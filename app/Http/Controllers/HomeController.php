@@ -35,7 +35,7 @@ class HomeController extends Controller
         $date_start = $request->input('date_start');
         $date_end = $request->input('date_end');
 
-        $field_detail = ['trn_dona_totambons.doc_no'];
+        $field_detail = ['trn_dona_totambons.doc_no', 'trn_dona_totambons.member_id'];
 
         $data = TrnDonaTotambon::select(
             'id', 'doc_datetime', 'doc_no', 'event', 'doc_refer', 'flag', 'cancel_date', 'cancel_user', 'member_id', 'do_befor', 'do_reedem',

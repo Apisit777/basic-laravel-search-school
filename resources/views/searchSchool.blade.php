@@ -16,6 +16,10 @@
         color: #fff !important;
         background: #1F2226 !important;
     }
+    .buttons-excel{
+        color: #fff !important;
+        background: #1F2226 !important;
+    }
     .table-responsive{-sm|-md|-lg|-xl|-xxl}
     element.style {
         top: 192px;
