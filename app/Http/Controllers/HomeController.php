@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Home;
 use App\Models\Food;
+use App\Models\TrnDonaTotambon;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -13,15 +14,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $foods = Food::select(
-            'id',
-            'name',
-            'price'
+        $search_school = TrnDonaTotambon::select(
+            'id', 'doc_datetime', 'doc_no', 'event', 'doc_refer', 'flag', 'cancel_date', 'cancel_user', 'member_id', 'do_befor', 'do_reedem',
+            'do_balance', 'donation_use', 'tb_id', 'school_id', 'remark', 'type_member', 'reg_user', 'reg_time', 'upd_user', 'upd_time', 'time_up'
         )
         ->get();
 
-        // dd($foods);
-        return view('searchSchool', compact('foods'));
+        // dd($search_school);
+        return view('searchSchool', compact('search_school'));
     }
 
     public function search_school(Request $request)
@@ -31,31 +31,31 @@ class HomeController extends Controller
             'page' => ceil(($request->input('start') + 1) / $limit),
         ]);
 
-        $name_number = $request->input('name_number');
+        $doc_no = $request->input('doc_no');
         $date_start = $request->input('date_start');
         $date_end = $request->input('date_end');
 
-        $field_detail = ['booking_ins.name', 'booking_ins.tel'];
+        $field_detail = ['trn_dona_totambons.doc_no'];
 
-        $data = Food::select(
-            'id',
-            'name',
-            'price')
+        $data = TrnDonaTotambon::select(
+            'id', 'doc_datetime', 'doc_no', 'event', 'doc_refer', 'flag', 'cancel_date', 'cancel_user', 'member_id', 'do_befor', 'do_reedem',
+            'do_balance', 'donation_use', 'tb_id', 'school_id', 'remark', 'type_member', 'reg_user', 'reg_time', 'upd_user', 'upd_time', 'time_up'
+        )
         ->orderBy('id', 'ASC');
 
 
-        if (null != $name_number) {
-            $data = $data->where(function ($data) use ($name_number, $field_detail) {
+        if (null != $doc_no) {
+            $data = $data->where(function ($data) use ($doc_no, $field_detail) {
                 for ($i = 0; $i < count($field_detail); $i++) {
-                    $data->orWhere($field_detail[$i], 'like', '%'.$name_number.'%');
+                    $data->orWhere($field_detail[$i], 'like', '%'.$doc_no.'%');
                 }
             });
         }
 
         if (null != $date_start && null != $date_end) {
-            $data = $data->whereBetween('booking_ins.booking_date', ["$date_start", "$date_end"]);
+            $data = $data->whereBetween('trn_dona_totambons.doc_datetime', ["$date_start", "$date_end"]);
         } elseif (null != $date_start) {
-            $data = $data->where('booking_ins.booking_date', '=', "$date_start");
+            $data = $data->where('trn_dona_totambons.doc_datetime', '=', "$date_start");
         }
 
         // dd($data);
