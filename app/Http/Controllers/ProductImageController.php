@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductImageController extends Controller
 {
@@ -37,21 +38,31 @@ class ProductImageController extends Controller
      */
     public function store(Request $request)
     {
-        if ($image_files = $request->file('image_files')) {
-            $year = date('Y');
-            $month = date('m');
-            foreach ($image_files as $image_file) {
-                $name = 'img_'.rand().'.'.$image_file->getClientOriginalExtension();
-                $img_path = "$year/$month";
-                if ($image_file->move(public_path($img_path), $name)) {
-                    $save_image_files = addimage::create([
-                        'name' => $name,
-                        'image_path' => $img_path.'/'.$name,
-                        'seq' => $id_car,
-                    ]);
-                }
-            }
+        // $validator = $request->validate([
+        $validator = Validator::make($request->all(), [
+            'files' => 'required|mimes:jpg,png,jpeg,gif,svg'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'failed', 'message' => $validator->errors()]);
         }
+
+        // if ($image_files = $request->file('image_files')) {
+        //     $year = date('Y');
+        //     $month = date('m');
+        //     foreach ($image_files as $image_file) {
+        //         $name = 'img_'.rand().'.'.$image_file->getClientOriginalExtension();
+        //         $img_path = "$year/$month";
+        //         if ($image_file->move(public_path($img_path), $name)) {
+        //             $save_image_files = addimage::create([
+        //                 'name' => $name,
+        //                 'image_path' => $img_path.'/'.$name,
+        //                 'seq' => $id_car,
+        //             ]);
+        //         }
+        //     }
+        // }
+        return back()->with('success', 'เพิ่มข้อมูลเรียบร้อยแล้ว.');
     }
 
     /**

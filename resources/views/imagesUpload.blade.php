@@ -1,4 +1,5 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 <style>
@@ -171,7 +172,8 @@
 
 <div class="justify-center items-center" style="position: relative;">
     <!-- <div class="" style="position: relative;"> -->
-    <div class="hide-success" style="position: absolute; right: 0;">
+        {{-- <div class="" style="position: absolute; right: 10px;"> --}}
+    <div class="hide-success" style="position: absolute; right: 10;">
         <div class="alert alert-success @if(!$message = Session::get('success')) active @endif" id="messageSuccess" style="display: flex; flex-wrap: wrap; align-items: center;">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
                 <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
@@ -180,37 +182,42 @@
             <i class="fa fa-times closebtn" aria-hidden="true"></i>
         </div>
     </div>
+    <div class="hide-success" id="error_noti_div" style="position: absolute; right: 10px;">
+        <div class="alert alert-danger active" id="messageError" style="display: flex; flex-wrap: wrap; align-items: center;">
+            <i class="fa fa-exclamation-circle" style="font-size: 20px"></i>
+            <div id="noti_message_error"></div>
+            &nbsp;<p style="color: black; font-weight: bold;">กรุณาเลือกรูปภาพ!</p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <i class="fa fa-times closebtn" aria-hidden="true"></i>
+        </div>
+    </div>
     <div class="mt-5 mb-5 flex justify-center items-center">
         <p class="inline-block space-y-2 border-b border-blue-500 text-xl font-bold">รายการ Upload Images</p>
     </div>
-    <div class="upload__box">
-        <div class="upload__btn-box">
-            <!-- <label class="upload__btn"> -->
-            <label class="inline-flex items-center px-3 py-2 text-sm font-medium text-white text-center bg-blue-800 shadow-lg shadow-gray-500 rounded-lg hover:bg-blue-900 focus:outline-none">
-                <p>Upload images</p>
-                <input type="file" multiple="" data-max_length="20" class="upload__inputfile">
-            </label>
-        </div>
-        <!-- <div class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-            <div class="flex flex-col items-center justify-center pt-5 pb-6"> -->
-                <ul class="pt-5 space-y-2 border-t border-blue-500">
-                    <div class="upload__img-wrap bg=[#202020]"></div>
-                <ul class="pt-5 space-y-2 border-t border-blue-500">
-                <div class="flex justify-center items-center mb-10"> 
-                    <button class="inline-flex items-center px-3 py-2 text-sm font-medium text-white text-center bg-blue-800 shadow-lg shadow-gray-500 rounded-lg hover:bg-blue-900 focus:outline-none">
-                        Add Images
-                    </button>
-                </div>
-            <!-- </div>
-        </div> -->
-        <div class="mt-10 mb-10 flex justify-center items-center">
-            <p class="inline-block space-y-2 border-b border-blue-500 text-xl font-bold">รายการ Preview Images</p>
-        </div>
-        <div class="mt-10">
+    <form method="POST" id="file-upload-form" enctype="multipart/form-data">
+        <div class="upload__box">
+            <div class="upload__btn-box">
+                <label class="inline-flex items-center px-3 py-2 text-sm font-medium text-white text-center bg-blue-800 shadow-lg shadow-gray-500 rounded-lg hover:bg-blue-900 focus:outline-none">
+                    <p>Upload images</p>
+                    <input type="file" name="files[]" id="file" class="upload__inputfile">
+                </label>
+            </div>
             <ul class="pt-5 space-y-2 border-t border-blue-500">
                 <div class="upload__img-wrap bg=[#202020]"></div>
             <ul class="pt-5 space-y-2 border-t border-blue-500">
+            <div class="flex justify-center items-center mb-10">
+                <button type="submit" class="inline-flex items-center px-3 py-2 text-sm font-medium text-white text-center bg-blue-800 shadow-lg shadow-gray-500 rounded-lg hover:bg-blue-900 focus:outline-none">
+                    Add Images
+                </button>
+            </div>
         </div>
+    </form>
+    <div class="mt-10 mb-10 flex justify-center items-center">
+        <p class="inline-block space-y-2 border-b border-blue-500 text-xl font-bold">รายการ Preview Images</p>
+    </div>
+    <div class="mt-10">
+        <ul class="pt-5 space-y-2 border-t border-blue-500">
+            <div class="upload__img-wrap bg=[#202020]"></div>
+        <ul class="pt-5 space-y-2 border-t border-blue-500">
     </div>
 </div>
 
@@ -220,11 +227,11 @@
 jQuery(document).ready(function () {
     ImgUpload();
 
-    $ajaxStup({
+    jQuery.ajaxSetup({
         headers: {
-            'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')
+            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
         }
-    })
+    });
     $("#file-upload-form").submit(function(event) {
         event.preventDefault();
         const formData = new FormData(this);
@@ -236,10 +243,18 @@ jQuery(document).ready(function () {
             contentType: false,
             processData: false,
             success: function(response) {
-                $('#messageSuccess').removeClass('active')
-                setTimeout(function() {
-                    $('#messageSuccess').addClass('active')
-                }, 3000)
+                if (response.status === 'success') {
+                    $('#messageSuccess').removeClass('hide-success')
+                    setTimeout(function() {
+                        $('#messageSuccess').addClass('hide-success')
+                    }, 3000)
+                }
+                else if (response.status === 'failed') {
+                    $('#error_noti_div').removeClass('hide-success')
+                    setTimeout(function() {
+                        $('#error_noti_div').addClass('hide-success')
+                    }, 3000)
+                }
             },
             error: function(error) {
 
