@@ -78,6 +78,95 @@
 	 position: relative;
 	 padding-bottom: 100%;
 }
+
+/* ************************************************* */
+.list-group{
+    position: relative;
+    display: block;
+    padding: .75rem 1.25rem;
+    margin-bottom: -1px;
+    background-color: #fff;
+    }
+
+    .img-wrap {
+        position: relative;
+    }
+    .img-wrap .close {
+        position: absolute;
+        right: 0px;
+        z-index: 100;
+    }
+    .close {
+        opacity: 0.8;
+    }
+    .img-thumbnail{
+        border: 0px;
+        padding: 2px;
+        height: 150px;
+    }
+    .container {
+        max-width: 700px;
+    }
+    dl, ol, ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .imgPreview img {
+        border-radius: .25rem;
+        padding: 2px;
+        max-height: 150px;
+    }
+    .color_reload{
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        background-color: #f5f5f5e0;
+        z-index: 999;
+    }
+    .hide-success .active{
+        transition: all 5s;
+        visibility: visible;
+        opacity: 1;
+    }
+    .hide-success .active{
+        transform: translateY(-130%);
+        transition-timing-function: ease-in;
+        transition: 1s;
+        visibility: hidden;
+        opacity: 0;
+    }
+    .closebtn {
+        position: absolute;
+        top: 7px;
+        right: 10px;
+        color: rgb(92, 92, 92);
+        float: right;
+        font-size: 15px;
+        line-height: 20px;
+        cursor: pointer;
+    }
+    .upload__img-close {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background-color: rgba(255, 0, 0, 0.734);
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        text-align: center;
+        line-height: 21px;
+        z-index: 1;
+        cursor: pointer;
+    }
+    .upload__img-close:after {
+        content: "✖";
+        font-size: 14px;
+        color: white;
+    }
 </style>
 
 <div class="justify-center items-center" style="position: relative;">
