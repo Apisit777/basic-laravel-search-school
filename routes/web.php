@@ -18,7 +18,8 @@ use App\Http\Controllers\ProductImageController;
 Route::get('search_school', [HomeController::class, 'index']);
 Route::post('search_school', [HomeController::class, 'search_school'])->name('search_school');
 
-Route::get('images_upload', [ProductImageController::class, 'index'])->name('images_upload');
+Route::get('images', [ProductImageController::class, 'index'])->name('images');
+Route::post('images_upload', [ProductImageController::class, 'store'])->name('images_upload');
 
 Route::get('/', function () {
     return view('welcome');
