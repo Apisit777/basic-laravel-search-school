@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +17,8 @@ use App\Http\Controllers\HomeController;
 
 Route::get('search_school', [HomeController::class, 'index']);
 Route::post('search_school', [HomeController::class, 'search_school'])->name('search_school');
+
+Route::get('images_upload', [ProductImageController::class, 'index'])->name('images_upload');
 
 Route::get('/', function () {
     return view('welcome');

@@ -35,7 +35,6 @@
         direction: ltr;
     }
 </style>
-
 {{-- <div class="App w-full bg-[#E7EDEF] dark:bg-[#202020] flex justify-center items-center relative"> --}}
 <!-- <div class="App w-full flex justify-center items-center"> -->
 <div class="justify-center items-center">
