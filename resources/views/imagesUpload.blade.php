@@ -10,7 +10,7 @@
 	 margin: 0;
 }
  .upload__box {
-	 padding: 40px;
+    padding: 0 40px 0 40px;
 }
  .upload__inputfile {
 	 width: 0.1px;
@@ -51,8 +51,10 @@
 }
  .upload__img-box {
 	 width: 200px;
-	 padding: 0 10px;
-	 margin-bottom: 12px;
+     gap: 5px
+	 /* padding: 0 10px; */
+	 /* margin-bottom: 12px; */
+     /* margin-top: 12px; */
 }
  .upload__img-close {
 	 width: 24px;
@@ -154,7 +156,7 @@
         width: 22px;
         height: 22px;
         border-radius: 50%;
-        background-color: rgba(255, 0, 0, 0.734);
+        /* background-color: rgba(255, 0, 0, 0.734); */
         position: absolute;
         top: 10px;
         right: 10px;
@@ -186,11 +188,11 @@
         <div class="alert alert-danger active" id="messageError" style="display: flex; flex-wrap: wrap; align-items: center;">
             <i class="fa fa-exclamation-circle" style="font-size: 20px"></i>
             <div id="noti_message_error"></div>
-            &nbsp;<p style="color: black; font-weight: bold;">กรุณาเลือกรูปภาพ!</p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <i class="fa fa-times closebtn" aria-hidden="true"></i>
+            &nbsp;<p style="color: black;">กรุณาเลือกรูปภาพ</p><p style="color: black; font-weight: bold;">&nbsp;!</p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <i class="fa fa-times closebtn" style="color: black;" aria-hidden="true"></i>
         </div>
     </div>
-    <div class="mt-5 mb-5 flex justify-center items-center">
+    <div class="mt-5 mb-1 flex justify-center items-center">
         <p class="inline-block space-y-2 border-b border-blue-500 text-xl font-bold">รายการ Upload Images</p>
     </div>
     <form method="POST" id="file-upload-form" enctype="multipart/form-data">
@@ -198,12 +200,12 @@
             <div class="upload__btn-box">
                 <label class="inline-flex items-center px-3 py-2 text-sm font-medium text-white text-center bg-blue-800 shadow-lg shadow-gray-500 rounded-lg hover:bg-blue-900 focus:outline-none">
                     <p>Upload images</p>
-                    <input type="file" name="files[]" id="file" class="upload__inputfile">
+                    <input type="file" name="files[]" id="file" class="upload__inputfile" multiple="">
                 </label>
             </div>
-            <ul class="pt-5 space-y-2 border-t border-blue-500">
-                <div class="upload__img-wrap bg=[#202020]"></div>
-            <ul class="pt-5 space-y-2 border-t border-blue-500">
+            <ul class="pt-2 space-y-2 border-t border-blue-500">
+                <div class="upload__img-wrap bg-[#202020] p-3"></div>
+            <ul class="pt-3 space-y-2 border-t border-blue-500">
             <div class="flex justify-center items-center mb-10">
                 <button type="submit" class="inline-flex items-center px-3 py-2 text-sm font-medium text-white text-center bg-blue-800 shadow-lg shadow-gray-500 rounded-lg hover:bg-blue-900 focus:outline-none">
                     Add Images
@@ -211,14 +213,14 @@
             </div>
         </div>
     </form>
-    <div class="mt-10 mb-10 flex justify-center items-center">
+    <div class="mt-5 mb-3 mb-1 flex justify-center items-center">
         <p class="inline-block space-y-2 border-b border-blue-500 text-xl font-bold">รายการ Preview Images</p>
     </div>
-    <div class="mt-10">
-        <ul class="pt-5 space-y-2 border-t border-blue-500">
-            <div class="upload__img-wrap bg=[#202020]"></div>
-        <ul class="pt-5 space-y-2 border-t border-blue-500">
-    </div>
+    <div class="upload__box">
+            <ul class="pt-2 space-y-2 border-t border-blue-500">
+                <div class="upload__img-wrap bg-[#202020] p-3"></div>
+            <ul class="pt-3 space-y-2 border-t border-blue-500">
+    </data>
 </div>
 
 <script src="https://cdn.tailwindcss.com"></script>
