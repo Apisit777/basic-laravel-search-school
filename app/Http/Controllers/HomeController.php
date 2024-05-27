@@ -119,4 +119,10 @@ class HomeController extends Controller
     {
         //
     }
+
+    public function home()
+    {
+        // dd($search_school);
+        return view('home');
+    }
 }
