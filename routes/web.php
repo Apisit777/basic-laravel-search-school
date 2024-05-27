@@ -15,6 +15,7 @@ use App\Http\Controllers\ProductImageController;
 |
 */
 
+Route::get('home', [HomeController::class, 'home']);
 Route::get('search_school', [HomeController::class, 'index']);
 Route::post('search_school', [HomeController::class, 'search_school'])->name('search_school');
 
