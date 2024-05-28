@@ -18,7 +18,7 @@
         } */
     </style>
 
-    <div class="sticky top-0 z-40 flex justify-start gap-x-6 bg-white px-4 py-4 shadow-sm sm:px-10">
+    <!-- <div class="sticky top-0 z-40 flex justify-start gap-x-6 bg-white px-4 py-4 shadow-sm sm:px-10"> -->
         <button type="button" class="-m-2.5 p-2.5 text-neutral-700" @click="open = true">
             <span class="sr-only">Open sidebar</span>
             <!-- Hamburger icon -->
@@ -61,7 +61,7 @@
             </span>
             </span>
         </button>
-    </div>
+    <!-- </div> -->
 
     <script>
         // grap everything we need

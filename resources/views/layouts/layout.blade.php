@@ -12,18 +12,17 @@
 </head>
 
 <body>
-    <div id="app">
+    <!-- <div id="app"> -->
         @include('layouts.admin_menu')
-            <div class="">
+            <!-- <div class=""> -->
                 {{-- <a id="show-sidebar" class="btn btn-sm btn-dark" href="#">
                     <i class="fas fa-bars"></i>
                 </a> --}}
-                @include('layouts.admin_menu_left')
                 <!-- <nav class="fixed bottom-[calc(100vh-theme(spacing.16))] left-0 right-0 top-0 bg-blue-200">Nav</nav> -->
-                <div class="flex min-h-screen bg-white dark:bg-[#202020]">
+                <!-- <div class="flex min-h-screen bg-white dark:bg-[#202020]"> -->
                     {{-- <aside class="sticky top-14 h-[calc(100vh-theme(spacing.14))] w-64 overflow-y-auto bg-[#e9e9e9] dark:bg-[#303030] relative"> --}}
-                    <aside class="fixed top-14 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-[#e9e9e9] dark:bg-[#303030]">
-                        <div class="h-full px-3 py-4 overflow-y-auto">
+                    <!-- <aside class="fixed top-14 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 bg-[#e9e9e9] dark:bg-[#303030]"> -->
+                        <!-- <div class="h-full px-3 py-4 overflow-y-auto">
                             <ul class="space-y-2 font-medium">
                                <li>
                                   <a href="#" class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -54,15 +53,15 @@
                                   </a>
                                </li>
                             </ul>
-                         </div>
-                    </aside>
+                         </div> -->
+                    <!-- </aside> -->
 
                     <!-- <main class="flex justify-center items-center"> -->
                         @yield('content')
                     <!-- </main> -->
-                </div>
-            </div>
-    </div>
+                <!-- </div> -->
+            <!-- </div> -->
+    <!-- </div> -->
 
     <script>
         $.ajaxSetup({
