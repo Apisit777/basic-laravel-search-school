@@ -7,6 +7,7 @@ module.exports = {
     "./resources/**/*.vue",
     "./node_modules/flowbite/**/*.js",
     "./node_modules/preline/dist/*.js",
+    "./node_modules/tw-elements/js/**/*.js"
   ],
   theme: {
     extend: {},
@@ -14,6 +15,7 @@ module.exports = {
   plugins: [
     require('flowbite/plugin'),
     require('preline/plugin'),
+    require("tw-elements/plugin.cjs")
   ],
 }
 
