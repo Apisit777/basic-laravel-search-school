@@ -4,23 +4,12 @@
 
 [x-cloak] { display: none !important; } /*<-- This Line right here!*/
 
-@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap");
-@tailwind base;
-
-@layer base {
-  html {
-    @apply text-surface;
-    @apply bg-white;
-  }
-  html.dark {
-    @apply text-neutral-50;
-    @apply bg-body-dark;
-  }
+.float-label-input {
+  margin: 32px 0;     
 }
 
-@tailwind components;
-@tailwind utilities;
-
-p {
-  @apply leading-[1.6];
+.float-label-input:focus-within label,
+.float-label-input input:not(:placeholder-shown) + label {
+  transform: translateY(-1.1rem) scale(0.75);
+  background-color: white;
 }

@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductImageController;
+use App\Http\Controllers\Auth\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +16,10 @@ use App\Http\Controllers\ProductImageController;
 |
 */
 
-Route::get('login', [HomeController::class, 'login']);
+Route::get('register', [AuthController::class, 'register']);
+Route::post('register', [AuthController::class, 'registerPost'])->name('register');
+Route::get('login', [AuthController::class, 'login']);
+
 Route::get('home', [HomeController::class, 'home']);
 Route::get('search_school', [HomeController::class, 'index']);
 Route::post('search_school', [HomeController::class, 'search_school'])->name('search_school');

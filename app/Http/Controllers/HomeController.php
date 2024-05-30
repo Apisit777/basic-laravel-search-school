@@ -125,9 +125,4 @@ class HomeController extends Controller
         // dd($search_school);
         return view('home');
     }
-    public function login()
-    {
-        // dd($search_school);
-        return view('login');
-    }
 }
