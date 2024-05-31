@@ -2,17 +2,15 @@
 @section('title', 'Inspection & deteils')
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta.3/css/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css"> -->
+    <!-- <link rel="stylesheet" href="{{ asset('css/twitter-bootstrap4.0.0/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap5.css">
 
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css"> -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.6/css/bootstrap.min.css"> -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> -->
     <style>
         .page-item.active .page-link {
             color: #fff !important;
@@ -44,89 +42,202 @@
             transition: transform ease-in-out 0.3s;
         }
 
+        [x-cloak] {
+            display: none;
+        }
+
     </style>
-    <!-- Styles -->
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <body x-cloak x-data="{darkMode: $persist(false)}" :class="{'dark': darkMode === true }" class="antialiased">
-    <div class="justify-center items-center">
-        <div class="mt-5 mb-5 flex justify-center items-center">
-            <p class="inline-block space-y-2 border-b border-blue-500 text-xl font-bold text-gray-900 dark:text-gray-100">รายการเลือกให้โรงเรียน</p>
-        </div>
-        <div class="row flex justify-center items-center mb-3 text-gray-900 dark:text-gray-100">
-            <div class="form-group row col-md-10" style="justify-content: center;">
-                <div class="form-group col-md-3">
-                    <label>Sarch Column</label>
-                    <select id="contact_status" class="form-select" aria-label="Default select example">
-                        <option value=""selected>ALL</option>
-                        <option value="0">doc_no</option>
-                        <option value="1">member_id</option>
-                        <option value="2">refer_member</option>
-                        <option value="3">refer_mobile</option>
-                        <option value="4">refer_idcard</option>
-                        <option value="5">refer_brand</option>
-                        <option value="6">branch_id</option>
-                    </select>
+    <!-- <body x-cloak x-data="{darkMode: $persist(false)}" :class="{'dark': darkMode === true }" class="antialiased"> -->
+        <div class="justify-center items-center">
+            <div class="mt-5 mb-5 flex justify-center items-center">
+                <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการเลือกให้โรงเรียน</p>
+            </div>
+            <div class="row flex justify-center items-center mb-3 text-gray-900 dark:text-gray-100">
+                <div class="form-group row col-md-10" style="justify-content: center;">
+                    <div class="form-group col-md-3">
+                        <!-- <label>Sarch Column</label>
+                        <select id="contact_status" class="form-select text-gray-900 dark:text-gray-100" aria-label="Default select example" style="height: 35px;">
+                            <option value="" selected>ALL</option>
+                            <option value="0">doc_no</option>
+                            <option value="1">member_id</option>
+                            <option value="2">refer_member</option>
+                            <option value="3">refer_mobile</option>
+                            <option value="4">refer_idcard</option>
+                            <option value="5">refer_brand</option>
+                            <option value="6">branch_id</option>
+                        </select> -->
+
+                        <label for="countries" class="block mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Sarch Column</label>
+                        <select id="countries" class="border border-[#6b6b6b] text-gray-900 dark:text-gray-100 text-xs rounded-sm block w-full p-2.5 text-gray-900 dark:text-gray-900 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option value="" selected>ALL</option>
+                            <option value="0">doc_no</option>
+                            <option value="1">member_id</option>
+                            <option value="2">refer_member</option>
+                            <option value="3">refer_mobile</option>
+                            <option value="4">refer_idcard</option>
+                            <option value="5">refer_brand</option>
+                            <option value="6">branch_id</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label>Value</label>
+                        <input type="text" style="height: 38px;" class="form-control form-control-sm form-border" name="doc_no" id="doc_no" value="">
+                    </div>
+                    <div class="form-group col-md-3" style="position:relative">
+                        <label for="">ช่วงวันที่</label>
+                        <input type="date" style="height: 38px;" class="form-control" data-date-format="dd/mm/yyyy" name="date_start" id="date_start" placeholder="คลิ๊กเพื่อเลือกวัน" autocomplete="off">
+                        <!-- <span class="bi bi-calendar" style="font-size: 20px; position: absolute; cursor: pointer; top: 32px; right: 7%;"> -->
+                        </span>
+                    </div>
+                    <div class="form-group col-md-3" style="position:relative">
+                        <label for="">ถึงวันที่</label>
+                        <input type="date" style="height: 38px;" class="form-control" data-date-format="dd/mm/yyyy" name="date_end" id="date_end" placeholder="คลิ๊กเพื่อเลือกวัน" autocomplete="off">
+                        <!-- <span class="bi bi-calendar" style="font-size: 20px; position: absolute; cursor: pointer; top: 32px; right: 7%;"> -->
+                        </span>
+                    </div>
                 </div>
-                <div class="form-group col-md-3">
-                    <label>Value</label>
-                    <input type="text" style="height: 35px;" class="form-control form-control-sm form-border" name="doc_no" id="doc_no" value="">
-                </div>
-                <div class="form-group col-md-3" style="position:relative">
-                    <label for="">ช่วงวันที่</label>
-                    <input type="date" style="height: 35px;" class="form-control" data-date-format="dd/mm/yyyy" name="date_start" id="date_start" placeholder="คลิ๊กเพื่อเลือกวัน" autocomplete="off">
-                    <!-- <span class="bi bi-calendar" style="font-size: 20px; position: absolute; cursor: pointer; top: 32px; right: 7%;"> -->
-                    </span>
-                </div>
-                <div class="form-group col-md-3" style="position:relative">
-                    <label for="">ถึงวันที่</label>
-                    <input type="date" style="height: 35px;" class="form-control" data-date-format="dd/mm/yyyy" name="date_end" id="date_end" placeholder="คลิ๊กเพื่อเลือกวัน" autocomplete="off">
-                    <!-- <span class="bi bi-calendar" style="font-size: 20px; position: absolute; cursor: pointer; top: 32px; right: 7%;"> -->
-                    </span>
+
+                <!-- <div class="antialiased sans-serif">
+                    <div x-data="app()" x-init="[initDate(), getNoOfDays()]" x-cloak>
+                        <div class="container mx-auto px-4 py-2 md:py-10">
+                            <div class="mb-5 w-64">
+                                <label for="datepicker" class="font-bold mb-1 text-gray-900 dark:text-white block">ช่วงวันที่</label>
+                                <div class="relative">
+                                    <input type="hidden" name="date" x-ref="date">
+                                    <input 
+                                        name="date_start"
+                                        type="text"
+                                        readonly
+                                        x-model="datepickerValue"
+                                        @click="showDatepicker = !showDatepicker"
+                                        @keydown.escape="showDatepicker = false"
+                                        class="w-full pl-4 pr-10 leading-none rounded-sm shadow-sm cursor-pointer focus:outline-none focus:shadow-outline text-gray-900 dark:text-white font-medium bg-white dark:bg-[#202020] duration-500"
+                                        placeholder="Select date">
+
+                                        <div class="absolute top-0 right-0 px-3 py-2">
+                                            <svg class="h-6 w-6 text-gray-400"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                            </svg>
+                                        </div>
+
+                                        <div 
+                                            class="bg-white dark:bg-[#303030] duration-500 mt-10 rounded-lg shadow p-4 absolute top-0 -left-2" 
+                                            style="width: 17rem" 
+                                            x-show.transition="showDatepicker"
+                                            @click.away="showDatepicker = false">
+
+                                            <div class="flex justify-between items-center mb-2">
+                                                <div>
+                                                    <span x-text="MONTH_NAMES[month]" class="text-lg font-bold text-gray-900 dark:text-white"></span>
+                                                    <span x-text="year" class="ml-1 text-lg text-gray-900 dark:text-white font-normal"></span>
+                                                </div>
+                                                <div>
+                                                    <button 
+                                                        type="button"
+                                                        class="transition ease-in-out duration-100 inline-flex cursor-pointer hover:bg-gray-200 p-1 rounded-full" 
+                                                        :class="{'cursor-not-allowed opacity-25': month == 0 }"
+                                                        :disabled="month == 0 ? true : false"
+                                                        @click="month--; getNoOfDays()">
+                                                        <svg class="h-6 w-6 text-gray-900 dark:text-white inline-flex"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                                                        </svg>  
+                                                    </button>
+                                                    <button 
+                                                        type="button"
+                                                        class="transition ease-in-out duration-100 inline-flex cursor-pointer hover:bg-gray-200 p-1 rounded-full" 
+                                                        :class="{'cursor-not-allowed opacity-25': month == 11 }"
+                                                        :disabled="month == 11 ? true : false"
+                                                        @click="month++; getNoOfDays()">
+                                                        <svg class="h-6 w-6 text-gray-900 dark:text-white inline-flex"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                                        </svg>									  
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="flex flex-wrap mb-3 -mx-1">
+                                                <template x-for="(day, index) in DAYS" :key="index">	
+                                                    <div style="width: 14.26%" class="px-1">
+                                                        <div
+                                                            x-text="day" 
+                                                            class="text-gray-900 dark:text-white font-medium text-center text-xs"></div>
+                                                    </div>
+                                                </template>
+                                            </div>
+
+                                            <div class="flex flex-wrap -mx-1">
+                                                <template x-for="blankday in blankdays">
+                                                    <div 
+                                                        style="width: 14.28%"
+                                                        class="text-center border p-1 border-transparent text-sm"	
+                                                    ></div>
+                                                </template>	
+                                                <template x-for="(date, dateIndex) in no_of_days" :key="dateIndex">	
+                                                    <div style="width: 14.28%" class="px-1 mb-1">
+                                                        <div
+                                                            @click="getDateValue(date)"
+                                                            x-text="date"
+                                                            class="cursor-pointer text-center text-sm leading-none rounded-full leading-loose transition ease-in-out duration-100"
+                                                            :class="{'bg-blue-500 text-gray-900 dark:text-white': isToday(date) == true, 'text-gray-900 dark:text-white hover:bg-blue-200': isToday(date) == false }"	
+                                                        ></div>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                </div>	 
+                            </div>
+                        </div>
+                    </div> -->
+
+                <div class="form-group col-md-3 my-2 mt-4">
+                    <label></label>
+                    <button id="btnSerarch" type="button" class="btn btn-warning btn-sm form-control form-border title-search"><i class="fa fa-search" aria-hidden="true"></i> ค้นหา</button>
                 </div>
             </div>
-            <div class="form-group col-md-3 my-2 mt-4">
-                <label></label>
-                <button id="btnSerarch" type="button" class="btn btn-warning btn-sm form-control form-border title-search"><i class="fa fa-search" aria-hidden="true"></i> ค้นหา</button>
+            <!-- <ul class="pt-5 space-y-2 border-t border-blue-500"> -->
+            <div class="mt-10 col-md-12 flex justify-center items-center text-gray-900 dark:text-gray-100">
+                <div class="row">
+                    <table id="example" class="table table-dark table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>doc_datetime</th>
+                                <th>doc_no</th>
+                                <th>event</th>
+                                <th>doc_refer</th>
+                                <th>flag</th>
+                                <!-- <th>cancel_date</th> -->
+                                <!-- <th>cancel_user</th> -->
+                                <th>member_id</th>
+                                <!-- <th>do_befor</th> -->
+                                <th>do_reedem</th>
+                                <!-- <th>do_balance</th> -->
+                                <th>donation_use</th>
+                                <!-- <th>tb_id</th> -->
+                                <th>school_id</th>
+                                <th>remark</th>
+                                <!-- <th>type_member</th> -->
+                                <!-- <th>reg_user</th> -->
+                                <!-- <th>reg_time</th> -->
+                                <!-- <th>upd_user</th>
+                                <th>upd_time</th> -->
+                                <!-- <th>time_up</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-        <!-- <ul class="pt-5 space-y-2 border-t border-blue-500"> -->
-        <div class="col-md-12 flex justify-center items-center text-gray-900 dark:text-gray-100">
-            <div class="row">
-                <table id="example" class="table table-dark table-hover">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>doc_datetime</th>
-                            <th>doc_no</th>
-                            <th>event</th>
-                            <th>doc_refer</th>
-                            <th>flag</th>
-                            <!-- <th>cancel_date</th> -->
-                            <!-- <th>cancel_user</th> -->
-                            <th>member_id</th>
-                            <!-- <th>do_befor</th> -->
-                            <th>do_reedem</th>
-                            <!-- <th>do_balance</th> -->
-                            <th>donation_use</th>
-                            <!-- <th>tb_id</th> -->
-                            <th>school_id</th>
-                            <th>remark</th>
-                            <!-- <th>type_member</th> -->
-                            <!-- <th>reg_user</th> -->
-                            <!-- <th>reg_time</th> -->
-                            <!-- <th>upd_user</th>
-                            <th>upd_time</th> -->
-                            <!-- <th>time_up</th> -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </body>
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    <!-- </body> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript"  src="../node_modules/tw-elements/dist/js/tw-elements.umd.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
@@ -356,5 +467,64 @@
         //         });
         //     });
         // });
+
+        // const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        // const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+        // function app() {
+        //     return {
+        //         showDatepicker: false,
+        //         datepickerValue: '',
+
+        //         month: '',
+        //         year: '',
+        //         no_of_days: [],
+        //         blankdays: [],
+        //         days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+
+        //         initDate() {
+        //             let today = new Date();
+        //             this.month = today.getMonth();
+        //             this.year = today.getFullYear();
+        //             this.datepickerValue = new Date(this.year, this.month, today.getDate()).toDateString();
+        //         },
+
+        //         isToday(date) {
+        //             const today = new Date();
+        //             const d = new Date(this.year, this.month, date);
+
+        //             return today.toDateString() === d.toDateString() ? true : false;
+        //         },
+
+        //         getDateValue(date) {
+        //             let selectedDate = new Date(this.year, this.month, date);
+        //             this.datepickerValue = selectedDate.toDateString();
+
+        //             this.$refs.date.value = selectedDate.getFullYear() +"-"+ ('0'+ selectedDate.getMonth()).slice(-2) +"-"+ ('0' + selectedDate.getDate()).slice(-2);
+
+        //             console.log(this.$refs.date.value);
+
+        //             this.showDatepicker = false;
+        //         },
+
+        //         getNoOfDays() {
+        //             let daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
+
+        //             let dayOfWeek = new Date(this.year, this.month).getDay();
+        //             let blankdaysArray = [];
+        //             for ( var i=1; i <= dayOfWeek; i++) {
+        //                 blankdaysArray.push(i);
+        //             }
+
+        //             let daysArray = [];
+        //             for ( var i=1; i <= daysInMonth; i++) {
+        //                 daysArray.push(i);
+        //             }
+
+        //             this.blankdays = blankdaysArray;
+        //             this.no_of_days = daysArray;
+        //         }
+        //     }
+        // }
     </script>
 @endsection

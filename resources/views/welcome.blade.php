@@ -38,8 +38,8 @@
     </style>
     </head>
     <body x-cloak x-data="{darkMode: $persist(false)}" :class="{'dark': darkMode === true }" class="antialiased">
-
         <div class="scale-100 p-6 bg-[#e9e9e9] dark:bg-[#202020] from-gray-700/50 via-transparent">
+            <div class="min-h-screen p-4 sm:ml-64 border-2 border-gray-200 border-dashed rounded-sm bg-white dark:bg-[#202020] duration-500">
             @if (Route::has('login'))
                 <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right">
                     @auth
