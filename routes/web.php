@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Product\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,11 +22,14 @@ Route::post('register', [AuthController::class, 'registerPost'])->name('register
 Route::get('login', [AuthController::class, 'login']);
 
 Route::get('home', [HomeController::class, 'home']);
-Route::get('search_school', [HomeController::class, 'index']);
-Route::post('search_school', [HomeController::class, 'search_school'])->name('search_school');
+Route::get('search_school', [HomeController::class, 'index'])->name('search_school');
+Route::post('search_school', [HomeController::class, 'search_school']);
 
 Route::get('images', [ProductImageController::class, 'index'])->name('images');
 Route::post('images_upload', [ProductImageController::class, 'store'])->name('images_upload');
+
+Route::get('product', [ProductController::class, 'index'])->name('product');
+Route::post('', [ProductController::class, 'store'])->name('');
 
 Route::get('/', function () {
     return view('welcome');
