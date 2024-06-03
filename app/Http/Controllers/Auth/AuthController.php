@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;    
+use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
-    public function login()
-    {
-        return view('auth.login');
-    }
     public function register()
     {
         return view('auth.register');
@@ -27,9 +25,30 @@ class AuthController extends Controller
 
         $user->save();
 
-        toastr()->success('Data has been saved successfully!', 'Congrats', ['timeOut' => 5000]);
+        toastr()->success('Created successfully!', 'Congrats', ['timeOut' => 5000]);
 
         return redirect()->back();
         // return back()->with('success', 'Register Successfully');
+    }
+    public function login()
+    {
+        return view('auth.login');
+    }
+    public function checkLogin(Request $request)
+    {
+        $credetail = [
+            'email' => $request->email,
+            'password' => $request->password
+        ];
+
+        if (Auth::attempt($credetail)) {
+            // return redirect('product');
+
+            $request->session()->regenerate();
+
+            return response()->json(['success' => 'Log in Success.', 'route' => 'product']);
+        } else {
+            return response(['error' => 'Check Username Or Password!'], 401);
+        }
     }
 }

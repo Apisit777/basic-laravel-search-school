@@ -20,7 +20,7 @@
                         d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
                     </svg>
                 </button>
-                <span class="self-center text-md font-semibold sm:text-xl whitespace-nowrap dark:text-white ml-2.5">Product Master</span>
+                <span class="self-center text-md font-semibold sm:text-xl whitespace-nowrap text-black dark:text-white ml-2.5">Product Master</span>
             </div>
             <div class="flex items-center">
                 <div class="flex items-center ms-3">

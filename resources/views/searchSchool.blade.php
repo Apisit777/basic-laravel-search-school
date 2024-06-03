@@ -108,7 +108,7 @@
                                 <label for="datepicker" class="font-bold mb-1 text-gray-900 dark:text-white block">ช่วงวันที่</label>
                                 <div class="relative">
                                     <input type="hidden" name="date" x-ref="date">
-                                    <input 
+                                    <input
                                         name="date_start"
                                         type="text"
                                         readonly
@@ -124,9 +124,9 @@
                                             </svg>
                                         </div>
 
-                                        <div 
-                                            class="bg-white dark:bg-[#303030] duration-500 mt-10 rounded-lg shadow p-4 absolute top-0 -left-2" 
-                                            style="width: 17rem" 
+                                        <div
+                                            class="bg-white dark:bg-[#303030] duration-500 mt-10 rounded-lg shadow p-4 absolute top-0 -left-2"
+                                            style="width: 17rem"
                                             x-show.transition="showDatepicker"
                                             @click.away="showDatepicker = false">
 
@@ -136,34 +136,34 @@
                                                     <span x-text="year" class="ml-1 text-lg text-gray-900 dark:text-white font-normal"></span>
                                                 </div>
                                                 <div>
-                                                    <button 
+                                                    <button
                                                         type="button"
-                                                        class="transition ease-in-out duration-100 inline-flex cursor-pointer hover:bg-gray-200 p-1 rounded-full" 
+                                                        class="transition ease-in-out duration-100 inline-flex cursor-pointer hover:bg-gray-200 p-1 rounded-full"
                                                         :class="{'cursor-not-allowed opacity-25': month == 0 }"
                                                         :disabled="month == 0 ? true : false"
                                                         @click="month--; getNoOfDays()">
                                                         <svg class="h-6 w-6 text-gray-900 dark:text-white inline-flex"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-                                                        </svg>  
+                                                        </svg>
                                                     </button>
-                                                    <button 
+                                                    <button
                                                         type="button"
-                                                        class="transition ease-in-out duration-100 inline-flex cursor-pointer hover:bg-gray-200 p-1 rounded-full" 
+                                                        class="transition ease-in-out duration-100 inline-flex cursor-pointer hover:bg-gray-200 p-1 rounded-full"
                                                         :class="{'cursor-not-allowed opacity-25': month == 11 }"
                                                         :disabled="month == 11 ? true : false"
                                                         @click="month++; getNoOfDays()">
                                                         <svg class="h-6 w-6 text-gray-900 dark:text-white inline-flex"  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                                        </svg>									  
+                                                        </svg>
                                                     </button>
                                                 </div>
                                             </div>
 
                                             <div class="flex flex-wrap mb-3 -mx-1">
-                                                <template x-for="(day, index) in DAYS" :key="index">	
+                                                <template x-for="(day, index) in DAYS" :key="index">
                                                     <div style="width: 14.26%" class="px-1">
                                                         <div
-                                                            x-text="day" 
+                                                            x-text="day"
                                                             class="text-gray-900 dark:text-white font-medium text-center text-xs"></div>
                                                     </div>
                                                 </template>
@@ -171,24 +171,24 @@
 
                                             <div class="flex flex-wrap -mx-1">
                                                 <template x-for="blankday in blankdays">
-                                                    <div 
+                                                    <div
                                                         style="width: 14.28%"
-                                                        class="text-center border p-1 border-transparent text-sm"	
+                                                        class="text-center border p-1 border-transparent text-sm"
                                                     ></div>
-                                                </template>	
-                                                <template x-for="(date, dateIndex) in no_of_days" :key="dateIndex">	
+                                                </template>
+                                                <template x-for="(date, dateIndex) in no_of_days" :key="dateIndex">
                                                     <div style="width: 14.28%" class="px-1 mb-1">
                                                         <div
                                                             @click="getDateValue(date)"
                                                             x-text="date"
                                                             class="cursor-pointer text-center text-sm leading-none rounded-full leading-loose transition ease-in-out duration-100"
-                                                            :class="{'bg-blue-500 text-gray-900 dark:text-white': isToday(date) == true, 'text-gray-900 dark:text-white hover:bg-blue-200': isToday(date) == false }"	
+                                                            :class="{'bg-blue-500 text-gray-900 dark:text-white': isToday(date) == true, 'text-gray-900 dark:text-white hover:bg-blue-200': isToday(date) == false }"
                                                         ></div>
                                                     </div>
                                                 </template>
                                             </div>
                                         </div>
-                                </div>	 
+                                </div>
                             </div>
                         </div>
                     </div> -->
@@ -198,8 +198,11 @@
                     <button id="btnSerarch" type="button" class="btn btn-warning btn-sm form-control form-border title-search"><i class="fa fa-search" aria-hidden="true"></i> ค้นหา</button>
                 </div>
             </div>
+            <button type="submit" class="absolute right-24 top-96 inline-flex items-center px-3 py-2 text-sm text-gray-100 font-medium text-center bg-blue-800 shadow-lg shadow-gray-500 rounded-sm hover:bg-blue-900 focus:outline-none">
+                Add New User
+            </button>
             <!-- <ul class="pt-5 space-y-2 border-t border-blue-500"> -->
-            <div class="mt-10 col-md-12 flex justify-center items-center text-gray-900 dark:text-gray-100">
+            <div class="relative mt-16 col-md-12 flex justify-center items-center text-gray-900 dark:text-gray-100">
                 <div class="row">
                     <table id="example" class="table table-dark table-hover">
                         <thead>

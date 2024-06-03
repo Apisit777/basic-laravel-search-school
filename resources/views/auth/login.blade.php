@@ -2,8 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-</head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
@@ -87,10 +87,10 @@
         .loading__dot:nth-child(2) { animation-delay: 250ms }
         .loading__dot:nth-child(3) { animation-delay: 500ms }
     </style>
+</head>
 
-    
 <body>
-    <!-- <div id="slide" class="loaderslide"></div> -->
+    <div id="slide" class="loaderslide"></div>
     <!-- <div class="min-h-screen p-10" style="background-image: url('https://www.pixelstalk.net/wp-content/uploads/2016/07/1080p-Full-HD-Images-For-Desktop.jpg')"> -->
     <!-- <div class="min-h-screen p-10" style="background-image: url('https://www.ssup.co.th/wp-content/uploads/2024/04/new-member-april.jpg')"> -->
     <div class="min-h-screen p-10" style="background-image: url('https://www.ssup.co.th/wp-content/uploads/2022/11/shutterstock_2079577573.png')">
@@ -98,12 +98,13 @@
             <div class="mb-12 grow-0 basis-auto md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12 xl:ml-12">
             </div>
             <div class="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-4/12">
-                <form class="max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-32" action="" method="POST">
-                    @csrf
+                {{-- <form class="js-validation-signin max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-32" method="POST" action="javascript:void(0)" action="{{ route('checkLogin') }}">
+                    @csrf --}}
+                <form class="js-validation-signin max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-32" method="POST">
                     <div class="flex flex-row items-center justify-center lg:justify-start">
                         <div class="flex text-center">
                             <p class="mb-0 me-4 mt-4 text-lg">Sign in with</p>
-                            <!-- <button class="flex items-center mr-2 bg-white dark:bg-[#303030] border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                            {{-- <button class="flex items-center mr-2 bg-white dark:bg-[#303030] border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                                 <img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="social icon" width="35px" height="35px">
                                 <span>
                                     Github
@@ -114,7 +115,7 @@
                                 <span>
                                     Google
                                 </span>
-                            </button> -->
+                            </button> --}}
                             <button class="flex items-center bg-white dark:bg-[#303030] border border-gray-300 rounded-lg shadow-md px-6 py-5 text-sm font-medium text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                                 <img src="https://www.ssup.co.th/wp-content/uploads/2022/11/site-logo-g.png" width="65px" height="65px">
                             </button>
@@ -129,14 +130,14 @@
 
                     <div class="flex flex-col gap-6">
                         <div class="relative float-label-input mt-0">
-                            <input type="email" id="name small-input" placeholder=" " class="block w-full bg-white dark:bg-[#2020] rounded-sm text-xs focus:outline-none focus:shadow-outline border border-black dark:border-gray-100 appearance-none leading-normal focus:border-blue-400">
-                            <label for="name" class="absolute block top-1 left-0 text-md text-black dark:text-white pointer-events-none transition duration-200 ease-in-outbg-white px-2 text-grey-darker">
+                            <input type="email" id="email small-input" name="email" placeholder=" " class="block w-full bg-white dark:bg-[#2020] rounded-sm text-xs focus:outline-none focus:shadow-outline border border-black dark:border-gray-100 appearance-none leading-normal focus:border-blue-400">
+                            <label for="" class="absolute block top-1 left-0 text-md text-black dark:text-white pointer-events-none transition duration-200 ease-in-outbg-white px-2 text-grey-darker">
                                 Email
                             </label>
                         </div>
                         <div class="relative float-label-input -mt-8">
-                            <input type="password" id="name small-input" placeholder=" " class="block w-full bg-white dark:bg-[#2020] rounded-sm text-xs focus:outline-none focus:shadow-outline border border-black dark:border-gray-100 appearance-none leading-normal focus:border-blue-400">
-                            <label for="name" class="absolute block top-1 left-0 text-md text-black dark:text-white pointer-events-none transition duration-200 ease-in-outbg-white px-2 text-grey-darker">
+                            <input type="password" id="password small-input" name="password" placeholder=" " class="block w-full bg-white dark:bg-[#2020] rounded-sm text-xs focus:outline-none focus:shadow-outline border border-black dark:border-gray-100 appearance-none leading-normal focus:border-blue-400">
+                            <label for="" class="absolute block top-1 left-0 text-md text-black dark:text-white pointer-events-none transition duration-200 ease-in-outbg-white px-2 text-grey-darker">
                                 Password
                             </label>
                         </div>
@@ -162,10 +163,15 @@
                     <button
                         class="mt-6 block w-full select-none rounded-lg bg-[#3061AF] py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                         type="submit"
-                        data-ripple-light="true"
                     >
                         Login
                     </button>
+
+                    {{-- <div class="form-group">
+                        <button type="submit" value="Login" class="btn float-right login_btn">
+                            <i class="fas fa-sign-in-alt"></i> Login
+                        </button>
+                    </div> --}}
                     <p class="mt-4 block text-center font-sans text-base font-normal leading-relaxed antialiased">
                         Already have an account?
                             <a to="/signup" class="cursor-pointer">
@@ -178,7 +184,7 @@
                 </form>
             </div>
         </div>
-        <!-- <div class="relative w-[350px] overflow-hidden"> 
+        {{-- <div class="relative w-[350px] overflow-hidden">
             <input type="checkbox" class="peer absolute top-0 inset-x-0 w-full h-12 opacity-0 z-100000 cursor-pointer">
             <div class="bg-gray-600 text-white h-12 w-full pl-5 flex items-center">
                 <h1 class="text-white text-lg">
@@ -192,25 +198,20 @@
             </div>
             <div class="bg-white overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40">
                 <div class="p-4">
-                    For example 
+                    For example
                     You enter the room you will see three row of the table,
                     I shit recentre under the air conditionner just like you.
                 </div>
             </div>
-        </div> -->
+        </div>  --}}
         <div class="imgContainer">
-            {{-- <span class="l">LOADING...</span> --}}
             <div id="loader" class="overlay hidden">
                 <div class="loading">
-                    <!-- LOADING -->
                     <span class="text-[#18978A] text-5xl font-medium">SSUP</span>
-                    <!-- <img src="https://www.ssup.co.th/wp-content/uploads/2022/11/site-logo-g.png" width="50%" height="50px"> -->
-                    <!-- <div class="mt-20"> -->
                         <span class="loading__dot">.</span>
                         <span class="loading__dot">.</span>
                         <span class="loading__dot">.</span>
                         <div class="lds-dual-ring "></div>
-                    <!-- </div> -->
                 </div>
                  <!-- <img src="https://mir-s3-cdn-cf.behance.net/project_modules/fs/02b374101705095.5f24d5db1096f.gif" alt="" style="width: 100%;">  -->
             </div>
@@ -218,8 +219,73 @@
 
     </div>
 </body>
-</html>
+
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-<!-- <script type="text/javascript"  src="../node_modules/tw-elements/dist/js/tw-elements.umd.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+    jQuery.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+        }
+    });
+</script>
+<script>
+
+    toastr.options = {
+        "closeButton": true,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": true,
+        "positionClass": "toast-top-right",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+    // $(document).ready(function onDocumentReady() {
+    //     setInterval(function doThisEveryTwoSeconds() {
+    //         toastr.success("Hello World!");
+    //     }, 2000);
+    // });
+
+
+    function checkLogin() {
+        console.log('0', data);
+        const dataForm = $(".js-validation-signin").serialize();
+        jQuery.ajax({
+            type: "POST",
+            url: "{{ route('checkLogin') }}",
+            data: dataForm,
+            beforeSend: function () {
+                console.log('1', data);
+                $('#loader').removeClass('hidden')
+            },
+            success: function (res) {
+                console.log('2', data);
+                // sessionStorage.setItem("first_login", "Y")
+                window.location = res.route
+            },
+            error: function (params) {
+                console.log('3', data);
+                errorMessage('Check Username Or Password.');
+            }
+        });
+    }
+
+    function errorMessage(text) {
+        $('#loader').addClass('hidden');
+        $('#email').val('')
+        $('#password').val('')
+        toastr.success("Check Username Or Password!");
+    }
+</script>
+</html>
