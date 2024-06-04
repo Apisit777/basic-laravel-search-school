@@ -1,13 +1,38 @@
 @extends('layouts.layout')
 @section('title', 'Inspection & deteils')
-@section('content')
 
     <style>
-
+        .loaderslide {
+            width: 100%;
+            height: 100%;
+            background-color: #303030;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            animation: slide_up 1s linear 0.7s forwards;
+        }
+        .btn {
+            z-index: 1001;
+            margin: auto;
+        }
+        @keyframes slide_up{
+            0% {
+                height: 100%;
+            }
+            70% {
+                height: 10%;
+            }
+            100% {
+                height: 0%;
+            }
+        }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+    <div id="slide" class="loaderslide"></div>
+    
+@section('content')
     <div class="justify-center items-center">
         <div class="mt-5 mb-5 flex justify-center items-center">
             <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการเลือกให้โรงเรียน</p>
@@ -16,7 +41,7 @@
             <div class="form-group row col-md-10" style="justify-content: center;">
                 <div class="form-group col-md-3">
                     <label for="countries" class="block mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Sarch Column</label>
-                    <select id="countries" class="border border-[#6b6b6b] text-gray-900 dark:text-gray-100 text-xs rounded-sm block w-full p-2.5 text-gray-900 dark:text-gray-900 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <select id="countries" class="border border-[#6b6b6b] text-gray-900 dark:text-gray-900 text-xs rounded-sm block w-full p-2.5 dark:border-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="" selected>ALL</option>
                         <option value="0">doc_no</option>
                         <option value="1">member_id</option>
@@ -66,6 +91,20 @@
     <script src="https://cdn.tailwindcss.com"></script>
     {{-- <script type="text/javascript"  src="../node_modules/tw-elements/dist/js/tw-elements.umd.min.js"></script> --}}
     <script>
+
+    const add_element = () => {
+        const template = document.createElement('div');
+        template.classList.add("loaderslide");
+        template.setAttribute("id","slide");
+        document.body.appendChild(template);
+    }
+
+    if (sessionStorage.getItem("first_login") === 'Y') {
+        sessionStorage.setItem("first_login", "yes")
+        $("#slide").addClass("loaderslide");
+    } else {
+        $("#slide").remove();
+    }
 
     </script>
 @endsection
