@@ -65,7 +65,8 @@
             position: relative;
         }
         .loading span{
-            font-size: calc(1vw + 1.5vh);
+            /* font-size: calc(1vw + 1.5vh); */
+            font-family: "Times New Roman", Times, serif;
         }
         .l {
             position: fixed;
@@ -100,11 +101,11 @@
             <div class="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-4/12">
                 {{-- <form class="js-validation-signin max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-32" method="POST" action="javascript:void(0)" action="{{ route('checkLogin') }}">
                     @csrf --}}
-                <form class="js-validation-signin max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-32" method="POST">
+                <!-- <form class="js-validation-signin max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-32" method="POST">
                     <div class="flex flex-row items-center justify-center lg:justify-start">
                         <div class="flex text-center">
                             <p class="mb-0 me-4 mt-4 text-lg">Sign in with</p>
-                            {{-- <button class="flex items-center mr-2 bg-white dark:bg-[#303030] border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                            <button class="flex items-center mr-2 bg-white dark:bg-[#303030] border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                                 <img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="social icon" width="35px" height="35px">
                                 <span>
                                     Github
@@ -115,7 +116,7 @@
                                 <span>
                                     Google
                                 </span>
-                            </button> --}}
+                            </button>
                             <button class="flex items-center bg-white dark:bg-[#303030] border border-gray-300 rounded-lg shadow-md px-6 py-5 text-sm font-medium text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                                 <img src="https://www.ssup.co.th/wp-content/uploads/2022/11/site-logo-g.png" width="65px" height="65px">
                             </button>
@@ -166,12 +167,6 @@
                     >
                         Login
                     </button>
-
-                    {{-- <div class="form-group">
-                        <button type="submit" value="Login" class="btn float-right login_btn">
-                            <i class="fas fa-sign-in-alt"></i> Login
-                        </button>
-                    </div> --}}
                     <p class="mt-4 block text-center font-sans text-base font-normal leading-relaxed antialiased">
                         Already have an account?
                             <a to="/signup" class="cursor-pointer">
@@ -181,7 +176,124 @@
                     <span class="mt-4 block font-sans text-xs font-bold text-center">
                     PRODUCT MASTER (V 1.04.0 © 2024)
                     </span>
+                </form> -->
+
+                <form class="js-validation-signin max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-32" method="POST">
+                    <div class="flex flex-row items-center justify-center lg:justify-start">
+                        <div class="flex text-center">
+                            <p class="mb-0 me-4 mt-4 text-lg">Sign in with</p>
+                            <button class="flex items-center bg-white dark:bg-[#303030] border border-gray-300 rounded-lg shadow-md px-6 py-5 text-sm font-medium text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                                <img src="https://www.ssup.co.th/wp-content/uploads/2022/11/site-logo-g.png" width="65px" height="65px">
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-black dark:before:border-blue-500 after:mt-0.5 after:flex-1 after:border-t after:border-black dark:after:border-blue-500">
+                        <p class="mx-4 mb-0 text-center font-semibold dark:text-white">
+                        Or
+                        </p>
+                    </div>
+
+                    <div class="flex flex-col gap-6">
+                        <div class="relative float-label-input mt-0">
+                            <input type="email" id="email" name="email" placeholder=" " class="block w-full bg-white dark:bg-[#2020] rounded-sm text-xs focus:outline-none focus:shadow-outline border border-black dark:border-gray-100 appearance-none leading-normal focus:border-blue-400">
+                            <label for="" class="absolute block top-1 left-0 text-md text-black dark:text-white pointer-events-none transition duration-200 ease-in-outbg-white px-2 text-grey-darker">
+                                Email
+                            </label>
+                        </div>
+                        <div class="relative float-label-input -mt-8">
+                            <input type="password" id="password" name="password" placeholder=" " class="block w-full bg-white dark:bg-[#2020] rounded-sm text-xs focus:outline-none focus:shadow-outline border border-black dark:border-gray-100 appearance-none leading-normal focus:border-blue-400">
+                            <label for="" class="absolute block top-1 left-0 text-md text-black dark:text-white pointer-events-none transition duration-200 ease-in-outbg-white px-2 text-grey-darker">
+                                Password
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="inline-flex items-center">
+                        <label
+                            class="relative -ml-2.5 flex cursor-pointer items-center rounded-full p-3"
+                            htmlFor="checkbox"
+                            data-ripple-dark="true"
+                        >
+                        </label>
+                        <label class="mt-px cursor-pointer select-none font-light" htmlFor="checkbox">
+                            <p class="flex items-center font-sans text-sm font-normal leading-normal antialiased">
+                                I agree the
+                                <Link class="font-medium transition-colors hover:text-blue-500" href="#" >
+                                    &nbsp;Terms and Conditions
+                                </Link>
+                            </p>
+                        </label>
+                    </div>
+
+                    <!-- <button
+                        class="mt-6 block w-full select-none rounded-lg bg-[#3061AF] py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                        type="button"
+                        onClick="checkLogin()"
+                    >
+                        Login
+                    </button> -->
+
+                    <a class="mb-3 flex w-full items-center justify-center rounded bg-primary px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong" 
+                        style="background-color: #3b5998" 
+                        href="#!" role="button" 
+                        data-twe-ripple-init="" 
+                        data-twe-ripple-color="light"
+                        onClick="checkLogin()">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                            <path d="M5.25 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM2.25 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM18.75 7.5a.75.75 0 0 0-1.5 0v2.25H15a.75.75 0 0 0 0 1.5h2.25v2.25a.75.75 0 0 0 1.5 0v-2.25H21a.75.75 0 0 0 0-1.5h-2.25V7.5Z" />
+                        </svg>
+                        </span>
+                        Login
+                    </a>
+
+                    <p class="mt-4 block text-center font-sans text-base font-normal leading-relaxed antialiased">
+                        Already have an account?
+                            <a href="{{ route('register') }}" class="cursor-pointer inline-block space-y-2 border-b border-[#303030] dark:border-[#303030]">
+                                Create an account
+                            </a>
+                    </p>
+                    <span class="mt-4 block font-sans text-xs font-bold text-center">
+                        PRODUCT MASTER (V 1.04.0 © 2024)
+                    </span>
                 </form>
+
+                <!-- <form class="js-validation-signin" method="POST" action="{{ route('checkLogin') }}">
+                    @csrf
+                    <div class="py-3">
+                        <div class="mb-4">
+                            <input type="text" class="form-control form-control-lg form-control-alt"
+                                id="email" name="email" placeholder="Username">
+                        </div>
+                        <div class="mb-4">
+                            <input type="password" class="form-control form-control-lg form-control-alt"
+                                id="password" name="password" placeholder="Password">
+                        </div>
+                        <div class="mb-4">
+                            <div class="d-md-flex align-items-md-center justify-content-md-between">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="login-remember"
+                                        name="login-remember">
+                                    <label class="form-check-label" for="login-remember">Remember
+                                        Me</label>
+                                </div>
+                                <div class="py-2">
+                                    <a class="fs-sm fw-medium" href="javascript:void(0)">Forgot
+                                        Password?</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row justify-content-center mb-0">
+                        <div class="col-md-6 col-xl-5">
+                            <button type="submit" class="btn btn-block btn-primary text-white">
+                                <i class="fa fa-fw fa-sign-in-alt mr-1"></i> Sign In
+                            </button>
+                        </div>
+                    </div>
+                </form> -->
+
             </div>
         </div>
         {{-- <div class="relative w-[350px] overflow-hidden">
@@ -207,7 +319,7 @@
         <div class="imgContainer">
             <div id="loader" class="overlay hidden">
                 <div class="loading">
-                    <span class="text-[#18978A] text-5xl font-medium">SSUP</span>
+                    <span class="text-[#18978A] text-5xl font-semibold">S S U P</span>
                         <span class="loading__dot">.</span>
                         <span class="loading__dot">.</span>
                         <span class="loading__dot">.</span>
@@ -226,11 +338,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>
-    jQuery.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-        }
-    });
+    
 </script>
 <script>
 
@@ -251,31 +359,29 @@
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     }
-    // $(document).ready(function onDocumentReady() {
-    //     setInterval(function doThisEveryTwoSeconds() {
-    //         toastr.success("Hello World!");
-    //     }, 2000);
-    // });
-
 
     function checkLogin() {
-        console.log('0', data);
-        const dataForm = $(".js-validation-signin").serialize();
+        let dataForm = $(".js-validation-signin").serialize();
+
+        jQuery.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+            }
+        });
         jQuery.ajax({
             type: "POST",
             url: "{{ route('checkLogin') }}",
             data: dataForm,
             beforeSend: function () {
-                console.log('1', data);
                 $('#loader').removeClass('hidden')
             },
-            success: function (res) {
-                console.log('2', data);
-                // sessionStorage.setItem("first_login", "Y")
-                window.location = res.route
+            success: function(res) {
+                sessionStorage.setItem("first_login", "Y")
+                if(res == 'success') {
+                    window.location.replace('/product')
+                }
             },
             error: function (params) {
-                console.log('3', data);
                 errorMessage('Check Username Or Password.');
             }
         });
@@ -285,7 +391,7 @@
         $('#loader').addClass('hidden');
         $('#email').val('')
         $('#password').val('')
-        toastr.success("Check Username Or Password!");
+        toastr.error("Check Username Or Password!");
     }
 </script>
 </html>

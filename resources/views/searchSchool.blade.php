@@ -71,7 +71,7 @@
                         </select> -->
 
                         <label for="countries" class="block mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Sarch Column</label>
-                        <select id="countries" class="border border-[#6b6b6b] text-gray-900 dark:text-gray-100 text-xs rounded-sm block w-full p-2.5 text-gray-900 dark:text-gray-900 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <select id="countries" class="border border-[#6b6b6b] text-gray-900 dark:text-gray-900 text-xs rounded-sm block w-full p-2.5 dark:border-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                             <option value="" selected>ALL</option>
                             <option value="0">doc_no</option>
                             <option value="1">member_id</option>

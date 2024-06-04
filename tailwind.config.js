@@ -10,7 +10,11 @@ module.exports = {
     "./node_modules/tw-elements/js/**/*.js"
   ],
   theme: {
-    extend: {},
+    extend: {
+      zIndex: {
+        '100000': '100000',
+      }
+    },
   },
   plugins: [
     require('flowbite/plugin'),

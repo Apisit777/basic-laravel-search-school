@@ -19,7 +19,12 @@ use App\Http\Controllers\Product\ProductController;
 
 Route::get('/register', [AuthController::class, 'register']);
 Route::post('/register', [AuthController::class, 'registerPost'])->name('register');
-Route::get('/login', [AuthController::class, 'login']);
+
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+// Route::get('/login', function () {
+//     return "Check login";
+// });
+
 Route::post('/checkLogin', [AuthController::class, 'checkLogin'])->name('checkLogin');
 
 Route::get('/home', [HomeController::class, 'home']);
