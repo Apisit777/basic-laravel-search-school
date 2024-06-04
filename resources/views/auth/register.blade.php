@@ -102,10 +102,10 @@
                         </svg>
                     </div>
 
-                    <a class="mb-3 flex w-full items-center justify-center rounded bg-primary px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong" 
-                        style="background-color: #3b5998" 
-                        href="#!" role="button" 
-                        data-twe-ripple-init="" 
+                    <a class="mb-3 flex w-full items-center justify-center rounded bg-primary px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                        style="background-color: #3b5998"
+                        href="#!" role="button"
+                        data-twe-ripple-init=""
                         data-twe-ripple-color="light"
                         onclick="register()">
 
@@ -117,7 +117,7 @@
                     </a>
                     <p class="mt-4 block text-center font-sans text-base font-normal leading-relaxed antialiased">
                         Already have an account?
-                            <a href="{{ route('login') }}" class="cursor-pointer inline-block space-y-2 border-b border-[#303030] dark:border-[#303030]">
+                            <a href="{{ route('login') }}" class="cursor-pointer inline-block space-y-2 border-b border-black dark:border-blue-500">
                                 Sigh In
                             </a>
                     </p>
@@ -163,7 +163,7 @@
     // });
 
     const dlayMessage = 1000;
-    
+
     function register() {
         jQuery.ajaxSetup({
             headers: {

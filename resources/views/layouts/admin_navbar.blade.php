@@ -50,10 +50,10 @@
                     </button>
                 </div>
                 <div class="text-black dark:text-white ml-2">
-                    Login
+                    Logout
                 </div>
             </div>
         </div>
-        
+
     </div>
 </nav>
