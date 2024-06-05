@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\Managemenu\ManageMenuController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,8 @@ Route::post('/images_upload', [ProductImageController::class, 'store'])->name('i
 Route::get('/product', [ProductController::class, 'index'])->name('product');
 Route::get('/product_create', [ProductController::class, 'create'])->name('product_create');
 Route::post('', [ProductController::class, 'store'])->name('');
+
+Route::get('/manage_menu', [ManageMenuController::class, 'index'])->name('manage_menu');
 
 Route::get('/', function () {
     return view('welcome');
