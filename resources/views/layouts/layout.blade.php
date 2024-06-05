@@ -24,7 +24,7 @@
     <body x-cloak x-data="{darkMode: $persist(false)}" :class="{'dark': darkMode === true }" class="antialiased">
         <div class="min-h-screen p-4 sm:ml-64 bg-white dark:bg-[#202020] duration-500">
             <div class="p-4 rounded-sm dark:border-gray-700 mt-5">
-                <div class="max-w-7xl mx-auto">
+                <div class="max-w-8xl mx-auto">
                     @yield('content')
                 </div>
             </div>
