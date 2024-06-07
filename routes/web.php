@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Managemenu\ManageMenuController;
+use App\Http\Controllers\Tool\ToolController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,10 +37,15 @@ Route::get('/images', [ProductImageController::class, 'index'])->name('images');
 Route::post('/images_upload', [ProductImageController::class, 'store'])->name('images_upload');
 
 Route::get('/product', [ProductController::class, 'index'])->name('product');
+Route::get('/get_users', [ProductController::class, 'get_users'])->name('get_users');
 Route::get('/product_create', [ProductController::class, 'create'])->name('product_create');
-Route::post('', [ProductController::class, 'store'])->name('');
+Route::get('/checknamebrand', [ProductController::class, 'create'])->name('checknamebrand');
+Route::post('/search_product', [ProductController::class, 'search_product'])->name('search_product');
+Route::post('/list_users', [ProductController::class, 'list_users'])->name('list_users');
+Route::delete('/upate_product_status/{id}', [ProductController::class, 'upate_product_status'])->name('upate_product_status');
 
 Route::get('/manage_menu', [ManageMenuController::class, 'index'])->name('manage_menu');
+Route::get('/tool', [ToolController::class, 'index'])->name('tool');
 
 Route::get('/', function () {
     return view('welcome');

@@ -1,24 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Managemenu;
+namespace App\Http\Controllers\Tool;
 
-use App\Models\ManageMenu;
-use App\Models\position;
-use App\Models\menu;
+use App\Models\Tool;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class ManageMenuController extends Controller
+class ToolController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $menu = menu::all();
-        $position = position::all();
-
-        return view('managemenu.index', compact('menu', 'position'));
+        return view('tool.index');
     }
 
     /**
@@ -40,7 +35,7 @@ class ManageMenuController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ManageMenu $manageMenu)
+    public function show(Tool $tool)
     {
         //
     }
@@ -48,7 +43,7 @@ class ManageMenuController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ManageMenu $manageMenu)
+    public function edit(Tool $tool)
     {
         //
     }
@@ -56,7 +51,7 @@ class ManageMenuController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ManageMenu $manageMenu)
+    public function update(Request $request, Tool $tool)
     {
         //
     }
@@ -64,7 +59,7 @@ class ManageMenuController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ManageMenu $manageMenu)
+    public function destroy(Tool $tool)
     {
         //
     }
