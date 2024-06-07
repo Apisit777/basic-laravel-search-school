@@ -67,7 +67,7 @@
     
 @section('content')
     <div class="justify-center items-center">
-        <div class="mt-5 flex justify-center items-center">
+        <div class="mt-5 mb-5 flex justify-center items-center">
             <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการเลือกให้โรงเรียน</p>
         </div>
         <div class="row relative flex justify-center items-center mb-3 text-gray-900 dark:text-gray-100">
@@ -107,7 +107,7 @@
             </div>
         </div>
 
-        <div class="absolute right-24 top-76">
+        <div class="absolute right-24 top-80">
             <a href="{{ route('product_create') }}">
                 <button type="submit" class="inline-flex items-center px-3 py-2 text-sm text-gray-100 font-medium text-center bg-blue-800 shadow-lg shadow-gray-500 rounded-sm hover:bg-blue-900 focus:outline-none">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -117,7 +117,7 @@
                 </button>
             </a>
         </div>
-        <div class="relative mt-5 col-md-12 flex justify-center items-center text-gray-900 dark:text-gray-100">
+        <div class="relative mt-16 col-md-12 flex justify-center items-center text-gray-900 dark:text-gray-100">
             <div class="row">
                 <table id="example" class="table table-dark table-hover">
                     <thead>
@@ -125,7 +125,7 @@
                             <th>ID</th>
                             <th>Full Name</th>
                             <th>Email</th>
-                            <th>Action</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -191,7 +191,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
 
-                "url": "{{ route('search_product') }}",
+                "url": "{{ route('list_users') }}",
                 "type": "POST",
                 'data': function(data) {
                     // Read values
@@ -233,10 +233,7 @@
                     targets: 3,
                     orderable: true,
                     render: function(data, type, row) {
-                        let text = "#"
-                        let disabledRoute = "{{route('upate_product_status', 0)}}".replace('/0', "/" + row.id)
-
-                        return `<button onclick="disableAppointment('${disabledRoute}',this,'${row.id}')" class="bclose btn btn-sm btn-danger"><i class="far fa-trash-alt" style="color: white;"></i></button>`;
+                        return row.status;
                     }
                 }
             ]
@@ -246,57 +243,6 @@
             mytableDatatable.draw();
         });
 
-        function disableAppointment(url,e,id) {
-            const mytableDatatable = $('#example').DataTable();
-
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#dd3333',
-                confirmButtonText: 'delete!'
-
-                }).then(result => {
-                    if (result.isConfirmed) {
-                        $.ajax({
-                            type: "DELETE",
-                            url: url,
-                            beforeSend: function() {
-                                $(e).parent().parent().addClass('d-none');
-                            },
-                            success: function (params) {
-                                if(params.success){
-                                    Swal.fire({
-                                        title:'ลบไฟล์ข้อมูลเรียบร้อย',
-                                        text:'',
-                                        icon:'success',
-                                        showConfirmButton: false,
-                                        timer: 1500
-                                    });
-                                    mytableDatatable.draw();
-                                }
-                                else{
-                                    Swal.fire({
-                                        title:'ลบไฟล์ข้อมูลไม่สำเร็จ',
-                                        text:'',
-                                        icon:'error',
-                                    });
-                                    $(e).parent().parent().removeClass('d-none');
-                                }
-                            },
-                            error: function(er){
-                                Swal.fire({
-                                    title:'ลบไฟล์ข้อมูลไม่สำเร็จ',
-                                    text:'',
-                                    icon:'error',
-                                });
-                                $(e).parent().parent().removeClass('d-none');
-                            }
-                        });
-                    }
-                });
-        }
+       
     </script>
 @endsection
