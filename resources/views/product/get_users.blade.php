@@ -60,11 +60,11 @@
             display: none;
         }
     </style>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <div id="slide" class="loaderslide"></div>
-    
+
 @section('content')
     <div class="justify-center items-center">
         <div class="mt-5 mb-5 flex justify-center items-center">
@@ -156,7 +156,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
     <script>
+        const pusher  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
+        const channel = pusher.subscribe('public');
 
         const add_element = () => {
             const template = document.createElement('div');
@@ -243,6 +247,34 @@
             mytableDatatable.draw();
         });
 
-       
+        toastr.options = {
+            "closeButton": false,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
+        channel.bind('chat', function (data) {
+            $.post("/receive", {
+                _token:  '{{csrf_token()}}',
+                message: data.message,
+            })
+            .done(function (res) {
+                console.log("🚀 ~ res:", res)
+                toastr.info("You have unread "+res+' job');
+            });
+        });
+
     </script>
 @endsection

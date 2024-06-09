@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\Managemenu\ManageMenuController;
 use App\Http\Controllers\Tool\ToolController;
+use App\Http\Controllers\PusherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,10 @@ Route::delete('/upate_product_status/{id}', [ProductController::class, 'upate_pr
 
 Route::get('/manage_menu', [ManageMenuController::class, 'index'])->name('manage_menu');
 Route::get('/tool', [ToolController::class, 'index'])->name('tool');
+
+Route::get('/test', [PusherController::class, 'index']);
+Route::post('/broadcast', [PusherController::class, 'broadcast'])->name('broadcast');
+Route::post('/receive', [PusherController::class, 'receive'])->name('receive');
 
 Route::get('/', function () {
     return view('welcome');

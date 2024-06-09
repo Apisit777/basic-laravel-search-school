@@ -81,6 +81,9 @@ class ProductController extends Controller
             ->where('status', '=', 2)
             ->count();
 
+            // $data = $data->count();
+
+        // return response()->json($data);
         return $data;
     }
 
@@ -91,36 +94,15 @@ class ProductController extends Controller
             'page' => ceil(($request->input('start') + 1) / $limit),
         ]);
 
-        // $doc_no = $request->input('doc_no');
-        // $date_start = $request->input('date_start');
-        // $date_end = $request->input('date_end');
-
-        // $field_detail = ['trn_dona_totambons.doc_no', 'trn_dona_totambons.member_id'];
-
         $data = User::select(
             'id',
             'name',
             'email',
             'status'
         )
+        ->where('status', 2)
         ->orderBy('id', 'ASC');
 
-
-        // if (null != $doc_no) {
-        //     $data = $data->where(function ($data) use ($doc_no, $field_detail) {
-        //         for ($i = 0; $i < count($field_detail); $i++) {
-        //             $data->orWhere($field_detail[$i], 'like', '%'.$doc_no.'%');
-        //         }
-        //     });
-        // }
-
-        // if (null != $date_start && null != $date_end) {
-        //     $data = $data->whereBetween('trn_dona_totambons.doc_datetime', ["$date_start", "$date_end"]);
-        // } elseif (null != $date_start) {
-        //     $data = $data->where('trn_dona_totambons.doc_datetime', '=', "$date_start");
-        // }
-
-        // dd($data);
         $data = $data->paginate($limit);
         $totalRecords = $data->total();
         $totalRecordwithFilter = $data->count();
@@ -150,33 +132,12 @@ class ProductController extends Controller
             'page' => ceil(($request->input('start') + 1) / $limit),
         ]);
 
-        // $doc_no = $request->input('doc_no');
-        // $date_start = $request->input('date_start');
-        // $date_end = $request->input('date_end');
-
-        // $field_detail = ['trn_dona_totambons.doc_no', 'trn_dona_totambons.member_id'];
-
         $data = User::select(
             'id',
             'name',
             'email'
         )
         ->orderBy('id', 'ASC');
-
-
-        // if (null != $doc_no) {
-        //     $data = $data->where(function ($data) use ($doc_no, $field_detail) {
-        //         for ($i = 0; $i < count($field_detail); $i++) {
-        //             $data->orWhere($field_detail[$i], 'like', '%'.$doc_no.'%');
-        //         }
-        //     });
-        // }
-
-        // if (null != $date_start && null != $date_end) {
-        //     $data = $data->whereBetween('trn_dona_totambons.doc_datetime', ["$date_start", "$date_end"]);
-        // } elseif (null != $date_start) {
-        //     $data = $data->where('trn_dona_totambons.doc_datetime', '=', "$date_start");
-        // }
 
         // dd($data);
         $data = $data->paginate($limit);
