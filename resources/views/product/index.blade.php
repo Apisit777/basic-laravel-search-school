@@ -64,7 +64,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <div id="slide" class="loaderslide"></div>
-    
+
 @section('content')
     <div class="justify-center items-center">
         <div class="mt-5 flex justify-center items-center">
@@ -156,7 +156,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
     <script>
+    const pusher  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
+    const channel = pusher.subscribe('public');
+
 
         const add_element = () => {
             const template = document.createElement('div');
@@ -236,15 +240,17 @@
                         let text = "#"
                         let disabledRoute = "{{route('upate_product_status', 0)}}".replace('/0', "/" + row.id)
 
-                        return `<button onclick="disableAppointment('${disabledRoute}',this,'${row.id}')" class="bclose btn btn-sm btn-danger"><i class="far fa-trash-alt" style="color: white;"></i></button>`;
+                        return `<button onclick="disableAppointment('${disabledRoute}',this,'${row.id}')" class="bclose btn btn-sm btn-success refersh_btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                            <path fill-rule="evenodd" d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z" clip-rule="evenodd" />
+                        </svg>
+                            </button>`;
+
                     }
                 }
             ]
         });
 
-        $('#btnSerarch').click(function() {
-            mytableDatatable.draw();
-        });
 
         function disableAppointment(url,e,id) {
             const mytableDatatable = $('#example').DataTable();
@@ -256,9 +262,24 @@
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#dd3333',
-                confirmButtonText: 'delete!'
+                confirmButtonText: 'Update'
 
                 }).then(result => {
+
+                    $.ajax({
+                    url:"/broadcast",
+                    method:'POST',
+                    headers:{
+                        'X-Socket-Id': pusher.connection.socket_id
+                    },
+                    data:{
+                        _token:  '{{csrf_token()}}',
+                        message: 'update notify'
+                    }
+                }).done(function (res) {
+                    console.log("🚀 ~ $ ~ res:", res)
+                });
+
                     if (result.isConfirmed) {
                         $.ajax({
                             type: "DELETE",
@@ -269,7 +290,7 @@
                             success: function (params) {
                                 if(params.success){
                                     Swal.fire({
-                                        title:'ลบไฟล์ข้อมูลเรียบร้อย',
+                                        title:'อัปเดตข้อมูลเรียบร้อย',
                                         text:'',
                                         icon:'success',
                                         showConfirmButton: false,
@@ -279,7 +300,7 @@
                                 }
                                 else{
                                     Swal.fire({
-                                        title:'ลบไฟล์ข้อมูลไม่สำเร็จ',
+                                        title:'อัปเดตข้อมูลไม่สำเร็จ',
                                         text:'',
                                         icon:'error',
                                     });
@@ -288,7 +309,7 @@
                             },
                             error: function(er){
                                 Swal.fire({
-                                    title:'ลบไฟล์ข้อมูลไม่สำเร็จ',
+                                    title:'อัปเดตข้อมูลไม่สำเร็จ',
                                     text:'',
                                     icon:'error',
                                 });
@@ -298,5 +319,36 @@
                     }
                 });
         }
+
+        // document.querySelectorAll('.refersh_btn').forEach(element => {
+        //     console.log("🚀 ~ document.querySelectorAll ~ element:", element)
+        //     el.addEventListener('click', function() {
+
+        //     })
+        // });
+
+
+        // $('.refersh_btn').on('click', function() {
+        //     // event.preventDefault();
+        //     console.log('first')
+        //     $.ajax({
+        //         url:"/broadcast",
+        //         method:'POST',
+        //         headers:{
+        //             'X-Socket-Id': pusher.connection.socket_id
+        //         },
+        //         data:{
+        //             _token:  '{{csrf_token()}}',
+        //             message: 'update notify'
+        //         }
+        //     }).done(function (res) {
+        //         console.log("🚀 ~ $ ~ res:", res)
+        //     });
+        // });
+
+        // $("form").submit(function (event) {
+
+        // });
+
     </script>
 @endsection
