@@ -67,12 +67,12 @@
 
 @section('content')
     <div class="justify-center items-center">
-        <div class="mt-5 flex justify-center items-center">
-            <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการเลือกให้โรงเรียน</p>
+        <div class="mt-5 mb-4 flex justify-center items-center">
+            <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการทะเบียนสินค้า</p>
         </div>
         <div class="row relative flex justify-center items-center mb-3 text-gray-900 dark:text-gray-100">
             <div class="form-group row col-md-10" style="justify-content: center;">
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                     <label for="countries" class="block mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Sarch Column</label>
                     <select id="countries" class="border border-[#6b6b6b] text-gray-900 dark:text-gray-900 text-xs rounded-sm block w-full p-2.5 dark:border-gray-500 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500">
                         <option value="" selected>ALL</option>
@@ -86,11 +86,11 @@
                     </select>
                 </div>
 
-                <div class="form-group col-md-3">
+                <div class="form-group col-md-4">
                     <label>Value</label>
                     <input type="text" style="height: 38px;" class="form-control form-control-sm form-border" name="doc_no" id="doc_no" value="">
                 </div>
-                <div class="form-group col-md-3" style="position:relative">
+                <!-- <div class="form-group col-md-3" style="position:relative">
                     <label for="">ช่วงวันที่</label>
                     <input type="date" style="height: 38px;" class="form-control" data-date-format="dd/mm/yyyy" name="date_start" id="date_start" placeholder="คลิ๊กเพื่อเลือกวัน" autocomplete="off">
                     </span>
@@ -99,7 +99,7 @@
                     <label for="">ถึงวันที่</label>
                     <input type="date" style="height: 38px;" class="form-control" data-date-format="dd/mm/yyyy" name="date_end" id="date_end" placeholder="คลิ๊กเพื่อเลือกวัน" autocomplete="off">
                     </span>
-                </div>
+                </div> -->
             </div>
             <div class="form-group col-md-3 my-2 mt-4">
                 <label></label>
@@ -123,8 +123,8 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Full Name</th>
-                            <th>Email</th>
+                            <th>รหัสสินค้า</th>
+                            <th>ชื้อสินค้า</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -157,7 +157,36 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+    @if(Session::has("status"))
+        <script>
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            
+            jQuery().ready(function () {
+                toastr.success( {{Session::get("status")}} );
+            });
+        </script>
+    @endif
+
     <script>
+    const dlayMessage = 1000;
     const pusher  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
     const channel = pusher.subscribe('public');
 
@@ -195,7 +224,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
 
-                "url": "{{ route('search_product') }}",
+                "url": "{{ route('list_products') }}",
                 "type": "POST",
                 'data': function(data) {
                     // Read values
@@ -223,14 +252,14 @@
                     targets: 1,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.name;
+                        return row.seq;
                     }
                 },
                 {
                     targets: 2,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.email;
+                        return row.name;
                     }
                 },
                 {
@@ -260,26 +289,34 @@
                 text: "You won't be able to revert this!",
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#dd3333',
-                confirmButtonText: 'Update'
+                confirmButtonColor: '#303030',
+                cancelButtonColor: '#e13636',
+                confirmButtonText: `
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" class="size-6 hidden h-6 w-6 md:inline-block">
+                        <path d="M0 0h24v24H0V0z" fill="none"></path>
+                        <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
+                        <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
+                    </svg>
+                    Save
+                `,
+                cancelButtonText: `Cancle`,
+                color: "#ffffff",
+                background: "#202020",
 
                 }).then(result => {
-
                     $.ajax({
-                    url:"/broadcast",
-                    method:'POST',
-                    headers:{
-                        'X-Socket-Id': pusher.connection.socket_id
-                    },
-                    data:{
-                        _token:  '{{csrf_token()}}',
-                        message: 'update notify'
-                    }
-                }).done(function (res) {
-                    console.log("🚀 ~ $ ~ res:", res)
-                });
-
+                        url:"/broadcast",
+                        method:'POST',
+                        headers:{
+                            'X-Socket-Id': pusher.connection.socket_id
+                        },
+                        data:{
+                            _token:  '{{csrf_token()}}',
+                            message: 'update notify'
+                        }
+                    }).done(function (res) {
+                        console.log("🚀 ~ $ ~ res:", res)
+                    });
                     if (result.isConfirmed) {
                         $.ajax({
                             type: "DELETE",
@@ -319,36 +356,6 @@
                     }
                 });
         }
-
-        // document.querySelectorAll('.refersh_btn').forEach(element => {
-        //     console.log("🚀 ~ document.querySelectorAll ~ element:", element)
-        //     el.addEventListener('click', function() {
-
-        //     })
-        // });
-
-
-        // $('.refersh_btn').on('click', function() {
-        //     // event.preventDefault();
-        //     console.log('first')
-        //     $.ajax({
-        //         url:"/broadcast",
-        //         method:'POST',
-        //         headers:{
-        //             'X-Socket-Id': pusher.connection.socket_id
-        //         },
-        //         data:{
-        //             _token:  '{{csrf_token()}}',
-        //             message: 'update notify'
-        //         }
-        //     }).done(function (res) {
-        //         console.log("🚀 ~ $ ~ res:", res)
-        //     });
-        // });
-
-        // $("form").submit(function (event) {
-
-        // });
 
     </script>
 @endsection

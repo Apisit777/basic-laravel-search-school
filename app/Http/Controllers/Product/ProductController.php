@@ -23,9 +23,14 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        return view('product.create');
+        $productCodeMax = Product::max('seq');
+        $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
+        $productCode = 'P'.sprintf('%05d', $productCodeNumber);
+
+        // dd($productCode);
+        return view('product.create', compact('productCode'));
     }
 
     /**
@@ -33,7 +38,32 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::beginTransaction();
+        try {
+            $data_product = [
+                'name' => $request->input('name')
+            ];
+
+            $product = Product::create($data_product);
+
+            $productCodeMax = Product::max('seq');
+            $productCodeNumber =  preg_replace( '/[^0-9]/', '', $productCodeMax ) + 1;
+            $productCode = 'T'.sprintf('%06d', $productCodeNumber);
+
+            Product::where('id', $product->id)->update([
+                'seq' => $productCode,
+            ]);
+
+            DB::commit();
+            $request->session()->flash('status', 'success');
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'fail');
+
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
     }
 
     /**
@@ -77,7 +107,7 @@ class ProductController extends Controller
 
     public static function count_users()
     {
-        $data = User::select('id')
+        $data = Product::select('id')
             ->where('status', '=', 2)
             ->count();
 
@@ -87,22 +117,22 @@ class ProductController extends Controller
         return $data;
     }
 
-    public function list_users(Request $request)
+    public function list_products(Request $request)
     {
         $limit = $request->input('length'); // limit per page
         $request->merge([
             'page' => ceil(($request->input('start') + 1) / $limit),
         ]);
 
-        $data = User::select(
+        $data = Product::select(
             'id',
-            'name',
-            'email',
-            'status'
+            'seq',
+            'name'
         )
-        ->where('status', 2)
+        ->where('status', 1)
         ->orderBy('id', 'ASC');
 
+        // dd($data);
         $data = $data->paginate($limit);
         $totalRecords = $data->total();
         $totalRecordwithFilter = $data->count();
@@ -125,18 +155,20 @@ class ProductController extends Controller
         return response()->json($data > 0 ? false : true);
     }
 
-    public function search_product(Request $request)
+    public function list_approve_products(Request $request)
     {
         $limit = $request->input('length'); // limit per page
         $request->merge([
             'page' => ceil(($request->input('start') + 1) / $limit),
         ]);
 
-        $data = User::select(
+        $data = Product::select(
             'id',
+            'seq',
             'name',
-            'email'
+            'status'
         )
+        ->where('status', 2)
         ->orderBy('id', 'ASC');
 
         // dd($data);
@@ -155,7 +187,7 @@ class ProductController extends Controller
 
     public function upate_product_status($id)
     {
-        $data = User::find($id);
+        $data = Product::find($id);
         $data->status = 2;
         $data->save();
 
