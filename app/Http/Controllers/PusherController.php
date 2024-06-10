@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Events\PusherBroadcast;
 use App\Models\User;
+use App\Models\Product;
 
 class PusherController extends Controller
 {
@@ -17,7 +18,7 @@ class PusherController extends Controller
     public function broadcast(Request $request) {
         broadcast(new PusherBroadcast($request->get('message')))->toOthers();
 
-        $data = User::find($request->id);
+        $data = Product::find($request->id);
         $data->status = 2;
         $data->save();
 
@@ -25,7 +26,7 @@ class PusherController extends Controller
     }
 
     public function receive(Request $request) {
-        $data = User::select('id')
+        $data = Product::select('id')
             ->where('status', '=', 2)
             ->count();
 

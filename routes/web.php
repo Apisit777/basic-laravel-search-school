@@ -39,10 +39,11 @@ Route::post('/images_upload', [ProductImageController::class, 'store'])->name('i
 
 Route::get('/product', [ProductController::class, 'index'])->name('product');
 Route::get('/get_users', [ProductController::class, 'get_users'])->name('get_users');
+Route::post('/create_products', [ProductController::class, 'store'])->name('create_products');
 Route::get('/product_create', [ProductController::class, 'create'])->name('product_create');
-Route::get('/checknamebrand', [ProductController::class, 'create'])->name('checknamebrand');
-Route::post('/search_product', [ProductController::class, 'search_product'])->name('search_product');
-Route::post('/list_users', [ProductController::class, 'list_users'])->name('list_users');
+Route::get('/checknamebrand', [ProductController::class, 'checkname_brand'])->name('checknamebrand');
+Route::post('/list_products', [ProductController::class, 'list_products'])->name('list_products');
+Route::post('/list_approve_products', [ProductController::class, 'list_approve_products'])->name('list_approve_products');
 Route::delete('/upate_product_status/{id}', [ProductController::class, 'upate_product_status'])->name('upate_product_status');
 
 Route::get('/manage_menu', [ManageMenuController::class, 'index'])->name('manage_menu');
@@ -50,6 +51,7 @@ Route::get('/tool', [ToolController::class, 'index'])->name('tool');
 
 Route::get('/test', [PusherController::class, 'index']);
 Route::post('/broadcast', [PusherController::class, 'broadcast'])->name('broadcast');
+Route::get('/get_receive', [PusherController::class, 'receive'])->name('get_receive');
 Route::post('/receive', [PusherController::class, 'receive'])->name('receive');
 
 Route::get('/', function () {
