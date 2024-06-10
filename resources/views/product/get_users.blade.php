@@ -263,6 +263,11 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
+        $(document).ready(function onDocumentReady() {
+                setInterval(function doThisEveryTwoSeconds() {
+                    toastr.success("Hello World!");
+                }, 2000);
+        });
 
         channel.bind('chat', function (data) {
             $.post("/receive", {

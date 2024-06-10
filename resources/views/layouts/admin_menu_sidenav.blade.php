@@ -135,6 +135,24 @@ $countUsers = ProductController::count_users();
             </li>
         </ul>
     </div>
+    {{-- function ajaxGetNoti() {
+            $.ajax({
+                type: "GET",
+                url: "{{ route('get_receive') }}",
+                success: function (res) {
+                    console.log('res', res);
+                    if(res){
+                        $("#count_noti").html(res);
+
+                    }else{
+                        $("#count_noti").empty();
+                    }
+                },
+                error: function(){
+                    console.log(res);
+                }
+            });
+        } --}}
 </aside>
 
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script> -->
@@ -145,25 +163,6 @@ $countUsers = ProductController::count_users();
 <script>
     const pusher1  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
     const channel1 = pusher1.subscribe('public');
-
-    // function ajaxGetNoti() {
-    //     $.ajax({
-    //         type: "GET",
-    //         url: "{{ route('get_receive') }}",
-    //         success: function (res) {
-    //             console.log('res', res);
-    //             if(res){
-    //                 $("#count_noti").html(res);
-
-    //             }else{
-    //                 $("#count_noti").empty();
-    //             }
-    //         },
-    //         error: function(){ 
-    //             console.log(res);
-    //         }
-    //     });
-    // }
 
     channel1.bind('chat', function (data) {
         $.post("/receive", {
