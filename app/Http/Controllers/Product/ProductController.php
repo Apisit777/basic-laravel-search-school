@@ -50,17 +50,17 @@ class ProductController extends Controller
             $productCodeNumber =  preg_replace( '/[^0-9]/', '', $productCodeMax ) + 1;
             $productCode = 'T'.sprintf('%06d', $productCodeNumber);
 
-            Product::where('id', $product->id)->update([
+            $response = Product::where('id', $product->id)->update([
                 'seq' => $productCode,
             ]);
 
+            // dd($response);
             DB::commit();
-            $request->session()->flash('status', 'success');
-
-            return response()->json(['success' => true]);
+            return response()->json(['success' => 'เพิ่มขู้อมูลสำเร็จ', 'route' => 'product']);
+            // return redirect('product')->with('success', 'เพิ่มขู้อมูลสำเร็จ');
+            // return response()->json($response);
         } catch (\Exception $e) {
             DB::rollback();
-            $request->session()->flash('status', 'fail');
 
             return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
         }
