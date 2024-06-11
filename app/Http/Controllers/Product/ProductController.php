@@ -54,13 +54,12 @@ class ProductController extends Controller
                 'seq' => $productCode,
             ]);
 
-            // dd($response);
             DB::commit();
-            return response()->json(['success' => 'เพิ่มขู้อมูลสำเร็จ', 'route' => 'product']);
-            // return redirect('product')->with('success', 'เพิ่มขู้อมูลสำเร็จ');
-            // return response()->json($response);
+            $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
+            return response()->json(['success' => true]);
         } catch (\Exception $e) {
             DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
 
             return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
         }
@@ -193,4 +192,13 @@ class ProductController extends Controller
 
         return response()->json(['success'=>true]);
     }
+    // public static function upate_product_status()
+    // {
+    //     $data = Product::find('id');
+    //     $data->status = 2;
+    //     $data->save();
+
+    //     // return response()->json(['success'=>true]);
+    //     return $data;
+    // }
 }

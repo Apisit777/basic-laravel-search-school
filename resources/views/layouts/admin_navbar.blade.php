@@ -23,7 +23,7 @@
                 <span class="self-center text-md font-semibold sm:text-xl whitespace-nowrap text-black dark:text-white ml-2.5">Product Master</span>
             </div>
             <div class="flex items-center space-x-6 rtl:space-x-reverse">
-                <div class="text-sm text-black dark:text-white">
+                <div class="text-sm text-black dark:text-white -mr-5">
                     <button @click="darkMode=!darkMode" type="button" class="relative inline-flex flex-shrink-0 h-6 mr-1 transition-colors duration-200 ease-in-out border-2 border-transparent rounded-full cursor-pointer bg-zinc-200 dark:bg-zinc-700 w-11 focus:outline-none focus:ring-2 focus:ring-neutral-700 focus:ring-offset-2" role="switch" aria-checked="false">
                         <span class="sr-only">Use setting</span>
                         <span class="relative inline-block w-5 h-5 transition duration-500 ease-in-out transform translate-x-0 bg-white rounded-full shadow pointer-events-none dark:translate-x-5 ring-0">
@@ -49,8 +49,37 @@
                         </span>
                     </button>
                 </div>
-                <div class="text-black dark:text-white ml-2">
-                    Logout
+                <div class="relative w-[120px] overflow-hidden rounded-sm bg-white dark:bg-[#303030] shadow-lg">
+                    <input type="checkbox" class="peer absolute top-0 inset-x-0 w-full h-7 opacity-0 z-100000 cursor-pointer">
+                    <div class="bg-white dark:bg-[#303030] shadow-lg text-white h-7 w-full pl-5 flex items-center">
+                        <h1 class="text-black dark:text-white text-sm">
+                            Language
+                        </h1>
+                    </div>
+                    <div class="absolute top-1.5 right-3 text-white transition-tranform duration-500 rotate-0 peer-checked:rotate-180">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-black dark:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="bg-white dark:bg-[#232323] shadow-lg overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40 cursor-pointer">
+                        <div class="flex justify-center items-center mt-1 hover:bg-gray-100 dark:hover:bg-[#303030]">
+                            <img src="https://crm.wsmart.co.th/media/flag/usa-flag-icon.png" style="width: 22px; height: 15px; object-fit: cover;">
+                            <p class="inline-block text-md font-bold text-gray-900 dark:text-gray-100 ml-2">EN</p>
+                        </div>
+                        <ul class="pt-1 mt-1 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
+                        <div class="flex justify-center items-center mb-1 hover:bg-gray-100 dark:hover:bg-[#303030]">
+                            <img src="https://crm.wsmart.co.th/media/flag/thailand-flag-icon.png" style="width: 22px; height: 15px; object-fit: cover;">
+                            <p class="inline-block text-md font-bold text-gray-900 dark:text-gray-100 ml-2">TH</p>
+                        </div>
+                    </div>
+                </div>  
+                <div class="text-black dark:text-white text-sm ml-2 mt-1">
+                    <a href="#" class="text-black dark:text-white bg-white dark:bg-[#303030] shadow-lg  py-1 px-2 rounded-sm group">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="mb-1 hidden h-5 w-5 transition-transform group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                            <path fill-rule="evenodd" d="M7.5 3.75A1.5 1.5 0 0 0 6 5.25v13.5a1.5 1.5 0 0 0 1.5 1.5h6a1.5 1.5 0 0 0 1.5-1.5V15a.75.75 0 0 1 1.5 0v3.75a3 3 0 0 1-3 3h-6a3 3 0 0 1-3-3V5.25a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3V9A.75.75 0 0 1 15 9V5.25a1.5 1.5 0 0 0-1.5-1.5h-6Zm10.72 4.72a.75.75 0 0 1 1.06 0l3 3a.75.75 0 0 1 0 1.06l-3 3a.75.75 0 1 1-1.06-1.06l1.72-1.72H9a.75.75 0 0 1 0-1.5h10.94l-1.72-1.72a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                        </svg>
+                        Logout
+                    </a>
                 </div>
             </div>
         </div>
