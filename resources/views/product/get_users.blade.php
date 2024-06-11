@@ -107,7 +107,7 @@
             </div>
         </div>
 
-        <div class="absolute right-24 top-80">
+        <!-- <div class="absolute right-24 top-80">
             <a href="#">
                 <button type="submit" class="inline-flex items-center px-3 py-2 text-sm text-gray-100 font-medium text-center bg-blue-800 shadow-lg shadow-gray-500 rounded-sm hover:bg-blue-900 focus:outline-none">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -116,7 +116,7 @@
                     Add
                 </button>
             </a>
-        </div>
+        </div> -->
         <div class="relative mt-16 col-md-12 flex justify-center items-center text-gray-900 dark:text-gray-100">
             <div class="row">
                 <table id="example" class="table table-dark table-hover">
@@ -265,7 +265,7 @@
         }
         $(document).ready(function onDocumentReady() {
                 setInterval(function doThisEveryTwoSeconds() {
-                    toastr.success("Hello World!");
+                    toastr.info("You have unread 1 job !");
                 }, 2000);
         });
 
@@ -276,7 +276,7 @@
             })
             .done(function (res) {
                 console.log("🚀 ~ res:", res)
-                toastr.info("You have unread "+res+' job');
+                toastr.info("You have unread "+ res +' job!');
             });
         });
 
