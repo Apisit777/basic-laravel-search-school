@@ -12,6 +12,12 @@
             top: 0;
             left: 0;
         }
+        .highlight { 
+            background-color: #014a77; 
+        }
+        #positionTable tbody tr:hover{ 
+            cursor: pointer; 
+        }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -38,7 +44,7 @@
                     <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
                         <div class="mt-8 flex justify-center items-center">
                             <form id="posForm" method="post">
-                                <table id="positionTable" class="table table-bordered table-hover text-gray-900 dark:text-white cursor-pointer" style="width: 100%;">
+                                <table id="positionTable" class="table table-bordered text-gray-900 dark:text-white cursor-pointer" style="width: 100%;">
                                     <thead>
                                         <tr>
                                             <th style="width: 30px">ID</th>
@@ -114,6 +120,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     {{-- <script type="text/javascript"  src="../node_modules/tw-elements/dist/js/tw-elements.umd.min.js"></script> --}}
     <script>
+        $("#positionTable tbody tr").click(function() {
+            let selected = $(this).hasClass("highlight");
+            let css = $(this).hasClass({ "color": "#ffffff" });
 
+            $("#positionTable tr").removeClass("highlight");
+            if(!selected){
+                $(this).addClass("highlight");
+            }
+        });
     </script>
 @endsection

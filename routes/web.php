@@ -19,6 +19,7 @@ use App\Http\Controllers\PusherController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/post', [AuthController::class, 'index'])->name('post');
 
 Route::get('/register', [AuthController::class, 'register']);
 Route::post('/register', [AuthController::class, 'registerPost'])->name('register');
@@ -56,4 +57,4 @@ Route::post('/receive', [PusherController::class, 'receive'])->name('receive');
 
 Route::get('/', function () {
     return view('welcome');
-});
+    });

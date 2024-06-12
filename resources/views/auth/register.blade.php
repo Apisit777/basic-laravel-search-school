@@ -4,6 +4,7 @@
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
@@ -64,6 +65,15 @@
                             <label for="name" class="absolute block top-1 left-0 text-md text-black dark:text-white pointer-events-none transition duration-200 ease-in-outbg-white px-2 text-grey-darker">
                                 Password
                             </label>
+                        </div>
+                        <div class="relative float-label-input -mt-8">
+                            <select class="js-example-basic-single w-full bg-white dark:bg-[#2020] rounded-sm text-xs" name="state">
+                                <option value="AL">Alabama</option>
+                                <option value="WY">Wyoming</option>
+                            </select>
+                            <!-- <label for="name" class="absolute block top-1 left-0 text-md text-black dark:text-white pointer-events-none transition duration-200 ease-in-outbg-white px-2 text-grey-darker">
+                                Password
+                            </label> -->
                         </div>
                     </div>
 
@@ -131,13 +141,18 @@
 </body>
 </html>
 
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
 <!-- <script type="text/javascript"  src="./node_modules/tw-elements/dist/js/tw-elements.umd.min.js"></script> -->
 
-<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>
+
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2();
+    });
 
     toastr.options = {
         "closeButton": true,
