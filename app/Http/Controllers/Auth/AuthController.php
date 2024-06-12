@@ -9,9 +9,27 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class AuthController extends Controller
 {
+    public function index()
+    {
+        $response = Http::post('https://extrassup.ssup.co.th/api/v2/login', [
+            'username' => '000000',
+            'password' => '000000',
+        ]);
+        // $response = Http::get('https://jsonplaceholder.typicode.com/posts');
+        // $response = Http::get('https://ins.schicher.com/api/users');
+        // $response = Http::post('http://10.10.35.99:7777/api/checklogin', [
+        //     'email' => 'test@gmail.com',
+        //     'password' => '1234',
+        // ]);
+
+        // dd($response->json());
+        // dd($response->object());
+        return $response->json();
+    }
     public function register()
     {
         return view('auth.register');
