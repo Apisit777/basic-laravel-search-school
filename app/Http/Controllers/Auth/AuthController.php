@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use App\models\position;
 
 class AuthController extends Controller
 {
@@ -32,7 +33,11 @@ class AuthController extends Controller
     }
     public function register()
     {
-        return view('auth.register');
+        // $list_position = position::select('id_position', 'name_position')->pluck('name_position')->toArray();
+        $list_position = position::select('id_position', 'name_position')->get();
+
+        // dd($list_position);
+        return view('auth.register', compact('list_position'));
     }
     public function registerPost(Request $request)
     {

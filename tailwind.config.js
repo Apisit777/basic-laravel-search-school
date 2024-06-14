@@ -19,7 +19,8 @@ module.exports = {
   plugins: [
     require('flowbite/plugin'),
     require('preline/plugin'),
-    require("tw-elements/plugin.cjs")
+    require('tw-elements/plugin.cjs'),
+    require('tailwind-scrollbar')
   ],
 }
 
