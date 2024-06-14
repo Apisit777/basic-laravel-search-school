@@ -1,8 +1,51 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900&display=swap");
 @tailwind base;
+
+@layer base {
+  html {
+    @apply text-surface;
+    @apply bg-white;
+  }
+  html.dark {
+    @apply text-neutral-50;
+    @apply bg-body-dark;
+  }
+}
+
 @tailwind components;
 @tailwind utilities;
 
+p {
+  @apply leading-[1.6];
+}
+
 [x-cloak] { display: none !important; } /*<-- This Line right here!*/
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    background: #888;
+    border-radius: 5px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #191919;
+    border-radius: 5px;
+}
+ 
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
 
 .float-label-input {
   margin: 32px 0;     
@@ -55,7 +98,7 @@
 
 .select2-dropdown {
 	/* Dropdown area after the arrow down is clicked */
- 	@apply absolute block w-auto box-border bg-white dark:bg-slate-700 border-solid border border-gray-200 z-50 float-left;
+ 	@apply absolute block w-auto box-border bg-white dark:bg-[#303030] border-solid border border-gray-200 z-50 float-left;
 }
 
 .select2-results {
@@ -142,7 +185,7 @@
 
 .select2-container--default .select2-selection--single {
 	/* Selection bar - Self */
-	@apply p-2 h-10 bg-white dark:bg-slate-700 border border-solid dark:border-gray-700; 
+	@apply p-2 h-10 bg-white dark:bg-[#303030] border border-solid dark:border-gray-700; 
 }
 	.select2-container--default .select2-selection--single .select2-selection__rendered {
 	  	/* Selection bar - Text color of the item you selected from the results */
@@ -196,7 +239,7 @@
 }
 
 .select2-container--default .select2-selection--multiple {
-	@apply p-1 min-h-full h-full border border-solid dark:border-gray-700 rounded shadow bg-white dark:bg-slate-700; 
+	@apply p-1 min-h-full h-full border border-solid dark:border-gray-700 rounded shadow bg-white dark:bg-[#303030]; 
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__rendered {
@@ -209,7 +252,7 @@
     @apply float-right cursor-pointer mt-1 mr-2 p-1;
 }
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
-    @apply bg-white dark:bg-slate-700 text-gray-700 dark:text-gray-200 border cursor-default rounded my-1 mr-1 px-2 float-left;
+    @apply bg-white dark:bg-[#303030] text-gray-700 dark:text-gray-200 border cursor-default rounded my-1 mr-1 px-2 float-left;
 }
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
 	@apply text-gray-700 dark:text-gray-200 cursor-pointer inline-block mr-1;

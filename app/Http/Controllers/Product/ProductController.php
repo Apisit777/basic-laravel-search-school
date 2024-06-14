@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Product;
 
 use App\Models\Product;
+use App\Models\position;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -29,8 +30,9 @@ class ProductController extends Controller
         $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
         $productCode = 'P'.sprintf('%05d', $productCodeNumber);
 
+        $list_position = position::select('id_position', 'name_position')->get();
         // dd($productCode);
-        return view('product.create', compact('productCode'));
+        return view('product.create', compact('productCode', 'list_position'));
     }
 
     /**

@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -26,13 +29,40 @@ class AuthController extends Controller
         return response()->json($users);
     }
 
-    public function checkLogin(Request $request)
+    public function login(Request $request)
     {
-        $credetail = [
-            'email' => $request->email,
-            'password' => $request->password
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'fail', 'message' => $validator->errors()]);
+        }
+
+        $credentials = $request->only('name', 'password');
+        $setAuth = [
+            'name' => $credentials['name'],
+            'password' => $credentials['password'],
         ];
 
-        return response()->json($credetail);
+        if(Auth::attempt($setAuth, ! empty($request->post('remember')))) {
+            $data = Auth::user();
+            $token = Auth::user()->createToken('productMastertoken')->plainTextToken;
+            $data->token = $token;
+            $role = User::select(
+                'position.name_position as role'
+            )
+            ->leftjoin('user_permission', 'user_permission.user_id', '=', 'users.id')
+            ->leftjoin('position', 'position.id_position', '=', 'user_permission.position_id')
+            ->where('users.id', '=', Auth::user()->id)
+            ->first();
+
+            $data->role = $role;
+
+            return response()->json(['status' => 'success', 'data' => $data]);
+        } else {
+            return response()->json(['status' => 'fail', 'data' => 'Check Username or Password']);
+        }
     }
 }
