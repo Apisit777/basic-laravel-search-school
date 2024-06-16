@@ -236,7 +236,7 @@
                 toastr.success('{{ session('status') }}');
             });
         </script>
-    @endif 
+    @endif
     <script>
         const pusher  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
         const channel = pusher.subscribe('public');
@@ -360,20 +360,22 @@
                 background: "#202020",
 
                 }).then(result => {
-                    // $.ajax({
-                    //     url:"/broadcast",
-                    //     method:'POST',
-                    //     headers:{
-                    //         'X-Socket-Id': pusher.connection.socket_id
-                    //     },
-                    //     data:{
-                    //         _token:  '{{csrf_token()}}',
-                    //         message: 'update notify'
-                    //     }
-                    // }).done(function (res) {
-                    //     console.log("🚀 ~ $ ~ res:", res)
-                    // });
+                    console.log("🚀 ~ disableAppointment ~ result:", result)
+
                     if (result.isConfirmed) {
+                        $.ajax({
+                        url:"/broadcast",
+                        method:'POST',
+                        headers:{
+                            'X-Socket-Id': pusher.connection.socket_id
+                        },
+                        data:{
+                            _token:  '{{csrf_token()}}',
+                            message: 'update notify'
+                        }
+                        }).done(function (res) {
+                            console.log("🚀 ~ $ ~ res:", res)
+                        });
                         $.ajax({
                             type: "DELETE",
                             url: url,
