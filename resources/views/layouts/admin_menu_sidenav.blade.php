@@ -48,9 +48,9 @@ $countUsers = ProductController::count_users();
                     <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
                     </svg>
                     <span class="flex-1 ms-3 whitespace-nowrap">Approve Product</span>
-                    @if ($countUsers > 0)
-                        <span id="count_noti" class="inline-flex items-center justify-center px-2 ms-3 text-xs font-medium text-gray-100 bg-[#C82333] rounded-full dark:bg-[#C82333] dark:text-gray-300">{{ $countUsers }}</span>
-                    @endif
+                    {{-- @if ($countUsers > 0) --}}
+                        <span id="count_noti" class="inline-flex items-center justify-center px-2 ms-3 text-xs font-medium text-gray-100 bg-[#C82333] rounded-full dark:bg-[#C82333] dark:text-gray-300"></span>
+                    {{-- @endif --}}
                 </a>
             </li>
             <li>
@@ -163,22 +163,44 @@ $countUsers = ProductController::count_users();
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 <script>
-    // const pusher1  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
-    // const channel1 = pusher1.subscribe('public');
 
-    // channel1.bind('chat', function (data) {
-    //     $.post("/receive", {
-    //         _token:  '{{csrf_token()}}',
-    //         message: data.message,
-    //     })
-    //     .done(function (res) {
-    //         console.log("🚀 ~ res:", res)
-    //         const count_noti = document.getElementById('count_noti')
-    //         if (res == 0) {
-    //             count_noti.remove()
-    //         }else {
-    //             count_noti.innerHTML = res
-    //         }
-    //     });
-    // });
+    function ajaxGetNoti() {
+        $.ajax({
+            type: "GET",
+            url: "{{ route('get_receive') }}",
+            success: function (res) {
+                console.log('res', res);
+                if(res){
+                    $("#count_noti").html(res);
+
+                }else{
+                    $("#count_noti").empty();
+                }
+            },
+            error: function(){
+                console.log(res);
+            }
+        });
+    }
+
+    ajaxGetNoti();
+    
+    const pusher1  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
+    const channel1 = pusher1.subscribe('public');
+
+    channel1.bind('chat', function (data) {
+        $.post("/receive", {
+            _token:  '{{csrf_token()}}',
+            message: data.message,
+        })
+        .done(function (res) {
+            console.log("🚀 ~ res:", res)
+            const count_noti = document.getElementById('count_noti')
+            if (res == 0) {
+                count_noti.remove()
+            }else {
+                count_noti.innerHTML = res
+            }
+        });
+    });
 </script>

@@ -263,11 +263,11 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
-        $(document).ready(function onDocumentReady() {
-                setInterval(function doThisEveryTwoSeconds() {
-                    toastr.info("You have unread 1 job !");
-                }, 2000);
-        });
+        // $(document).ready(function onDocumentReady() {
+        //         setInterval(function doThisEveryTwoSeconds() {
+        //             toastr.info("You have unread 1 job !");
+        //         }, 2000);
+        // });
 
         channel.bind('chat', function (data) {
             $.post("/receive", {
@@ -277,6 +277,7 @@
             .done(function (res) {
                 console.log("🚀 ~ res:", res)
                 toastr.info("You have unread "+ res +' job!');
+                mytableDatatable.draw();
             });
         });
 
