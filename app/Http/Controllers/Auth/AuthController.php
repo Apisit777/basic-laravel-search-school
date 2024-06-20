@@ -82,19 +82,32 @@ class AuthController extends Controller
             'password' => $request->password
         ];
 
-        // dd($request);
-
         if (Auth::attempt($credetail)) {
             // return redirect('product');
-
-            $request->session()->regenerate();
-
+            
+            // $request->session()->regenerate();
+            
             // return response()->json(['success' => 'Log in Success.', 'route' => 'product']);
-            return response()->json([['success']]);
+            // return response()->json([['success']]);
+            // dd($credetail);
+
+            $data = Auth::user();
+            $token = Auth::user()->createToken('productMastertoken')->plainTextToken;
+            $data->token = $token;
+            $role = User::select(
+                'position.name_position as role'
+            )
+            ->leftjoin('user_permission', 'user_permission.user_id', '=', 'users.id')
+            ->leftjoin('position', 'position.id_position', '=', 'user_permission.position_id')
+            ->where('users.id', '=', Auth::user()->id)
+            ->first();
+
+            $data->role = $role;
+
+            return response()->json(['success' => 'success', 'data' => $data]);
         } 
         else {
             return response(['error' => 'Check Username Or Password!'], 401);
-            // return response([ [2] ]);
         }
     }
 }

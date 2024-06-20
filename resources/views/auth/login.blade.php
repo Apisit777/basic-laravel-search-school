@@ -14,8 +14,8 @@
             height: calc(1.5vw + 5vh);
             font-size: 1vw;
             border-radius: 50%;
-            border: 6px solid #18978A;
-            border-color: #18978A transparent #18978A transparent;
+            border: 6px solid #fff;
+        border-color: #fff transparent #fff transparent;
             animation: lds-dual-ring 1.2s linear infinite;
         }
         .overlay.hidden {
@@ -60,7 +60,7 @@
         .loading {
             margin: auto;
             padding-top: calc((1.5vw + 5vh) + 3rem);
-            color: #18978A;
+            color: #fff;
             font-size: calc(1vw + 1.5vh);
             position: relative;
         }
@@ -73,7 +73,7 @@
             font-size: 18px;
             top: 38%;
             left: 47.3%;
-            color: #18978A;
+            color: #fff;
         }
         @keyframes lds-dual-ring {
             0% {
@@ -99,9 +99,7 @@
             <div class="mb-12 grow-0 basis-auto md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12 xl:ml-12">
             </div>
             <div class="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-4/12">
-                {{-- <form class="js-validation-signin max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-32" method="POST" action="javascript:void(0)" action="{{ route('checkLogin') }}">
-                    @csrf --}}
-                <form class="js-validation-signin max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-32" method="POST">
+                <form class="js-validation-signin max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-32" action="javascript:void(0)" method="POST">
                     <div class="flex flex-row items-center justify-center lg:justify-start">
                         <div class="flex text-center">
                             <p class="mb-0 me-4 mt-4 text-lg">Sign in with</p>
@@ -208,11 +206,11 @@
         <div class="imgContainer">
             <div id="loader" class="overlay hidden">
                 <div class="loading">
-                    <span class="text-[#18978A] text-5xl font-semibold">S S U P</span>
-                        <span class="loading__dot">.</span>
-                        <span class="loading__dot">.</span>
-                        <span class="loading__dot">.</span>
-                        <div class="lds-dual-ring "></div>
+                    LOADING
+                    <span class="loading__dot">.</span>
+                    <span class="loading__dot">.</span>
+                    <span class="loading__dot">.</span>
+                    <div class="lds-dual-ring "></div>
                 </div>
                  <!-- <img src="https://mir-s3-cdn-cf.behance.net/project_modules/fs/02b374101705095.5f24d5db1096f.gif" alt="" style="width: 100%;">  -->
             </div>
@@ -259,14 +257,15 @@
         });
         jQuery.ajax({
             type: "POST",
-            url: "{{ route('checkLogin') }}",
+            url: "/checkLogin",
             data: dataForm,
             beforeSend: function () {
                 $('#loader').removeClass('hidden')
             },
             success: function(res) {
                 sessionStorage.setItem("first_login", "Y")
-                if(res == 'success') {
+                sessionStorage.setItem("credetail", JSON.stringify(res.data))
+                if(res.success == 'success') {
                     window.location.replace('/product')
                 }
             },
