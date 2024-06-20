@@ -5,9 +5,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\ProductForm\ProductFormController;
 use App\Http\Controllers\Managemenu\ManageMenuController;
 use App\Http\Controllers\Tool\ToolController;
 use App\Http\Controllers\PusherController;
+use App\Http\Controllers\BrandController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,9 +27,6 @@ Route::get('/register', [AuthController::class, 'register']);
 Route::post('/register', [AuthController::class, 'registerPost'])->name('register');
 
 Route::get('/login', [AuthController::class, 'login'])->name('login');
-// Route::get('/login', function () {
-//     return "Check login";
-// });
 
 Route::post('/checkLogin', [AuthController::class, 'checkLogin'])->name('checkLogin');
 
@@ -39,6 +38,9 @@ Route::get('/images', [ProductImageController::class, 'index'])->name('images');
 Route::post('/images_upload', [ProductImageController::class, 'store'])->name('images_upload');
 
 Route::get('/product', [ProductController::class, 'index'])->name('product');
+Route::get('/product_form', [ProductFormController::class, 'index'])->name('product_form');
+Route::get('/product_form_creat', [ProductFormController::class, 'create'])->name('product_form_creat');
+
 Route::get('/get_users', [ProductController::class, 'get_users'])->name('get_users');
 Route::post('/create_products', [ProductController::class, 'store'])->name('create_products');
 Route::get('/product_create', [ProductController::class, 'create'])->name('product_create');
@@ -54,6 +56,9 @@ Route::get('/test', [PusherController::class, 'index']);
 Route::post('/broadcast', [PusherController::class, 'broadcast'])->name('broadcast');
 Route::get('/get_receive', [PusherController::class, 'receive'])->name('get_receive');
 Route::post('/receive', [PusherController::class, 'receive'])->name('receive');
+
+Route::get('/getBrandIdListAjax', [BrandController::class, 'getBrandIdListAjax'])->name('ajax_brand_id');
+
 
 Route::get('/', function () {
     return view('welcome');

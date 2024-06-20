@@ -12,8 +12,8 @@
             animation: slide_up 1s linear 0.7s forwards;
         }
         .btn {
-            z-index: 1001;
-            margin: auto;
+            z-index: 10;
+            /* margin: auto; */
         }
         @keyframes slide_up{
             0% {
@@ -31,6 +31,10 @@
             background: #1F2226 !important;
         }
         .buttons-excel{
+            color: #fff !important;
+            background: #1F2226 !important;
+        }
+        .buttons-collection{
             color: #fff !important;
             background: #1F2226 !important;
         }
@@ -106,20 +110,10 @@
                 <button id="btnSerarch" type="button" class="btn btn-warning btn-sm form-control form-border title-search"><i class="fa fa-search" aria-hidden="true"></i> ค้นหา</button>
             </div>
         </div>
-
-        <!-- <div class="absolute right-24 top-80">
-            <a href="#">
-                <button type="submit" class="inline-flex items-center px-3 py-2 text-sm text-gray-100 font-medium text-center bg-blue-800 shadow-lg shadow-gray-500 rounded-sm hover:bg-blue-900 focus:outline-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                        <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
-                    </svg>
-                    Add
-                </button>
-            </a>
-        </div> -->
-        <div class="relative mt-16 col-md-12 flex justify-center items-center text-gray-900 dark:text-gray-100">
-            <div class="row">
-                <table id="example" class="table table-dark table-hover">
+        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
+        <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
+            <div id="containerexample" class="text-gray-900 dark:text-gray-100">
+                <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -177,8 +171,12 @@
 
         const mytableDatatable = $('#example').DataTable({
             // new DataTable('#example', {
-            'searching': false,
+                'searching': false,
             "serverSide": true,
+            searching: false,
+            resposive: true,
+            scrollX: true,
+            orderCellsTop: true,
             "order": [
                 [0, "desc"]
             ],

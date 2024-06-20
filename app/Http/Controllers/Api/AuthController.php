@@ -29,7 +29,7 @@ class AuthController extends Controller
         return response()->json($users);
     }
 
-    public function login(Request $request)
+    public function apiLogin(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',

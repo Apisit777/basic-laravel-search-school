@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->integer('brand_id')->nullable()->comment('รหัสแบรนด์');
+            $table->integer('product_id')->nullable()->comment('รหัสสินค้า');
             $table->string('name', 255)->nullable()->comment('ชื่อสินค้า');
+            $table->string('company_products', 255)->nullable()->comment('สินค้าของบริษัท');
             $table->string('seq', 100)->nullable()->comment('ลำดับ');
             $table->tinyInteger('status')->default(1)->comment('0 = รออนุมัติ, 1 = อนุมัติ');
             $table->timestamps();

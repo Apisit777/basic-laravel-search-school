@@ -18,7 +18,9 @@ class ProductController extends Controller
     {
         $user = User::all();
 
-        return view('product.index', compact('user'));
+        $product_seq = Product::select('seq')->get();
+
+        return view('product.index', compact('user', 'product_seq'));
     }
 
     /**

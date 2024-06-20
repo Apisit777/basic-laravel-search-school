@@ -2,21 +2,16 @@
 @section('title', 'Inspection & deteils')
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css"> -->
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css"> -->
-    <!-- <link rel="stylesheet" href="{{ asset('css/twitter-bootstrap4.0.0/bootstrap.min.css') }}" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap5.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/3.0.2/css/buttons.bootstrap5.css">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> -->
     <style>
         .page-item.active .page-link {
             color: #fff !important;
             background: #1F2226 !important;
         }
         .buttons-excel{
+            color: #fff !important;
+            background: #1F2226 !important;
+        }
+        .buttons-collection{
             color: #fff !important;
             background: #1F2226 !important;
         }
@@ -198,13 +193,14 @@
                     <button id="btnSerarch" type="button" class="btn btn-warning btn-sm form-control form-border title-search"><i class="fa fa-search" aria-hidden="true"></i> ค้นหา</button>
                 </div>
             </div>
-            <button type="submit" class="absolute right-24 top-96 inline-flex items-center px-3 py-2 text-sm text-gray-100 font-medium text-center bg-blue-800 shadow-lg shadow-gray-500 rounded-sm hover:bg-blue-900 focus:outline-none">
+            <!-- <button type="submit" class="absolute right-24 top-96 inline-flex items-center px-3 py-2 text-sm text-gray-100 font-medium text-center bg-blue-800 shadow-lg shadow-gray-500 rounded-sm hover:bg-blue-900 focus:outline-none">
                 Add New User
-            </button>
+            </button> -->
             <!-- <ul class="pt-5 space-y-2 border-t border-blue-500"> -->
-            <div class="relative mt-16 col-md-12 flex justify-center items-center text-gray-900 dark:text-gray-100">
-                <div class="row">
-                    <table id="example" class="table table-dark table-hover">
+            <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
+            <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4 bg-white dark:bg-[#202020]">
+                <div id="containerexample" class="text-gray-900 dark:text-gray-100">
+                    <table id="example" class="table table-striped table-bordered dt-responsive nowrap bg-white dark:bg-[#202020] text-gray-900 dark:text-gray-100" style="width:100%">
                         <thead>
                             <tr>
                                 <th>ID</th>
@@ -213,22 +209,22 @@
                                 <th>event</th>
                                 <th>doc_refer</th>
                                 <th>flag</th>
-                                <!-- <th>cancel_date</th> -->
-                                <!-- <th>cancel_user</th> -->
+                                <th>cancel_date</th>
+                                <th>cancel_user</th>
                                 <th>member_id</th>
-                                <!-- <th>do_befor</th> -->
+                                <th>do_befor</th>
                                 <th>do_reedem</th>
-                                <!-- <th>do_balance</th> -->
+                                <th>do_balance</th>
                                 <th>donation_use</th>
-                                <!-- <th>tb_id</th> -->
+                                <th>tb_id</th>
                                 <th>school_id</th>
                                 <th>remark</th>
-                                <!-- <th>type_member</th> -->
-                                <!-- <th>reg_user</th> -->
-                                <!-- <th>reg_time</th> -->
-                                <!-- <th>upd_user</th>
-                                <th>upd_time</th> -->
-                                <!-- <th>time_up</th> -->
+                                <th>type_member</th>
+                                <th>reg_user</th>
+                                <th>reg_time</th>
+                                <th>upd_user</th>
+                                <th>upd_time</th>
+                                <th>time_up</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -239,12 +235,12 @@
         </div>
     <!-- </body> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <script type="text/javascript"  src="../node_modules/tw-elements/dist/js/tw-elements.umd.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -253,6 +249,8 @@
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/5.0.1/js/dataTables.fixedColumns.js"></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/5.0.1/js/fixedColumns.bootstrap5.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
@@ -262,10 +260,16 @@
         // new DataTable('#example', {
             'searching': false,
             "serverSide": true,
+            searching: false,
+            resposive: true,
+            scrollX: true,
+            orderCellsTop: true,
+            fixedColumns: true,
+            scrollCollapse: true,
             "order": [
                 [0, "desc"]
             ],
-            "lengthMenu": [20, 30, 50],
+            "lengthMenu": [10, 20, 30, 50],
             "layout": {
                 "topStart": {
                     "buttons": ['excel', 'colvis']
@@ -336,118 +340,118 @@
                         return row.flag;
                     }
                 },
-                // {
-                //     targets: 6,
-                //     orderable: true,
-                //     render: function(data, type, row) {
-                //         return row.cancel_date;
-                //     }
-                // },
-                // {
-                //     targets: 7,
-                //     orderable: true,
-                //     render: function(data, type, row) {
-                //         return row.cancel_user;
-                //     }
-                // },
                 {
                     targets: 6,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.cancel_date;
+                    }
+                },
+                {
+                    targets: 7,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.cancel_user;
+                    }
+                },
+                {
+                    targets: 8,
                     orderable: true,
                     render: function(data, type, row) {
                         return row.member_id;
                     }
                 },
-                // {
-                //     targets: 9,
-                //     orderable: true,
-                //     render: function(data, type, row) {
-                //         return row.do_befor;
-                //     }
-                // },
-                {
-                    targets: 7,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.do_reedem;
-                    }
-                },
-                // {
-                //     targets: 11,
-                //     orderable: true,
-                //     render: function(data, type, row) {
-                //         return row.do_balance;
-                //     }
-                // },
-                {
-                    targets: 8,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.donation_use;
-                    }
-                },
-                // {
-                //     targets: 13,
-                //     orderable: true,
-                //     render: function(data, type, row) {
-                //         return row.tb_id;
-                //     }
-                // },
                 {
                     targets: 9,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.school_id;
+                        return row.do_befor;
                     }
                 },
                 {
                     targets: 10,
                     orderable: true,
                     render: function(data, type, row) {
+                        return row.do_reedem;
+                    }
+                },
+                {
+                    targets: 11,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.do_balance;
+                    }
+                },
+                {
+                    targets: 12,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.donation_use;
+                    }
+                },
+                {
+                    targets: 13,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.tb_id;
+                    }
+                },
+                {
+                    targets: 14,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.school_id;
+                    }
+                },
+                {
+                    targets: 15,
+                    orderable: true,
+                    render: function(data, type, row) {
                         return row.remark;
                     }
                 },
-                // {
-                //     targets: 16,
-                //     orderable: true,
-                //     render: function(data, type, row) {
-                //         return row.type_member;
-                //     }
-                // },
-                // {
-                //     targets: 17,
-                //     orderable: true,
-                //     render: function(data, type, row) {
-                //         return row.reg_user;
-                //     }
-                // },
-                // {
-                //     targets: 18,
-                //     orderable: true,
-                //     render: function(data, type, row) {
-                //         return row.reg_time;
-                //     }
-                // },
-                // {
-                //     targets: 11,
-                //     orderable: true,
-                //     render: function(data, type, row) {
-                //         return row.upd_user;
-                //     }
-                // },
-                // {
-                //     targets: 12,
-                //     orderable: true,
-                //     render: function(data, type, row) {
-                //         return row.upd_time;
-                //     }
-                // },
-                // {
-                //     targets: 21,
-                //     orderable: true,
-                //     render: function(data, type, row) {
-                //         return row.time_up;
-                //     }
-                // },
+                {
+                    targets: 16,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.type_member;
+                    }
+                },
+                {
+                    targets: 17,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.reg_user;
+                    }
+                },
+                {
+                    targets: 18,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.reg_time;
+                    }
+                },
+                {
+                    targets: 19,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.upd_user;
+                    }
+                },
+                {
+                    targets: 20,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.upd_time;
+                    }
+                },
+                {
+                    targets: 21,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.time_up;
+                    }
+                },
             ]
         });
 
