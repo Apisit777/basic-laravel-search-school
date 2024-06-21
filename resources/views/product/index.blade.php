@@ -84,7 +84,17 @@
                         <label for="">ชื่อพนักงาน<span class="text-danger"> *</span></label>
                         <input type="text" name="name" id="id_brand" onkeyup="checkNameBrand()" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                     </div>
-                    <div class="md:col-span-6 text-center">
+                    <div class="md:col-span-3" >
+                        <label for="">ช่วงวันที่</label>
+                        <input type="date" style="height: 38px;" class="form-control bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="date_start" id="date_start" placeholder="คลิ๊กเพื่อเลือกวัน" autocomplete="off">
+                        </span>
+                    </div>
+                    <div class="md:col-span-3" >
+                        <label for="">ช่วงวันที่</label>
+                        <input type="date" style="height: 38px;" class="form-control bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="date_start" id="date_start" placeholder="คลิ๊กเพื่อเลือกวัน" autocomplete="off">
+                        </span>
+                    </div>
+                    <div class="md:col-span-6 text-center mt-4">
                         <div class="inline-flex items-center">
                             <!-- <label></label>
                             <button id="btnSerarch" type="button" class="btn btn-warning btn-sm form-control form-border title-search"><i class="fa fa-search" aria-hidden="true"></i> ค้นหา</button> -->

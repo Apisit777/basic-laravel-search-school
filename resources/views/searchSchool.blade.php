@@ -84,13 +84,13 @@
                     </div>
                     <div class="form-group col-md-3" style="position:relative">
                         <label for="">ช่วงวันที่</label>
-                        <input type="date" style="height: 38px;" class="form-control" data-date-format="dd/mm/yyyy" name="date_start" id="date_start" placeholder="คลิ๊กเพื่อเลือกวัน" autocomplete="off">
+                        <input type="date" style="height: 38px;" class="form-control bg-white dark:bg-[#202020] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="date_start" id="date_start" placeholder="คลิ๊กเพื่อเลือกวัน" autocomplete="off">
                         <!-- <span class="bi bi-calendar" style="font-size: 20px; position: absolute; cursor: pointer; top: 32px; right: 7%;"> -->
                         </span>
                     </div>
                     <div class="form-group col-md-3" style="position:relative">
                         <label for="">ถึงวันที่</label>
-                        <input type="date" style="height: 38px;" class="form-control" data-date-format="dd/mm/yyyy" name="date_end" id="date_end" placeholder="คลิ๊กเพื่อเลือกวัน" autocomplete="off">
+                        <input type="date" style="height: 38px;" class="form-control bg-white dark:bg-[#202020] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="date_end" id="date_end" placeholder="คลิ๊กเพื่อเลือกวัน" autocomplete="off">
                         <!-- <span class="bi bi-calendar" style="font-size: 20px; position: absolute; cursor: pointer; top: 32px; right: 7%;"> -->
                         </span>
                     </div>
