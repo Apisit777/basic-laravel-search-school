@@ -44,7 +44,7 @@
                         <div class="md:col-span-3" >
                             <label for="name">รหัสสินค้า<span class="text-danger"> *</span></label>
                             <!-- <select class="js-example-basic-single w-full rounded-sm text-xs" id="product_id" name="product_id" onchange="setAutoFill(this)"> -->
-                            <select class="js-example-basic-single w-full rounded-sm text-xs" id="product_id" name="product_id">
+                            <select class="js-example-basic-single w-full rounded-sm text-xs" id="product_id" name="product_id" onchange="onSelect(this)">
                                 <option value=""> --- กรุณาเลือก ---</option>
                             </select>
                         </div>
@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class='w-12/12 mt-4 relative'>
-                <form class="" action="" method="POST" id="create_product">       
+                <form class="" action="" method="POST" id="create_product">
                     <div class="p-4">
                         <ul class="relative m-0 w-full list-none overflow-hidden p-0 transition-[height] duration-200 ease-in-out" data-twe-stepper-init="" data-twe-stepper-type="vertical">
                             <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[2.45rem] after:top-[3.6rem] after:mt-px after:h-[calc(100%-2.45rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
@@ -425,12 +425,12 @@
 
             if (params === 'brand_id') {
                 url = '{{ route('ajax_brand_id') }}?brand_id=' + e.value;
-                select = jQuery('#product_id');               
+                select = jQuery('#product_id');
                 jQuery('#product_id').find("option").remove();
                 select.find("option").remove();
                 const newop = new Option("--- กรุณาเลือก ---", "");
                 jQuery(newop).appendTo(jQuery('#product_id'))
-            } 
+            }
 
             jQuery.ajax({
                 method: "GET",
@@ -449,9 +449,8 @@
                         jQuery(newop).appendTo(select)
                         data.map((item, index) => {
                             console.log('item', item)
-                            const newoption = new Option(item.product_id, item.id);
+                            const newoption = new Option(item.product_id, item.seq);
                             jQuery(newoption).appendTo(select)
-                            $('#company_products').val(item.seq);
                         });
                     }
                 },
@@ -464,10 +463,9 @@
             });
         }
 
-        // function setAutoFill(e) {
-        //     const data = $("#autofill").find("option:selected").data('params')
-        //     console.log('data', data)
-        //     $('#company_products').val(data.company_products);
-        // }
+        function onSelect(seq) {
+            console.log("🚀 ~ funnctiononSelect ~ r:", seq.value);
+            $('#company_products').val(seq.value);
+        }
     </script>
 @endsection
