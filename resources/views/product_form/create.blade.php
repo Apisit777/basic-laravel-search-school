@@ -465,7 +465,11 @@
 
         function onSelect(seq) {
             console.log("🚀 ~ funnctiononSelect ~ r:", seq.value);
-            $('#company_products').val(seq.value);
+            if (seq) {
+                $('#company_products').val(seq.value);
+            } else {
+                $('#company_products').val();
+            }
         }
     </script>
 @endsection
