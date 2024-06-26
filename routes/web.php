@@ -50,6 +50,11 @@ Route::post('/list_approve_products', [ProductController::class, 'list_approve_p
 Route::delete('/upate_product_status/{id}', [ProductController::class, 'upate_product_status'])->name('upate_product_status');
 
 Route::get('/manage_menu', [ManageMenuController::class, 'index'])->name('manage_menu');
+
+Route::get('/menu_access', [ManageMenuController::class, 'menuAccess'])->name('menu_access');
+Route::post('/create_access', [ManageMenuController::class, 'createAccess'])->name('create_access');
+Route::post('/delete_access', [ManageMenuController::class, 'deleteAccess'])->name('delete_access');
+
 Route::get('/tool', [ToolController::class, 'index'])->name('tool');
 
 Route::get('/test', [PusherController::class, 'index']);
