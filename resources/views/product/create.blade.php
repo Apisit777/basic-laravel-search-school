@@ -26,7 +26,7 @@
 @section('content')
     <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4 mt-10">
         <div class="justify-center items-center">
-            <div class="mt-5 flex justify-center items-center">
+            <div class="mt-5 flex justify-items-start">
                 <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">เพิ่มรายการสินค้า</p>
             </div>
             <div class='w-12/12 mt-4 relative'>
@@ -39,7 +39,7 @@
                                         1
                                     </span>
                                     <span data-twe-stepper-head-text-ref="" class="after:absolute after:flex after:text-[0.8rem] text-black/50 dark:text-white/50 font-medium !text-black/50 dark:!text-white/50">
-                                        step1
+                                        รายละเอียด1
                                     </span>
                                 </div>
                                 <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[3.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
@@ -136,7 +136,7 @@
                                         2
                                     </span>
                                     <span data-twe-stepper-head-text-ref="" class="after:absolute after:flex after:text-[0.8rem] text-black/50 dark:text-white/50 font-medium !text-black/50 dark:!text-white/50">
-                                        step2
+                                        รายละเอียด2
                                     </span>
                                 </div>
                                 <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[3.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
@@ -182,7 +182,7 @@
                                         3
                                     </span>
                                     <span data-twe-stepper-head-text-ref="" class="after:absolute after:flex after:text-[0.8rem] text-black/50 dark:text-white/50 font-medium !text-black/50 dark:!text-white/50">
-                                        step3
+                                        รายละเอียด3
                                     </span>
                                 </div>
                                 <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[3.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
@@ -243,7 +243,7 @@
                                         4
                                     </span>
                                     <span data-twe-stepper-head-text-ref="" class="after:absolute after:flex after:text-[0.8rem] text-black/50 dark:text-white/50 font-medium !text-black/50 dark:!text-white/50">
-                                        step4
+                                        รายละเอียด4
                                     </span>
                                 </div>
                                 <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[3.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >

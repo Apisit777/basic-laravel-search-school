@@ -47,6 +47,7 @@ class User extends Authenticatable
 
     public function getUserPermission()
     {
-        return $this->hasOne(user_permission::class, 'user_id', 'id');
+        return $this->hasOne(user_permission::class, 'user_id', 'id')
+            ->leftJoin('position', 'position.id_position', '=', 'user_permission.position_id');
     }
 }

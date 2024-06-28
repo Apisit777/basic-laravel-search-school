@@ -26,6 +26,9 @@
                 <p class="font-bold text-gray-900 dark:text-gray-100">
                     UserID: {{ Auth::user()->id }}
                 </p>
+                <p class="font-bold text-gray-900 dark:text-gray-100">
+                    Role: {{ Auth::user()->getUserPermission->name_position }}
+                </p>
                 <div class="text-sm text-black dark:text-white -mr-5">
                     <button @click="darkMode=!darkMode" type="button" class="relative inline-flex flex-shrink-0 h-6 mr-1 transition-colors duration-200 ease-in-out border-2 border-transparent rounded-full cursor-pointer bg-zinc-200 dark:bg-zinc-700 w-11 focus:outline-none focus:ring-2 focus:ring-neutral-700 focus:ring-offset-2" role="switch" aria-checked="false">
                         <span class="sr-only">Use setting</span>

@@ -39,17 +39,33 @@ class ManageMenuController extends Controller
         $checkboxes = $request->input('arrs', []);
         $keys = ['show', 'create', 'edit', 'delete'];
         $options = [];
+        // $keys = [
+        //     'show' => false,
+        //     'create' => false,
+        //     'edit' => false,
+        //     'delete' => false,
+        // ];
 
-        foreach ($keys as $key) {
-                $options[$key] = in_array($key, $checkboxes);
+        foreach ($checkboxes as $key => $value) {
+                $options[] = $value;
         }
-        // dd($request);
+
+        // foreach ($keys as $key) {
+        //         $options[$key] = in_array($key, $checkboxes);
+        // }
+        // dd(['Array1' => $request]);
+        // foreach ($checkboxes as $key => $value) {
+        //     if (isset($keys[$key])) {
+        //         $keys[$key] = true;
+        //     }
+        // }
+        // dd(['Array2' => $request]);
         $create = menu_relation::firstOrCreate([
             'position_id' => $request->input('pos_id'),
             'menu_id' => $request->input('menu_id'),
             'options' => json_encode($options),
         ]);
-
+        // dd(['Array3' => $request]);
         return response()->json($create);
     }
 
