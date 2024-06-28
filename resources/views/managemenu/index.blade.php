@@ -180,8 +180,9 @@
                         }
                     });
                     let arrs = [];
+                    let menu = <?php echo json_encode($menu_data->id); ?>;
                     console.log("🚀 ~ setMenu ~ arrs:", arrs)
-                    $('[name="checkboxes[]"]').each(function(index, value) { 
+                    $('[name="checkboxes[]"]').each(function() { 
                         if (this.getAttribute('id') == 'action_1') {
                             if ($(this).is(':checked')) {
                                 arrs.push("1");
