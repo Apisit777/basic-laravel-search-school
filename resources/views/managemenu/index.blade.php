@@ -97,29 +97,29 @@
                                             <th style="width: 30px">ID</th>
                                             <th>ชื่อเมนู</th>
                                             <th class="text-center" style="width: 70px;">
-                                            show
+                                                view
                                             </th>
                                             <th class="text-center" style="width: 70px;">
-                                            create
+                                                create
                                             </th>
                                             <th class="text-center" style="width: 70px;">
-                                            edit
+                                                edit
                                             </th>
                                             <th class="text-center" style="width: 70px;">
-                                            delete
+                                                delete
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($menu as $menu_data)
                                             <tr>
-                                                <td><input type="checkbox" id="menu_{{ $menu_data->id }}" value="{{ $menu_data->id }}" onclick="setMenu(this)"></td>
+                                                <td><input type="checkbox" id="action_all_{{ $menu_data->id }}" value="{{ $menu_data->id }}" onclick="setMenu(this)"></td>
                                                 <td>{{ $menu_data->id }}</td>
                                                 <td>{{ $menu_data->menu_name }}</td>
-                                                <td class="text-center"><input type="checkbox" id="action_{{ $menu_data->id }}" name="checkboxes[]" value="{{ $menu_data->id }}" onclick="setMenu(this)"></td>
-                                                <td class="text-center"><input type="checkbox" id="action_{{ $menu_data->id }}" name="checkboxes[]" value="{{ $menu_data->id }}" onclick="setMenu(this)"></td>
-                                                <td class="text-center"><input type="checkbox" id="action_{{ $menu_data->id }}" name="checkboxes[]" value="{{ $menu_data->id }}" onclick="setMenu(this)"></td>
-                                                <td class="text-center"><input type="checkbox" id="action_{{ $menu_data->id }}" name="checkboxes[]" value="{{ $menu_data->id }}" onclick="setMenu(this)"></td>
+                                                <td class="text-center"><input type="checkbox" id="action_view_{{ $menu_data->id }}" name="checkboxes[]" value="{{ $menu_data->id }}" onclick="setMenu(this)"></td>
+                                                <td class="text-center"><input type="checkbox" id="action_create_{{ $menu_data->id }}" name="checkboxes[]" value="{{ $menu_data->id }}" onclick="setMenu(this)"></td>
+                                                <td class="text-center"><input type="checkbox" id="action_edit_{{ $menu_data->id }}" name="checkboxes[]" value="{{ $menu_data->id }}" onclick="setMenu(this)"></td>
+                                                <td class="text-center"><input type="checkbox" id="action_delete_{{ $menu_data->id }}" name="checkboxes[]" value="{{ $menu_data->id }}" onclick="setMenu(this)"></td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -173,7 +173,7 @@
         function setMenu(data){
             if(select_pos){
                 if($(data).prop("checked")){
-                    console.log("🚀 ~ setMenu ~ data:", data)
+                    console.log("🚀 ~ setMenu ~ data:", data.checked)
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -182,22 +182,26 @@
                     let arrs = [];
                     let menu = <?php echo json_encode($menu_data->id); ?>;
                     console.log("🚀 ~ setMenu ~ arrs:", arrs)
-                    $('[name="checkboxes[]"]').each(function() { 
-                        if (this.getAttribute('id') == 'action_1') {
-                            if ($(this).is(':checked')) {
-                                arrs.push("1");
-                            } else {
-                                arrs.push("0");
-                            }
-                        }
-                    });
+                    // $('[name="checkboxes[]"]').each(function() {
+                    //     // if (this.getAttribute('id') == 'action_view_1') {
+                    //     //     if ($(this).is(':checked')) {
+                    //     //         arrs.push("1");
+                    //     //     } else {
+                    //     //         arrs.push("0");
+                    //     //     }
+                    //     // }
+
+                    // });
+                    let action =  data.id.split('_')[1]
+                    let menuId =  data.id.split('_')[2]
                     $.ajax({
                         type: "POST",
                         url: "{{url('create_access')}}",
                         data: {
                             pos_id: select_pos,
-                            menu_id: $(data).val(),
-                            arrs: arrs
+                            menu_id: menuId,
+                            action: action,
+                            state: data.checked ? 1 : 0,
                         },
                         beforeSend: function () {
                             $('#loader').removeClass('hidden')
@@ -277,9 +281,10 @@
                     },dlayMessage)
                 },
                 success:function(res){
+                    console.log("🚀 ~ ajaxGetMenuAccess ~ res:", res)
                     if(res){
                         for(let i = 0; i < res.length; i++){
-                            $("#menu_" + res[i]).prop("checked",true);
+                            $("#action_all_" + res[i]).prop("checked",true);
                         }
                     }else{
                         console.log('no data');
@@ -291,7 +296,7 @@
         function removeMenu() {
             let menu_count = $("#menuTable").find("input[type='checkbox']").length;
             for(let i = 1; i <= menu_count; i++){
-                $("#menu_" + i).prop("checked",false);
+                $("#action_all_" + i).prop("checked",false);
             }
         }
 

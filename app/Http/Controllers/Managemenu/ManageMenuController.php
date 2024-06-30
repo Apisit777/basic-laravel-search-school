@@ -28,17 +28,42 @@ class ManageMenuController extends Controller
 
     public function menuAccess(Request $request)
     {
-        // return $request->all();
         $data = menu_relation::where('position_id', $request->input('pos_id'))->pluck('menu_id');
+        // $action = menu_relation::select(
+        //     'view',
+        //     'create',
+        //     'edit',
+        //     'delete',
+        // )
+        // ->pluck("view", "create", "edit", "delete")
+        // ->toArray();
 
-        return response()->json($data);
+        $menus = menu::select('id')->get();
+
+        foreach ($menus as $menu) {
+            $dataarray_code = [];
+                $item_code = menu_relation::select("id", "view")
+                    ->where('menu_id', '=', $menu->id)
+                    ->get();
+
+                foreach ($item_code as $dataitem_code) {
+                    $dataarray_code[] = $dataitem_code->view;
+                }
+
+                $menu->dataarray_code = $dataarray_code;
+
+        }
+
+        dd($menus->all());
+
+        return response()->json(['data' => $data, 'menus' => $menus]);
     }
-    
+
     public function createAccess(Request $request)
     {
-        $checkboxes = $request->input('arrs', []);
-        $keys = ['show', 'create', 'edit', 'delete'];
-        $options = [];
+        // $checkboxes = $request->input('arrs', []);
+        // $keys = ['show', 'create', 'edit', 'delete'];
+        // $options = [];
         // $keys = [
         //     'show' => false,
         //     'create' => false,
@@ -46,9 +71,9 @@ class ManageMenuController extends Controller
         //     'delete' => false,
         // ];
 
-        foreach ($checkboxes as $key => $value) {
-                $options[] = $value;
-        }
+        // foreach ($checkboxes as $key => $value) {
+        //         $options[] = $value;
+        // }
 
         // foreach ($keys as $key) {
         //         $options[$key] = in_array($key, $checkboxes);
@@ -59,21 +84,41 @@ class ManageMenuController extends Controller
         //         $keys[$key] = true;
         //     }
         // }
-        // dd(['Array2' => $request]);
-        $create = menu_relation::firstOrCreate([
+        // dd(['Array2' => $request->all()]);
+
+        $view = '';
+        if ($request->action == 'view') {
+            $view = $request->state;
+        }
+        $create = '';
+        if ($request->action == 'create') {
+            $create = $request->state;
+        }
+        $edit = '';
+        if ($request->action == 'edit') {
+            $edit = $request->state;
+        }
+        $delete = '';
+        if ($request->action == 'delete') {
+            $delete = $request->state;
+        }
+
+        $create_menu_relation = menu_relation::updateOrCreate([
             'position_id' => $request->input('pos_id'),
             'menu_id' => $request->input('menu_id'),
-            'options' => json_encode($options),
+            'view' => intval($view) ?? null,
+            'create' => intval($create) ?? null,
+            'edit' => intval($edit) ?? null,
+            'delete' => intval($delete) ?? null,
         ]);
         // dd(['Array3' => $request]);
-        return response()->json($create);
+        return response()->json($create_menu_relation);
     }
 
     public function deleteAccess(Request $request)
     {
         $delete = menu_relation::where('position_id', $request->input('pos_id'))
             ->where('menu_id', $request->input('menu_id'))
-            ->where('options', $request->input('action_name'))
             ->delete();
 
         return response()->json($delete);
