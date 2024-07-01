@@ -9,11 +9,21 @@ class menu_relation extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    // protected $guarded = [];
+    protected $guarded = [];
 
-    protected $fillable = ['menu_relations'];
+    // public function getMenuRelation()
+    // {
+    //     return $this->belongsTo(position::class, 'id_position', 'position_id')
+    //         ->leftJoin('menus', 'menus.id', '=', 'menu_relations.menu_id');
+    // }
 
-    protected $casts = [
-        'menu_relations' => 'array',
-    ];
+    public function getMenuRelation()
+    {
+        return $this->hasMany(menu_relation::class, 'position_id', 'position_id');
+    }
+
+    public function getPosition()
+    {
+        return $this->hasOne(position::class, 'id_position', 'position_id');
+    }
 }
