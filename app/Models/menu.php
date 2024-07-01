@@ -14,4 +14,10 @@ class menu extends Model
     protected $primaryKey = 'id';
 
     protected $table = 'menus';
+
+    // public function getMenuRelation()
+    // {
+    //     return $this->hasOne(menu_relation::class, 'menu_id', 'id')
+    //         ->leftJoin('position', 'position.id_position', '=', 'menu_relations.position_id');
+    // }
 }

@@ -6,6 +6,7 @@ use App\Models\ManageMenu;
 use App\Models\position;
 use App\Models\menu;
 use App\models\menu_relation;
+use App\models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -20,98 +21,57 @@ class ManageMenuController extends Controller
         $position = position::all();
 
         $options = menu_relation::all();
-
-        // dd($options->all());
+        // $users = User::select()
+        //     ->with('getUserPermission:id,user_id')->get();
+        $menus = menu_relation::select('position_id')
+            ->with('getMenuRelation:position_id,menu_id,view,create,edit,delete')
+            ->get()
+            ->toArray();
+        // $permissions[] = ['view', 'create', 'edit', 'delete'];
+        // $userIds = menu_relation::pluck('menu_id');
+        // $permissionData = $userIds->map(function ($userId) use ($permissions) {
+        //     return collect($permissions)->mapWithKeys(function ($permission) use ($permissions) {
+        //         return [$permission => in_array($permission, $permissions)]; // Corrected line
+        //     })->toArray();
+        // });
+        // dd($menus);
 
         return view('managemenu.index', compact('menu', 'position'));
     }
 
     public function menuAccess(Request $request)
     {
-        $data = menu_relation::where('position_id', $request->input('pos_id'))->pluck('menu_id');
-        // $action = menu_relation::select(
-        //     'view',
-        //     'create',
-        //     'edit',
-        //     'delete',
-        // )
-        // ->pluck("view", "create", "edit", "delete")
-        // ->toArray();
+        // $data = menu_relation::where('position_id', $request->input('pos_id'))->pluck('menu_id');
+        $menus = menu_relation::select('position_id')
+            ->with('getMenuRelation:position_id,menu_id,view,create,edit,delete')
+            ->get()
+            ->toArray();
 
-        $menus = menu::select('id')->get();
+        // dd($menus);
 
-        foreach ($menus as $menu) {
-            $dataarray_code = [];
-                $item_code = menu_relation::select("id", "view")
-                    ->where('menu_id', '=', $menu->id)
-                    ->get();
-
-                foreach ($item_code as $dataitem_code) {
-                    $dataarray_code[] = $dataitem_code->view;
-                }
-
-                $menu->dataarray_code = $dataarray_code;
-
-        }
-
-        dd($menus->all());
-
-        return response()->json(['data' => $data, 'menus' => $menus]);
+        return response()->json(['menus' => $menus]);
     }
 
     public function createAccess(Request $request)
     {
         // $checkboxes = $request->input('arrs', []);
-        // $keys = ['show', 'create', 'edit', 'delete'];
-        // $options = [];
-        // $keys = [
-        //     'show' => false,
-        //     'create' => false,
-        //     'edit' => false,
-        //     'delete' => false,
-        // ];
 
         // foreach ($checkboxes as $key => $value) {
         //         $options[] = $value;
         // }
 
+        // dd(['Array1' => $request]);
         // foreach ($keys as $key) {
         //         $options[$key] = in_array($key, $checkboxes);
         // }
-        // dd(['Array1' => $request]);
-        // foreach ($checkboxes as $key => $value) {
-        //     if (isset($keys[$key])) {
-        //         $keys[$key] = true;
-        //     }
-        // }
-        // dd(['Array2' => $request->all()]);
+        // dd($request->action);
 
-        $view = '';
-        if ($request->action == 'view') {
-            $view = $request->state;
-        }
-        $create = '';
-        if ($request->action == 'create') {
-            $create = $request->state;
-        }
-        $edit = '';
-        if ($request->action == 'edit') {
-            $edit = $request->state;
-        }
-        $delete = '';
-        if ($request->action == 'delete') {
-            $delete = $request->state;
-        }
+        $state = $request->input('state');
 
-        $create_menu_relation = menu_relation::updateOrCreate([
-            'position_id' => $request->input('pos_id'),
-            'menu_id' => $request->input('menu_id'),
-            'view' => intval($view) ?? null,
-            'create' => intval($create) ?? null,
-            'edit' => intval($edit) ?? null,
-            'delete' => intval($delete) ?? null,
+        $create_menu_relation = menu_relation::updateOrCreate(['position_id' => $request->pos_id, 'menu_id' => $request->menu_id],
+        [
+            $request->action => $state,
         ]);
-        // dd(['Array3' => $request]);
         return response()->json($create_menu_relation);
     }
 
