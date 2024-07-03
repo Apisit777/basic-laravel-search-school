@@ -19,7 +19,7 @@ class ProductFormController extends Controller
     {
         $user = User::all();
 
-        return view('product_form.index', compact('user'));
+        return view('new_product_develop.index', compact('user'));
     }
 
     /**
@@ -31,7 +31,7 @@ class ProductFormController extends Controller
         $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
         $productCode = 'P'.sprintf('%05d', $productCodeNumber);
 
-        $list_position = position::select('id_position', 'name_position')->get();
+        $list_position = position::select('id', 'name_position')->get();
 
         $brands = Brand::listBrand();
         // dd($brands->all());
@@ -40,7 +40,7 @@ class ProductFormController extends Controller
 
         $Products = $Products->get();
 
-        return view('product_form.create', compact('productCode', 'list_position', 'brands'));
+        return view('new_product_develop.create', compact('productCode', 'list_position', 'brands'));
     }
 
     /**

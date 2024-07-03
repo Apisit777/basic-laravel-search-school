@@ -33,7 +33,7 @@ class ProductController extends Controller
         $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
         $productCode = 'P'.sprintf('%05d', $productCodeNumber);
 
-        $list_position = position::select('id_position', 'name_position')->get();
+        $list_position = position::select('id', 'name_position')->get();
         // dd($productCode);
         return view('product.create', compact('productCode', 'list_position'));
     }

@@ -18,6 +18,6 @@ class menu extends Model
     // public function getMenuRelation()
     // {
     //     return $this->hasOne(menu_relation::class, 'menu_id', 'id')
-    //         ->leftJoin('position', 'position.id_position', '=', 'menu_relations.position_id');
+    //         ->leftJoin('position', 'position.id', '=', 'menu_relations.position_id');
     // }
 }

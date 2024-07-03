@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class position extends Model
+class Post extends Model
 {
     use HasFactory;
     public $timestamps = false;
     protected $guarded = [];
-    public function getPs()
+    public function comments()
     {
-        return $this->hasMany(menu_relation::class, 'position_id', 'id');
+        return $this->hasMany(Comment::class);
     }
 }

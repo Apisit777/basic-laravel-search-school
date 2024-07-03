@@ -17,12 +17,12 @@ class AuthController extends Controller
             'users.id as user_id',
             'name',
             'username',
-            'position.id_position as position_id',
-            'position.name_position as role',
+            'positions.id as position_id',
+            'positions.name_position as role',
             'status'
         )
             ->leftjoin('user_permission', 'user_permission.user_id', '=', 'users.id')
-            ->leftjoin('position', 'position.id_position', '=', 'user_permission.position_id')
+            ->leftjoin('positions', 'positions.id', '=', 'user_permission.position_id')
             ->where('status', '=', 1)
             ->get();
 
@@ -51,10 +51,10 @@ class AuthController extends Controller
             $token = Auth::user()->createToken('productMastertoken')->plainTextToken;
             $data->token = $token;
             $role = User::select(
-                'position.name_position as role'
+                'positions.name_position as role'
             )
             ->leftjoin('user_permission', 'user_permission.user_id', '=', 'users.id')
-            ->leftjoin('position', 'position.id_position', '=', 'user_permission.position_id')
+            ->leftjoin('positions', 'positions.id', '=', 'user_permission.position_id')
             ->where('users.id', '=', Auth::user()->id)
             ->first();
 

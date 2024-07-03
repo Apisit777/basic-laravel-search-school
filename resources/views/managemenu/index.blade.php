@@ -55,8 +55,8 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($position as $pos_data)
-                                                <tr id="pos_{{ $pos_data->id_position }}" onclick="setAccess({{  $pos_data->id_position  }})">
-                                                    <td>{{ $pos_data->id_position }}</td>
+                                                <tr id="pos_{{ $pos_data->id }}" onclick="setAccess({{  $pos_data->id  }})">
+                                                    <td>{{ $pos_data->id }}</td>
                                                     <td>{{ $pos_data->name_position }}</td>
                                                 </tr>
                                             @endforeach
