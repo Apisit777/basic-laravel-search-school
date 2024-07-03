@@ -221,7 +221,7 @@ CREATE TABLE `personal_access_tokens` (
 --
 
 CREATE TABLE `position` (
-  `id_position` bigint(20) NOT NULL,
+  `id` bigint(20) NOT NULL,
   `name_position` varchar(255) NOT NULL,
   `menu_1` char(1) NOT NULL,
   `menu_2` char(1) NOT NULL,
@@ -240,7 +240,7 @@ CREATE TABLE `position` (
 -- Dumping data for table `position`
 --
 
-INSERT INTO `position` (`id_position`, `name_position`, `menu_1`, `menu_2`, `menu_3`, `menu_4`, `menu_5`, `menu_6`, `menu_7`, `menu_8`, `menu_9`, `menu_10`, `menu_11`) VALUES
+INSERT INTO `position` (`id`, `name_position`, `menu_1`, `menu_2`, `menu_3`, `menu_4`, `menu_5`, `menu_6`, `menu_7`, `menu_8`, `menu_9`, `menu_10`, `menu_11`) VALUES
 (1, 'Administrator', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'),
 (2, 'Technician', '1', '1', '0', '0', '1', '1', '1', '1', '0', '0', '1'),
 (5, 'panadda', '1', '1', '1', '0', '1', '0', '0', '0', '0', '0', '0'),

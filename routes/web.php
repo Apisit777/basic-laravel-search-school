@@ -38,8 +38,8 @@ Route::get('/images', [ProductImageController::class, 'index'])->name('images');
 Route::post('/images_upload', [ProductImageController::class, 'store'])->name('images_upload');
 
 Route::get('/product', [ProductController::class, 'index'])->name('product');
-Route::get('/product_form', [ProductFormController::class, 'index'])->name('product_form');
-Route::get('/product_form_creat', [ProductFormController::class, 'create'])->name('product_form_creat');
+Route::get('/new_product_develop', [ProductFormController::class, 'index'])->name('new_product_develop');
+Route::get('/new_product_develop_creat', [ProductFormController::class, 'create'])->name('new_product_develop_creat');
 
 Route::get('/get_users', [ProductController::class, 'get_users'])->name('get_users');
 Route::post('/create_products', [ProductController::class, 'store'])->name('create_products');

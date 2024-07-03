@@ -33,8 +33,8 @@ class AuthController extends Controller
     }
     public function register()
     {
-        // $list_position = position::select('id_position', 'name_position')->pluck('name_position')->toArray();
-        $list_position = position::select('id_position', 'name_position')->get();
+        // $list_position = position::select('id', 'name_position')->pluck('name_position')->toArray();
+        $list_position = position::select('id', 'name_position')->get();
 
         // dd($list_position);
         return view('auth.register', compact('list_position'));
@@ -95,10 +95,10 @@ class AuthController extends Controller
             $token = Auth::user()->createToken('productMastertoken')->plainTextToken;
             $data->token = $token;
             $role = User::select(
-                'position.name_position as role'
+                'positions.name_position as role'
             )
             ->leftjoin('user_permission', 'user_permission.user_id', '=', 'users.id')
-            ->leftjoin('position', 'position.id_position', '=', 'user_permission.position_id')
+            ->leftjoin('positions', 'positions.id', '=', 'user_permission.position_id')
             ->where('users.id', '=', Auth::user()->id)
             ->first();
 

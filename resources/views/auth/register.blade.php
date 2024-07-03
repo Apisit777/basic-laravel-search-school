@@ -73,7 +73,7 @@
                             <select class="js-example-basic-single w-full bg-white dark:bg-[#2020] rounded-sm text-xs" name="state">
                                 <option value=""> --- กรุณาเลือก ---</option>
                                 @foreach ($list_position as $key => $list_positions)
-                                    <option value={{ $list_positions->id_position }}>{{ $list_positions->name_position }}</option>
+                                    <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
                                 @endforeach
                             </select>
                             <!-- <label for="name" class="absolute block top-1 left-0 text-md text-black dark:text-white pointer-events-none transition duration-200 ease-in-outbg-white px-2 text-grey-darker">

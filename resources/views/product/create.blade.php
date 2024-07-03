@@ -11,6 +11,7 @@
             height: 100%;
             top: 0;
             left: 0;
+            z-index: 1000;
         }
         .select2-container .select2-dropdown .select2-results__options {
             max-height: 360px !important;
@@ -70,7 +71,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="state">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($list_position as $key => $list_positions)
-                                                                            <option value={{ $list_positions->id_position }}>{{ $list_positions->name_position }}</option>
+                                                                            <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>

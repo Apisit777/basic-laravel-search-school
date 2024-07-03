@@ -48,6 +48,14 @@ class User extends Authenticatable
     public function getUserPermission()
     {
         return $this->hasOne(user_permission::class, 'user_id', 'id')
-            ->leftJoin('position', 'position.id_position', '=', 'user_permission.position_id');
+            ->leftJoin('positions', 'positions.id', '=', 'user_permission.position_id');
+    }
+    public function getPost()
+    {
+        return $this->hasOne(Post::class);
+    }
+    public function getUP()
+    {
+        return $this->hasMany(user_permission::class);
     }
 }

@@ -6,6 +6,8 @@ use App\Models\ManageMenu;
 use App\Models\position;
 use App\Models\menu;
 use App\models\menu_relation;
+use App\models\Post;
+use App\models\Comment;
 use App\models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -34,6 +36,12 @@ class ManageMenuController extends Controller
         //         return [$permission => in_array($permission, $permissions)]; // Corrected line
         //     })->toArray();
         // });
+
+        $ps = Post::select('id')
+            ->with('comments:post_id,user_id')
+            ->get()
+            ->toArray();
+
         // dd($menus);
 
         return view('managemenu.index', compact('menu', 'position'));
