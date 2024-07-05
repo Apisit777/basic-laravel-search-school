@@ -25,7 +25,7 @@
     @include('layouts.admin_navbar')
     @include('layouts.admin_menu_sidenav')
     <body x-cloak x-data="{darkMode: $persist(false)}" :class="{'dark': darkMode === true }" class="antialiased ">
-        <div class="min-h-screen p-4 sm:ml-64 bg-white dark:bg-[#202020] duration-500">
+        <div class="min-h-screen p-4 md:ml-64 bg-white dark:bg-[#202020] duration-500">
             <div class="p-2 rounded-sm dark:border-gray-700 mt-4">
                 <div class="max-w-8xl mx-auto">
                     @yield('content')
@@ -34,12 +34,26 @@
         </div>
     </body>
 
+    <!-- contents lg:pointer-events-auto lg:block lg:w-72 lg:overflow-y-auto lg:border-r lg:border-zinc-900/10 lg:px-6 lg:pb-8 lg:pt-4 xl:w-80 lg:dark:border-white/10 -->
+
     <script>
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        $('#select_locale').change(function(event) {
+            jQuery.ajax({
+                url: "{{ route('setLocale', 0) }}/".replaceAll('/0', '/' + event.target.value),
+                type: 'GET',
+                success: function (response) {
+                    if(response.status === 200) {
+                        window.location.reload()
+                    }
+                }
+            })
+        })
     </script>
 
 </html>

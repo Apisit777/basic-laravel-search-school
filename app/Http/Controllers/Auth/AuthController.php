@@ -16,7 +16,9 @@ class AuthController extends Controller
 {
     public function index()
     {
-        $response = Http::post('https://extrassup.ssup.co.th/api/v2/login', [
+        $response = Http::withHeaders([
+            'app_key' => 'iBnauPU1C7-H2WXee2OkJATb'
+        ])->post('https://extrassup.ssup.co.th/api/v2/apps/login', [
             'username' => '000000',
             'password' => '000000',
         ]);
@@ -26,9 +28,6 @@ class AuthController extends Controller
         //     'email' => 'test@gmail.com',
         //     'password' => '1234',
         // ]);
-
-        // dd($response->json());
-        // dd($response->object());
         return $response->json();
     }
     public function register()

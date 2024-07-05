@@ -64,7 +64,19 @@ Route::post('/receive', [PusherController::class, 'receive'])->name('receive');
 
 Route::get('/getBrandIdListAjax', [BrandController::class, 'getBrandIdListAjax'])->name('ajax_brand_id');
 
+Route::get('/greeting/{locale}', function ($locale) {
+    if (! in_array($locale, ['en', 'th'])) {
+        return response()->json([
+            'status' => 400
+        ]);
+    }
+    session()->put('locale', $locale);
+
+    return response()->json([
+        'status' => 200
+    ]);
+})->name('setLocale');
 
 Route::get('/', function () {
     return view('welcome');
-    });
+});
