@@ -14,7 +14,7 @@ $countUsers = ProductController::count_users();
     } */
 </style>
 
-<aside id="logo-sidebar" class="sidebar fixed top-12 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 border-r border-gray-200 sm:translate-x-0 dark:border-gray-700 transition-all duration-500" aria-label="Sidebar">
+<aside id="logo-sidebar" class="sidebar fixed top-12 left-0 z-40 w-64 h-screen transition-transform -translate-x-full border-r border-gray-200 md:translate-x-0 dark:border-gray-700 transition-all duration-500" aria-label="Sidebar">
     <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-[#202020] duration-500">
         <ul class="space-y-2 font-medium">
             <!-- <li>
@@ -62,11 +62,13 @@ $countUsers = ProductController::count_users();
             <li>
                 <a href="#" class="flex items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                    <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
+                        <path d="M4.5 3.75a3 3 0 0 0-3 3v.75h21v-.75a3 3 0 0 0-3-3h-15Z" />
+                        <path fill-rule="evenodd" d="M22.5 9.75h-21v7.5a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3v-7.5Zm-18 3.75a.75.75 0 0 1 .75-.75h6a.75.75 0 0 1 0 1.5h-6a.75.75 0 0 1-.75-.75Zm.75 2.25a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 0-1.5h-3Z" clip-rule="evenodd" />
                     </svg>
                     <span class="flex-1 ms-3 whitespace-nowrap">Approve</span>
                 </a>
             </li>
+
             @if (Auth::user()->getUserPermission->name_position == "Administrator") 
                 <li>
                     <a class="flex items-center p-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group {{ (Request::is('manage_menu') || Request::is('manage_menu')) ? 'rounded-sm bg-primary-100 dark:bg-[#014a77] duration-500': '' }}" href="{{ route('manage_menu') }}">
@@ -138,15 +140,6 @@ $countUsers = ProductController::count_users();
                     <path d="M4.462 19.462c.42-.419.753-.89 1-1.395.453.214.902.435 1.347.662a6.742 6.742 0 0 1-1.286 1.794.75.75 0 0 1-1.06-1.06Z" />
                     </svg>
                     <span class="flex-1 ms-3 whitespace-nowrap">School</span>
-                </a>
-            </li> -->
-            <!-- <li>
-                <a href="#" class="flex items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                    <path d="M4.5 3.75a3 3 0 0 0-3 3v.75h21v-.75a3 3 0 0 0-3-3h-15Z" />
-                    <path fill-rule="evenodd" d="M22.5 9.75h-21v7.5a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3v-7.5Zm-18 3.75a.75.75 0 0 1 .75-.75h6a.75.75 0 0 1 0 1.5h-6a.75.75 0 0 1-.75-.75Zm.75 2.25a.75.75 0 0 0 0 1.5h3a.75.75 0 0 0 0-1.5h-3Z" clip-rule="evenodd" />
-                    </svg>
-                    <span class="flex-1 ms-3 whitespace-nowrap">Card</span>
                 </a>
             </li> -->
         </ul>

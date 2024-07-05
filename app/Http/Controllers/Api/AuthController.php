@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class AuthController extends Controller
 {
@@ -63,6 +64,43 @@ class AuthController extends Controller
             return response()->json(['status' => 'success', 'data' => $data]);
         } else {
             return response()->json(['status' => 'fail', 'data' => 'Check Username or Password']);
+        }
+    }
+    public function apiAppsLogin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'fail', 'message' => $validator->errors()]);
+        }
+
+        $loginUrl = 'https://extrassup.ssup.co.th/api/v2/apps/login';
+        $credentials = [
+            'username' => $request->input('username'),
+            'password' => $request->input('password')
+        ];
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'app_key' => 'iBnauPU1C7-H2WXee2OkJATb'
+        ];
+
+        $data = Http::withHeaders($headers)->post($loginUrl, $credentials);
+
+        if ($data->successful()) {
+            $response = $data->json();
+            
+            return response()->json(['status' => 'success', 'response' => $response]);
+        } elseif ($data->failed()) {
+            $error = $data->json();
+
+            return response()->json(['status' => 'fail', 'response' => $error]);
+        } else {
+            return response()->json(['message' => 'Unexpected response status', 'response' => $data->status()]);
         }
     }
 }

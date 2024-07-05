@@ -57,7 +57,7 @@
 @section('content')
     <div class="justify-center items-center">
         <div class="mt-5 mb-4 flex justify-center items-center">
-            <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการทะเบียนสินค้า</p>
+            <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">@lang('global.content.product_registration_list')</p>
         </div>
         <div id="create_product">
         </div>
@@ -183,7 +183,7 @@
             let dataLogin = sessionStorage.getItem("credetail");
             let dataJson = JSON.parse(dataLogin)
             console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
-            if ( dataJson.role.role == "Administrator" ||  dataJson.role.role == "Manager_Product") {
+            if ( dataJson.data.roles == "superadmin" ||  dataJson.data.roles == "Manager_Product") {
                 $('#create_product').append(
                     `<div class="fixed flex bottom-5 right-5 z-10">
                         <a href="{{ route('product_create') }}" class="text-gray-100 bg-[#303030] hover:bg-[#404040] text-white font-bold py-2 px-2 mr-2 mt-20 rounded-full group">
