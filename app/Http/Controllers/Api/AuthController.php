@@ -93,14 +93,14 @@ class AuthController extends Controller
 
         if ($data->successful()) {
             $response = $data->json();
-            
+
             return response()->json(['status' => 'success', 'response' => $response]);
         } elseif ($data->failed()) {
             $error = $data->json();
 
-            return response()->json(['status' => 'fail', 'response' => $error]);
+            return response()->json(['error' => $error], 401);
         } else {
-            return response()->json(['message' => 'Unexpected response status', 'response' => $data->status()]);
+            return response()->json(['error' => 'Unexpected response status', 'response' => $data->status()]);
         }
     }
 }

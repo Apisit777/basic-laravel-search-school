@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->integer('position_id')->comment('รหัสตำแหน่ง');
             $table->integer('menu_id')->comment('รหัสเมนู');
-            $table->json('options')->nullable()->default(null)->comment('department action');
+            $table->integer('view')->nullable()->default(null)->comment('action');
+            $table->integer('create')->nullable()->default(null)->comment('action');
+            $table->integer('edit')->nullable()->default(null)->comment('action');
+            $table->integer('delete')->nullable()->default(null)->comment('action');
             $table->timestamps();
         });
     }

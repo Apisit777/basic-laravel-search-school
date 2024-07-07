@@ -103,10 +103,10 @@
                     <div class="flex flex-row items-center justify-center lg:justify-start">
                         <div class="flex text-center">
                             <p class="mb-0 me-4 mt-4 text-lg">Sign in with</p>
-                            <button class="flex items-center bg-white dark:bg-[#303030] border border-gray-300 rounded-lg shadow-md px-6 py-5 text-sm font-medium text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                            {{-- <button class="flex items-center bg-white dark:bg-[#303030] border border-gray-300 rounded-lg shadow-md px-6 py-5 text-sm font-medium text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                                 <img src="https://www.ssup.co.th/wp-content/uploads/2022/11/site-logo-g.png" width="65px" height="65px">
                             </button>
-                            <!-- <button class="flex items-center mr-2 bg-white dark:bg-[#303030] border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                            <button class="flex items-center mr-2 bg-white dark:bg-[#303030] border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                                 <img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="social icon" width="35px" height="35px">
                                 <span>
                                     Github
@@ -117,7 +117,7 @@
                                 <span>
                                     Google
                                 </span>
-                            </button> -->
+                            </button> --}}
                         </div>
                     </div>
 
@@ -128,7 +128,7 @@
                     </div>
 
                     <div class="flex flex-col gap-6">
-                        
+
                         <div class="relative float-label-input mt-0">
                             <input type="text" id="username" name="username" placeholder=" " class="block w-full bg-white dark:bg-[#2020] rounded-sm text-xs focus:outline-none focus:shadow-outline border border-black dark:border-gray-100 appearance-none leading-normal focus:border-blue-400">
                             <label for="name" class="absolute block top-1 left-0 text-md text-black dark:text-white pointer-events-none transition duration-200 ease-in-outbg-white px-2 text-grey-darker">
@@ -264,7 +264,9 @@
         });
         jQuery.ajax({
             type: "GET",
+            // type: "POST",
             url: "/api/api_apps_login",
+            // url: "/checkLogin",
             data: dataForm,
             beforeSend: function () {
                 $('#loader').removeClass('hidden')
@@ -277,12 +279,15 @@
                 }
             },
             error: (params) => {
+                console.log("🚀 ~ checkLogin ~ params:", params)
+
                 errorMessage('Check Username Or Password.')
             }
         });
     }
 
     function errorMessage(text) {
+        console.log("🚀 ~ errorMessage ~ text:", text)
         $('#loader').addClass('hidden');
         $('#username').val('')
         $('#password').val('')
