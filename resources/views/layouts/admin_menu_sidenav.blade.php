@@ -69,7 +69,7 @@ $countUsers = ProductController::count_users();
                 </a>
             </li>
 
-            @if (Auth::user()->getUserPermission->name_position == "Administrator") 
+            {{-- @if (Auth::user()->getUserPermission->name_position == "superadmin") --}}
                 <li>
                     <a class="flex items-center p-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group {{ (Request::is('manage_menu') || Request::is('manage_menu')) ? 'rounded-sm bg-primary-100 dark:bg-[#014a77] duration-500': '' }}" href="{{ route('manage_menu') }}">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-7 mt-1 ml-0.5 text-black dark:text-white">
@@ -79,7 +79,7 @@ $countUsers = ProductController::count_users();
                         <span class="flex-1 ms-3 whitespace-nowrap text-gray-900 dark:text-white">Manage Menu</span>
                     </a>
                 </li>
-            @endif
+            {{-- @endif --}}
             <!-- <li>
                 <a class="flex items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group {{ (Request::is('tool') || Request::is('tool')) ? 'rounded-sm bg-primary-100 dark:bg-[#014a77] duration-500': '' }}" href="{{ route('tool') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -173,7 +173,7 @@ $countUsers = ProductController::count_users();
     }
 
     ajaxGetNoti();
-    
+
     const pusher1  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
     const channel1 = pusher1.subscribe('public');
 

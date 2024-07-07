@@ -11,6 +11,7 @@ use App\models\Comment;
 use App\models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ManageMenuController extends Controller
 {
@@ -20,11 +21,16 @@ class ManageMenuController extends Controller
     public function index()
     {
         $menu = menu::all();
+        // $menu = menu::select('position_id', 'menu_name')
+        //     ->leftJoin('menu_relations', 'menus.id', 'menu_relations.menu_id')
+        //     ->get();
+
         $position = position::all();
 
         $options = menu_relation::all();
-        // $users = User::select()
-        //     ->with('getUserPermission:id,user_id')->get();
+        // $users = Auth::user()->getUserPermission->name_position;
+        // User::select()
+        //     ->with('getUserPermission:position_id,name_position')->get();
         $menus = menu_relation::select('position_id')
             ->with('getMenuRelation:position_id,menu_id,view,create,edit,delete')
             ->get()
@@ -42,7 +48,7 @@ class ManageMenuController extends Controller
             ->get()
             ->toArray();
 
-        // dd($menus);
+        // dd($menu);
 
         return view('managemenu.index', compact('menu', 'position'));
     }
@@ -50,8 +56,9 @@ class ManageMenuController extends Controller
     public function menuAccess(Request $request)
     {
         // $data = menu_relation::where('position_id', $request->input('pos_id'))->pluck('menu_id');
-        $menus = menu_relation::select('position_id')
+        $menus = menu_relation::select('position_id', 'menu_id')
             ->with('getMenuRelation:position_id,menu_id,view,create,edit,delete')
+            ->where('position_id', $request->input('pos_id'))
             ->get()
             ->toArray();
 

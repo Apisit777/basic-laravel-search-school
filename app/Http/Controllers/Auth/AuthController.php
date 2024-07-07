@@ -77,15 +77,15 @@ class AuthController extends Controller
     public function checkLogin(Request $request)
     {
         $credetail = [
-            'email' => $request->email,
+            'username' => $request->username,
             'password' => $request->password
         ];
 
         if (Auth::attempt($credetail)) {
             // return redirect('product');
-            
+
             // $request->session()->regenerate();
-            
+
             // return response()->json(['success' => 'Log in Success.', 'route' => 'product']);
             // return response()->json([['success']]);
             // dd($credetail);
@@ -103,8 +103,8 @@ class AuthController extends Controller
 
             $data->role = $role;
 
-            return response()->json(['success' => 'success', 'data' => $data]);
-        } 
+            return response()->json(['status' => 'success', 'data' => $data]);
+        }
         else {
             return response(['error' => 'Check Username Or Password!'], 401);
         }
