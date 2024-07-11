@@ -33,7 +33,7 @@
     <div id="slide" class="loaderslide"></div>
 
     <div class="justify-center items-center">
-        <div class="mt-5 mb-4 flex justify-center items-center">
+        <div class="mt-6 mb-4 flex justify-center items-center">
             <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการทะเบียนสินค้า</p>
         </div>
 

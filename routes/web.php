@@ -42,6 +42,7 @@ Route::get('/new_product_develop', [ProductFormController::class, 'index'])->nam
 Route::get('/new_product_develop_creat', [ProductFormController::class, 'create'])->name('new_product_develop_creat');
 
 Route::get('/get_users', [ProductController::class, 'get_users'])->name('get_users');
+Route::get('/product_detail_create', [ProductController::class, 'productDetailCreate'])->name('product_detail_create');
 Route::post('/create_products', [ProductController::class, 'store'])->name('create_products');
 Route::get('/product_create', [ProductController::class, 'create'])->name('product_create');
 Route::get('/checknamebrand', [ProductController::class, 'checkname_brand'])->name('checknamebrand');
@@ -50,6 +51,9 @@ Route::post('/list_approve_products', [ProductController::class, 'list_approve_p
 Route::delete('/upate_product_status/{id}', [ProductController::class, 'upate_product_status'])->name('upate_product_status');
 
 Route::get('/manage_menu', [ManageMenuController::class, 'index'])->name('manage_menu');
+Route::post('/list_menu', [ManageMenuController::class, 'listMenu'])->name('list_menu');
+
+Route::get('/create_menu', [ManageMenuController::class, 'createMenu'])->name('create_menu');
 
 Route::get('/menu_access', [ManageMenuController::class, 'menuAccess'])->name('menu_access');
 Route::post('/create_access', [ManageMenuController::class, 'createAccess'])->name('create_access');

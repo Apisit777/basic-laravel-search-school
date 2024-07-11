@@ -106,13 +106,12 @@
                     $current_lang = session()->get('locale');
                 @endphp
                 <div class="flex">
-                    <select id="select_locale" class="selectpicker" data-width="fit">
-                        <option value="en" {{ $current_lang == 'en' ? 'selected' :'' }} style="font-family: Noto Emoji, sans-serif;">
-                            <img src="https://crm.wsmart.co.th/media/flag/usa-flag-icon.png" style="width: 22px; height: 15px; object-fit: cover;">
+                    <select id="select_locale" class="block w-full p-2 bg-gray-50 dark:bg-[#303030] text-gray-900 dark:text-white text-xs rounded-sm">
+                        <option value="en" {{ $current_lang == 'en' ? 'selected' :'' }} style="font-family: Noto Emoji, sans-serif; font-size:14">
                             @lang('global.menu.en')
                         </option>
                         <ul class="pt-1 mt-1 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
-                        <option value="th" {{ $current_lang == 'th' ? 'selected' :'' }} style="font-family: Noto Emoji, sans-serif;" data-content='<span class="flag-icon       flag-icon-us"></span> English'>
+                        <option value="th" {{ $current_lang == 'th' ? 'selected' :'' }} style="font-family: Noto Emoji, sans-serif; font-size:14">
                             @lang('global.menu.th')
                         </option>
                     </select>

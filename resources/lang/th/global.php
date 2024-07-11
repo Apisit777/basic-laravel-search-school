@@ -6,6 +6,7 @@ return [
         'th' => 'ไทย',
     ],
     'content' => [
-        'product_registration_list' => 'รายการทะเบียนสินค้า'
+        'product_registration_list' => 'รายการทะเบียนสินค้า',
+        'list_manage_menu' => 'รายการจัดการเมนู'
     ]
 ];

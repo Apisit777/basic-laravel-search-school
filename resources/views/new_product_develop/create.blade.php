@@ -1,5 +1,5 @@
 @extends('layouts.layout')
-@section('title', 'Inspection & deteils')
+@section('title', '')
 
     <style>
         .loading {
@@ -32,8 +32,12 @@
             <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
                 <div class="lg:col-span-4 xl:grid-cols-4">
                     <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                        <div class="md:col-span-3" >
-                            <label for="name">บริษัท<span class="text-danger"> *</span></label>
+                        <div class="md:col-span-2" >
+                            <label for="name">Customer<span class="text-danger"> *</span></label>
+                            <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                        </div>
+                        <div class="md:col-span-2" >
+                            <label for="name"><span class="text-danger"> *</span></label>
                             <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="brand_id" onchange="brandIdChange(this,'brand_id')">
                                 <option value=""> --- กรุณาเลือก ---</option>
                                 @foreach ($brands as $key => $brand)
@@ -41,7 +45,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="md:col-span-3" >
+                        <div class="md:col-span-2" >
                             <label for="name">รหัสสินค้า<span class="text-danger"> *</span></label>
                             <select class="js-example-basic-single w-full rounded-sm text-xs" id="product_id" name="product_id" onchange="onSelect(this)">
                                 <option value=""> --- กรุณาเลือก ---</option>
@@ -217,8 +221,8 @@
                                     </div>
                                 </div>
                             </li> -->
-                            <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[2.45rem] after:top-[3.6rem] after:mt-px after:h-[calc(100%-2.45rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
-                                <div data-twe-stepper-head-ref="" class="setpcollep flex cursor-pointer items-center p-6 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
+                            <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
+                                <div data-twe-stepper-head-ref="" class="setpcollep flex cursor-pointer items-center p-1 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
                                     <span data-twe-stepper-head-icon-ref="" class="bg_step_color me-3 flex h-[1.938rem] w-[1.938rem] items-center justify-center rounded-full text-sm  !bg-primary-100 !text-primary-700 dark:!bg-slate-900 dark:!text-primary-500">
                                         1
                                     </span>
@@ -226,7 +230,7 @@
                                         ข้อมูลผลิตภัณฑ์
                                     </span>
                                 </div>
-                                <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[3.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
+                                <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[1.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
                                     <div class="grid grid-cols-5 gap-10">
                                         <div class="form col-span-5">
                                             <div class="relative w-full overflow-hidden peer-checked:hidden">
@@ -295,8 +299,8 @@
                                     </div>
                                 </div>
                             </li>
-                            <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[2.45rem] after:top-[3.6rem] after:mt-px after:h-[calc(100%-2.45rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
-                                <div data-twe-stepper-head-ref="" class="setpcollep  flex cursor-pointer items-center p-6 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
+                            <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
+                                <div data-twe-stepper-head-ref="" class="setpcollep  flex cursor-pointer items-center p-1 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
                                     <span data-twe-stepper-head-icon-ref="" class="bg_step_color me-3 flex h-[1.938rem] w-[1.938rem] items-center justify-center rounded-full text-sm  !bg-primary-100 !text-primary-700 dark:!bg-slate-900 dark:!text-primary-500">
                                         2
                                     </span>
@@ -304,7 +308,7 @@
                                         รายละเอียดผลิตภัณฑ์
                                     </span>
                                 </div>
-                                <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[3.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
+                                <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[1.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
                                     <div class="grid grid-cols-5 gap-10">
                                                 <div class="form col-span-5">
                                             <div class="relative w-full overflow-hidden">
@@ -429,16 +433,16 @@
                                     </div>
                                 </div>
                             </li>
-                            <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[2.45rem] after:top-[3.6rem] after:mt-px after:h-[calc(100%-2.45rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
-                                <div data-twe-stepper-head-ref="" class="setpcollep  flex cursor-pointer items-center p-6 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
+                            <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
+                                <div data-twe-stepper-head-ref="" class="setpcollep  flex cursor-pointer items-center p-1 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
                                     <span data-twe-stepper-head-icon-ref="" class="bg_step_color me-3 flex h-[1.938rem] w-[1.938rem] items-center justify-center rounded-full text-sm  !bg-primary-100 !text-primary-700 dark:!bg-slate-900 dark:!text-primary-500">
-                                        2
+                                        3
                                     </span>
                                     <span data-twe-stepper-head-text-ref="" class="after:absolute after:flex after:text-[0.8rem] text-black/50 dark:text-white/50 font-medium !text-black/50 dark:!text-white/50">
                                         ความต้องการเพิ่มเติม
                                     </span>
                                 </div>
-                                <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[3.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
+                                <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[1.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
                                     <div class="grid grid-cols-5 gap-10">
                                                 <div class="form col-span-5">
                                             <div class="relative w-full overflow-hidden">

@@ -25,7 +25,7 @@
     @include('layouts.admin_navbar')
     @include('layouts.admin_menu_sidenav')
     <body x-cloak x-data="{darkMode: $persist(false)}" :class="{'dark': darkMode === true }" class="antialiased ">
-        <div class="min-h-screen p-4 md:ml-64 bg-white dark:bg-[#202020] duration-500">
+        <div class="min-h-screen p-6 md:ml-64 bg-white dark:bg-[#202020] duration-500">
             <div class="p-2 rounded-sm dark:border-gray-700 mt-4">
                 <div class="max-w-8xl mx-auto">
                     @yield('content')

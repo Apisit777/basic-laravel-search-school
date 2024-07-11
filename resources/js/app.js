@@ -1,9 +1,13 @@
 import './bootstrap';
 import Alpine from 'alpinejs'
 import persist from '@alpinejs/persist'
-// import {  Stepper, initTWE } from "tw-elements";
+import {
+    Modal,
+    Ripple,
+    initTWE,
+  } from "tw-elements";
 
-// initTWE({ Stepper });
+initTWE({ Modal, Ripple });
 
 window.Alpine = Alpine
 

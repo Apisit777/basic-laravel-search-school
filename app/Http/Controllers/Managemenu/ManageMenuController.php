@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Managemenu;
 use App\Models\ManageMenu;
 use App\Models\position;
 use App\Models\menu;
+use App\Models\submenu;
 use App\models\menu_relation;
 use App\models\Post;
 use App\models\Comment;
 use App\models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class ManageMenuController extends Controller
@@ -20,7 +22,7 @@ class ManageMenuController extends Controller
      */
     public function index()
     {
-        $menu = menu::all();
+        // $menu = menu::all();
         // $menu = menu::select('position_id', 'menu_name')
         //     ->leftJoin('menu_relations', 'menus.id', 'menu_relations.menu_id')
         //     ->get();
@@ -31,10 +33,16 @@ class ManageMenuController extends Controller
         // $users = Auth::user()->getUserPermission->name_position;
         // User::select()
         //     ->with('getUserPermission:position_id,name_position')->get();
-        $menus = menu_relation::select('position_id')
-            ->with('getMenuRelation:position_id,menu_id,view,create,edit,delete')
-            ->get()
-            ->toArray();
+        $menus = menu::all();
+        
+        $menu_data = [];
+        foreach ($menus as $key => $menu) {
+            foreach ($menu->getMenuRelation()->where('position_id', '=', 1)->get() as $key_sub_menu => $menu_relation) {
+                $menu_data[$key_sub_menu] = $menu_relation->with('getSubMenu')->where('position_id', '=', 1)->get();
+            }
+        }
+        // dd($menu_data);
+
         // $permissions[] = ['view', 'create', 'edit', 'delete'];
         // $userIds = menu_relation::pluck('menu_id');
         // $permissionData = $userIds->map(function ($userId) use ($permissions) {
@@ -48,23 +56,145 @@ class ManageMenuController extends Controller
             ->get()
             ->toArray();
 
-        // dd($menu);
+        // dd($menus);
 
-        return view('managemenu.index', compact('menu', 'position'));
+        $menuData = [
+            [
+                'main_menu' => ['id' => 1,'Menu 1', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
+                'sub_menus' => [
+                    ['id' => 1, 'name' => 'Submenu 1.1', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
+                    ['id' => 2, 'name' => 'Submenu 1.2', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
+                ],
+            ],
+            [
+                'main_menu' => ['id' => 2, 'Menu 2', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
+                'sub_menus' => [
+                    ['id' => 3, 'name' => 'Submenu 2.1', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
+                    ['id' => 4, 'name' => 'Submenu 2.2', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
+                ],
+            ],
+        ];
+
+        return view('managemenu.index', compact('menus', 'position', 'menuData'));
+    }
+
+    public function createMenu(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+
+            $data_menu = [
+                'name' => $request->input('menu_name')
+            ];
+
+            $data_menu = menu::create($data_menu);
+
+            foreach ($request->inputs as $key => $value) {
+                submenu::create($value);
+            }
+
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+    public function updateMenu(Request $request, $id)
+    {
+        DB::beginTransaction();
+        try {
+
+            $data_menu = [
+                'name' => $request->input('menu_name')
+            ];
+
+            $data_menu = menu::create($data_menu);
+
+            if (null != $request->sale_name && count($request->input('sale_name')) > 0) {
+                $i = 0;
+                $x = 1;
+                foreach ($request->status as $key => $value) {
+                    $data_update = [
+                        'tent_id' => $id,
+                        'sale_name' => $request->sale_name[$i],
+                        'seq' => $x,
+                        'status' => $request->status[$key],
+                        'updated_by' => Auth::user()->id,
+                    ];
+
+                    if ('' != $request->sale_id[$i] && '' != $request->sale_name[$i]) {
+                        $Tent_saler = submenu::where('id', $request->sale_id[$i])
+                            ->update($data_update);
+                        ++$x;
+                    } elseif ('' == $request->sale_id[$i] && '' != $request->sale_name[$i]) {
+                        $seq = submenu::select('seq')
+                            ->where('tent_id', $id)
+                            ->orderBy('seq', 'DESC')
+                            ->first();
+
+                        if (null == $seq) {
+                            $seq = 1;
+                        } else {
+                            $seq = $seq->seq + 1;
+                        }
+                        $seq = (int) $seq;
+
+                        $data_update['seq'] = $seq;
+                        $Tent_saler = submenu::create($data_update);
+                        ++$x;
+                    } elseif ('' != $request->sale_id[$i] && '' == $request->sale_name[$i]) {
+                        $Tent_saler = submenu::where('tent_salers.id', $request->sale_id[$i])
+                            ->delete();
+                    }
+                    ++$i;
+                }
+            }
+
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function listMenu(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $data = menu::all();
+
+        // dd($data);
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
     }
 
     public function menuAccess(Request $request)
     {
         // $data = menu_relation::where('position_id', $request->input('pos_id'))->pluck('menu_id');
-        $menus = menu_relation::select('position_id', 'menu_id')
-            ->with('getMenuRelation:position_id,menu_id,view,create,edit,delete')
-            ->where('position_id', $request->input('pos_id'))
-            ->get()
-            ->toArray();
-
-        // dd($menus);
-
-        return response()->json(['menus' => $menus]);
+        $menus = menu::all();
+        
+        $check_permission_menus = [];
+        foreach ($menus as $key => $menu) {
+            foreach ($menu->getMenuRelation()->where('position_id', '=', $request->input('pos_id'))->get() as $key_sub_menu => $menu_relation) {
+                $check_permission_menus[$key_sub_menu] = $menu_relation->with('getSubMenu')->where('position_id', '=', $request->input('pos_id'))->get();
+            }
+        }
+        // dd($check_permission_menus);
+        return response()->json(['check_permission_menus' => $check_permission_menus]);
     }
 
     public function createAccess(Request $request)

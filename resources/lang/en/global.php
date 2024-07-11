@@ -6,6 +6,7 @@ return [
         'th' => 'TH',
     ],
     'content' => [
-        'product_registration_list' => 'Product registration list'
+        'product_registration_list' => 'Product registration list',
+        'list_manage_menu' => 'List Manage Menu'
     ]
 ];
