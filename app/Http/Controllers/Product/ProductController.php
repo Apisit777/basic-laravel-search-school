@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Brand;
 
 class ProductController extends Controller
 {
@@ -34,8 +35,19 @@ class ProductController extends Controller
         $productCode = 'P'.sprintf('%05d', $productCodeNumber);
 
         $list_position = position::select('id', 'name_position')->get();
+        $brands = Brand::listBrand();
         // dd($productCode);
-        return view('product.create', compact('productCode', 'list_position'));
+        return view('product.create', compact('productCode', 'list_position', 'brands'));
+    }
+    public function productDetailCreate(Request $request)
+    {
+        $productCodeMax = Product::max('seq');
+        $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
+        $productCode = 'P'.sprintf('%05d', $productCodeNumber);
+
+        $list_position = position::select('id', 'name_position')->get();
+        // dd($productCode);
+        return view('product_detail.create', compact('productCode', 'list_position'));
     }
 
     /**

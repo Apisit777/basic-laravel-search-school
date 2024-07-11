@@ -25,10 +25,194 @@
 
 @section('content')
     <div class="justify-center items-center">
-        <div class="mt-5 flex justify-center items-center">
-            <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการจัดการเมนู</p>
+        <div class="mt-6 flex justify-center items-center">
+            <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">@lang('global.content.list_manage_menu')</p>
+        </div>     
+        <div class="fixed flex bottom-5 right-5 z-10">
+            <a 
+                type="button" 
+                class="text-gray-100 bg-[#303030] hover:bg-[#404040] text-white font-bold py-2 px-2 mr-2 mt-20 rounded-full group"
+                data-twe-toggle="modal"
+                data-twe-target="#exampleModalLg"
+                data-twe-ripple-init
+                data-twe-ripple-color="light"
+                onclick="editModel()"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                    <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                </svg>
+            </a>
         </div>
+        <div
+            data-twe-modal-init
+            class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+            id="exampleModalLg"
+            data-twe-backdrop="static"
+            data-twe-keyboard="false"
+            tabindex="-1"
+            aria-labelledby="exampleModalLgLabel"
+            aria-hidden="true"
+        >
+            <div data-twe-modal-dialog-ref class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px] min-[992px]:max-w-[800px]">
+                <div class="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-clip-padding text-current shadow-4 outline-none bg-gray-100 dark:bg-[#202020]">
+                    <div class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-200 p-4 dark:border-white/10">
+                        <h5 class="text-xl font-medium leading-normal text-surface dark:text-white" id="exampleModalLgLabel"></h5>
+                        <button
+                            type="button"
+                            class="box-content rounded-none border-none text-neutral-500 hover:text-neutral-800 hover:no-underline focus:text-neutral-800 focus:opacity-100 focus:shadow-none focus:outline-none dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"
+                            data-twe-modal-dismiss
+                            aria-label="Close"
+                        >
+                            <span class="[&>svg]:h-6 [&>svg]:w-6">
+                                <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor">
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                    <form id="form_menu">
+                        <input class="" type="hidden" id="edit_id" name="edit_id" value="">
+                        <div class="relative p-4 text-gray-900 dark:text-gray-100">
+                            <label for="name">ชื่อเมนู</label>
+                            <input type="text" id="menu_id" name="menu_name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                            <table class="table table-sm table-bordered text-gray-900 dark:text-gray-100 mt-5" id="table">
+                                <tr>
+                                    <th class="text-sm">ชื่อเมนูย่อย</th>
+                                    <th class="text-sm text-center">Action</th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <!-- <input class="w-12/12 text-gray-900 text-sm form-control" type="text" name="inputs[0][name]" placeholder="Name"> -->
+                                        <input type="text" name="inputs[0][menu_submenu_name]" id="menu_submenu_id" class="w-12/12 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                    </td>
+                                    <td class="text-center">
+                                        <!-- <button type="button" name="add" id="add" class="inline-flex btn btn-success">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                                <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                                            </svg>
+                                            Add
+                                        </button> -->
+                                        <button type="button" class="mt-1 px-2 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#303030] text-white rounded group" ame="add" id="add">
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                                <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                                            </svg>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
+                    <div class="p-2 ">
+                        <ul class="space-y-2 font-large border-t border-gray-200 dark:border-gray-500"></ul>
+                    </div>
+                    <div class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md p-2">
+                        <a class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 rounded cursor-pointer group" onclick="createMenu()">
+                            <button type="submit" class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                    <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                    <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
+                                    <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
+                                </svg>
+                                Save
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="grid grid-cols-5 gap-10 mt-10">
+            <div class="form col-span-3">
+                <div class="relative w-full overflow-hidden">
+                    <input type="checkbox" class="peer absolute top-0 inset-x-0 w-full h-12 opacity-0 z-100000 cursor-pointer">
+                    <div class="bg-[#d7d8db] dark:bg-[#303030] text-white h-12 w-full pl-5 flex items-center">
+                        <h1 class="text-gray-900 dark:text-white text-lg">
+                            Test
+                        </h1>
+                    </div>
+                    <div class="absolute top-3 right-3 text-white transition-tranform duration-500 rotate-180 peer-checked:rotate-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900 dark:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-full peer-checked:max-h-0">
+                        <div class="mt-8 flex justify-center items-center">
+                            <form id="posForm" method="post">
+                                <div class="table-responsive text-gray-900 dark:text-white">
+                                    <h1>Menu Table</h1>
+                                    <table id="positionTable" class="mt-5 table table-bordered table-hover text-gray-900 dark:text-white cursor-pointer" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>Action</th>
+                                                <th>ID</th>
+                                                <th>Name</th>
+                                                <th>view</th>
+                                                <th>create</th>
+                                                <th>edit</th>
+                                                <th>delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($menuData as $menu)
+                                                <tr class="main-menu">
+                                                    <td class="flex relative">
+                                                        <button 
+                                                            type="button" 
+                                                            class="px-2 py-1 left-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group"
+                                                            data-twe-toggle="modal"
+                                                            data-twe-target="#exampleModalLg"
+                                                            data-twe-ripple-init
+                                                            data-twe-ripple-color="light"
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                                                <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                                                <path d="M5 18.08V19h.92l9.06-9.06-.92-.92z" opacity=".3"></path>
+                                                                <path d="M20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29s-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83zM3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM5.92 19H5v-.92l9.06-9.06.92.92L5.92 19z"></path>
+                                                            </svg>
+                                                        </button>
+                                                        <button 
+                                                            type="button" 
+                                                            class="px-2 py-1 font-medium tracking-wide bg-[#c72121] hover:bg-[#c23737e3] text-white rounded group"
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                                                <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" />
+                                                            </svg>
+                                                        </button>
+                                                    </td>
+                                                    <td class="text-center">{{ $menu['main_menu']['id'] }}</td>
+                                                    <td>{{ $menu['main_menu'][0] }}</td>
+                                                    <td class="text-center"><input type="checkbox" id="action_view_{{ $menu['main_menu']['id'] }}" name="checkboxes[]" value="{{ $menu['main_menu']['view'] }}" onclick="setMenu(this)"></td>
+                                                    <td class="text-center"><input type="checkbox" id="action_create_{{ $menu['main_menu']['id'] }}" name="checkboxes[]" value="{{ $menu['main_menu']['create'] }}" onclick="setMenu(this)"></td>
+                                                    <td class="text-center"><input type="checkbox" id="action_edit_{{ $menu['main_menu']['id'] }}" name="checkboxes[]" value="{{ $menu['main_menu']['edit'] }}" onclick="setMenu(this)"></td>
+                                                    <td class="text-center"><input type="checkbox" id="action_delete_{{ $menu['main_menu']['id'] }}" name="checkboxes[]" value="{{ $menu['main_menu']['delete'] }}" onclick="setMenu(this)"></td>
+                                                </tr>
+                                                @foreach($menu['sub_menus'] as $submenu)
+                                                    <tr>
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td>&nbsp;&nbsp;&nbsp;{{ $submenu['name'] }}</td>
+                                                        <td class="text-center"><input type="checkbox" id="action_submenu_view_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $submenu['view'] }}" onclick="setMenu(this)"></td>
+                                                        <td class="text-center"><input type="checkbox" id="action_submenu_create_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $submenu['create'] }}" onclick="setMenu(this)"></td>
+                                                        <td class="text-center"><input type="checkbox" id="action_submenu_edit_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $submenu['edit'] }}" onclick="setMenu(this)"></td>
+                                                        <td class="text-center"><input type="checkbox" id="action_submenu_delete_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $submenu['delete'] }}" onclick="setMenu(this)"></td>
+                                                    </tr>
+                                                @endforeach
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="form col-span-2">
                 <div class="relative w-full overflow-hidden">
                     <input type="checkbox" class="peer absolute top-0 inset-x-0 w-full h-12 opacity-0 z-100000 cursor-pointer">
@@ -87,19 +271,16 @@
                             <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
                         </svg>
                     </div>
-                    {{-- @php
-                    dd($menu);
-                    @endphp --}}
 
                     <div class="container table-responsive bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-full peer-checked:max-h-0 scrollme">
                         <form id="menuForm" method="post">
                             <div class="table-responsive">
-                                <table id="menuTable" class="table table-bordered table-hover text-gray-900 dark:text-white cursor-pointer" style="width: 100%;">
+                                <table id="menuTable" class="mt-4 table table-bordered table-hover text-gray-900 dark:text-white cursor-pointer" style="width: 100%;">
                                     <thead>
                                         <tr>
-                                            <th style="width: 30px">#</th>
-                                            <th style="width: 30px">ID</th>
-                                            <th>ชื่อเมนู</th>
+                                            <th class="text-center" style="width: 30px;">Action</th>
+                                            <th class="text-center" style="width: 30px">ID</th>
+                                            <th class="text-center">ชื่อเมนู</th>
                                             <th class="text-center" style="width: 70px;">
                                                 view
                                             </th>
@@ -115,10 +296,91 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($menu as $menu_data)
+                                        @foreach ($menus as $menu_data)
                                             <tr>
-                                                <td><input type="checkbox" id="action_all_{{ $menu_data->id }}" value="{{ $menu_data->id }}" onclick="setMenu(this)"></td>
-                                                <td>{{ $menu_data->id }}</td>
+                                                <td class="flex relative">
+                                                    <!-- <input type="checkbox" class="peer absolute top-0 inset-x-0 w-full h-10 opacity-0 z-10 cursor-pointer ">
+                                                    <div class="absolute top-4 left-0 transition-tranform duration-500 rotate-0 peer-checked:rotate-90">
+                                                        <svg class="w-3 h-3 text-gray-800 dark:text-white " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 10 16">
+                                                            <path d="M3.414 1A2 2 0 0 0 0 2.414v11.172A2 2 0 0 0 3.414 15L9 9.414a2 2 0 0 0 0-2.828L3.414 1Z"/>
+                                                        </svg>
+                                                    </div> -->
+                                                    <button 
+                                                        type="button" 
+                                                        class="px-2 py-1 left-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group"
+                                                        data-twe-toggle="modal"
+                                                        data-twe-target="#exampleModalLg"
+                                                        data-twe-ripple-init
+                                                        data-twe-ripple-color="light"
+                                                        onclick="editModel('{{ $menu_data->id }}', '{{ $menu_data->menu_name }}')"
+                                                    >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                                            <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                                            <path d="M5 18.08V19h.92l9.06-9.06-.92-.92z" opacity=".3"></path>
+                                                            <path d="M20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29s-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83zM3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM5.92 19H5v-.92l9.06-9.06.92.92L5.92 19z"></path>
+                                                        </svg>
+                                                    </button>
+                                                    <button 
+                                                        type="button" 
+                                                        class="px-2 py-1 font-medium tracking-wide bg-[#c72121] hover:bg-[#c23737e3] text-white rounded group"
+                                                        onclick="disableAppointment('${disabledRoute}',this,'${row.id}')"
+                                                    >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                                            <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" />
+                                                        </svg>
+                                                    </button>
+                                                </td>
+                                                <!-- <ul class="bg-[#f9f9f9] dark:bg-[#232323] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40">
+                                                    <li>
+                                                        <div class="flex w-full p-2 text-gray-900 transition duration-75 rounded-sm pl-8 group hover:bg-gray-100 dark:text-white dark:hover:bg-[#303030]">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5 mt-0.5 mr-1.5 text-black dark:text-white">
+                                                                <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
+                                                            </svg>
+                                                            <a href="#" class="">Products</a>
+                                                        </div>
+                                                    </li>
+                                                </ul> -->
+                                                <td>
+                                                    <ul>
+                                                        <li class="relative w-[120px] overflow-hidden group">
+                                                            <input type="checkbox" class="peer absolute top-0 inset-x-0 w-full h-8 opacity-0 z-10 cursor-pointer ">
+                                                            <div class="flex peer group-hover:bg-gray-100 dark:group-hover:bg-[#303030] duration-500">
+                                                                
+                                                                <div class="text-white h-8 w-full pl-5 flex items-center duration-500 group-hover:bg-gray-100 dark:group-hover:bg-[#303030]">
+                                                                    <h1 class="text-black dark:text-white text-sm">
+                                                                        อื่นๆ
+                                                                    </h1>
+                                                                </div>
+                                                            </div>
+                                                            <div class="absolute top-4 left-1 transition-tranform duration-500 rotate-0 peer-checked:rotate-90">
+                                                                <svg class="w-3 h-3 text-gray-800 dark:text-white -mt-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 10 16">
+                                                                    <path d="M3.414 1A2 2 0 0 0 0 2.414v11.172A2 2 0 0 0 3.414 15L9 9.414a2 2 0 0 0 0-2.828L3.414 1Z"/>
+                                                                </svg>
+                                                            </div>
+                                                            <ul class="overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40">
+                                                                <li>
+                                                                    <div class="flex w-full p-2 text-gray-900 transition duration-75 rounded-sm pl-8 group hover:bg-gray-100 dark:text-white dark:hover:bg-[#303030]">
+                                                                        
+                                                                        <a href="#" class="">Products</a>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <div class="flex w-full p-2 text-gray-900 transition duration-75 rounded-sm pl-8 group hover:bg-gray-100 dark:text-white dark:hover:bg-[#303030]">
+                                                                        
+                                                                        <a href="#" class="">Billing</a>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <div class="flex w-full p-2 text-gray-900 transition duration-75 rounded-sm pl-8 group hover:bg-gray-100 dark:text-white dark:hover:bg-[#303030]">
+                                                                        
+                                                                        <a href="#" class="">Invoice</a>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                                <!-- <td>{{ $menu_data->id }}</td> -->
                                                 <td>{{ $menu_data->menu_name }}</td>
                                                 <td class="text-center"><input type="checkbox" id="action_view_{{ $menu_data->id }}" name="checkboxes[]" value="{{ $menu_data->id }}" onclick="setMenu(this)"></td>
                                                 <td class="text-center"><input type="checkbox" id="action_create_{{ $menu_data->id }}" name="checkboxes[]" value="{{ $menu_data->id }}" onclick="setMenu(this)"></td>
@@ -153,6 +415,7 @@
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.colVis.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         toastr.options = {
             "closeButton": true,
@@ -171,8 +434,64 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
-
         const dlayMessage = 500;
+
+        function editModel(id, menu_name) {
+            console.log(id, menu_name)
+            let url = ""
+            if(id){
+                jQuery("#edit_id").val(id)
+                jQuery("#menu_id").val(menu_name)
+                jQuery("#exampleModalLgLabel").text('แก้ไขรายการเมนู')
+            } else {
+                jQuery("#edit_id").val('')
+                jQuery("#menu_id").val('')
+                jQuery("#exampleModalLgLabel").text('เพิ่มรายการเมนู')
+            }
+        }
+
+        function createMenu() {
+            let dataForm = $(".js-validation-signin").serialize();
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                type: "POST",
+                url: "/create_menu",
+                data: dataForm,
+                beforeSend: function () {
+                    $('#loader').removeClass('hidden')
+                },
+                success: function(res){
+                    setTimeout(function() {
+                        successMessage("Create User Successfully!");
+                    },dlayMessage)
+                    setTimeout(function() {
+                        toastr.success("Create User Successfully!");
+                    },dlayMessage)
+                },
+                error: function (params) {
+                    setTimeout(function() {
+                        errorMessage("Can't Create Username!");
+                    },dlayMessage)
+                    setTimeout(function() {
+                        toastr.error("Can't Create Username!");
+                    },dlayMessage)
+                }
+            });
+        }
+
+        function successMessage(text) {
+            $('#loader').addClass('hidden');
+            $('#name').val('')
+        }
+        function errorMessage(text) {
+            $('#loader').addClass('hidden');
+            $('#name').val('')
+        }
+
         let select_pos;
         function setMenu(data){
             if(select_pos){
@@ -194,7 +513,6 @@
                     //     //         arrs.push("0");
                     //     //     }
                     //     // }
-
                     // });
                     let action =  data.id.split('_')[1]
                     let menuId =  data.id.split('_')[2]
@@ -274,6 +592,31 @@
             select_pos = pos_id;
         }
 
+        let i = 0;
+        $('#add').click( () => {
+            ++i;
+            $('#table').append(
+                `<tr>
+                    <td>
+                        <input class="w-12/12 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" type="text" name="inputs[`+ i +`][name]" placeholder="">
+                    </td>
+                    <td class="text-center">
+                        <button 
+                            type="button" 
+                            class="mt-1 px-2 py-1 font-medium tracking-wide bg-[#c72121] hover:bg-[#c23737e3] text-white rounded group remove-table-row"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </td>
+                </tr>`);
+        });
+        console.log("Index: ", ++i)
+        console.log("Click ", $('#add').click())
+        $(document).on('click', '.remove-table-row', function() {
+            $(this).parents('tr').remove();
+        });
 
         function ajaxGetMenuAccess(pos_id) {
             console.log("🚀 ~ ajaxGetMenuAccess ~ pos_id:", pos_id)
@@ -287,7 +630,8 @@
                     },dlayMessage)
                 },
                 success:function(res){
-                    let menuAll = <?php echo json_encode($menu); ?>;
+                    console.log("🚀 ~ ajaxGetMenuAccess ~ res:", res)
+                    let menuAll = <?php echo json_encode($menus); ?>;
                     console.log("🚀 ~ ajaxGetMenuAccess ~ menuAll:", menuAll)
                     const menupermission = res.menus.length ? res.menus[0].get_menu_relation : []
                     console.log("🚀 ~ ajaxGetMenuAccess ~ menupermission:", menupermission)
@@ -324,6 +668,81 @@
 
         function successMessage(text) {
             $('#loader').addClass('hidden');
+        }
+
+        function disableAppointment(url,e,id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want be delete!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#303030',
+                cancelButtonColor: '#e13636',
+                confirmButtonText: `
+                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" class="size-6 hidden h-6 w-6 md:inline-block">
+                        <path d="M0 0h24v24H0V0z" fill="none"></path>
+                        <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
+                        <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
+                    </svg>
+                    Save
+                `,
+                cancelButtonText: `Cancle`,
+                color: "#ffffff",
+                background: "#202020",
+
+            }).then(result => {
+                console.log("🚀 ~ disableAppointment ~ result:", result)
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url:"/broadcast",
+                        method:'POST',
+                        headers:{
+                            'X-Socket-Id': pusher.connection.socket_id
+                        },
+                        data:{
+                            _token:  '{{csrf_token()}}',
+                            message: 'update notify'
+                        }
+                        }).done(function (res) {
+                            console.log("🚀 ~ $ ~ res:", res)
+                    });
+                    $.ajax({
+                        type: "DELETE",
+                        url: url,
+                        beforeSend: function() {
+                            $(e).parent().parent().addClass('d-none');
+                        },
+                        success: function (params) {
+                            if(params.success){
+                                Swal.fire({
+                                    title:'อัปเดตข้อมูลเรียบร้อย',
+                                    text:'',
+                                    icon:'success',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                                mytableDatatable.draw();
+                            }
+                            else{
+                                Swal.fire({
+                                    title:'อัปเดตข้อมูลไม่สำเร็จ',
+                                    text:'',
+                                    icon:'error',
+                                });
+                                $(e).parent().parent().removeClass('d-none');
+                            }
+                        },
+                        error: function(er){
+                            Swal.fire({
+                                title:'อัปเดตข้อมูลไม่สำเร็จ',
+                                text:'',
+                                icon:'error',
+                            });
+                            $(e).parent().parent().removeClass('d-none');
+                        }
+                    });
+                }
+            });
         }
     </script>
 @endsection

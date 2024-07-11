@@ -15,9 +15,13 @@ class menu extends Model
 
     protected $table = 'menus';
 
-    // public function getMenuRelation()
-    // {
-    //     return $this->hasOne(menu_relation::class, 'menu_id', 'id')
-    //         ->leftJoin('position', 'position.id', '=', 'menu_relations.position_id');
-    // }
+    public function getMenuRelation()
+    {
+        return $this->hasMany(menu_relation::class, 'menu_id', 'id');
+    }
+
+    public function getSubMenu()
+    {
+        return $this->belongsToMany(submenu::class, 'menu_relations');
+    }
 }

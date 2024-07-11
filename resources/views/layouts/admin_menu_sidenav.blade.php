@@ -14,7 +14,7 @@ $countUsers = ProductController::count_users();
     } */
 </style>
 
-<aside id="logo-sidebar" class="sidebar fixed top-12 left-0 z-40 w-64 h-screen transition-transform -translate-x-full border-r border-gray-200 md:translate-x-0 dark:border-gray-700 transition-all duration-500" aria-label="Sidebar">
+<aside id="logo-sidebar" class="sidebar fixed top-12 left-0 z-40 w-64 h-screen -translate-x-full border-r border-gray-200 md:translate-x-0 dark:border-gray-700 transition-all duration-500" aria-label="Sidebar">
     <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-[#202020] duration-500">
         <ul class="space-y-2 font-medium">
             <!-- <li>
@@ -51,7 +51,7 @@ $countUsers = ProductController::count_users();
                 </a>
             </li>
             <li>
-                <a class="flex items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group {{ (Request::is('get_users') || Request::is('get_users')) ? 'rounded-sm bg-primary-100 dark:bg-[#014a77] duration-500' : '' }}" href="{{ route('get_users') }}">
+                <a class="flex items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group {{ (Request::is('get_users') || Request::is('get_users/*') || Request::is('product_detail_create')) ? 'rounded-sm bg-primary-100 dark:bg-[#014a77] duration-500' : '' }}" href="{{ route('get_users') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                     <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
                     </svg>
@@ -80,7 +80,7 @@ $countUsers = ProductController::count_users();
                     </a>
                 </li>
             {{-- @endif --}}
-            <!-- <li>
+            <li>
                 <a class="flex items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group {{ (Request::is('tool') || Request::is('tool')) ? 'rounded-sm bg-primary-100 dark:bg-[#014a77] duration-500': '' }}" href="{{ route('tool') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                     <path fill-rule="evenodd" d="M12 6.75a5.25 5.25 0 0 1 6.775-5.025.75.75 0 0 1 .313 1.248l-3.32 3.319c.063.475.276.934.641 1.299.365.365.824.578 1.3.64l3.318-3.319a.75.75 0 0 1 1.248.313 5.25 5.25 0 0 1-5.472 6.756c-1.018-.086-1.87.1-2.309.634L7.344 21.3A3.298 3.298 0 1 1 2.7 16.657l8.684-7.151c.533-.44.72-1.291.634-2.309A5.342 5.342 0 0 1 12 6.75ZM4.117 19.125a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75h-.008a.75.75 0 0 1-.75-.75v-.008Z" clip-rule="evenodd" />
@@ -89,7 +89,7 @@ $countUsers = ProductController::count_users();
                     </svg>
                     <span class="flex-1 ms-3 whitespace-nowrap text-gray-900 dark:text-white">Tool</span>
                 </a>
-            </li> -->
+            </li>
             <ul class="pt-2 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
             <!-- <li>
                 <a href="#" class="flex items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group">
@@ -132,6 +132,50 @@ $countUsers = ProductController::count_users();
                     </ul>
                 </li>
             <ul class="pt-2 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
+            <!-- <li class="relative w-[230px] overflow-hidden group">
+                <input type="checkbox" class="peer absolute top-0 inset-x-0 w-full h-10 opacity-0 z-10 cursor-pointer ">
+                <div class="flex peer group-hover:bg-gray-100 dark:group-hover:bg-[#303030] duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-7 mt-2 ml-3 text-black dark:text-white">
+                        <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
+                    </svg>
+                    <div class="bg-white dark:bg-[#202020] text-white h-10 w-full pl-1.5 flex items-center duration-500 group-hover:bg-gray-100 dark:group-hover:bg-[#303030]">
+                        <h1 class="text-black dark:text-white text-md">
+                            Category
+                        </h1>
+                    </div>
+                </div>
+                <div class="absolute top-4 left-1 transition-tranform duration-500 rotate-0 peer-checked:rotate-90">
+                    <svg class="w-3 h-3 text-gray-800 dark:text-white " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 10 16">
+                        <path d="M3.414 1A2 2 0 0 0 0 2.414v11.172A2 2 0 0 0 3.414 15L9 9.414a2 2 0 0 0 0-2.828L3.414 1Z"/>
+                    </svg>
+                </div>
+                <ul class="bg-[#f9f9f9] dark:bg-[#232323] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40">
+                    <li>
+                        <div class="flex w-full p-2 text-gray-900 transition duration-75 rounded-sm pl-8 group hover:bg-gray-100 dark:text-white dark:hover:bg-[#303030]">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5 mt-0.5 mr-1.5 text-black dark:text-white">
+                                <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
+                            </svg>
+                            <a href="#" class="">Products</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flex w-full p-2 text-gray-900 transition duration-75 rounded-sm pl-8 group hover:bg-gray-100 dark:text-white dark:hover:bg-[#303030]">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5 mt-0.5 mr-1.5 text-black dark:text-white">
+                                <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
+                            </svg>
+                            <a href="#" class="">Billing</a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="flex w-full p-2 text-gray-900 transition duration-75 rounded-sm pl-8 group hover:bg-gray-100 dark:text-white dark:hover:bg-[#303030]">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5 mt-0.5 mr-1.5 text-black dark:text-white">
+                                <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
+                            </svg>
+                            <a href="#" class="">Invoice</a>
+                        </div>
+                    </li>
+                </ul>
+            </li> -->
             <!-- <li>
                 <a class="flex items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group {{ (request()->is('search_school') || request()->is('search_school')) ? 'rounded-sm bg-gray-100 dark:bg-[#303030] duration-500': '' }}" href="{{ route('search_school') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
