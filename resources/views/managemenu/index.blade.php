@@ -90,8 +90,8 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <!-- <input class="w-12/12 text-gray-900 text-sm form-control" type="text" name="inputs[0][name]" placeholder="Name"> -->
-                                        <input type="text" name="inputs[0][menu_submenu_name]" id="menu_submenu_id" class="w-12/12 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                        <!-- <input class="w-12/12 text-gray-900 text-sm form-control" type="text" name="inputs_submenu[0][name]" placeholder="Name"> -->
+                                        <input type="text" name="inputs_submenu[0][submenu_name]" id="submenu_id" class="w-12/12 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                     </td>
                                     <td class="text-center">
                                         <!-- <button type="button" name="add" id="add" class="inline-flex btn btn-success">
@@ -598,7 +598,7 @@
             $('#table').append(
                 `<tr>
                     <td>
-                        <input class="w-12/12 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" type="text" name="inputs[`+ i +`][name]" placeholder="">
+                        <input class="w-12/12 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" type="text" name="inputs_submenu[`+ i +`][submenu_name]" placeholder="">
                     </td>
                     <td class="text-center">
                         <button 
@@ -617,6 +617,13 @@
         $(document).on('click', '.remove-table-row', function() {
             $(this).parents('tr').remove();
         });
+
+        getParmeterLogin()
+        function getParmeterLogin() {
+            let dataLogin = sessionStorage.getItem("credetail");
+            let dataJson = JSON.parse(dataLogin)
+            console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
+        }
 
         function ajaxGetMenuAccess(pos_id) {
             console.log("🚀 ~ ajaxGetMenuAccess ~ pos_id:", pos_id)

@@ -30,9 +30,6 @@ class ManageMenuController extends Controller
         $position = position::all();
 
         $options = menu_relation::all();
-        // $users = Auth::user()->getUserPermission->name_position;
-        // User::select()
-        //     ->with('getUserPermission:position_id,name_position')->get();
         $menus = menu::all();
         
         $menu_data = [];
@@ -77,74 +74,70 @@ class ManageMenuController extends Controller
 
         return view('managemenu.index', compact('menus', 'position', 'menuData'));
     }
-
-    public function createMenu(Request $request)
+    public function updateOrCreateMenu(Request $request, $id)
     {
         DB::beginTransaction();
         try {
 
-            $data_menu = [
-                'name' => $request->input('menu_name')
-            ];
+            $seq = menu::select('seq')
+                ->where('id', $id)
+                ->orderBy('seq', 'DESC')
+                ->first();
 
-            $data_menu = menu::create($data_menu);
-
-            foreach ($request->inputs as $key => $value) {
-                submenu::create($value);
+            if (NUll == $seq) {
+                $seq = 1;
+            } else {
+                $seq = $seq->seq + 1;
             }
 
-            DB::commit();
-            return response()->json(['success' => true]);
-        } catch (\Exception $e) {
-            DB::rollback();
-            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
-        }
-    }
-    public function updateMenu(Request $request, $id)
-    {
-        DB::beginTransaction();
-        try {
+            $data_menu = menu::updateOrCreate(['id' => $request->menu_id], [
+                'name' => $request->input('menu_name'),
+                'seq' => $seq,
+                'created_by' => Auth::user()->id,
+                'updated_by' => Auth::user()->id,
+            ]);
 
-            $data_menu = [
-                'name' => $request->input('menu_name')
-            ];
-
-            $data_menu = menu::create($data_menu);
-
-            if (null != $request->sale_name && count($request->input('sale_name')) > 0) {
+            if (NUll != $request->inputs_submenu && count($request->input('inputs_submenu')) > 0) {
                 $i = 0;
                 $x = 1;
-                foreach ($request->status as $key => $value) {
-                    $data_update = [
-                        'tent_id' => $id,
-                        'sale_name' => $request->sale_name[$i],
-                        'seq' => $x,
-                        'status' => $request->status[$key],
-                        'updated_by' => Auth::user()->id,
-                    ];
+                foreach ($request->inputs_submenu as $key => $value) {
+                    // $data_update = [
+                    //     'tent_id' => $id,
+                    //     'sale_name' => $request->sale_name[$i],
+                    //     'seq' => $x,
+                    //     'status' => $request->status[$key],
+                    //     'updated_by' => Auth::user()->id,
+                    // ];
 
-                    if ('' != $request->sale_id[$i] && '' != $request->sale_name[$i]) {
-                        $Tent_saler = submenu::where('id', $request->sale_id[$i])
-                            ->update($data_update);
+                    if ('' != $request->menu_relation_id[$i] && '' != $request->inputs_submenu[$i]) {
+                        $data_submenu = submenu::updateOrCreate(['menu_relation_id' => $request->menu_relation_id[$i]], [
+                            'name' => $request->sale_name[$i],
+                            'seq' => $x,
+                            'created_by' => Auth::user()->id,
+                            'updated_by' => Auth::user()->id,
+                        ]);
                         ++$x;
-                    } elseif ('' == $request->sale_id[$i] && '' != $request->sale_name[$i]) {
+                    } elseif ('' == $request->menu_relation_id[$i] && '' != $request->inputs_submenu[$i]) {
                         $seq = submenu::select('seq')
-                            ->where('tent_id', $id)
+                            ->where('menu_relation_id', $id)
                             ->orderBy('seq', 'DESC')
                             ->first();
 
-                        if (null == $seq) {
+                        if (NUll == $seq) {
                             $seq = 1;
                         } else {
                             $seq = $seq->seq + 1;
                         }
-                        $seq = (int) $seq;
 
-                        $data_update['seq'] = $seq;
-                        $Tent_saler = submenu::create($data_update);
-                        ++$x;
-                    } elseif ('' != $request->sale_id[$i] && '' == $request->sale_name[$i]) {
-                        $Tent_saler = submenu::where('tent_salers.id', $request->sale_id[$i])
+                        $data_submenu = submenu::updateOrCreate(['menu_relation_id' => $request->menu_relation_id[$i]], [
+                            'name' => $request->sale_name[$i],
+                            'seq' => $seq,
+                            'created_by' => Auth::user()->id,
+                            'updated_by' => Auth::user()->id,
+                        ]);
+                        $seq = (int) $seq + 1;
+                    } elseif ('' != $request->menu_relation_id[$i] && '' == $request->inputs_submenu[$i]) {
+                        $data_submenu = submenu::where('menu_relation_id', $request->menu_relation_id[$i])
                             ->delete();
                     }
                     ++$i;
@@ -158,30 +151,6 @@ class ManageMenuController extends Controller
             return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
         }
     }
-
-    public function listMenu(Request $request)
-    {
-        $limit = $request->input('length'); // limit per page
-        $request->merge([
-            'page' => ceil(($request->input('start') + 1) / $limit),
-        ]);
-
-        $data = menu::all();
-
-        // dd($data);
-        $data = $data->paginate($limit);
-        $totalRecords = $data->total();
-        $totalRecordwithFilter = $data->count();
-        $response = [
-            'draw' => intval($request->draw),
-            'iTotalRecords' => $totalRecordwithFilter,
-            'iTotalDisplayRecords' => $totalRecords,
-            'aaData' => $data->items(),
-        ];
-
-        return response()->json($response);
-    }
-
     public function menuAccess(Request $request)
     {
         // $data = menu_relation::where('position_id', $request->input('pos_id'))->pluck('menu_id');
@@ -211,15 +180,20 @@ class ManageMenuController extends Controller
         // }
         // dd($request->action);
 
-        $state = $request->input('state');
+        $menu_state = $request->input('state');
 
-        $create_menu_relation = menu_relation::updateOrCreate(['position_id' => $request->pos_id, 'menu_id' => $request->menu_id],
-        [
-            $request->action => $state,
+        $menu_relation = menu_relation::updateOrCreate(['position_id' => $request->pos_id, 'menu_id' => $request->menu_id], [
+            $request->action => $menu_state,
         ]);
-        return response()->json($create_menu_relation);
-    }
 
+        $submenu_state = $request->input('submenu_state');
+
+        $submenu_relation = submenu::updateOrCreate(['menu_relation_id' => $request->menu_relation_id], [
+            $request->submenu_action => $submenu_state,
+        ]);
+
+        return response()->json(['menu' => $menu_relation, 'submenu' => $submenu_relation]);
+    }
     public function deleteAccess(Request $request)
     {
         $delete = menu_relation::where('position_id', $request->input('pos_id'))
@@ -227,6 +201,28 @@ class ManageMenuController extends Controller
             ->delete();
 
         return response()->json($delete);
+    }
+    public function listMenu(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $data = menu::all();
+
+        // dd($data);
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
     }
     /**
      * Show the form for creating a new resource.

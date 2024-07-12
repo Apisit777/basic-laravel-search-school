@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('company_products', 255)->nullable()->comment('สินค้าของบริษัท');
             $table->string('seq', 100)->nullable()->comment('ลำดับ');
             $table->tinyInteger('status')->default(1)->comment('0 = รออนุมัติ, 1 = อนุมัติ');
+            $table->integer('created_by')->nullable()->comment('Created by');
+            $table->integer('updated_by')->nullable()->comment('Updated by');
             $table->timestamps();
         });
     }

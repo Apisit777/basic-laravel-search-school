@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('positions', function (Blueprint $table) {
             $table->id();
             $table->string('name_position', 255)->nullable()->comment('ชื่อบทบาท');
+            $table->integer('created_by')->nullable()->comment('Created by');
+            $table->integer('updated_by')->nullable()->comment('Updated by');
             $table->timestamps();
         });
     }

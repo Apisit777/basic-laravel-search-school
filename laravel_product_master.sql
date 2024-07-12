@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 07, 2024 at 12:20 PM
+-- Generation Time: Jul 12, 2024 at 10:55 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,52 @@ SET time_zone = "+00:00";
 --
 -- Database: `laravel_product_master`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `brands`
+--
+
+CREATE TABLE `brands` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `company_name` varchar(255) DEFAULT NULL COMMENT 'ชื่อบริษัท',
+  `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '0 = รออนุมัติ, 1 = อนุมัติ',
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `brands`
+--
+
+INSERT INTO `brands` (`id`, `company_name`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 'OP', 1, NULL, NULL, '2024-06-18 06:43:01', '2024-06-18 06:43:01'),
+(2, 'Cute Press', 1, NULL, NULL, '2024-06-18 06:43:01', '2024-06-18 06:43:01');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comments`
+--
+
+CREATE TABLE `comments` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `post_id` int(11) NOT NULL COMMENT 'รหัสโพสต์',
+  `user_id` int(11) NOT NULL COMMENT 'รหัสผู้ใช้งาน',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `comments`
+--
+
+INSERT INTO `comments` (`id`, `post_id`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, '2024-07-03 04:00:12', '2024-07-03 04:00:12'),
+(2, 1, 1, '2024-07-03 04:00:12', '2024-07-03 04:00:12');
 
 -- --------------------------------------------------------
 
@@ -84,6 +130,7 @@ CREATE TABLE `manage_menus` (
 CREATE TABLE `menus` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `menu_name` varchar(255) NOT NULL COMMENT 'ชื่อ',
+  `seq` int(11) DEFAULT NULL,
   `menu_relate` tinyint(4) DEFAULT NULL COMMENT 'main menu id',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -93,27 +140,12 @@ CREATE TABLE `menus` (
 -- Dumping data for table `menus`
 --
 
-INSERT INTO `menus` (`id`, `menu_name`, `menu_relate`, `created_at`, `updated_at`) VALUES
-(1, 'inspection_report', 0, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
-(2, 'inspection', 0, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
-(3, 'appointment_list', 2, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
-(4, 'pending_list', 2, '2021-04-03 19:06:02', '2021-04-03 19:06:02'),
-(5, 'ins_and_detail', 2, '2021-04-03 19:06:02', '2021-04-03 19:06:02'),
-(6, 'menu_manage', 0, '2021-04-03 19:06:02', '2021-04-03 19:06:02'),
-(7, 'auction_list', 2, '2021-04-03 19:06:02', '2021-04-03 19:06:02'),
-(8, 'qr_code', 0, '2021-04-03 19:06:02', '2021-04-03 19:06:02'),
-(9, 'tent', 0, '2021-04-03 19:06:02', '2021-04-03 19:06:02'),
-(10, 'user', 0, '2021-04-03 19:06:02', '2021-04-03 19:06:02'),
-(11, 'technician', 0, '2021-04-03 19:06:02', '2021-04-03 19:06:02'),
-(12, 'price', 0, '2021-04-03 19:06:02', '2021-04-03 19:06:02'),
-(13, 'price_list_pending', 12, '2021-04-03 19:06:02', '2021-04-03 19:06:02'),
-(14, 'price_list_all', 12, '2021-04-03 19:06:02', '2021-04-03 19:06:02'),
-(15, 'price_list_history', 12, '2021-04-03 19:06:02', '2021-04-03 19:06:02'),
-(16, 'bookingins', 0, '2021-04-03 19:06:02', '2021-04-03 19:06:02'),
-(17, 'car_data', 0, '2021-04-26 21:24:59', '2021-04-26 21:24:59'),
-(18, 'inspection_process_report', NULL, NULL, NULL),
-(19, 'verify_ins_report', 2, NULL, NULL),
-(20, 'ttb', 0, NULL, NULL);
+INSERT INTO `menus` (`id`, `menu_name`, `seq`, `menu_relate`, `created_at`, `updated_at`) VALUES
+(1, 'NPD Request', NULL, 0, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
+(2, 'ทะเบียนสินค้า', NULL, 0, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
+(3, 'Marketing', NULL, 0, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
+(4, 'Managemenu', NULL, 0, '2024-06-28 07:48:31', '2024-06-28 07:48:34'),
+(5, 'อื่นๆ', NULL, 0, '2024-07-02 03:36:12', '2024-07-02 03:36:12');
 
 -- --------------------------------------------------------
 
@@ -125,6 +157,12 @@ CREATE TABLE `menu_relations` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `position_id` int(11) NOT NULL COMMENT 'รหัสตำแหน่ง',
   `menu_id` int(11) NOT NULL COMMENT 'รหัสเมนู',
+  `view` int(11) DEFAULT NULL,
+  `create` int(11) DEFAULT NULL,
+  `edit` int(11) DEFAULT NULL,
+  `delete` int(11) DEFAULT NULL,
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -133,27 +171,11 @@ CREATE TABLE `menu_relations` (
 -- Dumping data for table `menu_relations`
 --
 
-INSERT INTO `menu_relations` (`id`, `position_id`, `menu_id`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, '2023-01-20 01:07:36', '2023-01-20 01:07:36'),
-(2, 1, 2, '2023-01-20 01:07:36', '2023-01-20 01:07:36'),
-(3, 1, 3, '2023-01-20 01:07:38', '2023-01-20 01:07:38'),
-(4, 1, 4, '2023-01-20 01:07:38', '2023-01-20 01:07:38'),
-(5, 1, 5, '2023-01-20 01:07:40', '2023-01-20 01:07:40'),
-(6, 1, 6, '2023-01-20 01:07:40', '2023-01-20 01:07:40'),
-(7, 1, 7, '2023-01-20 01:07:42', '2023-01-20 01:07:42'),
-(8, 1, 8, '2023-01-20 01:07:44', '2023-01-20 01:07:44'),
-(9, 1, 9, '2023-01-20 01:07:44', '2023-01-20 01:07:44'),
-(10, 1, 10, '2023-01-20 01:07:45', '2023-01-20 01:07:45'),
-(11, 1, 11, '2023-01-20 01:07:47', '2023-01-20 01:07:47'),
-(12, 1, 12, '2023-01-20 01:07:48', '2023-01-20 01:07:48'),
-(13, 1, 13, '2023-01-20 01:07:49', '2023-01-20 01:07:49'),
-(14, 1, 14, '2023-01-20 01:07:49', '2023-01-20 01:07:49'),
-(15, 1, 15, '2023-01-20 01:07:50', '2023-01-20 01:07:50'),
-(16, 1, 16, '2023-01-20 01:07:51', '2023-01-20 01:07:51'),
-(17, 1, 17, '2023-01-20 01:07:53', '2023-01-20 01:07:53'),
-(18, 1, 18, '2023-01-20 01:07:55', '2023-01-20 01:07:55'),
-(19, 1, 19, '2023-01-20 01:07:56', '2023-01-20 01:07:56'),
-(20, 1, 20, '2023-01-20 01:07:58', '2023-01-20 01:07:58');
+INSERT INTO `menu_relations` (`id`, `position_id`, `menu_id`, `view`, `create`, `edit`, `delete`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, 1, 1, 1, NULL, NULL, '2023-01-19 18:07:36', '2023-01-19 18:07:36'),
+(2, 1, 2, 1, NULL, NULL, NULL, NULL, NULL, '2023-01-19 18:07:36', '2023-01-19 18:07:36'),
+(3, 5, 1, 1, NULL, NULL, NULL, NULL, NULL, '2023-01-19 18:07:38', '2023-01-19 18:07:38'),
+(4, 5, 2, 1, 1, 1, 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -180,8 +202,14 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (6, '2024_05_02_143813_create_food_table', 1),
 (7, '2024_05_03_013728_create_trn_dona_totambons_table', 1),
 (8, '2024_05_06_070843_create_product_images_table', 1),
-(9, '2024_05_31_020058_create_products_table', 1),
-(10, '2024_06_05_030301_create_manage_menus_table', 1);
+(10, '2024_06_05_030301_create_manage_menus_table', 1),
+(15, '2024_05_31_020058_create_products_table', 2),
+(16, '2024_06_18_061507_create_brands_table', 2),
+(17, '2024_06_25_072051_create_menu_relations_table', 3),
+(19, '2024_07_03_031800_create_positions_table', 4),
+(20, '2024_07_03_035414_create_posts_table', 5),
+(21, '2024_07_03_035448_create_comments_table', 5),
+(23, '2024_07_09_030557_create_submenus_table', 6);
 
 -- --------------------------------------------------------
 
@@ -214,40 +242,139 @@ CREATE TABLE `personal_access_tokens` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `personal_access_tokens`
+--
+
+INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `name`, `token`, `abilities`, `last_used_at`, `expires_at`, `created_at`, `updated_at`) VALUES
+(1, 'App\\Models\\User', 21, 'token', '2436d243389b413db0908a8b92c0acc281b4776522122722e23a63fc6f825f9b', '[\"*\"]', NULL, NULL, '2024-06-12 19:35:30', '2024-06-12 19:35:30'),
+(2, 'App\\Models\\User', 21, 'token', 'c12d4b29c3309c772327a2fc61e25b4905c33f97f54de4f536ed3f365aad5076', '[\"*\"]', NULL, NULL, '2024-06-12 19:37:48', '2024-06-12 19:37:48'),
+(3, 'App\\Models\\User', 21, 'token', 'b12b7621bf8d88f80d75b534a6fd59928c50e8c63b5c86ce8f5fbcc64426d023', '[\"*\"]', NULL, NULL, '2024-06-12 19:39:55', '2024-06-12 19:39:55'),
+(4, 'App\\Models\\User', 21, 'token', '9e95cee18142a834812755aad941bf318150b83175c646d9514d3364b90bc2fd', '[\"*\"]', NULL, NULL, '2024-06-12 19:42:10', '2024-06-12 19:42:10'),
+(5, 'App\\Models\\User', 21, 'token', 'f62117b0dd17b4a334b75ebf2a5df8b56831b4e604749402c99a3daf9e9937b7', '[\"*\"]', NULL, NULL, '2024-06-12 19:43:20', '2024-06-12 19:43:20'),
+(6, 'App\\Models\\User', 21, 'token', 'a5538d66f23b8ebe7a487f836a97abcb932596990474efdb28f205dc74ef4717', '[\"*\"]', NULL, NULL, '2024-06-12 19:43:34', '2024-06-12 19:43:34'),
+(7, 'App\\Models\\User', 21, 'token', '3f00d3a68b2cd8ff2194b03a16847dde2ee38e604fb75dde790690bb1251b4d5', '[\"*\"]', NULL, NULL, '2024-06-12 19:45:15', '2024-06-12 19:45:15'),
+(8, 'App\\Models\\User', 21, 'token', '4eae7afe92ba7eaa77cd279fa1c9feb0fdb2f732b9f669ce56799b6c34fade97', '[\"*\"]', NULL, NULL, '2024-06-12 19:45:30', '2024-06-12 19:45:30'),
+(9, 'App\\Models\\User', 21, 'token', 'a3e505f1a8249797d49c8108e0a48bebf1cbe4dc69921495d32d16ae8cd0874c', '[\"*\"]', NULL, NULL, '2024-06-12 19:52:28', '2024-06-12 19:52:28'),
+(10, 'App\\Models\\User', 21, 'productMastertoken', '1be007dbee7cd3fb7d27404d684dff8ed495e4479d9bb629d06f7b860d630f3d', '[\"*\"]', NULL, NULL, '2024-06-12 19:54:14', '2024-06-12 19:54:14'),
+(11, 'App\\Models\\User', 21, 'productMastertoken', 'f6f06bb3eb9f5cbe7242e124cf833247ece25eea5cb1c27ca3f02da3f570aeb2', '[\"*\"]', NULL, NULL, '2024-06-12 19:56:09', '2024-06-12 19:56:09'),
+(12, 'App\\Models\\User', 21, 'productMastertoken', 'de007513813a774484876cbe540dbdc5ab2843c05de961997c8985998d9f3e1c', '[\"*\"]', NULL, NULL, '2024-06-12 19:56:26', '2024-06-12 19:56:26'),
+(13, 'App\\Models\\User', 21, 'productMastertoken', '5125e88d435a3305a38727013e0442adaecd332370f936d156a0862a6d7b4e92', '[\"*\"]', NULL, NULL, '2024-06-12 19:56:45', '2024-06-12 19:56:45'),
+(14, 'App\\Models\\User', 21, 'productMastertoken', '4e6361efd115dcd8d5efe13900badfee20a413788f20d0cf830965353d23b120', '[\"*\"]', NULL, NULL, '2024-06-18 18:48:51', '2024-06-18 18:48:51'),
+(15, 'App\\Models\\User', 21, 'productMastertoken', 'be75d5e5a267457784700e7be2cd330da7e9dd38f6a8578ddf01663050e698e5', '[\"*\"]', NULL, NULL, '2024-06-18 20:59:44', '2024-06-18 20:59:44'),
+(16, 'App\\Models\\User', 21, 'productMastertoken', '95e710312222430cc226ef5c187948db557cd83c3b961ea84c8e538f91cea219', '[\"*\"]', NULL, NULL, '2024-06-19 00:03:51', '2024-06-19 00:03:51'),
+(17, 'App\\Models\\User', 21, 'productMastertoken', 'e4930a1d85255afe49a41a7f6c0b222b788c173905094cc5a5f82c98747c9bab', '[\"*\"]', NULL, NULL, '2024-06-19 00:33:11', '2024-06-19 00:33:11'),
+(18, 'App\\Models\\User', 21, 'productMastertoken', 'a005ad9baf9e41c0d27c61ea30ad7b1a5d69207b70a1642e1d0fbc7b72a99005', '[\"*\"]', NULL, NULL, '2024-06-19 18:42:44', '2024-06-19 18:42:44'),
+(19, 'App\\Models\\User', 21, 'productMastertoken', '229b927bafafda68e22f69e229bd551e3625eef36b45c15630c11260508dabd9', '[\"*\"]', NULL, NULL, '2024-06-19 20:58:29', '2024-06-19 20:58:29'),
+(20, 'App\\Models\\User', 21, 'productMastertoken', '64e5009667746876e91a77aa12d30fef943e60241cfa62e0bc34e556f45c28f1', '[\"*\"]', NULL, NULL, '2024-06-19 20:59:58', '2024-06-19 20:59:58'),
+(21, 'App\\Models\\User', 21, 'productMastertoken', 'bec7ce838c6ee94b50139c9b15b0d0c91178299e1e33e64aace8c5065860fd88', '[\"*\"]', NULL, NULL, '2024-06-19 21:02:03', '2024-06-19 21:02:03'),
+(22, 'App\\Models\\User', 21, 'productMastertoken', 'd575196f97c44b33c37b5549f7a3592e61e692cd104e1f4b1188f96cc179e1ff', '[\"*\"]', NULL, NULL, '2024-06-19 21:04:43', '2024-06-19 21:04:43'),
+(23, 'App\\Models\\User', 21, 'productMastertoken', '2fd5db58565ac77762f2901fe0747eba7281b0f44f4de298bbb9dc2c89f04ce2', '[\"*\"]', NULL, NULL, '2024-06-19 21:06:13', '2024-06-19 21:06:13'),
+(24, 'App\\Models\\User', 21, 'productMastertoken', '2d1f99db9c62fae9c8d3407a302bcaf6b2db460a7112d9ad9f2c88a85e00fbda', '[\"*\"]', NULL, NULL, '2024-06-19 21:06:55', '2024-06-19 21:06:55'),
+(25, 'App\\Models\\User', 21, 'productMastertoken', '2d08d462074f0640c1e7dc9966c7df358888d7a8266a3536cd36391043444338', '[\"*\"]', NULL, NULL, '2024-06-20 03:24:13', '2024-06-20 03:24:13'),
+(26, 'App\\Models\\User', 21, 'productMastertoken', 'afd9966d12492cd20e0021dfcc22ab890a120cba94748e6eef8c03c3b092363f', '[\"*\"]', NULL, NULL, '2024-06-20 19:59:31', '2024-06-20 19:59:31'),
+(27, 'App\\Models\\User', 21, 'productMastertoken', 'ce07293d5330058e642357c7d0689e5030a6634566c8c9c20c80ad162f392baf', '[\"*\"]', NULL, NULL, '2024-06-23 18:37:08', '2024-06-23 18:37:08'),
+(28, 'App\\Models\\User', 21, 'productMastertoken', '03822f552439452768f6a075b53e39ffba32d2981d44f9976c39e8d58a34fb5e', '[\"*\"]', NULL, NULL, '2024-06-24 02:11:00', '2024-06-24 02:11:00'),
+(29, 'App\\Models\\User', 21, 'productMastertoken', 'bf2551fa4d52ba78585a569af7323a33dad57fc59e19c7e1510432c7391251bc', '[\"*\"]', NULL, NULL, '2024-06-24 02:21:05', '2024-06-24 02:21:05'),
+(30, 'App\\Models\\User', 21, 'productMastertoken', '0e34f37e1e7560f85cc1974c295a66f12acb0aac73acab0db2aef5104b5b745f', '[\"*\"]', NULL, NULL, '2024-06-24 03:03:32', '2024-06-24 03:03:32'),
+(31, 'App\\Models\\User', 21, 'productMastertoken', '3ba4731b2456e2670e424853b72c80bcad9395ee92499eff422c43938fa97191', '[\"*\"]', NULL, NULL, '2024-06-24 18:35:49', '2024-06-24 18:35:49'),
+(32, 'App\\Models\\User', 21, 'productMastertoken', 'fd3a3b4ee000780ba816753c6b8991f84888975f907a1abc5982209d90ec7135', '[\"*\"]', NULL, NULL, '2024-06-24 21:14:17', '2024-06-24 21:14:17'),
+(33, 'App\\Models\\User', 21, 'productMastertoken', 'dfe18ec3d763ac8f148d5ac942b5dc1889379eaf8707bce2cb37bf510155d015', '[\"*\"]', NULL, NULL, '2024-06-24 21:18:01', '2024-06-24 21:18:01'),
+(34, 'App\\Models\\User', 21, 'productMastertoken', '23808effd7cb55eb53c23173fc1e4646b9040b614e4f7d95d0a7f63b24a6f06d', '[\"*\"]', NULL, NULL, '2024-06-24 21:18:12', '2024-06-24 21:18:12'),
+(35, 'App\\Models\\User', 21, 'productMastertoken', '80cf6eed556e51562949ec47f34dd2a71e9a0853d71f368b767666126cb2662e', '[\"*\"]', NULL, NULL, '2024-06-24 23:23:48', '2024-06-24 23:23:48'),
+(36, 'App\\Models\\User', 21, 'productMastertoken', '4d1aed63a81021b73fd7b7feddd5fa7ebd8cd63780ddcaad233799bf10666ed6', '[\"*\"]', NULL, NULL, '2024-06-25 03:35:31', '2024-06-25 03:35:31'),
+(37, 'App\\Models\\User', 21, 'productMastertoken', 'eb0e767d3bcfdb2339acb56784f2ecc66c2b6ec1cae3d6b4365288d9b2a93444', '[\"*\"]', NULL, NULL, '2024-06-25 19:02:26', '2024-06-25 19:02:26'),
+(38, 'App\\Models\\User', 21, 'productMastertoken', '32cd8edbc01bbb994f3f534d20f06622177605a1cb3c03d274ea9ec03570d28e', '[\"*\"]', NULL, NULL, '2024-06-26 00:12:48', '2024-06-26 00:12:48'),
+(39, 'App\\Models\\User', 21, 'productMastertoken', '7bf46907932b298792c95deb8c86a580e2245b4b2d2b4b767079a0d96d339474', '[\"*\"]', NULL, NULL, '2024-06-26 18:29:11', '2024-06-26 18:29:11'),
+(40, 'App\\Models\\User', 21, 'productMastertoken', '20ff50700ec46a7d0bc0a7f1154f57333d1dc59a367617a5ee6c75e090d410d1', '[\"*\"]', NULL, NULL, '2024-06-26 20:54:50', '2024-06-26 20:54:50'),
+(41, 'App\\Models\\User', 23, 'productMastertoken', 'be2ca76e00d93e31d2149ed7765fbd658177c3400445401d8efc7870075aad73', '[\"*\"]', NULL, NULL, '2024-06-26 21:04:31', '2024-06-26 21:04:31'),
+(42, 'App\\Models\\User', 21, 'productMastertoken', '66353bbf7c8445a2501db140a7e56a0d8dfbf50a2149a79b697e2e1c20fd855a', '[\"*\"]', NULL, NULL, '2024-06-26 21:19:16', '2024-06-26 21:19:16'),
+(43, 'App\\Models\\User', 21, 'productMastertoken', '6f9e695c2076a984a573cc9b2db478d03138f50be54b174b3358cabaa8554684', '[\"*\"]', NULL, NULL, '2024-06-26 23:46:39', '2024-06-26 23:46:39'),
+(44, 'App\\Models\\User', 23, 'productMastertoken', '1da9080bbd2c2ba1eff88841ea9bc9627ba671848a181dece3012a41441ab51a', '[\"*\"]', NULL, NULL, '2024-06-26 23:47:40', '2024-06-26 23:47:40'),
+(45, 'App\\Models\\User', 23, 'productMastertoken', '08d1920149b02ea17db75350258e2d39bdbf8eb75455faea9b8e7e2c2c590a86', '[\"*\"]', NULL, NULL, '2024-06-26 23:48:43', '2024-06-26 23:48:43'),
+(46, 'App\\Models\\User', 21, 'productMastertoken', '236bed5d8f0bf03e47808afee632e788577e240ea408c532735956a8a16f69c4', '[\"*\"]', NULL, NULL, '2024-06-26 23:49:17', '2024-06-26 23:49:17'),
+(47, 'App\\Models\\User', 23, 'productMastertoken', '750c461ed63083d104a211bab1dba9d36afda3ef40966d7575a2bc7eb85b3fbc', '[\"*\"]', NULL, NULL, '2024-06-26 23:50:10', '2024-06-26 23:50:10'),
+(48, 'App\\Models\\User', 21, 'productMastertoken', '90b894b6617fac6628db8c962b5e7f9925cae97a5b1f708159c372f919bbe366', '[\"*\"]', NULL, NULL, '2024-06-27 00:01:13', '2024-06-27 00:01:13'),
+(49, 'App\\Models\\User', 21, 'productMastertoken', '172be104dd1c2bb45a5d89fcda51b4788888949900d9534db657bb1d126bff6a', '[\"*\"]', NULL, NULL, '2024-06-27 19:06:24', '2024-06-27 19:06:24'),
+(50, 'App\\Models\\User', 23, 'productMastertoken', '5846d7012c7f77e1672ca0ab799c038734e9f87e8756e4787e44f2e3f8a1287f', '[\"*\"]', NULL, NULL, '2024-06-27 20:16:51', '2024-06-27 20:16:51'),
+(51, 'App\\Models\\User', 24, 'productMastertoken', '050af50bf26a189dba7a14d9a040ca5e7692d5a67f17b312ccc2f24c29491f83', '[\"*\"]', NULL, NULL, '2024-06-27 20:19:31', '2024-06-27 20:19:31'),
+(52, 'App\\Models\\User', 24, 'productMastertoken', '71855b162f8f7194f3ef6f5fbcbb4bd4672d85e16860d1b13a104464fc082026', '[\"*\"]', NULL, NULL, '2024-06-27 20:21:19', '2024-06-27 20:21:19'),
+(53, 'App\\Models\\User', 21, 'productMastertoken', '725c0304701eb152e82383069219e5f97e1fd1e932a334e14b8192d9897c6b08', '[\"*\"]', NULL, NULL, '2024-06-27 23:19:01', '2024-06-27 23:19:01'),
+(54, 'App\\Models\\User', 24, 'productMastertoken', '82d8eecd16ddbfbb55bbdbfb3da01c9818ff4f849e028f44a10738da859c34ca', '[\"*\"]', NULL, NULL, '2024-06-27 23:19:37', '2024-06-27 23:19:37'),
+(55, 'App\\Models\\User', 23, 'productMastertoken', 'c8d87d0ba456cd61d0d8897a34672e828a784d24e69191f0075a116dec5f4291', '[\"*\"]', NULL, NULL, '2024-06-28 00:52:01', '2024-06-28 00:52:01'),
+(56, 'App\\Models\\User', 21, 'productMastertoken', '355f844976d9cf617531dcf8d010eea2c2d16447bac52d26ac4e3b567725d5a2', '[\"*\"]', NULL, NULL, '2024-06-30 18:17:54', '2024-06-30 18:17:54'),
+(57, 'App\\Models\\User', 21, 'productMastertoken', 'c38921fda5ac0294fee36b73b31e3a917f799d9e5b3652ede05b276ec7be8aac', '[\"*\"]', NULL, NULL, '2024-07-01 20:03:59', '2024-07-01 20:03:59'),
+(58, 'App\\Models\\User', 21, 'productMastertoken', 'e53028db9c2848d3d1fb228ec0863d3b7c666a3ac1e1ed97339c7d72c40a8ee7', '[\"*\"]', NULL, NULL, '2024-07-01 23:13:57', '2024-07-01 23:13:57'),
+(59, 'App\\Models\\User', 24, 'productMastertoken', '11fa9f2dce76d6dfadd595febc3ce6a246fbf44590e9049771be4d251d8bb52f', '[\"*\"]', NULL, NULL, '2024-07-02 02:26:25', '2024-07-02 02:26:25'),
+(60, 'App\\Models\\User', 23, 'productMastertoken', '93e7fa397d09e07230e2c960c9a910ff024e82adf334f294ac6d2fcb84d043ba', '[\"*\"]', NULL, NULL, '2024-07-02 02:28:47', '2024-07-02 02:28:47'),
+(61, 'App\\Models\\User', 21, 'productMastertoken', '1e10725c8984d1a0d5c6329da652d864324eb5c9b53e3736650c87c20289d8d4', '[\"*\"]', NULL, NULL, '2024-07-02 19:19:43', '2024-07-02 19:19:43'),
+(62, 'App\\Models\\User', 21, 'productMastertoken', '78007010b421994ed1cb35638f4beccc8ac4413c5e9afba14aebc09681fe9aec', '[\"*\"]', NULL, NULL, '2024-07-02 23:51:29', '2024-07-02 23:51:29'),
+(63, 'App\\Models\\User', 21, 'productMastertoken', 'e5fc4b1351f0d7d6dcafe4d7fefc48c7b58d27097c5a9c29a1d0b849c3cb9037', '[\"*\"]', NULL, NULL, '2024-07-02 23:51:41', '2024-07-02 23:51:41'),
+(64, 'App\\Models\\User', 21, 'productMastertoken', '4780d8b8ee05c7b2e3a4e7a17dbccf7ed9f0f6bf04da1fa6f3ff17fe3b8e31b1', '[\"*\"]', NULL, NULL, '2024-07-02 23:52:06', '2024-07-02 23:52:06'),
+(65, 'App\\Models\\User', 21, 'productMastertoken', '1afcb7247b778c5f9cc20951ac400773e4ef9a3d45ced2ec5002cc13860692f6', '[\"*\"]', NULL, NULL, '2024-07-02 23:53:11', '2024-07-02 23:53:11'),
+(66, 'App\\Models\\User', 21, 'productMastertoken', '31f4363c67ba1846fea16bc78db4212c5a76ae6021f1617998a1441443125dc4', '[\"*\"]', NULL, NULL, '2024-07-02 23:53:37', '2024-07-02 23:53:37'),
+(67, 'App\\Models\\User', 21, 'productMastertoken', 'ea7cf419bd895bbffc06b22e33733066824a6b3443bc8d14241d864c0e3d287c', '[\"*\"]', NULL, NULL, '2024-07-02 23:55:21', '2024-07-02 23:55:21'),
+(68, 'App\\Models\\User', 21, 'productMastertoken', '9f32a6958400d7c5ba46e5b2d9111320e26822890726f70c3630f6bb4e41e877', '[\"*\"]', NULL, NULL, '2024-07-02 23:56:12', '2024-07-02 23:56:12'),
+(69, 'App\\Models\\User', 21, 'productMastertoken', 'ac5ebaa774750ea4d78a876105288ea8e206a2a4ae800f11db2cafe6a9c3fd1c', '[\"*\"]', NULL, NULL, '2024-07-02 23:56:52', '2024-07-02 23:56:52'),
+(70, 'App\\Models\\User', 21, 'productMastertoken', 'c7382d7c78d314ab3a1469871c2c8cf1ebfb4d55f9d28e8fc8e0b8b3abcdb3b3', '[\"*\"]', NULL, NULL, '2024-07-02 23:57:32', '2024-07-02 23:57:32'),
+(71, 'App\\Models\\User', 21, 'productMastertoken', '66f97e39b662fa8937aa574f38295ed7614083e8a99fc22baadedae2db15af13', '[\"*\"]', NULL, NULL, '2024-07-02 23:59:41', '2024-07-02 23:59:41'),
+(72, 'App\\Models\\User', 21, 'productMastertoken', '6d742ac6ed30bcc662c8c0613fb6cad400053c6971dc8ef9b418c03699e8db5a', '[\"*\"]', NULL, NULL, '2024-07-02 23:59:53', '2024-07-02 23:59:53'),
+(73, 'App\\Models\\User', 21, 'productMastertoken', 'b7a4b132945737d4b9f08f3d9ea38d4850136140afdf56e261c7a3cd78b55de0', '[\"*\"]', NULL, NULL, '2024-07-03 00:01:04', '2024-07-03 00:01:04'),
+(74, 'App\\Models\\User', 21, 'productMastertoken', '0be825358692cd04114932af24ab5ecb4bc8bab2551891d02a2f9a6908b99ec3', '[\"*\"]', NULL, NULL, '2024-07-03 00:02:16', '2024-07-03 00:02:16'),
+(75, 'App\\Models\\User', 21, 'productMastertoken', '6e5d7791ecf6c1665c255bfe8b5c30156570317313dd33a2d57a904b015facad', '[\"*\"]', NULL, NULL, '2024-07-03 02:30:58', '2024-07-03 02:30:58'),
+(76, 'App\\Models\\User', 21, 'productMastertoken', '3c5759db270e42321fca1548ebdca314b9e7c08cc156a2792b9931ce5a09c6f2', '[\"*\"]', NULL, NULL, '2024-07-03 18:53:50', '2024-07-03 18:53:50'),
+(77, 'App\\Models\\User', 21, 'productMastertoken', '04c89c067bb465919e63339cf378527c17b2d8912e1ff5f4a88262499932bd62', '[\"*\"]', NULL, NULL, '2024-07-03 23:40:51', '2024-07-03 23:40:51'),
+(78, 'App\\Models\\User', 21, 'productMastertoken', '965dc19202395d8cd9a51c37a4f5e7e5431b0242ad1010e6c83ab81a64abb852', '[\"*\"]', NULL, NULL, '2024-07-04 20:29:28', '2024-07-04 20:29:28');
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `position`
+-- Table structure for table `positions`
 --
 
-CREATE TABLE `position` (
-  `id` bigint(20) NOT NULL,
-  `name_position` varchar(255) NOT NULL,
-  `menu_1` char(1) NOT NULL,
-  `menu_2` char(1) NOT NULL,
-  `menu_3` char(1) NOT NULL,
-  `menu_4` char(1) NOT NULL,
-  `menu_5` char(1) NOT NULL,
-  `menu_6` char(1) NOT NULL,
-  `menu_7` char(1) NOT NULL,
-  `menu_8` char(1) NOT NULL,
-  `menu_9` char(1) NOT NULL,
-  `menu_10` enum('1','0') NOT NULL,
-  `menu_11` enum('1','0') NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+CREATE TABLE `positions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name_position` varchar(255) DEFAULT NULL COMMENT 'ชื่อบทบาท',
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `position`
+-- Dumping data for table `positions`
 --
 
-INSERT INTO `position` (`id`, `name_position`, `menu_1`, `menu_2`, `menu_3`, `menu_4`, `menu_5`, `menu_6`, `menu_7`, `menu_8`, `menu_9`, `menu_10`, `menu_11`) VALUES
-(1, 'Administrator', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1'),
-(2, 'Technician', '1', '1', '0', '0', '1', '1', '1', '1', '0', '0', '1'),
-(5, 'panadda', '1', '1', '1', '0', '1', '0', '0', '0', '0', '0', '0'),
-(6, 'Admin Tents', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1'),
-(7, 'Sale Tents', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '1'),
-(8, 'Admin Technician', '1', '1', '1', '0', '1', '0', '0', '0', '0', '0', '0'),
-(9, 'Inside Sales', '1', '1', '1', '0', '0', '1', '0', '0', '0', '0', '0');
+INSERT INTO `positions` (`id`, `name_position`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 'Administrator', NULL, NULL, NULL, NULL),
+(2, 'Manager_Account', NULL, NULL, NULL, NULL),
+(3, 'Account', NULL, NULL, NULL, NULL),
+(4, 'Manager_Product', NULL, NULL, NULL, NULL),
+(5, 'Product', NULL, NULL, NULL, NULL),
+(6, 'Manager_Marketing', NULL, NULL, NULL, NULL),
+(7, 'Marketing', NULL, NULL, NULL, NULL),
+(8, 'Manager_IBSH', NULL, NULL, NULL, NULL),
+(9, 'IBSH', NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `posts`
+--
+
+CREATE TABLE `posts` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `user_id` int(11) NOT NULL COMMENT 'รหัสผู้ใช้งาน',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `posts`
+--
+
+INSERT INTO `posts` (`id`, `user_id`, `created_at`, `updated_at`) VALUES
+(1, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -257,9 +384,30 @@ INSERT INTO `position` (`id`, `name_position`, `menu_1`, `menu_2`, `menu_3`, `me
 
 CREATE TABLE `products` (
   `id` bigint(20) UNSIGNED NOT NULL,
+  `brand_id` int(11) DEFAULT NULL COMMENT 'รหัสแบรนด์',
+  `product_id` int(11) DEFAULT NULL COMMENT 'รหัสสินค้า',
+  `name` varchar(255) DEFAULT NULL COMMENT 'ชื่อสินค้า',
+  `company_products` varchar(255) DEFAULT NULL COMMENT 'สินค้าของบริษัท',
+  `seq` varchar(100) DEFAULT NULL COMMENT 'ลำดับ',
+  `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '0 = รออนุมัติ, 1 = อนุมัติ',
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `brand_id`, `product_id`, `name`, `company_products`, `seq`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 1, 20001, 'ครีมทาผิว', 'OP', 'P00001', 1, NULL, NULL, '2024-06-09 17:50:30', '2024-06-09 12:04:49'),
+(2, 1, 20002, 'ครีมทาหน้า', 'OP', 'P00002', 1, NULL, NULL, NULL, '2024-06-17 14:14:32'),
+(3, 1, 20003, 'aaa', 'OP', 'T000003', 1, NULL, NULL, '2024-06-10 11:45:13', '2024-06-17 14:12:29'),
+(4, 1, 20004, 'aaaaa', 'OP', 'T000004', 1, NULL, NULL, '2024-06-10 17:50:26', '2024-06-16 16:36:14'),
+(5, 1, 20005, 'eeeee', 'OP', 'T000005', 2, NULL, NULL, '2024-06-10 19:02:59', '2024-06-16 16:26:45'),
+(6, 1, 20006, 'ttttt', 'OP', 'T000006', 2, NULL, NULL, '2024-06-10 19:35:45', '2024-06-16 16:26:32'),
+(7, 2, 70001, 'jjj', 'Cute Press', 'T000007', 2, NULL, NULL, '2024-06-16 17:57:36', '2024-06-16 20:18:42');
 
 -- --------------------------------------------------------
 
@@ -273,9 +421,42 @@ CREATE TABLE `product_images` (
   `image_path` varchar(255) DEFAULT NULL COMMENT 'ชื่อพาร์ท',
   `seq` int(11) NOT NULL DEFAULT 0 COMMENT 'ลำดับไฟล์',
   `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '1= active 0= deactive',
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `submenus`
+--
+
+CREATE TABLE `submenus` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `menu_relation_id` int(11) NOT NULL COMMENT 'รหัสเมนู',
+  `name` varchar(255) DEFAULT NULL COMMENT 'ชื่อเมนูย่อย',
+  `seq` int(11) NOT NULL DEFAULT 0 COMMENT 'ลำดับเมนูย่อย',
+  `view` int(11) DEFAULT NULL COMMENT 'action',
+  `create` int(11) DEFAULT NULL COMMENT 'action',
+  `edit` int(11) DEFAULT NULL COMMENT 'action',
+  `delete` int(11) DEFAULT NULL COMMENT 'action',
+  `created_by` int(11) DEFAULT NULL,
+  `updated_by` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `submenus`
+--
+
+INSERT INTO `submenus` (`id`, `menu_relation_id`, `name`, `seq`, `view`, `create`, `edit`, `delete`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 1, 'Posion_1_menu_1_Test_1', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
+(2, 1, 'Posion_1_menu_1_Test_2', 2, NULL, NULL, NULL, NULL, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
+(3, 3, 'Posion_5_menu_1_Test_1', 1, 1, 1, 1, 1, NULL, NULL, '2024-07-09 08:00:47', '2024-07-09 08:00:47'),
+(4, 3, 'Posion_5_menu_1_Test_2', 2, NULL, NULL, NULL, NULL, NULL, NULL, '2024-07-11 02:20:24', '2024-07-11 02:20:24');
 
 -- --------------------------------------------------------
 
@@ -1421,12 +1602,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'superadmin', 'Administrator', 'admin@gmail.com', NULL, '$2y$10$3rjn/Q80C2udNQorwpEo8.SPQknet8o1i..hJAXzNUzL7vaIJcjO.', 'lG9ZTgVdT63LWF3EE1uFxzf1fgZpLUWJVl19wGyt0SLVv9UZgaJe5gTkaU3s', 1, '2020-07-21 13:16:54', '2022-10-07 01:10:11'),
-(2, 'panadda', 'Panadda Tingmahain', 'panadda.t@schicer.com', NULL, '$2y$10$nCf4c8Cw0KWGBmxNwrGpEOYGzR5RiVQv6Ls7lz.lovJrPZUWvKGD.', NULL, 2, '2021-03-23 18:51:36', '2024-06-07 03:12:21'),
-(3, 'markawan', 'Markawan Maneesinthop', 'markawan@mail.com', NULL, '$2y$10$PWB7OepESELIfTbzlz.8HO/FMmuxT2.XKglYh/RbKsn0HmhWtlznq', NULL, 1, '2021-03-23 20:40:29', '2024-06-06 18:40:52'),
-(4, 'perapong', 'Perapong Srisawan', 'perapong@mail.com', NULL, '$2y$10$NuyBmpB9Pnn4b9QnJj5/t.xfrYDKPhKNUJTyqpfYHTkmJmhLZUsqu', NULL, 1, '2021-03-23 20:42:02', '2021-03-23 20:42:02'),
-(5, 'nuttapon', 'Nuttapon Sangkaputti', 'nuttapon@mail.com', NULL, '$2y$10$mHrGyoxU.vwYY5oUhKm6bOz8nH7NO8VHNA7.JJ8I9GNGql6mIYAAy', NULL, 1, '2021-03-23 20:43:57', '2021-03-23 20:43:57'),
-(6, 'aekkalux', 'Aekkalux Uthaipan', 'aekkalux@mail.com', NULL, '$2y$10$5O8lKPrm/Kgnh5u8x4gsze3jbINcALFeVzNs3TJUqY4R9esa.cmKe', NULL, 1, '2021-03-23 20:46:43', '2021-03-23 20:46:43'),
+(1, 'superadmin', 'Administrator', 'admin@gmail.com', NULL, '$2y$10$3rjn/Q80C2udNQorwpEo8.SPQknet8o1i..hJAXzNUzL7vaIJcjO.', 'lG9ZTgVdT63LWF3EE1uFxzf1fgZpLUWJVl19wGyt0SLVv9UZgaJe5gTkaU3s', 1, '2020-07-21 13:16:54', '2024-06-10 01:57:30'),
+(2, 'panadda', 'Panadda Tingmahain', 'panadda.t@schicer.com', NULL, '$2y$10$nCf4c8Cw0KWGBmxNwrGpEOYGzR5RiVQv6Ls7lz.lovJrPZUWvKGD.', NULL, 1, '2021-03-23 18:51:36', '2024-06-09 21:28:01'),
+(3, 'markawan', 'Markawan Maneesinthop', 'markawan@mail.com', NULL, '$2y$10$PWB7OepESELIfTbzlz.8HO/FMmuxT2.XKglYh/RbKsn0HmhWtlznq', NULL, 1, '2021-03-23 20:40:29', '2024-06-09 21:29:28'),
+(4, 'perapong', 'Perapong Srisawan', 'perapong@mail.com', NULL, '$2y$10$NuyBmpB9Pnn4b9QnJj5/t.xfrYDKPhKNUJTyqpfYHTkmJmhLZUsqu', NULL, 1, '2021-03-23 20:42:02', '2024-06-09 21:30:35'),
+(5, 'nuttapon', 'Nuttapon Sangkaputti', 'nuttapon@mail.com', NULL, '$2y$10$mHrGyoxU.vwYY5oUhKm6bOz8nH7NO8VHNA7.JJ8I9GNGql6mIYAAy', NULL, 1, '2021-03-23 20:43:57', '2024-06-09 21:24:12'),
+(6, 'aekkalux', 'Aekkalux Uthaipan', 'aekkalux@mail.com', NULL, '$2y$10$5O8lKPrm/Kgnh5u8x4gsze3jbINcALFeVzNs3TJUqY4R9esa.cmKe', NULL, 1, '2021-03-23 20:46:43', '2024-06-09 21:26:01'),
 (7, 'tent1', 'Tent Example', 'tent1@gmail.com', NULL, '$2y$10$VIy2UhwGaVDwZbVhdbucS.Jf7ZLcUy2K9wrSfXJF8TUBeCzAfD6UG', NULL, 1, '2021-04-26 15:06:30', '2021-04-26 15:06:30'),
 (8, 'tent2', 'tent2', 'tent2@mail.com', NULL, '$2y$10$l967vwQtA74YAn10wx2XM.X1cqa/KvHy7/jadcTsJT09K.9QZmR9q', NULL, 1, '2021-08-30 14:22:12', '2021-08-30 14:25:26'),
 (9, 'bb_smartcar1', 'BB Smart Car (สาขา 1)', 'bbsmartcar1@gmail.com', NULL, '$2y$10$.FK7OqclU7cVHUIfZCl4AO6QSFg88vN/M3jcTqfJJA0cpoH0TfGXq', NULL, 1, '2022-01-19 19:14:47', '2022-01-19 19:14:47'),
@@ -1441,7 +1622,9 @@ INSERT INTO `users` (`id`, `username`, `name`, `email`, `email_verified_at`, `pa
 (18, 'non', 'ช่างนนท์', 'test9@gmail.com', NULL, '$2y$10$lVlPxZzSSOy8I78RhDoq4uzKawJOZWh94fl17nXCFE5GGY9vNMp.u', 'weAz9Es0XTN3bWxh5T8sNdCE7FzAa1P33934CARLD1POD6P4rYL74assYS9P', 1, '2022-02-28 15:27:09', '2022-10-03 21:39:28'),
 (19, 'lun', 'ช่างหลัน', 'test10@gmail.com', NULL, '$2y$10$KR6b/F3/otoliSBKm.wRle7PYOWiYh1LLjobAGzI.DDh87IIR0eR.', NULL, 1, '2022-02-28 15:27:48', '2022-10-26 21:26:48'),
 (20, 'tom', 'ช่างต้อม', 'test11@gmail.com', NULL, '$2y$10$VPYPUygmU1y/85/RfvEbG.khWSskAlppOI/8ThFVAcb.xQrS0BIwu', NULL, 1, '2022-02-28 15:28:18', '2022-02-28 15:28:18'),
-(21, NULL, 'test1', 'test1@gmail.com', NULL, '$2y$10$XY8os2I.PICMI9eznO96CuUVO2EkiNSpVh9FJ.lJyF.idv.3b7iLm', NULL, 1, '2024-06-07 03:19:36', '2024-06-07 03:19:36');
+(21, NULL, 'test1', 'test1@gmail.com', NULL, '$2y$10$XY8os2I.PICMI9eznO96CuUVO2EkiNSpVh9FJ.lJyF.idv.3b7iLm', NULL, 1, '2024-06-07 03:19:36', '2024-06-07 03:19:36'),
+(23, NULL, 'test2', 'test12@gmail.com', NULL, '$2y$10$nCKIDugsGOPwbVvJORdHbuWe95RQg/9boW9lrPLulELyn/KasE8jS', NULL, 1, '2024-06-10 03:25:16', '2024-06-10 03:25:16'),
+(24, NULL, 'test3', 'test13@gmail.com', NULL, '$2y$10$DtMsKHv06DMDG65xyjiH4eetTIBomrv4..ghjcdoplRI7xsP1uA/.', NULL, 1, '2024-06-27 20:18:58', '2024-06-27 20:18:58');
 
 -- --------------------------------------------------------
 
@@ -1464,13 +1647,13 @@ CREATE TABLE `user_permission` (
 
 INSERT INTO `user_permission` (`id`, `user_id`, `tent_id`, `position_id`, `created_at`, `updated_at`) VALUES
 (1, 1, NULL, 1, NULL, '2021-06-09 12:28:31'),
-(2, 6, 1, 5, '2021-03-24 15:33:51', '2021-03-24 15:33:51'),
+(2, 21, 1, 1, '2021-03-24 15:33:51', '2021-03-24 15:33:51'),
 (3, 6, 2, 5, '2021-03-24 15:33:51', '2021-03-24 15:33:51'),
 (4, 7, 1, 8, '2021-03-24 17:40:29', '2021-03-24 17:40:29'),
 (5, 8, 1, 8, '2021-03-24 17:42:02', '2021-03-24 17:42:02'),
 (6, 9, 1, 2, '2021-03-24 17:43:57', '2021-03-24 17:43:57'),
-(7, 10, NULL, 2, '2021-03-24 17:46:43', '2021-03-24 17:46:43'),
-(9, 1, 1, 1, '2021-05-12 11:21:43', '2021-06-09 12:28:31'),
+(7, 23, 1, 5, '2021-03-24 17:46:43', '2021-03-24 17:46:43'),
+(9, 24, 1, 4, '2021-05-12 11:21:43', '2021-06-09 12:28:31'),
 (10, 11, 1, 6, '2021-08-31 11:18:01', '2021-08-31 11:18:01'),
 (11, 12, 514, 8, '2021-08-31 11:22:32', '2021-08-31 11:24:37'),
 (12, 13, 240, 6, '2022-01-20 16:17:10', '2022-01-20 16:17:10'),
@@ -1478,14 +1661,14 @@ INSERT INTO `user_permission` (`id`, `user_id`, `tent_id`, `position_id`, `creat
 (14, 15, 235, 8, '2022-03-01 12:29:29', '2022-03-01 12:29:29'),
 (15, 25, 235, 8, '2022-03-01 12:30:07', '2022-03-01 12:30:07'),
 (16, 17, 235, 8, '2022-03-01 12:30:14', '2022-03-01 12:30:14'),
-(17, 21, 235, 8, '2022-03-01 12:30:20', '2022-03-01 12:30:20'),
-(18, 23, 235, 8, '2022-03-01 12:30:24', '2022-03-01 12:30:24'),
+(17, 1, 235, 8, '2022-03-01 12:30:20', '2022-03-01 12:30:20'),
+(18, 1, 235, 8, '2022-03-01 12:30:24', '2022-03-01 12:30:24'),
 (19, 16, 235, 8, '2022-03-01 12:30:29', '2022-03-01 12:30:29'),
 (20, 19, 235, 8, '2022-03-01 12:30:33', '2022-03-01 12:30:33'),
 (21, 18, 235, 8, '2022-03-01 12:30:37', '2022-03-01 12:30:37'),
 (22, 22, 235, 8, '2022-03-01 12:30:41', '2022-03-01 12:30:41'),
 (23, 20, 235, 8, '2022-03-01 12:30:47', '2022-03-01 12:30:47'),
-(24, 24, 235, 8, '2022-03-01 12:30:51', '2022-03-01 12:30:51'),
+(24, 1, 235, 8, '2022-03-01 12:30:51', '2022-03-01 12:30:51'),
 (25, 26, 235, 8, '2022-03-01 12:32:54', '2022-03-01 12:32:54'),
 (26, 28, 235, 8, '2022-03-01 14:36:52', '2022-03-01 14:36:52'),
 (27, 27, 235, 8, '2022-03-01 14:37:04', '2022-03-01 14:37:04'),
@@ -1514,6 +1697,18 @@ INSERT INTO `user_permission` (`id`, `user_id`, `tent_id`, `position_id`, `creat
 --
 
 --
+-- Indexes for table `brands`
+--
+ALTER TABLE `brands`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `comments`
+--
+ALTER TABLE `comments`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
@@ -1539,6 +1734,18 @@ ALTER TABLE `manage_menus`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `menus`
+--
+ALTER TABLE `menus`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `menu_relations`
+--
+ALTER TABLE `menu_relations`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `migrations`
 --
 ALTER TABLE `migrations`
@@ -1559,6 +1766,18 @@ ALTER TABLE `personal_access_tokens`
   ADD KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`);
 
 --
+-- Indexes for table `positions`
+--
+ALTER TABLE `positions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
@@ -1568,6 +1787,12 @@ ALTER TABLE `products`
 -- Indexes for table `product_images`
 --
 ALTER TABLE `product_images`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `submenus`
+--
+ALTER TABLE `submenus`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1584,8 +1809,26 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `users_email_unique` (`email`);
 
 --
+-- Indexes for table `user_permission`
+--
+ALTER TABLE `user_permission`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `brands`
+--
+ALTER TABLE `brands`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `comments`
+--
+ALTER TABLE `comments`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -1612,28 +1855,58 @@ ALTER TABLE `manage_menus`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `menus`
+--
+ALTER TABLE `menus`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `menu_relations`
+--
+ALTER TABLE `menu_relations`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+
+--
+-- AUTO_INCREMENT for table `positions`
+--
+ALTER TABLE `positions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `product_images`
 --
 ALTER TABLE `product_images`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `submenus`
+--
+ALTER TABLE `submenus`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `trn_dona_totambons`
@@ -1645,7 +1918,13 @@ ALTER TABLE `trn_dona_totambons`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+
+--
+-- AUTO_INCREMENT for table `user_permission`
+--
+ALTER TABLE `user_permission`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

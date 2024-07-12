@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('image_path', 255)->nullable()->comment('ชื่อพาร์ท');
             $table->integer('seq')->default(0)->comment('ลำดับไฟล์');
             $table->tinyInteger('status')->default(1)->comment('1= active 0= deactive');
+            $table->integer('created_by')->nullable()->comment('Created by');
+            $table->integer('updated_by')->nullable()->comment('Updated by');
             $table->timestamps();
         });
     }

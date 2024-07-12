@@ -19,6 +19,8 @@ return new class extends Migration
             $table->integer('create')->nullable()->default(null)->comment('action');
             $table->integer('edit')->nullable()->default(null)->comment('action');
             $table->integer('delete')->nullable()->default(null)->comment('action');
+            $table->integer('created_by')->nullable()->comment('Created by');
+            $table->integer('updated_by')->nullable()->comment('Updated by');
             $table->timestamps();
         });
     }
