@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('company_name', 255)->nullable()->comment('ชื่อบริษัท');
             $table->tinyInteger('status')->default(1)->comment('0 = รออนุมัติ, 1 = อนุมัติ');
+            $table->integer('created_by')->nullable()->comment('Created by');
+            $table->integer('updated_by')->nullable()->comment('Updated by');
             $table->timestamps();
         });
     }
