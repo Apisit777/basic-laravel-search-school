@@ -30,15 +30,21 @@ class ManageMenuController extends Controller
         $position = position::all();
 
         $options = menu_relation::all();
+        // $menus = menu_relation::select('menus.id as menu_id')
+        //     ->leftjoin('menus', 'menu_relations.menu_id', 'menus.id')
+        //         ->get();
         $menus = menu::all();
-        
+        // $menus = menu::select('menus.id as menu_id')
+        //     ->leftjoin('menu_relations', 'menus.id', 'menu_relations.menu_id')
+        //     ->get();
+
         $menu_data = [];
         foreach ($menus as $key => $menu) {
-            foreach ($menu->getMenuRelation()->where('position_id', '=', 1)->get() as $key_sub_menu => $menu_relation) {
-                $menu_data[$key_sub_menu] = $menu_relation->with('getSubMenu')->where('position_id', '=', 1)->get();
+            foreach ($menu->with('getMenuRelation:id')->get() as $key_sub_menu => $menu_relation) {
+                $menu_data[$key_sub_menu] = $menu_relation->with('getSubMenu');
             }
         }
-        // dd($menu_data);
+        dd($menu_data);
 
         // $permissions[] = ['view', 'create', 'edit', 'delete'];
         // $userIds = menu_relation::pluck('menu_id');
@@ -155,7 +161,7 @@ class ManageMenuController extends Controller
     {
         // $data = menu_relation::where('position_id', $request->input('pos_id'))->pluck('menu_id');
         $menus = menu::all();
-        
+
         $check_permission_menus = [];
         foreach ($menus as $key => $menu) {
             foreach ($menu->getMenuRelation()->where('position_id', '=', $request->input('pos_id'))->get() as $key_sub_menu => $menu_relation) {
