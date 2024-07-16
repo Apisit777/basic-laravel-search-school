@@ -160,6 +160,99 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @foreach($menus as $menu)
+                                                <tr class="main-menu">
+                                                    <td class="flex relative">
+                                                        <button 
+                                                            type="button" 
+                                                            class="px-2 py-1 left-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group"
+                                                            data-twe-toggle="modal"
+                                                            data-twe-target="#exampleModalLg"
+                                                            data-twe-ripple-init
+                                                            data-twe-ripple-color="light"
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                                                <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                                                <path d="M5 18.08V19h.92l9.06-9.06-.92-.92z" opacity=".3"></path>
+                                                                <path d="M20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29s-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83zM3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM5.92 19H5v-.92l9.06-9.06.92.92L5.92 19z"></path>
+                                                            </svg>
+                                                        </button>
+                                                        <button 
+                                                            type="button" 
+                                                            class="px-2 py-1 font-medium tracking-wide bg-[#c72121] hover:bg-[#c23737e3] text-white rounded group"
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                                                <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" />
+                                                            </svg>
+                                                        </button>
+                                                    </td>
+                                                    <td class="text-center">{{ $menu['id'] }}</td>
+                                                    <td>{{ $menu['menu_name'] }}</td>
+                                                    <td class="text-center"><input type="checkbox" id="action_view_{{ $menu['id'] }}" name="checkboxes[]" value="" onclick="setMenu(this)"></td>
+                                                    <td class="text-center"><input type="checkbox" id="action_create_{{ $menu['id'] }}" name="checkboxes[]" value="" onclick="setMenu(this)"></td>
+                                                    <td class="text-center"><input type="checkbox" id="action_edit_{{ $menu['id'] }}" name="checkboxes[]" value="" onclick="setMenu(this)"></td>
+                                                    <td class="text-center"><input type="checkbox" id="action_delete_{{ $menu['id'] }}" name="checkboxes[]" value="" onclick="setMenu(this)"></td>
+                                                </tr>
+                                                @if (!empty($menu[0]['getMenuRelation'][0]['getSubMenu']))
+                                                    @foreach($menu[0]['getMenuRelation'][0]['getSubMenu'] as $submenu)
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td>&nbsp;&nbsp;&nbsp;{{ $submenu[0]['name'] }}</td>
+                                                            <td class="text-center"><input type="checkbox" id="action_submenu_view_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $submenu['view'] }}" onclick="setMenu(this)"></td>
+                                                            <td class="text-center"><input type="checkbox" id="action_submenu_create_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $submenu['create'] }}" onclick="setMenu(this)"></td>
+                                                            <td class="text-center"><input type="checkbox" id="action_submenu_edit_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $submenu['edit'] }}" onclick="setMenu(this)"></td>
+                                                            <td class="text-center"><input type="checkbox" id="action_submenu_delete_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $submenu['delete'] }}" onclick="setMenu(this)"></td>
+                                                        </tr>
+                                                    @endforeach
+                                                @else
+                                                    <tr class="sub-menu">
+                                                        <td></td>
+                                                        <td></td>
+                                                        <td colspan="3">&nbsp;&nbsp;&nbsp;No submenus available</td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form col-span-3">
+                <div class="relative w-full overflow-hidden">
+                    <input type="checkbox" class="peer absolute top-0 inset-x-0 w-full h-12 opacity-0 z-100000 cursor-pointer">
+                    <div class="bg-[#d7d8db] dark:bg-[#303030] text-white h-12 w-full pl-5 flex items-center">
+                        <h1 class="text-gray-900 dark:text-white text-lg">
+                            Test
+                        </h1>
+                    </div>
+                    <div class="absolute top-3 right-3 text-white transition-tranform duration-500 rotate-180 peer-checked:rotate-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900 dark:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                    <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-full peer-checked:max-h-0">
+                        <div class="mt-8 flex justify-center items-center">
+                            <form id="posForm" method="post">
+                                <div class="table-responsive text-gray-900 dark:text-white">
+                                    <h1>Menu Table</h1>
+                                    <table id="positionTable" class="mt-5 table table-bordered table-hover text-gray-900 dark:text-white cursor-pointer" style="width: 100%;">
+                                        <thead>
+                                            <tr>
+                                                <th>Action</th>
+                                                <th>ID</th>
+                                                <th>Name</th>
+                                                <th>view</th>
+                                                <th>create</th>
+                                                <th>edit</th>
+                                                <th>delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
                                             @foreach($menuData as $menu)
                                                 <tr class="main-menu">
                                                     <td class="flex relative">
@@ -193,17 +286,19 @@
                                                     <td class="text-center"><input type="checkbox" id="action_edit_{{ $menu['main_menu']['id'] }}" name="checkboxes[]" value="{{ $menu['main_menu']['edit'] }}" onclick="setMenu(this)"></td>
                                                     <td class="text-center"><input type="checkbox" id="action_delete_{{ $menu['main_menu']['id'] }}" name="checkboxes[]" value="{{ $menu['main_menu']['delete'] }}" onclick="setMenu(this)"></td>
                                                 </tr>
-                                                @foreach($menu['sub_menus'] as $submenu)
-                                                    <tr>
-                                                        <td></td>
-                                                        <td></td>
-                                                        <td>&nbsp;&nbsp;&nbsp;{{ $submenu['name'] }}</td>
-                                                        <td class="text-center"><input type="checkbox" id="action_submenu_view_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $submenu['view'] }}" onclick="setMenu(this)"></td>
-                                                        <td class="text-center"><input type="checkbox" id="action_submenu_create_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $submenu['create'] }}" onclick="setMenu(this)"></td>
-                                                        <td class="text-center"><input type="checkbox" id="action_submenu_edit_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $submenu['edit'] }}" onclick="setMenu(this)"></td>
-                                                        <td class="text-center"><input type="checkbox" id="action_submenu_delete_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $submenu['delete'] }}" onclick="setMenu(this)"></td>
-                                                    </tr>
-                                                @endforeach
+                                                @if (!empty($menu['sub_menus']))
+                                                    @foreach($menu['sub_menus'] as $submenu)
+                                                        <tr>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td>&nbsp;&nbsp;&nbsp;{{ $submenu['name'] }}</td>
+                                                            <td class="text-center"><input type="checkbox" id="action_submenu_view_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $submenu['view'] }}" onclick="setMenu(this)"></td>
+                                                            <td class="text-center"><input type="checkbox" id="action_submenu_create_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $submenu['create'] }}" onclick="setMenu(this)"></td>
+                                                            <td class="text-center"><input type="checkbox" id="action_submenu_edit_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $submenu['edit'] }}" onclick="setMenu(this)"></td>
+                                                            <td class="text-center"><input type="checkbox" id="action_submenu_delete_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $submenu['delete'] }}" onclick="setMenu(this)"></td>
+                                                        </tr>
+                                                    @endforeach
+                                               @endif
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -213,6 +308,21 @@
                     </div>
                 </div>
             </div>
+            @php
+                dd([
+                    'id' => $menus[0]['id'],
+                    'menu_name' => $menus[0]['menu_name'],
+                    $menus[0]['getMenuRelation'][0]['view'],
+                    $menus[0]['getMenuRelation'][0]['create'],
+                    $menus[0]['getMenuRelation'][0]['edit'],
+                    $menus[0]['getMenuRelation'][0]['delete'],
+                    'submenu_name' => $menus[0]['getMenuRelation'][0]['getSubMenu'][0]['name'],
+                    $menus[0]['getMenuRelation'][0]['getSubMenu'][0]['view'],
+                    $menus[0]['getMenuRelation'][0]['getSubMenu'][0]['create'],
+                    $menus[0]['getMenuRelation'][0]['getSubMenu'][0]['edit'],
+                    $menus[0]['getMenuRelation'][0]['getSubMenu'][0]['delete'],
+                ]);
+            @endphp
             <div class="form col-span-2">
                 <div class="relative w-full overflow-hidden">
                     <input type="checkbox" class="peer absolute top-0 inset-x-0 w-full h-12 opacity-0 z-100000 cursor-pointer">
@@ -397,7 +507,7 @@
             </div>
         </div>
     </div>
-
+     @endphp
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
@@ -417,6 +527,37 @@
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.colVis.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        // @php
+        //     function showSubMenu($menu) {
+        //         foreach ($menu[0]['getMenuRelation'][0]['getSubMenu'] as $submenu) {
+        //             $tr = "<tr>
+        //                 <td></td>
+        //                 <td></td>
+        //                 <td>&nbsp;&nbsp;&nbsp;.$submenu->name.</td>
+        //                 <td class='text-center'><input type='checkbox' id='action_submenu_view_{{ $submenu->id }}' name='checkboxes[]' value='{{ $submenu->view }}' onclick='setMenu(this)'></td>
+        //                 <td class='text-center'><input type='checkbox' id='action_submenu_create_{{ $submenu->id }}' name='checkboxes[]' value='{{ $submenu->create }}' onclick='setMenu(this)'></td>
+        //                 <td class='text-center'><input type='checkbox' id='action_submenu_edit_{{ $submenu->id }}' name='checkboxes[]' value='{{ $submenu->edit }}' onclick='setMenu(this)'></td>
+        //                 <td class='text-center'><input type='checkbox' id='action_submenu_delete_{{ $submenu->id }}' name='checkboxes[]' value='{{ $submenu->delete }}' onclick='setMenu(this)'></td>
+        //             </tr>";
+        //             $tr = $tr."</tr>";
+        //             echo $tr;
+        //         }
+
+        //         if(isset($menu[0]['getMenuRelation'][0]['getSubMenu']) && count($menu[0]['getMenuRelation'][0]['getSubMenu']) > 0) {
+        //             showSubMenu($submenu->name);
+        //         }
+        //     }
+        // @endphp
+        
+        // @php
+        //     dd([
+        //         $menus[0]['getMenuRelation'][0]['getSubMenu'][0]['name'],
+        //         $menus[0]['getMenuRelation'][0]['getSubMenu'][0]['view'],
+        //         $menus[0]['getMenuRelation'][0]['getSubMenu'][0]['create'],
+        //         $menus[0]['getMenuRelation'][0]['getSubMenu'][0]['edit'],
+        //         $menus[0]['getMenuRelation'][0]['getSubMenu'][0]['delete'],
+        //     ]);
+        // @endphp
         toastr.options = {
             "closeButton": true,
             "debug": false,
