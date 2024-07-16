@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 12, 2024 at 10:55 AM
+-- Generation Time: Jul 16, 2024 at 11:58 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -129,9 +129,9 @@ CREATE TABLE `manage_menus` (
 
 CREATE TABLE `menus` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `menu_name` varchar(255) NOT NULL COMMENT 'ชื่อ',
+  `menu_name` varchar(255) DEFAULT NULL COMMENT 'ชื่อ',
   `seq` int(11) DEFAULT NULL,
-  `menu_relate` tinyint(4) DEFAULT NULL COMMENT 'main menu id',
+  `status` int(11) DEFAULT NULL COMMENT 'main menu id',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -140,12 +140,12 @@ CREATE TABLE `menus` (
 -- Dumping data for table `menus`
 --
 
-INSERT INTO `menus` (`id`, `menu_name`, `seq`, `menu_relate`, `created_at`, `updated_at`) VALUES
-(1, 'NPD Request', NULL, 0, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
-(2, 'ทะเบียนสินค้า', NULL, 0, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
-(3, 'Marketing', NULL, 0, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
-(4, 'Managemenu', NULL, 0, '2024-06-28 07:48:31', '2024-06-28 07:48:34'),
-(5, 'อื่นๆ', NULL, 0, '2024-07-02 03:36:12', '2024-07-02 03:36:12');
+INSERT INTO `menus` (`id`, `menu_name`, `seq`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'NPD Request', NULL, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
+(2, 'ทะเบียนสินค้า', NULL, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
+(3, 'Marketing', NULL, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
+(4, 'Managemenu', NULL, 1, '2024-06-28 07:48:31', '2024-06-28 07:48:34'),
+(5, 'อื่นๆ', NULL, 1, '2024-07-02 03:36:12', '2024-07-02 03:36:12');
 
 -- --------------------------------------------------------
 
@@ -161,6 +161,7 @@ CREATE TABLE `menu_relations` (
   `create` int(11) DEFAULT NULL,
   `edit` int(11) DEFAULT NULL,
   `delete` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -171,11 +172,11 @@ CREATE TABLE `menu_relations` (
 -- Dumping data for table `menu_relations`
 --
 
-INSERT INTO `menu_relations` (`id`, `position_id`, `menu_id`, `view`, `create`, `edit`, `delete`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, 1, 1, 1, NULL, NULL, '2023-01-19 18:07:36', '2023-01-19 18:07:36'),
-(2, 1, 2, 1, NULL, NULL, NULL, NULL, NULL, '2023-01-19 18:07:36', '2023-01-19 18:07:36'),
-(3, 5, 1, 1, NULL, NULL, NULL, NULL, NULL, '2023-01-19 18:07:38', '2023-01-19 18:07:38'),
-(4, 5, 2, 1, 1, 1, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `menu_relations` (`id`, `position_id`, `menu_id`, `view`, `create`, `edit`, `delete`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, 1, 1, 1, 1, 1, NULL, NULL, '2023-01-19 18:07:36', '2023-01-19 18:07:36'),
+(2, 1, 2, 1, NULL, NULL, NULL, 1, NULL, NULL, '2023-01-19 18:07:36', '2023-01-19 18:07:36'),
+(3, 5, 1, 1, NULL, NULL, NULL, 1, NULL, NULL, '2023-01-19 18:07:38', '2023-01-19 18:07:38'),
+(4, 5, 2, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -442,6 +443,7 @@ CREATE TABLE `submenus` (
   `create` int(11) DEFAULT NULL COMMENT 'action',
   `edit` int(11) DEFAULT NULL COMMENT 'action',
   `delete` int(11) DEFAULT NULL COMMENT 'action',
+  `status` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -452,11 +454,11 @@ CREATE TABLE `submenus` (
 -- Dumping data for table `submenus`
 --
 
-INSERT INTO `submenus` (`id`, `menu_relation_id`, `name`, `seq`, `view`, `create`, `edit`, `delete`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 1, 'Posion_1_menu_1_Test_1', 1, NULL, NULL, NULL, NULL, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
-(2, 1, 'Posion_1_menu_1_Test_2', 2, NULL, NULL, NULL, NULL, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
-(3, 3, 'Posion_5_menu_1_Test_1', 1, 1, 1, 1, 1, NULL, NULL, '2024-07-09 08:00:47', '2024-07-09 08:00:47'),
-(4, 3, 'Posion_5_menu_1_Test_2', 2, NULL, NULL, NULL, NULL, NULL, NULL, '2024-07-11 02:20:24', '2024-07-11 02:20:24');
+INSERT INTO `submenus` (`id`, `menu_relation_id`, `name`, `seq`, `view`, `create`, `edit`, `delete`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 1, 'menu_1_test_1', 1, 1, 1, 1, 1, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
+(2, 1, 'menu_1_test_2', 2, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
+(3, 3, 'menu_1_test_1', 1, 1, 1, 1, 1, 1, NULL, NULL, '2024-07-09 08:00:47', '2024-07-09 08:00:47'),
+(4, 3, 'menu_1_test_2', 2, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-11 02:20:24', '2024-07-11 02:20:24');
 
 -- --------------------------------------------------------
 

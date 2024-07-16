@@ -28,23 +28,23 @@ class ManageMenuController extends Controller
         //     ->get();
 
         $position = position::all();
-
         $options = menu_relation::all();
-        // $menus = menu_relation::select('menus.id as menu_id')
-        //     ->leftjoin('menus', 'menu_relations.menu_id', 'menus.id')
-        //         ->get();
-        $menus = menu::all();
-        // $menus = menu::select('menus.id as menu_id')
-        //     ->leftjoin('menu_relations', 'menus.id', 'menu_relations.menu_id')
-        //     ->get();
+        // $menus = menu::all();
 
-        $menu_data = [];
-        foreach ($menus as $key => $menu) {
-            foreach ($menu->with('getMenuRelation:id')->get() as $key_sub_menu => $menu_relation) {
-                $menu_data[$key_sub_menu] = $menu_relation->with('getSubMenu');
-            }
-        }
-        dd($menu_data);
+        // $menu_data = [];
+        // foreach ($menus as $key => $menu) {
+        //     foreach ($menu->getMenuRelation()->where('position_id', '=', 1)->get() as $key_sub_menu => $menu_relation) {
+        //         $menu_data[$key_sub_menu] = $menu_relation->with('getSubMenu')->where('position_id', '=', 1)->get();
+        //     }
+        // }
+        // dd($menu_data);
+
+        $menus = menu::with(['getMenuRelation' => function ($query) {   
+            $query->where('status', 1)
+            ->with('getSubMenu');
+        }])
+        ->get();
+        // dd($menus);
 
         // $permissions[] = ['view', 'create', 'edit', 'delete'];
         // $userIds = menu_relation::pluck('menu_id');
@@ -71,9 +71,13 @@ class ManageMenuController extends Controller
             ],
             [
                 'main_menu' => ['id' => 2, 'Menu 2', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
+                'sub_menus' => [],
+            ],
+            [
+                'main_menu' => ['id' => 3,'Menu 3', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
                 'sub_menus' => [
-                    ['id' => 3, 'name' => 'Submenu 2.1', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
-                    ['id' => 4, 'name' => 'Submenu 2.2', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
+                    ['id' => 3, 'name' => 'Submenu 3.1', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
+                    ['id' => 4, 'name' => 'Submenu 3.2', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
                 ],
             ],
         ];
