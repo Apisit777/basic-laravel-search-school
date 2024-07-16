@@ -39,7 +39,7 @@ class ManageMenuController extends Controller
         // }
         // dd($menu_data);
 
-        $menus = menu::with(['getMenuRelation' => function ($query) {   
+        $menus = menu::with(['getMenuRelation' => function ($query) {
             $query->where('status', 1)
             ->with('getSubMenu');
         }])
