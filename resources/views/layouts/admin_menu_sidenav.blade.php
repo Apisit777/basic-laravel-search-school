@@ -103,34 +103,34 @@ $countUsers = ProductController::count_users();
                 </a>
             </li> -->
             <li class="relative w-[230px] overflow-hidden group">
-                    <input type="checkbox" class="peer absolute top-0 inset-x-0 w-full h-10 opacity-0 z-10 cursor-pointer ">
-                    <div class="flex peer group-hover:bg-gray-100 dark:group-hover:bg-[#303030] duration-500">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 mt-2 ml-2 text-black dark:text-white">
-                            <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
-                        </svg>
-                        <div class="bg-white dark:bg-[#202020] text-white h-10 w-full pl-2.5 flex items-center duration-500 group-hover:bg-gray-100 dark:group-hover:bg-[#303030]">
-                            <h1 class="text-black dark:text-white text-md">
-                                อื่นๆ
-                            </h1>
-                        </div>
+                <input type="checkbox" class="peer absolute top-0 inset-x-0 w-full h-10 opacity-0 z-10 cursor-pointer ">
+                <div class="flex peer group-hover:bg-gray-100 dark:group-hover:bg-[#303030] duration-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 mt-2 ml-2 text-black dark:text-white">
+                        <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
+                    </svg>
+                    <div class="bg-white dark:bg-[#202020] text-white h-10 w-full pl-2.5 flex items-center duration-500 group-hover:bg-gray-100 dark:group-hover:bg-[#303030]">
+                        <h1 class="text-black dark:text-white text-md">
+                            อื่นๆ
+                        </h1>
                     </div>
-                    <div class="absolute top-2 right-2 transition-tranform duration-500 rotate-0 peer-checked:rotate-180">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-black dark:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                    <ul class="bg-[#f9f9f9] dark:bg-[#232323] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40 h-fit after:absolute after:left-[1rem] after:top-[2.5rem] after:mt-px after:h-[calc(100%-2.45rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-gray-700">
-                        <li>
-                            <a href="#" class="flex items-center w-full p-1.5 text-gray-900 transition duration-75 rounded-sm pl-12 group hover:bg-gray-100 dark:text-white dark:hover:bg-[#303030]">Products</a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center w-full p-1.5 text-gray-900 transition duration-75 rounded-sm pl-12 group hover:bg-gray-100 dark:text-white dark:hover:bg-[#303030]">Billing</a>
-                        </li>
-                        <li>
-                            <a href="#" class="flex items-center w-full p-1.5 text-gray-900 transition duration-75 rounded-sm pl-12 group hover:bg-gray-100 dark:text-white dark:hover:bg-[#303030]">Invoice</a>
-                        </li>
-                    </ul>
-                </li>
+                </div>
+                <div class="absolute top-2 right-2 transition-tranform duration-500 rotate-0 peer-checked:rotate-180">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-black dark:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <ul class="bg-[#f9f9f9] dark:bg-[#232323] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40 h-fit after:absolute after:left-[1rem] after:top-[2.5rem] after:mt-px after:h-[calc(100%-2.45rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-gray-700">
+                    <li>
+                        <a href="#" class="flex items-center w-full p-1.5 text-gray-900 transition duration-75 rounded-sm pl-12 group hover:bg-gray-100 dark:text-white dark:hover:bg-[#303030]">Products</a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center w-full p-1.5 text-gray-900 transition duration-75 rounded-sm pl-12 group hover:bg-gray-100 dark:text-white dark:hover:bg-[#303030]">Billing</a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center w-full p-1.5 text-gray-900 transition duration-75 rounded-sm pl-12 group hover:bg-gray-100 dark:text-white dark:hover:bg-[#303030]">Invoice</a>
+                    </li>
+                </ul>
+            </li>
             <ul class="pt-2 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700">
             <!-- <li class="relative w-[230px] overflow-hidden group">
                 <input type="checkbox" class="peer absolute top-0 inset-x-0 w-full h-10 opacity-0 z-10 cursor-pointer ">
