@@ -53,7 +53,8 @@ Route::delete('/upate_product_status/{id}', [ProductController::class, 'upate_pr
 Route::get('/manage_menu', [ManageMenuController::class, 'index'])->name('manage_menu');
 Route::post('/list_menu', [ManageMenuController::class, 'listMenu'])->name('list_menu');
 
-Route::get('/create_menu', [ManageMenuController::class, 'createMenu'])->name('create_menu');
+// Route::get('/create_menu', [ManageMenuController::class, 'createMenu'])->name('create_menu');
+Route::post('/create_menu', [ManageMenuController::class, 'store'])->name('create_menu');
 
 Route::get('/menu_access', [ManageMenuController::class, 'menuAccess'])->name('menu_access');
 Route::post('/create_access', [ManageMenuController::class, 'createAccess'])->name('create_access');

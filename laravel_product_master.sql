@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 16, 2024 at 11:58 AM
+-- Generation Time: Jul 19, 2024 at 12:41 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -141,11 +141,12 @@ CREATE TABLE `menus` (
 --
 
 INSERT INTO `menus` (`id`, `menu_name`, `seq`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'NPD Request', NULL, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
-(2, 'ทะเบียนสินค้า', NULL, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
-(3, 'Marketing', NULL, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
-(4, 'Managemenu', NULL, 1, '2024-06-28 07:48:31', '2024-06-28 07:48:34'),
-(5, 'อื่นๆ', NULL, 1, '2024-07-02 03:36:12', '2024-07-02 03:36:12');
+(1, 'NPD Request', 1, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
+(2, 'ทะเบียนสินค้า', 2, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
+(3, 'Marketing', 3, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
+(4, 'Managemenu', 4, 1, '2024-06-28 07:48:31', '2024-06-28 07:48:34'),
+(5, 'อื่นๆ', 5, 1, '2024-07-02 03:36:12', '2024-07-02 03:36:12'),
+(7, '6', 6, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -176,7 +177,9 @@ INSERT INTO `menu_relations` (`id`, `position_id`, `menu_id`, `view`, `create`, 
 (1, 1, 1, 1, 1, 1, 1, 1, NULL, NULL, '2023-01-19 18:07:36', '2023-01-19 18:07:36'),
 (2, 1, 2, 1, NULL, NULL, NULL, 1, NULL, NULL, '2023-01-19 18:07:36', '2023-01-19 18:07:36'),
 (3, 5, 1, 1, NULL, NULL, NULL, 1, NULL, NULL, '2023-01-19 18:07:38', '2023-01-19 18:07:38'),
-(4, 5, 2, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL);
+(4, 5, 2, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL),
+(5, 1, 5, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-18 02:47:52', '2024-07-18 02:47:52'),
+(6, 7, 7, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -436,7 +439,8 @@ CREATE TABLE `product_images` (
 
 CREATE TABLE `submenus` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `menu_relation_id` int(11) NOT NULL COMMENT 'รหัสเมนู',
+  `menu_id` int(11) DEFAULT NULL,
+  `menu_relation_id` int(11) DEFAULT NULL COMMENT 'รหัสเมนู',
   `name` varchar(255) DEFAULT NULL COMMENT 'ชื่อเมนูย่อย',
   `seq` int(11) NOT NULL DEFAULT 0 COMMENT 'ลำดับเมนูย่อย',
   `view` int(11) DEFAULT NULL COMMENT 'action',
@@ -454,11 +458,12 @@ CREATE TABLE `submenus` (
 -- Dumping data for table `submenus`
 --
 
-INSERT INTO `submenus` (`id`, `menu_relation_id`, `name`, `seq`, `view`, `create`, `edit`, `delete`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 1, 'menu_1_test_1', 1, 1, 1, 1, 1, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
-(2, 1, 'menu_1_test_2', 2, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
-(3, 3, 'menu_1_test_1', 1, 1, 1, 1, 1, 1, NULL, NULL, '2024-07-09 08:00:47', '2024-07-09 08:00:47'),
-(4, 3, 'menu_1_test_2', 2, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-11 02:20:24', '2024-07-11 02:20:24');
+INSERT INTO `submenus` (`id`, `menu_id`, `menu_relation_id`, `name`, `seq`, `view`, `create`, `edit`, `delete`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 5, 5, 'Product', 1, 1, 1, 1, 1, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
+(2, 5, 5, 'Billing', 2, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
+(3, 5, 5, 'Invoice', 3, 1, 1, 1, 1, 1, NULL, NULL, '2024-07-09 08:00:47', '2024-07-09 08:00:47'),
+(4, 7, 6, '6.1', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-07-18 18:46:49', '2024-07-18 18:46:49'),
+(5, 7, 6, '6.2', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-07-18 18:46:49', '2024-07-18 18:46:49');
 
 -- --------------------------------------------------------
 
@@ -1860,13 +1865,13 @@ ALTER TABLE `manage_menus`
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `menu_relations`
 --
 ALTER TABLE `menu_relations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -1908,7 +1913,7 @@ ALTER TABLE `product_images`
 -- AUTO_INCREMENT for table `submenus`
 --
 ALTER TABLE `submenus`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `trn_dona_totambons`

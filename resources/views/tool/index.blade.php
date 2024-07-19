@@ -275,7 +275,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         let i = 0;
-        $('#add').click( () => {
+        $('#add').click(function() {
             ++i;
             $('#table').append(
                 `<tr>
@@ -288,7 +288,6 @@
                 </tr>`);
         });
         console.log("Index: ", ++i)
-        console.log("Click ", $('#add').click())
         $(document).on('click', '.remove-table-row', function() {
             $(this).parents('tr').remove();
         });

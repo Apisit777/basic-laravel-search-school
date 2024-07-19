@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 class ManageMenuController extends Controller
 {
@@ -39,6 +40,7 @@ class ManageMenuController extends Controller
         // }
         // dd($menu_data);
 
+        $Routename = Route::currentRouteName();
         $menus = menu::with(['getMenuRelation' => function ($query) {
             $query->where('status', 1)
             ->with('getSubMenu');
@@ -63,18 +65,18 @@ class ManageMenuController extends Controller
 
         $menuData = [
             [
-                'main_menu' => ['id' => 1,'Menu 1', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
+                'main_menu' => ['id' => 1, 'name' => 'Menu 1', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
                 'sub_menus' => [
                     ['id' => 1, 'name' => 'Submenu 1.1', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
                     ['id' => 2, 'name' => 'Submenu 1.2', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
                 ],
             ],
             [
-                'main_menu' => ['id' => 2, 'Menu 2', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
+                'main_menu' => ['id' => 2, 'name' => 'Menu 2', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
                 'sub_menus' => [],
             ],
             [
-                'main_menu' => ['id' => 3,'Menu 3', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
+                'main_menu' => ['id' => 3, 'name' => 'Menu 3', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
                 'sub_menus' => [
                     ['id' => 3, 'name' => 'Submenu 3.1', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
                     ['id' => 4, 'name' => 'Submenu 3.2', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
@@ -86,9 +88,10 @@ class ManageMenuController extends Controller
     }
     public function updateOrCreateMenu(Request $request, $id)
     {
+        dd($request);
         DB::beginTransaction();
         try {
-
+ 
             $seq = menu::select('seq')
                 ->where('id', $id)
                 ->orderBy('seq', 'DESC')
@@ -247,7 +250,41 @@ class ManageMenuController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        DB::beginTransaction();
+        try {
+ 
+            $seq = menu::max('seq');
+
+            $createMenu = menu::create([
+                'menu_name' => $request->input('menu_name'),
+                'seq' => $seq + 1,
+            ]);
+            // dd($createMenu);
+            $createMenuRelation  = menu_relation::create([
+                'position_id' => $createMenu->id,
+                'menu_id' => $createMenu->id,
+                'status' => 1,
+            ]);
+
+            if (NUll != $request->inputs_submenu && count($request->input('inputs_submenu')) > 0) {
+                $x = 1;
+                foreach ($request->inputs_submenu as $key => $value) {
+                    $createSubmenu = submenu::create([
+                        'menu_relation_id' => $createMenuRelation->id,
+                        'menu_id' => $createMenu->id,
+                        'name' => $value['submenu_name'],
+                        'seq' => $x
+                    ]);
+                    ++$x;
+                }
+            }
+
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
     }
 
     /**

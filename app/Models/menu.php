@@ -6,14 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class menu extends Model
 {
-    protected $fillable = [
-        'menu_name',
-        'menu_relate',
-    ];
+    public $timestamps = false;
+    protected $guarded = [];
 
-    protected $primaryKey = 'id';
-
-    protected $table = 'menus';
 
     public function getMenuRelation()
     {
