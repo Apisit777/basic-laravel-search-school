@@ -19,4 +19,8 @@ class menu extends Model
     {
         return $this->belongsToMany(submenu::class, 'menu_relations');
     }
+    public function getSubMenuLeft()
+    {
+        return $this->hasMany(submenu::class, 'menu_id', 'id');
+    }
 }
