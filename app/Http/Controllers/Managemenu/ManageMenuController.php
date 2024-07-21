@@ -46,7 +46,11 @@ class ManageMenuController extends Controller
             ->with('getSubMenu');
         }])
         ->get();
-        // dd($menus);
+        $menus2 = menu::with(['getSubMenuLeft' => function ($query) {
+            $query->where('status', 1);
+        }])
+        ->get();
+        // dd($Routename);
 
         // $permissions[] = ['view', 'create', 'edit', 'delete'];
         // $userIds = menu_relation::pluck('menu_id');
@@ -84,14 +88,14 @@ class ManageMenuController extends Controller
             ],
         ];
 
-        return view('managemenu.index', compact('menus', 'position', 'menuData'));
+        return view('managemenu.index', compact('menus', 'menus2', 'position', 'menuData'));
     }
     public function updateOrCreateMenu(Request $request, $id)
     {
         dd($request);
         DB::beginTransaction();
         try {
- 
+
             $seq = menu::select('seq')
                 ->where('id', $id)
                 ->orderBy('seq', 'DESC')
@@ -252,7 +256,7 @@ class ManageMenuController extends Controller
     {
         DB::beginTransaction();
         try {
- 
+
             $seq = menu::max('seq');
 
             $createMenu = menu::create([

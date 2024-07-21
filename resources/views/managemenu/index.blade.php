@@ -38,49 +38,47 @@
         <div class="mt-6 flex justify-center items-center">
             <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">@lang('global.content.list_manage_menu')</p>
         </div>
-        
-        <div id="logo-sidebar" class="w-[320px] border-r border-gray-200 md:translate-x-0 dark:border-gray-700 transition-all duration-500"> 
+        <div id="logo-sidebar" class="w-[320px] border-r border-gray-200 md:translate-x-0 dark:border-gray-700 transition-all duration-500">
             <div class="px-3 pb-4 overflow-y-auto bg-white dark:bg-[#202020] duration-500">
                 @foreach($menus as $menu)
                     <ul class="space-y-2 font-medium">
-                        @if (!empty($menu['getMenuRelation'][0]['getSubMenu']))
-                            @if ($menu['id'] == $menu['getMenuRelation'][0]['getSubMenu']['menu_id'])
-                                <li class="relative w-[230px] overflow-hidden group">
-                                    <input type="checkbox" class="peer absolute top-0 inset-x-0 w-full h-10 opacity-0 z-10 cursor-pointer ">
-                                    <div class="flex peer group-hover:bg-gray-100 dark:group-hover:bg-[#303030] duration-500">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 mt-2 ml-2 text-black dark:text-white">
-                                            <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
-                                        </svg>
-                                        <div class="bg-white dark:bg-[#202020] text-white h-10 w-full pl-2.5 flex items-center duration-500 group-hover:bg-gray-100 dark:group-hover:bg-[#303030]">
-                                            <h1 class="text-black dark:text-white text-md">
-                                                {{ $menu['menu_name'] }}
-                                            </h1>
-                                        </div>
+                        @if (!empty($menu['getSubMenuLeft'][0]))
+                            <li class="relative w-[300px] overflow-hidden group">
+                                <input type="checkbox" class="peer absolute top-0 inset-x-0 w-full h-10 opacity-0 z-10 cursor-pointer ">
+                                <div class="flex peer group-hover:bg-gray-100 dark:group-hover:bg-[#303030] duration-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-7 mt-2 ml-3 text-black dark:text-white">
+                                        <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
+                                    </svg>
+                                    <div class="bg-white dark:bg-[#202020] text-white h-10 w-full pl-2.5 flex items-center duration-500 group-hover:bg-gray-100 dark:group-hover:bg-[#303030]">
+                                        <h1 class="text-black dark:text-white text-md">
+                                            {{ $menu['menu_name'] }}
+                                        </h1>
                                     </div>
-                                    <div class="absolute top-2 right-2 transition-tranform duration-500 rotate-0 peer-checked:rotate-180">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-black dark:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
-                                        </svg>
-                                    </div>
-                                </li>
-                            @else
-                                <li>
-                                    <a class="flex items-center mt-5 p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group" href="">
-                                        <span class="flex-1 ms-3 whitespace-nowrap dark:text-white">{{ $menu['menu_name'] }}</span>
-                                    </a>
-                                </li>
-                            @endif
-                        @endif
-                        @if (!empty($menu['getMenuRelation'][0]['getSubMenu']))
-                            @foreach($menu['getMenuRelation'][0]['getSubMenu'] as $submenu)
-                                <ul class="bg-[#f9f9f9] dark:bg-[#232323] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40 h-fit after:absolute after:left-[1rem] after:top-[2.5rem] after:mt-px after:h-[calc(100%-2.45rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-gray-700">
-                                    <li>
-                                        <a class="flex items-center mt-5 p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group" href="">
-                                            <span class="flex-1 ms-3 whitespace-nowrap">&nbsp;&nbsp;&nbsp;{{ $submenu['name']}} <br></span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            @endforeach
+                                </div>
+                                <div class="absolute top-2 right-2 transition-tranform duration-500 rotate-0 peer-checked:rotate-180">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-black dark:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                                @foreach($menu['getSubMenuLeft'] as $submenu)
+                                    <ul class="bg-[#f9f9f9] dark:bg-[#232323] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40 h-fit after:absolute after:left-[1rem] after:top-[2.5rem] after:mt-px after:h-[calc(100%-2.45rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-gray-700">
+                                        <li>
+                                            <a class="flex items-center mt-5 p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group" href="">
+                                                <span class="flex-1 ms-3 whitespace-nowrap">&nbsp;&nbsp;&nbsp;{{ $submenu['name']}} <br></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                @endforeach
+                            </li>
+                        @else
+                            <li>
+                                <a class="flex items-center mt-5 p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group" href="">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 mt-2 ml-2 text-black dark:text-white">
+                                        <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
+                                    </svg>
+                                    <span class="flex-1 ms-3 whitespace-nowrap dark:text-white">{{ $menu['menu_name'] }}</span>
+                                </a>
+                            </li>
                         @endif
                     </ul>
                 @endforeach
@@ -211,8 +209,8 @@
                             เพิ่มสิทธิ์
                         </h5>
                         <!-- Close button -->
-                        <button 
-                            type="button" 
+                        <button
+                            type="button"
                             class="box-content rounded-none border-none text-neutral-500 hover:text-neutral-800 hover:no-underline focus:text-neutral-800 focus:opacity-100 focus:shadow-none focus:outline-none dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"
                             data-twe-modal-dismiss
                             aria-label="Close"
@@ -227,7 +225,7 @@
                                     <path
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
-                                        d="M6 18L18 6M6 6l12 12" 
+                                        d="M6 18L18 6M6 6l12 12"
                                     />
                                 </svg>
                             </span>
@@ -236,7 +234,7 @@
                     <div class=" p-4 text-gray-900 dark:text-gray-100">
                         <label for="name">ชื่อสิทธิ์</label>
                         <input type="text" id="menu_id" name="menu_name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                        
+
                     </div>
                     <div class="p-2 ">
                         <ul class="space-y-2 font-large border-t border-gray-200 dark:border-gray-500"></ul>
@@ -373,7 +371,7 @@
                                                     <td class="text-center"><input type="checkbox" id="action_create_{{ $menu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
                                                     <td class="text-center"><input type="checkbox" id="action_edit_{{ $menu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
                                                     <td class="text-center"><input type="checkbox" id="action_delete_{{ $menu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
-                                                    
+
                                                 </tr>
                                                 @if (!empty( $menu['getMenuRelation'][0]['getSubMenu']))
                                                     @foreach($menu['getMenuRelation'][0]['getSubMenu'] as $submenu)
@@ -561,9 +559,9 @@
                             <path d='M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z' />
                         </svg>"
             ];
-        @endphp     
+        @endphp
 
-        <div id="logo-sidebar" class="w-[320px] border-r border-gray-200 md:translate-x-0 dark:border-gray-700 transition-all duration-500"> 
+        <div id="logo-sidebar" class="w-[320px] border-r border-gray-200 md:translate-x-0 dark:border-gray-700 transition-all duration-500">
             <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-[#202020] duration-500">
                 @foreach($menus as $menu)
                     <ul class="space-y-2 font-medium">
@@ -604,7 +602,7 @@
                     </ul>
                 @endforeach
             </div>
-        </div> 
+        </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
@@ -694,12 +692,14 @@
             $('#loader_create_menu').addClass('hidden');
             $('#menu_id').val('')
             $('#submenu_id').val('')
+            $('#table').remove()
         }
         function errorMessage(text) {
             $('#loader_create_menu').addClass('hidden');
             $('#menu_id').val('')
             $('#submenu_id').val('')
-        }     
+            $('#table').remove()
+        }
         let select_pos;
         function setMenu(data){
             if(select_pos){
