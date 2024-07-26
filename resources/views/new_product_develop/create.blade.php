@@ -32,7 +32,7 @@
             <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
                 <div class="lg:col-span-4 xl:grid-cols-4">
                     <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                        <div class="md:col-span-2" >
+                        <!-- <div class="md:col-span-2" >
                             <label for="name">Customer<span class="text-danger"> *</span></label>
                             <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                         </div>
@@ -50,6 +50,10 @@
                             <select class="js-example-basic-single w-full rounded-sm text-xs" id="product_id" name="product_id" onchange="onSelect(this)">
                                 <option value=""> --- กรุณาเลือก ---</option>
                             </select>
+                        </div> -->
+                        <div class="md:col-span-6">
+                            <label for="seq">รหัสสินค้า</label>
+                            <input type="text" name="seq" id="seq" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-[#101010] dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="{{ $productCode }}" disabled>
                         </div>
                     </div>
                 </div>
@@ -222,87 +226,9 @@
                                 </div>
                             </li> -->
                             <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
-                                <div data-twe-stepper-head-ref="" class="setpcollep flex cursor-pointer items-center p-1 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
-                                    <span data-twe-stepper-head-icon-ref="" class="bg_step_color me-3 flex h-[1.938rem] w-[1.938rem] items-center justify-center rounded-full text-sm  !bg-primary-100 !text-primary-700 dark:!bg-slate-900 dark:!text-primary-500">
-                                        1
-                                    </span>
-                                    <span data-twe-stepper-head-text-ref="" class="after:absolute after:flex after:text-[0.8rem] text-black/50 dark:text-white/50 font-medium !text-black/50 dark:!text-white/50">
-                                        ข้อมูลผลิตภัณฑ์
-                                    </span>
-                                </div>
-                                <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[1.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
-                                    <div class="grid grid-cols-5 gap-10">
-                                        <div class="form col-span-5">
-                                            <div class="relative w-full overflow-hidden peer-checked:hidden">
-                                                <input type="checkbox" class="setcheckbox peer absolute top-0 inset-x-0 w-full h-12 opacity-0 cursor-pointer">
-                                                <div class="bg-[#d7d8db] dark:bg-[#303030] text-white h-12 w-full pl-5 flex items-center">
-                                                    <h1 class="text-gray-900 dark:text-white text-lg">
-                                                        ข้อมูลผลิตภัณฑ์
-                                                    </h1>
-                                                </div>
-                                                <div class="absolute top-3 right-3 text-white transition-tranform duration-500 rotate-180 peer-checked:rotate-0">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900 dark:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
-                                                    </svg>
-                                                </div>
-                                                <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
-                                                    <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
-                                                        <div class="lg:col-span-4">
-                                                            <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
-                                                                <div class="md:col-span-6">
-                                                                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Concept</label>
-                                                                    <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
-                                                                </div>
-                                                                <div class="md:col-span-6">
-                                                                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Benefix</label>
-                                                                    <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
-                                                                </div>
-                                                                <div class="md:col-span-2" >
-                                                                    <label for="name">texture<span class="text-danger"> *</span></label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="" name="">
-                                                                        <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($brands as $key => $brand)
-                                                                            <option value={{ $brand->id }}>{{ $brand->company_name }}</option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </div>
-                                                                <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="name">ระบุ<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="name">Color<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-6" style="position: relative;">
-                                                                    <label for="name">Fragrance Type<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-6">
-                                                                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Active Ingrement</label>
-                                                                    <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
-                                                                </div>
-                                                                <div class="md:col-span-6" style="position: relative;">
-                                                                    <label for="name">สินค้าต้นแบบที่ใช้วิจัย (STD)<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-6" style="position: relative;">
-                                                                    <label for="name">P/K ที่ใช้<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
                                 <div data-twe-stepper-head-ref="" class="setpcollep  flex cursor-pointer items-center p-1 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
                                     <span data-twe-stepper-head-icon-ref="" class="bg_step_color me-3 flex h-[1.938rem] w-[1.938rem] items-center justify-center rounded-full text-sm  !bg-primary-100 !text-primary-700 dark:!bg-slate-900 dark:!text-primary-500">
-                                        2
+                                        1
                                     </span>
                                     <span data-twe-stepper-head-text-ref="" class="after:absolute after:flex after:text-[0.8rem] text-black/50 dark:text-white/50 font-medium !text-black/50 dark:!text-white/50">
                                         รายละเอียดผลิตภัณฑ์
@@ -328,7 +254,7 @@
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">หายเลขเอกสาร<span class="text-danger"> *</span></label>
+                                                                    <label for="name">หมายเลขเอกสาร<span class="text-danger"> *</span></label>
                                                                     <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
@@ -434,6 +360,84 @@
                                 </div>
                             </li>
                             <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
+                                <div data-twe-stepper-head-ref="" class="setpcollep flex cursor-pointer items-center p-1 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
+                                    <span data-twe-stepper-head-icon-ref="" class="bg_step_color me-3 flex h-[1.938rem] w-[1.938rem] items-center justify-center rounded-full text-sm  !bg-primary-100 !text-primary-700 dark:!bg-slate-900 dark:!text-primary-500">
+                                        2
+                                    </span>
+                                    <span data-twe-stepper-head-text-ref="" class="after:absolute after:flex after:text-[0.8rem] text-black/50 dark:text-white/50 font-medium !text-black/50 dark:!text-white/50">
+                                        ข้อมูลผลิตภัณฑ์
+                                    </span>
+                                </div>
+                                <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[1.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
+                                    <div class="grid grid-cols-5 gap-10">
+                                        <div class="form col-span-5">
+                                            <div class="relative w-full overflow-hidden peer-checked:hidden">
+                                                <input type="checkbox" class="setcheckbox peer absolute top-0 inset-x-0 w-full h-12 opacity-0 cursor-pointer">
+                                                <div class="bg-[#d7d8db] dark:bg-[#303030] text-white h-12 w-full pl-5 flex items-center">
+                                                    <h1 class="text-gray-900 dark:text-white text-lg">
+                                                        ข้อมูลผลิตภัณฑ์
+                                                    </h1>
+                                                </div>
+                                                <div class="absolute top-3 right-3 text-white transition-tranform duration-500 rotate-180 peer-checked:rotate-0">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900 dark:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
+                                                    </svg>
+                                                </div>
+                                                <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
+                                                    <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
+                                                        <div class="lg:col-span-4">
+                                                            <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
+                                                                <div class="md:col-span-6">
+                                                                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Concept</label>
+                                                                    <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                                                                </div>
+                                                                <div class="md:col-span-6">
+                                                                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Benefix</label>
+                                                                    <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                                                                </div>
+                                                                <div class="md:col-span-2" >
+                                                                    <label for="name">texture<span class="text-danger"> *</span></label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="" name="">
+                                                                        <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($brands as $key => $brand)
+                                                                            <option value={{ $brand->id }}>{{ $brand->company_name }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="md:col-span-2" style="position: relative;">
+                                                                    <label for="name">ระบุ<span class="text-danger"> *</span></label>
+                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                </div>
+                                                                <div class="md:col-span-2" style="position: relative;">
+                                                                    <label for="name">Color<span class="text-danger"> *</span></label>
+                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                </div>
+                                                                <div class="md:col-span-6" style="position: relative;">
+                                                                    <label for="name">Fragrance Type<span class="text-danger"> *</span></label>
+                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                </div>
+                                                                <div class="md:col-span-6">
+                                                                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Active Ingrement</label>
+                                                                    <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                                                                </div>
+                                                                <div class="md:col-span-6" style="position: relative;">
+                                                                    <label for="name">สินค้าต้นแบบที่ใช้วิจัย (STD)<span class="text-danger"> *</span></label>
+                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                </div>
+                                                                <div class="md:col-span-6" style="position: relative;">
+                                                                    <label for="name">P/K ที่ใช้<span class="text-danger"> *</span></label>
+                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
                                 <div data-twe-stepper-head-ref="" class="setpcollep  flex cursor-pointer items-center p-1 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
                                     <span data-twe-stepper-head-icon-ref="" class="bg_step_color me-3 flex h-[1.938rem] w-[1.938rem] items-center justify-center rounded-full text-sm  !bg-primary-100 !text-primary-700 dark:!bg-slate-900 dark:!text-primary-500">
                                         3
@@ -517,6 +521,13 @@
     {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
+
+        getParmeterLogin()
+        function getParmeterLogin() {
+            let dataLogin = sessionStorage.getItem("credetail");
+            let dataJson = JSON.parse(dataLogin)
+            console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
+        }
 
         function onOpenhandler(params) {
             document.querySelectorAll('.setpcollep').forEach((element, index) => {

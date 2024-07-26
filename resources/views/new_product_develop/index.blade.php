@@ -140,6 +140,14 @@
         </script>
     @endif
     <script>
+        
+        getParmeterLogin()
+        function getParmeterLogin() {
+            let dataLogin = sessionStorage.getItem("credetail");
+            let dataJson = JSON.parse(dataLogin)
+            console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
+        }
+
         const pusher  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
         const channel = pusher.subscribe('public');
 

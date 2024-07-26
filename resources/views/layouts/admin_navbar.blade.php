@@ -98,6 +98,8 @@
 
                 <div id="auth_fullname_login" class="flex">
                 </div>
+                <div id="auth_departmant_login" class="flex">
+                </div>
 
                 @php
                     $current_lang = session()->get('locale');
