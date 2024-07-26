@@ -14,6 +14,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Route;
 
 class ManageMenuController extends Controller
@@ -257,29 +258,47 @@ class ManageMenuController extends Controller
         DB::beginTransaction();
         try {
 
+            $validator = Validator::make($request->all(), [
+                'menu_name' => 'required',
+                'url' => 'required',
+            ]);
+    
+            if ($validator->fails()) {
+                return response()->json(['status' => 'fail', 'message' => $validator->errors()]);
+            }
+
             $seq = menu::max('seq');
 
             $createMenu = menu::create([
                 'menu_name' => $request->input('menu_name'),
+                'url' => $request->input('menu_url'),
+                'status' => 1,
                 'seq' => $seq + 1,
             ]);
-            // dd($createMenu);
-            $createMenuRelation  = menu_relation::create([
-                'position_id' => $createMenu->id,
-                'menu_id' => $createMenu->id,
-                'status' => 1,
-            ]);
 
-            if (NUll != $request->inputs_submenu && count($request->input('inputs_submenu')) > 0) {
-                $x = 1;
-                foreach ($request->inputs_submenu as $key => $value) {
-                    $createSubmenu = submenu::create([
-                        'menu_relation_id' => $createMenuRelation->id,
+            // dd($request->inputs_submenu);
+            if ($request->inputs_submenu > 0) {
+                if (NUll != $request->inputs_submenu && count($request->input('inputs_submenu')) > 0) {
+                    $createMenuRelation  = menu_relation::create([
+                        'position_id' => $createMenu->id,
                         'menu_id' => $createMenu->id,
-                        'name' => $value['submenu_name'],
-                        'seq' => $x
+                        'status' => 1,
                     ]);
-                    ++$x;
+                }
+    
+                if (NUll != $request->inputs_submenu && count($request->input('inputs_submenu')) > 0) {
+                    $x = 1;
+                    foreach ($request->inputs_submenu as $key => $value) {
+                        $createSubmenu = submenu::create([
+                            'menu_relation_id' => $createMenuRelation->id,
+                            'menu_id' => $createMenu->id,
+                            'name' => $value['submenu_name'],
+                            'url' => $value['submenu_url'],
+                            'seq' => $x,
+                            'status' => 1,
+                        ]);
+                        ++$x;
+                    }
                 }
             }
 
@@ -287,6 +306,8 @@ class ManageMenuController extends Controller
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
             DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+
             return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
         }
     }

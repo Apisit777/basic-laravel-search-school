@@ -97,13 +97,125 @@
     <div class="min-h-screen p-10" style="background-image: url('https://www.ssup.co.th/wp-content/uploads/2022/11/shutterstock_2079577573.png')">
         <div class="g-2 flex flex-wrap items-center justify-center lg:justify-between">
             <div class="mb-12 grow-0 basis-auto md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12 xl:ml-12">
+                <!-- <div class="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-4/12">
+                    <form class="group js-validation-signin max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-32" action="javascript:void(0)" method="POST" novalidate>
+                        <div class="flex flex-row items-center justify-center lg:justify-start">
+                            <div class="flex text-center">
+                                <p class="mb-0 me-4 mt-4 text-lg">Sign in with</p>
+                            </div>
+                        </div>
+
+                        <div class="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-black dark:before:border-blue-500 after:mt-0.5 after:flex-1 after:border-t after:border-black dark:after:border-blue-500">
+                            <p class="mx-4 mb-0 text-center font-semibold dark:text-white">
+                            Or
+                            </p>
+                        </div>
+                        
+                        <div class="flex flex-col items-start space-y-4">
+                            <h1 class="text-xl font-medium text-gray-800">Log in to your account</h1>
+
+                            <div class="flex w-full flex-col items-start ">
+                                <label for="email" class="block text-sm font-normal text-black dark:text-white">Username</label>
+                                <input type="text" id="username" name="username" class="peer block w-full rounded-sm border-black dark:border-gray-100 p-2.5 text-sm text-gray-900 placeholder:text-xs placeholder:font-light placeholder:text-gray-400 focus:border-none focus:outline-none focus:ring-1 focus:ring-sky-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500" placeholder="Username" required pattern="^([A-Z][A-Za-z ,.'`-]{3,30})$" />
+                                <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">Please enter a valid username </span>
+                            </div>
+
+                            <div class="flex w-full flex-col items-start ">
+                                <label for="password" class="block text-sm font-normal text-black dark:text-white">Password</label>
+                                <input type="password" id="password" name="password" class="peer block w-full rounded-sm border-black dark:border-gray-100 p-2.5 text-sm text-gray-900 placeholder:text-xs placeholder:font-light placeholder:text-gray-400 focus:border-none focus:outline-none focus:ring-1 focus:ring-sky-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500" placeholder="*********" required pattern=".{7,}" />
+                                <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">Please enter a valid password</span>
+                            </div>
+
+                            <div class="flex w-full">
+                                <button 
+                                    onClick="checkLogin()"
+                                    type="submit"
+                                    class="w-full cursor-pointer rounded bg-primary-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-blue-300 group-invalid:pointer-events-none group-invalid:opacity-60">
+                                    Submit
+                                </button>
+                            </div>
+                            <p class="mt-4 block text-center font-sans text-base font-normal leading-relaxed antialiased text-black dark:text-white">
+                                Already have an account?
+                                    <a href="{{ route('register') }}" class="cursor-pointer inline-block space-y-2 border-b border-black dark:border-blue-500">
+                                        Create an account
+                                    </a>
+                            </p>
+                            <span class="mt-4 block font-sans text-xs font-bold text-center text-black dark:text-white">
+                                PRODUCT MASTER (V 1.04.0 © 2024)
+                            </span>
+                        </div>
+                    </form>
+                </div> -->
+                
             </div>
+
             <div class="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-4/12">
-                <form class="js-validation-signin max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-32" action="javascript:void(0)" method="POST">
+                <form id="from_user" class="group js-validation-signin max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-32" action="javascript:void(0)" method="POST">
                     <div class="flex flex-row items-center justify-center lg:justify-start">
                         <div class="flex text-center">
                             <p class="mb-0 me-4 mt-4 text-lg">Sign in with</p>
-                            {{-- <button class="flex items-center bg-white dark:bg-[#303030] border border-gray-300 rounded-lg shadow-md px-6 py-5 text-sm font-medium text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                        </div>
+                    </div>
+
+                    <div class="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-black dark:before:border-blue-500 after:mt-0.5 after:flex-1 after:border-t after:border-black dark:after:border-blue-500">
+                        <p class="mx-4 mb-0 text-center font-semibold dark:text-white">
+                        Or
+                        </p>
+                    </div>
+                    <div class="flex flex-col gap-6">
+                        <div class="flex w-full flex-col items-start ">
+                            <label for="email" class="block text-sm font-normal text-black dark:text-white">Username</label>
+                            <input type="text" id="username" name="username" class="peer block w-full rounded-sm border-black dark:border-gray-100 p-2.5 text-sm text-gray-900 placeholder:text-xs placeholder:font-light placeholder:text-gray-400 focus:border-none focus:outline-none focus:ring-1 focus:ring-sky-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500" placeholder="Username" required pattern="^([A-Z][A-Za-z ,.'`-]{3,30})$" />
+                            <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">Please enter a valid username </span>
+                        </div>
+                        <div class="flex w-full flex-col items-start ">
+                            <label for="password" class="block text-sm font-normal text-black dark:text-white">Password</label>
+                            <input type="password" id="password" name="password" class="peer block w-full rounded-sm border-black dark:border-gray-100 p-2.5 text-sm text-gray-900 placeholder:text-xs placeholder:font-light placeholder:text-gray-400 focus:border-none focus:outline-none focus:ring-1 focus:ring-sky-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500" placeholder="*********" required pattern=".{4,}" />
+                            <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">Please enter a valid password</span>
+                        </div>
+                    </div>
+                    <div class="inline-flex items-center">
+                        <label
+                            class="relative -ml-2.5 flex cursor-pointer items-center rounded-full p-3"
+                            htmlFor="checkbox"
+                            data-ripple-dark="true"
+                        >
+                        </label>
+                        <label class="mt-px cursor-pointer select-none font-light" htmlFor="checkbox">
+                            <p class="flex items-center font-sans text-sm font-normal leading-normal antialiased">
+                                <!-- I agree the -->
+                                <Link class="font-medium transition-colors hover:text-blue-500" href="#" >
+                                    <!-- &nbsp;Terms and Conditions -->
+                                </Link>
+                            </p>
+                        </label>
+                    </div>
+                    <div class="flex w-full">
+                        <button 
+                            onClick="checkLogin()"
+                            type="submit"
+                            class="w-full cursor-pointer rounded bg-primary-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-blue-300 group-invalid:pointer-events-none group-invalid:opacity-60">
+                            Login
+                        </button>
+                    </div>
+                    <p class="mt-4 block text-center font-sans text-base font-normal leading-relaxed antialiased">
+                        Already have an account?
+                            <a href="{{ route('register') }}" class="cursor-pointer inline-block space-y-2 border-b border-black dark:border-blue-500">
+                                Create an account
+                            </a>
+                    </p>
+                    <span class="mt-4 block font-sans text-xs font-bold text-center">
+                        PRODUCT MASTER (V 1.04.0 © 2024)
+                    </span>
+                </form>
+            </div>
+
+            <!-- <div class="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-4/12">
+                <form id="from_user" class="js-validation-signin max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-32" action="javascript:void(0)" method="POST">
+                    <div class="flex flex-row items-center justify-center lg:justify-start">
+                        <div class="flex text-center">
+                            <p class="mb-0 me-4 mt-4 text-lg">Sign in with</p>
+                             <button class="flex items-center bg-white dark:bg-[#303030] border border-gray-300 rounded-lg shadow-md px-6 py-5 text-sm font-medium text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                                 <img src="https://www.ssup.co.th/wp-content/uploads/2022/11/site-logo-g.png" width="65px" height="65px">
                             </button>
                             <button class="flex items-center mr-2 bg-white dark:bg-[#303030] border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
@@ -117,7 +229,7 @@
                                 <span>
                                     Google
                                 </span>
-                            </button> --}}
+                            </button> 
                         </div>
                     </div>
 
@@ -162,14 +274,13 @@
 
                     <a class="mb-3 flex w-full items-center justify-center rounded bg-primary px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group"
                         style="background-color: #3b5998"
-                        onClick="checkLogin()">
-                        <button type="" class="">
+                        onClick="checkLogin()"
+                        type="submit">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                 <path fill-rule="evenodd" d="M7.5 3.75A1.5 1.5 0 0 0 6 5.25v13.5a1.5 1.5 0 0 0 1.5 1.5h6a1.5 1.5 0 0 0 1.5-1.5V15a.75.75 0 0 1 1.5 0v3.75a3 3 0 0 1-3 3h-6a3 3 0 0 1-3-3V5.25a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3V9A.75.75 0 0 1 15 9V5.25a1.5 1.5 0 0 0-1.5-1.5h-6Zm10.72 4.72a.75.75 0 0 1 1.06 0l3 3a.75.75 0 0 1 0 1.06l-3 3a.75.75 0 1 1-1.06-1.06l1.72-1.72H9a.75.75 0 0 1 0-1.5h10.94l-1.72-1.72a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
                             </svg>
                             </span>
                             Login
-                        </button>
                     </a>
 
                     <p class="mt-4 block text-center font-sans text-base font-normal leading-relaxed antialiased">
@@ -182,7 +293,8 @@
                         PRODUCT MASTER (V 1.04.0 © 2024)
                     </span>
                 </form>
-            </div>
+            </div> -->
+
         </div>
         <!-- <div class="relative w-[350px] overflow-hidden">
             <input type="checkbox" class="peer absolute top-0 inset-x-0 w-full h-12 opacity-0 z-100000 cursor-pointer">
@@ -228,8 +340,9 @@
 
 
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script> -->
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>
 
@@ -276,16 +389,17 @@
                 sessionStorage.setItem("credetail", JSON.stringify(res.response))
                 if(res.status == 'success') {
                     window.location.replace('/product')
+                } else if (res.status == 'fail') {
+                    errorMessage('Check Username Or Password!')
                 }
             },
             error: (params) => {
                 console.log("🚀 ~ checkLogin ~ params:", params)
 
-                errorMessage('Check Username Or Password.')
+                errorMessage('Check Username Or Password!')
             }
         });
     }
-
     function errorMessage(text) {
         console.log("🚀 ~ errorMessage ~ text:", text)
         $('#loader').addClass('hidden');
@@ -293,5 +407,16 @@
         $('#password').val('')
         toastr.error("Check Username Or Password!");
     }
+
+    $(document).ready(function() {
+        $("#from_user").validate({
+            rules: {
+                username: "required"
+            },
+            messages: {
+                username: "กรุณากรอกชื่อผู้ใช้งาน"
+            },
+        });
+    });
 </script>
 </html>
