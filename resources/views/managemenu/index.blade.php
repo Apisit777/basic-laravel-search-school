@@ -185,7 +185,7 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <input type="text" name="inputs_submenu[0][submenu_name]" id="submenu_id" class="w-12/12 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                        <input type="text" name="inputs_submenu[0][submenu_name]" id="inputs_submenu" class="w-12/12 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                     </td>
                                     <td>
                                         <input type="text" name="inputs_submenu[0][submenu_url]" id="submenu_url_id" class="w-12/12 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" placeholder="EX. manage_menu" />
@@ -382,6 +382,7 @@
                                                             data-twe-target="#exampleModalLg"
                                                             data-twe-ripple-init
                                                             data-twe-ripple-color="light"
+                                                            onclick="modelManageMenu('{{ $menu->id }}', '{{ $menu->menu_name }}', {{ $menus3 }})"
                                                         >
                                                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                                                 <path d="M0 0h24v24H0V0z" fill="none"></path>
@@ -489,7 +490,7 @@
                                                         data-twe-target="#exampleModalLg"
                                                         data-twe-ripple-init
                                                         data-twe-ripple-color="light"
-                                                        onclick="modelManageMenu('{{ $menu_data->id }}', '{{ $menu_data->menu_name }}')"
+                                                        {{-- onclick="modelManageMenu('{{ $menu_data->id }}', '{{ $menu_data->menu_name }}')" --}}
                                                     >
                                                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                                             <path d="M0 0h24v24H0V0z" fill="none"></path>
@@ -611,14 +612,40 @@
             "hideMethod": "fadeOut"
         }
         const dlayMessage = 500;
-        function modelManageMenu(id, menu_name) {
-            console.log(id, menu_name)
+        function modelManageMenu(id, menu_name, menus3) {
+            jQuery(".table_submenu").remove('')
             let url = ""
-
             if(id){
                 jQuery("#edit_id").val(id)
                 jQuery("#menu_id").val(menu_name)
                 jQuery("#exampleModalLgLabel").text('แก้ไขรายการเมนู')
+                menus3.forEach((element, index) => {
+                    let seq = Number(index) + 1
+                    if (index == 0) {
+                        jQuery("#inputs_submenu").val(element.submenu_name)
+                    } else {
+                        $('#table').append(
+                        `<tr class="table_submenu">
+                            <td>
+                                <input class="w-12/12 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" type="text" name="inputs_submenu[`+ seq +`][submenu_name]" id="inputs_submenu[`+ seq +`][submenu_name]" value="`+ element.submenu_name +`" />
+                            </td>
+                            <td>
+                                <input class="w-12/12 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" type="text" name="inputs_submenu[`+ seq +`][submenu_url]" id="inputs_submenu[`+ seq +`][submenu_url]" value="" placeholder="EX. manage_menu" />
+                            </td>
+                            <td class="text-center">
+                                <button
+                                    type="button"
+                                    class="mt-1 px-2 py-1 font-medium tracking-wide bg-[#c72121] hover:bg-[#c23737e3] text-white rounded group remove-table-row"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                        <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>`);
+                    }
+                });
+
             } else {
                 jQuery("#edit_id").val('')
                 jQuery("#menu_id").val('')
@@ -628,13 +655,6 @@
                 jQuery("#exampleModalLgLabel").text('เพิ่มรายการเมนู')
             }
         }
-
-        var myModalEl = document.getElementById('form_menu')
-        myModalEl.addEventListener('hidden.bs.modal', function (event) {
-            // jQuery('#menu_id').val('');
-            // jQuery('#url_id').val('')
-            // jQuery("#formbrand .form-control").removeClass("is-invalid");
-        })
 
         function createMenu() {
             jQuery.ajaxSetup({
@@ -713,8 +733,18 @@
                     //     //     }
                     //     // }
                     // });
-                    let action =  data.id.split('_')[1]
-                    let menuId =  data.id.split('_')[2]
+                    const payload = data.id.split('_')
+                    let action, menuId, type
+                    if (payload[1] === 'submenu') {
+                        type = 'submenu'
+                        action =  payload[2]
+                        menuId =  payload[3]
+                    } else {
+                        type = 'mainmenu'
+                        action =  payload[1]
+                        menuId =  payload[2]
+                    }
+
                     $.ajax({
                         type: "POST",
                         url: "{{url('create_access')}}",
@@ -723,6 +753,7 @@
                             menu_id: menuId,
                             action: action,
                             state: data.checked ? 1 : 0,
+                            type: type
                         },
                         beforeSend: function () {
                             $('#loader').removeClass('hidden')
@@ -795,7 +826,7 @@
         $('#add').click( () => {
             ++i;
             $('#table').append(
-                `<tr>
+                `<tr class="table_submenu">
                     <td>
                         <input class="w-12/12 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" type="text" name="inputs_submenu[`+ i +`][submenu_name]" id="submenu_id" value="" />
                     </td>

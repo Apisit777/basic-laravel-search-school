@@ -51,7 +51,12 @@ class ManageMenuController extends Controller
             $query->where('status', 1);
         }])
         ->get();
-        // dd($Routename);
+
+        $menus3 = submenu::select(
+            'menu_id',
+            'name as submenu_name')
+            ->get();
+        // dd($menus3);
 
         // $permissions[] = ['view', 'create', 'edit', 'delete'];
         // $userIds = menu_relation::pluck('menu_id');
@@ -89,7 +94,7 @@ class ManageMenuController extends Controller
             ],
         ];
 
-        return view('managemenu.index', compact('menus', 'menus2', 'position', 'menuData'));
+        return view('managemenu.index', compact('menus', 'menus2', 'menus3', 'position', 'menuData'));
     }
     public function updateOrCreateMenu(Request $request, $id)
     {
@@ -198,19 +203,21 @@ class ManageMenuController extends Controller
         // }
         // dd($request->action);
 
+        dd($request);
         $menu_state = $request->input('state');
 
-        $menu_relation = menu_relation::updateOrCreate(['position_id' => $request->pos_id, 'menu_id' => $request->menu_id], [
-            $request->action => $menu_state,
-        ]);
+        if ($request->input('state') == 'submenu') {
+            $submenu_relation = submenu::updateOrCreate(['menu_relation_id' => $request->menu_relation_id], [
+                $request->submenu_action => $menu_state,
+            ]);
+        } else {
+            $menu_relation = menu_relation::updateOrCreate(['position_id' => $request->pos_id, 'menu_id' => $request->menu_id], [
+                $request->action => $menu_state,
+            ]);
+        }
 
-        $submenu_state = $request->input('submenu_state');
-
-        $submenu_relation = submenu::updateOrCreate(['menu_relation_id' => $request->menu_relation_id], [
-            $request->submenu_action => $submenu_state,
-        ]);
-
-        return response()->json(['menu' => $menu_relation, 'submenu' => $submenu_relation]);
+        return response()->json(['menu' => $menu_relation]);
+        // return response()->json(['menu' => $menu_relation, 'submenu' => $submenu_relation]);
     }
     public function deleteAccess(Request $request)
     {
@@ -262,7 +269,7 @@ class ManageMenuController extends Controller
                 'menu_name' => 'required',
                 'url' => 'required',
             ]);
-    
+
             if ($validator->fails()) {
                 return response()->json(['status' => 'fail', 'message' => $validator->errors()]);
             }
@@ -285,7 +292,7 @@ class ManageMenuController extends Controller
                         'status' => 1,
                     ]);
                 }
-    
+
                 if (NUll != $request->inputs_submenu && count($request->input('inputs_submenu')) > 0) {
                     $x = 1;
                     foreach ($request->inputs_submenu as $key => $value) {
