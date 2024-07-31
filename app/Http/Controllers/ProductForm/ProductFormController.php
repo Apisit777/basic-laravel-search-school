@@ -6,6 +6,10 @@ use App\Models\Product;
 use App\Models\position;
 use App\Models\User;
 use App\Models\Brand;
+use App\Models\Npd_cos;
+use App\Models\Npd_pdms;
+use App\Models\Npd_categorys;
+use App\Models\Npd_textures;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -40,7 +44,12 @@ class ProductFormController extends Controller
 
         $Products = $Products->get();
 
-        return view('new_product_develop.create', compact('productCode', 'list_position', 'brands'));
+        $product_co_ordimators = Npd_cos::all();
+        $marketing_managers = Npd_pdms::all();
+        $type_categorys = Npd_categorys::all();
+        $textures = Npd_textures::all();
+        // dd($textures);
+        return view('new_product_develop.create', compact('productCode', 'list_position', 'brands', 'product_co_ordimators', 'marketing_managers', 'type_categorys', 'textures'));
     }
 
     /**

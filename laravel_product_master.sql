@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 19, 2024 at 12:41 PM
+-- Generation Time: Jul 31, 2024 at 01:31 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -130,6 +130,7 @@ CREATE TABLE `manage_menus` (
 CREATE TABLE `menus` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `menu_name` varchar(255) DEFAULT NULL COMMENT 'ชื่อ',
+  `url` varchar(255) DEFAULT NULL,
   `seq` int(11) DEFAULT NULL,
   `status` int(11) DEFAULT NULL COMMENT 'main menu id',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -140,13 +141,17 @@ CREATE TABLE `menus` (
 -- Dumping data for table `menus`
 --
 
-INSERT INTO `menus` (`id`, `menu_name`, `seq`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'NPD Request', 1, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
-(2, 'ทะเบียนสินค้า', 2, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
-(3, 'Marketing', 3, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
-(4, 'Managemenu', 4, 1, '2024-06-28 07:48:31', '2024-06-28 07:48:34'),
-(5, 'อื่นๆ', 5, 1, '2024-07-02 03:36:12', '2024-07-02 03:36:12'),
-(7, '6', 6, NULL, NULL, NULL);
+INSERT INTO `menus` (`id`, `menu_name`, `url`, `seq`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'NPD Request', NULL, 1, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
+(2, 'ทะเบียนสินค้า', NULL, 2, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
+(3, 'Marketing', NULL, 3, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
+(4, 'Managemenu', NULL, 4, 1, '2024-06-28 07:48:31', '2024-06-28 07:48:34'),
+(5, 'อื่นๆ', NULL, 5, 1, '2024-07-02 03:36:12', '2024-07-02 03:36:12'),
+(37, '1', NULL, 6, 1, NULL, NULL),
+(38, '2', NULL, 7, 1, NULL, NULL),
+(39, '3', NULL, 8, 1, NULL, NULL),
+(40, '4', NULL, 9, 1, NULL, NULL),
+(41, '5', NULL, 10, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -158,6 +163,7 @@ CREATE TABLE `menu_relations` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `position_id` int(11) NOT NULL COMMENT 'รหัสตำแหน่ง',
   `menu_id` int(11) NOT NULL COMMENT 'รหัสเมนู',
+  `submenu_id` int(11) DEFAULT NULL,
   `view` int(11) DEFAULT NULL,
   `create` int(11) DEFAULT NULL,
   `edit` int(11) DEFAULT NULL,
@@ -173,13 +179,21 @@ CREATE TABLE `menu_relations` (
 -- Dumping data for table `menu_relations`
 --
 
-INSERT INTO `menu_relations` (`id`, `position_id`, `menu_id`, `view`, `create`, `edit`, `delete`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 1, 1, 1, 1, 1, 1, 1, NULL, NULL, '2023-01-19 18:07:36', '2023-01-19 18:07:36'),
-(2, 1, 2, 1, NULL, NULL, NULL, 1, NULL, NULL, '2023-01-19 18:07:36', '2023-01-19 18:07:36'),
-(3, 5, 1, 1, NULL, NULL, NULL, 1, NULL, NULL, '2023-01-19 18:07:38', '2023-01-19 18:07:38'),
-(4, 5, 2, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL),
-(5, 1, 5, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-18 02:47:52', '2024-07-18 02:47:52'),
-(6, 7, 7, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL);
+INSERT INTO `menu_relations` (`id`, `position_id`, `menu_id`, `submenu_id`, `view`, `create`, `edit`, `delete`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 1, 1, NULL, 1, 1, 1, 1, 1, NULL, NULL, '2023-01-19 18:07:36', '2023-01-19 18:07:36'),
+(2, 1, 2, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, '2023-01-19 18:07:36', '2023-01-19 18:07:36'),
+(3, 5, 1, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, '2023-01-19 18:07:38', '2023-01-19 18:07:38'),
+(4, 1, 5, NULL, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL),
+(5, 1, 5, 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-18 02:47:52', '2024-07-18 02:47:52'),
+(6, 1, 5, 2, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(7, 1, 5, 3, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(28, 37, 37, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(29, 38, 38, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(30, 39, 39, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(31, 40, 40, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(32, 41, 41, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(33, 41, 41, 33, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(34, 41, 41, 34, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -214,6 +228,98 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (20, '2024_07_03_035414_create_posts_table', 5),
 (21, '2024_07_03_035448_create_comments_table', 5),
 (23, '2024_07_09_030557_create_submenus_table', 6);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `npd_categorys`
+--
+
+CREATE TABLE `npd_categorys` (
+  `ID` varchar(10) NOT NULL DEFAULT '',
+  `DESCRIPTION` varchar(50) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `npd_categorys`
+--
+
+INSERT INTO `npd_categorys` (`ID`, `DESCRIPTION`) VALUES
+('001', 'Face'),
+('002', 'Body'),
+('003', 'Hair'),
+('004', 'Toiletries'),
+('005', 'Personal Care'),
+('006', 'Make Up'),
+('007', 'Household'),
+('008', 'Other');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `npd_cos`
+--
+
+CREATE TABLE `npd_cos` (
+  `ID` varchar(10) NOT NULL DEFAULT '',
+  `DESCRIPTION` varchar(50) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `npd_cos`
+--
+
+INSERT INTO `npd_cos` (`ID`, `DESCRIPTION`) VALUES
+('002', 'Intira Klaewban'),
+('008', 'Pinyamon Seekaw'),
+('012', 'Mullika Kidarn'),
+('013', 'Budsara Soontaratta'),
+('014', 'Praepan Upalagool'),
+('015', 'Thanayut Mangkhlat');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `npd_pdms`
+--
+
+CREATE TABLE `npd_pdms` (
+  `ID` varchar(10) NOT NULL DEFAULT '',
+  `DESCRIPTION` varchar(50) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `npd_pdms`
+--
+
+INSERT INTO `npd_pdms` (`ID`, `DESCRIPTION`) VALUES
+('001', 'Apaiporn Srisook');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `npd_textures`
+--
+
+CREATE TABLE `npd_textures` (
+  `ID` varchar(10) NOT NULL DEFAULT '',
+  `DESCRIPTION` varchar(50) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `npd_textures`
+--
+
+INSERT INTO `npd_textures` (`ID`, `DESCRIPTION`) VALUES
+('001', 'Cream'),
+('002', 'Gel'),
+('003', 'Lotion'),
+('004', 'Oil'),
+('005', 'Foam'),
+('006', 'Emultion'),
+('007', 'Mask'),
+('008', 'Powder'),
+('009', 'Other');
 
 -- --------------------------------------------------------
 
@@ -411,7 +517,8 @@ INSERT INTO `products` (`id`, `brand_id`, `product_id`, `name`, `company_product
 (4, 1, 20004, 'aaaaa', 'OP', 'T000004', 1, NULL, NULL, '2024-06-10 17:50:26', '2024-06-16 16:36:14'),
 (5, 1, 20005, 'eeeee', 'OP', 'T000005', 2, NULL, NULL, '2024-06-10 19:02:59', '2024-06-16 16:26:45'),
 (6, 1, 20006, 'ttttt', 'OP', 'T000006', 2, NULL, NULL, '2024-06-10 19:35:45', '2024-06-16 16:26:32'),
-(7, 2, 70001, 'jjj', 'Cute Press', 'T000007', 2, NULL, NULL, '2024-06-16 17:57:36', '2024-06-16 20:18:42');
+(7, 2, 70001, 'jjj', 'Cute Press', 'T000007', 2, NULL, NULL, '2024-06-16 17:57:36', '2024-06-16 20:18:42'),
+(8, NULL, NULL, NULL, NULL, 'T000008', 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -434,6 +541,72 @@ CREATE TABLE `product_images` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `pro_develops`
+--
+
+CREATE TABLE `pro_develops` (
+  `BRAND` varchar(10) NOT NULL DEFAULT '',
+  `DOC_NO` varchar(20) NOT NULL DEFAULT '',
+  `REF_DOC` varchar(20) NOT NULL DEFAULT '',
+  `REVISE_NO` decimal(6,0) NOT NULL DEFAULT 0,
+  `EDIT_DT` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
+  `USER_EDIT` varchar(15) NOT NULL DEFAULT '',
+  `STATUS` varchar(5) NOT NULL DEFAULT '',
+  `REMARK_ST` varchar(100) NOT NULL DEFAULT '',
+  `CUST_OEM` varchar(100) NOT NULL DEFAULT '',
+  `JOB_REFNO` varchar(20) NOT NULL DEFAULT '',
+  `DOC_DT` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
+  `NPD` varchar(50) NOT NULL DEFAULT '',
+  `PDM` varchar(50) NOT NULL DEFAULT '',
+  `NAME_ENG` varchar(70) NOT NULL DEFAULT '',
+  `PRODUCT` varchar(15) NOT NULL DEFAULT '',
+  `BARCODE` varchar(15) NOT NULL DEFAULT '',
+  `CATEGORY` varchar(20) NOT NULL DEFAULT '',
+  `CAPACITY` varchar(20) NOT NULL DEFAULT '',
+  `Q_SMELL` decimal(6,2) NOT NULL DEFAULT 0.00,
+  `Q_COLOR` decimal(6,2) NOT NULL DEFAULT 0.00,
+  `TARGET_GRP` varchar(20) NOT NULL DEFAULT '',
+  `TARGET_STK` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
+  `PRICE_FG` varchar(30) NOT NULL DEFAULT '',
+  `PRICE_COST` varchar(30) NOT NULL DEFAULT '',
+  `PRICE_BULK` varchar(30) NOT NULL DEFAULT '',
+  `P_CONCEPT` varchar(1000) NOT NULL DEFAULT '',
+  `P_BENEFIT` varchar(1000) NOT NULL DEFAULT '',
+  `TEXTURE` varchar(20) NOT NULL DEFAULT '',
+  `TEXTURE_OT` varchar(30) NOT NULL DEFAULT '',
+  `COLOR1` varchar(70) NOT NULL DEFAULT '',
+  `COLOR2` varchar(70) NOT NULL DEFAULT '',
+  `COLOR3` varchar(70) NOT NULL DEFAULT '',
+  `FRANGRANCE` varchar(70) NOT NULL DEFAULT '',
+  `INGREDIENT` varchar(1000) NOT NULL DEFAULT '',
+  `STD` varchar(70) NOT NULL DEFAULT '',
+  `PK` varchar(70) NOT NULL DEFAULT '',
+  `OTHER` varchar(70) NOT NULL DEFAULT '',
+  `DOCUMENT` varchar(70) NOT NULL DEFAULT '',
+  `FIRST_ORD` decimal(12,0) NOT NULL DEFAULT 0,
+  `OEM` varchar(1) NOT NULL DEFAULT '',
+  `REASON1` varchar(1) NOT NULL DEFAULT '',
+  `REASON1_DES` varchar(100) NOT NULL DEFAULT '',
+  `REASON2` varchar(1) NOT NULL DEFAULT '',
+  `REASON2_DES` varchar(100) NOT NULL DEFAULT '',
+  `REASON3` varchar(1) NOT NULL DEFAULT '',
+  `REASON3_DES` varchar(100) NOT NULL DEFAULT '',
+  `REF_COLOR` varchar(100) NOT NULL DEFAULT '',
+  `REF_FRAGRANCE` varchar(100) NOT NULL DEFAULT '',
+  `OEM_STD` varchar(100) NOT NULL DEFAULT '',
+  `PACKAGE_BOX` varchar(1) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `pro_develops`
+--
+
+INSERT INTO `pro_develops` (`BRAND`, `DOC_NO`, `REF_DOC`, `REVISE_NO`, `EDIT_DT`, `USER_EDIT`, `STATUS`, `REMARK_ST`, `CUST_OEM`, `JOB_REFNO`, `DOC_DT`, `NPD`, `PDM`, `NAME_ENG`, `PRODUCT`, `BARCODE`, `CATEGORY`, `CAPACITY`, `Q_SMELL`, `Q_COLOR`, `TARGET_GRP`, `TARGET_STK`, `PRICE_FG`, `PRICE_COST`, `PRICE_BULK`, `P_CONCEPT`, `P_BENEFIT`, `TEXTURE`, `TEXTURE_OT`, `COLOR1`, `COLOR2`, `COLOR3`, `FRANGRANCE`, `INGREDIENT`, `STD`, `PK`, `OTHER`, `DOCUMENT`, `FIRST_ORD`, `OEM`, `REASON1`, `REASON1_DES`, `REASON2`, `REASON2_DES`, `REASON3`, `REASON3_DES`, `REF_COLOR`, `REF_FRAGRANCE`, `OEM_STD`, `PACKAGE_BOX`) VALUES
+('OP', 'OP00000109', 'IBH-F155', 11, '2015-01-13 00:00:00', 'sa', '', '', '-', 'OP/IBHS/NP31/49', '2006-05-25 00:00:00', '', '', 'Cuticle Hair Treatment (New Formula)', '', '8850080226546', 'Hair Care', '125 ml', 1.00, 1.00, '20-50', '2007-03-01 00:00:00', '295', '-', '', 'เจลวิตามินบำรุงเส้นผมสูตรเข้มข้น เนื้อบางเบา ซ่อมแซมและป้องกันไม่ให้ผมแตกปลายด้วยการเชื่อม\r\nประสานคิวติเคิลของเส้นผม ให้ผมเรียบลื่น เงางาม ไม่เปราะขาดง่าย \r\n', 'อุดมคุณค่าสารสกัดที่ช่วยเคลือปกป้องเส้นผมจากมลภาวะ ให้เส้นผมนุ่มมาก และ เงางาม จัดทรงง่าย \r\nเป็นธรรมชาติ\r\n', 'เจล', '-', 'ไม่มีสี', '', '', 'เหมือน Cuticle Hair Treatment plus Sunscreen for Long Hair', '-', 'Satinique hi Gloss Serum', 'ใช้ร่วม Cuticle Hair Treatment plus Sunscreen for Long Hair', 'หาก develop แล้วให้ทำ blind test', '-', 0, 'Y', 'Y', '', 'Y', 'Reason 2', 'Y', 'Reason 3', 'Ref Color ---', 'Ref Fragrance ---', 'OEM Benchmark ---', 'N');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `submenus`
 --
 
@@ -442,6 +615,7 @@ CREATE TABLE `submenus` (
   `menu_id` int(11) DEFAULT NULL,
   `menu_relation_id` int(11) DEFAULT NULL COMMENT 'รหัสเมนู',
   `name` varchar(255) DEFAULT NULL COMMENT 'ชื่อเมนูย่อย',
+  `url` varchar(255) DEFAULT NULL,
   `seq` int(11) NOT NULL DEFAULT 0 COMMENT 'ลำดับเมนูย่อย',
   `view` int(11) DEFAULT NULL COMMENT 'action',
   `create` int(11) DEFAULT NULL COMMENT 'action',
@@ -458,12 +632,17 @@ CREATE TABLE `submenus` (
 -- Dumping data for table `submenus`
 --
 
-INSERT INTO `submenus` (`id`, `menu_id`, `menu_relation_id`, `name`, `seq`, `view`, `create`, `edit`, `delete`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 5, 5, 'Product', 1, 1, 1, 1, 1, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
-(2, 5, 5, 'Billing', 2, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
-(3, 5, 5, 'Invoice', 3, 1, 1, 1, 1, 1, NULL, NULL, '2024-07-09 08:00:47', '2024-07-09 08:00:47'),
-(4, 7, 6, '6.1', 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-07-18 18:46:49', '2024-07-18 18:46:49'),
-(5, 7, 6, '6.2', 2, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-07-18 18:46:49', '2024-07-18 18:46:49');
+INSERT INTO `submenus` (`id`, `menu_id`, `menu_relation_id`, `name`, `url`, `seq`, `view`, `create`, `edit`, `delete`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 5, 5, 'Product', '1', 1, 1, 1, 1, 1, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
+(2, 5, 5, 'Billing', '2', 2, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
+(3, 5, 5, 'Invoice', '.', 3, 1, 1, 1, 1, 1, NULL, NULL, '2024-07-09 01:00:47', '2024-07-09 01:00:47'),
+(28, 37, 28, NULL, NULL, 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-31 04:14:11', '2024-07-31 04:14:11'),
+(29, 38, 29, '2', '2', 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-31 04:14:24', '2024-07-31 04:14:24'),
+(30, 39, 30, NULL, NULL, 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-31 04:15:23', '2024-07-31 04:15:23'),
+(31, 40, 31, '4.1', '4.1', 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-31 04:21:59', '2024-07-31 04:21:59'),
+(32, 40, 31, '4.2', '4.2', 2, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-31 04:21:59', '2024-07-31 04:21:59'),
+(33, 41, 32, '5.1', '5.1', 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-31 04:28:26', '2024-07-31 04:28:26'),
+(34, 41, 32, '5.2', '5.2', 2, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-31 04:28:26', '2024-07-31 04:28:26');
 
 -- --------------------------------------------------------
 
@@ -1759,6 +1938,30 @@ ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `npd_categorys`
+--
+ALTER TABLE `npd_categorys`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `npd_cos`
+--
+ALTER TABLE `npd_cos`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `npd_pdms`
+--
+ALTER TABLE `npd_pdms`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `npd_textures`
+--
+ALTER TABLE `npd_textures`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- Indexes for table `password_reset_tokens`
 --
 ALTER TABLE `password_reset_tokens`
@@ -1865,13 +2068,13 @@ ALTER TABLE `manage_menus`
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `menu_relations`
 --
 ALTER TABLE `menu_relations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -1901,7 +2104,7 @@ ALTER TABLE `posts`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `product_images`
@@ -1913,7 +2116,7 @@ ALTER TABLE `product_images`
 -- AUTO_INCREMENT for table `submenus`
 --
 ALTER TABLE `submenus`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `trn_dona_totambons`
