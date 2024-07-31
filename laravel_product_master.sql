@@ -147,11 +147,7 @@ INSERT INTO `menus` (`id`, `menu_name`, `url`, `seq`, `status`, `created_at`, `u
 (3, 'Marketing', NULL, 3, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
 (4, 'Managemenu', NULL, 4, 1, '2024-06-28 07:48:31', '2024-06-28 07:48:34'),
 (5, 'อื่นๆ', NULL, 5, 1, '2024-07-02 03:36:12', '2024-07-02 03:36:12'),
-(37, '1', NULL, 6, 1, NULL, NULL),
-(38, '2', NULL, 7, 1, NULL, NULL),
-(39, '3', NULL, 8, 1, NULL, NULL),
-(40, '4', NULL, 9, 1, NULL, NULL),
-(41, '5', NULL, 10, 1, NULL, NULL);
+(41, '5', NULL, 6, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -187,10 +183,6 @@ INSERT INTO `menu_relations` (`id`, `position_id`, `menu_id`, `submenu_id`, `vie
 (5, 1, 5, 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-18 02:47:52', '2024-07-18 02:47:52'),
 (6, 1, 5, 2, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (7, 1, 5, 3, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(28, 37, 37, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(29, 38, 38, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(30, 39, 39, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(31, 40, 40, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (32, 41, 41, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (33, 41, 41, 33, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (34, 41, 41, 34, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL);
@@ -636,11 +628,6 @@ INSERT INTO `submenus` (`id`, `menu_id`, `menu_relation_id`, `name`, `url`, `seq
 (1, 5, 5, 'Product', '1', 1, 1, 1, 1, 1, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
 (2, 5, 5, 'Billing', '2', 2, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
 (3, 5, 5, 'Invoice', '.', 3, 1, 1, 1, 1, 1, NULL, NULL, '2024-07-09 01:00:47', '2024-07-09 01:00:47'),
-(28, 37, 28, NULL, NULL, 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-31 04:14:11', '2024-07-31 04:14:11'),
-(29, 38, 29, '2', '2', 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-31 04:14:24', '2024-07-31 04:14:24'),
-(30, 39, 30, NULL, NULL, 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-31 04:15:23', '2024-07-31 04:15:23'),
-(31, 40, 31, '4.1', '4.1', 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-31 04:21:59', '2024-07-31 04:21:59'),
-(32, 40, 31, '4.2', '4.2', 2, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-31 04:21:59', '2024-07-31 04:21:59'),
 (33, 41, 32, '5.1', '5.1', 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-31 04:28:26', '2024-07-31 04:28:26'),
 (34, 41, 32, '5.2', '5.2', 2, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-31 04:28:26', '2024-07-31 04:28:26');
 

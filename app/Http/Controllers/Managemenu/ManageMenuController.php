@@ -31,7 +31,6 @@ class ManageMenuController extends Controller
 
         $position = position::all();
         $options = menu_relation::all();
-        // $menus = menu::all();
 
         // $menu_data = [];
         // foreach ($menus as $key => $menu) {
@@ -56,17 +55,14 @@ class ManageMenuController extends Controller
             'menu_id',
             'name as submenu_name')
             ->get();
-        // dd($menus3);
 
-        $menu_permissions = menu::select('id', 'menu_name' )
+        $menu_permissions = menu::select('menus.id', 'menus.menu_name')
             ->get();
-
-        // dd($menu_permissions);
 
         foreach ($menu_permissions as $menu_permission) {
             $submenu_array = [];
 
-            $item_menu = menu_relation::select('submenus.name')
+            $item_menu = menu_relation::select('submenus.name', 'submenus.id')
                 ->leftJoin('submenus', 'menu_relations.submenu_id', 'submenus.id')
                 ->where('menu_relations.menu_id', '=', $menu_permission->id)
                 ->whereNotNull('menu_relations.submenu_id')
@@ -74,11 +70,16 @@ class ManageMenuController extends Controller
 
             foreach ($item_menu as $dataitem_menu) {
                 $submenu_array[] = $dataitem_menu->name;
+                // $submenu_array[] = $dataitem_menu->id;
             }
 
             $menu_permission->submenu_array = $submenu_array;
         }
 
+        $submenu = menu_relation::select('submenus.id', 'submenus.name')
+            ->leftJoin('submenus', 'menu_relations.submenu_id', 'submenus.id')
+            ->whereNotNull('submenu_id')
+        ->get();
         // dd($menu_permissions);
 
         // $permissions[] = ['view', 'create', 'edit', 'delete'];
