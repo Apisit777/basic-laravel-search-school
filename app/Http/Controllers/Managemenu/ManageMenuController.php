@@ -58,6 +58,29 @@ class ManageMenuController extends Controller
             ->get();
         // dd($menus3);
 
+        $menu_permissions = menu::select('id', 'menu_name' )
+            ->get();
+
+        // dd($menu_permissions);
+
+        foreach ($menu_permissions as $menu_permission) {
+            $submenu_array = [];
+
+            $item_menu = menu_relation::select('submenus.name')
+                ->leftJoin('submenus', 'menu_relations.submenu_id', 'submenus.id')
+                ->where('menu_relations.menu_id', '=', $menu_permission->id)
+                ->whereNotNull('menu_relations.submenu_id')
+                ->get();
+
+            foreach ($item_menu as $dataitem_menu) {
+                $submenu_array[] = $dataitem_menu->name;
+            }
+
+            $menu_permission->submenu_array = $submenu_array;
+        }
+
+        // dd($menu_permissions);
+
         // $permissions[] = ['view', 'create', 'edit', 'delete'];
         // $userIds = menu_relation::pluck('menu_id');
         // $permissionData = $userIds->map(function ($userId) use ($permissions) {
@@ -94,7 +117,7 @@ class ManageMenuController extends Controller
             ],
         ];
 
-        return view('managemenu.index', compact('menus', 'menus2', 'menus3', 'position', 'menuData'));
+        return view('managemenu.index', compact('menus', 'menus2', 'menus3', 'position', 'menuData', 'menu_permissions'));
     }
     public function updateOrCreateMenu(Request $request, $id)
     {
@@ -185,8 +208,47 @@ class ManageMenuController extends Controller
                 $check_permission_menus[$key_sub_menu] = $menu_relation->with('getSubMenu')->where('position_id', '=', $request->input('pos_id'))->get();
             }
         }
+
+        // $menu_check = menu::all();
+
+        // foreach ($menu_check as $menu_permission) {
+        //     $submenu_array = [];
+
+        //     $item_menu = menu_relation::select('menu_relations.view')
+        //         ->leftJoin('submenus', 'menu_relations.submenu_id', 'submenus.id')
+        //         ->where('menu_relations.position_id', '=', $request->input('pos_id'))
+        //         ->get();
+
+        //     foreach ($item_menu as $dataitem_menu) {
+        //         $submenu_array[] = $dataitem_menu->view;
+        //     }
+
+        //     $menu_permission->submenu_array = $submenu_array;
+        // }
+
+        $data = menu_relation::where('position_id', '=', $request->input('pos_id'))
+            ->whereNull('submenu_id')
+            ->get();
+
+        $submenu_array = [];
+        foreach ($data as $dataitem_menu) {
+            $submenu = menu_relation::where('menu_id', '=', $dataitem_menu->menu_id)
+                ->whereNotNull('submenu_id')
+                ->get();
+                $submenu_array[] = $dataitem_menu->toArray();
+                // if (count($submenu) > 0) {
+                //     $submenu_array[] = $submenu;
+                // }
+                foreach($submenu as $dataitem_submenu)
+                {
+                    $submenu_array[] = $dataitem_submenu->toArray();
+                }
+        }
+
+        // dd($submenu_array);
         // dd($check_permission_menus);
-        return response()->json(['check_permission_menus' => $check_permission_menus]);
+        return response()->json(['check_permission_menus' => $check_permission_menus, 'submenu_array' => $submenu_array]);
+        // return response()->json(['menu_check' => $menu_check]);
     }
 
     public function createAccess(Request $request)
@@ -262,6 +324,7 @@ class ManageMenuController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         DB::beginTransaction();
         try {
 
@@ -284,16 +347,12 @@ class ManageMenuController extends Controller
             ]);
 
             // dd($request->inputs_submenu);
-            if ($request->inputs_submenu > 0) {
-                if (NUll != $request->inputs_submenu && count($request->input('inputs_submenu')) > 0) {
+            if (!is_null($request->inputs_submenu[0]['submenu_name'])) {
                     $createMenuRelation  = menu_relation::create([
                         'position_id' => $createMenu->id,
                         'menu_id' => $createMenu->id,
                         'status' => 1,
                     ]);
-                }
-
-                if (NUll != $request->inputs_submenu && count($request->input('inputs_submenu')) > 0) {
                     $x = 1;
                     foreach ($request->inputs_submenu as $key => $value) {
                         $createSubmenu = submenu::create([
@@ -305,7 +364,12 @@ class ManageMenuController extends Controller
                             'status' => 1,
                         ]);
                         ++$x;
-                    }
+                        $createMenuSubRelation = menu_relation::create([
+                            'position_id' => $createMenu->id,
+                            'menu_id' => $createMenu->id,
+                            'submenu_id' => $createSubmenu->id,
+                            'status' => 1,
+                        ]);
                 }
             }
 
