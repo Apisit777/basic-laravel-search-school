@@ -455,10 +455,10 @@
                                                     </td>
                                                     <td class="text-center">{{ $menu['id'] }}</td>
                                                     <td>{{ $menu['menu_name'] }}</td>
-                                                    <td class="text-center"><input type="checkbox" id="action_view_{{ $menu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
-                                                    <td class="text-center"><input type="checkbox" id="action_create_{{ $menu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
-                                                    <td class="text-center"><input type="checkbox" id="action_edit_{{ $menu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
-                                                    <td class="text-center"><input type="checkbox" id="action_delete_{{ $menu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                    <td class="text-center"><input type="checkbox" id="action_view_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                    <td class="text-center"><input type="checkbox" id="action_create_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                    <td class="text-center"><input type="checkbox" id="action_edit_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                    <td class="text-center"><input type="checkbox" id="action_delete_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
                                                 </tr>
                                                 @if (!empty($menu['submenu_array']))
                                                     @foreach($menu['submenu_array'] as $submenu)
@@ -859,16 +859,20 @@
                     //     // }
                     // });
                     const payload = data.id.split('_')
-                    let action, menuId, type
-                    if (payload[1] === 'submenu') {
-                        type = 'submenu'
-                        action =  payload[2]
-                        menuId =  payload[3]
-                    } else {
-                        type = 'mainmenu'
-                        action =  payload[1]
-                        menuId =  payload[2]
-                    }
+                    //action_view_{{ $menu['id'] }}_{{ $submenu['id'] }}
+                    // let action, menuId, type
+                    // if (payload[1] === 'submenu') {
+                    //     type = 'submenu'
+                    //     action =  payload[2]
+                    //     menuId =  payload[3]
+                    // } else {
+                    //     type = 'mainmenu'
+                    //     action =  payload[1]
+                    //     menuId =  payload[2]
+                    // }
+                    let action = payload[1]
+                    let menuId = payload[2]
+                    let submenuId = payload[3] || NULL
 
                     $.ajax({
                         type: "POST",
@@ -878,7 +882,7 @@
                             menu_id: menuId,
                             action: action,
                             state: data.checked ? 1 : 0,
-                            type: type
+                            submenuId: submenuId
                         },
                         beforeSend: function () {
                             $('#loader').removeClass('hidden')
