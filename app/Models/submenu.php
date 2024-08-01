@@ -9,4 +9,8 @@ class submenu extends Model
 {
     use HasFactory;
     protected $guarded = [];
+    public function menu()
+    {
+        return $this->belongsTo(menu::class, 'id', 'menu_id');
+    }
 }

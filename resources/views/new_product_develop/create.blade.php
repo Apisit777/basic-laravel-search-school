@@ -488,18 +488,20 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name"><span class="text-danger"> *</span></label>
+                                                                    <label for="name"></label>
                                                                     <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <div class="md:col-span-4 mt-5">
                                                                         <input class="-mt-1" type="checkbox" id="" name="" value="">
                                                                         <label for="" class="mr-5">Others</label>
+                                                                        <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name"><span class="text-danger"> *</span></label>
+                                                                    <label for="name"></label>
                                                                     <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
                                                                 </div>
                                                                 <div class="md:col-span-3 mt-2">
                                                                     <div class="md:col-span-4 mt-3">
