@@ -27,19 +27,19 @@ p {
 
 /* width */
 ::-webkit-scrollbar {
-    width: 7px;
+    width: 5px;
 }
  
 /* Track */
 ::-webkit-scrollbar-track {
     background: #888;
-    border-radius: 3px;
+    /* border-radius: 3px; */
 }
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
     background: #303030;
-    border-radius: 3px;
+    /* border-radius: 3px; */
 }
  
 /* Handle on hover */
