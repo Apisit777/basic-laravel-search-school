@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 31, 2024 at 01:31 PM
+-- Generation Time: Aug 02, 2024 at 12:27 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,28 @@ SET time_zone = "+00:00";
 --
 -- Database: `laravel_product_master`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `barcodes`
+--
+
+CREATE TABLE `barcodes` (
+  `BRAND` varchar(10) NOT NULL DEFAULT '',
+  `B_CODE` varchar(15) NOT NULL DEFAULT '',
+  `NUMBER` decimal(10,0) NOT NULL DEFAULT 0,
+  `REMARK` varchar(50) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `barcodes`
+--
+
+INSERT INTO `barcodes` (`BRAND`, `B_CODE`, `NUMBER`, `REMARK`) VALUES
+('OP', '88500802', 9002, '8279'),
+('OTHER', '', 9002, 'ไม่ต้องมี Barcode'),
+('RI', '88500802', 9002, 'Brand Ri En');
 
 -- --------------------------------------------------------
 
@@ -66,6 +88,30 @@ CREATE TABLE `comments` (
 INSERT INTO `comments` (`id`, `post_id`, `user_id`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, '2024-07-03 04:00:12', '2024-07-03 04:00:12'),
 (2, 1, 1, '2024-07-03 04:00:12', '2024-07-03 04:00:12');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `documents`
+--
+
+CREATE TABLE `documents` (
+  `DOC_TP` varchar(10) NOT NULL DEFAULT '',
+  `DOC_SYS` varchar(10) DEFAULT '',
+  `DOC_NO` varchar(10) DEFAULT '',
+  `NUMBER` decimal(10,0) DEFAULT 0,
+  `FIELD` varchar(20) DEFAULT '',
+  `DOC_ST` decimal(2,0) DEFAULT 0,
+  `REMARK` varchar(50) DEFAULT '',
+  `REMARK_EDIT` varchar(50) DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `documents`
+--
+
+INSERT INTO `documents` (`DOC_TP`, `DOC_SYS`, `DOC_NO`, `NUMBER`, `FIELD`, `DOC_ST`, `REMARK`, `REMARK_EDIT`) VALUES
+('OP', '', '', 2, '', 1, '', '');
 
 -- --------------------------------------------------------
 
@@ -147,7 +193,7 @@ INSERT INTO `menus` (`id`, `menu_name`, `url`, `seq`, `status`, `created_at`, `u
 (3, 'Marketing', NULL, 3, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
 (4, 'Managemenu', NULL, 4, 1, '2024-06-28 07:48:31', '2024-06-28 07:48:34'),
 (5, 'อื่นๆ', NULL, 5, 1, '2024-07-02 03:36:12', '2024-07-02 03:36:12'),
-(41, '5', NULL, 6, 1, NULL, NULL);
+(6, '5', NULL, 6, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -183,9 +229,9 @@ INSERT INTO `menu_relations` (`id`, `position_id`, `menu_id`, `submenu_id`, `vie
 (5, 1, 5, 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-18 02:47:52', '2024-07-18 02:47:52'),
 (6, 1, 5, 2, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (7, 1, 5, 3, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(32, 41, 41, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(33, 41, 41, 33, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(34, 41, 41, 34, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL);
+(8, 1, 6, NULL, 1, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(9, 1, 6, 9, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(10, 1, 6, 10, 1, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -538,55 +584,55 @@ CREATE TABLE `product_images` (
 
 CREATE TABLE `pro_develops` (
   `BRAND` varchar(10) NOT NULL DEFAULT '',
-  `DOC_NO` varchar(20) NOT NULL DEFAULT '',
-  `REF_DOC` varchar(20) NOT NULL DEFAULT '',
-  `REVISE_NO` decimal(6,0) NOT NULL DEFAULT 0,
-  `EDIT_DT` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
-  `USER_EDIT` varchar(15) NOT NULL DEFAULT '',
-  `STATUS` varchar(5) NOT NULL DEFAULT '',
-  `REMARK_ST` varchar(100) NOT NULL DEFAULT '',
-  `CUST_OEM` varchar(100) NOT NULL DEFAULT '',
-  `JOB_REFNO` varchar(20) NOT NULL DEFAULT '',
-  `DOC_DT` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
-  `NPD` varchar(50) NOT NULL DEFAULT '',
-  `PDM` varchar(50) NOT NULL DEFAULT '',
-  `NAME_ENG` varchar(70) NOT NULL DEFAULT '',
-  `PRODUCT` varchar(15) NOT NULL DEFAULT '',
-  `BARCODE` varchar(15) NOT NULL DEFAULT '',
-  `CATEGORY` varchar(20) NOT NULL DEFAULT '',
-  `CAPACITY` varchar(20) NOT NULL DEFAULT '',
-  `Q_SMELL` decimal(6,2) NOT NULL DEFAULT 0.00,
-  `Q_COLOR` decimal(6,2) NOT NULL DEFAULT 0.00,
-  `TARGET_GRP` varchar(20) NOT NULL DEFAULT '',
-  `TARGET_STK` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
-  `PRICE_FG` varchar(30) NOT NULL DEFAULT '',
-  `PRICE_COST` varchar(30) NOT NULL DEFAULT '',
-  `PRICE_BULK` varchar(30) NOT NULL DEFAULT '',
-  `P_CONCEPT` varchar(1000) NOT NULL DEFAULT '',
-  `P_BENEFIT` varchar(1000) NOT NULL DEFAULT '',
-  `TEXTURE` varchar(20) NOT NULL DEFAULT '',
-  `TEXTURE_OT` varchar(30) NOT NULL DEFAULT '',
-  `COLOR1` varchar(70) NOT NULL DEFAULT '',
-  `COLOR2` varchar(70) NOT NULL DEFAULT '',
-  `COLOR3` varchar(70) NOT NULL DEFAULT '',
-  `FRANGRANCE` varchar(70) NOT NULL DEFAULT '',
-  `INGREDIENT` varchar(1000) NOT NULL DEFAULT '',
-  `STD` varchar(70) NOT NULL DEFAULT '',
-  `PK` varchar(70) NOT NULL DEFAULT '',
-  `OTHER` varchar(70) NOT NULL DEFAULT '',
-  `DOCUMENT` varchar(70) NOT NULL DEFAULT '',
-  `FIRST_ORD` decimal(12,0) NOT NULL DEFAULT 0,
-  `OEM` varchar(1) NOT NULL DEFAULT '',
-  `REASON1` varchar(1) NOT NULL DEFAULT '',
-  `REASON1_DES` varchar(100) NOT NULL DEFAULT '',
-  `REASON2` varchar(1) NOT NULL DEFAULT '',
-  `REASON2_DES` varchar(100) NOT NULL DEFAULT '',
-  `REASON3` varchar(1) NOT NULL DEFAULT '',
-  `REASON3_DES` varchar(100) NOT NULL DEFAULT '',
-  `REF_COLOR` varchar(100) NOT NULL DEFAULT '',
-  `REF_FRAGRANCE` varchar(100) NOT NULL DEFAULT '',
-  `OEM_STD` varchar(100) NOT NULL DEFAULT '',
-  `PACKAGE_BOX` varchar(1) NOT NULL DEFAULT ''
+  `DOC_NO` varchar(20) DEFAULT '',
+  `REF_DOC` varchar(20) DEFAULT '',
+  `REVISE_NO` decimal(6,0) DEFAULT 0,
+  `EDIT_DT` datetime DEFAULT '1900-01-01 00:00:00',
+  `USER_EDIT` varchar(15) DEFAULT '',
+  `STATUS` varchar(5) DEFAULT '',
+  `REMARK_ST` varchar(100) DEFAULT '',
+  `CUST_OEM` varchar(100) DEFAULT '',
+  `JOB_REFNO` varchar(20) DEFAULT '',
+  `DOC_DT` datetime DEFAULT '1900-01-01 00:00:00',
+  `NPD` varchar(50) DEFAULT '',
+  `PDM` varchar(50) DEFAULT '',
+  `NAME_ENG` varchar(70) DEFAULT '',
+  `PRODUCT` varchar(15) DEFAULT '',
+  `BARCODE` varchar(15) DEFAULT '',
+  `CATEGORY` varchar(20) DEFAULT '',
+  `CAPACITY` varchar(20) DEFAULT '',
+  `Q_SMELL` decimal(6,2) DEFAULT 0.00,
+  `Q_COLOR` decimal(6,2) DEFAULT 0.00,
+  `TARGET_GRP` varchar(20) DEFAULT '',
+  `TARGET_STK` datetime DEFAULT '1900-01-01 00:00:00',
+  `PRICE_FG` varchar(30) DEFAULT '',
+  `PRICE_COST` varchar(30) DEFAULT '',
+  `PRICE_BULK` varchar(30) DEFAULT '',
+  `P_CONCEPT` varchar(1000) DEFAULT '',
+  `P_BENEFIT` varchar(1000) DEFAULT '',
+  `TEXTURE` varchar(20) DEFAULT '',
+  `TEXTURE_OT` varchar(30) DEFAULT '',
+  `COLOR1` varchar(70) DEFAULT '',
+  `COLOR2` varchar(70) DEFAULT '',
+  `COLOR3` varchar(70) DEFAULT '',
+  `FRANGRANCE` varchar(70) DEFAULT '',
+  `INGREDIENT` varchar(1000) DEFAULT '',
+  `STD` varchar(70) DEFAULT '',
+  `PK` varchar(70) DEFAULT '',
+  `OTHER` varchar(70) DEFAULT '',
+  `DOCUMENT` varchar(70) DEFAULT '',
+  `FIRST_ORD` decimal(12,0) DEFAULT 0,
+  `OEM` varchar(1) DEFAULT '',
+  `REASON1` varchar(1) DEFAULT '',
+  `REASON1_DES` varchar(100) DEFAULT '',
+  `REASON2` varchar(1) DEFAULT '',
+  `REASON2_DES` varchar(100) DEFAULT '',
+  `REASON3` varchar(1) DEFAULT '',
+  `REASON3_DES` varchar(100) DEFAULT '',
+  `REF_COLOR` varchar(100) DEFAULT '',
+  `REF_FRAGRANCE` varchar(100) DEFAULT '',
+  `OEM_STD` varchar(100) DEFAULT '',
+  `PACKAGE_BOX` varchar(1) DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -594,7 +640,7 @@ CREATE TABLE `pro_develops` (
 --
 
 INSERT INTO `pro_develops` (`BRAND`, `DOC_NO`, `REF_DOC`, `REVISE_NO`, `EDIT_DT`, `USER_EDIT`, `STATUS`, `REMARK_ST`, `CUST_OEM`, `JOB_REFNO`, `DOC_DT`, `NPD`, `PDM`, `NAME_ENG`, `PRODUCT`, `BARCODE`, `CATEGORY`, `CAPACITY`, `Q_SMELL`, `Q_COLOR`, `TARGET_GRP`, `TARGET_STK`, `PRICE_FG`, `PRICE_COST`, `PRICE_BULK`, `P_CONCEPT`, `P_BENEFIT`, `TEXTURE`, `TEXTURE_OT`, `COLOR1`, `COLOR2`, `COLOR3`, `FRANGRANCE`, `INGREDIENT`, `STD`, `PK`, `OTHER`, `DOCUMENT`, `FIRST_ORD`, `OEM`, `REASON1`, `REASON1_DES`, `REASON2`, `REASON2_DES`, `REASON3`, `REASON3_DES`, `REF_COLOR`, `REF_FRAGRANCE`, `OEM_STD`, `PACKAGE_BOX`) VALUES
-('OP', 'OP00000109', 'IBH-F155', 11, '2015-01-13 00:00:00', 'sa', '', '', '-', 'OP/IBHS/NP31/49', '2006-05-25 00:00:00', '', '', 'Cuticle Hair Treatment (New Formula)', '', '8850080226546', 'Hair Care', '125 ml', 1.00, 1.00, '20-50', '2007-03-01 00:00:00', '295', '-', '', 'เจลวิตามินบำรุงเส้นผมสูตรเข้มข้น เนื้อบางเบา ซ่อมแซมและป้องกันไม่ให้ผมแตกปลายด้วยการเชื่อม\r\nประสานคิวติเคิลของเส้นผม ให้ผมเรียบลื่น เงางาม ไม่เปราะขาดง่าย \r\n', 'อุดมคุณค่าสารสกัดที่ช่วยเคลือปกป้องเส้นผมจากมลภาวะ ให้เส้นผมนุ่มมาก และ เงางาม จัดทรงง่าย \r\nเป็นธรรมชาติ\r\n', 'เจล', '-', 'ไม่มีสี', '', '', 'เหมือน Cuticle Hair Treatment plus Sunscreen for Long Hair', '-', 'Satinique hi Gloss Serum', 'ใช้ร่วม Cuticle Hair Treatment plus Sunscreen for Long Hair', 'หาก develop แล้วให้ทำ blind test', '-', 0, 'Y', 'Y', '', 'Y', 'Reason 2', 'Y', 'Reason 3', 'Ref Color ---', 'Ref Fragrance ---', 'OEM Benchmark ---', 'N');
+('OP', 'OP00000001', 'IBH-F155', 11, '2015-01-13 00:00:00', 'sa', '', '', '-', 'OP/IBHS/NP31/49', '2006-05-25 00:00:00', '', '', 'Cuticle Hair Treatment (New Formula)', '', '885008020001', 'Hair Care', '125 ml', 1.00, 1.00, '20-50', '2007-03-01 00:00:00', '295', '-', '', 'เจลวิตามินบำรุงเส้นผมสูตรเข้มข้น เนื้อบางเบา ซ่อมแซมและป้องกันไม่ให้ผมแตกปลายด้วยการเชื่อม\r\nประสานคิวติเคิลของเส้นผม ให้ผมเรียบลื่น เงางาม ไม่เปราะขาดง่าย \r\n', 'อุดมคุณค่าสารสกัดที่ช่วยเคลือปกป้องเส้นผมจากมลภาวะ ให้เส้นผมนุ่มมาก และ เงางาม จัดทรงง่าย \r\nเป็นธรรมชาติ\r\n', 'เจล', '-', 'ไม่มีสี', '', '', 'เหมือน Cuticle Hair Treatment plus Sunscreen for Long Hair', '-', 'Satinique hi Gloss Serum', 'ใช้ร่วม Cuticle Hair Treatment plus Sunscreen for Long Hair', 'หาก develop แล้วให้ทำ blind test', '-', 0, 'Y', 'Y', '', 'Y', 'Reason 2', 'Y', 'Reason 3', 'Ref Color ---', 'Ref Fragrance ---', 'OEM Benchmark ---', 'N');
 
 -- --------------------------------------------------------
 
@@ -605,14 +651,9 @@ INSERT INTO `pro_develops` (`BRAND`, `DOC_NO`, `REF_DOC`, `REVISE_NO`, `EDIT_DT`
 CREATE TABLE `submenus` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `menu_id` int(11) DEFAULT NULL,
-  `menu_relation_id` int(11) DEFAULT NULL COMMENT 'รหัสเมนู',
   `name` varchar(255) DEFAULT NULL COMMENT 'ชื่อเมนูย่อย',
   `url` varchar(255) DEFAULT NULL,
   `seq` int(11) NOT NULL DEFAULT 0 COMMENT 'ลำดับเมนูย่อย',
-  `view` int(11) DEFAULT NULL COMMENT 'action',
-  `create` int(11) DEFAULT NULL COMMENT 'action',
-  `edit` int(11) DEFAULT NULL COMMENT 'action',
-  `delete` int(11) DEFAULT NULL COMMENT 'action',
   `status` int(11) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
@@ -624,12 +665,12 @@ CREATE TABLE `submenus` (
 -- Dumping data for table `submenus`
 --
 
-INSERT INTO `submenus` (`id`, `menu_id`, `menu_relation_id`, `name`, `url`, `seq`, `view`, `create`, `edit`, `delete`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 5, 5, 'Product', '1', 1, 1, 1, 1, 1, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
-(2, 5, 5, 'Billing', '2', 2, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
-(3, 5, 5, 'Invoice', '.', 3, 1, 1, 1, 1, 1, NULL, NULL, '2024-07-09 01:00:47', '2024-07-09 01:00:47'),
-(33, 41, 32, '5.1', '5.1', 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-31 04:28:26', '2024-07-31 04:28:26'),
-(34, 41, 32, '5.2', '5.2', 2, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-31 04:28:26', '2024-07-31 04:28:26');
+INSERT INTO `submenus` (`id`, `menu_id`, `name`, `url`, `seq`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 5, 'Product', '1', 1, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
+(2, 5, 'Billing', '2', 2, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
+(3, 5, 'Invoice', '3', 3, 1, NULL, NULL, '2024-07-09 01:00:47', '2024-07-09 01:00:47'),
+(9, 6, '5.1', '5.1', 1, 1, NULL, NULL, '2024-07-31 04:28:26', '2024-07-31 04:28:26'),
+(10, 6, '5.2', '5.2', 2, 1, NULL, NULL, '2024-07-31 04:28:26', '2024-07-31 04:28:26');
 
 -- --------------------------------------------------------
 
@@ -1870,6 +1911,12 @@ INSERT INTO `user_permission` (`id`, `user_id`, `tent_id`, `position_id`, `creat
 --
 
 --
+-- Indexes for table `barcodes`
+--
+ALTER TABLE `barcodes`
+  ADD PRIMARY KEY (`BRAND`);
+
+--
 -- Indexes for table `brands`
 --
 ALTER TABLE `brands`
@@ -1880,6 +1927,12 @@ ALTER TABLE `brands`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `documents`
+--
+ALTER TABLE `documents`
+  ADD PRIMARY KEY (`DOC_TP`);
 
 --
 -- Indexes for table `failed_jobs`
@@ -1985,6 +2038,12 @@ ALTER TABLE `products`
 --
 ALTER TABLE `product_images`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `pro_develops`
+--
+ALTER TABLE `pro_develops`
+  ADD PRIMARY KEY (`BRAND`);
 
 --
 -- Indexes for table `submenus`

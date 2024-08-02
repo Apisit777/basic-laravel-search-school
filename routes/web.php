@@ -40,6 +40,7 @@ Route::post('/images_upload', [ProductImageController::class, 'store'])->name('i
 Route::get('/product', [ProductController::class, 'index'])->name('product');
 Route::get('/new_product_develop', [ProductFormController::class, 'index'])->name('new_product_develop');
 Route::get('/new_product_develop_creat', [ProductFormController::class, 'create'])->name('new_product_develop_creat');
+Route::post('/create_new_product_develop', [ProductFormController::class, 'store'])->name('create_new_product_develop');
 
 Route::get('/get_users', [ProductController::class, 'get_users'])->name('get_users');
 Route::get('/product_detail_create', [ProductController::class, 'productDetailCreate'])->name('product_detail_create');

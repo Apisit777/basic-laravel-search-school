@@ -77,7 +77,6 @@ class ProductController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
-
             return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
         }
     }
