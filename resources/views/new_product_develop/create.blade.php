@@ -33,11 +33,11 @@
                 <div class="lg:col-span-4 xl:grid-cols-4">
                     <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                         <!-- <div class="md:col-span-2" >
-                            <label for="name">Customer<span class="text-danger"> *</span></label>
+                            <label for="name">Customer</label>
                             <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                         </div>
                         <div class="md:col-span-2" >
-                            <label for="name"><span class="text-danger"> *</span></label>
+                            <label for="name"></label>
                             <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="brand_id" onchange="brandIdChange(this,'brand_id')">
                                 <option value=""> --- กรุณาเลือก ---</option>
                                 @foreach ($brands as $key => $brand)
@@ -46,20 +46,22 @@
                             </select>
                         </div>
                         <div class="md:col-span-2" >
-                            <label for="name">รหัสสินค้า<span class="text-danger"> *</span></label>
+                            <label for="name">รหัสสินค้า</label>
                             <select class="js-example-basic-single w-full rounded-sm text-xs" id="product_id" name="product_id" onchange="onSelect(this)">
                                 <option value=""> --- กรุณาเลือก ---</option>
                             </select>
                         </div> -->
                         <div class="md:col-span-6">
-                            <label for="seq">รหัสสินค้า</label>
-                            <input type="text" name="seq" id="seq" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-[#101010] dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="{{ $productCode }}" disabled>
+                            <label for="NUMBER">รหัสสินค้า</label>
+                            <input type="text" name="NUMBER" id="NUMBER" class="h-10 rounded-sm px-4 text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="{{ $productCode }}" disabled>
                         </div>
                     </div>
                 </div>
             </div>
             <div class='w-12/12 mt-4 relative'>
-                <form class="" action="" method="POST" id="create_product">
+                <form class="" action="" method="POST" id="create_NPDRequest">
+                    <input type="hidden" id="DOC_TP" name="DOC_TP" value="OP">
+                    <input type="hidden" id="BRAND" name="BRAND" value="OP">
                     <div class="p-4">
                         <ul class="relative m-0 w-full list-none overflow-hidden p-0 transition-[height] duration-200 ease-in-out" data-twe-stepper-init="" data-twe-stepper-type="vertical">
                             <!-- <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[2.45rem] after:top-[3.6rem] after:mt-px after:h-[calc(100%-2.45rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
@@ -254,28 +256,28 @@
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">หมายเลขเอกสาร<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="DOC_NO">หมายเลขเอกสาร</label>
+                                                                    <input type="text" name="DOC_NO" id="DOC_NO" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">Barcode<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="BARCODE">Barcode<span class="text-danger"> *</span></label>
+                                                                    <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="{{ $barcode }}" disabled>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">Job Ref. No.<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="JOB_REFNO">Job Ref. No.</label>
+                                                                    <input type="text" name="JOB_REFNO" id="JOB_REFNO" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3" >
-                                                                    <label for="name">วันที่<span class="text-danger"> *</span></label>
-                                                                    <input type="date" style="height: 38px;" class="form-control border-none bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="" id="" placeholder="" autocomplete="off" value="<?php echo date('Y-m-d'); ?>">
+                                                                    <label for="DOC_DT">วันที่</label>
+                                                                    <input type="date" name="DOC_DT" id="DOC_DT" style="height: 38px;" class="form-control border-none bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="" id="" placeholder="" autocomplete="off" value="<?php echo date('Y-m-d'); ?>">
                                                                 </div>
                                                                 <div class="md:col-span-6" style="position: relative;">
-                                                                    <label for="name">Customer (OEM)<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="CUST_OEM">Customer (OEM)</label>
+                                                                    <input type="text" name="CUST_OEM" id="CUST_OEM" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3" >
-                                                                    <label for="name">Product Co-ordinator<span class="text-danger"> *</span></label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="" name="">
+                                                                    <label for="NPD">Product Co-ordinator<span class="text-danger"> *</span></label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="NPD" name="NPD">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($product_co_ordimators as $key => $product_co_ordimator)
                                                                             <option value={{ $product_co_ordimator->ID }}>{{ $product_co_ordimator->DESCRIPTION }}</option>
@@ -283,8 +285,8 @@
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3" >
-                                                                    <label for="name">Marketing Mamager<span class="text-danger"> *</span></label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="" name="">
+                                                                    <label for="PDM">Marketing Mamager<span class="text-danger"> *</span></label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="PDM" name="PDM">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($marketing_managers as $key => $marketing_manager)
                                                                             <option value={{ $marketing_manager->ID }}>{{ $marketing_manager->DESCRIPTION }}</option>
@@ -292,12 +294,12 @@
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-6" style="position: relative;">
-                                                                    <label for="name">ชื่อผลิตภัณฑ์<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="NAME_ENG">ชื่อผลิตภัณฑ์</label>
+                                                                    <input type="text" name="NAME_ENG" id="NAME_ENG" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3" >
-                                                                    <label for="name">ประเภทผลิตภัณฑ์<span class="text-danger"> *</span></label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="" name="">
+                                                                    <label for="CATEGORY">ประเภทผลิตภัณฑ์<span class="text-danger"> *</span></label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="CATEGORY" name="CATEGORY">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($type_categorys as $key => $type_category)
                                                                             <option value={{ $type_category->ID }}>{{ $type_category->DESCRIPTION }}</option>
@@ -305,40 +307,40 @@
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">ปริมาณสุทธิ<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="CAPACITY">ปริมาณสุทธิ</label>
+                                                                    <input type="text" name="CAPACITY" id="CAPACITY" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">จำนวนกลิ่น<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="Q_SMELL">จำนวนกลิ่น</label>
+                                                                    <input type="text" name="Q_SMELL" id="Q_SMELL" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">จำนวนสี<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="Q_COLOR">จำนวนสี</label>
+                                                                    <input type="text" name="Q_COLOR" id="Q_COLOR" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">Target Group<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="TARGET_GRP">Target Group</label>
+                                                                    <input type="text" name="TARGET_GRP" id="TARGET_GRP" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3" >
-                                                                    <label for="name">Target Launch Date<span class="text-danger"> *</span></label>
-                                                                    <input type="date" style="height: 38px;" class="form-control border-none bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="" id="" placeholder="" autocomplete="off" value="<?php echo date('Y-m-d'); ?>">
+                                                                    <label for="TARGET_STK">Target Launch Date</label>
+                                                                    <input type="date" name="TARGET_STK" id="TARGET_STK" style="height: 38px;" class="form-control border-none bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="" id="" placeholder="" autocomplete="off" value="<?php echo date('Y-m-d'); ?>">
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">Target Price F/G<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="PRICE_FG">Target Price F/G</label>
+                                                                    <input type="text" name="PRICE_FG" id="PRICE_FG" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">Draft Cost Excluded PKG<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="PRICE_COST">Draft Cost Excluded PKG</label>
+                                                                    <input type="text" name="PRICE_COST" id="PRICE_COST" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">Bulk<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="PRICE_BULK">Bulk</label>
+                                                                    <input type="text" name="PRICE_BULK" id="PRICE_BULK" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">First Order<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="FIRST_ORD">First Order</label>
+                                                                    <input type="text" name="FIRST_ORD" id="FIRST_ORD" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -378,16 +380,16 @@
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
                                                                 <div class="md:col-span-6">
-                                                                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Concept</label>
-                                                                    <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                                                                    <label for="P_CONCEPT" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Concept</label>
+                                                                    <textarea id="P_CONCEPT" name="P_CONCEPT" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
                                                                 </div>
                                                                 <div class="md:col-span-6">
-                                                                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Benefix</label>
-                                                                    <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                                                                    <label for="P_BENEFIT" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Benefix</label>
+                                                                    <textarea id="P_BENEFIT" name="P_BENEFIT" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
                                                                 </div>
                                                                 <div class="md:col-span-2" >
-                                                                    <label for="name">texture<span class="text-danger"> *</span></label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="" name="">
+                                                                    <label for="TEXTURE">texture<span class="text-danger"> *</span></label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="TEXTURE" name="TEXTURE">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($textures as $key => $texture)
                                                                             <option value={{ $texture->ID }}>{{ $texture->DESCRIPTION }}</option>
@@ -395,28 +397,28 @@
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="name">ระบุ<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="TEXTURE_OT">ระบุ</label>
+                                                                    <input type="text" name="TEXTURE_OT" id="TEXTURE_OT" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="name">Color<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="COLOR1">Color</label>
+                                                                    <input type="text" name="COLOR1" id="COLOR1" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-6" style="position: relative;">
-                                                                    <label for="name">Fragrance Type<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="FRANGRANCE">Fragrance Type</label>
+                                                                    <input type="text" name="FRANGRANCE" id="FRANGRANCE" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-6">
-                                                                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Active Ingrement</label>
-                                                                    <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                                                                    <label for="INGREDIENT" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Active Ingrement</label>
+                                                                    <textarea name="INGREDIENT" id="INGREDIENT" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
                                                                 </div>
                                                                 <div class="md:col-span-6" style="position: relative;">
-                                                                    <label for="name">สินค้าต้นแบบที่ใช้วิจัย (STD)<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="STD">สินค้าต้นแบบที่ใช้วิจัย (STD)</label>
+                                                                    <input type="text" name="STD" id="STD" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-6" style="position: relative;">
-                                                                    <label for="name">P/K ที่ใช้<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="PK">P/K ที่ใช้</label>
+                                                                    <input type="text" name="PK" id="PK" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -456,19 +458,19 @@
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name">Other</label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="OTHER">Other</label>
+                                                                    <input type="text" name="OTHER" id="OTHER" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
                                                                 </div>
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name">เอกสารเพิ่มเติม</label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="DOCUMENT">เอกสารเพิ่มเติม</label>
+                                                                    <input type="text" name="DOCUMENT" id="DOCUMENT" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
                                                                 </div>
                                                                 <div class="md:col-span-6 mt-2">
-                                                                    <label for="name">Candidate with OEM</label>
+                                                                    <label for="OEM">Candidate with OEM</label>
                                                                     <div class="md:col-span-4 mt-3">
-                                                                        <input type="radio" id="" name="contact" value="email" />
+                                                                        <input type="radio" id="OEM_TYPE1" name="OEM" value="1" />
                                                                         <label for="" class="mr-5">yes</label>
-                                                                        <input type="radio" id="" name="contact" value="phone" />
+                                                                        <input type="radio" id="OEM_TYPE2" name="OEM" value="0" checked/>
                                                                         <label for="">no</label>
                                                                     </div>
                                                                     <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
@@ -476,52 +478,52 @@
                                                                 <div class="md:col-span-6 mt-2">
                                                                     <label for="name">Reason of use</label>
                                                                     <div class="md:col-span-4 mt-5">
-                                                                        <input class="-mt-1" type="checkbox" id="" name="" value="">
-                                                                        <label for="" class="mr-5">Claim in advertising media</label>
+                                                                        <input class="-mt-1" type="checkbox" id="REASON1" name="REASON1">
+                                                                        <label for="REASON1" class="mr-5">Claim in advertising media</label>
                                                                     </div>
                                                                     <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <div class="md:col-span-4 mt-5">
-                                                                        <input class="-mt-1" type="checkbox" id="" name="" value="">
-                                                                        <label for="" class="mr-5">Compare with benchmark/OEM</label>
+                                                                        <input class="-mt-1" type="checkbox" id="REASON2" name="REASON2">
+                                                                        <label for="REASON2" class="mr-5">Compare with benchmark/OEM</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name"></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="REASON2_DES"></label>
+                                                                    <input type="text" name="REASON2_DES" id="REASON2_DES" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <div class="md:col-span-4 mt-5">
-                                                                        <input class="-mt-1" type="checkbox" id="" name="" value="">
-                                                                        <label for="" class="mr-5">Others</label>
+                                                                        <input class="-mt-1" type="checkbox" id="REASON3" name="REASON3">
+                                                                        <label for="REASON3" class="mr-5">Others</label>
                                                                         <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name"></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="REASON3_DES"></label>
+                                                                    <input type="text" name="REASON3_DES" id="REASON3_DES" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
                                                                     <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
                                                                 </div>
                                                                 <div class="md:col-span-3 mt-2">
                                                                     <div class="md:col-span-4 mt-3">
-                                                                        <input type="radio" id="" name="contact" value="email" />
+                                                                        <input type="radio" id="PACKAGE_BOX_TYPE1" name="PACKAGE_BOX" value="1" />
                                                                         <label for="" class="mr-5">With an outer box</label>
-                                                                        <input type="radio" id="" name="contact" value="phone" />
+                                                                        <input type="radio" id="PACKAGE_BOX_TYPE2" name="PACKAGE_BOX" value="0" />
                                                                         <label for="">Without an outer box</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name">Ref. of Color</label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="REF_COLOR">Ref. of Color</label>
+                                                                    <input type="text" name="REF_COLOR" id="REF_COLOR" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
                                                                 </div>
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name">Ref. of Fragrance</label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="REF_FRAGRANCE">Ref. of Fragrance</label>
+                                                                    <input type="text" name="REF_FRAGRANCE" id="REF_FRAGRANCE" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
                                                                 </div>
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name">Comparing with OEM</label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="OEM_STD">Comparing with OEM</label>
+                                                                    <input type="text" name="OEM_STD" id="OEM_STD" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -542,13 +544,13 @@
                         </div>
                         <div class="md:col-span-6 text-right mt-4">
                             <div class="inline-flex items-end">
-                                <a href="{{ route('new_product_develop') }}" class="text-gray-100 bg-[#303030] hover:bg-[#404040] text-white font-bold py-2 px-4 mr-2 rounded group">
+                                <a href="{{ route('new_product_develop') }}" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                         <path fill-rule="evenodd" d="M9.53 2.47a.75.75 0 0 1 0 1.06L4.81 8.25H15a6.75 6.75 0 0 1 0 13.5h-3a.75.75 0 0 1 0-1.5h3a5.25 5.25 0 1 0 0-10.5H4.81l4.72 4.72a.75.75 0 1 1-1.06 1.06l-6-6a.75.75 0 0 1 0-1.06l6-6a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
                                     </svg>
                                     Back
                                 </a>
-                                <a class="text-gray-100 bg-[#3b5998] hover:bg-[#48639d] text-white font-bold py-2 px-4 rounded cursor-pointer" onclick="createProduct()">
+                                <a class="bg-[#3b5998] hover:bg-[#48639d] text-white font-bold py-2 px-4 rounded cursor-pointer" onclick="createNPDRequest()">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" class="size-6 hidden h-6 w-6 md:inline-block">
                                         <path d="M0 0h24v24H0V0z" fill="none"></path>
                                         <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
@@ -724,6 +726,67 @@
             } else {
                 $('#company_products').val();
             }
+        }
+
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
+        const dlayMessage = 1000;
+
+        function createNPDRequest() {
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                method: "POST",
+                url: "/create_new_product_develop",
+                data: $("#create_NPDRequest").serialize(),
+                beforeSend: function () {
+                    $('#loader').removeClass('hidden')
+                },
+                success: function(res){
+                    if(res.success == true) {
+                        window.location = "/new_product_develop";
+                    } else {
+                        toastr.error("Can't Create Product!");
+                    }
+                    return false;
+                },
+                error: function (params) {
+                    setTimeout(function() {
+                        errorMessage("Can't Create Username!");
+                    },dlayMessage)
+                    setTimeout(function() {
+                        toastr.error("Can't Create Username!");
+                    },dlayMessage)
+                }
+            });
+        }
+
+        function successMessage(text) {
+            $('#loader').addClass('hidden');
+            $('#name').val('')
+        }
+        function errorMessage(text) {
+            $('#loader').addClass('hidden');
+            $('#name').val('')
         }
     </script>
 @endsection

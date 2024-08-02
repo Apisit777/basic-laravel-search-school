@@ -378,7 +378,8 @@
         jQuery.ajax({
             type: "GET",
             // type: "POST",
-            url: "/api/api_apps_login",
+            // url: "/api/api_apps_login",
+            url: "/api/api_bypass_login",
             // url: "/checkLogin",
             data: dataForm,
             beforeSend: function () {

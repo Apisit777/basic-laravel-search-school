@@ -67,7 +67,7 @@
             `<p class="text-gray-900 dark:text-white">${dataJson.data.emp_tiger.personcode}</p>`
         );
         $('#auth_departmant_login').append(
-            `<p class="text-gray-900 dark:text-white">(${dataJson.data.emp_tiger.cmb2code})</p>`
+            `<p class="text-gray-900 dark:text-white">(${dataJson.data.emp_tiger.cmb1namet})</p>`
         );
         $('#auth_department').append(
             `<p class="text-gray-900 dark:text-white p-2">${dataJson.data.emp_tiger.cmb1namet}</p></button>`
