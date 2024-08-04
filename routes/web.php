@@ -38,6 +38,7 @@ Route::get('/images', [ProductImageController::class, 'index'])->name('images');
 Route::post('/images_upload', [ProductImageController::class, 'store'])->name('images_upload');
 
 Route::get('/product', [ProductController::class, 'index'])->name('product');
+
 Route::get('/new_product_develop', [ProductFormController::class, 'index'])->name('new_product_develop');
 Route::get('/new_product_develop_creat', [ProductFormController::class, 'create'])->name('new_product_develop_creat');
 Route::post('/create_new_product_develop', [ProductFormController::class, 'store'])->name('create_new_product_develop');
@@ -47,7 +48,11 @@ Route::get('/product_detail_create', [ProductController::class, 'productDetailCr
 Route::post('/create_products', [ProductController::class, 'store'])->name('create_products');
 Route::get('/product_create', [ProductController::class, 'create'])->name('product_create');
 Route::get('/checknamebrand', [ProductController::class, 'checkname_brand'])->name('checknamebrand');
+Route::post('/list_npd', [ProductController::class, 'list_npd'])->name('list_npd');
 Route::post('/list_products', [ProductController::class, 'list_products'])->name('list_products');
+
+Route::get('/edit_new_product_develop/{id_barcode}', [ProductController::class, 'edit'])->name('edit_new_product_develop');
+
 Route::post('/list_approve_products', [ProductController::class, 'list_approve_products'])->name('list_approve_products');
 Route::delete('/upate_product_status/{id}', [ProductController::class, 'upate_product_status'])->name('upate_product_status');
 
@@ -67,6 +72,9 @@ Route::get('/test', [PusherController::class, 'index']);
 Route::post('/broadcast', [PusherController::class, 'broadcast'])->name('broadcast');
 Route::get('/get_receive', [PusherController::class, 'receive'])->name('get_receive');
 Route::post('/receive', [PusherController::class, 'receive'])->name('receive');
+
+Route::post('/broadcast_npd', [PusherController::class, 'broadcastNPD'])->name('broadcast_npd');
+Route::get('/get_receive_pm', [PusherController::class, 'receivePM'])->name('get_receive_pm');
 
 Route::get('/getBrandIdListAjax', [BrandController::class, 'getBrandIdListAjax'])->name('ajax_brand_id');
 

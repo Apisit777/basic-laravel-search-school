@@ -685,6 +685,9 @@
             select_pos = pos_id;
         }
 
+        setAccess(1);
+        $("#pos_1").addClass("highlight");
+        
         let i = 0;
         $('#add').click( () => {
             ++i;
@@ -731,25 +734,37 @@
                     },dlayMessage)
                 },
                 success:function(res){
-                    console.log("🚀 ~ ajaxGetMenuAccess ~ res:", res)
                     let menuAll = <?php echo json_encode($menus); ?>;
                     console.log("🚀 ~ ajaxGetMenuAccess ~ menuAll:", menuAll)
-                    const menupermission = res.menus.length ? res.menus[0].get_menu_relation : []
-                    console.log("🚀 ~ ajaxGetMenuAccess ~ menupermission:", menupermission)
+                    let menupermission = res.submenu_array.length ? res.submenu_array : []
+                    const result = Object.groupBy(menupermission, ({ menu_id }) => menu_id);
+                    console.log("🚀 ~ ajaxGetMenuAccess ~ result:", result)
                     if(true){
                         menuAll.forEach(menu => {
-                            const currentMenu = menupermission.find(f => f.menu_id === menu.id)
+                            const currentMenu = result[menu.id]
                             console.log("🚀 ~ ajaxGetMenuAccess ~ currentMenu:", currentMenu)
-                            if(currentMenu){
-                                $(`#action_view_${menu.id}`).prop("checked",!!currentMenu.view);
-                                $(`#action_create_${menu.id}`).prop("checked",!!currentMenu.create);
-                                $(`#action_edit_${menu.id}`).prop("checked",!!currentMenu.edit);
-                                $(`#action_delete_${menu.id }`).prop("checked",!!currentMenu.delete);
+                            if(currentMenu != undefined){
+                                const menu_id = menu.id
+                                currentMenu.forEach(fmenu => {
+                                    const submenu_id = fmenu.submenu_id || 0
+                                    $(`#action_view_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.view);
+                                    $(`#action_create_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.create);
+                                    $(`#action_edit_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.edit);
+                                    $(`#action_delete_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.delete);
+                                })
                             } else {
-                                $(`#action_view_${menu.id}`).prop("checked",false);
-                                $(`#action_create_${menu.id}`).prop("checked",false);
-                                $(`#action_edit_${menu.id}`).prop("checked",false);
-                                $(`#action_delete_${menu.id }`).prop("checked",false);
+                                $(`#action_view_${menu.id}_${0}`).prop("checked",false);
+                                $(`#action_create_${menu.id}_${0}`).prop("checked",false);
+                                $(`#action_edit_${menu.id}_${0}`).prop("checked",false);
+                                $(`#action_delete_${menu.id}_${0}`).prop("checked",false);
+                                if(menu.submenus.length){
+                                    menu.submenus.forEach(submenu => {
+                                        $(`#action_view_${menu.id}_${submenu.id}`).prop("checked",false);
+                                        $(`#action_create_${menu.id}_${submenu.id}`).prop("checked",false);
+                                        $(`#action_edit_${menu.id}_${submenu.id}`).prop("checked",false);
+                                        $(`#action_delete_${menu.id}_${submenu.id}`).prop("checked",false);
+                                    })
+                                }
                             }
 
                         });
