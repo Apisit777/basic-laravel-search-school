@@ -5,6 +5,13 @@ namespace App\Http\Controllers\Product;
 use App\Models\Product;
 use App\Models\position;
 use App\Models\User;
+use App\Models\Npd_cos;
+use App\Models\Npd_pdms;
+use App\Models\Npd_categorys;
+use App\Models\Npd_textures;
+use App\Models\Pro_develops;
+use App\Models\Barcode;
+use App\Models\Document;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -92,9 +99,12 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit(Product $product, $id_barcode)
     {
-        //
+        // dd($id_barcode);
+        $data = Pro_develops::firstWhere('BARCODE', $id_barcode);
+
+        return view('new_product_develop.edit', compact('data'));
     }
 
     /**
@@ -132,6 +142,35 @@ class ProductController extends Controller
         return $data;
     }
 
+    public function list_npd(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $data = Pro_develops::select(
+            'BRAND',
+            'DOC_NO',
+            'BARCODE'
+        )
+        // ->where('status', 0)
+        ->orderBy('BARCODE', 'ASC');
+
+        // dd($data);
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
+    }
+
     public function list_products(Request $request)
     {
         $limit = $request->input('length'); // limit per page
@@ -160,7 +199,7 @@ class ProductController extends Controller
 
         return response()->json($response);
     }
-
+    
     public function checkname_brand(Request $request) {
 
         $data = User::select('id')
@@ -183,7 +222,7 @@ class ProductController extends Controller
             'name',
             'status'
         )
-        ->where('status', 2)
+        ->where('status', 1)
         ->orderBy('id', 'ASC');
 
         // dd($data);

@@ -33,4 +33,23 @@ class PusherController extends Controller
         return response()->json($data);
         // return view('receive', ['message' => $request->get('message')]);
     }
+
+    public function broadcastNPD(Request $request) {
+        broadcast(new PusherBroadcast($request->get('message')))->toOthers();
+
+        $data = Product::find($request->id);
+        $data->status = 1;
+        $data->save();
+
+        // return view('broadcast', ['message' => $request->get('message')]);
+    }
+
+    public function receivePM(Request $request) {
+        $data = Product::select('id')
+            ->where('status', '=', 1)
+            ->count();
+
+        return response()->json($data);
+        // return view('receive', ['message' => $request->get('message')]);
+    }
 }

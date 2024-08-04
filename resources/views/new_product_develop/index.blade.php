@@ -115,6 +115,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @if (session('status'))
         <script>
             toastr.options = {
@@ -140,7 +142,7 @@
         </script>
     @endif
     <script>
-        
+
         getParmeterLogin()
         function getParmeterLogin() {
             let dataLogin = sessionStorage.getItem("credetail");
@@ -164,7 +166,7 @@
         } else {
             $("#slide").remove();
         }
-        
+
         const mytableDatatable = $('#example').DataTable({
                 // new DataTable('#example', {
             'searching': false,
@@ -188,7 +190,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
 
-                "url": "/list_products",
+                "url": "/list_npd",
                 "type": "POST",
                 'data': function(data) {
                     // Read values
@@ -209,21 +211,21 @@
                     targets: 0,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.id;
+                        return row.BRAND;
                     }
                 },
                 {
                     targets: 1,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.seq;
+                        return row.DOC_NO;
                     }
                 },
                 {
                     targets: 2,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.name;
+                        return row.BARCODE;
                     }
                 },
                 {
@@ -232,24 +234,27 @@
                     className: 'text-center',
                     render: function(data, type, row) {
                         let text = "#"
-                        let disabledRoute = "{{route('upate_product_status', 0)}}".replace('/0', "/" + row.id)
+                        let disabledRoute = "{{route('upate_product_status', 0)}}".replace('/0', "/" + row.BARCODE)
 
                         return `<div class="inline-flex items-center rounded-md shadow-sm">
-                                    <button onclick="disableAppointment('${disabledRoute}',this,'${row.id}')" class="bclose btn btn-sm btn-success refersh_btn">
+                                    <a onclick="disableAppointment('${disabledRoute}',this,'${row.BARCODE}')" type="button"
+                                        class="bclose btn btn-sm btn-success refersh_btn"
+                                    >
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4">
                                         <path fill-rule="evenodd" d="M19.5 21a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3h-5.379a.75.75 0 0 1-.53-.22L11.47 3.66A2.25 2.25 0 0 0 9.879 3H4.5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h15Zm-6.75-10.5a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25v2.25a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V10.5Z" clip-rule="evenodd" />
                                         </svg>
-                                    </button>
-                                    <button type="button" class="px-1 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group">
+                                    </a>
+                                    <a href="{{route('edit_new_product_develop',0)}}"
+                                        type="button" class="px-1 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group">
                                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="hidden h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                             <path d="M0 0h24v24H0V0z" fill="none"></path>
                                             <path d="M5 18.08V19h.92l9.06-9.06-.92-.92z" opacity=".3"></path>
                                             <path d="M20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29s-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83zM3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM5.92 19H5v-.92l9.06-9.06.92.92L5.92 19z"></path>
                                         </svg>
                                         Edit
-                                    </button>
+                                    </a>
                                 </div>
-                               `;
+                               `.replaceAll('/0', '/' + row.BARCODE);
                     }
                 }
             ]
@@ -279,7 +284,7 @@
                 console.log("🚀 ~ disableAppointment ~ result:", result)
                 if (result.isConfirmed) {
                     $.ajax({
-                        url:"/broadcast",
+                        url:"/broadcast_npd",
                         method:'POST',
                         headers:{
                             'X-Socket-Id': pusher.connection.socket_id

@@ -30,11 +30,42 @@ class ProductFormController extends Controller
         return view('new_product_develop.index', compact('user'));
     }
 
+    private function ean13_check_digit() {
+
+        $barcodeMax = Pro_develops::max('BARCODE');
+        $barcodeNumber =  preg_replace('/[^0-9]/', '', $barcodeMax) + 1;
+        $barcode = sprintf('%04d', $barcodeNumber);
+        
+        //first change digits to a string so that we can access individual numbers
+        // $digits =(string)$digits;
+        // 1. Add the values of the digits in the even-numbered positions: 2, 4, 6, etc.
+        // $even_sum = $digits{1} + $digits{3} + $digits{5} + $digits{7} + $digits{9} + $digits{11};
+        // 2. Multiply this result by 3.
+        // $even_sum_three = $even_sum * 3;
+        // 3. Add the values of the digits in the odd-numbered positions: 1, 3, 5, etc.
+        // $odd_sum = $digits{0} + $digits{2} + $digits{4} + $digits{6} + $digits{8} + $digits{10};
+        // 4. Sum the results of steps 2 and 3.
+        // $total_sum = $even_sum_three + $odd_sum;
+        // 5. The check character is the smallest number which, when added to the result in step 4,  produces a multiple of 10.
+        // $next_ten = (ceil($total_sum/10))*10;
+        // $check_digit = $next_ten - $total_sum;
+        // return $digits . $check_digit;
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create(Request $request)
     {
+        $digits = $this->ean13_check_digit();
+        // dd($digits);
+        // $productOPCodeMax = Barcode::where('BRAND', '=', 'OP')->max('NUMBER');
+        // $productRICodeMax = Barcode::where('BRAND', '=', 'RI')->max('NUMBER');
+        // $productCodeNumber =  preg_replace('/[^0-9]/', '', $productRICodeMax) + 1;
+        // $productCode = $productCodeNumber;
+
+        // dd($productCode);
+
         $productCodeMax = Document::max('NUMBER');
         $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
         $productCode = '2'.sprintf('%04d', $productCodeNumber);
@@ -71,34 +102,6 @@ class ProductFormController extends Controller
         // dd($request);
         DB::beginTransaction();
         try {
-            // $data_product = [
-            //     'name' => $request->input('123'),
-            //     'name' => $request->input('123'),
-            //     'name' => $request->input('123'),
-            //     'name' => $request->input('123'),
-            //     'name' => $request->input('123'),
-            //     'name' => $request->input('123'),
-            //     'name' => $request->input('123'),
-            //     'name' => $request->input('123'),
-            //     'name' => $request->input('123'),
-            //     'name' => $request->input('123'),
-            //     'name' => $request->input('123'),
-            //     'name' => $request->input('123'),
-            //     'name' => $request->input('123'),
-            //     'name' => $request->input('123'),
-            //     'name' => $request->input('123'),
-            //     'name' => $request->input('123'),
-            //     'name' => $request->input('123'),
-            //     'name' => $request->input('123'),
-            //     'name' => $request->input('123'),
-            //     'name' => $request->input('123'),
-            // ];
-
-            // $productCodeMax = Document::max('NUMBER');
-            // $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
-            // $productCode = $productCodeNumber;            
-            // dd($productCode);
-
             if($request->DOC_TP == "OP") {
                 $productCodeMax = Document::max('NUMBER');
                 $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
@@ -107,32 +110,26 @@ class ProductFormController extends Controller
                 $data_number = Document::updateOrCreate(['DOC_TP' => $request->DOC_TP], [
                     'NUMBER' => $productCode
                 ]);
-            } 
+            }
             if($request->BRAND == "OP") {
-                $productCodeMax = Barcode::max('NUMBER');
-                $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
+                $productOPCodeMax = Barcode::where('BRAND', '=', 'OP')->max('NUMBER');
+                $productCodeNumber =  preg_replace('/[^0-9]/', '', $productOPCodeMax) + 1;
                 $productCode = $productCodeNumber;
 
                 $data_number = Barcode::updateOrCreate(['BRAND' => $request->BRAND], [
                     'NUMBER' => $productCode
                 ]);
             }
-            // dd($request);
-            // $product = Pro_develops::create($data_product);
-
-            $productCodeMax = Document::max('NUMBER');
-            $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
-            $productCode = sprintf('%04d', $productCodeNumber);
-
             $barcodeMax = Pro_develops::max('BARCODE');
             $barcodeNumber =  preg_replace('/[^0-9]/', '', $barcodeMax) + 1;
             $barcode = sprintf('%04d', $barcodeNumber);
 
-            // $response = Pro_develops::where('id', $product->id)->update([
-            //     'DOC_NO' => $productCode,
-            //     'BARCODE' => $barcode,
-            // ]);
-            
+            $data_product = [
+                'BARCODE' => $barcode,
+            ];
+
+            $product = Pro_develops::create($data_product);
+
             DB::commit();
             $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
             return response()->json(['success' => true]);

@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\PusherController;
+use App\Http\Controllers\Managemenu\ManageMenuController;
 
 $countUsers = ProductController::count_users();
+$menus = ManageMenuController::menus_data();
 
 @endphp
 
@@ -35,7 +37,7 @@ $countUsers = ProductController::count_users();
                 </a>
             </li> -->
             <li>
-                <a class="flex items-center mt-5 p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group {{ (request()->is('new_product_develop') || request()->is('new_product_develop/*') || request()->is('new_product_develop_creat')) ? 'rounded-sm bg-primary-100 dark:bg-[#014a77] duration-500' : '' }}" href="{{ route('new_product_develop') }}">
+                <a class="flex items-center mt-5 p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group {{ (request()->is('new_product_develop') || request()->is('new_product_develop/*') || request()->is('new_product_develop_creat') || request()->is('new_product_develop_creat/*') || request()->is('edit_new_product_develop') || request()->is('edit_new_product_develop/*')) ? 'rounded-sm bg-primary-100 dark:bg-[#014a77] duration-500' : '' }}" href="{{ route('new_product_develop') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                     <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
                     </svg>
@@ -48,6 +50,7 @@ $countUsers = ProductController::count_users();
                     <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
                     </svg>
                     <span class="flex-1 ms-3 whitespace-nowrap">Product Master</span>
+                    <span id="count_noti_pm" class="inline-flex items-center justify-center px-2 ms-3 text-xs font-medium text-gray-100 bg-[#C82333] rounded-full dark:bg-[#C82333] dark:text-gray-300"></span>
                 </a>
             </li>
             <li>
@@ -56,7 +59,7 @@ $countUsers = ProductController::count_users();
                     <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
                     </svg>
                     <span class="flex-1 ms-3 whitespace-nowrap">Product Detail</span>
-                        <span id="count_noti" class="inline-flex items-center justify-center px-2 ms-3 text-xs font-medium text-gray-100 bg-[#C82333] rounded-full dark:bg-[#C82333] dark:text-gray-300"></span>
+                    <span id="count_noti" class="inline-flex items-center justify-center px-2 ms-3 text-xs font-medium text-gray-100 bg-[#C82333] rounded-full dark:bg-[#C82333] dark:text-gray-300"></span>
                 </a>
             </li>
             <li>
@@ -197,6 +200,24 @@ $countUsers = ProductController::count_users();
 <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 <script>
 
+    function ajaxGetNotiPM() {
+        $.ajax({
+            type: "GET",
+            url: "{{ route('get_receive_pm') }}",
+            success: function (res) {
+                console.log('res', res);
+                if(res){
+                    $("#count_noti_pm").html(res);
+
+                }else{
+                    $("#count_noti_pm").empty();
+                }
+            },
+            error: function(){
+                console.log(res);
+            }
+        });
+    }
     function ajaxGetNoti() {
         $.ajax({
             type: "GET",
@@ -216,6 +237,7 @@ $countUsers = ProductController::count_users();
         });
     }
 
+    ajaxGetNotiPM();
     ajaxGetNoti();
 
     const pusher1  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
@@ -236,4 +258,10 @@ $countUsers = ProductController::count_users();
             }
         });
     });
+
+    let menuAll = <?php echo json_encode($menus); ?>;
+        // if(){
+        //     menuAll.forEach(menu => {
+        //     });
+        // }
 </script>

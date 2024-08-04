@@ -107,6 +107,13 @@ class ManageMenuController extends Controller
 
         return view('managemenu.index', compact('menus', 'position', 'menuData', 'menu_permissions'));
     }
+
+    public static function menus_data()
+    {
+        $menus = Menu::with('submenus')->get();
+        return $menus;
+    }
+
     public function updateOrCreateMenu(Request $request, $id)
     {
         dd($request);
