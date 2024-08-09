@@ -16,8 +16,7 @@ use App\Models\Document;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Traits\UpdateOrCreateOnNull;
-
+use Illuminate\Support\Facades\Auth;
 class ProductFormController extends Controller
 {
     /**
@@ -25,31 +24,52 @@ class ProductFormController extends Controller
      */
     public function index()
     {
-        $user = User::all();
+        $user = User::toSql();
+        $product_seq = Product::select('seq')->get();
 
-        return view('new_product_develop.index', compact('user'));
+        $data = Pro_develops::select(
+            'BRAND',
+            'REF_DOC',
+            'DOC_NO',
+            'BARCODE'
+        )
+        ->orderBy('BARCODE', 'ASC');
+        $productCodes = $data->select('BARCODE')->pluck('BARCODE')->toArray();
+                
+        // $productCodes = Pro_develops::select('BARCODE')->pluck('BARCODE')->toArray();
+        $productCodeArr = [];
+        foreach($productCodes as $productCodeLast) {
+            $productCodeArrLast = [];
+            $productCodeArrLast[] = substr_replace($productCodeLast, '', -1);
+            foreach($productCodeArrLast as $productCodeFirst) {
+                $productCodeArr[] = substr($productCodeFirst, 7, 11);
+            }
+        }
+
+        return view('new_product_develop.index', compact('user', 'product_seq', 'productCodeArr'));
     }
 
-    private function ean13_check_digit() {
-
-        $barcodeMax = Pro_develops::max('BARCODE');
+    private function ean13_check_digit() 
+    {
+        $lastElement = Pro_develops::max('BARCODE');
+        $barcodeMax = substr_replace($lastElement, '', -1);
         $barcodeNumber =  preg_replace('/[^0-9]/', '', $barcodeMax) + 1;
         $barcode = sprintf('%04d', $barcodeNumber);
-        
+        // $lastElement = (string)'8850080200010';
         //first change digits to a string so that we can access individual numbers
-        // $digits =(string)$digits;
+        $digits =(string)$barcode;
         // 1. Add the values of the digits in the even-numbered positions: 2, 4, 6, etc.
-        // $even_sum = $digits{1} + $digits{3} + $digits{5} + $digits{7} + $digits{9} + $digits{11};
+        $even_sum = $digits[1] + $digits[3] + $digits[5] + $digits[7] + $digits[9] + $digits[11];
         // 2. Multiply this result by 3.
-        // $even_sum_three = $even_sum * 3;
+        $even_sum_three = $even_sum * 3;
         // 3. Add the values of the digits in the odd-numbered positions: 1, 3, 5, etc.
-        // $odd_sum = $digits{0} + $digits{2} + $digits{4} + $digits{6} + $digits{8} + $digits{10};
+        $odd_sum = $digits[0] + $digits[2] + $digits[4] + $digits[6] + $digits[8] + $digits[10];
         // 4. Sum the results of steps 2 and 3.
-        // $total_sum = $even_sum_three + $odd_sum;
+        $total_sum = $even_sum_three + $odd_sum;
         // 5. The check character is the smallest number which, when added to the result in step 4,  produces a multiple of 10.
-        // $next_ten = (ceil($total_sum/10))*10;
-        // $check_digit = $next_ten - $total_sum;
-        // return $digits . $check_digit;
+        $next_ten = (ceil($total_sum/10))*10;
+        $check_digit = $next_ten - $total_sum;
+        return $digits . $check_digit;
     }
 
     /**
@@ -57,40 +77,73 @@ class ProductFormController extends Controller
      */
     public function create(Request $request)
     {
-        $digits = $this->ean13_check_digit();
-        // dd($digits);
-        // $productOPCodeMax = Barcode::where('BRAND', '=', 'OP')->max('NUMBER');
-        // $productRICodeMax = Barcode::where('BRAND', '=', 'RI')->max('NUMBER');
-        // $productCodeNumber =  preg_replace('/[^0-9]/', '', $productRICodeMax) + 1;
-        // $productCode = $productCodeNumber;
+        // $numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+        // $odd_numbers = array_filter($numbers, function($number) {
+        //     return $number % 2 != 0;
+        // });
+        // dd($odd_numbers);
 
-        // dd($productCode);
-
+        $digits_barcode = $this->ean13_check_digit();
         $productCodeMax = Document::max('NUMBER');
         $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
         $productCode = '2'.sprintf('%04d', $productCodeNumber);
 
-        $barcodeMax = Pro_develops::max('BARCODE');
-        $barcodeNumber =  preg_replace('/[^0-9]/', '', $barcodeMax) + 1;
-        $barcode = sprintf('%04d', $barcodeNumber);
-
-        // dd($productCode);
-
         $list_position = position::select('id', 'name_position')->get();
-
-        $brands = Brand::listBrand();
-        // dd($brands->all());
-
-        $Products = Product::orderBy('name');
-
-        $Products = $Products->get();
-
         $product_co_ordimators = Npd_cos::all();
         $marketing_managers = Npd_pdms::all();
         $type_categorys = Npd_categorys::all();
         $textures = Npd_textures::all();
-        // dd($textures);
-        return view('new_product_develop.create', compact('productCode', 'barcode', 'list_position', 'brands', 'product_co_ordimators', 'marketing_managers', 'type_categorys', 'textures'));
+
+        $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
+        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        $userpermission = Auth::user()->getUserPermission->name_position;
+        // dd($userpermission);
+        if (in_array($userpermission, [$isSuperAdmin])) {
+            $brands = Barcode::select(
+                'BRAND')
+            ->pluck('BRAND')
+            ->toArray();
+        } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+            $brands = Barcode::select(
+                'BRAND',
+                'STATUS')
+            ->whereIn('STATUS', ['OP', 'ALL'])
+            ->pluck('BRAND')
+            ->toArray();
+        } else if (in_array($userpermission, ['Marketing - CPS'])) {
+            $brands = Barcode::select(
+                'BRAND',
+                'STATUS')
+            ->whereIn('STATUS', ['CP', 'ALL'])
+            ->pluck('BRAND')
+            ->toArray();
+        }
+        $testBarcode = Barcode::all();
+        // dd($brands);
+
+        
+        return view('new_product_develop.create', compact('productCode', 'digits_barcode', 'list_position', 'brands', 'testBarcode', 'product_co_ordimators', 'marketing_managers', 'type_categorys', 'textures'));
+    }
+
+    public function getBrandListAjax(Request $request)
+    {
+        // $productCodes = Pro_develops::select('BARCODE')->pluck('BARCODE')->toArray();
+        // $productCodeArr = [];
+        // foreach($productCodes as $productCodeLast) {
+        //     $productCodeArrLast = [];
+        //     $productCodeArrLast[] = substr_replace($productCodeLast, '', -1);
+        //     foreach($productCodeArrLast as $productCodeFirst) {
+        //         $productCodeArr[] = substr($productCodeFirst, 7, 11);
+        //     }
+        // }
+
+        $Pro_develops = new Pro_develops();
+        $codeArr = $Pro_develops->listBrandProDevelops(['BRAND' => (int) $request->input('BRAND'), 'orderby' => 'BARCODE']);
+        // $productCodesObject = json_decode(json_encode($productCodes));
+        // $arr = json_decode(json_encode($productCodeArr));
+        // $codeArr = $productCodesObject->listBrandProDevelops(['BRAND' => (int) $request->input('BRAND'), 'orderby' => $arr]);
+        dd($codeArr);
+        return response()->json($codeArr);
     }
 
     /**
@@ -98,7 +151,6 @@ class ProductFormController extends Controller
      */
     public function store(Request $request)
     {
-
         // dd($request);
         DB::beginTransaction();
         try {
@@ -120,12 +172,51 @@ class ProductFormController extends Controller
                     'NUMBER' => $productCode
                 ]);
             }
-            $barcodeMax = Pro_develops::max('BARCODE');
-            $barcodeNumber =  preg_replace('/[^0-9]/', '', $barcodeMax) + 1;
-            $barcode = sprintf('%04d', $barcodeNumber);
+
+            $digits_barcode = $this->ean13_check_digit();
 
             $data_product = [
-                'BARCODE' => $barcode,
+                'BRAND' => $request->input('BRAND'),
+                'DOC_NO' => $request->input('DOC_NO'),
+                'REF_DOC' => 'IBH-F155',
+                'BARCODE' => $digits_barcode,
+                'JOB_REFNO' => $request->input('JOB_REFNO'),
+                'DOC_DT' => $request->input('DOC_DT'),
+                'CUST_OEM' => $request->input('CUST_OEM'),
+                'NPD' => $request->input('NPD'),
+                'PDM' => $request->input('PDM'),
+                'NAME_ENG' => $request->input('NAME_ENG'),
+                'CATEGORY' => $request->input('CATEGORY'),
+                'CAPACITY' => $request->input('CAPACITY'),
+                'Q_SMELL' => $request->input('Q_SMELL'),
+                'Q_COLOR' => $request->input('Q_COLOR'),
+                'TARGET_GRP' => $request->input('TARGET_GRP'),
+                'TARGET_STK' => $request->input('TARGET_STK'),
+                'PRICE_FG' => $request->input('PRICE_FG'),
+                'PRICE_COST' => $request->input('PRICE_COST'),
+                'PRICE_BULK' => $request->input('PRICE_BULK'),
+                'FIRST_ORD' => $request->input('FIRST_ORD'),
+                'P_CONCEPT' => $request->input('P_CONCEPT'),
+                'P_BENEFIT' => $request->input('P_BENEFIT'),
+                'TEXTURE' => $request->input('TEXTURE'),
+                'TEXTURE_OT' => $request->input('TEXTURE_OT'),
+                'COLOR1' => $request->input('COLOR1'),
+                'FRANGRANCE' => $request->input('FRANGRANCE'),
+                'INGREDIENT' => $request->input('INGREDIENT'),
+                'STD' => $request->input('STD'),
+                'PK' => $request->input('PK'),
+                'OTHER' => $request->input('OTHER'),
+                'DOCUMENT' => $request->input('DOCUMENT'),
+                'OEM' => $request->input('OEM'),
+                'REASON1' => is_null($request->input('REASON1')) ? 'N' : 'Y',
+                'REASON2' => is_null($request->input('REASON2')) ? 'N' : 'Y',
+                'REASON2_DES' => $request->input('REASON2_DES'),
+                'REASON3' => is_null($request->input('REASON3')) ? 'N' : 'Y',
+                'REASON3_DES' => $request->input('REASON3_DES'),
+                'PACKAGE_BOX' => $request->input('PACKAGE_BOX'),
+                'REF_COLOR' => $request->input('REF_COLOR'),
+                'REF_FRAGRANCE' => $request->input('REF_FRAGRANCE'),
+                'OEM_STD' => $request->input('OEM_STD'),
             ];
 
             $product = Pro_develops::create($data_product);

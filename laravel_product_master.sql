@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 02, 2024 at 12:27 PM
+-- Generation Time: Aug 09, 2024 at 11:16 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -28,20 +28,29 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `barcodes` (
+  `ID` int(11) NOT NULL,
   `BRAND` varchar(10) NOT NULL DEFAULT '',
   `B_CODE` varchar(15) NOT NULL DEFAULT '',
   `NUMBER` decimal(10,0) NOT NULL DEFAULT 0,
-  `REMARK` varchar(50) NOT NULL DEFAULT ''
+  `REMARK` varchar(50) NOT NULL DEFAULT '',
+  `STATUS` varchar(25) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `barcodes`
 --
 
-INSERT INTO `barcodes` (`BRAND`, `B_CODE`, `NUMBER`, `REMARK`) VALUES
-('OP', '88500802', 9002, '8279'),
-('OTHER', '', 9002, 'ไม่ต้องมี Barcode'),
-('RI', '88500802', 9002, 'Brand Ri En');
+INSERT INTO `barcodes` (`ID`, `BRAND`, `B_CODE`, `NUMBER`, `REMARK`, `STATUS`) VALUES
+(1, 'OP', '88500802', 6, '8279', 'OP'),
+(2, 'OTHER', '', 0, 'ไม่ต้องมี Barcode', 'ALL'),
+(3, 'RI', '88500802', 0, 'Brand Ri En', 'OP'),
+(4, 'BD', '88500803', 0, '0', 'CP'),
+(5, 'CPS', '88500807', 0, '0', 'CP'),
+(6, 'HOUSE HOLD', '88500808', 0, '0', 'CP'),
+(7, 'MM', '88500803', 0, '0', 'CP'),
+(8, 'OT', '88500803', 0, '0', 'CP'),
+(9, 'SPICES', '88500803', 0, '0', 'CP'),
+(10, 'VN', '88500803', 0, '0', 'CP');
 
 -- --------------------------------------------------------
 
@@ -111,7 +120,7 @@ CREATE TABLE `documents` (
 --
 
 INSERT INTO `documents` (`DOC_TP`, `DOC_SYS`, `DOC_NO`, `NUMBER`, `FIELD`, `DOC_ST`, `REMARK`, `REMARK_EDIT`) VALUES
-('OP', '', '', 2, '', 1, '', '');
+('OP', '', '', 6, '', 1, '', '');
 
 -- --------------------------------------------------------
 
@@ -226,12 +235,14 @@ INSERT INTO `menu_relations` (`id`, `position_id`, `menu_id`, `submenu_id`, `vie
 (2, 1, 2, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, '2023-01-19 18:07:36', '2023-01-19 18:07:36'),
 (3, 5, 1, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, '2023-01-19 18:07:38', '2023-01-19 18:07:38'),
 (4, 1, 5, NULL, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL),
-(5, 1, 5, 1, NULL, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-18 02:47:52', '2024-07-18 02:47:52'),
-(6, 1, 5, 2, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(7, 1, 5, 3, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(5, 1, 5, 1, 1, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-18 02:47:52', '2024-07-18 02:47:52'),
+(6, 1, 5, 2, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(7, 1, 5, 3, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (8, 1, 6, NULL, 1, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (9, 1, 6, 9, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(10, 1, 6, 10, 1, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL);
+(10, 1, 6, 10, 1, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(35, 7, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(36, 6, 1, NULL, 1, 1, 1, 1, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -494,13 +505,13 @@ CREATE TABLE `positions` (
 --
 
 INSERT INTO `positions` (`id`, `name_position`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 'Administrator', NULL, NULL, NULL, NULL),
+(1, 'Superadmin', NULL, NULL, NULL, NULL),
 (2, 'Manager_Account', NULL, NULL, NULL, NULL),
 (3, 'Account', NULL, NULL, NULL, NULL),
-(4, 'Manager_Product', NULL, NULL, NULL, NULL),
-(5, 'Product', NULL, NULL, NULL, NULL),
-(6, 'Manager_Marketing', NULL, NULL, NULL, NULL),
-(7, 'Marketing', NULL, NULL, NULL, NULL),
+(4, 'Category - OP', NULL, NULL, NULL, NULL),
+(5, 'Product - OP', NULL, NULL, NULL, NULL),
+(6, 'E-Commerce - OP', NULL, NULL, NULL, NULL),
+(7, 'Marketing - CPS', NULL, NULL, NULL, NULL),
 (8, 'Manager_IBSH', NULL, NULL, NULL, NULL),
 (9, 'IBSH', NULL, NULL, NULL, NULL);
 
@@ -587,24 +598,24 @@ CREATE TABLE `pro_develops` (
   `DOC_NO` varchar(20) DEFAULT '',
   `REF_DOC` varchar(20) DEFAULT '',
   `REVISE_NO` decimal(6,0) DEFAULT 0,
-  `EDIT_DT` datetime DEFAULT '1900-01-01 00:00:00',
+  `EDIT_DT` date DEFAULT '1900-01-01',
   `USER_EDIT` varchar(15) DEFAULT '',
   `STATUS` varchar(5) DEFAULT '',
   `REMARK_ST` varchar(100) DEFAULT '',
   `CUST_OEM` varchar(100) DEFAULT '',
   `JOB_REFNO` varchar(20) DEFAULT '',
-  `DOC_DT` datetime DEFAULT '1900-01-01 00:00:00',
+  `DOC_DT` date DEFAULT '1900-01-01',
   `NPD` varchar(50) DEFAULT '',
   `PDM` varchar(50) DEFAULT '',
   `NAME_ENG` varchar(70) DEFAULT '',
   `PRODUCT` varchar(15) DEFAULT '',
-  `BARCODE` varchar(15) DEFAULT '',
+  `BARCODE` varchar(15) NOT NULL DEFAULT '',
   `CATEGORY` varchar(20) DEFAULT '',
   `CAPACITY` varchar(20) DEFAULT '',
   `Q_SMELL` decimal(6,2) DEFAULT 0.00,
   `Q_COLOR` decimal(6,2) DEFAULT 0.00,
   `TARGET_GRP` varchar(20) DEFAULT '',
-  `TARGET_STK` datetime DEFAULT '1900-01-01 00:00:00',
+  `TARGET_STK` date DEFAULT '1900-01-01',
   `PRICE_FG` varchar(30) DEFAULT '',
   `PRICE_COST` varchar(30) DEFAULT '',
   `PRICE_BULK` varchar(30) DEFAULT '',
@@ -622,7 +633,7 @@ CREATE TABLE `pro_develops` (
   `OTHER` varchar(70) DEFAULT '',
   `DOCUMENT` varchar(70) DEFAULT '',
   `FIRST_ORD` decimal(12,0) DEFAULT 0,
-  `OEM` varchar(1) DEFAULT '',
+  `OEM` varchar(1) DEFAULT '0',
   `REASON1` varchar(1) DEFAULT '',
   `REASON1_DES` varchar(100) DEFAULT '',
   `REASON2` varchar(1) DEFAULT '',
@@ -640,7 +651,12 @@ CREATE TABLE `pro_develops` (
 --
 
 INSERT INTO `pro_develops` (`BRAND`, `DOC_NO`, `REF_DOC`, `REVISE_NO`, `EDIT_DT`, `USER_EDIT`, `STATUS`, `REMARK_ST`, `CUST_OEM`, `JOB_REFNO`, `DOC_DT`, `NPD`, `PDM`, `NAME_ENG`, `PRODUCT`, `BARCODE`, `CATEGORY`, `CAPACITY`, `Q_SMELL`, `Q_COLOR`, `TARGET_GRP`, `TARGET_STK`, `PRICE_FG`, `PRICE_COST`, `PRICE_BULK`, `P_CONCEPT`, `P_BENEFIT`, `TEXTURE`, `TEXTURE_OT`, `COLOR1`, `COLOR2`, `COLOR3`, `FRANGRANCE`, `INGREDIENT`, `STD`, `PK`, `OTHER`, `DOCUMENT`, `FIRST_ORD`, `OEM`, `REASON1`, `REASON1_DES`, `REASON2`, `REASON2_DES`, `REASON3`, `REASON3_DES`, `REF_COLOR`, `REF_FRAGRANCE`, `OEM_STD`, `PACKAGE_BOX`) VALUES
-('OP', 'OP00000001', 'IBH-F155', 11, '2015-01-13 00:00:00', 'sa', '', '', '-', 'OP/IBHS/NP31/49', '2006-05-25 00:00:00', '', '', 'Cuticle Hair Treatment (New Formula)', '', '885008020001', 'Hair Care', '125 ml', 1.00, 1.00, '20-50', '2007-03-01 00:00:00', '295', '-', '', 'เจลวิตามินบำรุงเส้นผมสูตรเข้มข้น เนื้อบางเบา ซ่อมแซมและป้องกันไม่ให้ผมแตกปลายด้วยการเชื่อม\r\nประสานคิวติเคิลของเส้นผม ให้ผมเรียบลื่น เงางาม ไม่เปราะขาดง่าย \r\n', 'อุดมคุณค่าสารสกัดที่ช่วยเคลือปกป้องเส้นผมจากมลภาวะ ให้เส้นผมนุ่มมาก และ เงางาม จัดทรงง่าย \r\nเป็นธรรมชาติ\r\n', 'เจล', '-', 'ไม่มีสี', '', '', 'เหมือน Cuticle Hair Treatment plus Sunscreen for Long Hair', '-', 'Satinique hi Gloss Serum', 'ใช้ร่วม Cuticle Hair Treatment plus Sunscreen for Long Hair', 'หาก develop แล้วให้ทำ blind test', '-', 0, 'Y', 'Y', '', 'Y', 'Reason 2', 'Y', 'Reason 3', 'Ref Color ---', 'Ref Fragrance ---', 'OEM Benchmark ---', 'N');
+('OP', 'OP00001', 'IBH-F155', 11, '2015-01-13', 'sa', '', '', '-', 'OP/IBHS/NP31/49', '2006-05-25', '', '', 'Cuticle Hair Treatment (New Formula)', '', '8850080200010', 'Hair Care', '125 ml', 1.00, 1.00, '20-50', '2007-03-01', '295', '-', '', 'เจลวิตามินบำรุงเส้นผมสูตรเข้มข้น เนื้อบางเบา ซ่อมแซมและป้องกันไม่ให้ผมแตกปลายด้วยการเชื่อม\r\nประสานคิวติเคิลของเส้นผม ให้ผมเรียบลื่น เงางาม ไม่เปราะขาดง่าย \r\n', 'อุดมคุณค่าสารสกัดที่ช่วยเคลือปกป้องเส้นผมจากมลภาวะ ให้เส้นผมนุ่มมาก และ เงางาม จัดทรงง่าย \r\nเป็นธรรมชาติ\r\n', 'เจล', '-', 'ไม่มีสี', '', '', 'เหมือน Cuticle Hair Treatment plus Sunscreen for Long Hair', '-', 'Satinique hi Gloss Serum', 'ใช้ร่วม Cuticle Hair Treatment plus Sunscreen for Long Hair', 'หาก develop แล้วให้ทำ blind test', '-', 0, 'Y', 'Y', '', 'Y', 'Reason 2', 'Y', 'Reason 3', 'Ref Color ---', 'Ref Fragrance ---', 'OEM Benchmark ---', 'N'),
+('OP', 'OP00002', 'IBH-F155', 0, '1900-01-01', '', '', '', '2', '2', '2024-08-05', '002', '001', '2', '', '8850080200027', '001', '2', 2.00, 2.00, '2', '2024-08-05', '2', '2', '2', '2', '2', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'N', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
+('OP', 'OP00003', 'IBH-F155', 0, '1900-01-01', '', '', '', '3', '3', '2024-08-05', '002', '001', '3', '', '8850080200034', '001', '3', 3.00, 3.00, '3', '2024-08-05', '3', '3', '3', '3', '3', '001', '3', '3', '', '', '3', '3', '3', '3', '3', '3', 3, 'N', 'Y', '', 'Y', '3', 'Y', '3', '3', '3', '3', NULL),
+('OP', 'OP00004', 'IBH-F155', 0, '1900-01-01', '', '', '', '4', '4', '2024-08-06', '002', '001', '4', '', '8850080200041', '001', '4', 4.00, 4.00, '4', '2024-08-06', '4', '4', '4', '4', '4', '001', '4', '4', '', '', '4', '4', '4', '4', '4', '4', 4, 'N', 'Y', '', 'Y', '4', 'Y', '4', '4', '4', '4', NULL),
+('OP', 'OP00005', 'IBH-F155', 0, '1900-01-01', '', '', '', '5', '5', '2024-08-06', '012', '001', '5', '', '8850080200058', '002', '5', 5.00, 5.00, '5', '2024-08-06', '5', '5', '5', '5', '5', '001', '5', '5', '', '', '5', '5', '5', '5', '5', '5', 5, 'N', 'Y', '', 'Y', '5', 'Y', '5', '5', '5', '5', NULL),
+('OP', 'OP00006', 'IBH-F155', 0, '1900-01-01', '', '', '', '6', '6', '2024-08-07', '002', '001', '6', '', '8850080200065', '001', '6', 6.00, 6.00, '6', '2024-08-07', '6', '6', NULL, NULL, NULL, NULL, NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', '', 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1802,9 +1818,9 @@ CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `username` varchar(255) DEFAULT NULL COMMENT 'ชื่อผู้ใช้งาน',
   `name` varchar(255) DEFAULT NULL COMMENT 'ชื่อ',
-  `email` varchar(255) NOT NULL,
+  `email` varchar(255) DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) NOT NULL,
+  `password` varchar(255) DEFAULT NULL,
   `remember_token` varchar(100) DEFAULT NULL,
   `status` tinyint(4) NOT NULL DEFAULT 1 COMMENT '1=ใช้งาน, 0=ไม่ใช้งาน',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1819,26 +1835,20 @@ INSERT INTO `users` (`id`, `username`, `name`, `email`, `email_verified_at`, `pa
 (1, 'superadmin', 'Administrator', 'admin@gmail.com', NULL, '$2y$10$3rjn/Q80C2udNQorwpEo8.SPQknet8o1i..hJAXzNUzL7vaIJcjO.', 'lG9ZTgVdT63LWF3EE1uFxzf1fgZpLUWJVl19wGyt0SLVv9UZgaJe5gTkaU3s', 1, '2020-07-21 13:16:54', '2024-06-10 01:57:30'),
 (2, 'panadda', 'Panadda Tingmahain', 'panadda.t@schicer.com', NULL, '$2y$10$nCf4c8Cw0KWGBmxNwrGpEOYGzR5RiVQv6Ls7lz.lovJrPZUWvKGD.', NULL, 1, '2021-03-23 18:51:36', '2024-06-09 21:28:01'),
 (3, 'markawan', 'Markawan Maneesinthop', 'markawan@mail.com', NULL, '$2y$10$PWB7OepESELIfTbzlz.8HO/FMmuxT2.XKglYh/RbKsn0HmhWtlznq', NULL, 1, '2021-03-23 20:40:29', '2024-06-09 21:29:28'),
-(4, 'perapong', 'Perapong Srisawan', 'perapong@mail.com', NULL, '$2y$10$NuyBmpB9Pnn4b9QnJj5/t.xfrYDKPhKNUJTyqpfYHTkmJmhLZUsqu', NULL, 1, '2021-03-23 20:42:02', '2024-06-09 21:30:35'),
-(5, 'nuttapon', 'Nuttapon Sangkaputti', 'nuttapon@mail.com', NULL, '$2y$10$mHrGyoxU.vwYY5oUhKm6bOz8nH7NO8VHNA7.JJ8I9GNGql6mIYAAy', NULL, 1, '2021-03-23 20:43:57', '2024-06-09 21:24:12'),
-(6, 'aekkalux', 'Aekkalux Uthaipan', 'aekkalux@mail.com', NULL, '$2y$10$5O8lKPrm/Kgnh5u8x4gsze3jbINcALFeVzNs3TJUqY4R9esa.cmKe', NULL, 1, '2021-03-23 20:46:43', '2024-06-09 21:26:01'),
 (7, 'tent1', 'Tent Example', 'tent1@gmail.com', NULL, '$2y$10$VIy2UhwGaVDwZbVhdbucS.Jf7ZLcUy2K9wrSfXJF8TUBeCzAfD6UG', NULL, 1, '2021-04-26 15:06:30', '2021-04-26 15:06:30'),
 (8, 'tent2', 'tent2', 'tent2@mail.com', NULL, '$2y$10$l967vwQtA74YAn10wx2XM.X1cqa/KvHy7/jadcTsJT09K.9QZmR9q', NULL, 1, '2021-08-30 14:22:12', '2021-08-30 14:25:26'),
 (9, 'bb_smartcar1', 'BB Smart Car (สาขา 1)', 'bbsmartcar1@gmail.com', NULL, '$2y$10$.FK7OqclU7cVHUIfZCl4AO6QSFg88vN/M3jcTqfJJA0cpoH0TfGXq', NULL, 1, '2022-01-19 19:14:47', '2022-01-19 19:14:47'),
 (10, 'bb_smartcar2', 'BB Smart Car (สาขา 2)', 'bbsmartcar2@gmail.com', NULL, '$2y$10$3j1BfNiE/cDVDMq16g5pI.JwVotGWSfCd8uBiWAnK5otXZvtbh8TO', NULL, 1, '2022-01-19 19:24:46', '2022-01-19 19:24:46'),
 (11, 'bo', 'ช่างโบ้', 'test@gmail.com', NULL, '$2y$10$qNXabFcf0l5rqJOoS/iaMOg0X0ljVJ4m8TxMvxE5WFJPXRO5DBZem', 'TyE0I46e23zpM6lWHXHXww79aNFKikpGWJo94KEWkoclxikPwWhW9Nqu3tZA', 1, '2022-02-28 15:21:57', '2022-10-02 22:22:30'),
 (12, 'file', 'ช่างฟิล์ม', 'test2@gmail.com', NULL, '$2y$10$oDK5H2V30XtEany.YHQDs.P56/0L2Bx/W/dgVkKT8Fi6w2gajl5re', NULL, 1, '2022-02-28 15:23:35', '2022-02-28 15:23:35'),
-(13, 'ko', 'ช่างโก้', 'test3@gmail.com', NULL, '$2y$10$essRxlSrjLHIocd43V6G5.zEO66cGZIqJI.yTzRWT6ppFAyBqekba', NULL, 1, '2022-02-28 15:24:13', '2022-02-28 15:24:13'),
-(14, 'boy1', 'ช่างบอย1', 'test4@gmail.com', NULL, '$2y$10$TTqMc4sibhMmzgQfwMFZFuEO3ecwMuQtBa82sJdi/nKNELe5q/7m2', 'XS3AsPrMmYbu2P6gFWNpCTRU3jKTeVnEFZHGi2RvNOOPMFM5MB2G4JQMPp7U', 1, '2022-02-28 15:24:40', '2022-02-28 15:24:40'),
-(15, 'boy2', 'ช่างบอย2', 'test5@gmail.com', NULL, '$2y$10$GnC/a6hg84ZoI6vmj2HV8.ufvjBZxK3RXdulGuSZz1jhkk5kWLpyS', 'pn37yLdZAOWHG5RYpWxErNaZNODCnfvzQVmKMb582z88Hj9PUuym8BpERDIH', 1, '2022-02-28 15:25:10', '2022-02-28 15:25:10'),
-(16, 'tee', 'ช่างตี๋', 'test6@gmail.com', NULL, '$2y$10$LrNuMoY/hcjNDSI51Oj4bO7f3Zca7V3Uxow0ylpJHBdipcSAyVBBq', NULL, 1, '2022-02-28 15:25:32', '2022-02-28 15:25:32'),
-(17, 'earth', 'ช่างเอิรท์', 'test7@gmail.com', NULL, '$2y$10$eNVktHs0lfaZJbC0gLXcWOIb7NrnWHrk6SCsl/uZB.gXAMXr7qdf2', NULL, 1, '2022-02-28 15:26:04', '2022-02-28 15:26:04'),
-(18, 'non', 'ช่างนนท์', 'test9@gmail.com', NULL, '$2y$10$lVlPxZzSSOy8I78RhDoq4uzKawJOZWh94fl17nXCFE5GGY9vNMp.u', 'weAz9Es0XTN3bWxh5T8sNdCE7FzAa1P33934CARLD1POD6P4rYL74assYS9P', 1, '2022-02-28 15:27:09', '2022-10-03 21:39:28'),
-(19, 'lun', 'ช่างหลัน', 'test10@gmail.com', NULL, '$2y$10$KR6b/F3/otoliSBKm.wRle7PYOWiYh1LLjobAGzI.DDh87IIR0eR.', NULL, 1, '2022-02-28 15:27:48', '2022-10-26 21:26:48'),
-(20, 'tom', 'ช่างต้อม', 'test11@gmail.com', NULL, '$2y$10$VPYPUygmU1y/85/RfvEbG.khWSskAlppOI/8ThFVAcb.xQrS0BIwu', NULL, 1, '2022-02-28 15:28:18', '2022-02-28 15:28:18'),
 (21, NULL, 'test1', 'test1@gmail.com', NULL, '$2y$10$XY8os2I.PICMI9eznO96CuUVO2EkiNSpVh9FJ.lJyF.idv.3b7iLm', NULL, 1, '2024-06-07 03:19:36', '2024-06-07 03:19:36'),
-(23, NULL, 'test2', 'test12@gmail.com', NULL, '$2y$10$nCKIDugsGOPwbVvJORdHbuWe95RQg/9boW9lrPLulELyn/KasE8jS', NULL, 1, '2024-06-10 03:25:16', '2024-06-10 03:25:16'),
-(24, NULL, 'test3', 'test13@gmail.com', NULL, '$2y$10$DtMsKHv06DMDG65xyjiH4eetTIBomrv4..ghjcdoplRI7xsP1uA/.', NULL, 1, '2024-06-27 20:18:58', '2024-06-27 20:18:58');
+(25, '00d750', NULL, NULL, NULL, NULL, 'TQYFJ6BFmL0HXjcUTtJ0DmYIKTq60aeyN61U0vdk92pX47te5d1sxjwSXPMG', 1, '2024-08-05 03:22:25', '2024-08-05 03:22:25'),
+(26, '00d752', NULL, NULL, NULL, NULL, 'g5oE76tjQFAO6UbQ1ECCATtPuAtTJwHtZAobUXc9PrNlYjAGdv1fbqSL6q0v', 1, '2024-08-05 18:50:00', '2024-08-05 18:50:00'),
+(27, '006631', NULL, NULL, NULL, NULL, 'IRnZ0kDtYPOaO68d1QtsreqPQIpjxYc8i8yxmCx0T4ExbXX9i1dH61NhQBAm', 1, '2024-08-07 01:15:19', '2024-08-07 01:15:19'),
+(28, '006935', NULL, NULL, NULL, NULL, NULL, 1, '2024-08-07 01:17:59', '2024-08-07 01:17:59'),
+(29, '003559', NULL, NULL, NULL, NULL, 'wKeR7kAzlvANIeBaD71ADpPAyyLtvWVp16tpqWP4MABt6wfjOezYf3wiNYdU', 1, '2024-08-07 23:41:47', '2024-08-07 23:41:47'),
+(30, '00C648', NULL, NULL, NULL, NULL, 'JYg0S1VU15z1n33xE6Aq4rFE6132Nrw6GAbZ7sszVxHvainm423rJ2wG4XfO', 1, '2024-08-07 23:50:00', '2024-08-07 23:50:00'),
+(32, '00d751', NULL, NULL, NULL, NULL, 'eV991mAPSjVDrtbstWdyeQRzdjBGYtThR2Ib4hQPvIxWQypaw65zqvZrdqmq', 1, '2024-08-08 23:37:47', '2024-08-08 23:37:47');
 
 -- --------------------------------------------------------
 
@@ -1860,51 +1870,15 @@ CREATE TABLE `user_permission` (
 --
 
 INSERT INTO `user_permission` (`id`, `user_id`, `tent_id`, `position_id`, `created_at`, `updated_at`) VALUES
-(1, 1, NULL, 1, NULL, '2021-06-09 12:28:31'),
-(2, 21, 1, 1, '2021-03-24 15:33:51', '2021-03-24 15:33:51'),
-(3, 6, 2, 5, '2021-03-24 15:33:51', '2021-03-24 15:33:51'),
-(4, 7, 1, 8, '2021-03-24 17:40:29', '2021-03-24 17:40:29'),
-(5, 8, 1, 8, '2021-03-24 17:42:02', '2021-03-24 17:42:02'),
-(6, 9, 1, 2, '2021-03-24 17:43:57', '2021-03-24 17:43:57'),
-(7, 23, 1, 5, '2021-03-24 17:46:43', '2021-03-24 17:46:43'),
-(9, 24, 1, 4, '2021-05-12 11:21:43', '2021-06-09 12:28:31'),
-(10, 11, 1, 6, '2021-08-31 11:18:01', '2021-08-31 11:18:01'),
-(11, 12, 514, 8, '2021-08-31 11:22:32', '2021-08-31 11:24:37'),
-(12, 13, 240, 6, '2022-01-20 16:17:10', '2022-01-20 16:17:10'),
-(13, 14, 241, 6, '2022-01-20 16:25:39', '2022-01-20 16:25:39'),
-(14, 15, 235, 8, '2022-03-01 12:29:29', '2022-03-01 12:29:29'),
-(15, 25, 235, 8, '2022-03-01 12:30:07', '2022-03-01 12:30:07'),
-(16, 17, 235, 8, '2022-03-01 12:30:14', '2022-03-01 12:30:14'),
-(17, 1, 235, 8, '2022-03-01 12:30:20', '2022-03-01 12:30:20'),
-(18, 1, 235, 8, '2022-03-01 12:30:24', '2022-03-01 12:30:24'),
-(19, 16, 235, 8, '2022-03-01 12:30:29', '2022-03-01 12:30:29'),
-(20, 19, 235, 8, '2022-03-01 12:30:33', '2022-03-01 12:30:33'),
-(21, 18, 235, 8, '2022-03-01 12:30:37', '2022-03-01 12:30:37'),
-(22, 22, 235, 8, '2022-03-01 12:30:41', '2022-03-01 12:30:41'),
-(23, 20, 235, 8, '2022-03-01 12:30:47', '2022-03-01 12:30:47'),
-(24, 1, 235, 8, '2022-03-01 12:30:51', '2022-03-01 12:30:51'),
-(25, 26, 235, 8, '2022-03-01 12:32:54', '2022-03-01 12:32:54'),
-(26, 28, 235, 8, '2022-03-01 14:36:52', '2022-03-01 14:36:52'),
-(27, 27, 235, 8, '2022-03-01 14:37:04', '2022-03-01 14:37:04'),
-(28, 29, 235, 8, '2022-03-09 15:03:07', '2022-03-09 15:03:07'),
-(29, 30, 971, 6, '2022-05-26 16:27:03', '2022-05-26 16:27:03'),
-(30, 31, NULL, 8, '2022-09-07 11:09:41', '2022-09-07 16:49:50'),
-(31, 32, 235, 8, '2022-09-07 11:10:35', '2022-09-07 11:10:35'),
-(32, 33, 235, 8, '2022-09-07 11:11:50', '2022-09-07 11:11:50'),
-(33, 34, 235, 8, '2022-09-07 11:25:30', '2022-09-07 11:25:30'),
-(35, 35, 235, 8, '2022-09-07 11:25:30', '2022-09-07 11:25:30'),
-(36, 36, 235, 8, '2022-09-07 11:25:30', '2022-09-07 11:25:30'),
-(37, 37, NULL, 8, '2022-09-07 11:25:30', '2022-09-07 16:55:29'),
-(38, 38, 235, 8, '2022-09-07 11:25:30', '2022-09-07 11:25:30'),
-(39, 39, 235, 8, '2022-09-07 11:25:30', '2022-09-07 11:25:30'),
-(40, 40, NULL, 8, '2022-09-07 11:25:30', '2022-09-07 16:53:24'),
-(41, 41, NULL, 8, '2022-09-07 11:25:30', '2022-09-07 16:55:58'),
-(42, 42, NULL, 8, '2022-09-07 11:25:30', '2022-09-07 16:51:14'),
-(43, 43, NULL, 8, '2022-09-07 11:25:30', '2022-09-07 16:54:07'),
-(44, 44, NULL, 8, '2022-09-07 11:25:30', '2022-09-07 16:54:40'),
-(45, 45, NULL, 8, '2022-09-07 11:25:30', '2022-09-07 16:52:35'),
+(1, 1, NULL, 2, NULL, '2021-06-09 12:28:31'),
+(2, 21, 1, 2, '2021-03-24 15:33:51', '2021-03-24 15:33:51'),
+(15, 25, NULL, 7, '2022-03-01 12:30:07', '2022-03-01 12:30:07'),
+(22, 29, NULL, 4, '2022-03-01 12:30:41', '2022-03-01 12:30:41'),
+(23, 30, NULL, 5, '2022-03-01 12:30:47', '2022-03-01 12:30:47'),
+(25, 26, NULL, 1, '2022-03-01 12:32:54', '2022-03-01 12:32:54'),
 (46, 46, 235, 8, '2022-09-07 11:25:30', '2022-09-07 11:25:30'),
-(47, 47, 235, 8, '2022-09-07 11:25:30', '2022-09-07 11:25:30');
+(47, 47, 235, 8, '2022-09-07 11:25:30', '2022-09-07 11:25:30'),
+(51, 32, NULL, 6, '2024-08-09 06:37:48', '2024-08-09 06:37:48');
 
 --
 -- Indexes for dumped tables
@@ -1914,7 +1888,8 @@ INSERT INTO `user_permission` (`id`, `user_id`, `tent_id`, `position_id`, `creat
 -- Indexes for table `barcodes`
 --
 ALTER TABLE `barcodes`
-  ADD PRIMARY KEY (`BRAND`);
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `BRAND` (`BRAND`) USING BTREE;
 
 --
 -- Indexes for table `brands`
@@ -2043,7 +2018,7 @@ ALTER TABLE `product_images`
 -- Indexes for table `pro_develops`
 --
 ALTER TABLE `pro_develops`
-  ADD PRIMARY KEY (`BRAND`);
+  ADD PRIMARY KEY (`BARCODE`) USING BTREE;
 
 --
 -- Indexes for table `submenus`
@@ -2073,6 +2048,12 @@ ALTER TABLE `user_permission`
 --
 -- AUTO_INCREMENT for dumped tables
 --
+
+--
+-- AUTO_INCREMENT for table `barcodes`
+--
+ALTER TABLE `barcodes`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `brands`
@@ -2120,7 +2101,7 @@ ALTER TABLE `menus`
 -- AUTO_INCREMENT for table `menu_relations`
 --
 ALTER TABLE `menu_relations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -2174,13 +2155,13 @@ ALTER TABLE `trn_dona_totambons`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `user_permission`
 --
 ALTER TABLE `user_permission`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=51;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

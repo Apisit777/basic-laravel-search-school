@@ -37,24 +37,33 @@
                             <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                         </div>
                         <div class="md:col-span-2" >
-                            <label for="name"></label>
-                            <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="brand_id" onchange="brandIdChange(this,'brand_id')">
-                                <option value=""> --- กรุณาเลือก ---</option>
-                                @foreach ($brands as $key => $brand)
-                                    <option value={{ $brand->id }}>{{ $brand->company_name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="md:col-span-2" >
                             <label for="name">รหัสสินค้า</label>
                             <select class="js-example-basic-single w-full rounded-sm text-xs" id="product_id" name="product_id" onchange="onSelect(this)">
                                 <option value=""> --- กรุณาเลือก ---</option>
                             </select>
                         </div> -->
-                        <div class="md:col-span-6">
+                        <!-- @if (Auth::user()->getUserPermission->name_position == "Superadmin" || Auth::user()->getUserPermission->name_position == "Superadmin")
+
+                        @endif -->
+                        <div class="md:col-span-3">
+                            <label for="NUMBER">Brand</label>
+                            <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="brand_id" onchange="brandIdChange(this, 'BRAND')">
+                                <option value=""> --- กรุณาเลือก ---</option>
+                                @foreach ($brands as $key => $brand)
+                                    <option value={{ $brand }}>{{ $brand }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="md:col-span-3" >
+                            <label for="NUMBER">รหัส</label>
+                            <select class="js-example-basic-single w-full rounded-sm text-xs" id="NUMBER" name="NUMBER" onchange="onSelect(this)">
+                                <option value=""> --- กรุณาเลือก ---</option>
+                            </select>
+                        </div>
+                        <!-- <div class="md:col-span-3">
                             <label for="NUMBER">รหัสสินค้า</label>
                             <input type="text" name="NUMBER" id="NUMBER" class="h-10 rounded-sm px-4 text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="{{ $productCode }}" disabled>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -261,7 +270,7 @@
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="BARCODE">Barcode<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="{{ $barcode }}" disabled>
+                                                                    <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="{{ $digits_barcode }}" disabled>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="JOB_REFNO">Job Ref. No.</label>
@@ -468,9 +477,9 @@
                                                                 <div class="md:col-span-6 mt-2">
                                                                     <label for="OEM">Candidate with OEM</label>
                                                                     <div class="md:col-span-4 mt-3">
-                                                                        <input type="radio" id="OEM_TYPE1" name="OEM" value="1" />
+                                                                        <input type="radio" id="OEM_TYPE1" name="OEM" value="Y" />
                                                                         <label for="" class="mr-5">yes</label>
-                                                                        <input type="radio" id="OEM_TYPE2" name="OEM" value="0" checked/>
+                                                                        <input type="radio" id="OEM_TYPE2" name="OEM" value="N" checked/>
                                                                         <label for="">no</label>
                                                                     </div>
                                                                     <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
@@ -574,6 +583,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
 
+        let barcodes = <?php echo json_encode($testBarcode); ?>;
+        console.log("🚀 ~ barcodes:", barcodes)
+        
         getParmeterLogin()
         function getParmeterLogin() {
             let dataLogin = sessionStorage.getItem("credetail");
@@ -679,13 +691,13 @@
             let url = "";
             let select = "";
 
-            if (params === 'brand_id') {
-                url = '{{ route('ajax_brand_id') }}?brand_id=' + e.value;
-                select = jQuery('#product_id');
-                jQuery('#product_id').find("option").remove();
+            if (params === 'BRAND') {
+                url = '{{ route('get_brand_list_ajax') }}?BRAND=' + e.value;
+                select = jQuery('#NUMBER');
+                jQuery('#NUMBER').find("option").remove();
                 select.find("option").remove();
                 const newop = new Option("--- กรุณาเลือก ---", "");
-                jQuery(newop).appendTo(jQuery('#product_id'))
+                jQuery(newop).appendTo(jQuery('#NUMBER'))
             }
 
             jQuery.ajax({
@@ -699,13 +711,14 @@
 
                 },
                 success: function (data) {
+                    console.log("🚀 ~ brandIdChange ~ data:", data)
                     if (data) {
                         select.find("option").remove();
                         const newop = new Option("--- กรุณาเลือก ---", "");
                         jQuery(newop).appendTo(select)
                         data.map((item, index) => {
                             console.log('item', item)
-                            const newoption = new Option(item.product_id, item.seq);
+                            const newoption = new Option(item.BARCODE, item);
                             jQuery(newoption).appendTo(select)
                         });
                     }

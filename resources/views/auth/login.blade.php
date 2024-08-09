@@ -4,6 +4,7 @@
 <head>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
@@ -87,6 +88,13 @@
         .loading__dot { animation: 2s blink infinite }
         .loading__dot:nth-child(2) { animation-delay: 250ms }
         .loading__dot:nth-child(3) { animation-delay: 500ms }
+
+        .select2-container .select2-dropdown .select2-results__options {
+            max-height: 360px !important;
+        }
+        .select2 {
+            width: 100%!important; /* force fluid responsive */
+        }
     </style>
 </head>
 
@@ -94,7 +102,9 @@
     <div id="slide" class="loaderslide"></div>
     <!-- <div class="min-h-screen p-10" style="background-image: url('https://www.pixelstalk.net/wp-content/uploads/2016/07/1080p-Full-HD-Images-For-Desktop.jpg')"> -->
     <!-- <div class="min-h-screen p-10" style="background-image: url('https://www.ssup.co.th/wp-content/uploads/2024/04/new-member-april.jpg')"> -->
-    <div class="min-h-screen p-10" style="background-image: url('https://www.ssup.co.th/wp-content/uploads/2022/11/shutterstock_2079577573.png')">
+        <!-- <div class="min-h-screen p-10" style="background-image: url('https://www.orientalprincess.com/pub/media/wysiwyg/block-img-m2/beneficial/Getthelook-Website-04.jpg')"> -->
+            <!-- <div class="min-h-screen p-10" style="background-image: url('https://www.orientalprincess.com/pub/media/wysiwyg/block-img-m2/beneficial/colors-hero-banner.jpg')"> -->
+        <div class="min-h-screen p-10" style="background-image: url('https://www.ssup.co.th/wp-content/uploads/2022/11/shutterstock_2079577573.png')">
         <div class="g-2 flex flex-wrap items-center justify-center lg:justify-between">
             <div class="mb-12 grow-0 basis-auto md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12 xl:ml-12">
                 <!-- <div class="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-4/12">
@@ -150,11 +160,37 @@
             </div>
 
             <div class="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-4/12">
-                <form id="from_user" class="group js-validation-signin max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-32" action="javascript:void(0)" method="POST">
+                <form id="from_user" class="group js-validation-signin max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-24" action="javascript:void(0)" method="POST">
                     <div class="flex flex-row items-center justify-center lg:justify-start">
                         <div class="flex text-center">
-                            <p class="mb-0 me-4 mt-4 text-lg">Sign in with</p>
+                            <p class="mb-0 me-4 text-lg -mt-2 font-semibold">Sign in with</p>
                         </div>
+                        <!-- Github -->
+                        <button
+                            type="button"
+                            data-twe-ripple-init
+                            data-twe-ripple-color="light"
+                            class="justify-items-center mr-2 mb-2 inline-block rounded bg-[#333] px-6 py-2 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg">
+                            <span class="[&>svg]:h-5 [&>svg]:w-5 grid justify-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 496 512">
+                                    <path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3 .3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5 .3-6.2 2.3zm44.2-1.7c-2.9 .7-4.9 2.6-4.6 4.9 .3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3 .7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3 .3 2.9 2.3 3.9 1.6 1 3.6 .7 4.3-.7 .7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3 .7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3 .7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z" />
+                                </svg>
+                            </span>
+                            <p>Github</p>
+                        </button>
+                        <!-- Google -->
+                        <button
+                            type="button"
+                            data-twe-ripple-init
+                            data-twe-ripple-color="light"
+                            class="mb-2 inline-block rounded bg-[#333] px-6 py-2 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg">
+                            <span class="[&>svg]:h-5 [&>svg]:w-5 grid justify-items-center">
+                                <svg  xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 488 512">
+                                    <path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z" />
+                                </svg>
+                            </span>
+                            <p>Google</p>
+                        </button>
                     </div>
 
                     <div class="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-black dark:before:border-blue-500 after:mt-0.5 after:flex-1 after:border-t after:border-black dark:after:border-blue-500">
@@ -162,18 +198,29 @@
                         Or
                         </p>
                     </div>
-                    <div class="flex flex-col gap-6">
+                    <div class="flex flex-col gap-3">
                         <div class="flex w-full flex-col items-start ">
-                            <label for="email" class="block text-sm font-normal text-black dark:text-white">Username</label>
-                            <input type="text" id="username" name="username" class="peer block w-full rounded-sm border-black dark:border-gray-100 p-2.5 text-sm text-gray-900 placeholder:text-xs placeholder:font-light placeholder:text-gray-400 focus:border-none focus:outline-none focus:ring-1 focus:ring-sky-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500" placeholder="Username" required pattern="^([A-Z][A-Za-z ,.'`-]{3,30})$" />
+                            <label for="" class="block text-sm font-normal text-black dark:text-white">Username</label>
+                            <input type="text" id="username" name="username" class="peer block w-full rounded-sm border-black dark:border-gray-100 p-2.5 text-xs text-gray-900  placeholder:text-xs placeholder:font-light placeholder:text-gray-400 focus:border-none focus:outline-none focus:ring-1 focus:ring-sky-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500" placeholder="Username" required pattern="^([A-Z][A-Za-z ,.'`-]{3,30})$" />
                             <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">Please enter a valid username </span>
                         </div>
                         <div class="flex w-full flex-col items-start ">
+                        <label for="email" class="block text-sm font-normal text-black dark:text-white">Position</label>
+                            <select id="position_id" name="position_id" class="js-example-basic-single bg-white dark:bg-[#2020] peer block w-full rounded-sm text-xs">
+                                <option value=""> --- กรุณาเลือก ---</option>
+                                @foreach ($list_position as $key => $list_positions)
+                                    <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
+                                @endforeach
+                            </select>
+                            <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">Please enter a valid password</span>
+                        </div>
+                        <div class="flex w-full flex-col items-start ">
                             <label for="password" class="block text-sm font-normal text-black dark:text-white">Password</label>
-                            <input type="password" id="password" name="password" class="peer block w-full rounded-sm border-black dark:border-gray-100 p-2.5 text-sm text-gray-900 placeholder:text-xs placeholder:font-light placeholder:text-gray-400 focus:border-none focus:outline-none focus:ring-1 focus:ring-sky-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500" placeholder="*********" required pattern=".{4,}" />
+                            <input type="password" id="password" name="password" class="peer block w-full rounded-sm border-black dark:border-gray-100 p-2.5 text-xs text-gray-900 placeholder:text-xs placeholder:font-light placeholder:text-gray-400 focus:border-none focus:outline-none focus:ring-1 focus:ring-sky-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500" placeholder="*********" required pattern=".{4,}" />
                             <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">Please enter a valid password</span>
                         </div>
                     </div>
+
                     <div class="inline-flex items-center">
                         <label
                             class="relative -ml-2.5 flex cursor-pointer items-center rounded-full p-3"
@@ -197,6 +244,7 @@
                             class="w-full cursor-pointer rounded bg-primary-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-blue-300 group-invalid:pointer-events-none group-invalid:opacity-60">
                             Login
                         </button>
+                        <!-- class="w-full cursor-pointer rounded bg-primary-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-blue-300 group-invalid:pointer-events-none group-invalid:opacity-60"> -->
                     </div>
                     <p class="mt-4 block text-center font-sans text-base font-normal leading-relaxed antialiased">
                         Already have an account?
@@ -340,14 +388,18 @@
 
 
 <script src="https://cdn.tailwindcss.com"></script>
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script> -->
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <script>
 
 </script>
 <script>
+
+    $(document).ready(function() {
+        $('.js-example-basic-single').select2();
+    });
 
     toastr.options = {
         "closeButton": true,
@@ -379,7 +431,7 @@
             type: "GET",
             // type: "POST",
             // url: "/api/api_apps_login",
-            url: "/api/api_bypass_login",
+            url: "/api_bypass_login",
             // url: "/checkLogin",
             data: dataForm,
             beforeSend: function () {

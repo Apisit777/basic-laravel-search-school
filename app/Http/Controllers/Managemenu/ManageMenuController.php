@@ -103,15 +103,64 @@ class ManageMenuController extends Controller
         }
 
         $menus = Menu::with('submenus')->get();
-        // dd($menus);
 
+        $filters = [
+            ['some_filter' => true],
+            ['some_filter' => false],
+            'filter1',
+            'filter2',
+            true,
+            false
+        ];
+
+        $count = 0;
+        foreach ($filters as $filter) {
+            if (is_array($filter)) {
+                foreach ($filter as $option) {
+                    if ($option !== false) {
+                        $count++;
+                    }
+                }
+            } else {
+                if ($filter !== false) {
+                    $count++;
+                }
+            }
+        }
+
+        dump(collect($filters));
+        dump(collect($filters)->flatten());
+        dump(collect($filters)->flatten()->filter());
+
+        // dd($authPosition);
         return view('managemenu.index', compact('menus', 'position', 'menuData', 'menu_permissions'));
     }
 
     public static function menus_data()
     {
-        $menus = Menu::with('submenus')->get();
-        return $menus;
+        $menuPpermissions = menu::select('menus.id', 'menus.menu_name')->get();
+        foreach ($menuPpermissions as $menu_permission) {
+            $submenu_array = [];
+
+            $item_menu = menu_relation::select('submenus.name', 'submenus.id')
+                ->leftJoin('submenus', 'menu_relations.submenu_id', 'submenus.id')
+                ->where('menu_relations.menu_id', '=', $menu_permission->id)
+                ->whereNotNull('menu_relations.submenu_id')
+                ->get();
+
+            foreach ($item_menu as $dataitem_menu) {
+                $submenu_array[] = $dataitem_menu->name;
+            }
+
+            $menu_permission->submenu_array = $submenu_array;
+        }
+        return $menuPpermissions;
+    }
+    public static function auth_position()
+    {
+        $authPosition = Auth::user()->getUserPermission->position_id;
+        // dd($authPosition);
+        return $authPosition;
     }
 
     public function updateOrCreateMenu(Request $request, $id)

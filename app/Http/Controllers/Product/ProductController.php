@@ -149,13 +149,65 @@ class ProductController extends Controller
             'page' => ceil(($request->input('start') + 1) / $limit),
         ]);
 
+        $BARCODE = $request->input('BARCODE');
+        $DOC_NO = $request->input('DOC_NO');
+        $field_detail = ['pro_develops.BARCODE', 'pro_develops.DOC_NO'];
         $data = Pro_develops::select(
-            'BRAND',
-            'DOC_NO',
-            'BARCODE'
-        )
-        // ->where('status', 0)
-        ->orderBy('BARCODE', 'ASC');
+                'BRAND',
+                'REF_DOC',
+                'DOC_NO',
+                'BARCODE',
+                'NAME_ENG'
+            )
+            ->orderBy('BARCODE', 'ASC');
+
+        if (null != $DOC_NO) {
+            $data = $data->where(function ($data) use ($DOC_NO, $field_detail) {
+                for ($i = 0; $i < count($field_detail); $i++) {
+                    $data->orWhere($field_detail[$i], 'like', '%'.$DOC_NO.'%');
+                }
+            });
+        }
+
+        if (null != $BARCODE) {
+            $productCodes = $data->select('BARCODE')->pluck('BARCODE')->toArray();
+            $productCodeArr = [];
+            foreach($productCodes as $productCodeLast) {
+                $productCodeArrLast = [];
+                $productCodeArrLast[] = substr_replace($productCodeLast, '', -1);
+                foreach($productCodeArrLast as $productCodeFirst) {
+                    $productCodeArr[] = substr($productCodeFirst, 7, 11);
+                }
+            }
+            // $productCodesObject = json_decode(json_encode($productCodes));
+            $obj = (object)$productCodes;
+            if (null != $productCodeArr) {
+                $obj->whereIn($productCodeArr, $BARCODE);
+            }
+
+            // $obj->where('pro_develops.BARCODE', function ($barcode) use ($request) {
+            //     $barcode->orWhere('BARCODE', $request->BARCODE);
+            // });
+        }
+
+        // // if (null != in_array($BARCODE, $productCodeArr)) {
+        // if (null != $BARCODE) {
+        //     $productCodes = $data->select('BARCODE')->pluck('BARCODE')->toArray();
+        //     $productCodeArr = [];
+        //     foreach($productCodes as $productCodeLast) {
+        //         $productCodeArrLast = [];
+        //         $productCodeArrLast[] = substr_replace($productCodeLast, '', -1);
+        //         foreach($productCodeArrLast as $productCodeFirst) {
+        //             $productCodeArr[] = substr($productCodeFirst, 7, 11);
+        //         }
+        //     }
+        //     // $productCode = implode($productCodeArr);
+        //     $productCodeArr = $productCodeArr->where(function ($productCodeArr) use ($BARCODE, $field_detail) {
+        //         for ($i = 0; $i < count($field_detail); $i++) {
+        //             $productCodeArr->orWhere($field_detail[$i], 'like', '%'.$BARCODE.'%');
+        //         }
+        //     });
+        // }
 
         // dd($data);
         $data = $data->paginate($limit);
