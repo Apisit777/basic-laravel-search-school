@@ -90,7 +90,7 @@ p {
 		@apply float-left;
 	}
 		.select2-container .select2-search--inline .select2-search__field {
-			@apply box-border border dark:border-gray-600 pl-1 my-1 w-full text-base;
+			@apply box-border border border-black pl-1 my-1 w-full text-base;
 		}
 			.select2-container .select2-search--inline .select2-search__field::-webkit-search-cancel-button {
 				@apply appearance-none;
@@ -98,7 +98,7 @@ p {
 
 .select2-dropdown {
 	/* Dropdown area after the arrow down is clicked */
- 	@apply absolute block w-auto box-border bg-white dark:bg-[#303030] border-solid border border-gray-200 z-50 float-left;
+ 	@apply absolute block w-auto box-border bg-white dark:bg-[#303030] border-solid border border-black z-50 float-left;
 }
 
 .select2-results {
@@ -125,12 +125,12 @@ p {
 
 .select2-container--open .select2-dropdown--above {
 	/* The left and right borders of the option rows */
-	@apply rounded border-gray-400 dark:border-gray-700 shadow;
+	@apply rounded border-black shadow;
 }
 
 .select2-container--open .select2-dropdown--below {
 	/* The left and right borders of the option rows */
-	@apply rounded border-gray-400 dark:border-gray-700 shadow;
+	@apply rounded border-black shadow;
 }
 
 .select2-search--dropdown {
@@ -139,7 +139,7 @@ p {
 }
 	.select2-search--dropdown .select2-search__field {
 		/* Search box itself where you can enter text*/
-		@apply h-10 p-1 bg-white dark:bg-slate-500 box-border rounded border-2 border-blue-300 dark:border-gray-700 dark:text-gray-200 outline-none;
+		@apply h-10 p-1 bg-white dark:bg-slate-500 box-border rounded border-2 focus:ring-sky-500 border-blue-300 dark:border-gray-700 dark:text-gray-200 outline-none;
 		width: 100%;
 	}
     .select2-search--dropdown .select2-search__field::-webkit-search-cancel-button {
@@ -185,35 +185,44 @@ p {
 
 .select2-container--default .select2-selection--single {
 	/* Selection bar - Self */
-	@apply p-2 h-10 bg-white dark:bg-[#303030] border border-solid dark:border-gray-700; 
+	@apply p-2 h-10 bg-white dark:bg-[#303030] border border-solid border-black; 
 }
-	.select2-container--default .select2-selection--single .select2-selection__rendered {
-	  	/* Selection bar - Text color of the item you selected from the results */
-	    @apply text-gray-700 dark:text-gray-200;
-	}
-	
-	.select2-container--default .select2-selection--single .select2-selection__clear {
-		/* Selection bar - Clear button - If this property is enabled*/
-    	@apply cursor-pointer float-right text-red-700;
-	}
-	.select2-container--default .select2-selection--single .select2-selection__placeholder {
-    	/* Selection bar - Color of the placeholder text before selection - If this property is enabled */
-    	@apply text-gray-600 dark:text-gray-300;
-	}
-	.select2-container--default .select2-selection--single .select2-selection__arrow {
-		/* Selection bar - DIV where the arrow pointing down is living*/
-		@apply absolute right-0 top-0 h-10 w-8;
-	}
-	    .select2-container--default .select2-selection--single .select2-selection__arrow b {
-	    	/* Arrow is a CSS triangle that does not exists in Tailwind without a package */
-			@apply absolute border-solid h-0 w-0 border-t-4 border-r-4 border-b-0 border-l-4;
-			border-color: #000 transparent transparent transparent;
-			left: 50%;
-			margin-left: -4px;
-			margin-top: -2px;
-			top: 50%;
-		}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+	/* Selection bar - Text color of the item you selected from the results */
+	@apply text-gray-700 dark:text-gray-200;
+}
 
+.select2-container--default .select2-selection--single .select2-selection__clear {
+	/* Selection bar - Clear button - If this property is enabled*/
+	@apply cursor-pointer float-right text-red-700;
+}
+.select2-container--default .select2-selection--single .select2-selection__placeholder {
+	/* Selection bar - Color of the placeholder text before selection - If this property is enabled */
+	@apply text-gray-600 dark:text-gray-300;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+	/* Selection bar - DIV where the arrow pointing down is living*/
+	@apply absolute right-0 top-0 h-10 w-8;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+	/* Arrow is a CSS triangle that does not exists in Tailwind without a package */
+	@apply absolute border-solid h-0 w-0 border-t-4 border-r-4 border-b-0 border-l-4;
+	border-color: #000 transparent transparent transparent;
+	left: 50%;
+	margin-left: -4px;
+	margin-top: -2px;
+	top: 50%;
+}
+.select2-container--default .select2-selection--single {
+	height: 2.5rem;
+	border-width: 1px;
+	border-style: solid;
+	--tw-border-opacity: 1;
+	border-color: rgb(0 0 0);
+	--tw-bg-opacity: 1;
+	background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+	padding: 0.3rem;
+}
 .select2-container--default[dir="rtl"] .select2-selection--single .select2-selection__clear {
 	/* Selection bar - Clear button - If this property is enabled from right to left*/
 	@apply float-left ml-4;

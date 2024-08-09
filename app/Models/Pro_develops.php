@@ -10,4 +10,15 @@ class Pro_develops extends Model
     use HasFactory;
     public $timestamps = false;
     protected $guarded = [];
+    public static function listBrandProDevelops($data = [])
+    {
+        $dataBrand = (new static())->newQuery()->select('*');
+
+        if (isset($data['orderby'])) {
+            $dataBrand->orderBy($data['orderby']);
+        }
+
+        // dd($dataBrand);
+        return $dataBrand->get();
+    }
 }

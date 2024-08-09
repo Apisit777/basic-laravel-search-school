@@ -21,13 +21,18 @@
             z-index: 10;
             display: block;
         }
-
         [x-cloak] {
             display: none;
         }
-
+        .select2-container .select2-dropdown .select2-results__options {
+            max-height: 360px !important;
+        }
+        .select2 {
+            width: 100%!important; /* force fluid responsive */
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <div id="slide" class="loaderslide"></div>
@@ -49,20 +54,20 @@
                 <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                     <div class="md:col-span-3" >
                         <label for="countries" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Sarch Column</label>
-                        <select id="countries" class="bg-gray-50 dark:bg-[#303030] text-gray-900 dark:text-white text-xs rounded-sm w-full p-2.5 ">
-                            <option value="" selected>ALL</option>
-                            <option value="0">doc_no</option>
-                            <option value="1">member_id</option>
-                            <option value="2">refer_member</option>
-                            <option value="3">refer_mobile</option>
-                            <option value="4">refer_idcard</option>
-                            <option value="5">refer_brand</option>
-                            <option value="6">branch_id</option>
+                        <select class="js-example-basic-single w-full rounded-sm text-xs text-center" id="BARCODE" name="BARCODE">
+                            <option class="" value=""> --- กรุณาเลือก ---</option>
+                            @foreach ($productCodeArr as $key => $productCode)
+                                <option value={{ $productCode }}>{{ $productCode }}</option>
+                            @endforeach
                         </select>
                     </div>
+                    <!-- <div class="md:col-span-3" >
+                        <label for="countries">รหัส</label>
+                        <input type="text" style="height: 38px;" name="BARCODE" id="BARCODE" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="">
+                    </div> -->
                     <div class="md:col-span-3" >
-                        <label for="">ชื่อพนักงาน<span class="text-danger"> *</span></label>
-                        <input type="text" name="name" id="id_brand" onkeyup="checkNameBrand()" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                        <label for="">รหัสสินค้า</label>
+                        <input type="text" name="DOC_NO" id="DOC_NO" onkeyup="checkNameBrand()" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                     </div>
                     <div class="md:col-span-6 text-center">
                         <div class="inline-flex items-center">
@@ -83,9 +88,10 @@
                 <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>รหัสสินค้า</th>
+                            <th>Brand</th>
+                            <!-- <th>REF_DOC</th> -->
                             <th>ชื้อสินค้า</th>
+                            <th>Barcode</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -117,6 +123,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @if (session('status'))
         <script>
             toastr.options = {
@@ -149,6 +157,10 @@
             let dataJson = JSON.parse(dataLogin)
             console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
         }
+
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
 
         const pusher  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
         const channel = pusher.subscribe('public');
@@ -193,16 +205,8 @@
                 "url": "/list_npd",
                 "type": "POST",
                 'data': function(data) {
-                    // Read values
-                    const doc_no = $('#doc_no').val();
-                    const date_start = $('#date_start').val();
-                    const date_end = $('#date_end').val();
-
-                    // Append to data
-                    data.doc_no = doc_no;
-                    data.date_start = date_start;
-                    data.date_end = date_end;
-
+                    data.BARCODE = $('#BARCODE').val();
+                    data.DOC_NO = $('#DOC_NO').val();
                     data._token = $('meta[name="csrf-token"]').attr('content');
                 }
             },
@@ -218,7 +222,7 @@
                     targets: 1,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.DOC_NO;
+                        return row.NAME_ENG;
                     }
                 },
                 {
@@ -237,13 +241,6 @@
                         let disabledRoute = "{{route('upate_product_status', 0)}}".replace('/0', "/" + row.BARCODE)
 
                         return `<div class="inline-flex items-center rounded-md shadow-sm">
-                                    <a onclick="disableAppointment('${disabledRoute}',this,'${row.BARCODE}')" type="button"
-                                        class="bclose btn btn-sm btn-success refersh_btn"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4">
-                                        <path fill-rule="evenodd" d="M19.5 21a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3h-5.379a.75.75 0 0 1-.53-.22L11.47 3.66A2.25 2.25 0 0 0 9.879 3H4.5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h15Zm-6.75-10.5a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25v2.25a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V10.5Z" clip-rule="evenodd" />
-                                        </svg>
-                                    </a>
                                     <a href="{{route('edit_new_product_develop',0)}}"
                                         type="button" class="px-1 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group">
                                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="hidden h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
@@ -259,6 +256,17 @@
                 }
             ]
         });
+
+        $('#btnSerarch').click(function() {
+            mytableDatatable.draw();
+        });
+        // <a onclick="disableAppointment('${disabledRoute}',this,'${row.BARCODE}')" type="button"
+        //     class="bclose btn btn-sm btn-success refersh_btn"
+        // >
+        //     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4">
+        //     <path fill-rule="evenodd" d="M19.5 21a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3h-5.379a.75.75 0 0 1-.53-.22L11.47 3.66A2.25 2.25 0 0 0 9.879 3H4.5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h15Zm-6.75-10.5a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25v2.25a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V10.5Z" clip-rule="evenodd" />
+        //     </svg>
+        // </a>
         function disableAppointment(url,e,id) {
             const mytableDatatable = $('#example').DataTable();
             Swal.fire({

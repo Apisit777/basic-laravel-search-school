@@ -93,48 +93,9 @@ class AuthController extends Controller
 
         if ($data->successful()) {
             $response = $data->json();
-
             return response()->json(['status' => 'success', 'response' => $response]);
         } elseif ($data->failed()) {
             $error = $data->json();
-
-            return response()->json(['error' => $error], 401);
-        } else {
-            return response()->json(['error' => 'Unexpected response status', 'response' => $data->status()]);
-        }
-    }
-    public function apiByPassLogin(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'username' => 'required',
-            // 'password' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['status' => 'fail', 'message' => $validator->errors()]);
-        }
-
-        $loginUrl = 'https://extrassup.ssup.co.th/api/apps/auth/login-bypass';
-        $credentials = [
-            'username' => $request->input('username'),
-            // 'password' => $request->input('password')
-        ];
-
-        $headers = [
-            'Accept' => 'application/json',
-            'Content-Type' => 'application/json',
-            'app_key' => 'iBnauPU1C7-H2WXee2OkJATb'
-        ];
-
-        $data = Http::withHeaders($headers)->post($loginUrl, $credentials);
-
-        if ($data->successful()) {
-            $response = $data->json();
-
-            return response()->json(['status' => 'success', 'response' => $response]);
-        } elseif ($data->failed()) {
-            $error = $data->json();
-
             return response()->json(['error' => $error], 401);
         } else {
             return response()->json(['error' => 'Unexpected response status', 'response' => $data->status()]);

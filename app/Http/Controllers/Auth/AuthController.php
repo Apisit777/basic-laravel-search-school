@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Models\User;
+use App\Models\user_permission;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use App\models\position;
+use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
@@ -58,22 +60,20 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make(trim($request->password)),
             ]);
-
             DB::commit();
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
             DB::rollback();
-            throw $e;
         }
-
         return response()->json($response);
         // return redirect()->back();
         // return back()->with('success', 'Register Successfully');
     }
     public function login()
     {
-        // dd('Test');
-        return view('auth.login');
+        $list_position = position::select('id', 'name_position')->get();
+        // dd($list_position);
+        return view('auth.login', compact('list_position'));
     }
     public function checkLogin(Request $request)
     {
@@ -105,9 +105,61 @@ class AuthController extends Controller
             $data->role = $role;
 
             return response()->json(['status' => 'success', 'data' => $data]);
-        }
-        else {
+        } else {
             return response(['error' => 'Check Username Or Password!'], 401);
+        }
+    }
+
+    public function apiByPassLogin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'username' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'fail', 'message' => $validator->errors()]);
+        }
+
+        $loginUrl = 'https://extrassup.ssup.co.th/api/apps/auth/login-bypass';
+        $credentials = $request->only('username');
+        $setAuth = [
+            'username' => $credentials['username']
+        ];
+
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'app_key' => 'iBnauPU1C7-H2WXee2OkJATb'
+        ];
+
+        $data = Http::withHeaders($headers)->post($loginUrl, $setAuth);
+        
+        if ($data->successful()) {
+            $response = $data->json();
+            $user = User::select('id')
+                ->where('username', $request->username)
+                ->first(); 
+
+            if($user == NULL) {
+                $createUser = User::create([
+                    'username' => $request->username
+                ]);
+                $createUser = user_permission::create([
+                    'user_id' => $createUser->id,
+                    'position_id' => $request->input('position_id')
+                ]);
+
+                $user = User::select('id')
+                ->where('username', $request->username)
+                ->first(); 
+            }
+            Auth::login($user, true);
+            return response()->json(['status' => 'success', 'response' => $response]);
+        } elseif ($data->failed()) {
+            $error = $data->json();
+            return response()->json(['error' => $error], 401);
+        } else {
+            return response()->json(['error' => 'Unexpected response status', 'response' => $data->status()]);
         }
     }
 }

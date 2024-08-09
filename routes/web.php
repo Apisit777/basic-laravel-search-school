@@ -22,6 +22,7 @@ use App\Http\Controllers\BrandController;
 |
 */
 Route::get('/post', [AuthController::class, 'index'])->name('post');
+Route::get('/api_bypass_login', [AuthController::class, 'apiByPassLogin'])->name('api_bypass_login');
 
 Route::get('/register', [AuthController::class, 'register']);
 Route::post('/register', [AuthController::class, 'registerPost'])->name('register');
@@ -50,6 +51,7 @@ Route::get('/product_create', [ProductController::class, 'create'])->name('produ
 Route::get('/checknamebrand', [ProductController::class, 'checkname_brand'])->name('checknamebrand');
 Route::post('/list_npd', [ProductController::class, 'list_npd'])->name('list_npd');
 Route::post('/list_products', [ProductController::class, 'list_products'])->name('list_products');
+Route::get('/get_brand_list_ajax', [ProductFormController::class, 'getBrandListAjax'])->name('get_brand_list_ajax');
 
 Route::get('/edit_new_product_develop/{id_barcode}', [ProductController::class, 'edit'])->name('edit_new_product_develop');
 
