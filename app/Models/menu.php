@@ -10,6 +10,10 @@ class menu extends Model
     protected $guarded = [];
 
 
+    // public function getMenuRelation()
+    // {
+    //     return $this->hasMany(menu_relation::class, 'menu_id', 'id');
+    // }
     public function getMenuRelation()
     {
         return $this->hasMany(menu_relation::class, 'menu_id', 'id');
@@ -26,5 +30,8 @@ class menu extends Model
     public function submenus()
     {
         return $this->hasMany(submenu::class, 'menu_id', 'id');
+            // ->leftJoin('menu_relations', 'submenus.id', '=', 'menu_relations.submenu_id');
+            // ->leftJoin('submenus', 'submenus.id', '=', 'menu_relations.submenu_id');
+            // ->leftJoin('positions', 'menu_relations.position_id', '=', 'positions.id');
     }
 }

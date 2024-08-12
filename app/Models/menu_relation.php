@@ -15,9 +15,14 @@ class menu_relation extends Model
     // {
     //     return $this->hasMany(menu_relation::class, 'position_id', 'position_id');
     // }
+    public function getMenu()
+    {
+        return $this->belongsTo(menu::class, 'menu_id', 'id');
+    }
     public function getSubMenu()
     {
         return $this->hasMany(submenu::class, 'menu_relation_id', 'id');
+            // ->leftJoin('menu_relations', 'menu_relations.menu_id', 'menus.id');
     }
     public function getPosition()
     {

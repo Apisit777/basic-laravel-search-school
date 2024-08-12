@@ -102,38 +102,77 @@ class ManageMenuController extends Controller
             $menu_permission->submenu_array = $submenu_array;
         }
 
-        $menus = Menu::with('submenus')->get();
+        $menus = menu::with('submenus')->get();
 
-        $filters = [
-            ['some_filter' => true],
-            ['some_filter' => false],
-            'filter1',
-            'filter2',
-            true,
-            false
-        ];
+        $authPosition = Auth::user()->getUserPermission->position_id;
+        $menusAuthPosition = menu::with('submenus')
+            ->with('getMenuRelation')
+            ->whereHas('getMenuRelation', function ($query) use ($authPosition){
+                $query->where('menu_relations.position_id', $authPosition);
+                // ->whereNotNull('position_id');
+            })
+        ->get();
+        $auth = Auth::user()->getUserPermission->user_id;
+        // $data = menu_relation::where('position_id', '=', $authPosition)
+        //     ->whereNull('submenu_id')
+        //     ->get();
 
-        $count = 0;
-        foreach ($filters as $filter) {
-            if (is_array($filter)) {
-                foreach ($filter as $option) {
-                    if ($option !== false) {
-                        $count++;
-                    }
-                }
-            } else {
-                if ($filter !== false) {
-                    $count++;
-                }
-            }
-        }
+        // dd($menusAuthPosition->getMenuRelation->create);
+        // $submenu_array = [];
+        // foreach ($data as $dataitem_menu) {
+        //     $submenu = menu_relation::where('menu_id', '=', $dataitem_menu->menu_id)
+        //         ->where('position_id', '=', $authPosition)
+        //         ->whereNotNull('submenu_id')
+        //         ->get();
 
-        dump(collect($filters));
-        dump(collect($filters)->flatten());
-        dump(collect($filters)->flatten()->filter());
+        //     $submenu_array[] = $dataitem_menu->toArray();
+        //     foreach($submenu as $dataitem_submenu) {
+        //         $submenu_array[] = $dataitem_submenu->toArray();
+        //     }
+        // }
 
-        // dd($authPosition);
-        return view('managemenu.index', compact('menus', 'position', 'menuData', 'menu_permissions'));
+        // $menusAuthPosition = menu::with('submenus')
+        //     ->with('getMenuRelation')
+        //     ->whereHas('getMenuRelation', function ($query) use ($authPosition){
+        //         $query->where('position_id', '=', $authPosition);
+        //         // ->whereNotNull('position_id');
+        //     })
+        // ->get();
+        // $menusAuthPosition= Menu::with('submenus')
+        //     ->with(['getMenuRelation' => function ($query) use ($authPosition){
+        //         $query->where('position_id', $authPosition);
+        //     }])
+        //     ->get();
+        // dd($menusAuthPosition);
+        // $filters = [
+        //     ['some_filter' => true],
+        //     ['some_filter' => false],
+        //     'filter1',
+        //     'filter2',
+        //     true,
+        //     false
+        // ];
+
+        // $count = 0;
+        // foreach ($filters as $filter) {
+        //     if (is_array($filter)) {
+        //         foreach ($filter as $option) {
+        //             if ($option !== false) {
+        //                 $count++;
+        //             }
+        //         }
+        //     } else {
+        //         if ($filter !== false) {
+        //             $count++;
+        //         }
+        //     }
+        // }
+
+        // dump(collect($filters));
+        // dump(collect($filters)->flatten());
+        // dump(collect($filters)->flatten()->filter());
+
+        return view('managemenu.index', compact('menus', 'position', 'menuData', 'menu_permissions', 'menusAuthPosition'));
     }
 
     public static function menus_data()
@@ -260,6 +299,7 @@ class ManageMenuController extends Controller
         $submenu_array = [];
         foreach ($data as $dataitem_menu) {
             $submenu = menu_relation::where('menu_id', '=', $dataitem_menu->menu_id)
+                ->where('position_id', '=', $request->input('pos_id'))
                 ->whereNotNull('submenu_id')
                 ->get();
 
