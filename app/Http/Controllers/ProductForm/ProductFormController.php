@@ -13,10 +13,12 @@ use App\Models\Npd_textures;
 use App\Models\Pro_develops;
 use App\Models\Barcode;
 use App\Models\Document;
+use App\Models\menu;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use stdClass;
 class ProductFormController extends Controller
 {
     /**
@@ -35,7 +37,7 @@ class ProductFormController extends Controller
         )
         ->orderBy('BARCODE', 'ASC');
         $productCodes = $data->select('BARCODE')->pluck('BARCODE')->toArray();
-                
+
         // $productCodes = Pro_develops::select('BARCODE')->pluck('BARCODE')->toArray();
         $productCodeArr = [];
         foreach($productCodes as $productCodeLast) {
@@ -46,10 +48,24 @@ class ProductFormController extends Controller
             }
         }
 
+        $authPosition = Auth::user()->getUserPermission->position_id;
+        $menusAuthPosition = menu::with('submenus')
+            ->with('getMenuRelation')
+            ->whereHas('getMenuRelation', function ($query) use ($authPosition){
+                $query->where('menu_relations.position_id', $authPosition);
+                // ->whereNotNull('position_id');
+            })
+        ->get();
+
+        // Permission
+        // $Permissions = new STDClass();
+        // $Permissions->create = Auth::user()->hasPermission('create');
+        // dd($postComment);
+        
         return view('new_product_develop.index', compact('user', 'product_seq', 'productCodeArr'));
     }
 
-    private function ean13_check_digit() 
+    private function ean13_check_digit()
     {
         $lastElement = Pro_develops::max('BARCODE');
         $barcodeMax = substr_replace($lastElement, '', -1);
@@ -121,7 +137,7 @@ class ProductFormController extends Controller
         $testBarcode = Barcode::all();
         // dd($brands);
 
-        
+
         return view('new_product_develop.create', compact('productCode', 'digits_barcode', 'list_position', 'brands', 'testBarcode', 'product_co_ordimators', 'marketing_managers', 'type_categorys', 'textures'));
     }
 

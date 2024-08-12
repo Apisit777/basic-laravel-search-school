@@ -60,7 +60,66 @@
             ];
         @endphp
 
+        {{-- @foreach($menusAuthPosition as $submenu)
+            <p>{{!empty($submenu['getSubMenu'][0]['name'])}}</p>
+        @endforeach --}}
+        @foreach($menusAuthPosition as $menu)
+            {{-- <p>{{ !empty($menu['submenus']['name'][0]) }}</p> --}}
+            {{-- <p>{{$menu->submenus}}</p> --}}
+        @endforeach
         <div id="logo-sidebar" class="w-[256px] border-r border-gray-200 md:translate-x-0 dark:border-gray-700 transition-all duration-500">
+            <div class="px-3 pb-4 overflow-y-auto bg-white dark:bg-[#202020] duration-500">
+                @foreach($menusAuthPosition as $menu)
+                    <ul class="space-y-2 font-medium">
+                        @if (!empty($menu['submenus'][0]))
+                            {{-- @if ( Request::is($menu->url) == $menu->url) --}}
+                                <li class="relative w-[232px] overflow-hidden group mt-2">
+                                    <input type="checkbox" class="peer absolute top-0 inset-x-0 w-full h-10 opacity-0 z-10 cursor-pointer ">
+                                    <div class="flex peer group-hover:bg-gray-100 dark:group-hover:bg-[#303030] duration-500">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8 mt-1.5 ml-2 text-black dark:text-white">
+                                            <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
+                                            <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
+                                        </svg>
+                                        <div class="bg-white dark:bg-[#202020] text-white h-10 w-full pl-2.5 flex items-center duration-500 group-hover:bg-gray-100 dark:group-hover:bg-[#303030]">
+                                            <h1 class="text-black dark:text-white text-md">
+                                                {{$menu['menu_name']}}
+                                            </h1>
+                                        </div>
+                                    </div>
+                                    <div class="absolute top-2 right-2 transition-tranform duration-500 rotate-0 peer-checked:rotate-180">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-black dark:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    @foreach($menu['submenus'] as $submenu)
+                                        <ul class="bg-[#f9f9f9] dark:bg-[#232323] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40 h-fit after:absolute after:left-[1.20rem] after:top-[2.5rem] after:mt-px after:h-[calc(100%-2.45rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-gray-700">
+                                            <li>
+                                                <a href="#" class="flex items-center w-full p-1.5 text-gray-900 transition duration-75 rounded-sm pl-12 group hover:bg-gray-100 dark:text-white dark:hover:bg-[#303030]">
+                                                    {{ $submenu->name }}
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    @endforeach
+                                </li>
+                            {{-- @endif --}}
+                        @else
+                            <li class="mt-2">
+                                {{-- @if ( Request::is($menu->url) == $menu->url) --}}
+                                    <a class="flex items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group {{ (Request::is($menu->url) || Request::is($menu->url)) ? 'rounded-sm bg-primary-100 dark:bg-[#014a77] duration-500': '' }}" href="{{ $menu->url }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-black dark:text-white">
+                                            <path d="M19.5 21a3 3 0 0 0 3-3v-4.5a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3V18a3 3 0 0 0 3 3h15ZM1.5 10.146V6a3 3 0 0 1 3-3h5.379a2.25 2.25 0 0 1 1.59.659l2.122 2.121c.14.141.331.22.53.22H19.5a3 3 0 0 1 3 3v1.146A4.483 4.483 0 0 0 19.5 9h-15a4.483 4.483 0 0 0-3 1.146Z" />
+                                        </svg>
+                                        <span class="flex-1 ms-3 whitespace-nowrap dark:text-white">{{$menu['menu_name']}}</span>
+                                    </a>
+                                {{-- @endif --}}
+                            </li>
+                        @endif
+                    </ul>
+                @endforeach
+            </div>
+        </div>
+
+        {{-- <div id="logo-sidebar" class="w-[256px] border-r border-gray-200 md:translate-x-0 dark:border-gray-700 transition-all duration-500">
             <div class="px-3 pb-4 overflow-y-auto bg-white dark:bg-[#202020] duration-500">
                 @foreach($menu_permissions as $menu)
                     <ul class="space-y-2 font-medium">
@@ -112,7 +171,7 @@
                     </ul>
                 @endforeach
             </div>
-        </div>
+        </div> --}}
 
         <div class="fixed flex bottom-5 right-5 z-10">
             <a
@@ -472,8 +531,10 @@
             "hideMethod": "fadeOut"
         }
         const dlayMessage = 500;
+        let menusAuthPosition = <?php echo json_encode($menusAuthPosition); ?>;
+        console.log("🚀 ~ menusAuthPosition:", menusAuthPosition)
         function modelManageMenu(id, menu_name, submenus_name) {
-            console.log("🚀 ~ modelManageMenu ~ submenus_name:", submenus_name.submenus)
+            // console.log("🚀 ~ modelManageMenu ~ submenus_name:", submenus_name.submenus)
             jQuery(".table_submenu").remove('')
             let url = ""
             if(id){
@@ -481,7 +542,7 @@
                 jQuery("#menu_id").val(menu_name)
                 jQuery("#exampleModalLgLabel").text('แก้ไขรายการเมนู')
                 submenus_name.submenus.forEach((element, index) => {
-                    console.log("🚀 ~ submenus_name.submenu_array.forEach ~ element:", element.name)
+                    // console.log("🚀 ~ submenus_name.submenu_array.forEach ~ element:", element.name)
                     let seq = Number(index) + 1
                     if (index == 0) {
                         jQuery("#inputs_submenu").val(element.name)
@@ -577,7 +638,7 @@
         function setMenu(data){
             if(select_pos){
                 if($(data).prop("checked")){
-                    console.log("🚀 ~ setMenu ~ data:", data)
+                    // console.log("🚀 ~ setMenu ~ data:", data)
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -593,7 +654,7 @@
                     //     //     }
                     //     // }
                     // });
-                    const payload = data.id.split('_')
+
                     // let action, menuId, type
                     // if (payload[1] === 'submenu') {
                     //     type = 'submenu'
@@ -604,6 +665,7 @@
                     //     action =  payload[1]
                     //     menuId =  payload[2]
                     // }
+                    const payload = data.id.split('_')
                     let action = payload[1]
                     let menuId = payload[2]
                     let submenuId = payload[3] || null
@@ -623,7 +685,7 @@
                         },
                         success: function(res){
                             if(res){
-                                console.log('checked : '+$(data).val());
+                                // console.log('checked : '+$(data).val());
                                 setTimeout(function() {
                                     successMessage("Create User Successfully!");
                                 },dlayMessage)
@@ -631,7 +693,7 @@
                                     toastr.success("Create Menu successfully!");
                                 },dlayMessage)
                             }else{
-                                console.log('Can not create access.');
+                                // console.log('Can not create access.');
                             }
                         }
                     });
@@ -654,7 +716,7 @@
                         },
                         success: function(res){
                             if(res){
-                                console.log('checked : '+$(data).val());
+                                // console.log('checked : '+$(data).val());
                                 setTimeout(function() {
                                     successMessage("Create User Successfully!");
                                 },dlayMessage)
@@ -662,7 +724,7 @@
                                     toastr.success("Delete Menu Successfully!");
                                 },dlayMessage)
                             }else{
-                                console.log('Can not create access.');
+                                // console.log('Can not create access.');
                             }
                         }
                     });
@@ -687,7 +749,7 @@
 
         setAccess(1);
         $("#pos_1").addClass("highlight");
-        
+
         let i = 0;
         $('#add').click( () => {
             ++i;
@@ -719,7 +781,7 @@
         function getParmeterLogin() {
             let dataLogin = sessionStorage.getItem("credetail");
             let dataJson = JSON.parse(dataLogin)
-            console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
+            // console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
         }
 
         function ajaxGetMenuAccess(pos_id) {
@@ -735,14 +797,16 @@
                 },
                 success:function(res){
                     let menuAll = <?php echo json_encode($menus); ?>;
-                    console.log("🚀 ~ ajaxGetMenuAccess ~ menuAll:", menuAll)
+                    // console.log("🚀 ~ ajaxGetMenuAccess ~ res:", res)
+                    // console.log("🚀 ~ ajaxGetMenuAccess ~ menuAll:", menuAll)
                     let menupermission = res.submenu_array.length ? res.submenu_array : []
                     const result = Object.groupBy(menupermission, ({ menu_id }) => menu_id);
                     console.log("🚀 ~ ajaxGetMenuAccess ~ result:", result)
-                    if(true){
+                    if(true) {
                         menuAll.forEach(menu => {
                             const currentMenu = result[menu.id]
                             console.log("🚀 ~ ajaxGetMenuAccess ~ currentMenu:", currentMenu)
+                            console.log("🚀 ~ ajaxGetMenuAccess ~ menu:", menu)
                             if(currentMenu != undefined){
                                 const menu_id = menu.id
                                 currentMenu.forEach(fmenu => {
@@ -751,6 +815,14 @@
                                     $(`#action_create_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.create);
                                     $(`#action_edit_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.edit);
                                     $(`#action_delete_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.delete);
+                                    if(submenu_id === 0 && menu.submenus.length){
+                                        menu.submenus.forEach(submenu => {
+                                            $(`#action_view_${menu.id}_${submenu.id}`).prop("checked",false);
+                                            $(`#action_create_${menu.id}_${submenu.id}`).prop("checked",false);
+                                            $(`#action_edit_${menu.id}_${submenu.id}`).prop("checked",false);
+                                            $(`#action_delete_${menu.id}_${submenu.id}`).prop("checked",false);
+                                        })
+                                    }
                                 })
                             } else {
                                 $(`#action_view_${menu.id}_${0}`).prop("checked",false);
@@ -768,7 +840,7 @@
                             }
 
                         });
-                    }else{
+                    }else {
                         console.log('no data');
                     }
                 }
@@ -778,7 +850,7 @@
         function removeMenu() {
             let menu_count = $("#menuTable").find("input[type='checkbox']").length;
             for(let i = 1; i <= menu_count; i++){
-                $("#action_all_" + i).prop("checked",false);
+                $("#action_all_" + i).prop("checked", false);
             }
         }
 
