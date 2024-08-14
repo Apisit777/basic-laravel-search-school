@@ -143,23 +143,16 @@ class ProductFormController extends Controller
 
     public function getBrandListAjax(Request $request)
     {
-        // $productCodes = Pro_develops::select('BARCODE')->pluck('BARCODE')->toArray();
-        // $productCodeArr = [];
-        // foreach($productCodes as $productCodeLast) {
-        //     $productCodeArrLast = [];
-        //     $productCodeArrLast[] = substr_replace($productCodeLast, '', -1);
-        //     foreach($productCodeArrLast as $productCodeFirst) {
-        //         $productCodeArr[] = substr($productCodeFirst, 7, 11);
-        //     }
-        // }
-
-        $Pro_develops = new Pro_develops();
-        $codeArr = $Pro_develops->listBrandProDevelops(['BRAND' => (int) $request->input('BRAND'), 'orderby' => 'BARCODE']);
-        // $productCodesObject = json_decode(json_encode($productCodes));
-        // $arr = json_decode(json_encode($productCodeArr));
-        // $codeArr = $productCodesObject->listBrandProDevelops(['BRAND' => (int) $request->input('BRAND'), 'orderby' => $arr]);
-        dd($codeArr);
-        return response()->json($codeArr);
+        $productCodes = Pro_develops::select(
+                DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
+                'JOB_REFNO',
+                'NAME_ENG'
+            )
+            ->where('BRAND', $request->input('BRAND'))
+            ->orderby('Code')
+            ->get();
+        // dd($productCodes);
+        return response()->json($productCodes);
     }
 
     /**
