@@ -170,20 +170,20 @@ class ProductController extends Controller
         }
 
         if (null != $BARCODE) {
-            $productCodes = $data->select('BARCODE')->pluck('BARCODE')->toArray();
-            $productCodeArr = [];
-            foreach($productCodes as $productCodeLast) {
-                $productCodeArrLast = [];
-                $productCodeArrLast[] = substr_replace($productCodeLast, '', -1);
-                foreach($productCodeArrLast as $productCodeFirst) {
-                    $productCodeArr[] = substr($productCodeFirst, 7, 11);
-                }
-            }
+            $productCodes = $data->where(DB::raw('SUBSTRING(BARCODE, 8, 5)'), $request->input('BARCODE'))->pluck('BARCODE');
+            // $productCodeArr = [];
+            // foreach($productCodes as $productCodeLast) {
+            //     $productCodeArrLast = [];
+            //     $productCodeArrLast[] = substr_replace($productCodeLast, '', -1);
+            //     foreach($productCodeArrLast as $productCodeFirst) {
+            //         $productCodeArr[] = substr($productCodeFirst, 7, 11);
+            //     }
+            // }
             // $productCodesObject = json_decode(json_encode($productCodes));
-            $obj = (object)$productCodes;
-            if (null != $productCodeArr) {
-                $obj->whereIn($productCodeArr, $BARCODE);
-            }
+            // $data->where($productCodeArr, $BARCODE);
+            // $data= collect($productCodes);
+            // if (null != $productCodeArr) {
+            // }
 
             // $obj->where('pro_develops.BARCODE', function ($barcode) use ($request) {
             //     $barcode->orWhere('BARCODE', $request->BARCODE);

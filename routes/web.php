@@ -31,6 +31,7 @@ Route::get('/login', [AuthController::class, 'login'])->name('login');
 
 Route::post('/checkLogin', [AuthController::class, 'checkLogin'])->name('checkLogin');
 
+// search_school
 Route::get('/home', [HomeController::class, 'home']);
 Route::get('/search_school', [HomeController::class, 'index'])->name('search_school');
 Route::post('/search_school', [HomeController::class, 'search_school']);
@@ -38,6 +39,7 @@ Route::post('/search_school', [HomeController::class, 'search_school']);
 Route::get('/images', [ProductImageController::class, 'index'])->name('images');
 Route::post('/images_upload', [ProductImageController::class, 'store'])->name('images_upload');
 
+// product
 Route::get('/product', [ProductController::class, 'index'])->name('product');
 
 Route::get('/new_product_develop', [ProductFormController::class, 'index'])->name('new_product_develop');
@@ -45,6 +47,7 @@ Route::get('/new_product_develop_creat', [ProductFormController::class, 'create'
 Route::post('/create_new_product_develop', [ProductFormController::class, 'store'])->name('create_new_product_develop');
 
 Route::get('/get_users', [ProductController::class, 'get_users'])->name('get_users');
+
 Route::get('/product_detail_create', [ProductController::class, 'productDetailCreate'])->name('product_detail_create');
 Route::post('/create_products', [ProductController::class, 'store'])->name('create_products');
 Route::get('/product_create', [ProductController::class, 'create'])->name('product_create');
@@ -58,6 +61,7 @@ Route::get('/edit_new_product_develop/{id_barcode}', [ProductController::class, 
 Route::post('/list_approve_products', [ProductController::class, 'list_approve_products'])->name('list_approve_products');
 Route::delete('/upate_product_status/{id}', [ProductController::class, 'upate_product_status'])->name('upate_product_status');
 
+// manage_menu
 Route::get('/manage_menu', [ManageMenuController::class, 'index'])->name('manage_menu');
 Route::post('/list_menu', [ManageMenuController::class, 'listMenu'])->name('list_menu');
 
@@ -70,6 +74,7 @@ Route::post('/delete_access', [ManageMenuController::class, 'deleteAccess'])->na
 
 Route::get('/tool', [ToolController::class, 'index'])->name('tool');
 
+// Notify
 Route::get('/test', [PusherController::class, 'index']);
 Route::post('/broadcast', [PusherController::class, 'broadcast'])->name('broadcast');
 Route::get('/get_receive', [PusherController::class, 'receive'])->name('get_receive');
@@ -80,6 +85,7 @@ Route::get('/get_receive_pm', [PusherController::class, 'receivePM'])->name('get
 
 Route::get('/getBrandIdListAjax', [BrandController::class, 'getBrandIdListAjax'])->name('ajax_brand_id');
 
+// Language
 Route::get('/greeting/{locale}', function ($locale) {
     if (! in_array($locale, ['en', 'th'])) {
         return response()->json([
@@ -92,6 +98,14 @@ Route::get('/greeting/{locale}', function ($locale) {
         'status' => 200
     ]);
 })->name('setLocale');
+
+//Managemenu
+Route::prefix('managemenu')->name('managemenu.')->group(function () {
+    Route::resource('managemenu', ManageMenuController::class);
+    Route::get('/manage_menu', [ManageMenuController::class, 'manage_menu_index'])->name('manage_menu.index');
+    Route::get('/create', [ManageMenuController::class, 'manage_menu_create'])->name('manage_menu.create');
+    Route::get('/edit/{id}', [ManageMenuController::class, 'manage_menu_edit'])->name('manage_menu.edit');
+});
 
 Route::get('/', function () {
     return view('welcome');
