@@ -28,14 +28,4 @@ class RouteComposer
             'routeName' => $routeName,
         ]);
     }
-
-    private function getCssClass(string $routeName): string 
-    {
-
-        $activeRoutes = match ($routeName) {
-
-        };
-
-        return in_array(request()->route()->getName(), $activeRoutes) ? 'rounded-sm bg-primary-100 dark:bg-[#014a77] duration-500' : '';
-    }
 }

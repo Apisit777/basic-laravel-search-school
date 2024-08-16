@@ -39,50 +39,14 @@
 
     <div class="justify-center items-center">
         <div class="mt-6 mb-4 flex justify-center items-center">
-            <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการทะเบียนสินค้า</p>
+            <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการทะเบียนบัญชี</p>
         </div>
-
-        @if (Auth::user()->getUserPermission->user_id == Auth::user()->id)
-            <div class="fixed flex bottom-5 right-5 z-10">
-                <a href="{{ route('new_product_develop_creat') }}" class="bg-[#303030] hover:bg-[#404040] text-white font-bold cursor-pointer py-2 px-2 mr-2 mt-20 rounded-full group">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                        <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
-                    </svg>
-                </a>
-            </div>
-        @endif
-        <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
-            <div class="lg:col-span-4 xl:grid-cols-4">
-                <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                    <div class="md:col-span-3" >
-                        <label for="countries" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Sarch Column</label>
-                        <select class="js-example-basic-single w-full rounded-sm text-xs text-center" id="BARCODE" name="BARCODE">
-                            <option class="" value=""> --- กรุณาเลือก ---</option>
-                            @foreach ($productCodeArr as $key => $productCode)
-                                <option value={{ $productCode }}>{{ $productCode }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <!-- <div class="md:col-span-3" >
-                        <label for="countries">รหัส</label>
-                        <input type="text" style="height: 38px;" name="BARCODE" id="BARCODE" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="">
-                    </div> -->
-                    <div class="md:col-span-3" >
-                        <label for="">ค้นหา</label>
-                        <input type="text" name="search" id="search" onkeyup="checkNameBrand()" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" />
-                    </div>
-                    <div class="md:col-span-6 text-center">
-                        <div class="inline-flex items-center">
-                            <a href="#" id="btnSerarch" class="text-gray-100 bg-[#303030] hover:bg-[#404040] text-white font-bold py-2 px-4 mr-2 rounded group">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                                    <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
-                                </svg>
-                                ค้นหา
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="fixed flex bottom-5 right-5 z-10">
+            <a href="{{ route('account_create') }}" class="bg-[#303030] hover:bg-[#404040] text-white font-bold cursor-pointer py-2 px-2 mr-2 mt-20 rounded-full group">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                    <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                </svg>
+            </a>
         </div>
         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
@@ -90,10 +54,15 @@
                 <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
                     <thead>
                         <tr>
-                            <th>Brand</th>
-                            <th>รหัสสินค้า</th>
-                            <th>ชื่อสินค้า</th>
-                            <th>Barcode</th>
+                            <th>ID</th>
+                            <th>Account1</th>
+                            <th>Account2</th>
+                            <th>Account3</th>
+                            <th>Account4</th>
+                            <th>Account5</th>
+                            <th>Account6</th>
+                            <th>Account7</th>
+                            <th>Account8</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -164,23 +133,6 @@
             $('.js-example-basic-single').select2();
         });
 
-        const pusher  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
-        const channel = pusher.subscribe('public');
-
-        const add_element = () => {
-            const template = document.createElement('div');
-            template.classList.add("loaderslide");
-            template.setAttribute("id","slide");
-            document.body.appendChild(template);
-        }
-
-        if (sessionStorage.getItem("first_login") === 'Y') {
-            sessionStorage.setItem("first_login", "yes")
-            $("#slide").addClass("loaderslide");
-        } else {
-            $("#slide").remove();
-        }
-
         const mytableDatatable = $('#example').DataTable({
                 // new DataTable('#example', {
             'searching': false,
@@ -204,50 +156,80 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
 
-                "url": "/list_npd",
-                "type": "POST",
-                'data': function(data) {
-                    data.BARCODE = $('#BARCODE').val();
-                    data.search = $('#search').val();
-                    data._token = $('meta[name="csrf-token"]').attr('content');
-                }
+                "url": "/list_ajax_account",
+                "type": "POST"
             },
             orderable: true,
             columnDefs: [{
                     targets: 0,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.BRAND;
+                        return row.id;
                     }
                 },
                 {
                     targets: 1,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.Code;
+                        return row.account1;
                     }
                 },
                 {
                     targets: 2,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.NAME_ENG;
+                        return row.account2;
                     }
                 },
                 {
                     targets: 3,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.BARCODE;
+                        return row.account3;
                     }
                 },
                 {
                     targets: 4,
                     orderable: true,
+                    render: function(data, type, row) {
+                        return row.account4;
+                    }
+                },
+                {
+                    targets: 5,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.account5;
+                    }
+                },
+                {
+                    targets: 6,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.account6;
+                    }
+                },
+                {
+                    targets: 7,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.account7;
+                    }
+                },
+                {
+                    targets: 8,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.account8;
+                    }
+                },
+                {
+                    targets: 9,
+                    orderable: true,
                     className: 'text-center',
                     render: function(data, type, row) {
                         let text = "#"
-                        let disabledRoute = "{{route('upate_product_status', 0)}}".replace('/0', "/" + row.BARCODE)
+                        let disabledRoute = "{{route('upate_product_status', 0)}}".replace('/0', "/" + row.id)
 
                         return `<div class="inline-flex items-center rounded-md shadow-sm">
                                     <a href="{{route('edit_new_product_develop',0)}}"
@@ -260,7 +242,7 @@
                                         Edit
                                     </a>
                                 </div>
-                               `.replaceAll('/0', '/' + row.BARCODE);
+                               `.replaceAll('/0', '/' + row.id);
                     }
                 }
             ]

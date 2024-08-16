@@ -78,14 +78,14 @@
             <div class="fixed flex bottom-5 right-5 z-10 invisible" id="add_other">
                 <a
                     type="button"
-                    class="text-gray-100 bg-[#303030] hover:bg-[#404040] text-white font-bold py-2 px-2 mr-2 mt-20 rounded-full group"
+                    class="bg-[#303030] hover:bg-[#404040] text-white font-bold cursor-pointer py-2 px-2 mr-2 mt-20 rounded-full group"
                     data-twe-toggle="modal"
                     data-twe-target="#exampleModalLg"
                     data-twe-ripple-init
                     data-twe-ripple-color="light"
-                    onclick="modelManageMenu()"
+                    onclick=""
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 font-bold">
                         <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
                     </svg>
                 </a>
@@ -132,20 +132,24 @@
                             <div class="p-4 text-gray-900 dark:text-gray-100">
                                 <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
                                     <div class="md:col-span-3" style="position: relative;">
-                                        <label for="">ชื่อผลิตภัณฑ์<span class="text-danger"> *</span></label>
+                                        <label for="">ชื่อผลิตภัณฑ์</label>
                                         <input type="text" name="menu_name" id="menu_id" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                     </div>
                                     <div class="md:col-span-3" style="position: relative;">
-                                        <label for="">ปริมาณสุทธิ<span class="text-danger"> *</span></label>
+                                        <label for="">ปริมาณสุทธิ</label>
                                         <input type="text" name="url" id="url_id" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                     </div>
                                     <div class="md:col-span-3" style="position: relative;">
-                                        <label for="">จำนวนกลิ่น<span class="text-danger"> *</span></label>
+                                        <label for="">จำนวนกลิ่น</label>
                                         <input type="text" name="url" id="url_id" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                     </div>
                                     <div class="md:col-span-3" style="position: relative;">
-                                        <label for="">จำนวนสี<span class="text-danger"> *</span></label>
+                                        <label for="">จำนวนสี</label>
                                         <input type="text" name="url" id="url_id" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                    </div>
+                                    <div class="md:col-span-6">
+                                        <label for="P_CONCEPT" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">หมายเหตุ</label>
+                                        <textarea id="P_CONCEPT" name="P_CONCEPT" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
                                     </div>
                                 </div>
                                 <!-- <table class="table table-sm table-bordered text-gray-900 dark:text-gray-100 mt-5 relative" id="table">
@@ -406,7 +410,7 @@
                                                                 </div>
                                                                 <div class="md:col-span-3" >
                                                                     <label for="DOC_DT">วันที่</label>
-                                                                    <input type="date" name="DOC_DT" id="DOC_DT" style="height: 38px;" class="form-control border-none bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="" id="" placeholder="" autocomplete="off" value="<?php echo date('Y-m-d'); ?>">
+                                                                    <input type="date" name="DOC_DT" id="DOC_DT" style="height: 38px;" class="form-control border-[#303030] bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="" id="" placeholder="" autocomplete="off" value="<?php echo date('Y-m-d'); ?>">
                                                                 </div>
                                                                 <div class="md:col-span-6" style="position: relative;">
                                                                     <label for="CUST_OEM">Customer (OEM)</label>
@@ -461,7 +465,7 @@
                                                                 </div>
                                                                 <div class="md:col-span-3" >
                                                                     <label for="TARGET_STK">Target Launch Date</label>
-                                                                    <input type="date" name="TARGET_STK" id="TARGET_STK" style="height: 38px;" class="form-control border-none bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="" id="" placeholder="" autocomplete="off" value="<?php echo date('Y-m-d'); ?>">
+                                                                    <input type="date" name="TARGET_STK" id="TARGET_STK" style="height: 38px;" class="form-control border-[#303030] bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="" id="" placeholder="" autocomplete="off" value="<?php echo date('Y-m-d'); ?>">
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="PRICE_FG">Target Price F/G</label>
@@ -744,7 +748,7 @@
 
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
-            onOpenhandler()
+            onOpenhandler();
             document.querySelectorAll('.setcheckbox')[0].checked = true
             document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
             document.querySelectorAll('.bg_step_color')[0].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
@@ -819,8 +823,14 @@
             console.log("🚀 ~ brandIdChange ~ e:", e.value)
             if(e.value == 'OTHER') {
                 jQuery("#add_other").removeClass("invisible");
+                document.querySelectorAll('.setcheckbox')[0].checked = false
+                document.querySelectorAll('.bg_step_color')[0].classList.add('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+                document.querySelectorAll('.bg_step_color')[0].classList.remove('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
             } else {
                 jQuery("#add_other").addClass("invisible");
+                document.querySelectorAll('.setcheckbox')[0].checked = true
+                document.querySelectorAll('.bg_step_color')[0].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+                document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
             }
             let url = "";
             let select = "";

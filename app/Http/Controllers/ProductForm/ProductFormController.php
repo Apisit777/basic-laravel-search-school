@@ -14,6 +14,7 @@ use App\Models\Pro_develops;
 use App\Models\Barcode;
 use App\Models\Document;
 use App\Models\menu;
+use App\Models\Account;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -88,6 +89,50 @@ class ProductFormController extends Controller
         return $digits . $check_digit;
     }
 
+    public function indexAccount() 
+    {
+        // $account = Account::
+
+        return view('account.index');
+    }
+    public function createAccount(Request $request)
+    {
+        // dd($productCode);
+        return view('account.create');
+    }
+    public function listAjaxAccount(Request $request) 
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $data = Account::select(
+                'id',
+                'account1',
+                'account2',
+                'account3',
+                'account4',
+                'account5',
+                'account6',
+                'account7',
+                'account8',
+        )
+        ->orderBy('id', 'ASC');
+
+        // dd($data);
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -98,6 +143,11 @@ class ProductFormController extends Controller
         //     return $number % 2 != 0;
         // });
         // dd($odd_numbers);
+
+        // $productOPCodeMax = Barcode::where('BRAND', '=', 'OP')->max('NUMBER');
+        // $productOPCodeMax = Barcode::whereIn('BRAND', ['OP', 'OTHER', 'RI', 'BD', 'CPS', 'HOUSE HOLD', 'MM', 'OT', 'SPICES', 'VN'])->pluck('BRAND')->toArray();
+
+        // dd($productOPCodeMax);
 
         $digits_barcode = $this->ean13_check_digit();
         $productCodeMax = Document::max('NUMBER');
@@ -168,7 +218,7 @@ class ProductFormController extends Controller
                 $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
                 $productCode = $productCodeNumber;
 
-                $data_number = Document::updateOrCreate(['DOC_TP' => $request->DOC_TP], [
+                $data_DOC_TP = Document::updateOrCreate(['DOC_TP' => $request->DOC_TP], [
                     'NUMBER' => $productCode
                 ]);
             }
@@ -177,13 +227,14 @@ class ProductFormController extends Controller
                 $productCodeNumber =  preg_replace('/[^0-9]/', '', $productOPCodeMax) + 1;
                 $productCode = $productCodeNumber;
 
-                $data_number = Barcode::updateOrCreate(['BRAND' => $request->BRAND], [
+                $data_BRAND = Barcode::updateOrCreate(['BRAND' => $request->BRAND], [
                     'NUMBER' => $productCode
                 ]);
             }
 
             $digits_barcode = $this->ean13_check_digit();
 
+            dd($request);
             $data_product = [
                 'BRAND' => $request->input('BRAND'),
                 'DOC_NO' => $request->input('DOC_NO'),
