@@ -159,7 +159,7 @@
         <div class="fixed flex bottom-5 right-5 z-10">
             <a
                 type="button"
-                class="text-gray-100 bg-[#303030] hover:bg-[#404040] text-white font-bold py-2 px-2 mr-2 mt-20 rounded-full group"
+                class="bg-[#303030] hover:bg-[#404040] text-white font-bold cursor-pointer py-2 px-2 mr-2 mt-20 rounded-full group"
                 data-twe-toggle="modal"
                 data-twe-target="#exampleModalLg"
                 data-twe-ripple-init
@@ -334,7 +334,7 @@
                     <div class="fixed flex bottom-2 right-0 z-10 absolute">
                         <a
                             type="button"
-                            class="text-gray-100 bg-[#303030] hover:bg-[#404040] text-white font-bold py-2 px-2 mr-2 mt-20 rounded-full group"
+                            class="bg-[#303030] hover:bg-[#404040] text-white font-bold cursor-pointer py-2 px-2 mr-2 mt-20 rounded-full group"
                             data-twe-toggle="modal"
                             data-twe-target="#staticBackdrop"
                             data-twe-ripple-init

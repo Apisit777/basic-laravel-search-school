@@ -42,6 +42,11 @@ Route::post('/images_upload', [ProductImageController::class, 'store'])->name('i
 // product
 Route::get('/product', [ProductController::class, 'index'])->name('product');
 
+// Account
+Route::get('/account', [ProductFormController::class, 'indexAccount'])->name('account');
+Route::get('/account_create', [ProductFormController::class, 'createAccount'])->name('account_create');
+Route::post('/list_ajax_account', [ProductFormController::class, 'listAjaxAccount'])->name('list_ajax_account');
+
 Route::get('/new_product_develop', [ProductFormController::class, 'index'])->name('new_product_develop');
 Route::get('/new_product_develop_creat', [ProductFormController::class, 'create'])->name('new_product_develop_creat');
 Route::post('/create_new_product_develop', [ProductFormController::class, 'store'])->name('create_new_product_develop');
