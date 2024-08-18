@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -6,13 +6,10 @@
 
         <title>Laravel</title>
 
-        <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 
-        <!-- Styles -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        <!-- Styles -->
         <style>
             .bg-dark {
                 background-color:var(--schic_theme_color)!important;
@@ -29,12 +26,10 @@
                 padding-top:50px;
             }
 
-            /* //////////////////////////////////// */
             .cl-select {
                 padding: 5px;
                 border-radius: 5px;
             }
-            /* //////////////////////////////////// */
     </style>
     </head>
     <body x-cloak x-data="{darkMode: $persist(false)}" :class="{'dark': darkMode === true }" class="antialiased">
@@ -159,4 +154,6 @@
             </div>
         </div>
     </body>
-</html>
+</html> --}}
+
+
