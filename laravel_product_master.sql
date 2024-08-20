@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 09, 2024 at 11:16 AM
+-- Generation Time: Aug 20, 2024 at 12:14 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,33 @@ SET time_zone = "+00:00";
 --
 -- Database: `laravel_product_master`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `accounts`
+--
+
+CREATE TABLE `accounts` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `account1` double(8,2) DEFAULT NULL COMMENT 'บัญชี1',
+  `account2` double(8,2) DEFAULT NULL COMMENT 'บัญชี2',
+  `account3` double(8,2) DEFAULT NULL COMMENT 'บัญชี3',
+  `account4` double(8,2) DEFAULT NULL COMMENT 'บัญชี4',
+  `account5` double(8,2) DEFAULT NULL COMMENT 'บัญชี5',
+  `account6` double(8,2) DEFAULT NULL COMMENT 'บัญชี6',
+  `account7` double(8,2) DEFAULT NULL COMMENT 'บัญชี7',
+  `account8` double(8,2) DEFAULT NULL COMMENT 'บัญชี8',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `accounts`
+--
+
+INSERT INTO `accounts` (`id`, `account1`, `account2`, `account3`, `account4`, `account5`, `account6`, `account7`, `account8`, `created_at`, `updated_at`) VALUES
+(1, 10.00, 10.00, 10.00, 10.00, 10.00, 10.00, 10.00, 10.00, '2024-08-15 06:48:19', '2024-08-15 06:48:19');
 
 -- --------------------------------------------------------
 
@@ -41,16 +68,16 @@ CREATE TABLE `barcodes` (
 --
 
 INSERT INTO `barcodes` (`ID`, `BRAND`, `B_CODE`, `NUMBER`, `REMARK`, `STATUS`) VALUES
-(1, 'OP', '88500802', 6, '8279', 'OP'),
-(2, 'OTHER', '', 0, 'ไม่ต้องมี Barcode', 'ALL'),
-(3, 'RI', '88500802', 0, 'Brand Ri En', 'OP'),
-(4, 'BD', '88500803', 0, '0', 'CP'),
-(5, 'CPS', '88500807', 0, '0', 'CP'),
-(6, 'HOUSE HOLD', '88500808', 0, '0', 'CP'),
-(7, 'MM', '88500803', 0, '0', 'CP'),
-(8, 'OT', '88500803', 0, '0', 'CP'),
-(9, 'SPICES', '88500803', 0, '0', 'CP'),
-(10, 'VN', '88500803', 0, '0', 'CP');
+(1, 'OP', '88500802', 12, '8279', 'OP'),
+(2, 'OTHER', '', 1, 'ไม่ต้องมี Barcode', 'ALL'),
+(3, 'RI', '88500802', 1, 'Brand Ri En', 'OP'),
+(4, 'BD', '88500803', 1, '0', 'CP'),
+(5, 'CPS', '88500807', 1, '0', 'CP'),
+(6, 'HOUSE HOLD', '88500808', 1, '0', 'CP'),
+(7, 'MM', '88500803', 1, '0', 'CP'),
+(8, 'OT', '88500803', 1, '0', 'CP'),
+(9, 'SPICES', '88500803', 1, '0', 'CP'),
+(10, 'VN', '88500803', 1, '0', 'CP');
 
 -- --------------------------------------------------------
 
@@ -120,7 +147,7 @@ CREATE TABLE `documents` (
 --
 
 INSERT INTO `documents` (`DOC_TP`, `DOC_SYS`, `DOC_NO`, `NUMBER`, `FIELD`, `DOC_ST`, `REMARK`, `REMARK_EDIT`) VALUES
-('OP', '', '', 6, '', 1, '', '');
+('OP', '', '', 15, '', 1, '', '');
 
 -- --------------------------------------------------------
 
@@ -197,12 +224,13 @@ CREATE TABLE `menus` (
 --
 
 INSERT INTO `menus` (`id`, `menu_name`, `url`, `seq`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'NPD Request', NULL, 1, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
-(2, 'ทะเบียนสินค้า', NULL, 2, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
-(3, 'Marketing', NULL, 3, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
-(4, 'Managemenu', NULL, 4, 1, '2024-06-28 07:48:31', '2024-06-28 07:48:34'),
+(1, 'NPD Request', 'new_product_develop', 1, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
+(2, 'Product Master', 'product', 2, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
+(3, 'Product Detail', 'get_users', 3, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
+(4, 'Managemenu', 'manage_menu', 4, 1, '2024-06-28 07:48:31', '2024-06-28 07:48:34'),
 (5, 'อื่นๆ', NULL, 5, 1, '2024-07-02 03:36:12', '2024-07-02 03:36:12'),
-(6, '5', NULL, 6, 1, NULL, NULL);
+(6, '5', NULL, 6, 1, NULL, NULL),
+(42, 'Account', 'account', 7, 1, '2024-08-20 01:49:18', '2024-08-20 01:49:18');
 
 -- --------------------------------------------------------
 
@@ -232,17 +260,25 @@ CREATE TABLE `menu_relations` (
 
 INSERT INTO `menu_relations` (`id`, `position_id`, `menu_id`, `submenu_id`, `view`, `create`, `edit`, `delete`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, NULL, 1, 1, 1, 1, 1, NULL, NULL, '2023-01-19 18:07:36', '2023-01-19 18:07:36'),
-(2, 1, 2, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, '2023-01-19 18:07:36', '2023-01-19 18:07:36'),
 (3, 5, 1, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, '2023-01-19 18:07:38', '2023-01-19 18:07:38'),
-(4, 1, 5, NULL, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL),
-(5, 1, 5, 1, 1, NULL, NULL, NULL, 1, NULL, NULL, '2024-07-18 02:47:52', '2024-07-18 02:47:52'),
-(6, 1, 5, 2, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(7, 1, 5, 3, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(8, 1, 6, NULL, 1, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(9, 1, 6, 9, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(10, 1, 6, 10, 1, 1, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(35, 7, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(36, 6, 1, NULL, 1, 1, 1, 1, NULL, NULL, NULL, NULL, NULL);
+(36, 6, 1, NULL, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL),
+(39, 7, 4, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(50, 1, 2, NULL, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL),
+(51, 1, 3, NULL, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL),
+(82, 1, 6, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(83, 1, 6, 9, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(84, 1, 6, 10, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(90, 1, 4, NULL, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL),
+(92, 1, 5, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(94, 7, 5, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(95, 7, 5, 1, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(96, 7, 5, 2, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(98, 1, 5, 1, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(100, 6, 4, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(106, 6, 5, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(107, 6, 5, 1, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
+(108, 1, 5, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(109, 1, 5, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -276,7 +312,15 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (19, '2024_07_03_031800_create_positions_table', 4),
 (20, '2024_07_03_035414_create_posts_table', 5),
 (21, '2024_07_03_035448_create_comments_table', 5),
-(23, '2024_07_09_030557_create_submenus_table', 6);
+(23, '2024_07_09_030557_create_submenus_table', 6),
+(24, '2024_07_31_034934_create_npd_cos_table', 7),
+(25, '2024_07_31_040004_create_npd_pdms_table', 7),
+(26, '2024_07_31_042519_create_npd_categorys_table', 7),
+(27, '2024_07_31_062319_create_npd_textures_table', 7),
+(28, '2024_08_02_013802_create_pro_develops_table', 7),
+(29, '2024_08_02_041844_create_barcodes_table', 7),
+(30, '2024_08_02_042114_create_documents_table', 7),
+(31, '2024_08_15_063623_create_accounts_table', 7);
 
 -- --------------------------------------------------------
 
@@ -651,12 +695,18 @@ CREATE TABLE `pro_develops` (
 --
 
 INSERT INTO `pro_develops` (`BRAND`, `DOC_NO`, `REF_DOC`, `REVISE_NO`, `EDIT_DT`, `USER_EDIT`, `STATUS`, `REMARK_ST`, `CUST_OEM`, `JOB_REFNO`, `DOC_DT`, `NPD`, `PDM`, `NAME_ENG`, `PRODUCT`, `BARCODE`, `CATEGORY`, `CAPACITY`, `Q_SMELL`, `Q_COLOR`, `TARGET_GRP`, `TARGET_STK`, `PRICE_FG`, `PRICE_COST`, `PRICE_BULK`, `P_CONCEPT`, `P_BENEFIT`, `TEXTURE`, `TEXTURE_OT`, `COLOR1`, `COLOR2`, `COLOR3`, `FRANGRANCE`, `INGREDIENT`, `STD`, `PK`, `OTHER`, `DOCUMENT`, `FIRST_ORD`, `OEM`, `REASON1`, `REASON1_DES`, `REASON2`, `REASON2_DES`, `REASON3`, `REASON3_DES`, `REF_COLOR`, `REF_FRAGRANCE`, `OEM_STD`, `PACKAGE_BOX`) VALUES
-('OP', 'OP00001', 'IBH-F155', 11, '2015-01-13', 'sa', '', '', '-', 'OP/IBHS/NP31/49', '2006-05-25', '', '', 'Cuticle Hair Treatment (New Formula)', '', '8850080200010', 'Hair Care', '125 ml', 1.00, 1.00, '20-50', '2007-03-01', '295', '-', '', 'เจลวิตามินบำรุงเส้นผมสูตรเข้มข้น เนื้อบางเบา ซ่อมแซมและป้องกันไม่ให้ผมแตกปลายด้วยการเชื่อม\r\nประสานคิวติเคิลของเส้นผม ให้ผมเรียบลื่น เงางาม ไม่เปราะขาดง่าย \r\n', 'อุดมคุณค่าสารสกัดที่ช่วยเคลือปกป้องเส้นผมจากมลภาวะ ให้เส้นผมนุ่มมาก และ เงางาม จัดทรงง่าย \r\nเป็นธรรมชาติ\r\n', 'เจล', '-', 'ไม่มีสี', '', '', 'เหมือน Cuticle Hair Treatment plus Sunscreen for Long Hair', '-', 'Satinique hi Gloss Serum', 'ใช้ร่วม Cuticle Hair Treatment plus Sunscreen for Long Hair', 'หาก develop แล้วให้ทำ blind test', '-', 0, 'Y', 'Y', '', 'Y', 'Reason 2', 'Y', 'Reason 3', 'Ref Color ---', 'Ref Fragrance ---', 'OEM Benchmark ---', 'N'),
-('OP', 'OP00002', 'IBH-F155', 0, '1900-01-01', '', '', '', '2', '2', '2024-08-05', '002', '001', '2', '', '8850080200027', '001', '2', 2.00, 2.00, '2', '2024-08-05', '2', '2', '2', '2', '2', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'N', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('OP', 'OP00003', 'IBH-F155', 0, '1900-01-01', '', '', '', '3', '3', '2024-08-05', '002', '001', '3', '', '8850080200034', '001', '3', 3.00, 3.00, '3', '2024-08-05', '3', '3', '3', '3', '3', '001', '3', '3', '', '', '3', '3', '3', '3', '3', '3', 3, 'N', 'Y', '', 'Y', '3', 'Y', '3', '3', '3', '3', NULL),
-('OP', 'OP00004', 'IBH-F155', 0, '1900-01-01', '', '', '', '4', '4', '2024-08-06', '002', '001', '4', '', '8850080200041', '001', '4', 4.00, 4.00, '4', '2024-08-06', '4', '4', '4', '4', '4', '001', '4', '4', '', '', '4', '4', '4', '4', '4', '4', 4, 'N', 'Y', '', 'Y', '4', 'Y', '4', '4', '4', '4', NULL),
-('OP', 'OP00005', 'IBH-F155', 0, '1900-01-01', '', '', '', '5', '5', '2024-08-06', '012', '001', '5', '', '8850080200058', '002', '5', 5.00, 5.00, '5', '2024-08-06', '5', '5', '5', '5', '5', '001', '5', '5', '', '', '5', '5', '5', '5', '5', '5', 5, 'N', 'Y', '', 'Y', '5', 'Y', '5', '5', '5', '5', NULL),
-('OP', 'OP00006', 'IBH-F155', 0, '1900-01-01', '', '', '', '6', '6', '2024-08-07', '002', '001', '6', '', '8850080200065', '001', '6', 6.00, 6.00, '6', '2024-08-07', '6', '6', NULL, NULL, NULL, NULL, NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', '', 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL);
+('OP', 'OP00001', 'IBH-F155', 11, '2015-01-13', 'sa', '', '', '-', 'OP/IBHS/NP31/49', '2006-05-25', '', '', 'Cuticle Hair Treatment (New Formula1)', '', '8850080200010', 'Hair Care', '125 ml', 1.00, 1.00, '20-50', '2007-03-01', '295', '-', '', 'เจลวิตามินบำรุงเส้นผมสูตรเข้มข้น เนื้อบางเบา ซ่อมแซมและป้องกันไม่ให้ผมแตกปลายด้วยการเชื่อม\r\nประสานคิวติเคิลของเส้นผม ให้ผมเรียบลื่น เงางาม ไม่เปราะขาดง่าย \r\n', 'อุดมคุณค่าสารสกัดที่ช่วยเคลือปกป้องเส้นผมจากมลภาวะ ให้เส้นผมนุ่มมาก และ เงางาม จัดทรงง่าย \r\nเป็นธรรมชาติ\r\n', 'เจล', '-', 'ไม่มีสี', '', '', 'เหมือน Cuticle Hair Treatment plus Sunscreen for Long Hair', '-', 'Satinique hi Gloss Serum', 'ใช้ร่วม Cuticle Hair Treatment plus Sunscreen for Long Hair', 'หาก develop แล้วให้ทำ blind test', '-', 0, 'Y', 'Y', '', 'Y', 'Reason 2', 'Y', 'Reason 3', 'Ref Color ---', 'Ref Fragrance ---', 'OEM Benchmark ---', 'N'),
+('OP', 'OP00002', 'IBH-F155', 0, '1900-01-01', '', '', '', '2', '2', '2024-08-05', '002', '001', 'Cuticle Hair Treatment (New Formula2)', '', '8850080200027', '001', '2', 2.00, 2.00, '2', '2024-08-05', '2', '2', '2', '2', '2', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'N', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
+('OP', 'OP00003', 'IBH-F155', 0, '1900-01-01', '', '', '', '3', '3', '2024-08-05', '002', '001', 'Cuticle Hair Treatment (New Formula3)', '', '8850080200034', '001', '3', 3.00, 3.00, '3', '2024-08-05', '3', '3', '3', '3', '3', '001', '3', '3', '', '', '3', '3', '3', '3', '3', '3', 3, 'N', 'Y', '', 'Y', '3', 'Y', '3', '3', '3', '3', NULL),
+('OP', 'OP00004', 'IBH-F155', 0, '1900-01-01', '', '', '', '4', '4', '2024-08-06', '002', '001', 'Cuticle Hair Treatment (New Formula4)', '', '8850080200041', '001', '4', 4.00, 4.00, '4', '2024-08-06', '4', '4', '4', '4', '4', '001', '4', '4', '', '', '4', '4', '4', '4', '4', '4', 4, 'N', 'Y', '', 'Y', '4', 'Y', '4', '4', '4', '4', NULL),
+('OP', 'OP00005', 'IBH-F155', 0, '1900-01-01', '', '', '', '5', '5', '2024-08-06', '012', '001', 'Cuticle Hair Treatment (New Formula5)', '', '8850080200058', '002', '5', 5.00, 5.00, '5', '2024-08-06', '5', '5', '5', '5', '5', '001', '5', '5', '', '', '5', '5', '5', '5', '5', '5', 5, 'N', 'Y', '', 'Y', '5', 'Y', '5', '5', '5', '5', NULL),
+('OP', 'OP00006', 'IBH-F155', 0, '1900-01-01', '', '', '', '6', '6', '2024-08-07', '002', '001', 'Cuticle Hair Treatment (New Formula6)', '', '8850080200065', '001', '6', 6.00, 6.00, '6', '2024-08-07', '6', '6', NULL, NULL, NULL, NULL, NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', '', 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL),
+('OP', '7', 'IBH-F155', 0, '1900-01-01', '', '', '', '7', '7', '2024-08-15', '002', '001', 'Cuticle Hair7', '', '8850080200072', '001', '7', 7.00, NULL, '7', '2024-08-15', '7', '7', '7', '7', '7', '001', '7', '7', '', '', '7', '7', '7', '7', '7', '7', 7, 'N', 'Y', '', 'Y', '7', 'Y', '7', '7', '7', '7', NULL),
+('OP', '8', 'IBH-F155', 0, '1900-01-01', '', '', '', '8', '8', '2024-08-19', '002', '001', 'Cuticle Hair8', '', '8850080200089', '001', '8', 8.00, 8.00, '8', '2024-08-19', '8', '8', '8', '8', '8', '001', '8', '8', '', '', '8', '8', '8', '8', '8', '8', 8, 'N', 'Y', '', 'Y', '8', 'Y', '8', '8', '8', '8', NULL),
+('OP', '9', 'IBH-F155', 0, '1900-01-01', '', '', '', '9', '9', '2024-08-19', '002', '001', '9', '', '8850080200096', '001', '9', 9.00, 9.00, '9', '2024-08-19', '9', '9', '9', '9', '9', '001', '9', '9', '', '', '9', '9', '9', '9', '9', '9', 9, 'N', 'Y', '', 'Y', '9', 'Y', '9', '9', '9', '9', NULL),
+('OP', '10', 'IBH-F155', 0, '1900-01-01', '', '', '', '1', '1', '2024-08-19', '002', '001', '10', '', '8850080200102', '001', '21', 1.00, 1.00, '1', '2024-08-19', '1', '1', '1', '1', '1', '001', '1', '1', '', '', '1', '1', '1', '1', '1', '1', 1, 'N', 'Y', '', 'Y', '1', 'Y', '1', '1', '1', '1', NULL),
+('OP', '11', 'IBH-F155', 0, '1900-01-01', '', '', '', '11', '11', '2024-08-20', '002', '001', '11', '', '8850080200119', '001', '11', 11.00, 11.00, '11', '2024-08-20', '11', '11', '11', '11', '11', '001', '11', '11', '', '', '11', '11', '11', '11', '11', '11', 11, 'N', 'Y', '', 'Y', '11', 'Y', '11', '11', '11', '11', NULL),
+('OP', '12', 'IBH-F155', 0, '1900-01-01', '', '', '', '12', '12', '2024-08-20', '015', '001', '12', '', '8850080200126', '003', '12', 12.00, 12.00, '12', '2024-08-20', '12', '12', '12', '12', '12', '001', '12', '12', '', '', '12', '12', '12', '12', '12', '12', 12, 'N', 'Y', '', 'Y', '12', 'Y', '12', '12', '12', '12', NULL);
 
 -- --------------------------------------------------------
 
@@ -1842,13 +1892,13 @@ INSERT INTO `users` (`id`, `username`, `name`, `email`, `email_verified_at`, `pa
 (11, 'bo', 'ช่างโบ้', 'test@gmail.com', NULL, '$2y$10$qNXabFcf0l5rqJOoS/iaMOg0X0ljVJ4m8TxMvxE5WFJPXRO5DBZem', 'TyE0I46e23zpM6lWHXHXww79aNFKikpGWJo94KEWkoclxikPwWhW9Nqu3tZA', 1, '2022-02-28 15:21:57', '2022-10-02 22:22:30'),
 (12, 'file', 'ช่างฟิล์ม', 'test2@gmail.com', NULL, '$2y$10$oDK5H2V30XtEany.YHQDs.P56/0L2Bx/W/dgVkKT8Fi6w2gajl5re', NULL, 1, '2022-02-28 15:23:35', '2022-02-28 15:23:35'),
 (21, NULL, 'test1', 'test1@gmail.com', NULL, '$2y$10$XY8os2I.PICMI9eznO96CuUVO2EkiNSpVh9FJ.lJyF.idv.3b7iLm', NULL, 1, '2024-06-07 03:19:36', '2024-06-07 03:19:36'),
-(25, '00d750', NULL, NULL, NULL, NULL, 'TQYFJ6BFmL0HXjcUTtJ0DmYIKTq60aeyN61U0vdk92pX47te5d1sxjwSXPMG', 1, '2024-08-05 03:22:25', '2024-08-05 03:22:25'),
-(26, '00d752', NULL, NULL, NULL, NULL, 'g5oE76tjQFAO6UbQ1ECCATtPuAtTJwHtZAobUXc9PrNlYjAGdv1fbqSL6q0v', 1, '2024-08-05 18:50:00', '2024-08-05 18:50:00'),
+(25, '00d750', NULL, NULL, NULL, NULL, 'WvVIx0sfq0EDfp3uw85llh9OJBAMZR6anaPL0d9tSOkz2HXYeeRiNUDDz4Sy', 1, '2024-08-05 03:22:25', '2024-08-05 03:22:25'),
+(26, '00d752', NULL, NULL, NULL, NULL, 'DKTmdhFP1OqeL6InV9TX8xDJTt5E4I9N4fe4X2ckj5wZbGg7maoAIsYhnooh', 1, '2024-08-05 18:50:00', '2024-08-05 18:50:00'),
 (27, '006631', NULL, NULL, NULL, NULL, 'IRnZ0kDtYPOaO68d1QtsreqPQIpjxYc8i8yxmCx0T4ExbXX9i1dH61NhQBAm', 1, '2024-08-07 01:15:19', '2024-08-07 01:15:19'),
 (28, '006935', NULL, NULL, NULL, NULL, NULL, 1, '2024-08-07 01:17:59', '2024-08-07 01:17:59'),
 (29, '003559', NULL, NULL, NULL, NULL, 'wKeR7kAzlvANIeBaD71ADpPAyyLtvWVp16tpqWP4MABt6wfjOezYf3wiNYdU', 1, '2024-08-07 23:41:47', '2024-08-07 23:41:47'),
 (30, '00C648', NULL, NULL, NULL, NULL, 'JYg0S1VU15z1n33xE6Aq4rFE6132Nrw6GAbZ7sszVxHvainm423rJ2wG4XfO', 1, '2024-08-07 23:50:00', '2024-08-07 23:50:00'),
-(32, '00d751', NULL, NULL, NULL, NULL, 'eV991mAPSjVDrtbstWdyeQRzdjBGYtThR2Ib4hQPvIxWQypaw65zqvZrdqmq', 1, '2024-08-08 23:37:47', '2024-08-08 23:37:47');
+(32, '00d751', NULL, NULL, NULL, NULL, 'IV5eFt7A5DOG8mFSyAmAa0WyUvnmeSjt44m7rv0dGX7QkzqNP0FYpKuPcyED', 1, '2024-08-08 23:37:47', '2024-08-08 23:37:47');
 
 -- --------------------------------------------------------
 
@@ -1883,6 +1933,12 @@ INSERT INTO `user_permission` (`id`, `user_id`, `tent_id`, `position_id`, `creat
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `accounts`
+--
+ALTER TABLE `accounts`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `barcodes`
@@ -2050,6 +2106,12 @@ ALTER TABLE `user_permission`
 --
 
 --
+-- AUTO_INCREMENT for table `accounts`
+--
+ALTER TABLE `accounts`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `barcodes`
 --
 ALTER TABLE `barcodes`
@@ -2095,19 +2157,19 @@ ALTER TABLE `manage_menus`
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `menu_relations`
 --
 ALTER TABLE `menu_relations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`

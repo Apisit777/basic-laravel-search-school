@@ -288,7 +288,7 @@
             });
         });
 
-        let url = "{{ route('images_upload') }}";
+        let url = "{{ route('images.store') }}";
         $("#file-upload-form").submit(function(event) {
             event.preventDefault();
             // const formData = new FormData(this);

@@ -91,14 +91,34 @@ class ProductFormController extends Controller
 
     public function indexAccount() 
     {
-        // $account = Account::
+        $data = Pro_develops::select(
+            'BRAND',
+            'REF_DOC',
+            'DOC_NO',
+            'BARCODE'
+        )
+        ->orderBy('BARCODE', 'ASC');
+        $productCodes = $data->select('BARCODE')->pluck('BARCODE')->toArray();
+        $productCodeArr = [];
+        foreach($productCodes as $productCodeLast) {
+            $productCodeArrLast = [];
+            $productCodeArrLast[] = substr_replace($productCodeLast, '', -1);
+            foreach($productCodeArrLast as $productCodeFirst) {
+                $productCodeArr[] = substr($productCodeFirst, 7, 11);
+            }
+        }
 
-        return view('account.index');
+        return view('account.index', compact('productCodeArr'));
     }
     public function createAccount(Request $request)
     {
         // dd($productCode);
         return view('account.create');
+    }
+    public function editAccount(Request $request)
+    {
+        // dd($productCode);
+        return view('account.edit');
     }
     public function listAjaxAccount(Request $request) 
     {
@@ -173,20 +193,19 @@ class ProductFormController extends Controller
             $brands = Barcode::select(
                 'BRAND',
                 'STATUS')
-            ->whereIn('STATUS', ['OP', 'ALL'])
+            ->whereIn('STATUS', ['OP'])
             ->pluck('BRAND')
             ->toArray();
         } else if (in_array($userpermission, ['Marketing - CPS'])) {
             $brands = Barcode::select(
                 'BRAND',
                 'STATUS')
-            ->whereIn('STATUS', ['CP', 'ALL'])
+            ->whereIn('STATUS', ['CP'])
             ->pluck('BRAND')
             ->toArray();
         }
         $testBarcode = Barcode::all();
         // dd($brands);
-
 
         return view('new_product_develop.create', compact('productCode', 'digits_barcode', 'list_position', 'brands', 'testBarcode', 'product_co_ordimators', 'marketing_managers', 'type_categorys', 'textures'));
     }
@@ -234,7 +253,7 @@ class ProductFormController extends Controller
 
             $digits_barcode = $this->ean13_check_digit();
 
-            dd($request);
+            // dd($request);
             $data_product = [
                 'BRAND' => $request->input('BRAND'),
                 'DOC_NO' => $request->input('DOC_NO'),
@@ -294,17 +313,47 @@ class ProductFormController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+    public function show(Request $request, $id_barcode)
     {
-        //
+        $data = Pro_develops::select(
+            'BRAND',
+            'REF_DOC',
+            'DOC_NO',
+            'BARCODE'
+        )
+        ->orderBy('BARCODE', 'ASC');
+        $productCodes = $data->select('BARCODE')->pluck('BARCODE')->toArray();
+        $productCodeArr = [];
+        foreach($productCodes as $productCodeLast) {
+            $productCodeArrLast = [];
+            $productCodeArrLast[] = substr_replace($productCodeLast, '', -1);
+            foreach($productCodeArrLast as $productCodeFirst) {
+                $productCodeArr[] = substr($productCodeFirst, 7, 11);
+            }
+        }
+
+        $dataIBSH = Pro_develops::select(
+            'pro_develops.*')
+        ->firstWhere('BARCODE', '=', $id_barcode);
+        // dd($dataIBSH);
+
+        return view('new_product_develop.show', compact('dataIBSH', 'productCodeArr'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit(Product $product, $id_barcode)
     {
-        //
+        $data = Pro_develops::select(
+            'pro_develops.*',
+            DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
+            )
+            ->firstWhere('BARCODE', '=', $id_barcode);
+
+        // dd($data);
+
+        return view('new_product_develop.edit', compact('data'));
     }
 
     /**
@@ -330,5 +379,70 @@ class ProductFormController extends Controller
             ->count();
 
         return response()->json($data > 0 ? false : true);
+    }
+
+    public function list_npd(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $BARCODE = $request->input('BARCODE');
+        $DOC_NO = $request->search;
+        $field_detail = [
+            'pro_develops.DOC_NO',
+            'pro_develops.NAME_ENG',
+            'pro_develops.BARCODE', 
+        ];
+        $data = Pro_develops::select(
+                'BRAND',
+                DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
+                'BARCODE',
+                'NAME_ENG'
+            )
+            ->orderBy('BARCODE', 'DESC');
+
+        if (null != $DOC_NO) {
+            $data = $data->where(function ($data) use ($DOC_NO, $field_detail) {
+                for ($i = 0; $i < count($field_detail); $i++) {
+                    $data->orWhere($field_detail[$i], 'like', '%'.$DOC_NO.'%');
+                }
+            });
+        }
+
+        if (null != $BARCODE) {
+            $productCodes = $data->where(DB::raw('SUBSTRING(BARCODE, 8, 5)'), $request->input('BARCODE'))->pluck('BARCODE');
+            // $productCodeArr = [];
+            // foreach($productCodes as $productCodeLast) {
+            //     $productCodeArrLast = [];
+            //     $productCodeArrLast[] = substr_replace($productCodeLast, '', -1);
+            //     foreach($productCodeArrLast as $productCodeFirst) {
+            //         $productCodeArr[] = substr($productCodeFirst, 7, 11);
+            //     }
+            // }
+            // $productCodesObject = json_decode(json_encode($productCodes));
+            // $data->where($productCodeArr, $BARCODE);
+            // $data= collect($productCodes);
+            // if (null != $productCodeArr) {
+            // }
+
+            // $obj->where('pro_develops.BARCODE', function ($barcode) use ($request) {
+            //     $barcode->orWhere('BARCODE', $request->BARCODE);
+            // });
+        }
+
+        // dd($data);
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
     }
 }

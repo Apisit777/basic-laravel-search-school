@@ -9,6 +9,10 @@ class Barcode extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    public $primaryKey = null;
-    protected $guarded = [];
+    public $primaryKey = "ID";
+    // protected $guarded = [];
+    protected $fillable = [
+        'BRAND',
+        'NUMBER'
+    ];
 }

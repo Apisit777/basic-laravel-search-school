@@ -36,35 +36,33 @@ Route::get('/home', [HomeController::class, 'home']);
 Route::get('/search_school', [HomeController::class, 'index'])->name('search_school');
 Route::post('/search_school', [HomeController::class, 'search_school']);
 
-Route::get('/images', [ProductImageController::class, 'index'])->name('images');
-Route::post('/images_upload', [ProductImageController::class, 'store'])->name('images_upload');
-
 // product
-Route::get('/product', [ProductController::class, 'index'])->name('product');
+// Route::get('/product', [ProductController::class, 'index'])->name('product');
+// Route::post('/create_products', [ProductController::class, 'store'])->name('create_products');
+// Route::get('/product_create', [ProductController::class, 'create'])->name('product_create');
+// Route::post('/list_products', [ProductController::class, 'list_products'])->name('list_products');
+// Route::delete('/upate_product_status/{id}', [ProductController::class, 'upate_product_status'])->name('upate_product_status');
 
 // Account
-Route::get('/account', [ProductFormController::class, 'indexAccount'])->name('account');
-Route::get('/account_create', [ProductFormController::class, 'createAccount'])->name('account_create');
-Route::post('/list_ajax_account', [ProductFormController::class, 'listAjaxAccount'])->name('list_ajax_account');
+// Route::get('/account', [ProductFormController::class, 'indexAccount'])->name('account');
+// Route::get('/account_create', [ProductFormController::class, 'createAccount'])->name('account_create');
+// Route::post('/list_ajax_account', [ProductFormController::class, 'listAjaxAccount'])->name('list_ajax_account');
 
-Route::get('/new_product_develop', [ProductFormController::class, 'index'])->name('new_product_develop');
-Route::get('/new_product_develop_creat', [ProductFormController::class, 'create'])->name('new_product_develop_creat');
-Route::post('/create_new_product_develop', [ProductFormController::class, 'store'])->name('create_new_product_develop');
+// // npd
+// Route::get('/new_product_develop', [ProductFormController::class, 'index'])->name('new_product_develop');
+// Route::get('/new_product_develop_creat', [ProductFormController::class, 'create'])->name('new_product_develop_creat');
+// Route::post('/create_new_product_develop', [ProductFormController::class, 'store'])->name('create_new_product_develop');
 
 Route::get('/get_users', [ProductController::class, 'get_users'])->name('get_users');
 
 Route::get('/product_detail_create', [ProductController::class, 'productDetailCreate'])->name('product_detail_create');
-Route::post('/create_products', [ProductController::class, 'store'])->name('create_products');
-Route::get('/product_create', [ProductController::class, 'create'])->name('product_create');
 Route::get('/checknamebrand', [ProductController::class, 'checkname_brand'])->name('checknamebrand');
-Route::post('/list_npd', [ProductController::class, 'list_npd'])->name('list_npd');
-Route::post('/list_products', [ProductController::class, 'list_products'])->name('list_products');
+
+// Route::post('/list_npd', [ProductController::class, 'list_npd'])->name('list_npd');
+
 Route::get('/get_brand_list_ajax', [ProductFormController::class, 'getBrandListAjax'])->name('get_brand_list_ajax');
 
-Route::get('/edit_new_product_develop/{id_barcode}', [ProductController::class, 'edit'])->name('edit_new_product_develop');
-
 Route::post('/list_approve_products', [ProductController::class, 'list_approve_products'])->name('list_approve_products');
-Route::delete('/upate_product_status/{id}', [ProductController::class, 'upate_product_status'])->name('upate_product_status');
 
 // manage_menu
 Route::get('/manage_menu', [ManageMenuController::class, 'index'])->name('manage_menu');
@@ -104,12 +102,42 @@ Route::get('/greeting/{locale}', function ($locale) {
     ]);
 })->name('setLocale');
 
-//Managemenu
-Route::prefix('managemenu')->name('managemenu.')->group(function () {
-    Route::resource('managemenu', ManageMenuController::class);
-    Route::get('/manage_menu', [ManageMenuController::class, 'manage_menu_index'])->name('manage_menu.index');
-    Route::get('/create', [ManageMenuController::class, 'manage_menu_create'])->name('manage_menu.create');
-    Route::get('/edit/{id}', [ManageMenuController::class, 'manage_menu_edit'])->name('manage_menu.edit');
+// //Managemenu
+// Route::group(['prefix' => 'manage_menu', 'as' => 'manage_menu.'], function () {
+//     Route::get('', [ManageMenuController::class, 'manage_menu_index'])->name('index');
+// });
+
+// images
+Route::group(['prefix' => 'images', 'as' => 'images.'], function () {
+    Route::get('', [ProductImageController::class, 'index'])->name('index');
+    Route::post('/images_upload', [ProductImageController::class, 'store'])->name('store');
+});
+
+// npd
+Route::group(['prefix' => 'new_product_develop', 'as' => 'new_product_develop.'], function () {
+    Route::get('', [ProductFormController::class, 'index'])->name('index');
+    Route::post('/list_npd', [ProductFormController::class, 'list_npd'])->name('list_npd');
+    Route::post('/', [ProductFormController::class, 'store'])->name('store');
+    Route::get('/create', [ProductFormController::class, 'create'])->name('create');
+    Route::get('/edit/{id_barcode}', [ProductFormController::class, 'edit'])->name('edit');
+    Route::get('/show/{id_barcode}', [ProductFormController::class, 'show'])->name('show');
+});
+
+// Account
+Route::group(['prefix' => 'account', 'as' => 'account.'], function () {
+    Route::get('', [ProductFormController::class, 'indexAccount'])->name('index');
+    Route::post('/list_ajax_account', [ProductFormController::class, 'listAjaxAccount'])->name('list_ajax_account');
+    Route::get('/create', [ProductFormController::class, 'createAccount'])->name('create');
+    Route::get('/edit/{id}', [ProductFormController::class, 'createAccount'])->name('edit');
+});
+
+// product
+Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
+    Route::get('', [ProductController::class, 'index'])->name('index');
+    Route::post('/list_products', [ProductController::class, 'list_products'])->name('list_products');
+    Route::post('/', [ProductController::class, 'store'])->name('store');
+    Route::get('/create', [ProductController::class, 'create'])->name('create');
+    Route::delete('/update/{id}', [ProductController::class, 'upate_product_status'])->name('update');
 });
 
 Route::get('/', function () {
