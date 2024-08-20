@@ -592,13 +592,13 @@
     <script>
 
         let barcodes = <?php echo json_encode($testBarcode); ?>;
-        console.log("🚀 ~ barcodes:", barcodes)
-        
+        // console.log("🚀 ~ barcodes:", barcodes)
+
         getParmeterLogin()
         function getParmeterLogin() {
             let dataLogin = sessionStorage.getItem("credetail");
             let dataJson = JSON.parse(dataLogin)
-            console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
+            // console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
         }
 
         function onOpenhandler(params) {
@@ -643,7 +643,7 @@
                     </td>
                 </tr>`);
         });
-        console.log("Index: ", ++i)
+        // console.log("Index: ", ++i)
         $(document).on('click', '.remove-table-row', function() {
             $(this).parents('tr').remove();
         });
@@ -695,8 +695,8 @@
             });
         }
 
+        let datass = {}
         function brandIdChange(e, params) {
-            console.log("🚀 ~ brandIdChange ~ e:", e.value)
             if(e.value == 'OTHER') {
                 jQuery("#add_other").removeClass("invisible");
                 document.querySelectorAll('.setcheckbox')[0].checked = false
@@ -711,6 +711,9 @@
             let url = "";
             let select = "";
 
+            $('#NAME_ENG').val('');
+            $('#JOB_REFNO').val('');
+            
             if (params === 'BRAND') {
                 url = '{{ route('get_brand_list_ajax') }}?BRAND=' + e.value;
                 select = jQuery('#NUMBER');
@@ -733,11 +736,12 @@
                 success: function (data) {
                     console.log("🚀 ~ brandIdChange ~ data:", data)
                     if (data) {
+                        datass = data
                         select.find("option").remove();
                         const newop = new Option("--- กรุณาเลือก ---", "");
                         jQuery(newop).appendTo(select)
+                        console.log('data', data)
                         data.map((item, index) => {
-                            console.log('item', item)
                             const newoption = new Option(item.Code, item.JOB_REFNO);
                             jQuery(newoption).appendTo(select)
                         });
@@ -753,14 +757,18 @@
         }
 
         function onSelect(JOB_REFNO) {
-            console.log("🚀 ~ funnctiononSelect ~ r:", JOB_REFNO.value);
-            // if (NAME_ENG || JOB_REFNO) {
-                $('#NAME_ENG').val(JOB_REFNO.value);
-                $('#JOB_REFNO').val(JOB_REFNO.value);
-            // } else {
-            //     $('#NAME_ENG').val();
-            //     $('#JOB_REFNO').val();
-            // }
+            console.log("🚀 ~ onSelect ~ JOB_REFNO:", JOB_REFNO)
+            let curData = datass.find(f => f.JOB_REFNO === JOB_REFNO.value) || {}
+            console.log("🚀 ~ onSelect ~ curData:", curData)
+            if (curData.JOB_REFNO) {
+                console.log('1')
+                $('#NAME_ENG').val(curData.NAME_ENG);
+                $('#JOB_REFNO').val(curData.JOB_REFNO);
+            } else {
+                console.log('2')
+                $('#NAME_ENG').val();
+                $('#JOB_REFNO').val();
+            }
         }
 
         toastr.options = {

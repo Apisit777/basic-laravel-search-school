@@ -17,7 +17,7 @@
         page[size="A4"] {
             width: 210mm;
             height: 297mm;
-            
+
         }
         .background_img {
             background-image: url("https://www.ssup.co.th/wp-content/uploads/2022/11/site-logo-g.png");
@@ -228,6 +228,37 @@
   column-gap: 40px;
   column-rule-style: solid;
 }
+
+/* ******************************************************************* */
+    .wrapper {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 0px;
+        grid-auto-rows: minmax(45px, auto);
+        /* border: 2px solid #000; */
+    }
+
+    .wrapper > div {
+        border: 2px solid #000;
+    }
+    .wrapper .one {
+        grid-column: 1/3;
+    }
+    .wrapper .five {
+        grid-column: 1/4;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+    }
+    .wrapper .six {
+        border-top: none;
+        border-right: none;
+    }
+    .wrapper .sevent {
+        border-top: none;
+        border-right: none;
+        /* border-left: none; */
+    }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -246,7 +277,7 @@
                                 &nbsp;Print</span></button>
                     </div> -->
                     <a type="button" onclick="myFunction()" class="cursor-pointer text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
-                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                             viewBox="0 0 512 512" xml:space="preserve"
                             class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                             <rect x="153.361" y="65.14" style="fill:#FFFFFF;" width="205.278" height="95.191"/>
@@ -295,7 +326,7 @@
                             <div class="row font-semibold" style="width: 380px;">
                                 <div style="width: 100px">
                                     <span style="font-size: 14px;">
-                                        Document No. :                
+                                        Document No. :
                                     </span>
                                 </div>
                                 <div class="col" style="">
@@ -307,7 +338,7 @@
                             <div class="row font-semibold" style="margin-top: 20px;">
                                 <div style="width: 250px;">
                                     <span style="font-size: 14px;">
-                                        Customer & Product Requirements                  
+                                        Customer & Product Requirements
                                     </span>
                                 </div>
                                 <!-- <div class="col" style="width: 80px;">
@@ -323,7 +354,7 @@
                             <div class="row" style="width: 264px; margin-top: 20px;">
                                 <div style="width: 95px;">
                                     <span style="font-size: 14px;">
-                                        Declared Date :                    
+                                        Declared Date :
                                     </span>
                                 </div>
                                 <div class="col" style="width: 80px;">
@@ -335,7 +366,7 @@
                             <!-- <div class="row" style="margin-top: 10px;">
                                 <div style="width: 80px;">
                                     <span style="font-size: 14px;">
-                                        ชื่อโรงเรียน                    
+                                        ชื่อโรงเรียน
                                     </span>
                                 </div>
                                 <div class="col" style="width: 310px;">
@@ -351,7 +382,7 @@
                             <div class="row text-start" style="width: 300px; margin-top: 22px;">
                                 <div style="width: 250px;">
                                     <span style="font-size: 12px;">
-                                        Institute of Beauty and Health Sciences Co.,Ltd.                    
+                                        Institute of Beauty and Health Sciences Co.,Ltd.
                                     </span>
                                 </div>
                                 <div class="" style="width: 250px;">
@@ -373,7 +404,7 @@
                     </div>
                 </div>
 
-                <table class="normal_tb table table-bordered border-2 border-black" style="width: 100%; margin-top: 30px;">
+                {{-- <table class="normal_tb table table-bordered border-2 border-black" style="width: 100%; margin-top: 30px;">
                     <tbody>
                         <tr class="border-2 border-black">
                             <td class="text-center border-lb" colspan="2" width="30%" style="border-left: none; border-top: none;">รายละเอียดผู้ให้บริการ :</td>
@@ -386,54 +417,20 @@
                             <td>@twitter</td>
                         </tr>
                     </tbody>
-                </table>
+                </table> --}}
 
-                <!-- <div class="">
-                    <ul class=" font-medium border-t border-2 border-black"></ul>
-                        <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-12">
-                            <div class="md:col-span-4" >
-                                <select class="js-example-basic-single w-full rounded-sm text-xs text-center" id="BARCODE" name="BARCODE">
-                                    <option class="" value=""> --- กรุณาเลือก ---</option>
-                                    @foreach ($productCodeArr as $key => $productCode)
-                                        <option value={{ $productCode }}>{{ $productCode }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="md:col-span-2" >
-                                <input type="text" name="search" id="search" onkeyup="checkNameBrand()" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" />
-                            </div>
-                            <div class="md:col-span-2" >
-                                <input type="text" name="search" id="search" onkeyup="checkNameBrand()" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" />
-                            </div>
-                            <div class="md:col-span-2" >
-                                <input type="text" name="search" id="search" onkeyup="checkNameBrand()" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" />
-                            </div>
-                        </div>
-                    <ul class=" font-medium border-t border-1 border-black"></ul>
-                        <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-12">
-                            <div class="md:col-span-6" >
-                                <select class="js-example-basic-single w-full rounded-sm text-xs text-center" id="BARCODE" name="BARCODE">
-                                    <option class="" value=""> --- กรุณาเลือก ---</option>
-                                    @foreach ($productCodeArr as $key => $productCode)
-                                        <option value={{ $productCode }}>{{ $productCode }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="md:col-span-3" >
-                                <input type="text" name="search" id="search" onkeyup="checkNameBrand()" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" />
-                            </div>
-                            <div class="md:col-span-3" >
-                                <input type="text" name="search" id="search" onkeyup="checkNameBrand()" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" />
-                            </div>
-                        </div>
-                    <ul class=" font-medium border-t border-2 border-black"></ul>
-                </div> -->
-
-                <ul class=" font-medium border-t border-2 border-black"></ul>
-                <div class="newspaper">
-                    Lorem ipsum dolor sit amet, consectetuer adipiscing elit, gfjfvhjffhjffhjfjfhhfjhfjhfjfhjfhjfhjfhjhfjng id quod mazim placerat facer possim assum. aaaaaaaaaaaaaaaaaaaaaaaaa
-                </div>
-                <ul class=" font-medium border-t border-2 border-black"></ul>
+                <div class="wrapper" style="position: relative;">
+                    <div class="one" style=" border-left: none; border-right: none;">
+                        <div class="1one" style="position:absolute">Test</div>
+                        <div class="1one" style="display:flex; justify-content:center; align-items: center; height: 100%;">aaaaaaaaaaaa</div>
+                    </div>
+                    <div class="two" style=" border-right: none">two</div>
+                    <div class="three" style=" border-right: none">Three</div>
+                    <div class="four" style=" border-right: none">Four</div>
+                    <div class="five" style="">Five</div>
+                    <div class="six" style="border-top: none">Six</div>
+                    <div class="sevent" style="border-top: none">Six</div>
+                  </div>
             </div>
         </div>
         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700 no-print"></ul>
