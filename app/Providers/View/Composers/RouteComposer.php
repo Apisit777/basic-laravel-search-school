@@ -4,13 +4,16 @@ namespace App\Providers\View\Composers;
 
 use Illuminate\View\View;
 use App\Models\menu;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class RouteComposer
 {
     public function compose(View $view)
     {
-        $authPosition = Auth::user()->getUserPermission->position_id;
+        // dd(Auth::user());
+        $id = Auth::user()->id;
+        $authPosition = User::where('id', $id)->first()->getUserPermission->position_id;
         $routeName = menu::with(['getPermissionSubmenus' => function ($query) use ($authPosition) {
                 $query->where('menu_relations.position_id', $authPosition)
                 ->whereNotNull('submenu_id');
@@ -26,6 +29,17 @@ class RouteComposer
 
         $view->with([
             'routeName' => $routeName,
+            'authPosition' => $authPosition,
         ]);
     }
+
+    // private function getCssClass(string $routeName): string 
+    // {
+    //     $activeRoutes = match ($routeName) {
+    //         'home' => ['home'],
+    //         default => []
+    //     };
+
+    //     return in_array(request()->route()->getName(), $activeRoutes) ? 'rounded-sm bg-primary-100 dark:bg-[#014a77] duration-500' : '';
+    // }
 }

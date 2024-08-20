@@ -42,8 +42,33 @@ class ProductController extends Controller
         $productCode = 'P'.sprintf('%05d', $productCodeNumber);
 
         $list_position = position::select('id', 'name_position')->get();
-        $brands = Brand::listBrand();
+        // $brands = Brand::listBrand();
         // dd($productCode);
+
+        $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
+        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        $userpermission = Auth::user()->getUserPermission->name_position;
+        if (in_array($userpermission, [$isSuperAdmin])) {
+            $brands = Barcode::select(
+                'BRAND')
+            ->pluck('BRAND')
+            ->toArray();
+        } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+            $brands = Barcode::select(
+                'BRAND',
+                'STATUS')
+            ->whereIn('STATUS', ['OP', 'ALL'])
+            ->pluck('BRAND')
+            ->toArray();
+        } else if (in_array($userpermission, ['Marketing - CPS'])) {
+            $brands = Barcode::select(
+                'BRAND',
+                'STATUS')
+            ->whereIn('STATUS', ['CP', 'ALL'])
+            ->pluck('BRAND')
+            ->toArray();
+        }
+
         return view('product.create', compact('productCode', 'list_position', 'brands'));
     }
     public function productDetailCreate(Request $request)
@@ -99,17 +124,9 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product, $id_barcode)
+    public function edit(Product $product)
     {
-        $data = Pro_develops::select(
-            'pro_develops.*',
-            DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
-            )
-            ->firstWhere('BARCODE', '=', $id_barcode);
-
-        // dd($data);
-
-        return view('new_product_develop.edit', compact('data'));
+        //
     }
 
     /**
@@ -147,71 +164,6 @@ class ProductController extends Controller
         return $data;
     }
 
-    public function list_npd(Request $request)
-    {
-        $limit = $request->input('length'); // limit per page
-        $request->merge([
-            'page' => ceil(($request->input('start') + 1) / $limit),
-        ]);
-
-        $BARCODE = $request->input('BARCODE');
-        $DOC_NO = $request->search;
-        $field_detail = [
-            'pro_develops.DOC_NO',
-            'pro_develops.NAME_ENG',
-            'pro_develops.BARCODE', 
-        ];
-        $data = Pro_develops::select(
-                'BRAND',
-                DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
-                'BARCODE',
-                'NAME_ENG'
-            )
-            ->orderBy('BARCODE', 'DESC');
-
-        if (null != $DOC_NO) {
-            $data = $data->where(function ($data) use ($DOC_NO, $field_detail) {
-                for ($i = 0; $i < count($field_detail); $i++) {
-                    $data->orWhere($field_detail[$i], 'like', '%'.$DOC_NO.'%');
-                }
-            });
-        }
-
-        if (null != $BARCODE) {
-            $productCodes = $data->where(DB::raw('SUBSTRING(BARCODE, 8, 5)'), $request->input('BARCODE'))->pluck('BARCODE');
-            // $productCodeArr = [];
-            // foreach($productCodes as $productCodeLast) {
-            //     $productCodeArrLast = [];
-            //     $productCodeArrLast[] = substr_replace($productCodeLast, '', -1);
-            //     foreach($productCodeArrLast as $productCodeFirst) {
-            //         $productCodeArr[] = substr($productCodeFirst, 7, 11);
-            //     }
-            // }
-            // $productCodesObject = json_decode(json_encode($productCodes));
-            // $data->where($productCodeArr, $BARCODE);
-            // $data= collect($productCodes);
-            // if (null != $productCodeArr) {
-            // }
-
-            // $obj->where('pro_develops.BARCODE', function ($barcode) use ($request) {
-            //     $barcode->orWhere('BARCODE', $request->BARCODE);
-            // });
-        }
-
-        // dd($data);
-        $data = $data->paginate($limit);
-        $totalRecords = $data->total();
-        $totalRecordwithFilter = $data->count();
-        $response = [
-            'draw' => intval($request->draw),
-            'iTotalRecords' => $totalRecordwithFilter,
-            'iTotalDisplayRecords' => $totalRecords,
-            'aaData' => $data->items(),
-        ];
-
-        return response()->json($response);
-    }
-
     public function list_products(Request $request)
     {
         $limit = $request->input('length'); // limit per page
@@ -219,6 +171,13 @@ class ProductController extends Controller
             'page' => ceil(($request->input('start') + 1) / $limit),
         ]);
 
+        $BARCODE = $request->input('BARCODE');
+        // $DOC_NO = $request->search;
+        // $field_detail = [
+        //     'pro_develops.DOC_NO',
+        //     'pro_develops.NAME_ENG',
+        //     'pro_develops.BARCODE', 
+        // ];
         $data = Product::select(
             'id',
             'seq',
@@ -226,6 +185,10 @@ class ProductController extends Controller
         )
         ->where('status', 1)
         ->orderBy('id', 'ASC');
+
+        if (null != $BARCODE) {
+            $productCodes = $data->where(DB::raw('SUBSTRING(BARCODE, 8, 5)'), $request->input('BARCODE'))->pluck('BARCODE');
+        }
 
         // dd($data);
         $data = $data->paginate($limit);
