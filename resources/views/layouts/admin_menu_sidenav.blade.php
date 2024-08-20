@@ -29,7 +29,7 @@ $authPosition = ManageMenuController::auth_position();
 
 <aside id="logo-sidebar" class="sidebar fixed top-12 left-0 z-40 w-64 h-screen -translate-x-full border-r border-gray-200 md:translate-x-0 dark:border-gray-700 transition-all duration-500" aria-label="Sidebar">
     <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-[#202020] duration-500 mt">
-        <!-- @foreach($routeName as $menu)
+        {{-- @foreach($routeName as $menu)
             <ul class="space-y-2 font-medium">
                 @if (!empty($menu['getPermissionSubmenus'][0]))
                     <li class="relative w-[232px] overflow-hidden group mt-2">
@@ -71,7 +71,7 @@ $authPosition = ManageMenuController::auth_position();
                     </li>
                 @endif
             </ul>
-        @endforeach -->
+        @endforeach --}}
 
         <ul class="space-y-2 font-medium">
             <li>
@@ -108,7 +108,7 @@ $authPosition = ManageMenuController::auth_position();
                     <span id="count_noti" class="inline-flex items-center justify-center px-2 ms-3 text-xs font-medium text-gray-100 bg-[#C82333] rounded-full dark:bg-[#C82333] dark:text-gray-300"></span>
                 </a>
             </li>
-            {{-- <li>
+            <li>
                 <a href="#" class="flex items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                         <path d="M4.5 3.75a3 3 0 0 0-3 3v.75h21v-.75a3 3 0 0 0-3-3h-15Z" />
@@ -116,7 +116,7 @@ $authPosition = ManageMenuController::auth_position();
                     </svg>
                     <span class="flex-1 ms-3 whitespace-nowrap">Approve</span>
                 </a>
-            </li> --}}
+            </li>
             <li>
                 <a class="flex items-center p-1 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group {{ (Request::is('manage_menu') || Request::is('manage_menu')) ? 'rounded-sm bg-primary-100 dark:bg-[#014a77] duration-500': '' }}" href="{{ route('manage_menu') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-7 mt-1 ml-0.5 text-black dark:text-white">
