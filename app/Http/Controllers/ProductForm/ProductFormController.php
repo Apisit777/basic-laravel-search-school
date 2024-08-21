@@ -213,9 +213,8 @@ class ProductFormController extends Controller
     public function getBrandListAjax(Request $request)
     {
         $productCodes = Pro_develops::select(
-                DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
-                'JOB_REFNO',
-                'NAME_ENG'
+                'pro_develops.*',
+                DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code')
             )
             ->where('BRAND', $request->input('BRAND'))
             ->orderby('Code')

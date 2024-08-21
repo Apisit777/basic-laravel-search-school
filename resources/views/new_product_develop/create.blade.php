@@ -713,6 +713,31 @@
 
             $('#NAME_ENG').val('');
             $('#JOB_REFNO').val('');
+            $('#DOC_NO').val('');
+            $('#CUST_OEM').val('');
+            $('#CAPACITY').val('');
+            $('#Q_SMELL').val('');
+            $('#Q_COLOR').val('');
+            $('#TARGET_GRP').val('');
+            $('#PRICE_FG').val('');
+            $('#PRICE_COST').val('');
+            $('#PRICE_BULK').val('');
+            $('#FIRST_ORD').val('');
+            $('#P_CONCEPT').val('');
+            $('#P_BENEFIT').val('');
+            $('#TEXTURE_OT').val('');
+            $('#COLOR1').val('');
+            $('#FRANGRANCE').val('');
+            $('#INGREDIENT').val('');
+            $('#STD').val('');
+            $('#PK').val('');
+            $('#OTHER').val('');
+            $('#DOCUMENT').val('');
+            $('#REASON2_DES').val('');
+            $('#REASON3_DES').val('');
+            $('#REF_COLOR').val('');
+            $('#REF_FRAGRANCE').val('');
+            $('#OEM_STD').val('');
             
             if (params === 'BRAND') {
                 url = '{{ route('get_brand_list_ajax') }}?BRAND=' + e.value;
@@ -759,16 +784,41 @@
         function onSelect(JOB_REFNO) {
             console.log("🚀 ~ onSelect ~ JOB_REFNO:", JOB_REFNO)
             let curData = datass.find(f => f.JOB_REFNO === JOB_REFNO.value) || {}
-            console.log("🚀 ~ onSelect ~ curData:", curData)
             if (curData.JOB_REFNO) {
                 console.log('1')
                 $('#NAME_ENG').val(curData.NAME_ENG);
                 $('#JOB_REFNO').val(curData.JOB_REFNO);
-            } else {
-                console.log('2')
-                $('#NAME_ENG').val();
-                $('#JOB_REFNO').val();
-            }
+                $('#DOC_NO').val(curData.DOC_NO);
+                $('#CUST_OEM').val(curData.CUST_OEM);
+                $('#CAPACITY').val(curData.CAPACITY);
+                $('#Q_SMELL').val(curData.Q_SMELL);
+                $('#Q_COLOR').val(curData.Q_COLOR);
+                $('#TARGET_GRP').val(curData.TARGET_GRP);
+                $('#PRICE_FG').val(curData.PRICE_FG);
+                $('#PRICE_COST').val(curData.PRICE_COST);
+                $('#PRICE_BULK').val(curData.PRICE_BULK);
+                $('#FIRST_ORD').val(curData.FIRST_ORD);
+                $('#P_CONCEPT').val(curData.P_CONCEPT);
+                $('#P_BENEFIT').val(curData.P_BENEFIT);
+                $('#TEXTURE_OT').val(curData.TEXTURE_OT);
+                $('#COLOR1').val(curData.COLOR1);
+                $('#FRANGRANCE').val(curData.FRANGRANCE);
+                $('#INGREDIENT').val(curData.INGREDIENT);
+                $('#STD').val(curData.STD);
+                $('#PK').val(curData.PK);
+                $('#OTHER').val(curData.OTHER);
+                $('#DOCUMENT').val(curData.DOCUMENT);
+                $('#REASON2_DES').val(curData.REASON2_DES);
+                $('#REASON3_DES').val(curData.REASON3_DES);
+                $('#REF_COLOR').val(curData.REF_COLOR);
+                $('#REF_FRAGRANCE').val(curData.REF_FRAGRANCE);
+                $('#OEM_STD').val(curData.OEM_STD);
+            } 
+            // else {
+            //     console.log('2')
+            //     $('#NAME_ENG').val();
+            //     $('#JOB_REFNO').val();
+            // }
         }
 
         toastr.options = {

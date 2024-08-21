@@ -64,13 +64,13 @@
             `
         );
         $('#auth_fullname_login').append(
-            `<p class="text-gray-900 dark:text-white">${dataJson.data.emp_tiger.personcode}</p>`
+            `<span class="text-gray-900 dark:text-white">${dataJson.data.emp_tiger.personcode}</span>`
         );
         $('#auth_departmant_login').append(
-            `<p class="text-gray-900 dark:text-white">(${dataJson.data.emp_tiger.cmb1namet})</p>`
+            `<span class="text-gray-900 dark:text-white">(${dataJson.data.emp_tiger.cmb1namet})</span>`
         );
         $('#auth_department').append(
-            `<p class="text-gray-900 dark:text-white p-2">${dataJson.data.emp_tiger.cmb1namet}</p></button>`
+            `<span class="text-gray-900 dark:text-white p-2">${dataJson.data.emp_tiger.cmb1namet}</span></button>`
         );
     </script>
 
