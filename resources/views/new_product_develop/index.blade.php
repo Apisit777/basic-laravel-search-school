@@ -30,6 +30,13 @@
         .select2 {
             width: 100%!important; /* force fluid responsive */
         }
+        .rotate:hover{
+            transform: rotate(180deg);
+            transition: 0.5s all;
+        }
+        .rotate{
+            transition: 0.5s all;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -39,51 +46,130 @@
 
     <div class="justify-center items-center">
         <div class="mt-6 mb-4 flex justify-center items-center">
-            <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการทะเบียนสินค้า</p>
+            <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">NPD Request List</p>
         </div>
 
-        @if (Auth::user()->getUserPermission->user_id == Auth::user()->id)
-            <div class="fixed flex bottom-5 right-5 z-10">
-                <a href="{{ route('new_product_develop.create') }}" class="bg-[#303030] hover:bg-[#404040] text-white font-bold cursor-pointer py-2 px-2 mr-2 mt-20 rounded-full group">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                        <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
-                    </svg>
-                </a>
-            </div>
-        @endif
-        <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
-            <div class="lg:col-span-4 xl:grid-cols-4">
-                <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                    <div class="md:col-span-3" >
-                        <label for="countries" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Sarch Column</label>
-                        <select class="js-example-basic-single w-full rounded-sm text-xs text-center" id="BARCODE" name="BARCODE">
-                            <option class="" value=""> --- กรุณาเลือก ---</option>
-                            @foreach ($productCodeArr as $key => $productCode)
-                                <option value={{ $productCode }}>{{ $productCode }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <!-- <div class="md:col-span-3" >
-                        <label for="countries">รหัส</label>
-                        <input type="text" style="height: 38px;" name="BARCODE" id="BARCODE" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="">
-                    </div> -->
-                    <div class="md:col-span-3" >
-                        <label for="">ค้นหา</label>
-                        <input type="text" name="search" id="search" onkeyup="checkNameBrand()" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" />
-                    </div>
-                    <div class="md:col-span-6 text-center">
-                        <div class="inline-flex items-center">
-                            <a href="#" id="btnSerarch" class="text-gray-100 bg-[#303030] hover:bg-[#404040] text-white font-bold py-2 px-4 mr-2 rounded group">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                                    <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
-                                </svg>
-                                ค้นหา
-                            </a>
+        <form action="#">
+            @if (Auth::user()->getUserPermission->user_id == Auth::user()->id)
+                <div class="fixed flex bottom-5 right-5 z-10">
+                    <a href="{{ route('new_product_develop.create') }}" class="bg-[#303030] hover:bg-[#404040] text-white font-bold cursor-pointer py-2 px-2 mr-2 mt-20 rounded-full group">
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                            <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                        </svg> -->
+                        <svg fill="currentColor" class="size-8" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                            viewBox="0 0 496 496" xml:space="preserve">
+                            <g>
+                                <g>
+                                    <g>
+                                        <path d="M486.624,300.168L432,252.368V144C432,64.6,367.4,0,288,0h-88C123.304,0,60.592,60.328,56.408,136H32
+                                            c-17.648,0-32,14.352-32,32s14.352,32,32,32h24v144c0,54.656,42.376,99.592,96,103.696V496h16v-64h-8c-48.52,0-88-39.48-88-88
+                                            V200h32v16h16v-16h21.24c2.56,8,6,15.536,10.288,22.52l-13.352,13.36l33.936,33.936l13.352-13.344
+                                            c9.448,5.848,19.672,10.08,30.528,12.632V288h48v-18.888c10.856-2.552,21.088-6.784,30.528-12.632l13.352,13.344l33.936-33.936
+                                            l-13.344-13.352c5.848-9.456,10.08-19.68,12.632-30.528H360v-48h-18.888c-2.552-10.848-6.784-21.08-12.632-30.528l13.344-13.352
+                                            l-33.936-33.936l-13.352,13.344c-9.456-5.848-19.68-10.08-30.528-12.632V48h-48v18.888c-10.848,2.552-21.08,6.784-30.528,12.632
+                                            l-13.352-13.344l-33.936,33.936l13.352,13.36C147.24,120.464,143.808,128,141.24,136H120v-16h-16v16H72.408
+                                            C76.568,69.152,132.12,16,200,16h88c70.576,0,128,57.424,128,128v115.632l60.088,52.568c2.48,2.184,3.912,5.32,3.912,8.624
+                                            c0,5.256-3.56,9.824-8.664,11.104L416,345.76V400c0,17.648-14.352,32-32,32h-48v64h16v-48h32c26.472,0,48-21.528,48-48v-41.76
+                                            l43.208-10.808C487.456,344.384,496,333.44,496,320.824C496,312.912,492.584,305.384,486.624,300.168z M120,152h33.456l1.552-6
+                                            c2.736-10.632,7.216-20.36,13.312-28.92l3.92-5.512l-11.44-11.456L172.112,88.8l11.456,11.44l5.504-3.92
+                                            c10.848-7.728,23.048-12.776,36.248-14.992L232,80.2V64h16v16.2l6.672,1.128c13.2,2.216,25.4,7.264,36.248,14.992l5.504,3.92
+                                            L307.88,88.8l11.312,11.312l-11.44,11.456l3.92,5.512c7.728,10.848,12.776,23.048,14.992,36.248L327.8,160H344v16h-16.2
+                                            l-1.128,6.672c-2.216,13.2-7.264,25.4-14.992,36.248l-3.92,5.504l11.44,11.456l-11.312,11.312l-11.456-11.456l-5.504,3.928
+                                            c-10.848,7.736-23.048,12.784-36.248,15L248,255.8V272h-16v-16.2l-6.672-1.128c-13.2-2.216-25.4-7.264-36.248-15l-5.504-3.928
+                                            L172.12,247.2l-11.312-11.312l11.44-11.456l-3.92-5.504c-6.096-8.56-10.576-18.288-13.312-28.92l-1.56-6.008H120V152z M104,152
+                                            v32H32c-8.824,0-16-7.176-16-16c0-8.824,7.176-16,16-16H104z"/>
+                                        <path d="M240,232c35.288,0,64-28.712,64-64c0-35.288-28.712-64-64-64c-35.288,0-64,28.712-64,64C176,203.288,204.712,232,240,232
+                                            z M240,120c26.472,0,48,21.528,48,48s-21.528,48-48,48s-48-21.528-48-48S213.528,120,240,120z"/>
+                                        <rect x="232" y="304" width="16" height="16"/>
+                                        <rect x="232" y="336" width="16" height="16"/>
+                                        <rect x="232" y="368" width="16" height="16"/>
+                                        <rect x="232" y="400" width="16" height="16"/>
+                                        <rect x="232" y="432" width="16" height="16"/>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                    </a>
+                </div>
+            @endif
+            <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
+                <div class="lg:col-span-4 xl:grid-cols-4">
+                    <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
+                        <div class="md:col-span-3" >
+                            <label for="countries" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Sarch Column</label>
+                            <select class="js-example-basic-single w-full rounded-sm text-xs text-center" id="BARCODE" name="BARCODE">
+                                <option class="" value=""> --- กรุณาเลือก ---</option>
+                                @foreach ($productCodeArr as $key => $productCode)
+                                    <option value={{ $productCode }}>{{ $productCode }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <!-- <div class="md:col-span-3" >
+                            <label for="countries">รหัส</label>
+                            <input type="text" style="height: 38px;" name="BARCODE" id="BARCODE" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="">
+                        </div> -->
+                        <div class="md:col-span-3" >
+                            <label for="">ค้นหา</label>
+                            <input type="text" name="search" id="search" onkeyup="checkNameBrand()" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" />
+                        </div>
+                        <div class="md:col-span-6 text-center">
+                            <div class="inline-flex items-center">
+                                <a href="#" id="btnSerarch" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-1 px-4 mr-2 rounded group">
+                                    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                        <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
+                                    </svg> -->
+                                    <svg class="hidden h-9 w-9 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block"
+                                        viewBox="0 0 100 100" enable-background="new 0 0 100 100" id="Layer_1" version="1.1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <g>
+                                            <g>
+                                                <rect clip-rule="evenodd" fill="#F2F2F2" fill-rule="evenodd" height="83.437" width="67.025" x="9.012" y="7.604"/>
+                                                <path d="M77.454,92.458H7.595V6.187h69.859V92.458z M10.429,89.624H74.62V9.021H10.429V89.624z"/>
+                                            </g>
+                                            <g><rect clip-rule="evenodd" fill="#FF7C24" fill-rule="evenodd" height="10.481" width="17.952" x="46.695" y="34.866"/></g>
+                                            <g><rect height="2.834" width="19.463" x="20.504" y="35.575"/></g>
+                                            <g><rect height="2.834" width="15.561" x="20.718" y="42.508"/></g>
+                                            <g><rect height="2.833" width="15.562" x="20.813" y="49.514"/></g>
+                                            <g><rect height="2.833" width="27.128" x="20.718" y="56.753"/></g>
+                                            <g><rect height="2.833" width="23.51" x="20.718" y="63.688"/></g>
+                                            <g></g>
+                                            <g><rect height="2.833" width="26.272" x="20.718" y="70.32"/></g>
+                                            <g><rect height="2.834" width="32.8" x="20.718" y="77.253"/></g>
+                                            <g><rect height="2.834" width="3.235" x="38.304" y="42.508"/></g>
+                                            <g>
+                                                <path clip-rule="evenodd" d="M77.931,71.902l4.287,4.427l-6.644,6.437l-4.309-4.457    C74.147,76.998,76.504,74.726,77.931,71.902L77.931,71.902z" fill="#F2F2F2" fill-rule="evenodd"/>
+                                                <path d="M75.542,84.77l-6.692-6.92l1.828-0.831c2.579-1.174,4.706-3.218,5.989-5.756l0.897-1.776l6.656,6.874L75.542,84.77z     M73.584,78.669l2.023,2.091l4.605-4.463l-2.007-2.074C76.994,76.012,75.414,77.531,73.584,78.669z"/>
+                                            </g>
+                                            <g>
+                                                <polygon clip-rule="evenodd" fill="#39B6CC" fill-rule="evenodd" points="83.267,75.319 91.984,84.338 83.247,92.779     74.535,83.761   "/>
+                                                <path d="M83.213,94.783L72.531,83.726l10.771-10.41l10.687,11.056L83.213,94.783z M76.538,83.794l6.744,6.981l6.698-6.472    l-6.748-6.981L76.538,83.794z"/>
+                                            </g>
+                                            <g>
+                                                <path clip-rule="evenodd" d="M66.124,50.799c7.742,0,14.018,6.276,14.018,14.019    s-6.275,14.019-14.018,14.019c-7.743,0-14.019-6.276-14.019-14.019S58.381,50.799,66.124,50.799L66.124,50.799z" fill="#F2F2F2" fill-rule="evenodd"/>
+                                                <path d="M66.124,80.253c-8.511,0-15.435-6.924-15.435-15.435s6.924-15.435,15.435-15.435S81.56,56.307,81.56,64.818    S74.635,80.253,66.124,80.253z M66.124,52.216c-6.949,0-12.601,5.653-12.601,12.602s5.651,12.601,12.601,12.601    c6.948,0,12.602-5.652,12.602-12.601S73.072,52.216,66.124,52.216z"/>
+                                            </g>
+                                            <g> <rect height="2.833" width="10.313" x="39.902" y="49.514"/></g>
+                                            <g><path d="M76.404,65.586H73.57c0-0.636-0.068-1.255-0.205-1.84c-0.043-0.186-0.096-0.385-0.169-0.63l2.717-0.808    c0.091,0.304,0.158,0.559,0.215,0.801C76.31,63.901,76.404,64.735,76.404,65.586z M72.438,61.433    c-1.489-2.5-4.203-4.058-7.084-4.061l0.004-2.834c3.871,0.005,7.518,2.091,9.516,5.445L72.438,61.433z"/></g>
+                                        </g>
+                                    </svg>
+                                    ค้นหา
+                                </a>
+                                <!-- <button id="btnClearSerarch" style="margin-left:auto;" type="reset" class="btn btn-warning btn-sm btn-qrcode clear">
+                                    ล้างข้อมูล
+                                </button> -->
+                                <button  id="" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group cursor-pointer" type="reset">
+                                    <svg class="hidden h-7 w-7 md:inline-block rotate"
+                                        viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                        <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 93,62 C 83,82 65,96 48,96 32,96 19,89 15,79 L 5,90 5,53 40,53 29,63 c 0,0 5,14 26,14 16,0 38,-15 38,-15 z"/>
+                                        <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 5,38 C 11,18 32,4 49,4 65,4 78,11 85,21 L 95,10 95,47 57,47 68,37 C 68,37 63,23 42,23 26,23 5,38 5,38 z"/>
+                                    </svg>
+                                    ล้างข้อมูล
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
             <div id="containerexample" class="text-gray-900 dark:text-gray-100">
@@ -153,6 +239,22 @@
     @endif
     <script>
 
+        $(function(){
+            $('form').on('reset', function() {
+                localStorage.removeItem('get_refun_url');
+                setTimeout(function() {
+                    mytableDatatable.draw();
+                }, 500)
+            });
+        });
+
+        getParameterSearce()
+        function getParameterSearce() {
+            let dataSearch = localStorage.getItem("get_refun_url");
+            let dataJson = JSON.parse(dataSearch)
+            console.log("🚀 ~ getParameterSearce ~ dataJson:", dataJson)
+        }
+
         getParmeterLogin()
         function getParmeterLogin() {
             let dataLogin = sessionStorage.getItem("credetail");
@@ -210,6 +312,9 @@
                     data.BARCODE = $('#BARCODE').val();
                     data.search = $('#search').val();
                     data._token = $('meta[name="csrf-token"]').attr('content');
+
+                    // SetParameterSearce
+                    localStorage.setItem("get_refun_url", JSON.stringify(data));
                 }
             },
             orderable: true,
@@ -285,6 +390,7 @@
 
         $('#btnSerarch').click(function() {
             mytableDatatable.draw();
+            return false;
         });
         // <a onclick="disableAppointment('${disabledRoute}',this,'${row.BARCODE}')" type="button"
         //     class="bclose btn btn-sm btn-success refersh_btn"

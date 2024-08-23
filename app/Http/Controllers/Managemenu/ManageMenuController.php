@@ -171,12 +171,12 @@ class ManageMenuController extends Controller
         }
         return $menuPpermissions;
     }
-    public static function auth_position()
-    {
-        $authPosition = Auth::user()->getUserPermission->position_id;
-        // dd($authPosition);
-        return $authPosition;
-    }
+    // public static function auth_position()
+    // {
+    //     $authPosition = Auth::user()->getUserPermission->position_id;
+    //     // dd($authPosition);
+    //     return $authPosition;
+    // }
 
     public function updateOrCreateMenu(Request $request, $id)
     {

@@ -95,6 +95,11 @@
         color: #000000;
         background-image: repeating-linear-gradient(180deg, transparent, transparent 19px, #000000 20px);
     }
+
+    img {
+        width: 70px;
+        /* mix-blend-mode: multiply; */
+    }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -103,19 +108,34 @@
 @section('content')
     <div class="bg-white rounded shadow-lg duration-500 md:p-4 mt-10">
         <div class="justify-center items-center">
+            <!-- <div class="mt-5 flex justify-items-start">
+                <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">New Product Development Request</p>
+            </div> -->
             <div id="print_page">
                 <div class="md:col-span-6 text-right mt-4 no-print">
                     <div class="inline-flex items-end">
                         <a href="{{ route('new_product_develop.index') }}" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                            <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                 <path fill-rule="evenodd" d="M9.53 2.47a.75.75 0 0 1 0 1.06L4.81 8.25H15a6.75 6.75 0 0 1 0 13.5h-3a.75.75 0 0 1 0-1.5h3a5.25 5.25 0 1 0 0-10.5H4.81l4.72 4.72a.75.75 0 1 1-1.06 1.06l-6-6a.75.75 0 0 1 0-1.06l6-6a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+                            </svg> -->
+
+                            <svg fill="#fff" class="-mt-1 size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                viewBox="0 0 26.676 26.676" xml:space="preserve">
+                                <g>
+                                    <path d="M26.105,21.891c-0.229,0-0.439-0.131-0.529-0.346l0,0c-0.066-0.156-1.716-3.857-7.885-4.59
+                                        c-1.285-0.156-2.824-0.236-4.693-0.25v4.613c0,0.213-0.115,0.406-0.304,0.508c-0.188,0.098-0.413,0.084-0.588-0.033L0.254,13.815
+                                        C0.094,13.708,0,13.528,0,13.339c0-0.191,0.094-0.365,0.254-0.477l11.857-7.979c0.175-0.121,0.398-0.129,0.588-0.029
+                                        c0.19,0.102,0.303,0.295,0.303,0.502v4.293c2.578,0.336,13.674,2.33,13.674,11.674c0,0.271-0.191,0.508-0.459,0.562
+                                        C26.18,21.891,26.141,21.891,26.105,21.891z"/>
+                                    <g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
+                                </g>
                             </svg>
                             Back
                         </a>
                         <a type="button" onclick="myFunction()" class="cursor-pointer text-white bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
                             <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 viewBox="0 0 512 512" xml:space="preserve"
-                                class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                class="-mt-1 size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                 <rect x="153.361" y="65.14" style="fill:#FFFFFF;" width="205.278" height="95.191"/>
                                 <path style="fill:#1E0478;" d="M512,144.296v172.838c0,19.889-16.176,36.066-36.066,36.066h-95.582v104.517
                                     c0,5.993-4.864,10.857-10.857,10.857H142.504c-5.993,0-10.857-4.864-10.857-10.857V353.2H36.066C16.176,353.2,0,337.023,0,317.134
@@ -154,10 +174,19 @@
                     </div>
                 </div>
                 <ul class="m-1 font-medium border-t border-2 border-black"></ul>
-                <div class="justify-items-start mt-1 mb-3">
+                <!-- <div class="justify-items-start mt-1 mb-3">
                     <span class="m-1 text-xl font-semibold text-black" style="font-size: 20px;">New Product Development Project Brief</span>
-                </div>
-                <div class="row m-1 text-black mb-10" style="">
+                </div> -->
+                
+                <div class="flex justify-between ...">
+                    <span class="m-1 text-xl font-semibold text-black" style="font-size: 20px;">New Product Development Project Brief</span>
+                    <!-- <div>02</div> -->
+                    <!-- <div>03</div> -->
+                    <div style="margin-top: 10px; margin-right: 85px; margin-left: 50px;">
+                        <img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQaOvxEZSnjYjoYtsSJUJMgaPq3WPTVvkqUywlyynplww2bv6A0" style="">
+                    </div>
+                    </div>
+                <div class="row m-1 text-black mb-10 -mt-10 z-auto" style="">
                     <div class="col d-flex flex-row-reverse 2" style="margin-right: -80px;">
                         <div>
                             <div class="row font-semibold" style="width: 380px;">
@@ -264,8 +293,8 @@
                     <div class="">
                         <div class="text-xs" style="position:absolute">PRODUCT CONCEPT</div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; top: 5px;">
-                            <p> 
-                                2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก
+                            <p class="font-normal"> 
+                                2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก
                             </p>
                         </div>
                     </div>
@@ -275,8 +304,8 @@
                     <div class="">
                         <div class="text-xs" style="position:absolute">PRODUCT BENEFIT</div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; top: 5px;">
-                            <p> 
-                                2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก
+                            <p class="font-normal"> 
+                                สีทาปากสูตรน้ําที่ให้การติดทน พร้อมลิปกลอสที่ช่วยเพิ่มความชุ่มชื้นให้ริมฝีปาก อวบอิ่มเป็นประกายแวววาว พร้อมลิปกลอสที่ช่วยเพิ่มความชุ่มชื้นให้ริมฝีปาก อวบอิ่มเป็นประกายแวววาว พร้อมลิปกลอสที่ช่วยเพิ่มความชุ่มชื้นให้ริมฝีปาก อวบอิ่มเป็นประกายแวววาว พร้อมลิปกลอสที่ช่วยเพิ่มความชุ่มชื้นให้ริมฝีปาก อวบอิ่มเป็นประกายแวววาว
                             </p>
                         </div>
                     </div>

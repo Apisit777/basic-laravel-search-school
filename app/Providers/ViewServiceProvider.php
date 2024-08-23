@@ -5,7 +5,6 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use App\Providers\View\Composers\RouteComposer;
-use App\Providers\View\Composers\HeaderComposer;
 use Illuminate\Support\Facades;
 
 class ViewServiceProvider extends ServiceProvider
@@ -25,6 +24,5 @@ class ViewServiceProvider extends ServiceProvider
     {
         //attach with all views
         View::composer('*', RouteComposer::class);
-        View::composer('*', HeaderComposer::class);
     }
 }
