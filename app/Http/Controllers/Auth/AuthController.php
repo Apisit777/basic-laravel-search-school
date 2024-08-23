@@ -162,4 +162,15 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unexpected response status', 'response' => $data->status()]);
         }
     }
+
+    public function apiByPassLogout(Request $request)
+    {
+        Auth::guard('web')->logout();
+ 
+        $request->session()->invalidate();
+    
+        $request->session()->regenerateToken();
+
+        return redirect('/login');
+    }
 }

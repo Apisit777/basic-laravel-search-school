@@ -6,7 +6,6 @@ use App\Http\Controllers\Managemenu\ManageMenuController;
 
 $countUsers = ProductController::count_users();
 $menuPpermissions = ManageMenuController::menus_data();
-$authPosition = ManageMenuController::auth_position();
 
 // $numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 // $odd_numbers = array_filter($numbers, function($number) {
@@ -29,7 +28,7 @@ $authPosition = ManageMenuController::auth_position();
 
 <aside id="logo-sidebar" class="sidebar fixed top-12 left-0 z-40 w-64 h-screen -translate-x-full border-r border-gray-200 md:translate-x-0 dark:border-gray-700 transition-all duration-500" aria-label="Sidebar">
     <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-[#202020] duration-500 mt">
-        {{-- @foreach($routeName as $menu)
+        @foreach($routeName as $menu)
             <ul class="space-y-2 font-medium">
                 @if (!empty($menu['getPermissionSubmenus'][0]))
                     <li class="relative w-[232px] overflow-hidden group mt-2">
@@ -71,9 +70,9 @@ $authPosition = ManageMenuController::auth_position();
                     </li>
                 @endif
             </ul>
-        @endforeach --}}
+        @endforeach
 
-        <ul class="space-y-2 font-medium">
+        <!-- <ul class="space-y-2 font-medium">
             <li>
                 <a class="flex items-center mt-5 p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group {{ (request()->is('new_product_develop') || request()->is('new_product_develop/*')) ? 'rounded-sm bg-primary-100 dark:bg-[#014a77] duration-500' : '' }}" href="{{ route('new_product_develop.index') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
@@ -146,7 +145,7 @@ $authPosition = ManageMenuController::auth_position();
                     </li>
                 </ul>
             </li>
-        </ul>
+        </ul> -->
         <!-- <li>
             <a href="#" class="flex items-center p-2 text-gray-900 rounded-sm dark:text-white hover:bg-gray-100 dark:hover:bg-[#303030] group">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">

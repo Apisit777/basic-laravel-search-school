@@ -29,24 +29,22 @@
             <div class="mt-5 flex justify-items-start">
                 <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">New Product Development Request</p>
             </div>
-            <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
-                <div class="lg:col-span-4 xl:grid-cols-4">
-                    <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                        <div class="md:col-span-3" style="position: relative;">
-                            <label for="BARCODE">Brand</label>
-                            <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="{{ $data->BRAND }}" disabled>
-                        </div>
-                        <div class="md:col-span-3" style="position: relative;">
-                            <label for="BARCODE">รหัส</label>
-                            <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="{{ $data->Code }}" disabled>
+            <form class="" action="" method="POST" id="update_NPDRequest">
+                <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
+                    <div class="lg:col-span-4 xl:grid-cols-4">
+                        <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
+                            <div class="md:col-span-3" style="position: relative;">
+                                <label for="BRAND">Brand</label>
+                                <input type="text" name="BRAND" id="BRAND" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->BRAND }}" readonly>
+                            </div>
+                            <div class="md:col-span-3" style="position: relative;">
+                                <label for="Code">รหัส</label>
+                                <input type="text" name="Code" id="Code" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->Code }}" readonly>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class='w-12/12 mt-4 relative'>
-                <form class="" action="" method="POST" id="create_NPDRequest">
-                    <input type="hidden" id="DOC_TP" name="DOC_TP" value="OP">
-                    <input type="hidden" id="BRAND" name="BRAND" value="OP">
+                <div class='w-12/12 mt-4 relative'>
                     <div class="p-4">
                         <ul class="relative m-0 w-full list-none overflow-hidden p-0 transition-[height] duration-200 ease-in-out" data-twe-stepper-init="" data-twe-stepper-type="vertical">
                             <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
@@ -79,90 +77,90 @@
                                                             <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="DOC_NO">หมายเลขเอกสาร</label>
-                                                                    <input type="text" name="DOC_NO" id="DOC_NO" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="text" name="DOC_NO" id="DOC_NO" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->DOC_NO }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="BARCODE">Barcode<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="{{ $data->BARCODE }}" disabled>
+                                                                    <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->BARCODE }}" readonly>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="JOB_REFNO">Job Ref. No.</label>
-                                                                    <input type="text" name="JOB_REFNO" id="JOB_REFNO" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="text" name="JOB_REFNO" id="JOB_REFNO" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->JOB_REFNO }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3" >
                                                                     <label for="DOC_DT">วันที่</label>
-                                                                    <input type="date" name="DOC_DT" id="DOC_DT" style="height: 38px;" class="form-control border-[#303030] bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="" id="" placeholder="" autocomplete="off" value="<?php echo date('Y-m-d'); ?>">
+                                                                    <input type="date" name="DOC_DT" id="DOC_DT" style="height: 38px;" class="form-control border-[#303030] bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="" id="" placeholder="" autocomplete="off" value="{{ $data->DOC_DT }}">
                                                                 </div>
                                                                 <div class="md:col-span-6" style="position: relative;">
                                                                     <label for="CUST_OEM">Customer (OEM)</label>
-                                                                    <input type="text" name="CUST_OEM" id="CUST_OEM" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="text" name="CUST_OEM" id="CUST_OEM" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->CUST_OEM }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3" >
                                                                     <label for="NPD">Product Co-ordinator<span class="text-danger"> *</span></label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" id="NPD" name="NPD">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        {{-- @foreach ($product_co_ordimators as $key => $product_co_ordimator)
-                                                                            <option value={{ $product_co_ordimator->ID }}>{{ $product_co_ordimator->DESCRIPTION }}</option>
-                                                                        @endforeach --}}
+                                                                        @foreach ($product_co_ordimators as $key => $product_co_ordimator)
+                                                                            <option value={{ $product_co_ordimator->ID_NPD }} {{ $product_co_ordimator->ID_NPD == $data->ID_NPD ? 'selected' : '' }}>{{ $product_co_ordimator->DESCRIPTION }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3" >
                                                                     <label for="PDM">Marketing Mamager<span class="text-danger"> *</span></label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" id="PDM" name="PDM">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        {{-- @foreach ($marketing_managers as $key => $marketing_manager)
-                                                                            <option value={{ $marketing_manager->ID }}>{{ $marketing_manager->DESCRIPTION }}</option>
-                                                                        @endforeach --}}
+                                                                        @foreach ($marketing_managers as $key => $marketing_manager)
+                                                                            <option value={{ $marketing_manager->ID_PDM }} {{ $marketing_manager->ID_PDM == $data->ID_PDM ? 'selected' : '' }}>{{ $marketing_manager->DESCRIPTION }}</option>
+                                                                        @endforeach 
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-6" style="position: relative;">
                                                                     <label for="NAME_ENG">ชื่อผลิตภัณฑ์</label>
-                                                                    <input type="text" name="NAME_ENG" id="NAME_ENG" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="text" name="NAME_ENG" id="NAME_ENG" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->NAME_ENG }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3" >
                                                                     <label for="CATEGORY">ประเภทผลิตภัณฑ์<span class="text-danger"> *</span></label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" id="CATEGORY" name="CATEGORY">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        {{-- @foreach ($type_categorys as $key => $type_category)
-                                                                            <option value={{ $type_category->ID }}>{{ $type_category->DESCRIPTION }}</option>
-                                                                        @endforeach --}}
+                                                                        @foreach ($type_categorys as $key => $type_category)
+                                                                            <option value={{ $type_category->ID_CATEGORY }} {{ $type_category->ID_CATEGORY == $data->ID_CATEGORY ? 'selected' : '' }}>{{ $type_category->DESCRIPTION }}</option>
+                                                                        @endforeach 
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="CAPACITY">ปริมาณสุทธิ</label>
-                                                                    <input type="text" name="CAPACITY" id="CAPACITY" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="text" name="CAPACITY" id="CAPACITY" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->CAPACITY }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="Q_SMELL">จำนวนกลิ่น</label>
-                                                                    <input type="text" name="Q_SMELL" id="Q_SMELL" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="text" name="Q_SMELL" id="Q_SMELL" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->Q_SMELL }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="Q_COLOR">จำนวนสี</label>
-                                                                    <input type="text" name="Q_COLOR" id="Q_COLOR" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="text" name="Q_COLOR" id="Q_COLOR" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->Q_COLOR }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="TARGET_GRP">Target Group</label>
-                                                                    <input type="text" name="TARGET_GRP" id="TARGET_GRP" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="text" name="TARGET_GRP" id="TARGET_GRP" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->TARGET_GRP }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3" >
                                                                     <label for="TARGET_STK">Target Launch Date</label>
-                                                                    <input type="date" name="TARGET_STK" id="TARGET_STK" style="height: 38px;" class="form-control border-[#303030] bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="" id="" placeholder="" autocomplete="off" value="<?php echo date('Y-m-d'); ?>">
+                                                                    <input type="date" name="TARGET_STK" id="TARGET_STK" style="height: 38px;" class="form-control border-[#303030] bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="" id="" placeholder="" autocomplete="off" value="{{ $data->TARGET_STK }}">
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="PRICE_FG">Target Price F/G</label>
-                                                                    <input type="text" name="PRICE_FG" id="PRICE_FG" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="text" name="PRICE_FG" id="PRICE_FG" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PRICE_FG }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="PRICE_COST">Draft Cost Excluded PKG</label>
-                                                                    <input type="text" name="PRICE_COST" id="PRICE_COST" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="text" name="PRICE_COST" id="PRICE_COST" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PRICE_COST }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="PRICE_BULK">Bulk</label>
-                                                                    <input type="text" name="PRICE_BULK" id="PRICE_BULK" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="text" name="PRICE_BULK" id="PRICE_BULK" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PRICE_BULK }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="FIRST_ORD">First Order</label>
-                                                                    <input type="text" name="FIRST_ORD" id="FIRST_ORD" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="text" name="FIRST_ORD" id="FIRST_ORD" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->FIRST_ORD }}" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -173,7 +171,7 @@
                                     </div>
                                 </div>
                             </li>
-                            {{-- <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
+                           <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
                                 <div data-twe-stepper-head-ref="" class="setpcollep flex cursor-pointer items-center p-1 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
                                     <span data-twe-stepper-head-icon-ref="" class="bg_step_color me-3 flex h-[1.938rem] w-[1.938rem] items-center justify-center rounded-full text-sm  !bg-primary-100 !text-primary-700 dark:!bg-slate-900 dark:!text-primary-500">
                                         2
@@ -203,44 +201,44 @@
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
                                                                 <div class="md:col-span-6">
                                                                     <label for="P_CONCEPT" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Concept</label>
-                                                                    <textarea id="P_CONCEPT" name="P_CONCEPT" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                                                                    <textarea id="P_CONCEPT" name="P_CONCEPT" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">{{ $data->P_CONCEPT ?? '' }}</textarea>
                                                                 </div>
                                                                 <div class="md:col-span-6">
                                                                     <label for="P_BENEFIT" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Benefix</label>
-                                                                    <textarea id="P_BENEFIT" name="P_BENEFIT" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                                                                    <textarea id="P_BENEFIT" name="P_BENEFIT" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">{{ $data->P_BENEFIT ?? '' }}</textarea>
                                                                 </div>
                                                                 <div class="md:col-span-2" >
                                                                     <label for="TEXTURE">texture<span class="text-danger"> *</span></label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" id="TEXTURE" name="TEXTURE">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($textures as $key => $texture)
-                                                                            <option value={{ $texture->ID }}>{{ $texture->DESCRIPTION }}</option>
+                                                                            <option value={{ $texture->ID_TEXTURE }} {{ $texture->ID_TEXTURE == $data->ID_TEXTURE ? 'selected' : '' }}>{{ $texture->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
                                                                     <label for="TEXTURE_OT">ระบุ</label>
-                                                                    <input type="text" name="TEXTURE_OT" id="TEXTURE_OT" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="text" name="TEXTURE_OT" id="TEXTURE_OT" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->TEXTURE_OT }}" />
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
                                                                     <label for="COLOR1">Color</label>
-                                                                    <input type="text" name="COLOR1" id="COLOR1" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="text" name="COLOR1" id="COLOR1" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->COLOR1 }}" />
                                                                 </div>
                                                                 <div class="md:col-span-6" style="position: relative;">
                                                                     <label for="FRANGRANCE">Fragrance Type</label>
-                                                                    <input type="text" name="FRANGRANCE" id="FRANGRANCE" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="text" name="FRANGRANCE" id="FRANGRANCE" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->FRANGRANCE }}" />
                                                                 </div>
                                                                 <div class="md:col-span-6">
                                                                     <label for="INGREDIENT" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Active Ingrement</label>
-                                                                    <textarea name="INGREDIENT" id="INGREDIENT" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                                                                    <textarea name="INGREDIENT" id="INGREDIENT" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">{{ $data->INGREDIENT ?? '' }}</textarea>
                                                                 </div>
                                                                 <div class="md:col-span-6" style="position: relative;">
                                                                     <label for="STD">สินค้าต้นแบบที่ใช้วิจัย (STD)</label>
-                                                                    <input type="text" name="STD" id="STD" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="text" name="STD" id="STD" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->STD }}" />
                                                                 </div>
                                                                 <div class="md:col-span-6" style="position: relative;">
                                                                     <label for="PK">P/K ที่ใช้</label>
-                                                                    <input type="text" name="PK" id="PK" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="text" name="PK" id="PK" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PK }}" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -281,18 +279,20 @@
                                                             <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                                                                 <div class="md:col-span-3">
                                                                     <label for="OTHER">Other</label>
-                                                                    <input type="text" name="OTHER" id="OTHER" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
+                                                                    <input type="text" name="OTHER" id="OTHER" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PK }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="DOCUMENT">เอกสารเพิ่มเติม</label>
-                                                                    <input type="text" name="DOCUMENT" id="DOCUMENT" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
+                                                                    <input type="text" name="DOCUMENT" id="DOCUMENT" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PK }}" />
                                                                 </div>
                                                                 <div class="md:col-span-6 mt-2">
                                                                     <label for="OEM">Candidate with OEM</label>
                                                                     <div class="md:col-span-4 mt-3">
-                                                                        <input type="radio" id="OEM_TYPE1" name="OEM" value="1" />
+                                                                        <input type="radio" id="OEM_TYPE1" name="OEM" value="1" 
+                                                                            {{ $data->OEM == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">yes</label>
-                                                                        <input type="radio" id="OEM_TYPE2" name="OEM" value="0" checked/>
+                                                                        <input type="radio" id="OEM_TYPE2" name="OEM" value="0"
+                                                                            {{ $data->OEM == 'N' ? 'checked' : '' }}>
                                                                         <label for="">no</label>
                                                                     </div>
                                                                     <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
@@ -300,52 +300,54 @@
                                                                 <div class="md:col-span-6 mt-2">
                                                                     <label for="name">Reason of use</label>
                                                                     <div class="md:col-span-4 mt-5">
-                                                                        <input class="-mt-1" type="checkbox" id="REASON1" name="REASON1">
+                                                                        <input class="-mt-1" type="checkbox" id="REASON1" name="REASON1" value="1" @if ($data->REASON1 == 'Y') checked @endif>
                                                                         <label for="REASON1" class="mr-5">Claim in advertising media</label>
                                                                     </div>
                                                                     <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <div class="md:col-span-4 mt-5">
-                                                                        <input class="-mt-1" type="checkbox" id="REASON2" name="REASON2">
+                                                                        <input class="-mt-1" type="checkbox" id="REASON2" name="REASON2" value="1" @if ($data->REASON2 == 'Y') checked @endif>
                                                                         <label for="REASON2" class="mr-5">Compare with benchmark/OEM</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="REASON2_DES"></label>
-                                                                    <input type="text" name="REASON2_DES" id="REASON2_DES" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
+                                                                    <input type="text" name="REASON2_DES" id="REASON2_DES" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->REASON2_DES }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <div class="md:col-span-4 mt-5">
-                                                                        <input class="-mt-1" type="checkbox" id="REASON3" name="REASON3">
+                                                                        <input class="-mt-1" type="checkbox" id="REASON3" name="REASON3" value="1" @if ($data->REASON3 == 'Y') checked @endif>
                                                                         <label for="REASON3" class="mr-5">Others</label>
                                                                         <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="REASON3_DES"></label>
-                                                                    <input type="text" name="REASON3_DES" id="REASON3_DES" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
+                                                                    <input type="text" name="REASON3_DES" id="REASON3_DES" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->REASON3_DES }}" />
                                                                     <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
                                                                 </div>
                                                                 <div class="md:col-span-3 mt-2">
                                                                     <div class="md:col-span-4 mt-3">
-                                                                        <input type="radio" id="PACKAGE_BOX_TYPE1" name="PACKAGE_BOX" value="1" />
+                                                                        <input type="radio" id="PACKAGE_BOX_TYPE1" name="PACKAGE_BOX" value="1"
+                                                                            {{ $data->PACKAGE_BOX == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">With an outer box</label>
-                                                                        <input type="radio" id="PACKAGE_BOX_TYPE2" name="PACKAGE_BOX" value="0" />
+                                                                        <input type="radio" id="PACKAGE_BOX_TYPE2" name="PACKAGE_BOX" value="0"
+                                                                            {{ $data->PACKAGE_BOX == 'Y' ? 'checked' : '' }}>
                                                                         <label for="">Without an outer box</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="REF_COLOR">Ref. of Color</label>
-                                                                    <input type="text" name="REF_COLOR" id="REF_COLOR" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
+                                                                    <input type="text" name="REF_COLOR" id="REF_COLOR" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->REF_COLOR }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="REF_FRAGRANCE">Ref. of Fragrance</label>
-                                                                    <input type="text" name="REF_FRAGRANCE" id="REF_FRAGRANCE" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
+                                                                    <input type="text" name="REF_FRAGRANCE" id="REF_FRAGRANCE" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->REF_FRAGRANCE }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="OEM_STD">Comparing with OEM</label>
-                                                                    <input type="text" name="OEM_STD" id="OEM_STD" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
+                                                                    <input type="text" name="OEM_STD" id="OEM_STD" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->OEM_STD }}" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -355,7 +357,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </li> --}}
+                            </li>
                         </ul>
                         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
                         <div id="loader" class="loading absolute hidden bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]">
@@ -367,13 +369,21 @@
                         <div class="md:col-span-6 text-right mt-4">
                             <div class="inline-flex items-end">
                                 <a href="{{ route('new_product_develop.index') }}" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                                        <path fill-rule="evenodd" d="M9.53 2.47a.75.75 0 0 1 0 1.06L4.81 8.25H15a6.75 6.75 0 0 1 0 13.5h-3a.75.75 0 0 1 0-1.5h3a5.25 5.25 0 1 0 0-10.5H4.81l4.72 4.72a.75.75 0 1 1-1.06 1.06l-6-6a.75.75 0 0 1 0-1.06l6-6a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
+                                    <svg fill="#fff" class="-mt-1 size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                        viewBox="0 0 26.676 26.676" xml:space="preserve">
+                                        <g>
+                                            <path d="M26.105,21.891c-0.229,0-0.439-0.131-0.529-0.346l0,0c-0.066-0.156-1.716-3.857-7.885-4.59
+                                                c-1.285-0.156-2.824-0.236-4.693-0.25v4.613c0,0.213-0.115,0.406-0.304,0.508c-0.188,0.098-0.413,0.084-0.588-0.033L0.254,13.815
+                                                C0.094,13.708,0,13.528,0,13.339c0-0.191,0.094-0.365,0.254-0.477l11.857-7.979c0.175-0.121,0.398-0.129,0.588-0.029
+                                                c0.19,0.102,0.303,0.295,0.303,0.502v4.293c2.578,0.336,13.674,2.33,13.674,11.674c0,0.271-0.191,0.508-0.459,0.562
+                                                C26.18,21.891,26.141,21.891,26.105,21.891z"/>
+                                            <g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
+                                        </g>
                                     </svg>
                                     Back
                                 </a>
-                                <a class="bg-[#3b5998] hover:bg-[#48639d] text-white font-bold py-2 px-4 rounded cursor-pointer" onclick="createNPDRequest()">
-                                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" class="size-6 hidden h-6 w-6 md:inline-block">
+                                <a class="-mt-1 bg-[#3b5998] hover:bg-[#48639d] text-white font-bold py-2 px-4 rounded cursor-pointer" onclick="updateNPDRequest()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF" class="-mt-1 w-5 h-5 hidden md:inline-block">
                                         <path d="M0 0h24v24H0V0z" fill="none"></path>
                                         <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
                                         <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
@@ -383,16 +393,14 @@
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 
-    {{-- <script src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"></script> --}}
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
 
@@ -431,24 +439,6 @@
             document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
             document.querySelectorAll('.bg_step_color')[0].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
         });
-
-        // let i = 0;
-        // $('#add').click( () => {
-        //     ++i;
-        //     $('#table').append(
-        //         `<tr>
-        //             <td>
-        //                 <input class="w-11/12 text-gray-900 text-sm form-control" type="text" name="inputs[`+ i +`][name]" placeholder="Name">
-        //             </td>
-        //             <td>
-        //                 <button type="button" class="btn btn-danger remove-table-row">Remove</button>
-        //             </td>
-        //         </tr>`);
-        // });
-        // console.log("Index: ", ++i)
-        // $(document).on('click', '.remove-table-row', function() {
-        //     $(this).parents('tr').remove();
-        // });
 
         jQuery('#username_loading').hide();
         jQuery("#username_alert").hide();
@@ -497,59 +487,6 @@
             });
         }
 
-        function brandIdChange(e, params) {
-            let url = "";
-            let select = "";
-
-            if (params === 'brand_id') {
-                url = '{{ route('ajax_brand_id') }}?brand_id=' + e.value;
-                select = jQuery('#product_id');
-                jQuery('#product_id').find("option").remove();
-                select.find("option").remove();
-                const newop = new Option("--- กรุณาเลือก ---", "");
-                jQuery(newop).appendTo(jQuery('#product_id'))
-            }
-
-            jQuery.ajax({
-                method: "GET",
-                url,
-                dataType: 'json',
-                beforeSend: function () {
-                    select.find("option").remove();
-                    const newoption = new Option("LOADING..", "");
-                    jQuery(newoption).appendTo(select)
-
-                },
-                success: function (data) {
-                    if (data) {
-                        select.find("option").remove();
-                        const newop = new Option("--- กรุณาเลือก ---", "");
-                        jQuery(newop).appendTo(select)
-                        data.map((item, index) => {
-                            console.log('item', item)
-                            const newoption = new Option(item.product_id, item.seq);
-                            jQuery(newoption).appendTo(select)
-                        });
-                    }
-                },
-                error: function (params) {
-                    select.find("option").remove();
-                    const newop = new Option("error", "");
-                    jQuery(newop).appendTo(select)
-                    console.log('ajax error ::', params);
-                }
-            });
-        }
-
-        function onSelect(seq) {
-            console.log("🚀 ~ funnctiononSelect ~ r:", seq.value);
-            if (seq) {
-                $('#company_products').val(seq.value);
-            } else {
-                $('#company_products').val();
-            }
-        }
-
         toastr.options = {
             "closeButton": true,
             "debug": false,
@@ -567,48 +504,38 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
-
         const dlayMessage = 1000;
 
-        // function createNPDRequest() {
-        //     jQuery.ajaxSetup({
-        //         headers: {
-        //             'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-        //         }
-        //     });
-        //     $.ajax({
-        //         method: "POST",
-        //         url: "/create_new_product_develop",
-        //         data: $("#create_NPDRequest").serialize(),
-        //         beforeSend: function () {
-        //             $('#loader').removeClass('hidden')
-        //         },
-        //         success: function(res){
-        //             if(res.success == true) {
-        //                 window.location = "/new_product_develop";
-        //             } else {
-        //                 toastr.error("Can't Create Product!");
-        //             }
-        //             return false;
-        //         },
-        //         error: function (params) {
-        //             setTimeout(function() {
-        //                 errorMessage("Can't Create Username!");
-        //             },dlayMessage)
-        //             setTimeout(function() {
-        //                 toastr.error("Can't Create Username!");
-        //             },dlayMessage)
-        //         }
-        //     });
-        // }
-
-        // function successMessage(text) {
-        //     $('#loader').addClass('hidden');
-        //     $('#name').val('')
-        // }
-        // function errorMessage(text) {
-        //     $('#loader').addClass('hidden');
-        //     $('#name').val('')
-        // }
+        function updateNPDRequest() {
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                method: "POST",
+                url: "{{ route('new_product_develop.update', $data->BARCODE) }}",
+                data: $("#update_NPDRequest").serialize(),
+                beforeSend: function () {
+                    $('#loader').removeClass('hidden')
+                },
+                success: function(res){
+                    if(res.success == true) {
+                        window.location = "/new_product_develop";
+                    } else {
+                        toastr.error("Can't Update Product!");
+                    }
+                    return false;
+                },
+                error: function (params) {
+                    setTimeout(function() {
+                        errorMessage("Can't Update Username!");
+                    },dlayMessage)
+                    setTimeout(function() {
+                        toastr.error("Can't Update Username!");
+                    },dlayMessage)
+                }
+            });
+        }
     </script>
 @endsection

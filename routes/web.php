@@ -21,44 +21,16 @@ use App\Http\Controllers\BrandController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/post', [AuthController::class, 'index'])->name('post');
-Route::get('/api_bypass_login', [AuthController::class, 'apiByPassLogin'])->name('api_bypass_login');
-
-Route::get('/register', [AuthController::class, 'register']);
-Route::post('/register', [AuthController::class, 'registerPost'])->name('register');
-
-Route::get('/login', [AuthController::class, 'login'])->name('login');
-
-Route::post('/checkLogin', [AuthController::class, 'checkLogin'])->name('checkLogin');
 
 // search_school
 Route::get('/home', [HomeController::class, 'home']);
 Route::get('/search_school', [HomeController::class, 'index'])->name('search_school');
 Route::post('/search_school', [HomeController::class, 'search_school']);
 
-// product
-// Route::get('/product', [ProductController::class, 'index'])->name('product');
-// Route::post('/create_products', [ProductController::class, 'store'])->name('create_products');
-// Route::get('/product_create', [ProductController::class, 'create'])->name('product_create');
-// Route::post('/list_products', [ProductController::class, 'list_products'])->name('list_products');
-// Route::delete('/upate_product_status/{id}', [ProductController::class, 'upate_product_status'])->name('upate_product_status');
-
-// Account
-// Route::get('/account', [ProductFormController::class, 'indexAccount'])->name('account');
-// Route::get('/account_create', [ProductFormController::class, 'createAccount'])->name('account_create');
-// Route::post('/list_ajax_account', [ProductFormController::class, 'listAjaxAccount'])->name('list_ajax_account');
-
-// // npd
-// Route::get('/new_product_develop', [ProductFormController::class, 'index'])->name('new_product_develop');
-// Route::get('/new_product_develop_creat', [ProductFormController::class, 'create'])->name('new_product_develop_creat');
-// Route::post('/create_new_product_develop', [ProductFormController::class, 'store'])->name('create_new_product_develop');
-
 Route::get('/get_users', [ProductController::class, 'get_users'])->name('get_users');
 
 Route::get('/product_detail_create', [ProductController::class, 'productDetailCreate'])->name('product_detail_create');
 Route::get('/checknamebrand', [ProductController::class, 'checkname_brand'])->name('checknamebrand');
-
-// Route::post('/list_npd', [ProductController::class, 'list_npd'])->name('list_npd');
 
 Route::get('/get_brand_list_ajax', [ProductFormController::class, 'getBrandListAjax'])->name('get_brand_list_ajax');
 
@@ -88,6 +60,54 @@ Route::get('/get_receive_pm', [PusherController::class, 'receivePM'])->name('get
 
 Route::get('/getBrandIdListAjax', [BrandController::class, 'getBrandIdListAjax'])->name('ajax_brand_id');
 
+// images
+Route::group(['prefix' => 'images', 'as' => 'images.'], function () {
+    Route::get('', [ProductImageController::class, 'index'])->name('index');
+    Route::post('/images_upload', [ProductImageController::class, 'store'])->name('store');
+});
+
+// By pass login
+Route::get('/api_bypass_login', [AuthController::class, 'apiByPassLogin'])->name('api_bypass_login');
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/logout', [AuthController::class, 'apiByPassLogout'])->name('logout');
+
+    // npd
+    Route::group(['prefix' => 'new_product_develop', 'as' => 'new_product_develop.'], function () {
+        Route::get('', [ProductFormController::class, 'index'])->name('index');
+        Route::post('/list_npd', [ProductFormController::class, 'list_npd'])->name('list_npd');
+        Route::post('/', [ProductFormController::class, 'store'])->name('store');
+        Route::get('/create', [ProductFormController::class, 'create'])->name('create');
+        Route::get('/show/{id_barcode}', [ProductFormController::class, 'show'])->name('show');
+        Route::get('/edit/{id_barcode}', [ProductFormController::class, 'edit'])->name('edit');
+        Route::post('/update/{id_barcode}', [ProductFormController::class, 'update'])->name('update');
+    });
+    
+    // Account
+    Route::group(['prefix' => 'account', 'as' => 'account.'], function () {
+        Route::get('', [ProductFormController::class, 'indexAccount'])->name('index');
+        Route::post('/list_ajax_account', [ProductFormController::class, 'listAjaxAccount'])->name('list_ajax_account');
+        Route::get('/create', [ProductFormController::class, 'createAccount'])->name('create');
+        Route::get('/edit/{id}', [ProductFormController::class, 'createAccount'])->name('edit');
+    });
+    
+    // product
+    Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
+        Route::get('', [ProductController::class, 'index'])->name('index');
+        Route::post('/list_products', [ProductController::class, 'list_products'])->name('list_products');
+        Route::post('/', [ProductController::class, 'store'])->name('store');
+        Route::get('/create', [ProductController::class, 'create'])->name('create');
+        Route::delete('/update/{id}', [ProductController::class, 'upate_product_status'])->name('update');
+    });
+});
+
+// Login
+Route::get('/register', [AuthController::class, 'register']);
+Route::post('/register', [AuthController::class, 'registerPost'])->name('register');
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/checkLogin', [AuthController::class, 'checkLogin'])->name('checkLogin');
+Route::get('/post', [AuthController::class, 'index'])->name('post');
+
 // Language
 Route::get('/greeting/{locale}', function ($locale) {
     if (! in_array($locale, ['en', 'th'])) {
@@ -101,44 +121,6 @@ Route::get('/greeting/{locale}', function ($locale) {
         'status' => 200
     ]);
 })->name('setLocale');
-
-// //Managemenu
-// Route::group(['prefix' => 'manage_menu', 'as' => 'manage_menu.'], function () {
-//     Route::get('', [ManageMenuController::class, 'manage_menu_index'])->name('index');
-// });
-
-// images
-Route::group(['prefix' => 'images', 'as' => 'images.'], function () {
-    Route::get('', [ProductImageController::class, 'index'])->name('index');
-    Route::post('/images_upload', [ProductImageController::class, 'store'])->name('store');
-});
-
-// npd
-Route::group(['prefix' => 'new_product_develop', 'as' => 'new_product_develop.'], function () {
-    Route::get('', [ProductFormController::class, 'index'])->name('index');
-    Route::post('/list_npd', [ProductFormController::class, 'list_npd'])->name('list_npd');
-    Route::post('/', [ProductFormController::class, 'store'])->name('store');
-    Route::get('/create', [ProductFormController::class, 'create'])->name('create');
-    Route::get('/edit/{id_barcode}', [ProductFormController::class, 'edit'])->name('edit');
-    Route::get('/show/{id_barcode}', [ProductFormController::class, 'show'])->name('show');
-});
-
-// Account
-Route::group(['prefix' => 'account', 'as' => 'account.'], function () {
-    Route::get('', [ProductFormController::class, 'indexAccount'])->name('index');
-    Route::post('/list_ajax_account', [ProductFormController::class, 'listAjaxAccount'])->name('list_ajax_account');
-    Route::get('/create', [ProductFormController::class, 'createAccount'])->name('create');
-    Route::get('/edit/{id}', [ProductFormController::class, 'createAccount'])->name('edit');
-});
-
-// product
-Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
-    Route::get('', [ProductController::class, 'index'])->name('index');
-    Route::post('/list_products', [ProductController::class, 'list_products'])->name('list_products');
-    Route::post('/', [ProductController::class, 'store'])->name('store');
-    Route::get('/create', [ProductController::class, 'create'])->name('create');
-    Route::delete('/update/{id}', [ProductController::class, 'upate_product_status'])->name('update');
-});
 
 Route::get('/', function () {
     return view('welcome');

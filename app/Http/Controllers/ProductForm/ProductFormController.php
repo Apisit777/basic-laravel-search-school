@@ -187,6 +187,7 @@ class ProductFormController extends Controller
         if (in_array($userpermission, [$isSuperAdmin])) {
             $brands = Barcode::select(
                 'BRAND')
+            ->whereNotIn('STATUS', ['ALL'])
             ->pluck('BRAND')
             ->toArray();
         } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
@@ -347,20 +348,87 @@ class ProductFormController extends Controller
         $data = Pro_develops::select(
             'pro_develops.*',
             DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
-            )
+            'npd_cos.ID AS ID_NPD',
+            'npd_pdms.ID AS ID_PDM',
+            'npd_categorys.ID AS ID_CATEGORY',
+            'npd_textures.ID AS ID_TEXTURE',
+        )
+            ->join('npd_cos', 'pro_develops.NPD', '=', 'npd_cos.ID')
+            ->join('npd_pdms', 'pro_develops.PDM', '=', 'npd_pdms.ID')
+            ->join('npd_categorys', 'pro_develops.CATEGORY', '=', 'npd_categorys.ID')
+            ->join('npd_textures', 'pro_develops.TEXTURE', '=', 'npd_textures.ID')
             ->firstWhere('BARCODE', '=', $id_barcode);
 
-        // dd($data);
+        // dd($data->BRAND);
+        $product_co_ordimators = Npd_cos::select('ID AS ID_NPD', 'DESCRIPTION')->get();
+        $marketing_managers = Npd_pdms::select('ID AS ID_PDM', 'DESCRIPTION')->get();
+        $type_categorys = Npd_categorys::select('ID AS ID_CATEGORY', 'DESCRIPTION')->get();
+        $textures = Npd_textures::select('ID AS ID_TEXTURE', 'DESCRIPTION')->get();
 
-        return view('new_product_develop.edit', compact('data'));
+        return view('new_product_develop.edit', compact('data', 'product_co_ordimators', 'marketing_managers', 'type_categorys', 'textures'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id_barcode)
     {
-        //
+        // dd($request);
+        DB::beginTransaction();
+        try {
+            $data_product = [
+                'BRAND' => $request->input('BRAND'),
+                'DOC_NO' => $request->input('DOC_NO'),
+                'REF_DOC' => 'IBH-F155',
+                'BARCODE' => $request->input('BARCODE'),
+                'JOB_REFNO' => $request->input('JOB_REFNO'),
+                'DOC_DT' => $request->input('DOC_DT'),
+                'CUST_OEM' => $request->input('CUST_OEM'),
+                'NPD' => $request->input('NPD'),
+                'PDM' => $request->input('PDM'),
+                'NAME_ENG' => $request->input('NAME_ENG'),
+                'CATEGORY' => $request->input('CATEGORY'),
+                'CAPACITY' => $request->input('CAPACITY'),
+                'Q_SMELL' => $request->input('Q_SMELL'),
+                'Q_COLOR' => $request->input('Q_COLOR'),
+                'TARGET_GRP' => $request->input('TARGET_GRP'),
+                'TARGET_STK' => $request->input('TARGET_STK'),
+                'PRICE_FG' => $request->input('PRICE_FG'),
+                'PRICE_COST' => $request->input('PRICE_COST'),
+                'PRICE_BULK' => $request->input('PRICE_BULK'),
+                'FIRST_ORD' => $request->input('FIRST_ORD'),
+                'P_CONCEPT' => $request->input('P_CONCEPT'),
+                'P_BENEFIT' => $request->input('P_BENEFIT'),
+                'TEXTURE' => $request->input('TEXTURE'),
+                'TEXTURE_OT' => $request->input('TEXTURE_OT'),
+                'COLOR1' => $request->input('COLOR1'),
+                'FRANGRANCE' => $request->input('FRANGRANCE'),
+                'INGREDIENT' => $request->input('INGREDIENT'),
+                'STD' => $request->input('STD'),
+                'PK' => $request->input('PK'),
+                'OTHER' => $request->input('OTHER'),
+                'DOCUMENT' => $request->input('DOCUMENT'),
+                'OEM' => is_null($request->input('OEM')) ? 'N' : 'Y',
+                'REASON1' => is_null($request->input('REASON1')) ? 'N' : 'Y',
+                'REASON2' => is_null($request->input('REASON2')) ? 'N' : 'Y',
+                'REASON2_DES' => $request->input('REASON2_DES'),
+                'REASON3' => is_null($request->input('REASON3')) ? 'N' : 'Y',
+                'REASON3_DES' => $request->input('REASON3_DES'),
+                'PACKAGE_BOX' => $request->input('PACKAGE_BOX'),
+                'REF_COLOR' => $request->input('REF_COLOR'),
+                'REF_FRAGRANCE' => $request->input('REF_FRAGRANCE'),
+                'OEM_STD' => $request->input('OEM_STD'),
+            ];
+
+            $product = Pro_develops::where('BARCODE', $id_barcode)->update($data_product);
+            DB::commit();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
     }
 
     /**

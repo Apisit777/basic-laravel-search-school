@@ -20,8 +20,8 @@
 <div class="chat">
 
   <!-- Header -->
-  <div class="top">
-    <img src="https://assets.edlin.app/images/rossedlin/03/rossedlin-03-100.jpg" alt="Avatar">
+  <div id="top" class="top">
+    <!-- <img src="https://assets.edlin.app/images/rossedlin/03/rossedlin-03-100.jpg" alt="Avatar"> -->
     <div>
       <p>Ross Edlin</p>
       <small>Online</small>
@@ -85,5 +85,11 @@
         });
     });
 
+    let dataLogin = sessionStorage.getItem("credetail");
+    let dataJson = JSON.parse(dataLogin)
+    console.log("🚀 ~ dataJson:", dataJson)
+    $('#top').append(
+        `<img class="w-8 h-8 rounded" src="${dataJson.data.photo}">`
+    );
 </script>
 </html>
