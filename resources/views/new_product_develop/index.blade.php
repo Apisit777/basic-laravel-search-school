@@ -30,7 +30,7 @@
         .select2 {
             width: 100%!important; /* force fluid responsive */
         }
-        .rotate:hover{
+        .btn-rotate:hover .rotate{
             transform: rotate(180deg);
             transition: 0.5s all;
         }
@@ -56,7 +56,7 @@
                         <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                             <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
                         </svg> -->
-                        <svg fill="currentColor" class="size-8" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                        <svg fill="currentColor" class="size-8" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                             viewBox="0 0 496 496" xml:space="preserve">
                             <g>
                                 <g>
@@ -156,7 +156,7 @@
                                 <!-- <button id="btnClearSerarch" style="margin-left:auto;" type="reset" class="btn btn-warning btn-sm btn-qrcode clear">
                                     ล้างข้อมูล
                                 </button> -->
-                                <button  id="" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group cursor-pointer" type="reset">
+                                <button  id="" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group cursor-pointer btn-rotate" type="reset">
                                     <svg class="hidden h-7 w-7 md:inline-block rotate"
                                         viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
                                         <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 93,62 C 83,82 65,96 48,96 32,96 19,89 15,79 L 5,90 5,53 40,53 29,63 c 0,0 5,14 26,14 16,0 38,-15 38,-15 z"/>
@@ -363,7 +363,7 @@
                                         Edit
                                     </a>
                                     <a href="{{route('new_product_develop.show',0)}}" type="button" class="bclose">
-                                        <svg class="size-7 cursor-pointer" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                        <svg class="size-7 cursor-pointer" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                             viewBox="0 0 309.267 309.267" xml:space="preserve">
                                             <g>
                                                 <path style="fill:#E2574C;" d="M38.658,0h164.23l87.049,86.711v203.227c0,10.679-8.659,19.329-19.329,19.329H38.658

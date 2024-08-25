@@ -42,7 +42,7 @@
             /* ... the rest of the rules ... */
         }
 
-        
+
 
         @media print {
 
@@ -70,6 +70,9 @@
     .wrapper > div {
         border: 2px solid #000;
     }
+    .wrapper2 > div {
+        border: 1px solid #000;
+    }
     .wrapper .one {
         grid-column: 1/3;
     }
@@ -88,6 +91,16 @@
         border-right: none;
     }
 
+    /* .wrapper .eight {
+        grid-column: 1/2;
+    } */
+
+    .wrapper .eight {
+        grid-column: 1/4;
+        /* border-top: none; */
+        border-left: none;
+        border-right: none;
+    }
     p {
         /* width: 500px; */
         /* line-height: 1.3; */
@@ -97,7 +110,7 @@
     }
 
     img {
-        width: 70px;
+        width: 65px;
         /* mix-blend-mode: multiply; */
     }
     </style>
@@ -119,7 +132,7 @@
                                 <path fill-rule="evenodd" d="M9.53 2.47a.75.75 0 0 1 0 1.06L4.81 8.25H15a6.75 6.75 0 0 1 0 13.5h-3a.75.75 0 0 1 0-1.5h3a5.25 5.25 0 1 0 0-10.5H4.81l4.72 4.72a.75.75 0 1 1-1.06 1.06l-6-6a.75.75 0 0 1 0-1.06l6-6a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
                             </svg> -->
 
-                            <svg fill="#fff" class="-mt-1 size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                            <svg fill="#fff" class="-mt-1 size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 viewBox="0 0 26.676 26.676" xml:space="preserve">
                                 <g>
                                     <path d="M26.105,21.891c-0.229,0-0.439-0.131-0.529-0.346l0,0c-0.066-0.156-1.716-3.857-7.885-4.59
@@ -177,16 +190,17 @@
                 <!-- <div class="justify-items-start mt-1 mb-3">
                     <span class="m-1 text-xl font-semibold text-black" style="font-size: 20px;">New Product Development Project Brief</span>
                 </div> -->
-                
+
                 <div class="flex justify-between ...">
                     <span class="m-1 text-xl font-semibold text-black" style="font-size: 20px;">New Product Development Project Brief</span>
                     <!-- <div>02</div> -->
                     <!-- <div>03</div> -->
-                    <div style="margin-top: 10px; margin-right: 85px; margin-left: 50px;">
-                        <img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQaOvxEZSnjYjoYtsSJUJMgaPq3WPTVvkqUywlyynplww2bv6A0" style="">
+                    <div style="margin-top: 0px; margin-right: 85px; margin-left: 50px;">
+                        <img src="{{URL::asset('media/ibhs_img.png')}}">
+                        {{-- <img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQaOvxEZSnjYjoYtsSJUJMgaPq3WPTVvkqUywlyynplww2bv6A0" style=""> --}}
                     </div>
                     </div>
-                <div class="row m-1 text-black mb-10 -mt-10 z-auto" style="">
+                <div class="row m-1 text-black" style="">
                     <div class="col d-flex flex-row-reverse 2" style="margin-right: -80px;">
                         <div>
                             <div class="row font-semibold" style="width: 380px;">
@@ -212,7 +226,7 @@
                     </div>
                     <div class="col d-flex flex-row-reverse 2" style="width: 89px; margin-right: -50px;">
                         <div>
-                            <div class="row" style="width: 264px; margin-top: 20px;">
+                            <div class="row" style="width: 264px; margin-top: 12px;">
                                 <div style="width: 95px;">
                                     <span style="font-size: 14px;">
                                         Declared Date :
@@ -228,7 +242,7 @@
                     </div>
                     <div class="" style="width: 64px; margin-right: 170px;">
                         <div>
-                            <div class="row text-start" style="width: 300px; margin-top: 22px;">
+                            <div class="row text-start" style="width: 300px; margin-top: 10px;">
                                 <div style="width: 250px;">
                                     <span style="font-size: 12px;">
                                         Institute of Beauty and Health Sciences Co.,Ltd.
@@ -259,7 +273,7 @@
                     </tbody>
                 </table> --}}
 
-                <div class="wrapper mt-3" style="position: relative;">
+                <div class="wrapper mt-2" style="position: relative;">
                     <div class="one" style="border-left: none; border-right: none;">
                         <div class="text-xs" style="position:absolute">BRAND</div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">OP</div>
@@ -289,11 +303,81 @@
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">No</div>
                     </div>
                 </div>
+
                 <div style="position: relative;">
                     <div class="">
                         <div class="text-xs" style="position:absolute">PRODUCT CONCEPT</div>
+                        <div style="position: absolute; top: 7px; line-height: 39.5px; text-indent: 120px">
+                            2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก
+                        </div>
+                        <div class="" style="border-bottom: 1px solid #000; height:40px;">
+                        </div>
+                        <div class="" style="border-bottom: 1px solid #000; height:40px">
+
+                        </div>
+                        <div class="" style="border-bottom: 1px solid #000; height:40px">
+
+                        </div>
+                        <div class="" style="border-bottom: 1px solid #000; height:40px">
+
+                        </div>
+                        <div class="" style="border-bottom: 1px solid #000; height:40px">
+
+                        </div>
+                        <div class="" style="border-bottom: 1px solid #000; height:40px">
+
+                        </div>
+                        <div class="text-xs" style=""></div>
+                    </div>
+                    <ul class="mt-8 font-medium border-t border-2 border-black"></ul>
+                </div>
+
+                <div style="position: relative;">
+                    <div class="">
+                        <div class="text-xs" style="position:absolute">PRODUCT CONCEPT</div>
+                        <div style="position: absolute; top: 7px; line-height: 39.5px; text-indent: 120px">
+                            2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก
+                        </div>
+                        <div class="" style="border-bottom: 1px solid #000; height:40px;">
+                        </div>
+                        <div class="" style="border-bottom: 1px solid #000; height:40px">
+
+                        </div>
+                        <div class="" style="border-bottom: 1px solid #000; height:40px">
+
+                        </div>
+                        <div class="" style="border-bottom: 1px solid #000; height:40px">
+
+                        </div>
+                        <div class="" style="border-bottom: 1px solid #000; height:40px">
+
+                        </div>
+                        <div class="" style="border-bottom: 1px solid #000; height:40px">
+
+                        </div>
+                        <div class="" style="border-bottom: 1px solid #000; height:40px">
+
+                        </div>
+                        <div class="text-md font-semibold" style="position:absolute">Formulation Requirements</div>
+                    </div>
+                </div>
+
+                <div class="wrapper mt-10" style="position: relative;">
+                    <div class="eight" style="border-right: none;">
+                        <div class="text-xs" style="position:absolute">PROJECT NAME</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">Beneficial Lipstick - KISS FROM A ROSE SHEENY TINT&GLOSS</div>
+                    </div>
+                    <div class="" style="border-right: none; grid-column: 4/6;">
+                        <div class="text-xs" style="position:absolute">TARGET GROUP</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">18-35</div>
+                    </div>
+                </div>
+
+                {{-- <div style="position: relative;">
+                    <div class="">
+                        <div class="text-xs" style="position:absolute">PRODUCT CONCEPT</div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; top: 5px;">
-                            <p class="font-normal"> 
+                            <p class="font-normal">
                                 2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก
                             </p>
                         </div>
@@ -304,7 +388,7 @@
                     <div class="">
                         <div class="text-xs" style="position:absolute">PRODUCT BENEFIT</div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; top: 5px;">
-                            <p class="font-normal"> 
+                            <p class="font-normal">
                                 สีทาปากสูตรน้ําที่ให้การติดทน พร้อมลิปกลอสที่ช่วยเพิ่มความชุ่มชื้นให้ริมฝีปาก อวบอิ่มเป็นประกายแวววาว พร้อมลิปกลอสที่ช่วยเพิ่มความชุ่มชื้นให้ริมฝีปาก อวบอิ่มเป็นประกายแวววาว พร้อมลิปกลอสที่ช่วยเพิ่มความชุ่มชื้นให้ริมฝีปาก อวบอิ่มเป็นประกายแวววาว พร้อมลิปกลอสที่ช่วยเพิ่มความชุ่มชื้นให้ริมฝีปาก อวบอิ่มเป็นประกายแวววาว
                             </p>
                         </div>
@@ -315,13 +399,20 @@
                         <div class="text-md font-semibold" style="position:absolute">Formulation Requirements</div>
                         <div class="" style="display:flex; justify-content:center; align-items: center;">-</div>
                     </div>
+                </div> --}}
+                <ul class="mt-10 font-medium border-t border-2 border-black"></ul>
+
+                <div class="divide-y-2 divide-dashed">
+                    <p>หมายเหตุ : </p>
+                    <div></div>
                 </div>
-                <ul class="-mt-1 font-medium border-t border-2 border-black"></ul>
+
             </div>
         </div>
         <!-- <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700 no-print"></ul> -->
     </div>
 
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>

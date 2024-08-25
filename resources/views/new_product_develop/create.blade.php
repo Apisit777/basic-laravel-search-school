@@ -42,12 +42,9 @@
                                 <option value=""> --- กรุณาเลือก ---</option>
                             </select>
                         </div> -->
-                        <!-- @if (Auth::user()->getUserPermission->name_position == "Superadmin" || Auth::user()->getUserPermission->name_position == "Superadmin")
-
-                        @endif -->
                         <div class="md:col-span-3">
-                            <label for="NUMBER">Brand</label>
-                            <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="brand_id" onchange="brandIdChange(this, 'BRAND')">
+                            <label for="BRAND">Brand</label>
+                            <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND" onchange="brandIdChange(this, 'BRAND')">
                                 <option value=""> --- กรุณาเลือก ---</option>
                                 @foreach ($brands as $key => $brand)
                                     <option value={{ $brand }}>{{ $brand }}</option>
@@ -562,7 +559,7 @@
                         <div class="md:col-span-6 text-right mt-4">
                             <div class="inline-flex items-end">
                                 <a href="{{ route('new_product_develop.index') }}" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-4 mr-2 rounded group">
-                                    <svg fill="#fff" class="-mt-1 size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                    <svg fill="#fff" class="-mt-1 size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                         viewBox="0 0 26.676 26.676" xml:space="preserve">
                                         <g>
                                             <path d="M26.105,21.891c-0.229,0-0.439-0.131-0.529-0.346l0,0c-0.066-0.156-1.716-3.857-7.885-4.59
@@ -746,7 +743,7 @@
             $('#REF_COLOR').val('');
             $('#REF_FRAGRANCE').val('');
             $('#OEM_STD').val('');
-            
+
             if (params === 'BRAND') {
                 url = '{{ route('get_brand_list_ajax') }}?BRAND=' + e.value;
                 select = jQuery('#NUMBER');
@@ -821,7 +818,7 @@
                 $('#REF_COLOR').val(curData.REF_COLOR);
                 $('#REF_FRAGRANCE').val(curData.REF_FRAGRANCE);
                 $('#OEM_STD').val(curData.OEM_STD);
-            } 
+            }
             // else {
             //     console.log('2')
             //     $('#NAME_ENG').val();

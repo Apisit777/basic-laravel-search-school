@@ -62,7 +62,7 @@ class ProductFormController extends Controller
         // $Permissions = new STDClass();
         // $Permissions->create = Auth::user()->hasPermission('create');
         // dd($postComment);
-        
+
         return view('new_product_develop.index', compact('user', 'product_seq', 'productCodeArr'));
     }
 
@@ -89,7 +89,7 @@ class ProductFormController extends Controller
         return $digits . $check_digit;
     }
 
-    public function indexAccount() 
+    public function indexAccount()
     {
         $data = Pro_develops::select(
             'BRAND',
@@ -120,7 +120,7 @@ class ProductFormController extends Controller
         // dd($productCode);
         return view('account.edit');
     }
-    public function listAjaxAccount(Request $request) 
+    public function listAjaxAccount(Request $request)
     {
         $limit = $request->input('length'); // limit per page
         $request->merge([
@@ -168,6 +168,9 @@ class ProductFormController extends Controller
         // $productOPCodeMax = Barcode::whereIn('BRAND', ['OP', 'OTHER', 'RI', 'BD', 'CPS', 'HOUSE HOLD', 'MM', 'OT', 'SPICES', 'VN'])->pluck('BRAND')->toArray();
 
         // dd($productOPCodeMax);
+
+        // $brandArr = Document::select('DOC_TP')->pluck('DOC_TP')->toArray();
+        // dd($brandArr);
 
         $digits_barcode = $this->ean13_check_digit();
         $productCodeMax = Document::max('NUMBER');
@@ -232,23 +235,30 @@ class ProductFormController extends Controller
         // dd($request);
         DB::beginTransaction();
         try {
-            if($request->DOC_TP == "OP") {
-                $productCodeMax = Document::max('NUMBER');
-                $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
-                $productCode = $productCodeNumber;
+            $documentBrandArr = Document::select('DOC_TP')->pluck('DOC_TP')->toArray();
+            dd($documentBrandArr);
+            if($request->BRAND) {
+                if (in_array($documentBrandArr, ['OP', 'RI'])) {
+                    $productCodeMax = Document::where('DOC_TP', '=', $documentBrandArr)->max('NUMBER');
+                    $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
+                    $productCode = $productCodeNumber;
 
-                $data_DOC_TP = Document::updateOrCreate(['DOC_TP' => $request->DOC_TP], [
-                    'NUMBER' => $productCode
-                ]);
+                    $data_DOC_TP = Document::updateOrCreate(['DOC_TP' => $documentBrandArr], [
+                        'NUMBER' => $productCode
+                    ]);
+                }
             }
-            if($request->BRAND == "OP") {
-                $productOPCodeMax = Barcode::where('BRAND', '=', 'OP')->max('NUMBER');
-                $productCodeNumber =  preg_replace('/[^0-9]/', '', $productOPCodeMax) + 1;
-                $productCode = $productCodeNumber;
+            $barcodeBrandArr = Barcode::select('BRAND')->pluck('BRAND')->toArray();
+            if($request->BRAND) {
+                if (in_array($barcodeBrandArr, ['OP', 'RI'])) {
+                    $productOPCodeMax = Barcode::where('BRAND', '=', $barcodeBrandArr)->max('NUMBER');
+                    $productCodeNumber =  preg_replace('/[^0-9]/', '', $productOPCodeMax) + 1;
+                    $productCode = $productCodeNumber;
 
-                $data_BRAND = Barcode::updateOrCreate(['BRAND' => $request->BRAND], [
-                    'NUMBER' => $productCode
-                ]);
+                    $data_BRAND = Barcode::updateOrCreate(['BRAND' => $barcodeBrandArr], [
+                        'NUMBER' => $productCode
+                    ]);
+                }
             }
 
             $digits_barcode = $this->ean13_check_digit();
@@ -460,7 +470,7 @@ class ProductFormController extends Controller
         $field_detail = [
             'pro_develops.DOC_NO',
             'pro_develops.NAME_ENG',
-            'pro_develops.BARCODE', 
+            'pro_develops.BARCODE',
         ];
         $data = Pro_develops::select(
                 'BRAND',

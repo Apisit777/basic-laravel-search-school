@@ -237,7 +237,7 @@
                                             <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                                 <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
                                             </svg> -->
-                                            <svg fill="currentColor" class="h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                            <svg fill="currentColor" class="h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                                     viewBox="0 0 473.599 473.6"
                                                     xml:space="preserve">
                                                 <g>
@@ -542,7 +542,7 @@
         }
         const dlayMessage = 500;
         let menusAuthPosition = <?php echo json_encode($menusAuthPosition); ?>;
-        console.log("🚀 ~ menusAuthPosition:", menusAuthPosition)
+        // console.log("🚀 ~ menusAuthPosition:", menusAuthPosition)
         function modelManageMenu(id, menu_name, submenus_name) {
             // console.log("🚀 ~ modelManageMenu ~ submenus_name:", submenus_name.submenus)
             jQuery(".table_submenu").remove('')
@@ -795,7 +795,7 @@
         }
 
         function ajaxGetMenuAccess(pos_id) {
-            console.log("🚀 ~ ajaxGetMenuAccess ~ pos_id:", pos_id)
+            // console.log("🚀 ~ ajaxGetMenuAccess ~ pos_id:", pos_id)
             $.ajax({
                 url: "{{ route('menu_access') }}?pos_id=" + pos_id,
                 type: "GET",
@@ -815,8 +815,8 @@
                     if(true) {
                         menuAll.forEach(menu => {
                             const currentMenu = result[menu.id]
-                            console.log("🚀 ~ ajaxGetMenuAccess ~ currentMenu:", currentMenu)
-                            console.log("🚀 ~ ajaxGetMenuAccess ~ menu:", menu)
+                            // console.log("🚀 ~ ajaxGetMenuAccess ~ currentMenu:", currentMenu)
+                            // console.log("🚀 ~ ajaxGetMenuAccess ~ menu:", menu)
                             if(currentMenu != undefined){
                                 const menu_id = menu.id
                                 currentMenu.forEach(fmenu => {
