@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 20, 2024 at 12:14 PM
+-- Generation Time: Aug 30, 2024 at 12:48 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -29,14 +29,15 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `accounts` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `account1` double(8,2) DEFAULT NULL COMMENT 'บัญชี1',
-  `account2` double(8,2) DEFAULT NULL COMMENT 'บัญชี2',
-  `account3` double(8,2) DEFAULT NULL COMMENT 'บัญชี3',
-  `account4` double(8,2) DEFAULT NULL COMMENT 'บัญชี4',
-  `account5` double(8,2) DEFAULT NULL COMMENT 'บัญชี5',
-  `account6` double(8,2) DEFAULT NULL COMMENT 'บัญชี6',
-  `account7` double(8,2) DEFAULT NULL COMMENT 'บัญชี7',
-  `account8` double(8,2) DEFAULT NULL COMMENT 'บัญชี8',
+  `cost` double(8,2) DEFAULT NULL COMMENT 'ต้นทุน',
+  `perfume_tax` double(8,2) DEFAULT NULL COMMENT 'ภาษีน้ำหอม',
+  `cost_perfume_tax` double(8,2) DEFAULT NULL COMMENT 'ต้นทุน + ภาษีน้ำหอม',
+  `cost5percent` double(8,2) DEFAULT NULL COMMENT 'ต้นทุน+5%',
+  `cost10percent` double(8,2) DEFAULT NULL COMMENT 'ต้นทุน+10%',
+  `cost_other` double(8,2) DEFAULT NULL COMMENT ' ต้นทุน+อื่นๆ',
+  `sale_km` double(8,2) DEFAULT NULL COMMENT 'ราคาขาย KM',
+  `sale_km20percent` double(8,2) DEFAULT NULL COMMENT 'ราคาขาย KM + 20%',
+  `sale_km_other` double(8,2) DEFAULT NULL COMMENT 'ราคาขาย KM+อื่นๆ',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -45,8 +46,27 @@ CREATE TABLE `accounts` (
 -- Dumping data for table `accounts`
 --
 
-INSERT INTO `accounts` (`id`, `account1`, `account2`, `account3`, `account4`, `account5`, `account6`, `account7`, `account8`, `created_at`, `updated_at`) VALUES
-(1, 10.00, 10.00, 10.00, 10.00, 10.00, 10.00, 10.00, 10.00, '2024-08-15 06:48:19', '2024-08-15 06:48:19');
+INSERT INTO `accounts` (`id`, `cost`, `perfume_tax`, `cost_perfume_tax`, `cost5percent`, `cost10percent`, `cost_other`, `sale_km`, `sale_km20percent`, `sale_km_other`, `created_at`, `updated_at`) VALUES
+(1, 100.00, 100.00, 100.00, 100.00, 100.00, 100.00, 100.00, 100.00, 100.00, '2024-08-26 07:35:17', '2024-08-26 07:35:17');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `acctypes`
+--
+
+CREATE TABLE `acctypes` (
+  `ID` varchar(10) NOT NULL DEFAULT '',
+  `DESCRIPTION` varchar(50) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `acctypes`
+--
+
+INSERT INTO `acctypes` (`ID`, `DESCRIPTION`) VALUES
+('80004', 'น้ำหอม'),
+('90000', 'อื่นๆ');
 
 -- --------------------------------------------------------
 
@@ -68,9 +88,9 @@ CREATE TABLE `barcodes` (
 --
 
 INSERT INTO `barcodes` (`ID`, `BRAND`, `B_CODE`, `NUMBER`, `REMARK`, `STATUS`) VALUES
-(1, 'OP', '88500802', 12, '8279', 'OP'),
-(2, 'OTHER', '', 1, 'ไม่ต้องมี Barcode', 'ALL'),
-(3, 'RI', '88500802', 1, 'Brand Ri En', 'OP'),
+(1, 'OP', '88500802', 2, '8279', 'OP'),
+(2, 'OTHER', '', 0, 'ไม่ต้องมี Barcode', 'ALL'),
+(3, 'RI', '88500802', 3, 'Brand Ri En', 'OP'),
 (4, 'BD', '88500803', 1, '0', 'CP'),
 (5, 'CPS', '88500807', 1, '0', 'CP'),
 (6, 'HOUSE HOLD', '88500808', 1, '0', 'CP'),
@@ -106,6 +126,175 @@ INSERT INTO `brands` (`id`, `company_name`, `status`, `created_by`, `updated_by`
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `brand_ps`
+--
+
+CREATE TABLE `brand_ps` (
+  `ID` varchar(10) NOT NULL DEFAULT '',
+  `REMARK` varchar(50) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `categories`
+--
+
+CREATE TABLE `categories` (
+  `ID` varchar(10) NOT NULL DEFAULT '',
+  `DESCRIPTION` varchar(50) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`ID`, `DESCRIPTION`) VALUES
+('80001', 'EQUIPMENT KM'),
+('80002', 'ACCESSORY KM'),
+('99999', 'NOT DEFINE'),
+('AM', 'Ambient Mist, Ambient Spray'),
+('BC', 'Body Cream'),
+('BD', 'Brow Designer Eyebrow'),
+('BF', 'Brush Foot'),
+('BG', 'Bag'),
+('BL', 'Body Lotion,Body Moisturiser'),
+('BM', 'Body Mist,Body Spray,Body Colonge'),
+('BO', 'Blush On'),
+('BS', 'Body Serum'),
+('BX', 'Box'),
+('CA', 'Case'),
+('CC', 'Body Colonge Cream'),
+('CF', 'Cleansing Foam/ Clenser'),
+('CG', 'Cleansing Gel'),
+('CM', 'Charm'),
+('CM.PM', 'Premium'),
+('CN', 'Conditioner'),
+('CP', 'CAP'),
+('CR', 'Moisturiser Cream / Cream'),
+('CS', 'Capsule'),
+('DC', 'Day Cream / Day Moisturiser'),
+('DE', 'Deodorant'),
+('DF', 'Diffuser'),
+('DL', 'DAY Lotion'),
+('DO', 'Deo Spray'),
+('DS', 'Day Serum'),
+('DT', 'Detox'),
+('EC', 'Eye Cream / Eye Moisturiser'),
+('EF', 'Eau de Perfume'),
+('EG', 'Eye Gel'),
+('EN', 'Essence'),
+('EO', 'Essential Oil'),
+('ET', 'Eau de Toilette'),
+('EX', 'Exfoliating'),
+('EY', 'Eyelash Curler'),
+('FC', 'Foot Cream'),
+('FE', 'Feminime Hygiene'),
+('FS', 'Foot Spray'),
+('GE', 'Gel Vitamin (บำรุง)'),
+('GH', 'Hand Gel'),
+('HA', 'Alcohol Spray'),
+('HC', 'Hand Cream'),
+('HD', 'Hair Shadow'),
+('HG', 'Styling Gel'),
+('HK', 'Hair Mask'),
+('HM', 'Hair Mist,Hair Spray,Hair Colonge'),
+('HP', 'Hair Spray'),
+('HR', 'Hand Serum'),
+('HS', 'Hair Serum'),
+('HT', 'Hair Tonic'),
+('HW', 'Hand Wash,Hand Foam'),
+('KC', 'Knee Cream'),
+('KTY', 'Katanyu'),
+('LB', 'Lip Balm'),
+('LC', 'Cheek & Lips'),
+('LG', 'Lingerie Mist'),
+('LM', 'Linen Mist,Linen Spray'),
+('LR', 'Lip Sheer'),
+('LS', 'Lipstick'),
+('LT', 'Lip Treatment'),
+('MA', 'Massage Gel'),
+('MB', 'Makeup Brush'),
+('MG', 'Mask Gel'),
+('MI', 'Mirror'),
+('MK', 'Mask Cream'),
+('ML', 'Massage Lotion'),
+('MM', 'Massage Cream'),
+('MN', 'Maincure'),
+('MO', 'Massage Oil'),
+('MX', 'Set'),
+('NB', 'Nail Balm'),
+('NC', 'Night Cream/ Night Moisturiser'),
+('NL', 'Night Lotion'),
+('NS', 'Night Serum'),
+('NT', 'Nail Sticker'),
+('OC.BA', 'Base'),
+('OC.BM', 'Body Makeup'),
+('OC.BO', 'Blush On'),
+('OC.CE', 'CC Cream'),
+('OC.CH', 'Cheek'),
+('OC.CL', 'Concealer'),
+('OC.CM', 'Cleansing Milk '),
+('OC.CO', 'Cleansing Oil'),
+('OC.CW', 'Cleansing Water'),
+('OC.EB', 'Eyebrow'),
+('OC.EE', 'Eyebrow  & Eyeliner'),
+('OC.EL', 'Eyeliner'),
+('OC.EM', 'Eyebrow & Mascara'),
+('OC.EP', 'Eye Primer'),
+('OC.ES', 'Eye Shadow'),
+('OC.EY', 'Eyes'),
+('OC.FO', 'Foundation'),
+('OC.HL', 'Highlight & Contour'),
+('OC.LC', 'Cheek & Lip'),
+('OC.LD', 'Liquid Lip'),
+('OC.LI', 'Lip Gloss'),
+('OC.LL', 'Lip Liner'),
+('OC.LO', 'Loose Pwder'),
+('OC.LP', 'Lip Primer '),
+('OC.LR', 'Lip Sheer'),
+('OC.LS', 'Lip'),
+('OC.MC', 'Mascara'),
+('OC.MF', 'Make Off'),
+('OC.MT', 'Make Up Tools'),
+('OC.PM', 'Premium'),
+('OC.PO', 'Powder'),
+('OC.TL', 'Tint Lip'),
+('OS', 'Oil Control Sheet'),
+('OT', 'Other'),
+('PD', 'Talc,Powder for body'),
+('PG', 'Peeling Gel'),
+('PM', 'Paper Mask'),
+('PP', 'Pump'),
+('PU', 'Puff'),
+('PW', 'Pre Facial Wash'),
+('SB', 'Body Scrub'),
+('SC', 'Shower Cream'),
+('SE', 'Serum'),
+('SG', 'Shower Gel'),
+('SH', 'Shampoo'),
+('SM', 'Scrub Mask'),
+('SN', 'Sponge'),
+('SO', 'Soap สบู่ก้อน'),
+('SP', 'Spot Treatment Cream'),
+('SR', 'Sharpener'),
+('SS', 'Time to Shine'),
+('ST', 'Styling Cream'),
+('SU', 'Styling Mouse'),
+('SW', 'Styling Wax'),
+('SY', 'Spray'),
+('TC', 'Shower cap'),
+('TO', 'Toner'),
+('TS', 'Treatment Serum'),
+('UC', 'Underarm Cream'),
+('US', 'Underarm Scrub'),
+('UT', 'Underarm Toning'),
+('WP', 'Water Spray'),
+('WS', 'White Secret');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `comments`
 --
 
@@ -124,6 +313,25 @@ CREATE TABLE `comments` (
 INSERT INTO `comments` (`id`, `post_id`, `user_id`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, '2024-07-03 04:00:12', '2024-07-03 04:00:12'),
 (2, 1, 1, '2024-07-03 04:00:12', '2024-07-03 04:00:12');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `conditions`
+--
+
+CREATE TABLE `conditions` (
+  `ID` varchar(10) NOT NULL DEFAULT '',
+  `DESCRIPTION` varchar(50) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `conditions`
+--
+
+INSERT INTO `conditions` (`ID`, `DESCRIPTION`) VALUES
+('C', 'Credit'),
+('S', 'Consign');
 
 -- --------------------------------------------------------
 
@@ -147,7 +355,9 @@ CREATE TABLE `documents` (
 --
 
 INSERT INTO `documents` (`DOC_TP`, `DOC_SYS`, `DOC_NO`, `NUMBER`, `FIELD`, `DOC_ST`, `REMARK`, `REMARK_EDIT`) VALUES
-('OP', '', '', 15, '', 1, '', '');
+('CPS', '', '', 1, '', 1, '', ''),
+('OP', '', '', 1, '', 1, '', ''),
+('RI', '', '', 2, '', 1, '', '');
 
 -- --------------------------------------------------------
 
@@ -178,6 +388,26 @@ CREATE TABLE `food` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `grp_ps`
+--
+
+CREATE TABLE `grp_ps` (
+  `GRP_P` varchar(10) NOT NULL DEFAULT '',
+  `REMARK` varchar(50) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `grp_ps`
+--
+
+INSERT INTO `grp_ps` (`GRP_P`, `REMARK`) VALUES
+('CM', 'COS MARCHE'),
+('OP', 'ORIENTAL PRINCESS'),
+('RE', 'RI EN');
 
 -- --------------------------------------------------------
 
@@ -228,8 +458,8 @@ INSERT INTO `menus` (`id`, `menu_name`, `url`, `seq`, `status`, `created_at`, `u
 (2, 'Product Master', 'product', 2, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
 (3, 'Product Detail', 'get_users', 3, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
 (4, 'Managemenu', 'manage_menu', 4, 1, '2024-06-28 07:48:31', '2024-06-28 07:48:34'),
-(5, 'อื่นๆ', NULL, 5, 1, '2024-07-02 03:36:12', '2024-07-02 03:36:12'),
-(6, '5', NULL, 6, 1, NULL, NULL),
+(5, 'จัดการข้อมูลทั่วไป', NULL, 5, 1, '2024-07-02 03:36:12', '2024-07-02 03:36:12'),
+(6, 'Approve', NULL, 6, 1, NULL, NULL),
 (42, 'Account', 'account', 7, 1, '2024-08-20 01:49:18', '2024-08-20 01:49:18');
 
 -- --------------------------------------------------------
@@ -261,24 +491,30 @@ CREATE TABLE `menu_relations` (
 INSERT INTO `menu_relations` (`id`, `position_id`, `menu_id`, `submenu_id`, `view`, `create`, `edit`, `delete`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
 (1, 1, 1, NULL, 1, 1, 1, 1, 1, NULL, NULL, '2023-01-19 18:07:36', '2023-01-19 18:07:36'),
 (3, 5, 1, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, '2023-01-19 18:07:38', '2023-01-19 18:07:38'),
-(36, 6, 1, NULL, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL),
-(39, 7, 4, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (50, 1, 2, NULL, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL),
 (51, 1, 3, NULL, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL),
-(82, 1, 6, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(83, 1, 6, 9, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(84, 1, 6, 10, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (90, 1, 4, NULL, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL),
-(92, 1, 5, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (94, 7, 5, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (95, 7, 5, 1, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (96, 7, 5, 2, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(98, 1, 5, 1, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(100, 6, 4, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (106, 6, 5, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
 (107, 6, 5, 1, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(108, 1, 5, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(109, 1, 5, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(111, 3, 42, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(112, 3, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(113, 3, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(114, 3, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(116, 7, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(123, 6, 2, NULL, 1, 1, 1, 1, NULL, NULL, NULL, NULL, NULL),
+(153, 1, 5, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(154, 1, 5, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(155, 1, 5, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(156, 1, 5, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(157, 1, 42, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(158, 6, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(159, 7, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(160, 6, 3, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(161, 6, 5, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(162, 6, 5, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -320,7 +556,22 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (28, '2024_08_02_013802_create_pro_develops_table', 7),
 (29, '2024_08_02_041844_create_barcodes_table', 7),
 (30, '2024_08_02_042114_create_documents_table', 7),
-(31, '2024_08_15_063623_create_accounts_table', 7);
+(32, '2024_08_15_063623_create_accounts_table', 8),
+(33, '2024_08_28_032026_create_product1s_table', 9),
+(48, '2024_08_28_093742_create_owners_table', 10),
+(49, '2024_08_28_094236_create_type_gs_table', 10),
+(50, '2024_08_28_094351_create_solutions_table', 10),
+(51, '2024_08_28_094454_create_series_table', 10),
+(52, '2024_08_28_094658_create_categories_table', 10),
+(53, '2024_08_28_094854_create_sub_categories_table', 10),
+(54, '2024_08_28_095003_create_pdms_table', 10),
+(55, '2024_08_29_021407_create_grp_ps_table', 10),
+(56, '2024_08_29_021446_create_brand_ps_table', 10),
+(57, '2024_08_29_022612_create_vendors_table', 10),
+(58, '2024_08_29_030352_create_unit_ps_table', 10),
+(59, '2024_08_29_030457_create_unit_types_table', 10),
+(60, '2024_08_29_030652_create_acctypes_table', 10),
+(61, '2024_08_29_032021_create_conditions_table', 10);
 
 -- --------------------------------------------------------
 
@@ -417,6 +668,25 @@ INSERT INTO `npd_textures` (`ID`, `DESCRIPTION`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `owners`
+--
+
+CREATE TABLE `owners` (
+  `OWNER` varchar(10) NOT NULL DEFAULT '',
+  `REMARK` varchar(50) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `owners`
+--
+
+INSERT INTO `owners` (`OWNER`, `REMARK`) VALUES
+('KM', 'KM INTERLAB'),
+('OP', 'ORIENTAL PRINCESS');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `password_reset_tokens`
 --
 
@@ -425,6 +695,28 @@ CREATE TABLE `password_reset_tokens` (
   `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pdms`
+--
+
+CREATE TABLE `pdms` (
+  `ID` varchar(10) NOT NULL DEFAULT '',
+  `REMARK` varchar(50) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `pdms`
+--
+
+INSERT INTO `pdms` (`ID`, `REMARK`) VALUES
+('99999', 'No Define'),
+('G0001', 'Make up PDM'),
+('G0002', 'Skincare PDM'),
+('G0003', 'B&B, Hair care and Fragrance PDM'),
+('G0004', 'Household PDM');
 
 -- --------------------------------------------------------
 
@@ -551,7 +843,7 @@ CREATE TABLE `positions` (
 INSERT INTO `positions` (`id`, `name_position`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
 (1, 'Superadmin', NULL, NULL, NULL, NULL),
 (2, 'Manager_Account', NULL, NULL, NULL, NULL),
-(3, 'Account', NULL, NULL, NULL, NULL),
+(3, 'Accounting', NULL, NULL, NULL, NULL),
 (4, 'Category - OP', NULL, NULL, NULL, NULL),
 (5, 'Product - OP', NULL, NULL, NULL, NULL),
 (6, 'E-Commerce - OP', NULL, NULL, NULL, NULL),
@@ -578,6 +870,82 @@ CREATE TABLE `posts` (
 
 INSERT INTO `posts` (`id`, `user_id`, `created_at`, `updated_at`) VALUES
 (1, 1, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product1s`
+--
+
+CREATE TABLE `product1s` (
+  `BRAND` varchar(10) DEFAULT NULL,
+  `PRODUCT` varchar(15) DEFAULT NULL,
+  `BARCODE` varchar(15) NOT NULL,
+  `COLOR` varchar(50) DEFAULT NULL,
+  `GRP_P` varchar(10) DEFAULT NULL,
+  `SUPPLIER` varchar(15) DEFAULT NULL,
+  `NAME_THAI` varchar(70) DEFAULT NULL,
+  `NAME_ENG` varchar(70) DEFAULT NULL,
+  `SHORT_THAI` varchar(70) DEFAULT NULL,
+  `SHORT_ENG` varchar(70) DEFAULT '',
+  `VENDOR` varchar(10) DEFAULT NULL,
+  `PRICE` decimal(8,2) DEFAULT NULL,
+  `COST` decimal(8,2) DEFAULT NULL,
+  `UNIT` varchar(20) DEFAULT NULL,
+  `UNIT_Q` decimal(8,2) DEFAULT NULL,
+  `SOLUTION` varchar(10) DEFAULT NULL,
+  `SERIES` varchar(10) DEFAULT NULL,
+  `CATEGORY` varchar(10) DEFAULT NULL,
+  `NON_VAT` varchar(1) DEFAULT NULL,
+  `STATUS` varchar(1) DEFAULT NULL,
+  `S_CAT` varchar(10) DEFAULT NULL,
+  `PDM_GROUP` varchar(10) DEFAULT NULL,
+  `BRAND_P` varchar(10) DEFAULT NULL,
+  `REGISTER` varchar(20) DEFAULT NULL,
+  `CONDITION_SALE` varchar(2) DEFAULT NULL,
+  `WHOLE_SALE` decimal(8,2) DEFAULT NULL,
+  `GP` decimal(8,2) DEFAULT NULL,
+  `RETURN` varchar(1) DEFAULT NULL,
+  `O_PRODUCT` varchar(15) DEFAULT NULL,
+  `BAR_PACK1` varchar(15) DEFAULT NULL,
+  `BAR_PACK2` varchar(15) DEFAULT NULL,
+  `BAR_PACK3` varchar(15) DEFAULT NULL,
+  `BAR_PACK4` varchar(15) DEFAULT NULL,
+  `PACK_SIZE1` decimal(5,0) DEFAULT NULL,
+  `PACK_SIZE2` decimal(5,0) DEFAULT NULL,
+  `PACK_SIZE3` decimal(5,0) DEFAULT NULL,
+  `PACK_SIZE4` decimal(5,0) DEFAULT NULL,
+  `REG_DATE` datetime DEFAULT NULL,
+  `AGE` varchar(20) DEFAULT NULL,
+  `STORAGE_TEMP` varchar(1) DEFAULT NULL,
+  `WIDTH` decimal(5,2) DEFAULT NULL,
+  `HEIGHT` decimal(5,2) DEFAULT NULL,
+  `WIDE` decimal(5,2) DEFAULT NULL,
+  `NAME_EXP` varchar(100) DEFAULT NULL,
+  `NET_WEIGHT` decimal(12,2) DEFAULT NULL,
+  `UNIT_TYPE` varchar(20) DEFAULT NULL,
+  `TYPE_G` varchar(2) DEFAULT NULL,
+  `CONTROL_STK` varchar(1) DEFAULT NULL,
+  `TESTER` varchar(1) DEFAULT NULL,
+  `OPT_DATE1` datetime DEFAULT NULL,
+  `OPT_DATE2` datetime DEFAULT NULL,
+  `OPT_TXT1` varchar(50) DEFAULT NULL,
+  `OPT_TXT2` varchar(50) DEFAULT NULL,
+  `OPT_NUM1` decimal(15,2) DEFAULT NULL,
+  `OPT_NUM2` decimal(15,2) DEFAULT NULL,
+  `ACC_TYPE` varchar(10) DEFAULT NULL,
+  `ACC_DT` datetime DEFAULT NULL,
+  `USER_EDIT` varchar(15) DEFAULT NULL,
+  `EDIT_DT` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product1s`
+--
+
+INSERT INTO `product1s` (`BRAND`, `PRODUCT`, `BARCODE`, `COLOR`, `GRP_P`, `SUPPLIER`, `NAME_THAI`, `NAME_ENG`, `SHORT_THAI`, `SHORT_ENG`, `VENDOR`, `PRICE`, `COST`, `UNIT`, `UNIT_Q`, `SOLUTION`, `SERIES`, `CATEGORY`, `NON_VAT`, `STATUS`, `S_CAT`, `PDM_GROUP`, `BRAND_P`, `REGISTER`, `CONDITION_SALE`, `WHOLE_SALE`, `GP`, `RETURN`, `O_PRODUCT`, `BAR_PACK1`, `BAR_PACK2`, `BAR_PACK3`, `BAR_PACK4`, `PACK_SIZE1`, `PACK_SIZE2`, `PACK_SIZE3`, `PACK_SIZE4`, `REG_DATE`, `AGE`, `STORAGE_TEMP`, `WIDTH`, `HEIGHT`, `WIDE`, `NAME_EXP`, `NET_WEIGHT`, `UNIT_TYPE`, `TYPE_G`, `CONTROL_STK`, `TESTER`, `OPT_DATE1`, `OPT_DATE2`, `OPT_TXT1`, `OPT_TXT2`, `OPT_NUM1`, `OPT_NUM2`, `ACC_TYPE`, `ACC_DT`, `USER_EDIT`, `EDIT_DT`) VALUES
+('OP', NULL, '00001', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '26', NULL),
+('OP', '001', '8850080200010', 'Yellow', '001', 'บริษัท', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', '-', '', '', '', '', '', '', 100.00, 0.00, '', '', '', '', '', '', 0, 0, 0, 0, '2001-05-28 00:00:00', '', '', 0.00, 0.00, 0.00, '', 0.00, '', '01', 'N', 'N', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', 'transfer', '2005-12-24 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -695,18 +1063,310 @@ CREATE TABLE `pro_develops` (
 --
 
 INSERT INTO `pro_develops` (`BRAND`, `DOC_NO`, `REF_DOC`, `REVISE_NO`, `EDIT_DT`, `USER_EDIT`, `STATUS`, `REMARK_ST`, `CUST_OEM`, `JOB_REFNO`, `DOC_DT`, `NPD`, `PDM`, `NAME_ENG`, `PRODUCT`, `BARCODE`, `CATEGORY`, `CAPACITY`, `Q_SMELL`, `Q_COLOR`, `TARGET_GRP`, `TARGET_STK`, `PRICE_FG`, `PRICE_COST`, `PRICE_BULK`, `P_CONCEPT`, `P_BENEFIT`, `TEXTURE`, `TEXTURE_OT`, `COLOR1`, `COLOR2`, `COLOR3`, `FRANGRANCE`, `INGREDIENT`, `STD`, `PK`, `OTHER`, `DOCUMENT`, `FIRST_ORD`, `OEM`, `REASON1`, `REASON1_DES`, `REASON2`, `REASON2_DES`, `REASON3`, `REASON3_DES`, `REF_COLOR`, `REF_FRAGRANCE`, `OEM_STD`, `PACKAGE_BOX`) VALUES
-('OP', 'OP00001', 'IBH-F155', 11, '2015-01-13', 'sa', '', '', '-', 'OP/IBHS/NP31/49', '2006-05-25', '', '', 'Cuticle Hair Treatment (New Formula1)', '', '8850080200010', 'Hair Care', '125 ml', 1.00, 1.00, '20-50', '2007-03-01', '295', '-', '', 'เจลวิตามินบำรุงเส้นผมสูตรเข้มข้น เนื้อบางเบา ซ่อมแซมและป้องกันไม่ให้ผมแตกปลายด้วยการเชื่อม\r\nประสานคิวติเคิลของเส้นผม ให้ผมเรียบลื่น เงางาม ไม่เปราะขาดง่าย \r\n', 'อุดมคุณค่าสารสกัดที่ช่วยเคลือปกป้องเส้นผมจากมลภาวะ ให้เส้นผมนุ่มมาก และ เงางาม จัดทรงง่าย \r\nเป็นธรรมชาติ\r\n', 'เจล', '-', 'ไม่มีสี', '', '', 'เหมือน Cuticle Hair Treatment plus Sunscreen for Long Hair', '-', 'Satinique hi Gloss Serum', 'ใช้ร่วม Cuticle Hair Treatment plus Sunscreen for Long Hair', 'หาก develop แล้วให้ทำ blind test', '-', 0, 'Y', 'Y', '', 'Y', 'Reason 2', 'Y', 'Reason 3', 'Ref Color ---', 'Ref Fragrance ---', 'OEM Benchmark ---', 'N'),
-('OP', 'OP00002', 'IBH-F155', 0, '1900-01-01', '', '', '', '2', '2', '2024-08-05', '002', '001', 'Cuticle Hair Treatment (New Formula2)', '', '8850080200027', '001', '2', 2.00, 2.00, '2', '2024-08-05', '2', '2', '2', '2', '2', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'N', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('OP', 'OP00003', 'IBH-F155', 0, '1900-01-01', '', '', '', '3', '3', '2024-08-05', '002', '001', 'Cuticle Hair Treatment (New Formula3)', '', '8850080200034', '001', '3', 3.00, 3.00, '3', '2024-08-05', '3', '3', '3', '3', '3', '001', '3', '3', '', '', '3', '3', '3', '3', '3', '3', 3, 'N', 'Y', '', 'Y', '3', 'Y', '3', '3', '3', '3', NULL),
-('OP', 'OP00004', 'IBH-F155', 0, '1900-01-01', '', '', '', '4', '4', '2024-08-06', '002', '001', 'Cuticle Hair Treatment (New Formula4)', '', '8850080200041', '001', '4', 4.00, 4.00, '4', '2024-08-06', '4', '4', '4', '4', '4', '001', '4', '4', '', '', '4', '4', '4', '4', '4', '4', 4, 'N', 'Y', '', 'Y', '4', 'Y', '4', '4', '4', '4', NULL),
-('OP', 'OP00005', 'IBH-F155', 0, '1900-01-01', '', '', '', '5', '5', '2024-08-06', '012', '001', 'Cuticle Hair Treatment (New Formula5)', '', '8850080200058', '002', '5', 5.00, 5.00, '5', '2024-08-06', '5', '5', '5', '5', '5', '001', '5', '5', '', '', '5', '5', '5', '5', '5', '5', 5, 'N', 'Y', '', 'Y', '5', 'Y', '5', '5', '5', '5', NULL),
-('OP', 'OP00006', 'IBH-F155', 0, '1900-01-01', '', '', '', '6', '6', '2024-08-07', '002', '001', 'Cuticle Hair Treatment (New Formula6)', '', '8850080200065', '001', '6', 6.00, 6.00, '6', '2024-08-07', '6', '6', NULL, NULL, NULL, NULL, NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', '', 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL),
-('OP', '7', 'IBH-F155', 0, '1900-01-01', '', '', '', '7', '7', '2024-08-15', '002', '001', 'Cuticle Hair7', '', '8850080200072', '001', '7', 7.00, NULL, '7', '2024-08-15', '7', '7', '7', '7', '7', '001', '7', '7', '', '', '7', '7', '7', '7', '7', '7', 7, 'N', 'Y', '', 'Y', '7', 'Y', '7', '7', '7', '7', NULL),
-('OP', '8', 'IBH-F155', 0, '1900-01-01', '', '', '', '8', '8', '2024-08-19', '002', '001', 'Cuticle Hair8', '', '8850080200089', '001', '8', 8.00, 8.00, '8', '2024-08-19', '8', '8', '8', '8', '8', '001', '8', '8', '', '', '8', '8', '8', '8', '8', '8', 8, 'N', 'Y', '', 'Y', '8', 'Y', '8', '8', '8', '8', NULL),
-('OP', '9', 'IBH-F155', 0, '1900-01-01', '', '', '', '9', '9', '2024-08-19', '002', '001', '9', '', '8850080200096', '001', '9', 9.00, 9.00, '9', '2024-08-19', '9', '9', '9', '9', '9', '001', '9', '9', '', '', '9', '9', '9', '9', '9', '9', 9, 'N', 'Y', '', 'Y', '9', 'Y', '9', '9', '9', '9', NULL),
-('OP', '10', 'IBH-F155', 0, '1900-01-01', '', '', '', '1', '1', '2024-08-19', '002', '001', '10', '', '8850080200102', '001', '21', 1.00, 1.00, '1', '2024-08-19', '1', '1', '1', '1', '1', '001', '1', '1', '', '', '1', '1', '1', '1', '1', '1', 1, 'N', 'Y', '', 'Y', '1', 'Y', '1', '1', '1', '1', NULL),
-('OP', '11', 'IBH-F155', 0, '1900-01-01', '', '', '', '11', '11', '2024-08-20', '002', '001', '11', '', '8850080200119', '001', '11', 11.00, 11.00, '11', '2024-08-20', '11', '11', '11', '11', '11', '001', '11', '11', '', '', '11', '11', '11', '11', '11', '11', 11, 'N', 'Y', '', 'Y', '11', 'Y', '11', '11', '11', '11', NULL),
-('OP', '12', 'IBH-F155', 0, '1900-01-01', '', '', '', '12', '12', '2024-08-20', '015', '001', '12', '', '8850080200126', '003', '12', 12.00, 12.00, '12', '2024-08-20', '12', '12', '12', '12', '12', '001', '12', '12', '', '', '12', '12', '12', '12', '12', '12', 12, 'N', 'Y', '', 'Y', '12', 'Y', '12', '12', '12', '12', NULL);
+('OP', 'OP00001', 'IBH-F155', 0, '1900-01-01', '', 'OP', '', '2', '2', '2024-08-21', NULL, '001', 'Cuticle Hair Treatment 13', '', '8850080200010', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2', '2', NULL, '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'N', 'N', '', 'N', '2', 'N', '2', '2', '2', '2', NULL),
+('OP', 'OP00002', 'IBH-F155', 0, '1900-01-01', '32', 'OP', '', NULL, NULL, '2024-08-30', NULL, NULL, NULL, '', '8850080200027', NULL, NULL, NULL, NULL, NULL, '2024-08-30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', '', 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL),
+('RI', 'OP000015', 'IBH-F155', 0, '1900-01-01', '32', 'RI', '', '2', '2', '2024-08-22', '002', '001', 'Cuticle Hair Treatment 15', '', '8850080700022', '001', '2', 2.00, 2.00, '2', '2024-08-22', '2', '2', '2', '2', '2', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'N', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
+('RI', NULL, 'IBH-F155', 0, '1900-01-01', '32', 'RI', '', NULL, NULL, '2024-08-30', NULL, NULL, NULL, '', '8850080700039', NULL, NULL, NULL, NULL, NULL, '2024-08-30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', '', 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `p_statuses`
+--
+
+CREATE TABLE `p_statuses` (
+  `ID` varchar(1) NOT NULL DEFAULT '',
+  `DESCRIPTION` varchar(50) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `p_statuses`
+--
+
+INSERT INTO `p_statuses` (`ID`, `DESCRIPTION`) VALUES
+('', 'Existing (No Define)'),
+('D', 'Discontinue'),
+('E', 'Existing'),
+('L', 'Limited'),
+('N', 'New Product'),
+('O', 'Delete'),
+('S', 'Sampling'),
+('T', 'Tester'),
+('X', 'Not Exist');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `series`
+--
+
+CREATE TABLE `series` (
+  `ID` varchar(10) NOT NULL DEFAULT '',
+  `DESCRIPTION` varchar(50) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `series`
+--
+
+INSERT INTO `series` (`ID`, `DESCRIPTION`) VALUES
+('80001', 'EQUIPMENT KM'),
+('80002', 'ACCESSORY KM'),
+('99999', 'NOT DEFINE'),
+('AA', 'All Day Bright'),
+('AB', 'Absolute Treatment'),
+('AC', 'Natural Acne Care'),
+('AD', 'All Day Sun Protection'),
+('AG', 'Age Recharge'),
+('AL', 'Alluring Moment'),
+('AM', 'Acnemise'),
+('AN', 'Absolute Nourishing'),
+('AO', 'All Day Glow'),
+('AR', 'Age Renewal'),
+('AU', 'Automatic'),
+('AW', 'All Day Wear'),
+('AY', 'As You wish'),
+('BB', 'BB Secret'),
+('BD', 'Brow Designer Eyebrow Pencil'),
+('BE', 'Beauty Essence Complex'),
+('BG', 'Bag'),
+('BJ', 'Beautiful Journey'),
+('BK', 'Bikini Care'),
+('BM', 'Body Makeup'),
+('BN', 'Bene'),
+('BS', 'Baby Skin'),
+('BT', 'Botanical Lips Expert'),
+('BW', 'Brilliant White'),
+('CB', 'Closing Bill'),
+('CC', 'Cashmere Creamy'),
+('CE', 'Cherry Blossom'),
+('CF', 'Charisma The  Art Of Fragrance Layering'),
+('CG', 'Collagen'),
+('CH', 'Cuticle Hair Treatment'),
+('CL', 'Soft Cushion Lip Cream'),
+('CM', 'Curl Maximising'),
+('CP', 'Shower Cap'),
+('CR', 'Cherish'),
+('CS', 'Cuticle Professional Hair Care'),
+('CU', 'Cushion'),
+('CY', 'Creamy Matte'),
+('DA', 'Dazzle Glow'),
+('DB', 'Dermacare Bath Pom-Pom'),
+('DE', 'Deep Velvet Matte'),
+('DF', 'DENTAL FLOSS'),
+('DG', 'Dazzling Glow'),
+('DM', 'Disney x Mulan'),
+('DR', 'Dramatic'),
+('DS', 'Dermasoft Facial Sponge'),
+('DV', 'Dolly Curl & Volume'),
+('EB', 'Eyebrow'),
+('EC', 'Extreme Coverage'),
+('EF', 'Easy Happy Feet'),
+('EP', 'Exfoliating Pad'),
+('EV', 'Extreme Volume'),
+('FF', '5 in 1'),
+('FI', 'Face Illuminator'),
+('FJ', 'Luscious Fruity Journey'),
+('FL', 'Floralista'),
+('FM', 'For men'),
+('FN', 'Flawless Finish'),
+('FO', '4 in 1  Perfect'),
+('FP', 'Friuty Party'),
+('FS', 'Foot Scratcher'),
+('FU', 'Fresh Up'),
+('FW', 'Fruity Sweet Lip Care'),
+('GB', 'Gentle Cleansing Brush'),
+('GD', 'Gradient'),
+('GG', 'Glam & Glow Smooth'),
+('GL', 'Glamourama'),
+('GO', 'Gorgeous'),
+('GR', 'Gradation'),
+('GS', 'Glow&smooth'),
+('GT', 'Magic Touch'),
+('HC', 'That Hot Choco'),
+('HF', 'Hydra Fresh Mineral Water Spray'),
+('HG', 'Healthy Glow'),
+('HI', 'Happy In The Garden'),
+('HM', 'Happy Beauty  Mask'),
+('HP', 'Instant Hand Protection'),
+('HS', 'Happiness Stories'),
+('HY', 'Hypnosis'),
+('IB', 'Instant Brightening'),
+('IC', 'Iconic'),
+('IF', 'Intense Hydration Foot Care'),
+('IH', 'Intense Hydration Hand Care'),
+('IN', 'Individualist'),
+('JD', 'Fresh&Juicy Delight'),
+('JF', 'Juice Fruity Lip Care'),
+('JG', 'Juicy Glow'),
+('JS', 'Journey for Senses'),
+('JU', 'Juicy Squeze'),
+('KAL', 'alcohol Spray'),
+('KBL', 'Body Lotion'),
+('KC', 'Knee Care'),
+('KCG', 'Cleansing Gel'),
+('KDO', 'Deodorant'),
+('KR', 'Kiss From A Rose'),
+('KSW', 'shower'),
+('KTY', 'KTY'),
+('LC', 'Lumino Complex Expert'),
+('LD', 'Lengthen & Define'),
+('LF', 'Lift Firming'),
+('LI', 'LIFE'),
+('LK', 'Lovely Kiss'),
+('LL', 'Love Letter'),
+('LP', 'Lumino Complex Perfecting White'),
+('LU', 'Luxurious'),
+('LW', 'Lengthening Waterproof'),
+('MA', 'Maincure'),
+('MB', 'Milky Whitening Intensive'),
+('MC', 'Pure Matte Lip Colours'),
+('ML', 'Magic Lengths'),
+('MR', 'Make Off Remover'),
+('MS', 'Matte Stay'),
+('MT', 'Make Up Tools'),
+('MW', 'Milky Whitening Radiance Intensive Booster'),
+('NA', 'Naturally Ageless'),
+('NC', 'Natural Power C Miracle Brightening Complex'),
+('NE', 'Natural Eyebrow'),
+('NF', 'Nail Fashion Sticker'),
+('NG', 'Natural Glow'),
+('NI', 'Natural Intensive C'),
+('NL', 'Natural Lip Treatment'),
+('NS', 'Natural Salon Styler'),
+('NY', 'New Year, Premium Set'),
+('OB', 'Oriental Beauty'),
+('OC.LL', 'Lip Liner & Lipstick'),
+('OC.LN', 'Proliner'),
+('OC.MA', 'Mascara'),
+('OC.MT', 'Mousse Tint'),
+('OC.NL', 'Nude Lipstick'),
+('OC.PB', 'Powder Blusher'),
+('OC.RG', 'Ready To Glam'),
+('OE', 'Oriental Eyes'),
+('OS', 'Oriental Sensation'),
+('OS.AA', 'Nat Sun Anti-Aging'),
+('OS.AC', 'Nat Sun Acne'),
+('OS.BM', 'Nat Sun Base Make Up'),
+('OS.CL', 'Nat Sun Cleanser'),
+('OS.DC', 'Nat Sun Daily Care'),
+('OS.EA', 'Nat Sun Extreme Activity'),
+('OS.FI', 'Nat Sun Firming'),
+('OS.HP', 'Nat Sun High Protection'),
+('OS.LI', 'Nat Sun Lip'),
+('OS.MU', 'Nat Sun Make Up'),
+('OS.OC', 'Nat Sun Oil Control'),
+('OS.SP', 'Nat Sun Skin Problem'),
+('OS.WH', 'Nat Sun Whitening'),
+('OT', 'Other'),
+('PA', 'Peony Bloom'),
+('PB', 'pH Balanced'),
+('PC', 'Perfect Curling'),
+('PD', 'Professional Brow Designer'),
+('PE', 'Perfect Eyebrow'),
+('PF', 'Perfect Body Treatment'),
+('PG', 'Princess Garden'),
+('PH', 'Phenomenal'),
+('PI', 'Pro Highlight & Contour'),
+('PK', 'Powder Kiss Lipstick'),
+('PL', 'Perfect Lasting Oil Control'),
+('PM', 'Perfect Matte'),
+('PN', 'Perfect Finish'),
+('PO', 'Palette Of Thailand'),
+('PP', 'Passion of Polish'),
+('PR', 'Pum refill'),
+('PS', 'Peach Blossom'),
+('PT', 'Phytotherphy'),
+('PU', 'Pure Colours'),
+('PW', 'Professional Brow Designer Water Proof'),
+('PWH', 'Perfumed White'),
+('RD', 'RED Natural Whitening Phenomenon'),
+('RF', 'RED Natural Whitening & Firming Phenomenon'),
+('RM', 'Rich Moisturisers'),
+('RN', 'Rhythms of Nature'),
+('RR', 'Repair & Rescue'),
+('RV', 'Revival Renewal'),
+('RW', 'Ready To Wear'),
+('SA', 'Sachet'),
+('Sanitizer', 'Sanitizer'),
+('SC', 'Secret of Charm'),
+('SE', 'Secret Agent'),
+('SF', 'Secret Soft'),
+('SG', 'Sugar Lip'),
+('SH', 'Story of Happiness'),
+('SK', 'Sweet Kiss Lip Butter'),
+('SL', 'Scent of Love Set'),
+('SM', 'Studio Matte'),
+('SN', 'Skin Solution Complex  Anti Acne'),
+('SO', 'Smoothing Matte'),
+('Soap', 'Soap'),
+('SP', 'Super Waterproof'),
+('ST', 'Soft Touch'),
+('SU', 'Sunsational'),
+('SW', 'Skin Solution Complex Whitening'),
+('TB', 'Tender Body Sponge'),
+('TL', 'Touchless Matte'),
+('TM', 'Satin Matte'),
+('TN', 'Tropical Nutrient'),
+('Toothbrush', 'Toothbrush'),
+('Toothpaste', 'Toothpaste'),
+('TR', 'True Wings'),
+('TS', 'Tales of the star'),
+('TW', 'Twisty'),
+('UC', 'Underarm Care'),
+('UE', 'Ultra Natural E+'),
+('UF', 'Ultima Lift'),
+('UL', 'Ultimate Coverage'),
+('UM', 'Ultimate Renewal'),
+('UR', 'Ultra Rich Moisture'),
+('UT', 'Underarm Toning'),
+('V.DF', 'DENTAL FLOSS'),
+('VE', 'Velvet'),
+('VL', 'Value Set'),
+('VV', 'Veda Vanda'),
+('WA', 'Wonders of Asia'),
+('WD', 'Weekly Detox'),
+('WG', 'Welcome Gift , Member Gift'),
+('WP', 'White Perfection'),
+('WS', 'White Secret'),
+('WT', 'Wimantra'),
+('WV', 'Wine Valley');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `solutions`
+--
+
+CREATE TABLE `solutions` (
+  `ID` varchar(10) NOT NULL DEFAULT '',
+  `DESCRIPTION` varchar(50) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `solutions`
+--
+
+INSERT INTO `solutions` (`ID`, `DESCRIPTION`) VALUES
+('80001', 'Equipment Km'),
+('80002', 'Accessory Km'),
+('99999', 'Not Define'),
+('KTY', 'Katanyu'),
+('OA', 'Accessories'),
+('OB', 'Body'),
+('OC', 'Colours'),
+('OF', 'Facial'),
+('OG', 'Gift Set/ Limited Edition'),
+('OH', 'Hair'),
+('OL', 'Lifestyle (Soft Line)'),
+('OM', 'Member'),
+('OO', 'Others'),
+('OP', 'Perfumery'),
+('OS', 'Sunscreen'),
+('OT', 'Treatment'),
+('OX', 'ของฟรี ของแจก ของแถม'),
+('RB', 'Body'),
+('Toothbrush', 'Toothbrush');
 
 -- --------------------------------------------------------
 
@@ -732,11 +1392,146 @@ CREATE TABLE `submenus` (
 --
 
 INSERT INTO `submenus` (`id`, `menu_id`, `name`, `url`, `seq`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 5, 'Product', '1', 1, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
-(2, 5, 'Billing', '2', 2, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
-(3, 5, 'Invoice', '3', 3, 1, NULL, NULL, '2024-07-09 01:00:47', '2024-07-09 01:00:47'),
-(9, 6, '5.1', '5.1', 1, 1, NULL, NULL, '2024-07-31 04:28:26', '2024-07-31 04:28:26'),
-(10, 6, '5.2', '5.2', 2, 1, NULL, NULL, '2024-07-31 04:28:26', '2024-07-31 04:28:26');
+(1, 5, 'จัดการเเบรนด์', '1', 1, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
+(2, 5, 'จัดการสินค้า', '2', 2, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
+(3, 5, 'จัดการบิล', '3', 3, 1, NULL, NULL, '2024-07-09 01:00:47', '2024-07-09 01:00:47'),
+(9, 6, 'Approve1', '5.1', 1, 1, NULL, NULL, '2024-07-31 04:28:26', '2024-07-31 04:28:26'),
+(10, 6, 'Approve2', '5.2', 2, 1, NULL, NULL, '2024-07-31 04:28:26', '2024-07-31 04:28:26');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sub_categories`
+--
+
+CREATE TABLE `sub_categories` (
+  `ID` varchar(10) NOT NULL DEFAULT '',
+  `CATEGORY_ID` varchar(10) NOT NULL DEFAULT '',
+  `DESCRIPTION` varchar(50) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sub_categories`
+--
+
+INSERT INTO `sub_categories` (`ID`, `CATEGORY_ID`, `DESCRIPTION`) VALUES
+('DF', 'KTY', 'DENTAL FLOSS PICKS'),
+('JG', '', 'Juicy Glow'),
+('Loose', '', 'All Day Sun Loose'),
+('MT', 'OC.LS', 'Mousse Tint'),
+('OC.BM.BM', '', 'Body Makeup'),
+('OC.CH.AO', '', 'All Day Glow Powder Blush'),
+('OC.CH.CC', '', 'Cheek Colours'),
+('OC.CH.GD', '', 'Gradation Cheek'),
+('OC.CH.KS', '', 'Kiss From A Rose'),
+('OC.CH.PB', '', 'Powder Blusher'),
+('OC.CH.RW', '', 'Ready To Wear'),
+('OC.CW.MW', '', 'Perfect Cleanse Micellar Water'),
+('OC.EY.AW', '', 'All Day Wear Eyeshadow'),
+('OC.EY.EB', '', 'Eyebrow'),
+('OC.EY.EC', '', 'Eye Colours'),
+('OC.EY.EL', '', 'Eyeliner'),
+('OC.EY.EP', '', 'Eye palette'),
+('OC.EY.MC', '', 'Mascara'),
+('OC.FO.AF', '', 'All Day Sun Foundation'),
+('OC.FO.BC', '', 'BB Secret Cream'),
+('OC.FO.BF', '', 'Brilliant White Foundation'),
+('OC.FO.BS', '', 'Base'),
+('OC.FO.CC', '', 'All Day Sun CC Cream'),
+('OC.FO.CO', '', 'Concealer'),
+('OC.FO.CU', '', 'Cushion'),
+('OC.FO.DG', '', 'Defy Gravity Foundation'),
+('OC.FO.HF', '', 'Healthy Glow Foundation'),
+('OC.FO.MF', '', 'Makeup Fix'),
+('OC.FO.NF', '', 'Natural Glow Foundation'),
+('OC.FO.OF', '', 'Oil Control Foundation'),
+('OC.FO.PC', '', 'Phenomenal Perfect Coverage Foundation'),
+('OC.FO.PF', '', 'PHENOMENAL Foundation'),
+('OC.FO.PH', '', 'Phenomenal Perfecr Coverage'),
+('OC.FO.PN', '', 'Phenomenal Perfect Coverage Cream to Powder'),
+('OC.FO.RF', '', 'RED Natural Whitening & Firming Phenomenon'),
+('OC.FO.SH', '', 'Sunsational Rush Hour'),
+('OC.FO.UF', '', 'Ultimate Coverage Foundation'),
+('OC.FO.WF', '', 'White Perfection Foundation'),
+('OC.JG', '', 'Juicy Glow'),
+('OC.LO.AL', '', 'All Day Sun Loose Powder'),
+('OC.LO.PH', 'OC.LO', 'Phennomenal Loose Powder'),
+('OC.LO.PL', 'OC.LO', 'Perfect Lasting Oil Control Loose Powder'),
+('OC.LO.PP', '', 'Phenomeal Loose Powder'),
+('OC.LS.AN', '', 'Absolute Nourishing'),
+('OC.LS.AT', '', 'Automatic  Lip Pencil'),
+('OC.LS.CL', '', 'Collagen'),
+('OC.LS.CM', '', 'Creamy Matte'),
+('OC.LS.CR', '', 'Cashmere Creamy'),
+('OC.LS.DE', '', 'Deep Velvet Mette Lipstick'),
+('OC.LS.DM', '', 'Disney x Mulan'),
+('OC.LS.GG', '', 'Glam & Glow Smooth Lipstick'),
+('OC.LS.GM', '', 'Glamourama Lip Palette'),
+('OC.LS.HC', '', 'That Hot Choco'),
+('OC.LS.HG', '', 'Hypnosis  Gloss '),
+('OC.LS.IC', '', 'Intense Creamy '),
+('OC.LS.IM', '', 'Studio Matte'),
+('OC.LS.JG', '', 'JUICY  LIPGLOSS'),
+('OC.LS.LG', '', 'Lip Gloss'),
+('OC.LS.LL', '', 'Lip Liner'),
+('OC.LS.LP', '', 'Lip Primer'),
+('OC.LS.LQ', '', 'Lip Lacquer'),
+('OC.LS.LR', '', 'Lip Sheer'),
+('OC.LS.MT', '', 'Mousse Tint'),
+('OC.LS.NL', '', 'Nude Lipstick'),
+('OC.LS.PK', '', 'Powder Kiss Lipstick'),
+('OC.LS.RF', '', 'RED Natural Whiening & Firming Matte Lipstick'),
+('OC.LS.RM', '', 'Rich Moisturisers'),
+('OC.LS.SM', '', 'Satin Matte'),
+('OC.LS.SO', '', 'Smoothing Matte'),
+('OC.LS.TL', '', 'Lip Tint '),
+('OC.LS.TTL', '', 'Two Tone Lipstick'),
+('OC.LS.TWL', '', 'True Wings Lipstick'),
+('OC.LS.UM', '', 'Ultra Rich Moisture'),
+('OC.LS.VM', '', 'Velvet Matte'),
+('OC.LS>PK', '', 'Beneficial Powder Kiss Lipstick'),
+('OC.MA', 'OC.EY', 'Mascara'),
+('OC.MF.CB', '', 'Cleansing Bubble'),
+('OC.MF.CM', '', 'Cleansing Milk'),
+('OC.MF.CO', '', 'Cleansing Oil'),
+('OC.MF.CS', '', 'Cleansing Milk Essence'),
+('OC.MF.CW', '', 'Cleansing Water'),
+('OC.MF.OI', '', 'Cleansing Oil in Water'),
+('OC.MT.AC', '', 'Accessories'),
+('OC.MT.DM', '', 'Disney x Mulan'),
+('OC.MT.MB', '', 'Makeup Brush'),
+('OC.MT.MT', '', 'Make Up Tools'),
+('OC.NL', 'LS', 'Nude Lipstick'),
+('OC.PM.BG', '', 'True Wings Bag'),
+('OC.PO.AP', '', 'All Day Sun Powder'),
+('OC.PO.BL', '', 'BRILLIANT WHITE Loose Powder'),
+('OC.PO.BP', '', 'BB Secret Powder'),
+('OC.PO.BW', '', 'Brilliant White Powder'),
+('OC.PO.DM', '', 'Disney x Mulan'),
+('OC.PO.ECP', '', 'Extreme Coverage Powder '),
+('OC.PO.EP', '', 'EXTREME Powder'),
+('OC.PO.FN', '', 'Flawless Finish Mineral Powder'),
+('OC.PO.HL', '', 'Healthy Glow Loose Powder'),
+('OC.PO.HP', '', 'Healthy Glow Powder'),
+('OC.PO.IP', '', 'ILLUMINATOR POWDER'),
+('OC.PO.LO', '', 'Loose Powder'),
+('OC.PO.LP', '', 'Loose Powder'),
+('OC.PO.NP', '', 'Natural Glow  Powder'),
+('OC.PO.OP', '', 'Oil Control Powder'),
+('OC.PO.PC', '', 'Perfect Coverage Powder'),
+('OC.PO.PH', '', 'Pro Highlight & Contour'),
+('OC.PO.PL', '', 'Phenomenal Loose Powder'),
+('OC.PO.PP', '', 'Phenomenal Powder'),
+('OC.PO.PS', '', 'Pressed Powder'),
+('OC.PO.RF', '', 'RED Natural Whitening & Firming Phenomenon Powder'),
+('OC.PO.UP', '', 'Ultimate Coverage Powder'),
+('OC.PO.WL', '', 'White Perfection Loose Powder'),
+('OC.PO.WP', '', 'White Perfection Powder'),
+('OC.TL', '', 'Touchless Matte'),
+('OS.FB', '', 'For Body'),
+('OS.FF', '', 'For Face'),
+('OS.LI', '', 'Lip'),
+('SC', 'WS', 'Scrub');
 
 -- --------------------------------------------------------
 
@@ -1861,6 +2656,92 @@ INSERT INTO `trn_dona_totambons` (`id`, `doc_datetime`, `doc_no`, `event`, `doc_
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `type_gs`
+--
+
+CREATE TABLE `type_gs` (
+  `ID` varchar(2) NOT NULL DEFAULT '',
+  `DESCRIPTION` varchar(50) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `type_gs`
+--
+
+INSERT INTO `type_gs` (`ID`, `DESCRIPTION`) VALUES
+('01', 'สินค้าขายปกติ'),
+('02', 'สินค้าแถมฟรีหรือรางวัล'),
+('03', 'เอกสารสิ่งพิมพ์'),
+('04', 'อุปกรณ์สนับสนุนการขาย'),
+('05', 'วัสดุสิ้นเปลือง'),
+('06', 'อื่นๆ'),
+('08', 'แอลกอฮอล์'),
+('09', 'tester');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `unit_ps`
+--
+
+CREATE TABLE `unit_ps` (
+  `ID` varchar(2) NOT NULL DEFAULT '',
+  `DESCRIPTION` varchar(20) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `unit_ps`
+--
+
+INSERT INTO `unit_ps` (`ID`, `DESCRIPTION`) VALUES
+('01', 'กระป๋อง'),
+('02', 'กล่อง'),
+('03', 'ก้อน'),
+('04', 'ขวด'),
+('05', 'คัน'),
+('06', 'คู่'),
+('07', 'ชิ้น'),
+('08', 'ชุด'),
+('09', 'ซิงค์'),
+('10', 'ถาดหลุม'),
+('11', 'บาน'),
+('12', 'ม้วน'),
+('13', 'หลอด'),
+('14', 'หีบ'),
+('15', 'ห่อ'),
+('16', 'อัน'),
+('17', 'เซ็ท'),
+('18', 'เล่ม'),
+('19', 'เส้น'),
+('20', 'แท่ง'),
+('21', 'แผ่น'),
+('22', 'แพค'),
+('23', 'โหล'),
+('24', 'ใบ');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `unit_types`
+--
+
+CREATE TABLE `unit_types` (
+  `ID` varchar(2) NOT NULL DEFAULT '',
+  `DESCRIPTION` varchar(20) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `unit_types`
+--
+
+INSERT INTO `unit_types` (`ID`, `DESCRIPTION`) VALUES
+('01', '1'),
+('02', 'g.'),
+('03', 'ml');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -1892,13 +2773,14 @@ INSERT INTO `users` (`id`, `username`, `name`, `email`, `email_verified_at`, `pa
 (11, 'bo', 'ช่างโบ้', 'test@gmail.com', NULL, '$2y$10$qNXabFcf0l5rqJOoS/iaMOg0X0ljVJ4m8TxMvxE5WFJPXRO5DBZem', 'TyE0I46e23zpM6lWHXHXww79aNFKikpGWJo94KEWkoclxikPwWhW9Nqu3tZA', 1, '2022-02-28 15:21:57', '2022-10-02 22:22:30'),
 (12, 'file', 'ช่างฟิล์ม', 'test2@gmail.com', NULL, '$2y$10$oDK5H2V30XtEany.YHQDs.P56/0L2Bx/W/dgVkKT8Fi6w2gajl5re', NULL, 1, '2022-02-28 15:23:35', '2022-02-28 15:23:35'),
 (21, NULL, 'test1', 'test1@gmail.com', NULL, '$2y$10$XY8os2I.PICMI9eznO96CuUVO2EkiNSpVh9FJ.lJyF.idv.3b7iLm', NULL, 1, '2024-06-07 03:19:36', '2024-06-07 03:19:36'),
-(25, '00d750', NULL, NULL, NULL, NULL, 'WvVIx0sfq0EDfp3uw85llh9OJBAMZR6anaPL0d9tSOkz2HXYeeRiNUDDz4Sy', 1, '2024-08-05 03:22:25', '2024-08-05 03:22:25'),
-(26, '00d752', NULL, NULL, NULL, NULL, 'DKTmdhFP1OqeL6InV9TX8xDJTt5E4I9N4fe4X2ckj5wZbGg7maoAIsYhnooh', 1, '2024-08-05 18:50:00', '2024-08-05 18:50:00'),
+(25, '00d750', NULL, NULL, NULL, NULL, 'MQnZLy5XbUoVsmp5mJQxwH7WdcJHwkCTOXClB65Ai1rs7fs2aOjtkY77HICv', 1, '2024-08-05 03:22:25', '2024-08-05 03:22:25'),
+(26, '00d752', NULL, NULL, NULL, NULL, 'kmhbk54d0ukRhADvz4UQ85o8sgHtfevRY3zfKCWmyUJEYcZhea0yoHAsop25', 1, '2024-08-05 18:50:00', '2024-08-05 18:50:00'),
 (27, '006631', NULL, NULL, NULL, NULL, 'IRnZ0kDtYPOaO68d1QtsreqPQIpjxYc8i8yxmCx0T4ExbXX9i1dH61NhQBAm', 1, '2024-08-07 01:15:19', '2024-08-07 01:15:19'),
 (28, '006935', NULL, NULL, NULL, NULL, NULL, 1, '2024-08-07 01:17:59', '2024-08-07 01:17:59'),
 (29, '003559', NULL, NULL, NULL, NULL, 'wKeR7kAzlvANIeBaD71ADpPAyyLtvWVp16tpqWP4MABt6wfjOezYf3wiNYdU', 1, '2024-08-07 23:41:47', '2024-08-07 23:41:47'),
 (30, '00C648', NULL, NULL, NULL, NULL, 'JYg0S1VU15z1n33xE6Aq4rFE6132Nrw6GAbZ7sszVxHvainm423rJ2wG4XfO', 1, '2024-08-07 23:50:00', '2024-08-07 23:50:00'),
-(32, '00d751', NULL, NULL, NULL, NULL, 'IV5eFt7A5DOG8mFSyAmAa0WyUvnmeSjt44m7rv0dGX7QkzqNP0FYpKuPcyED', 1, '2024-08-08 23:37:47', '2024-08-08 23:37:47');
+(32, '00d751', NULL, NULL, NULL, NULL, 'zsAS1QywYTIwv3I4X7nAAJ8jeF8Ko5PPwHhM9ItQI6toGHELXL198GOvUvJl', 1, '2024-08-08 23:37:47', '2024-08-08 23:37:47'),
+(34, '009166', NULL, NULL, NULL, NULL, 'lqSixX6J7ViOl4Zh9yk4WckiTs1IyaUHrK6ENWi0Grb30orn3KlSoXjBbOsv', 1, '2024-08-23 01:12:24', '2024-08-23 01:12:24');
 
 -- --------------------------------------------------------
 
@@ -1928,7 +2810,45 @@ INSERT INTO `user_permission` (`id`, `user_id`, `tent_id`, `position_id`, `creat
 (25, 26, NULL, 1, '2022-03-01 12:32:54', '2022-03-01 12:32:54'),
 (46, 46, 235, 8, '2022-09-07 11:25:30', '2022-09-07 11:25:30'),
 (47, 47, 235, 8, '2022-09-07 11:25:30', '2022-09-07 11:25:30'),
-(51, 32, NULL, 6, '2024-08-09 06:37:48', '2024-08-09 06:37:48');
+(51, 32, NULL, 6, '2024-08-09 06:37:48', '2024-08-09 06:37:48'),
+(53, 34, NULL, 3, '2024-08-23 08:12:24', '2024-08-23 08:12:24');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vendors`
+--
+
+CREATE TABLE `vendors` (
+  `VEN_ID` varchar(15) NOT NULL DEFAULT '',
+  `ACC_CODE` varchar(10) NOT NULL DEFAULT '',
+  `CONTACT_NAME` varchar(50) NOT NULL DEFAULT '',
+  `VEN_NTHAI` varchar(70) NOT NULL DEFAULT '',
+  `VEN_NENG` varchar(70) NOT NULL DEFAULT '',
+  `ADDRESS` varchar(70) NOT NULL DEFAULT '',
+  `ROAD` varchar(30) NOT NULL DEFAULT '',
+  `DISTRICT` varchar(30) NOT NULL DEFAULT '',
+  `AMPHUR` varchar(30) NOT NULL DEFAULT '',
+  `PROVINCE` varchar(30) NOT NULL DEFAULT '',
+  `POSTCODE` varchar(5) NOT NULL DEFAULT '',
+  `TEL` varchar(20) NOT NULL DEFAULT '',
+  `MOBILE` varchar(12) NOT NULL DEFAULT '',
+  `FAX` varchar(12) NOT NULL DEFAULT '',
+  `DISCOUNT` decimal(5,2) NOT NULL DEFAULT 0.00,
+  `CREDIT_LIMIT` decimal(10,0) NOT NULL DEFAULT 0,
+  `CREDIT_DAY` decimal(5,0) NOT NULL DEFAULT 0,
+  `MAP` varchar(100) NOT NULL DEFAULT '',
+  `USER_EDIT` varchar(15) NOT NULL DEFAULT '',
+  `EDIT_DT` datetime NOT NULL DEFAULT '1900-01-01 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `vendors`
+--
+
+INSERT INTO `vendors` (`VEN_ID`, `ACC_CODE`, `CONTACT_NAME`, `VEN_NTHAI`, `VEN_NENG`, `ADDRESS`, `ROAD`, `DISTRICT`, `AMPHUR`, `PROVINCE`, `POSTCODE`, `TEL`, `MOBILE`, `FAX`, `DISCOUNT`, `CREDIT_LIMIT`, `CREDIT_DAY`, `MAP`, `USER_EDIT`, `EDIT_DT`) VALUES
+('5050', '', '', 'บ.เคเอ็ม อินเตอร์แล็บ จำกัด', 'Km Interlab Co.,Ltd', '', '', '', '', '', '', '', '', '', 0.00, 0, 0, '', '', '1900-01-01 00:00:00'),
+('7162', '-', 'คุณณัฐธิสา', 'VV.วิโรจน์ (คลังย่อย)', 'VV.', '89/1 ซ.รัชฏภัณฑ์', 'ถ.ราชปรารภ', 'แขวงมักกะสัน', 'เขตราชเทวี', 'กรุงเทพมหานคร', '10400', '-', '-', '-', 0.00, 0, 0, '', 'kaesinee', '2012-02-13 00:00:00');
 
 --
 -- Indexes for dumped tables
@@ -1939,6 +2859,12 @@ INSERT INTO `user_permission` (`id`, `user_id`, `tent_id`, `position_id`, `creat
 --
 ALTER TABLE `accounts`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `acctypes`
+--
+ALTER TABLE `acctypes`
+  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `barcodes`
@@ -1954,10 +2880,28 @@ ALTER TABLE `brands`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `brand_ps`
+--
+ALTER TABLE `brand_ps`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `categories`
+--
+ALTER TABLE `categories`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- Indexes for table `comments`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `conditions`
+--
+ALTER TABLE `conditions`
+  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `documents`
@@ -1977,6 +2921,12 @@ ALTER TABLE `failed_jobs`
 --
 ALTER TABLE `food`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `grp_ps`
+--
+ALTER TABLE `grp_ps`
+  ADD PRIMARY KEY (`GRP_P`);
 
 --
 -- Indexes for table `homes`
@@ -2033,10 +2983,22 @@ ALTER TABLE `npd_textures`
   ADD PRIMARY KEY (`ID`);
 
 --
+-- Indexes for table `owners`
+--
+ALTER TABLE `owners`
+  ADD PRIMARY KEY (`OWNER`);
+
+--
 -- Indexes for table `password_reset_tokens`
 --
 ALTER TABLE `password_reset_tokens`
   ADD PRIMARY KEY (`email`);
+
+--
+-- Indexes for table `pdms`
+--
+ALTER TABLE `pdms`
+  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `personal_access_tokens`
@@ -2059,6 +3021,12 @@ ALTER TABLE `posts`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `product1s`
+--
+ALTER TABLE `product1s`
+  ADD PRIMARY KEY (`BARCODE`);
+
+--
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
@@ -2077,16 +3045,58 @@ ALTER TABLE `pro_develops`
   ADD PRIMARY KEY (`BARCODE`) USING BTREE;
 
 --
+-- Indexes for table `p_statuses`
+--
+ALTER TABLE `p_statuses`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `series`
+--
+ALTER TABLE `series`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `solutions`
+--
+ALTER TABLE `solutions`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- Indexes for table `submenus`
 --
 ALTER TABLE `submenus`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `sub_categories`
+--
+ALTER TABLE `sub_categories`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- Indexes for table `trn_dona_totambons`
 --
 ALTER TABLE `trn_dona_totambons`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `type_gs`
+--
+ALTER TABLE `type_gs`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `unit_ps`
+--
+ALTER TABLE `unit_ps`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `unit_types`
+--
+ALTER TABLE `unit_types`
+  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `users`
@@ -2100,6 +3110,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `user_permission`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `vendors`
+--
+ALTER TABLE `vendors`
+  ADD PRIMARY KEY (`VEN_ID`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -2163,13 +3179,13 @@ ALTER TABLE `menus`
 -- AUTO_INCREMENT for table `menu_relations`
 --
 ALTER TABLE `menu_relations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=110;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=163;
 
 --
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -2217,13 +3233,13 @@ ALTER TABLE `trn_dona_totambons`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT for table `user_permission`
 --
 ALTER TABLE `user_permission`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
