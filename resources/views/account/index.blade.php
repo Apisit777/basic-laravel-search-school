@@ -55,14 +55,15 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Account1</th>
-                            <th>Account2</th>
-                            <th>Account3</th>
-                            <th>Account4</th>
-                            <th>Account5</th>
-                            <th>Account6</th>
-                            <th>Account7</th>
-                            <th>Account8</th>
+                            <th>ต้นทุน</th>
+                            <th>ภาษีน้ำหอม</th>
+                            <th>ต้นทุน + ภาษีน้ำหอม</th>
+                            <th>ต้นทุน+5%</th>
+                            <th>ต้นทุน+10%</th>
+                            <th>ต้นทุน+อื่นๆ</th>
+                            <th>ราคาขาย KM</th>
+                            <th>ราคาขาย KM + 20%</th>
+                            <th>ราคาขาย KM+อื่นๆ</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -167,60 +168,67 @@
                     targets: 1,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.account1;
+                        return row.cost;
                     }
                 },
                 {
                     targets: 2,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.account2;
+                        return row.perfume_tax;
                     }
                 },
                 {
                     targets: 3,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.account3;
+                        return row.cost_perfume_tax;
                     }
                 },
                 {
                     targets: 4,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.account4;
+                        return row.cost5percent;
                     }
                 },
                 {
                     targets: 5,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.account5;
+                        return row.cost10percent;
                     }
                 },
                 {
                     targets: 6,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.account6;
+                        return row.cost_other;
                     }
                 },
                 {
                     targets: 7,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.account7;
+                        return row.sale_km;
                     }
                 },
                 {
                     targets: 8,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.account8;
+                        return row.sale_km20percent;
                     }
                 },
                 {
                     targets: 9,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.sale_km_other;
+                    }
+                },
+                {
+                    targets: 10,
                     orderable: true,
                     className: 'text-center',
                     render: function(data, type, row) {

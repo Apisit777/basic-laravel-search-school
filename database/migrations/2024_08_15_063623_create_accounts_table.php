@@ -13,14 +13,15 @@ return new class extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
-            $table->double("account1", 8, 2)->nullable()->comment("บัญชี1");
-            $table->double("account2", 8, 2)->nullable()->comment("บัญชี2");
-            $table->double("account3", 8, 2)->nullable()->comment("บัญชี3");
-            $table->double("account4", 8, 2)->nullable()->comment("บัญชี4");
-            $table->double("account5", 8, 2)->nullable()->comment("บัญชี5");
-            $table->double("account6", 8, 2)->nullable()->comment("บัญชี6");
-            $table->double("account7", 8, 2)->nullable()->comment("บัญชี7");
-            $table->double("account8", 8, 2)->nullable()->comment("บัญชี8");
+            $table->double("cost", 8, 2)->nullable()->comment("ต้นทุน");
+            $table->double("perfume_tax", 8, 2)->nullable()->comment("ภาษีน้ำหอม");
+            $table->double("cost_perfume_tax", 8, 2)->nullable()->comment("ต้นทุน + ภาษีน้ำหอม");
+            $table->double("cost5percent", 8, 2)->nullable()->comment("ต้นทุน+5%");
+            $table->double("cost10percent", 8, 2)->nullable()->comment("ต้นทุน+10%");
+            $table->double("cost_other", 8, 2)->nullable()->comment("ต้นทุน+อื่นๆ");
+            $table->double("sale_km", 8, 2)->nullable()->comment("ราคาขาย KM");
+            $table->double("sale_km20percent", 8, 2)->nullable()->comment("ราคาขาย KM + 20%");
+            $table->double("sale_km_other", 8, 2)->nullable()->comment("ราคาขาย KM+อื่นๆ");
             $table->timestamps();
         });
     }

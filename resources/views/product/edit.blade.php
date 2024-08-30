@@ -6,7 +6,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            /* background-color: #7f7f7fe3; */
             width: 100%;
             height: 100%;
             top: 0;
@@ -28,6 +27,27 @@
         <div class="justify-center items-center">
             <div class="mt-5 flex justify-items-start">
                 <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">ทะเบียนสินค้า</p>
+            </div>
+            <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
+                <div class="lg:col-span-4 xl:grid-cols-4">
+                    <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
+                        <div class="md:col-span-3">
+                            <label for="NUMBER">Brand</label>
+                            <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="brand_id" onchange="brandIdChange(this, 'BRAND')">
+                                <option value=""> --- กรุณาเลือก ---</option>
+                                @foreach ($brands as $key => $brand)
+                                    <option value={{ $brand }}>{{ $brand }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="md:col-span-3" >
+                            <label for="name">รหัสสินค้า<span class="text-danger"> *</span></label>
+                            <select class="js-example-basic-single w-full rounded-sm text-xs" id="NUMBER" name="NUMBER" onchange="onSelect(this)">
+                                <option value=""> --- กรุณาเลือก ---</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="fixed flex bottom-5 right-5 z-10 invisible" id="add_other">
@@ -92,15 +112,15 @@
                                     </div>
                                     <div class="md:col-span-3" style="position: relative;">
                                         <label for="">ปริมาณสุทธิ</label>
-                                        <input type="text" name="" id="" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                        <input type="text" name="url" id="url_id" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                     </div>
                                     <div class="md:col-span-3" style="position: relative;">
                                         <label for="">จำนวนกลิ่น</label>
-                                        <input type="text" name="" id="" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                        <input type="text" name="url" id="url_id" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                     </div>
                                     <div class="md:col-span-3" style="position: relative;">
                                         <label for="">จำนวนสี</label>
-                                        <input type="text" name="" id="" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                        <input type="text" name="url" id="url_id" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                     </div>
                                     <div class="md:col-span-6">
                                         <label for="P_CONCEPT" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">หมายเหตุ</label>
@@ -132,30 +152,8 @@
                 </div>
             </div>
 
-            <form class="" action="" method="POST" id="create_product_master">
-                <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
-                    <div class="lg:col-span-4 xl:grid-cols-4">
-                        <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                            <div class="md:col-span-3">
-                                <label for="NUMBER">Brand</label>
-                                <select class="js-example-basic-single w-full rounded-sm text-xs" id="BRAND" name="BRAND" onchange="brandIdChange(this, 'BRAND')">
-                                    <option value=""> --- กรุณาเลือก ---</option>
-                                    @foreach ($brands as $key => $brand)
-                                        <option value={{ $brand }}>{{ $brand }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="md:col-span-3" >
-                                <label for="name">รหัสสินค้า<span class="text-danger"> *</span></label>
-                                <select class="js-example-basic-single w-full rounded-sm text-xs" id="NUMBER" name="NUMBER" onchange="onSelect(this)">
-                                    <option value=""> --- กรุณาเลือก ---</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class='w-12/12 mt-4 relative'>
+            <div class='w-12/12 mt-4 relative'>
+                <form class="" action="" method="POST" id="create_product">
                     <div class="p-4">
                         <ul class="relative m-0 w-full list-none overflow-hidden p-0 transition-[height] duration-200 ease-in-out" data-twe-stepper-init="" data-twe-stepper-type="vertical">
                             <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
@@ -183,43 +181,6 @@
                                                     </svg>
                                                 </div>
                                                 <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
-                                                    <!-- <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
-                                                        <div class="lg:col-span-4">
-                                                            <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
-                                                                <div class="md:col-span-2">
-                                                                    <label for="seq">Item No.</label>
-                                                                    <input type="text" name="seq" id="seq" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-[#101010] dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="{{ $productCode }}" disabled>
-                                                                </div>
-                                                                <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="name">สิ้นค้าของบริษัท<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="company_products" id="company_products" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="name">Bar Code<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="name">ชื่อภาษาไทย<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="name">ชื่อย่อภาษาไทย<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="name">ชื่อภาษาอังกฤษ<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="name">ชื่อย่อภาษาอังกฤษ<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="p-2 ">
-                                                        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-500"></ul>
-                                                    </div> -->
                                                     <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
@@ -243,8 +204,8 @@
                                                                     <label for="name">เจ้าของสินค้า</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="VENDOR" id="VENDOR">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($venders as $key => $vender)
-                                                                            <option value={{ $vender->VEN_ID }}>{{ $vender->VEN_NTHAI }}</option>
+                                                                        @foreach ($list_position as $key => $list_positions)
+                                                                            <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -256,8 +217,8 @@
                                                                     <label for="name">สินค้าของบริษัท</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="GRP_P" id="GRP_P">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($grp_ps as $key => $grp_p)
-                                                                            <option value={{ $grp_p->GRP_P }}>{{ $grp_p->REMARK }}</option>
+                                                                        @foreach ($list_position as $key => $list_positions)
+                                                                            <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -282,8 +243,8 @@
                                                                     <label for="name">ผู้ขาย/ผู้ผลิต</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="SUPPLIER" id="SUPPLIER">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($venders as $key => $vender)
-                                                                            <option value={{ $vender->id }}>{{ $vender->name_position }}</option>
+                                                                        @foreach ($list_position as $key => $list_positions)
+                                                                            <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -295,8 +256,8 @@
                                                                     <label for="name">ประเภทสินค้า</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="TYPE_G" id="TYPE_G">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($type_gs as $key => $type_g)
-                                                                            <option value={{ $type_g->ID }}>{{ $type_g->DESCRIPTION }}</option>
+                                                                        @foreach ($list_position as $key => $list_positions)
+                                                                            <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -308,8 +269,8 @@
                                                                     <label for="name">Solution</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="SOLUTION" id="SOLUTION">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($solutions as $key => $solution)
-                                                                        <option value={{ $solution->ID }}>{{ $solution->DESCRIPTION }}</option>
+                                                                        @foreach ($list_position as $key => $list_positions)
+                                                                        <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -321,8 +282,8 @@
                                                                     <label for="name">Series</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="SERIES" id="SERIES">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($series as $key => $serie)
-                                                                        <option value={{ $serie->ID }}>{{ $serie->DESCRIPTION }}</option>
+                                                                        @foreach ($list_position as $key => $list_positions)
+                                                                        <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -334,8 +295,8 @@
                                                                     <label for="name">Category</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="CATEGORY" id="CATEGORY">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($categorys as $key => $category)
-                                                                            <option value={{ $category->ID }}>{{ $category->DESCRIPTION }}</option>
+                                                                        @foreach ($list_position as $key => $list_positions)
+                                                                        <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -347,8 +308,8 @@
                                                                     <label for="name">Sub Category</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="S_CAT" id="S_CAT">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($sub_categorys as $key => $sub_category)
-                                                                        <option value={{ $sub_category->ID }}>{{ $sub_category->DESCRIPTION }}</option>
+                                                                        @foreach ($list_position as $key => $list_positions)
+                                                                        <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -360,8 +321,8 @@
                                                                     <label for="name">PDM GROUP</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="PDM_GROUP" id="PDM_GROUP">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($pdms as $key => $pdm)
-                                                                        <option value={{ $pdm->ID }}>{{ $pdm->REMARK }}</option>
+                                                                        @foreach ($list_position as $key => $list_positions)
+                                                                        <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -373,8 +334,8 @@
                                                                     <label for="name">สถานะสินค้า</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="STATUS" id="STATUS">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($p_statuss as $key => $p_status)
-                                                                            <option value={{ $p_status->ID  }}>{{ $p_status->DESCRIPTION }}</option>
+                                                                        @foreach ($list_position as $key => $list_positions)
+                                                                            <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -423,13 +384,9 @@
                                                                     <label for="name">รหัส Packsize1</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE1" id="PACK_SIZE1">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        <option value="3">3</option>
-                                                                        <option value="6">6</option>
-                                                                        <option value="9">9</option>
-                                                                        <option value="12">12</option>
-                                                                        <option value="24">24</option>
-                                                                        <option value="30">30</option>
-                                                                        <option value="48">48</option>
+                                                                        @foreach ($list_position as $key => $list_positions)
+                                                                            <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
@@ -441,14 +398,9 @@
                                                                     <label for="name">รหัส Packsize2</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE2" id="PACK_SIZE2">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        <option value=""> --- กรุณาเลือก ---</option>
-                                                                        <option value="3">3</option>
-                                                                        <option value="6">6</option>
-                                                                        <option value="9">9</option>
-                                                                        <option value="12">12</option>
-                                                                        <option value="24">24</option>
-                                                                        <option value="30">30</option>
-                                                                        <option value="48">48</option>
+                                                                        @foreach ($list_position as $key => $list_positions)
+                                                                            <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
@@ -460,14 +412,9 @@
                                                                     <label for="name">รหัส Packsize3</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE3" id="PACK_SIZE3">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        <option value=""> --- กรุณาเลือก ---</option>
-                                                                        <option value="3">3</option>
-                                                                        <option value="6">6</option>
-                                                                        <option value="9">9</option>
-                                                                        <option value="12">12</option>
-                                                                        <option value="24">24</option>
-                                                                        <option value="30">30</option>
-                                                                        <option value="48">48</option>
+                                                                        @foreach ($list_position as $key => $list_positions)
+                                                                            <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
@@ -479,14 +426,9 @@
                                                                     <label for="name">รหัส Packsize4</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE4" id="PACK_SIZE4">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        <option value=""> --- กรุณาเลือก ---</option>
-                                                                        <option value="3">3</option>
-                                                                        <option value="6">6</option>
-                                                                        <option value="9">9</option>
-                                                                        <option value="12">12</option>
-                                                                        <option value="24">24</option>
-                                                                        <option value="30">30</option>
-                                                                        <option value="48">48</option>
+                                                                        @foreach ($list_position as $key => $list_positions)
+                                                                            <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
@@ -495,9 +437,8 @@
                                                                 </div>
                                                                 
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="BARCODE">รหัส Barcode<span class="text-danger"> *</span></label>
-                                                                    <!-- <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled> -->
-                                                                    <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="">
+                                                                    <label for="BARCODE">รหัส Barcode</label>
+                                                                    <input type="text" name="BARCODE" id="BARCODE" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 
                                                                 <div class="md:col-span-3" style="position: relative;">
@@ -534,8 +475,8 @@
                                                                     <label for="name">หน่วยสินค้า</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="UNIT" id="UNIT">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($unit_ps as $key => $unit_p)
-                                                                            <option value={{ $unit_p->ID }}>{{ $unit_p->DESCRIPTION }}</option>
+                                                                        @foreach ($list_position as $key => $list_positions)
+                                                                            <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -543,8 +484,8 @@
                                                                     <label for="name">หน่วยปริมาณ</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="UNIT_TYPE" id="UNIT_TYPE">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($unit_types as $key => $unit_type)
-                                                                            <option value={{ $unit_type->ID }}>{{ $unit_type->DESCRIPTION }}</option>
+                                                                        @foreach ($list_position as $key => $list_positions)
+                                                                            <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -552,8 +493,8 @@
                                                                     <label for="name">ประเภทสินค้า [บัญชี]</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="ACC_TYPE" id="ACC_TYPE">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($acctypes as $key => $acctype)
-                                                                            <option value={{ $acctype->ID }}>{{ $acctype->DESCRIPTION }}</option>
+                                                                        @foreach ($list_position as $key => $list_positions)
+                                                                            <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -561,8 +502,8 @@
                                                                     <label for="name">เงื่อนไขชำระเงิน</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="CONDITION_SALE" id="CONDITION_SALE">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($conditions as $key => $condition)
-                                                                            <option value={{ $condition->ID }}>{{ $condition->DESCRIPTION }}</option>
+                                                                        @foreach ($list_position as $key => $list_positions)
+                                                                            <option value={{ $list_positions->id }}>{{ $list_positions->name_position }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -624,245 +565,6 @@
                                     </div>
                                 </div>
                             </li>
-                            <!-- <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[2.45rem] after:top-[3.6rem] after:mt-px after:h-[calc(100%-2.45rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
-                                <div data-twe-stepper-head-ref="" class="setpcollep flex cursor-pointer items-center p-6 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
-                                    <span data-twe-stepper-head-icon-ref="" class="bg_step_color me-3 flex h-[1.938rem] w-[1.938rem] items-center justify-center rounded-full text-sm  !bg-primary-100 !text-primary-700 dark:!bg-slate-900 dark:!text-primary-500">
-                                        1
-                                    </span>
-                                    <span data-twe-stepper-head-text-ref="" class="after:absolute after:flex after:text-[0.8rem] text-black/50 dark:text-white/50 font-medium !text-black/50 dark:!text-white/50">
-                                        ข้อมูลผลิตภัณฑ์
-                                    </span>
-                                </div>
-                                <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[3.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
-                                    <div class="grid grid-cols-5 gap-10">
-                                        <div class="form col-span-5">
-                                            <div class="relative w-full overflow-hidden peer-checked:hidden">
-                                                <input type="checkbox" class="setcheckbox peer absolute top-0 inset-x-0 w-full h-12 opacity-0 cursor-pointer">
-                                                <div class="bg-[#d7d8db] dark:bg-[#303030] text-white h-12 w-full pl-5 flex items-center">
-                                                    <h1 class="text-gray-900 dark:text-white text-lg">
-                                                        ข้อมูลผลิตภัณฑ์
-                                                    </h1>
-                                                </div>
-                                                <div class="absolute top-3 right-3 text-white transition-tranform duration-500 rotate-180 peer-checked:rotate-0">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900 dark:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
-                                                    </svg>
-                                                </div>
-                                                <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
-                                                    <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
-                                                        <div class="lg:col-span-4">
-                                                            <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
-                                                                <div class="md:col-span-6">
-                                                                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Concept</label>
-                                                                    <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
-                                                                </div>
-                                                                <div class="md:col-span-6">
-                                                                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Benefix</label>
-                                                                    <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
-                                                                </div>
-                                                                <div class="md:col-span-2" >
-                                                                    <label for="name">texture<span class="text-danger"> *</span></label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="" name="">
-                                                                        <option value=""> --- กรุณาเลือก ---</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="name">ระบุ<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="name">Color<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-6" style="position: relative;">
-                                                                    <label for="name">Fragrance Type<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-6">
-                                                                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Active Ingrement</label>
-                                                                    <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
-                                                                </div>
-                                                                <div class="md:col-span-6" style="position: relative;">
-                                                                    <label for="name">สินค้าต้นแบบที่ใช้วิจัย (STD)<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-6" style="position: relative;">
-                                                                    <label for="name">P/K ที่ใช้<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[2.45rem] after:top-[3.6rem] after:mt-px after:h-[calc(100%-2.45rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
-                                <div data-twe-stepper-head-ref="" class="setpcollep  flex cursor-pointer items-center p-6 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
-                                    <span data-twe-stepper-head-icon-ref="" class="bg_step_color me-3 flex h-[1.938rem] w-[1.938rem] items-center justify-center rounded-full text-sm  !bg-primary-100 !text-primary-700 dark:!bg-slate-900 dark:!text-primary-500">
-                                        2
-                                    </span>
-                                    <span data-twe-stepper-head-text-ref="" class="after:absolute after:flex after:text-[0.8rem] text-black/50 dark:text-white/50 font-medium !text-black/50 dark:!text-white/50">
-                                        รายละเอียดผลิตภัณฑ์
-                                    </span>
-                                </div>
-                                <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[3.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
-                                    <div class="grid grid-cols-5 gap-10">
-                                                <div class="form col-span-5">
-                                            <div class="relative w-full overflow-hidden">
-                                                <input type="checkbox" class="setcheckbox peer absolute top-0 inset-x-0 w-full h-12 opacity-0 cursor-pointer">
-                                                <div class="bg-[#d7d8db] dark:bg-[#303030] text-white h-12 w-full pl-5 flex items-center">
-                                                    <h1 class="text-gray-900 dark:text-white text-lg">
-                                                        รายละเอียดผลิตภัณฑ์
-                                                    </h1>
-                                                </div>
-                                                <div class="absolute top-3 right-3 text-white transition-tranform duration-500 rotate-180 peer-checked:rotate-0">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900 dark:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
-                                                    </svg>
-                                                </div>
-                                                <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
-                                                    <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
-                                                        <div class="lg:col-span-4">
-                                                            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">หายเลขเอกสาร<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">Barcode<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">Job Ref. No.<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3" >
-                                                                    <label for="name">วันที่<span class="text-danger"> *</span></label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="" name="">
-                                                                        <option value=""> --- กรุณาเลือก ---</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="md:col-span-6" style="position: relative;">
-                                                                    <label for="name">Customer (OEM)<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3" >
-                                                                    <label for="name">Product Co-ordinator<span class="text-danger"> *</span></label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="" name="">
-                                                                        <option value=""> --- กรุณาเลือก ---</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="md:col-span-3" >
-                                                                    <label for="name">Marketing Mamager<span class="text-danger"> *</span></label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="" name="">
-                                                                        <option value=""> --- กรุณาเลือก ---</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="md:col-span-6" style="position: relative;">
-                                                                    <label for="name">ชื่อผลิตภัณฑ์<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3" >
-                                                                    <label for="name">ประเภทผลิตภัณฑ์<span class="text-danger"> *</span></label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="" name="">
-                                                                        <option value=""> --- กรุณาเลือก ---</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">ปริมาณสุทธิ<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">จำนวนกลิ่น<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">จำนวนสี<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">Target Group<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3" >
-                                                                    <label for="name">Target Launch Date<span class="text-danger"> *</span></label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="" name="">
-                                                                        <option value=""> --- กรุณาเลือก ---</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">Target Price F/G<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">Draft Cost Excluded PKG<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">Bulk<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">First Order<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[2.45rem] after:top-[3.6rem] after:mt-px after:h-[calc(100%-2.45rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
-                                <div data-twe-stepper-head-ref="" class="setpcollep  flex cursor-pointer items-center p-6 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
-                                    <span data-twe-stepper-head-icon-ref="" class="bg_step_color me-3 flex h-[1.938rem] w-[1.938rem] items-center justify-center rounded-full text-sm  !bg-primary-100 !text-primary-700 dark:!bg-slate-900 dark:!text-primary-500">
-                                        2
-                                    </span>
-                                    <span data-twe-stepper-head-text-ref="" class="after:absolute after:flex after:text-[0.8rem] text-black/50 dark:text-white/50 font-medium !text-black/50 dark:!text-white/50">
-                                        ความต้องการเพิ่มเติม
-                                    </span>
-                                </div>
-                                <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[3.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
-                                    <div class="grid grid-cols-5 gap-10">
-                                                <div class="form col-span-5">
-                                            <div class="relative w-full overflow-hidden">
-                                                <input type="checkbox" class="setcheckbox peer absolute top-0 inset-x-0 w-full h-12 opacity-0 cursor-pointer">
-                                                <div class="bg-[#d7d8db] dark:bg-[#303030] text-white h-12 w-full pl-5 flex items-center">
-                                                    <h1 class="text-gray-900 dark:text-white text-lg">
-                                                        ความต้องการเพิ่มเติม
-                                                    </h1>
-                                                </div>
-                                                <div class="absolute top-3 right-3 text-white transition-tranform duration-500 rotate-180 peer-checked:rotate-0">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900 dark:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
-                                                    </svg>
-                                                </div>
-                                                <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
-                                                    <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
-                                                        <div class="lg:col-span-4">
-                                                            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                                                                <div class="md:col-span-3">
-                                                                    <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ส่วนประกอบหลังกล่อง</label>
-                                                                    <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">ระยะเวลาหลังเปิดใช้<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li> -->
                         </ul>
                         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
                         <div id="loader" class="loading absolute hidden bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]">
@@ -887,7 +589,7 @@
                                     </svg>
                                     Back
                                 </a>
-                                <a class=" bg-[#3b5998] hover:bg-[#48639d] text-white font-bold py-1.5 px-4 rounded cursor-pointer" onclick="createProductMaster()">
+                                <a class=" bg-[#3b5998] hover:bg-[#48639d] text-white font-bold py-1.5 px-4 rounded cursor-pointer" onclick="createNPDRequest()">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF" class="-mt-1 w-5 h-5 hidden md:inline-block">
                                         <path d="M0 0h24v24H0V0z" fill="none"></path>
                                         <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
@@ -898,16 +600,14 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
 
-    {{-- <script src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"></script> --}}
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
 
@@ -938,6 +638,24 @@
             document.querySelectorAll('.setcheckbox')[0].checked = true
             document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
             document.querySelectorAll('.bg_step_color')[0].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+        });
+
+        let i = 0;
+        $('#add').click( () => {
+            ++i;
+            $('#table').append(
+                `<tr>
+                    <td>
+                        <input class="w-11/12 text-gray-900 text-sm form-control" type="text" name="inputs[`+ i +`][name]" placeholder="Name">
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger remove-table-row">Remove</button>
+                    </td>
+                </tr>`);
+        });
+        console.log("Index: ", ++i)
+        $(document).on('click', '.remove-table-row', function() {
+            $(this).parents('tr').remove();
         });
 
         jQuery('#username_loading').hide();
@@ -986,147 +704,5 @@
                 }
             });
         }
-
-        let datass = {}
-        function brandIdChange(e, params) {
-            // console.log("🚀 ~ brandIdChange ~ e:", e.value)
-            if(e.value == 'OTHER') {
-                jQuery("#add_other").removeClass("invisible");
-                document.querySelectorAll('.setcheckbox')[0].checked = false
-                document.querySelectorAll('.bg_step_color')[0].classList.add('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
-                document.querySelectorAll('.bg_step_color')[0].classList.remove('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
-            } else {
-                jQuery("#add_other").addClass("invisible");
-                document.querySelectorAll('.setcheckbox')[0].checked = true
-                document.querySelectorAll('.bg_step_color')[0].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
-                document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
-            }
-            let url = "";
-            let select = "";
-
-            $('#NAME_THAI').val('');
-            $('#SHORT_THAI').val('');
-            $('#NAME_ENG').val('');
-            $('#SHORT_ENG').val('');
-            $('#AGE').val('');
-            $('#WHOLE_SALE').val('');
-            $('#REGISTER').val('');
-            $('#WIDTH').val('');
-            $('#WIDE').val('');
-            $('#HEIGHT').val('');
-            $('#PRICE').val('');
-            $('#COST').val('');
-            $('#UNIT_Q').val('');
-            $('#GP').val('');
-            // $('#BARCODE').val('');
-
-            if (params === 'BRAND') {
-                url = '{{ route('product.product_master_get_brand_list_ajax') }}?BRAND=' + e.value;
-                select = jQuery('#NUMBER');
-                jQuery('#NUMBER').find("option").remove();
-                select.find("option").remove();
-                const newop = new Option("--- กรุณาเลือก ---", "");
-                jQuery(newop).appendTo(jQuery('#NUMBER'))
-            }
-
-            jQuery.ajax({
-                method: "GET",
-                url,
-                dataType: 'json',
-                beforeSend: function () {
-                    select.find("option").remove();
-                    const newoption = new Option("LOADING..", "");
-                    jQuery(newoption).appendTo(select)
-
-                },
-                success: function (data) {
-                    console.log("🚀 ~ brandIdChange ~ data:", data.productCodes)
-                    if (data.productCodes) {
-                        datass = data.productCodes
-                        select.find("option").remove();
-                        const newop = new Option("--- กรุณาเลือก ---", "");
-                        jQuery(newop).appendTo(select)
-                        data.productCodes.map((item, index) => {
-                            // console.log('item', item)
-                            const newoption = new Option(item.Code, item.BARCODE);
-                            jQuery(newoption).appendTo(select)
-                        });
-                    }
-                },
-                error: function (params) {
-                    select.find("option").remove();
-                    const newop = new Option("error", "");
-                    jQuery(newop).appendTo(select)
-                    console.log('ajax error ::', params);
-                }
-            });
-        }
-
-        function onSelect(BARCODE) {
-            console.log("🚀 ~ onSelect ~ datas:", BARCODE)
-            let curData = datass.find(f => f.BARCODE === BARCODE.value) || {}
-            if (curData.BARCODE) {
-                console.log('1')
-                $('#NAME_THAI').val(curData.NAME_THAI);
-                $('#SHORT_THAI').val(curData.SHORT_THAI);
-                $('#NAME_ENG').val(curData.NAME_ENG);
-                $('#SHORT_ENG').val(curData.SHORT_ENG);
-                $('#AGE').val(curData.AGE);
-                $('#WHOLE_SALE').val(curData.WHOLE_SALE);
-                $('#REGISTER').val(curData.REGISTER);
-                $('#WIDTH').val(curData.WIDTH);
-                $('#WIDE').val(curData.WIDE);
-                $('#HEIGHT').val(curData.HEIGHT);
-                $('#PRICE').val(curData.PRICE);
-                $('#COST').val(curData.COST);
-                $('#UNIT_Q').val(curData.UNIT_Q);
-                $('#GP').val(curData.GP);
-                // $('#BARCODE').val(curData.BARCODE);
-            }
-        }
-
-        const dlayMessage = 1000;
-
-        function createProductMaster() {
-            jQuery.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                method: "POST",
-                url: "{{ route('product.store') }}",
-                data: $("#create_product_master").serialize(),
-                beforeSend: function () {
-                    $('#loader').removeClass('hidden')
-                },
-                success: function(res){
-                    if(res.success == true) {
-                        window.location = "/product";
-                    } else {
-                        toastr.error("Can't Create Product!");
-                    }
-                    return false;
-                },
-                error: function (params) {
-                    setTimeout(function() {
-                        errorMessage("Can't Create Username!");
-                    },dlayMessage)
-                    setTimeout(function() {
-                        toastr.error("Can't Create Username!");
-                    },dlayMessage)
-                }
-            });
-        }
-
-        function successMessage(text) {
-            $('#loader').addClass('hidden');
-            $('#name').val('')
-        }
-        function errorMessage(text) {
-            $('#loader').addClass('hidden');
-            $('#name').val('')
-        }
-    </script>
     </script>
 @endsection

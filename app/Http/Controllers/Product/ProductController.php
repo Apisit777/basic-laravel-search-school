@@ -10,6 +10,7 @@ use App\Models\Npd_pdms;
 use App\Models\Npd_categorys;
 use App\Models\Npd_textures;
 use App\Models\Pro_develops;
+use App\Models\Product1;
 use App\Models\Barcode;
 use App\Models\Document;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,21 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Brand;
+use App\Models\Owner;
+use App\Models\Type_g;
+use App\Models\Solution;
+use App\Models\Series;
+use App\Models\Category;
+use App\Models\Sub_category;
+use App\Models\Pdm;
+use App\Models\P_status;
+use App\Models\Grp_p;
+use App\Models\Brand_p;
+use App\Models\Vendor;
+use App\Models\Unit_p;
+use App\Models\Unit_type;
+use App\Models\Acctype;
+use App\Models\Condition;
 
 class ProductController extends Controller
 {
@@ -25,6 +41,8 @@ class ProductController extends Controller
      */
     public function index()
     {
+        $data = Product1::all();
+        // dd($data );
         $user = User::all();
 
         $product_seq = Product::select('seq')->get();
@@ -32,18 +50,46 @@ class ProductController extends Controller
         return view('product.index', compact('user', 'product_seq'));
     }
 
+    public function productMasterGetBrandListAjax(Request $request)
+    {
+        $productCodes = Product1::select(
+                'product1s.*',
+                DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code')
+            )
+            ->where('BRAND', $request->input('BRAND'))
+            ->orderby('Code')
+            ->get();
+
+        // dd($productCodes);
+        return response()->json(['productCodes' => $productCodes]);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create(Request $request)
     {
+        $owners = Owner::all();
+        $grp_ps = Grp_p::all();
+        $brand_ps = Brand_p::all();
+        $venders = Vendor::all();
+        $type_gs = Type_g::all();
+        $solutions = Solution::all();
+        $series = Series::all();
+        $categorys = Category::all();
+        $sub_categorys = Sub_category::all();
+        $pdms = Pdm::all();
+        $p_statuss = P_status::all();
+        $unit_ps = Unit_p::all();
+        $unit_types = Unit_type::all();
+        $acctypes = Acctype::all();
+        $conditions = Condition::all();
+
         $productCodeMax = Product::max('seq');
         $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
         $productCode = 'P'.sprintf('%05d', $productCodeNumber);
 
         $list_position = position::select('id', 'name_position')->get();
-        // $brands = Brand::listBrand();
-        // dd($productCode);
 
         $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
@@ -69,7 +115,8 @@ class ProductController extends Controller
             ->toArray();
         }
 
-        return view('product.create', compact('productCode', 'list_position', 'brands'));
+        // dd($venders);
+        return view('product.create', compact('productCode', 'list_position', 'brands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
     }
     public function productDetailCreate(Request $request)
     {
@@ -87,22 +134,93 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // DB::beginTransaction();
+        // try {
+        //     $data_product = [
+        //         'name' => $request->input('name')
+        //     ];
+        //     $product = Product::create($data_product);
+        //     $productCodeMax = Product::max('seq');
+        //     $productCodeNumber =  preg_replace( '/[^0-9]/', '', $productCodeMax ) + 1;
+        //     $productCode = 'T'.sprintf('%06d', $productCodeNumber);
+        //     $response = Product::where('id', $product->id)->update([
+        //         'seq' => $productCode,
+        //     ]);
+        //     DB::commit();
+        //     $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
+        //     return response()->json(['success' => true]);
+        // } catch (\Exception $e) {
+        //     DB::rollback();
+        //     $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+        //     return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        // }
+
+        // dd($request);
         DB::beginTransaction();
         try {
             $data_product = [
-                'name' => $request->input('name')
+                'BRAND' => $request->input('BRAND'),
+                'PRODUCT' => $request->input('PRODUCT'),
+                'BARCODE' => $request->input('BARCODE'),
+                'COLOR' => $request->input('COLOR'),
+                'GRP_P' => $request->input('GRP_P'),
+                'SUPPLIER' => $request->input('SUPPLIER'),
+                'NAME_THAI' => $request->input('NAME_THAI'),
+                'NAME_ENG' => $request->input('NAME_ENG'),
+                'SHORT_THAI' => $request->input('SHORT_THAI'),
+                'SHORT_ENG' => $request->input('SHORT_ENG'),
+                'VENDOR' => $request->input('VENDOR'),
+                'PRICE' => $request->input('PRICE'),
+                'COST' => $request->input('COST'),
+                'UNIT' => $request->input('UNIT'),
+                'UNIT_Q' => $request->input('UNIT_Q'),
+                'SOLUTION' => $request->input('SOLUTION'),
+                'SERIES' => $request->input('SERIES'),
+                'CATEGORY' => $request->input('CATEGORY'),
+                'STATUS' => $request->input('STATUS'),
+                'S_CAT' => $request->input('S_CAT'),
+                'PDM_GROUP' => $request->input('PDM_GROUP'),
+                'BRAND_P' => $request->input('BRAND_P'),
+                'REGISTER' => $request->input('REGISTER'),
+                'CONDITION_SALE' => $request->input('CONDITION_SALE'),
+                'WHOLE_SALE' => $request->input('WHOLE_SALE'),
+                'GP' => $request->input('GP'),
+                'O_PRODUCT' => $request->input('O_PRODUCT'),
+                'BAR_PACK1' => $request->input('BAR_PACK1'),
+                'BAR_PACK2' => $request->input('BAR_PACK2'),
+                'BAR_PACK3' => $request->input('BAR_PACK3'),
+                'BAR_PACK4' => $request->input('BAR_PACK4'),
+                'PACK_SIZE1' => $request->input('PACK_SIZE1'),
+                'PACK_SIZE2' => $request->input('PACK_SIZE2'),
+                'PACK_SIZE3' => $request->input('PACK_SIZE3'),
+                'PACK_SIZE4' => $request->input('PACK_SIZE4'),
+                'REG_DATE' => $request->input('REG_DATE'),
+                'AGE' => $request->input('AGE'),
+                'WIDTH' => $request->input('WIDTH'),
+                'HEIGHT' => $request->input('HEIGHT'),
+                'WIDE' => $request->input('WIDE'),
+                'NAME_EXP' => $request->input('NAME_EXP'),
+                'NET_WEIGHT' => $request->input('NET_WEIGHT'),
+                'UNIT_TYPE' => $request->input('UNIT_TYPE'),
+                'TYPE_G' => $request->input('TYPE_G'),
+                'OPT_DATE1' => $request->input('OPT_DATE1'),
+                'OPT_DATE2' => $request->input('OPT_DATE2'),
+                'OPT_TXT1' => $request->input('OPT_TXT1'),
+                'OPT_TXT2' => $request->input('OPT_TXT2'),
+                'OPT_NUM1' => $request->input('OPT_NUM1'),
+                'OPT_NUM2' => $request->input('OPT_NUM2'),
+                'ACC_TYPE' => $request->input('ACC_TYPE'),
+                'ACC_DT' => $request->input('ACC_DT'),
+                'EDIT_DT' => $request->input('EDIT_DT'),
+                'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
+                'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',
+                'STORAGE_TEMP' => is_null($request->input('STORAGE_TEMP')) ? 'N' : 'Y',
+                'CONTROL_STK' => is_null($request->input('CONTROL_STK')) ? 'N' : 'Y',
+                'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',     
+                'USER_EDIT' => Auth::user()->id
             ];
 
-            $product = Product::create($data_product);
-
-            $productCodeMax = Product::max('seq');
-            $productCodeNumber =  preg_replace( '/[^0-9]/', '', $productCodeMax ) + 1;
-            $productCode = 'T'.sprintf('%06d', $productCodeNumber);
-
-            $response = Product::where('id', $product->id)->update([
-                'seq' => $productCode,
-            ]);
-
+            $productMaster = Product1::create($data_product);
             DB::commit();
             $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
             return response()->json(['success' => true]);
@@ -124,9 +242,24 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Product $product)
+    public function edit(Product $product, $id_barcode)
     {
-        //
+        $data = Product1::select(
+            'product1s.*',
+            DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
+            // 'npd_cos.ID AS ID_NPD',
+            // 'npd_pdms.ID AS ID_PDM',
+            // 'npd_categorys.ID AS ID_CATEGORY',
+            // 'npd_textures.ID AS ID_TEXTURE',
+        )
+            // ->join('npd_cos', 'pro_develops.NPD', '=', 'npd_cos.ID')
+            // ->join('npd_pdms', 'pro_develops.PDM', '=', 'npd_pdms.ID')
+            // ->join('npd_categorys', 'pro_develops.CATEGORY', '=', 'npd_categorys.ID')
+            // ->join('npd_textures', 'pro_develops.TEXTURE', '=', 'npd_textures.ID')
+            ->firstWhere('BARCODE', '=', $id_barcode);
+
+        // dd($data);
+        return view('product.edit', compact('data'));
     }
 
     /**
@@ -178,13 +311,13 @@ class ProductController extends Controller
         //     'pro_develops.NAME_ENG',
         //     'pro_develops.BARCODE', 
         // ];
-        $data = Product::select(
-            'id',
-            'seq',
-            'name'
+
+        $data = Product1::select(
+            'BRAND',
+            'BARCODE',
+            'NAME_THAI'
         )
-        ->where('status', 1)
-        ->orderBy('id', 'ASC');
+        ->orderBy('BARCODE', 'DESC');
 
         if (null != $BARCODE) {
             $productCodes = $data->where(DB::raw('SUBSTRING(BARCODE, 8, 5)'), $request->input('BARCODE'))->pluck('BARCODE');
