@@ -29,53 +29,55 @@
             <div class="mt-5 flex justify-items-start">
                 <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">New Product Development Request</p>
             </div>
-            <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
-                <div class="lg:col-span-4 xl:grid-cols-4">
-                    <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                        <!-- <div class="md:col-span-2" >
-                            <label for="name">Customer</label>
-                            <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+            <form class="" action="" method="POST" id="create_NPDRequest">
+                <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
+                    <div class="lg:col-span-4 xl:grid-cols-4">
+                        <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
+                            <!-- <div class="md:col-span-2" >
+                                <label for="name">Customer</label>
+                                <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                            </div>
+                            <div class="md:col-span-2" >
+                                <label for="name">รหัสสินค้า</label>
+                                <select class="js-example-basic-single w-full rounded-sm text-xs" id="product_id" name="product_id" onchange="onSelect(this)">
+                                    <option value=""> --- กรุณาเลือก ---</option>
+                                </select>
+                            </div> -->
+                            <div class="md:col-span-3">
+                                <label for="BRAND">Brand</label>
+                                <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND" onchange="brandIdChange(this, 'BRAND')">
+                                    <option value=""> --- กรุณาเลือก ---</option>
+                                    @foreach ($brands as $key => $brand)
+                                        <option value={{ $brand }}>{{ $brand }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="md:col-span-3" style="position: relative;">
+                                <label for="code">รหัสสินค้า<span class="text-danger"> *</span></label>
+                                <input type="text" name="code" id="code" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled>
+                            </div>
+                            <!-- <div class="md:col-span-3" >
+                                <label for="NUMBER">รหัส</label>
+                                <select class="js-example-basic-single w-full rounded-sm text-xs" id="NUMBER" name="NUMBER" onchange="onSelect(this)">
+                                    <option value=""> --- กรุณาเลือก ---</option>
+                                </select>
+                            </div> -->
+                            <!-- <div class="fixed flex bottom-5 right-5 z-10 invisible" id="add_other">
+                                <a href="#" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-2 mr-2 mt-20 rounded-full group">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                        <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                                    </svg>
+                                </a>
+                            </div> -->
+                            <!-- <div class="md:col-span-3">
+                                <label for="NUMBER">รหัสสินค้า</label>
+                                <input type="text" name="NUMBER" id="NUMBER" class="h-10 rounded-sm px-4 text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="{{ $productCode }}" disabled>
+                            </div> -->
                         </div>
-                        <div class="md:col-span-2" >
-                            <label for="name">รหัสสินค้า</label>
-                            <select class="js-example-basic-single w-full rounded-sm text-xs" id="product_id" name="product_id" onchange="onSelect(this)">
-                                <option value=""> --- กรุณาเลือก ---</option>
-                            </select>
-                        </div> -->
-                        <div class="md:col-span-3">
-                            <label for="BRAND">Brand</label>
-                            <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND" onchange="brandIdChange(this, 'BRAND')">
-                                <option value=""> --- กรุณาเลือก ---</option>
-                                @foreach ($brands as $key => $brand)
-                                    <option value={{ $brand }}>{{ $brand }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="md:col-span-3" >
-                            <label for="NUMBER">รหัส</label>
-                            <select class="js-example-basic-single w-full rounded-sm text-xs" id="NUMBER" name="NUMBER" onchange="onSelect(this)">
-                                <option value=""> --- กรุณาเลือก ---</option>
-                            </select>
-                        </div>
-                        <!-- <div class="fixed flex bottom-5 right-5 z-10 invisible" id="add_other">
-                            <a href="#" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-2 mr-2 mt-20 rounded-full group">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                                    <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
-                                </svg>
-                            </a>
-                        </div> -->
-                        <!-- <div class="md:col-span-3">
-                            <label for="NUMBER">รหัสสินค้า</label>
-                            <input type="text" name="NUMBER" id="NUMBER" class="h-10 rounded-sm px-4 text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="{{ $productCode }}" disabled>
-                        </div> -->
                     </div>
                 </div>
-            </div>
 
-            <div class='w-12/12 mt-4 relative'>
-                <form class="" action="" method="POST" id="create_NPDRequest">
-                    <input type="hidden" id="DOC_TP" name="DOC_TP" value="OP">
-                    <input type="hidden" id="BRAND" name="BRAND" value="OP">
+                <div class='w-12/12 mt-4 relative'>
                     <div class="p-4">
                         <ul class="relative m-0 w-full list-none overflow-hidden p-0 transition-[height] duration-200 ease-in-out" data-twe-stepper-init="" data-twe-stepper-type="vertical">
                             <!-- <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[2.45rem] after:top-[3.6rem] after:mt-px after:h-[calc(100%-2.45rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
@@ -273,9 +275,13 @@
                                                                     <label for="DOC_NO">หมายเลขเอกสาร</label>
                                                                     <input type="text" name="DOC_NO" id="DOC_NO" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                <!-- <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="BARCODE">Barcode<span class="text-danger"> *</span></label>
                                                                     <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="{{ $digits_barcode }}" disabled>
+                                                                </div> -->
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="barcodeTest">Barcode<span class="text-danger"> *</span></label>
+                                                                    <input type="text" name="barcodeTest" id="barcodeTest" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="JOB_REFNO">Job Ref. No.</label>
@@ -283,7 +289,7 @@
                                                                 </div>
                                                                 <div class="md:col-span-3" >
                                                                     <label for="DOC_DT">วันที่</label>
-                                                                    <input type="date" name="DOC_DT" id="DOC_DT" style="height: 38px;" class="form-control border-[#303030] bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="" id="" placeholder="" autocomplete="off" value="<?php echo date('Y-m-d'); ?>">
+                                                                    <input type="date" name="DOC_DT" id="DOC_DT" style="height: 38px;" class="form-control border-[#303030] bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" placeholder="" autocomplete="off" value="<?php echo date('Y-m-d'); ?>">
                                                                 </div>
                                                                 <div class="md:col-span-6" style="position: relative;">
                                                                     <label for="CUST_OEM">Customer (OEM)</label>
@@ -398,7 +404,7 @@
                                                                     <textarea id="P_CONCEPT" name="P_CONCEPT" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
                                                                 </div>
                                                                 <div class="md:col-span-6">
-                                                                    <label for="P_BENEFIT" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Benefix</label>
+                                                                    <label for="P_BENEFIT" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Product Benefit</label>
                                                                     <textarea id="P_BENEFIT" name="P_BENEFIT" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
                                                                 </div>
                                                                 <div class="md:col-span-2" >
@@ -583,27 +589,23 @@
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 
-    {{-- <script src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"></script> --}}
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
 
         let barcodes = <?php echo json_encode($testBarcode); ?>;
-        // console.log("🚀 ~ barcodes:", barcodes)
 
         getParmeterLogin()
         function getParmeterLogin() {
             let dataLogin = sessionStorage.getItem("credetail");
             let dataJson = JSON.parse(dataLogin)
-            // console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
         }
 
         function onOpenhandler(params) {
@@ -633,24 +635,6 @@
             document.querySelectorAll('.setcheckbox')[0].checked = true
             document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
             document.querySelectorAll('.bg_step_color')[0].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
-        });
-
-        let i = 0;
-        $('#add').click( () => {
-            ++i;
-            $('#table').append(
-                `<tr>
-                    <td>
-                        <input class="w-11/12 text-gray-900 text-sm form-control" type="text" name="inputs[`+ i +`][name]" placeholder="Name">
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-danger remove-table-row">Remove</button>
-                    </td>
-                </tr>`);
-        });
-        // console.log("Index: ", ++i)
-        $(document).on('click', '.remove-table-row', function() {
-            $(this).parents('tr').remove();
         });
 
         jQuery('#username_loading').hide();
@@ -702,17 +686,6 @@
 
         let datass = {}
         function brandIdChange(e, params) {
-            if(e.value == 'OTHER') {
-                jQuery("#add_other").removeClass("invisible");
-                document.querySelectorAll('.setcheckbox')[0].checked = false
-                document.querySelectorAll('.bg_step_color')[0].classList.add('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
-                document.querySelectorAll('.bg_step_color')[0].classList.remove('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
-            } else {
-                jQuery("#add_other").addClass("invisible");
-                document.querySelectorAll('.setcheckbox')[0].checked = true
-                document.querySelectorAll('.bg_step_color')[0].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
-                document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
-            }
             let url = "";
             let select = "";
 
@@ -743,6 +716,7 @@
             $('#REF_COLOR').val('');
             $('#REF_FRAGRANCE').val('');
             $('#OEM_STD').val('');
+            $("#barcodeTest").val('');
 
             if (params === 'BRAND') {
                 url = '{{ route('get_brand_list_ajax') }}?BRAND=' + e.value;
@@ -750,7 +724,7 @@
                 jQuery('#NUMBER').find("option").remove();
                 select.find("option").remove();
                 const newop = new Option("--- กรุณาเลือก ---", "");
-                jQuery(newop).appendTo(jQuery('#NUMBER'))
+                jQuery(newop).appendTo(jQuery('#NUMBER'));
             }
 
             jQuery.ajax({
@@ -760,18 +734,18 @@
                 beforeSend: function () {
                     select.find("option").remove();
                     const newoption = new Option("LOADING..", "");
-                    jQuery(newoption).appendTo(select)
-
+                    jQuery(newoption).appendTo(select);
                 },
                 success: function (data) {
-                    console.log("🚀 ~ brandIdChange ~ data:", data)
-                    if (data) {
-                        datass = data
+                    jQuery("#barcodeTest").val(data.digits_barcode);
+                    jQuery("#code").val(data.digits_barcode.substring(7, 12));
+                    if (data.productCodes) {
+                        datass = data.productCodes
                         select.find("option").remove();
                         const newop = new Option("--- กรุณาเลือก ---", "");
                         jQuery(newop).appendTo(select)
-                        console.log('data', data)
-                        data.map((item, index) => {
+                        // console.log('data', data)
+                        data.productCodes.map((item, index) => {
                             const newoption = new Option(item.Code, item.JOB_REFNO);
                             jQuery(newoption).appendTo(select)
                         });
@@ -787,7 +761,6 @@
         }
 
         function onSelect(JOB_REFNO) {
-            console.log("🚀 ~ onSelect ~ JOB_REFNO:", JOB_REFNO)
             let curData = datass.find(f => f.JOB_REFNO === JOB_REFNO.value) || {}
             if (curData.JOB_REFNO) {
                 console.log('1')
@@ -819,11 +792,6 @@
                 $('#REF_FRAGRANCE').val(curData.REF_FRAGRANCE);
                 $('#OEM_STD').val(curData.OEM_STD);
             }
-            // else {
-            //     console.log('2')
-            //     $('#NAME_ENG').val();
-            //     $('#JOB_REFNO').val();
-            // }
         }
 
         toastr.options = {

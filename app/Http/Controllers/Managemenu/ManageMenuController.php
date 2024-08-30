@@ -258,9 +258,6 @@ class ManageMenuController extends Controller
     }
     public function menuAccess(Request $request)
     {
-        // $data = menu_relation::where('position_id', $request->input('pos_id'))->pluck('menu_id');
-        // $menus = menu::all();
-
         // $check_permission_menus = [];
         // foreach ($menus as $key => $menu) {
         //     foreach ($menu->getMenuRelation()->where('position_id', '=', $request->input('pos_id'))->get() as $key_sub_menu => $menu_relation) {
@@ -286,7 +283,6 @@ class ManageMenuController extends Controller
         }
 
         // dd($submenu_array);
-        // return response()->json(['check_permission_menus' => $check_permission_menus, 'submenu_array' => $submenu_array]);
         return response()->json(['submenu_array' => $submenu_array]);
     }
 
@@ -315,13 +311,20 @@ class ManageMenuController extends Controller
         }
 
         return response()->json(['menu' => $menu_relation]);
-        // return response()->json(['menu' => $menu_relation, 'submenu' => $submenu_relation]);
     }
     public function deleteAccess(Request $request)
     {
-        $delete = menu_relation::where('position_id', $request->input('pos_id'))
+        if($request->submenuId > 0) {
+            $delete = menu_relation::where('position_id', $request->input('pos_id'))
+                ->where('menu_id', $request->input('menu_id'))
+                ->where('submenu_id', $request->submenuId)
+                ->whereNotNull('submenu_id')
+                ->delete();
+        } else {
+            $delete = menu_relation::where('position_id', $request->input('pos_id'))
             ->where('menu_id', $request->input('menu_id'))
             ->delete();
+        }
 
         return response()->json($delete);
     }

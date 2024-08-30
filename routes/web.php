@@ -79,6 +79,7 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/', [ProductFormController::class, 'store'])->name('store');
         Route::get('/create', [ProductFormController::class, 'create'])->name('create');
         Route::get('/show/{id_barcode}', [ProductFormController::class, 'show'])->name('show');
+        Route::post('/duplicate_npd_request/{id_barcode}', [ProductFormController::class, 'duplicateNpdRequest'])->name('show_barcode');
         Route::get('/edit/{id_barcode}', [ProductFormController::class, 'edit'])->name('edit');
         Route::post('/update/{id_barcode}', [ProductFormController::class, 'update'])->name('update');
     });
@@ -95,8 +96,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
         Route::get('', [ProductController::class, 'index'])->name('index');
         Route::post('/list_products', [ProductController::class, 'list_products'])->name('list_products');
+        Route::get('/product_master_get_brand_list_ajax', [ProductController::class, 'productMasterGetBrandListAjax'])->name('product_master_get_brand_list_ajax');
         Route::post('/', [ProductController::class, 'store'])->name('store');
         Route::get('/create', [ProductController::class, 'create'])->name('create');
+        Route::get('/edit/{id_barcode}', [ProductController::class, 'edit'])->name('edit');
         Route::delete('/update/{id}', [ProductController::class, 'upate_product_status'])->name('update');
     });
 });

@@ -75,6 +75,7 @@
     }
     .wrapper .one {
         grid-column: 1/3;
+        border-bottom: 1px solid #000;
     }
     .wrapper .five {
         grid-column: 1/4;
@@ -100,6 +101,37 @@
         /* border-top: none; */
         border-left: none;
         border-right: none;
+        border-bottom: 1px solid #000;
+    }
+    .wrapper .nine {
+        border-bottom: 1px solid #000;
+        border-left: 1px solid #000;
+    }
+    .wrapper .ten {
+        grid-column: 1/6;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid #000;
+    }
+    .wrapper .elevent {
+        grid-column: 1/1;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid #000;
+    }
+    .wrapper .twel {
+        border-right: 1px solid #000;
+        border-top: none;
+        border-bottom: 1px solid #000;
+        border-left: 1px solid #000;
+    }
+    .wrapper .thirteen {
+        border-right: none;
+        border-top: none;
+        border-bottom: 1px solid #000;
+        border-left: none;;
     }
     p {
         /* width: 500px; */
@@ -195,7 +227,7 @@
                     <span class="m-1 text-xl font-semibold text-black" style="font-size: 20px;">New Product Development Project Brief</span>
                     <!-- <div>02</div> -->
                     <!-- <div>03</div> -->
-                    <div style="margin-top: 0px; margin-right: 85px; margin-left: 50px;">
+                    <div style="margin-top: 2px; margin-right: 85px; margin-left: 50px;">
                         <img src="{{URL::asset('media/ibhs_img.png')}}">
                         {{-- <img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQaOvxEZSnjYjoYtsSJUJMgaPq3WPTVvkqUywlyynplww2bv6A0" style=""> --}}
                     </div>
@@ -203,7 +235,7 @@
                 <div class="row m-1 text-black" style="">
                     <div class="col d-flex flex-row-reverse 2" style="margin-right: -80px;">
                         <div>
-                            <div class="row font-semibold" style="width: 380px;">
+                            <div class="row font-semibold" style="width: 380px; margin-top: -10px;">
                                 <div style="width: 100px">
                                     <span style="font-size: 14px;">
                                         Document No. :
@@ -215,7 +247,7 @@
                                     </span>
                                 </div>
                             </div>
-                            <div class="row font-semibold" style="margin-top: 20px;">
+                            <div class="row font-semibold" style="margin-top: 21px;">
                                 <div style="width: 250px;">
                                     <span style="font-size: 14px;">
                                         Customer & Product Requirements
@@ -226,7 +258,7 @@
                     </div>
                     <div class="col d-flex flex-row-reverse 2" style="width: 89px; margin-right: -50px;">
                         <div>
-                            <div class="row" style="width: 264px; margin-top: 12px;">
+                            <div class="row" style="width: 264px; margin-top: 3px;">
                                 <div style="width: 95px;">
                                     <span style="font-size: 14px;">
                                         Declared Date :
@@ -242,13 +274,13 @@
                     </div>
                     <div class="" style="width: 64px; margin-right: 170px;">
                         <div>
-                            <div class="row text-start" style="width: 300px; margin-top: 10px;">
+                            <div class="row text-start" style="width: 300px; margin-top: 3px;">
                                 <div style="width: 250px;">
                                     <span style="font-size: 12px;">
                                         Institute of Beauty and Health Sciences Co.,Ltd.
                                     </span>
                                 </div>
-                                <div class="" style="width: 250px;">
+                                <div class="" style="width: 250px; margin-top: 12px;">
                                     <span style="font-size: 13px;">
                                         Tel : 02-3151074 Ext : 301 Fax : 02-7051573
                                     </span>
@@ -257,36 +289,20 @@
                         </div>
                     </div>
                 </div>
-
-                {{-- <table class="normal_tb table table-bordered border-2 border-black" style="width: 100%; margin-top: 30px;">
-                    <tbody>
-                        <tr class="border-2 border-black">
-                            <td class="text-center border-lb" colspan="2" width="30%" style="border-left: none; border-top: none;">รายละเอียดผู้ให้บริการ :</td>
-                            <td class="text-center border-lb" colspan="1" width="20%" style="border-right: none;"></td>
-                            <td colspan="1" width="20%"></td>
-                            <td colspan="1" width="20%"></td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="" style="border-left-style: none;">Larry the Bird</td>
-                            <td>@twitter</td>
-                        </tr>
-                    </tbody>
-                </table> --}}
-
                 <div class="wrapper mt-2" style="position: relative;">
                     <div class="one" style="border-left: none; border-right: none;">
-                        <div class="text-xs" style="position:absolute">BRAND</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">OP</div>
+                        <div class="text-xs" style="position: absolute">BRAND</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->BRAND }}</div>
                     </div>
-                    <div class="" style="border-right: none;">
+                    <div class="" style="border-right: none; border-bottom: 1px solid #000; border-left: 1px solid #000;">
                         <div class="text-xs" style="position:absolute">PRODUCT TYPE</div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">Make Up</div>
                     </div>
-                    <div class="" style="border-right: none;">
+                    <div class="" style="border-right: none; border-bottom: 1px solid #000; border-left: 1px solid #000;">
                         <div class="text-xs" style="position:absolute">PRODUCT CODE</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">23692</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->Code }}</div>
                     </div>
-                    <div class="" style="border-right: none;">
+                    <div class="" style="border-right: none; border-bottom: 1px solid #000; border-left: 1px solid #000;">
                         <div class="text-xs" style="position:absolute">PROJECT REF. NO.</div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
                     </div>
@@ -294,82 +310,73 @@
                         <div class="text-xs" style="position:absolute">PROJECT NAME</div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">Beneficial Lipstick - KISS FROM A ROSE SHEENY TINT&GLOSS</div>
                     </div>
-                    <div class="" style="border-right: none; border-top: none;">
+                    <div class="" style="border-right: none; border-top: none; border-left: 1px solid #000;">
                         <div class="text-xs" style="position:absolute">TARGET GROUP</div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">18-35</div>
                     </div>
-                    <div class="" style="border-right: none; border-top: none;">
+                    <div class="" style="border-right: none; border-top: none; border-left: 1px solid #000;">
                         <div class="text-xs" style="position:absolute">COMPARE WITH OEM [YES / NO]</div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">No</div>
                     </div>
                 </div>
-
                 <div style="position: relative;">
                     <div class="">
-                        <div class="text-xs" style="position:absolute">PRODUCT CONCEPT</div>
-                        <div style="position: absolute; top: 7px; line-height: 39.5px; text-indent: 120px">
-                            2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก
+                        <div class="text-xs" style="position: absolute">
+                            PRODUCT CONCEPT
                         </div>
-                        <div class="" style="border-bottom: 1px solid #000; height:40px;">
+                        <div style="position: absolute; top: 7px; line-height: 34.5px; text-indent: 120px">
+                            {{ $dataIBSH->P_CONCEPT }}
                         </div>
-                        <div class="" style="border-bottom: 1px solid #000; height:40px">
-
-                        </div>
-                        <div class="" style="border-bottom: 1px solid #000; height:40px">
-
-                        </div>
-                        <div class="" style="border-bottom: 1px solid #000; height:40px">
-
-                        </div>
-                        <div class="" style="border-bottom: 1px solid #000; height:40px">
-
-                        </div>
-                        <div class="" style="border-bottom: 1px solid #000; height:40px">
-
-                        </div>
+                        <div class="" style="border-bottom: 1px solid #000; height:35px;"></div>
+                        <div class="" style="border-bottom: 1px solid #000; height:35px"></div>
+                        <div class="" style="border-bottom: 1px solid #000; height:35px"></div>
+                        <div class="" style="border-bottom: 1px solid #000; height:35px"></div>
+                        <div class="" style="border-bottom: 1px solid #000; height:35px"></div>
+                        <div class="" style="border-bottom: 1px solid #000; height:35px"></div>
                         <div class="text-xs" style=""></div>
                     </div>
                     <ul class="mt-8 font-medium border-t border-2 border-black"></ul>
                 </div>
-
                 <div style="position: relative;">
                     <div class="">
-                        <div class="text-xs" style="position:absolute">PRODUCT CONCEPT</div>
-                        <div style="position: absolute; top: 7px; line-height: 39.5px; text-indent: 120px">
-                            2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก
+                        <div class="text-xs" style="position:absolute">PRODUCT BENEFIT</div>
+                        <div style="position: absolute; top: 7px; line-height: 34.5px; text-indent: 120px">
+                            {{ $dataIBSH->P_BENEFIT }}
                         </div>
-                        <div class="" style="border-bottom: 1px solid #000; height:40px;">
-                        </div>
-                        <div class="" style="border-bottom: 1px solid #000; height:40px">
-
-                        </div>
-                        <div class="" style="border-bottom: 1px solid #000; height:40px">
-
-                        </div>
-                        <div class="" style="border-bottom: 1px solid #000; height:40px">
-
-                        </div>
-                        <div class="" style="border-bottom: 1px solid #000; height:40px">
-
-                        </div>
-                        <div class="" style="border-bottom: 1px solid #000; height:40px">
-
-                        </div>
-                        <div class="" style="border-bottom: 1px solid #000; height:40px">
-
-                        </div>
+                        <div class="" style="border-bottom: 1px solid #000; height:35px;"></div>
+                        <div class="" style="border-bottom: 1px solid #000; height:35px"></div>
+                        <div class="" style="border-bottom: 1px solid #000; height:35px"></div>
+                        <div class="" style="border-bottom: 1px solid #000; height:35px"></div>
+                        <div class="" style="border-bottom: 1px solid #000; height:35px"></div>
+                        <div class="" style="border-bottom: 1px solid #000; height:35px"></div>
+                        <div class="" style="border-bottom: 1px solid #000; height:35px"></div>
                         <div class="text-md font-semibold" style="position:absolute">Formulation Requirements</div>
                     </div>
                 </div>
-
                 <div class="wrapper mt-10" style="position: relative;">
                     <div class="eight" style="border-right: none;">
                         <div class="text-xs" style="position:absolute">PROJECT NAME</div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">Beneficial Lipstick - KISS FROM A ROSE SHEENY TINT&GLOSS</div>
                     </div>
-                    <div class="" style="border-right: none; grid-column: 4/6;">
+                    <div class="nine" style="border-right: none; grid-column: 4/6;">
                         <div class="text-xs" style="position:absolute">TARGET GROUP</div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">18-35</div>
+                    </div>
+                    <div class="ten" style="border-right: none;">
+                        <div class="text-xs" style="position:absolute">REF. PRODUCT / BENCHMARK (PLEASE IDENTIFY)</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">Kiss From a Rose Sheeny Tint & Gloss</div>
+                    </div>
+                    <div class="elevent" style="border-right: none;">
+                        <div class="text-xs" style="position:absolute">TOTAL COLOR</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">3</div>
+                    </div>
+                    <div class="twel" style="grid-column: 2/4;">
+                        <div class="text-xs" style="position:absolute">DETAIL OF COLOR</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">แดง,ส้มอมน้ําตาล,ชมพูเข็ม</div>
+                    </div>
+                    <div class="thirteen" style="grid-column: 4/6;">
+                        <div class="text-xs" style="position:absolute">REF. OF COLOR</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
                     </div>
                 </div>
 
@@ -400,12 +407,12 @@
                         <div class="" style="display:flex; justify-content:center; align-items: center;">-</div>
                     </div>
                 </div> --}}
-                <ul class="mt-10 font-medium border-t border-2 border-black"></ul>
+                <!-- <ul class="mt-10 font-medium border-t border-2 border-black"></ul>
 
                 <div class="divide-y-2 divide-dashed">
                     <p>หมายเหตุ : </p>
                     <div></div>
-                </div>
+                </div> -->
 
             </div>
         </div>
