@@ -173,7 +173,7 @@
                 data-twe-ripple-color="light"
                 onclick="modelManageMenu()"
             >
-                <svg class="size-7 rotate" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                <svg class="size-7 rotate" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                     viewBox="0 0 502 502" xml:space="preserve">
                     <g>
                         <g>
@@ -544,21 +544,21 @@
                                                     </td>
                                                     <td class="text-center">{{ $menu['id'] }}</td>
                                                     <td>{{ $menu['menu_name'] }}</td>
-                                                    <td class="text-center"><input type="checkbox" id="action_view_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
-                                                    <td class="text-center"><input type="checkbox" id="action_create_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
-                                                    <td class="text-center"><input type="checkbox" id="action_edit_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
-                                                    <td class="text-center"><input type="checkbox" id="action_delete_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                    <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-400" id="action_view_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                    <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-400" id="action_create_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                    <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-400" id="action_edit_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                    <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-400" id="action_delete_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
                                                 </tr>
                                                 @if(!is_null($menu['submenus']))
                                                     @foreach($menu['submenus'] as $submenu)
                                                         <tr>
                                                             <td></td>
                                                             <td></td>
-                                                            <td>&nbsp;&nbsp;&nbsp;{{ $submenu['name'] }}</td>
-                                                            <td class="text-center"><input type="checkbox" id="action_view_{{ $menu['id'] }}_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
-                                                            <td class="text-center"><input type="checkbox" id="action_create_{{ $menu['id'] }}_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
-                                                            <td class="text-center"><input type="checkbox" id="action_edit_{{ $menu['id'] }}_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
-                                                            <td class="text-center"><input type="checkbox" id="action_delete_{{ $menu['id'] }}_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                            <td class="">&nbsp;&nbsp;&nbsp;{{ $submenu['name'] }}</td>
+                                                            <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-400" id="action_view_{{ $menu['id'] }}_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                            <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-400" id="action_create_{{ $menu['id'] }}_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                            <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-400" id="action_edit_{{ $menu['id'] }}_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                            <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-400" id="action_delete_{{ $menu['id'] }}_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
                                                         </tr>
                                                     @endforeach
                                                 @endif
@@ -870,11 +870,9 @@
         function getParmeterLogin() {
             let dataLogin = sessionStorage.getItem("credetail");
             let dataJson = JSON.parse(dataLogin)
-            // console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
         }
 
         function ajaxGetMenuAccess(pos_id) {
-            // console.log("🚀 ~ ajaxGetMenuAccess ~ pos_id:", pos_id)
             $.ajax({
                 url: "{{ route('menu_access') }}?pos_id=" + pos_id,
                 type: "GET",
@@ -886,16 +884,12 @@
                 },
                 success:function(res){
                     let menuAll = <?php echo json_encode($menus); ?>;
-                    // console.log("🚀 ~ ajaxGetMenuAccess ~ res:", res)
-                    // console.log("🚀 ~ ajaxGetMenuAccess ~ menuAll:", menuAll)
                     let menupermission = res.submenu_array.length ? res.submenu_array : []
                     const result = Object.groupBy(menupermission, ({ menu_id }) => menu_id);
                     console.log("🚀 ~ ajaxGetMenuAccess ~ result:", result)
                     if(true) {
                         menuAll.forEach(menu => {
                             const currentMenu = result[menu.id]
-                            // console.log("🚀 ~ ajaxGetMenuAccess ~ currentMenu:", currentMenu)
-                            // console.log("🚀 ~ ajaxGetMenuAccess ~ menu:", menu)
                             if(currentMenu != undefined){
                                 const menu_id = menu.id
                                 currentMenu.forEach(fmenu => {
@@ -905,7 +899,20 @@
                                     $(`#action_edit_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.edit);
                                     $(`#action_delete_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.delete);
                                     if(submenu_id === 0 && menu.submenus.length){
+
                                         menu.submenus.forEach(submenu => {
+                                            if (!fmenu.view) {
+                                                $(`#action_view_${menu.id}_${submenu.id}`).prop("disabled", true);
+                                            }
+                                            if (!fmenu.create) {
+                                                $(`#action_create_${menu.id}_${submenu.id}`).prop("disabled", true);
+                                            }
+                                            if (!fmenu.edit) {
+                                                $(`#action_edit_${menu.id}_${submenu.id}`).prop("disabled", true);
+                                            }
+                                            if (!fmenu.delete) {
+                                                $(`#action_delete_${menu.id}_${submenu.id}`).prop("disabled", true);
+                                            }
                                             $(`#action_view_${menu.id}_${submenu.id}`).prop("checked",false);
                                             $(`#action_create_${menu.id}_${submenu.id}`).prop("checked",false);
                                             $(`#action_edit_${menu.id}_${submenu.id}`).prop("checked",false);
@@ -920,10 +927,15 @@
                                 $(`#action_delete_${menu.id}_${0}`).prop("checked",false);
                                 if(menu.submenus.length){
                                     menu.submenus.forEach(submenu => {
-                                        $(`#action_view_${menu.id}_${submenu.id}`).prop("checked",false);
-                                        $(`#action_create_${menu.id}_${submenu.id}`).prop("checked",false);
-                                        $(`#action_edit_${menu.id}_${submenu.id}`).prop("checked",false);
-                                        $(`#action_delete_${menu.id}_${submenu.id}`).prop("checked",false);
+                                        $(`#action_view_${menu.id}_${submenu.id}`).prop("disabled", true);
+                                        $(`#action_create_${menu.id}_${submenu.id}`).prop("disabled", true);
+                                        $(`#action_edit_${menu.id}_${submenu.id}`).prop("disabled", true);
+                                        $(`#action_delete_${menu.id}_${submenu.id}`).prop("disabled", true);
+
+                                        $(`#action_view_${menu.id}_${submenu.id}`).prop("checked", false);
+                                        $(`#action_create_${menu.id}_${submenu.id}`).prop("checked", false);
+                                        $(`#action_edit_${menu.id}_${submenu.id}`).prop("checked", false);
+                                        $(`#action_delete_${menu.id}_${submenu.id}`).prop("checked", false);
                                     })
                                 }
                             }

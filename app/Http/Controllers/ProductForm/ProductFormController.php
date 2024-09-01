@@ -60,9 +60,36 @@ class ProductFormController extends Controller
                 // ->whereNotNull('position_id');
             })
         ->get();
+
+        $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
+        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        $userpermission = Auth::user()->getUserPermission->name_position;
+        // dd($userpermission);
+        if (in_array($userpermission, [$isSuperAdmin])) {
+            $brands = Barcode::select(
+                'BRAND')
+            // ->whereNotIn('STATUS', ['ALL'])
+            ->pluck('BRAND')
+            ->toArray();
+        } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+            $brands = Barcode::select(
+                'BRAND',
+                'STATUS')
+            ->whereIn('STATUS', ['OP'])
+            ->pluck('BRAND')
+            ->toArray();
+        } else if (in_array($userpermission, ['Marketing - CPS'])) {
+            $brands = Barcode::select(
+                'BRAND',
+                'STATUS')
+            ->whereIn('STATUS', ['CP'])
+            ->pluck('BRAND')
+            ->toArray();
+        }
+
         // dd($product_seq);
 
-        return view('new_product_develop.index', compact('user', 'product_seq', 'productCodeArr'));
+        return view('new_product_develop.index', compact('user', 'product_seq', 'productCodeArr', 'brands'));
     }
 
     public function duplicateNpdRequest(Request $request, $id_barcode)
@@ -272,33 +299,34 @@ class ProductFormController extends Controller
             $next_ten = (ceil($total_sum/10))*10;
             $check_digit = $next_ten - $total_sum;
 
-        } else if (in_array($userpermission, ['Marketing - CPS'])) {
-            $lastElement = Pro_develops::where('BRAND', '=', 'CPS')->max('BARCODE');
-            $barcodeMax = substr_replace($lastElement, '', -1);
-            $barcodeNumber =  preg_replace('/[^0-9]/', '', $barcodeMax) + 1;
-            $barcode = sprintf('%04d', $barcodeNumber);
-
-            $digits =(string)$barcode;
-            $even_sum = $digits[1] + $digits[3] + $digits[5] + $digits[7] + $digits[9] + $digits[11];
-            $even_sum_three = $even_sum * 3;
-            $odd_sum = $digits[0] + $digits[2] + $digits[4] + $digits[6] + $digits[8] + $digits[10];
-            $total_sum = $even_sum_three + $odd_sum;
-            $next_ten = (ceil($total_sum/10))*10;
-            $check_digit = $next_ten - $total_sum;
-        } else if (in_array($userpermission, [$isSuperAdmin])) {
-            $lastElement = Pro_develops::where('BRAND', '=', 'RI')->max('BARCODE');
-            $barcodeMax = substr_replace($lastElement, '', -1);
-            $barcodeNumber =  preg_replace('/[^0-9]/', '', $barcodeMax) + 1;
-            $barcode = sprintf('%04d', $barcodeNumber);
-
-            $digits =(string)$barcode;
-            $even_sum = $digits[1] + $digits[3] + $digits[5] + $digits[7] + $digits[9] + $digits[11];
-            $even_sum_three = $even_sum * 3;
-            $odd_sum = $digits[0] + $digits[2] + $digits[4] + $digits[6] + $digits[8] + $digits[10];
-            $total_sum = $even_sum_three + $odd_sum;
-            $next_ten = (ceil($total_sum/10))*10;
-            $check_digit = $next_ten - $total_sum;
         }
+        // else if (in_array($userpermission, ['Marketing - CPS'])) {
+        //     $lastElement = Pro_develops::where('BRAND', '=', 'CPS')->max('BARCODE');
+        //     $barcodeMax = substr_replace($lastElement, '', -1);
+        //     $barcodeNumber =  preg_replace('/[^0-9]/', '', $barcodeMax) + 1;
+        //     $barcode = sprintf('%04d', $barcodeNumber);
+
+        //     $digits =(string)$barcode;
+        //     $even_sum = $digits[1] + $digits[3] + $digits[5] + $digits[7] + $digits[9] + $digits[11];
+        //     $even_sum_three = $even_sum * 3;
+        //     $odd_sum = $digits[0] + $digits[2] + $digits[4] + $digits[6] + $digits[8] + $digits[10];
+        //     $total_sum = $even_sum_three + $odd_sum;
+        //     $next_ten = (ceil($total_sum/10))*10;
+        //     $check_digit = $next_ten - $total_sum;
+        // } else if (in_array($userpermission, [$isSuperAdmin])) {
+        //     $lastElement = Pro_develops::where('BRAND', '=', 'RI')->max('BARCODE');
+        //     $barcodeMax = substr_replace($lastElement, '', -1);
+        //     $barcodeNumber =  preg_replace('/[^0-9]/', '', $barcodeMax) + 1;
+        //     $barcode = sprintf('%04d', $barcodeNumber);
+
+        //     $digits =(string)$barcode;
+        //     $even_sum = $digits[1] + $digits[3] + $digits[5] + $digits[7] + $digits[9] + $digits[11];
+        //     $even_sum_three = $even_sum * 3;
+        //     $odd_sum = $digits[0] + $digits[2] + $digits[4] + $digits[6] + $digits[8] + $digits[10];
+        //     $total_sum = $even_sum_three + $odd_sum;
+        //     $next_ten = (ceil($total_sum/10))*10;
+        //     $check_digit = $next_ten - $total_sum;
+        // }
 
         // $lastElement = Pro_develops::where('BRAND', '=', 'CPS')->max('BARCODE');
         // $barcodeMax = substr_replace($lastElement, '', -1);
@@ -342,20 +370,6 @@ class ProductFormController extends Controller
      */
     public function create(Request $request)
     {
-        // $numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-        // $odd_numbers = array_filter($numbers, function($number) {
-        //     return $number % 2 != 0;
-        // });
-        // dd($odd_numbers);
-
-        // $productOPCodeMax = Barcode::where('BRAND', '=', 'OP')->max('NUMBER');
-        // $productOPCodeMax = Barcode::whereIn('BRAND', ['OP', 'OTHER', 'RI', 'BD', 'CPS', 'HOUSE HOLD', 'MM', 'OT', 'SPICES', 'VN'])->pluck('BRAND')->toArray();
-
-        // dd($productOPCodeMax);
-
-        // $brandArr = Document::select('DOC_TP')->pluck('DOC_TP')->toArray();
-        // dd($brandArr);
-
         $digits_barcode = $this->ean13_check_digit();
         $productCodeMax = Document::max('NUMBER');
         $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;

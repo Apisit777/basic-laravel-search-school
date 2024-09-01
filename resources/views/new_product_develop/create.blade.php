@@ -737,8 +737,16 @@
                     jQuery(newoption).appendTo(select);
                 },
                 success: function (data) {
-                    jQuery("#barcodeTest").val(data.digits_barcode);
-                    jQuery("#code").val(data.digits_barcode.substring(7, 12));
+                    console.log("🚀 ~ brandIdChange ~ data:", data)
+                    if (e.value) {
+                       jQuery("#barcodeTest").val(data.digits_barcode);
+                       jQuery("#code").val(data.digits_barcode.substring(7, 12));
+                    } else {
+                        jQuery("#barcodeTest").val('');
+                        jQuery("#code").val('');
+                    }
+
+
                     if (data.productCodes) {
                         datass = data.productCodes
                         select.find("option").remove();
