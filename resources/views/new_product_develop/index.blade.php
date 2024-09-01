@@ -95,7 +95,16 @@
             <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
                 <div class="lg:col-span-4 xl:grid-cols-4">
                     <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                        <div class="md:col-span-3" >
+                        <div class="md:col-span-2">
+                            <label for="BRAND" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Brand</label>
+                            <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND" onchange="brandIdChange(this, 'BRAND')">
+                                <option value=""> --- กรุณาเลือก ---</option>
+                                @foreach ($brands as $key => $brand)
+                                    <option value={{ $brand }}>{{ $brand }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="md:col-span-2" >
                             <label for="countries" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Sarch Column</label>
                             <select class="js-example-basic-single w-full rounded-sm text-xs text-center" id="BARCODE" name="BARCODE">
                                 <option class="" value=""> --- กรุณาเลือก ---</option>
@@ -108,7 +117,7 @@
                             <label for="countries">รหัส</label>
                             <input type="text" style="height: 38px;" name="BARCODE" id="BARCODE" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="">
                         </div> -->
-                        <div class="md:col-span-3" >
+                        <div class="md:col-span-2" >
                             <label for="">ค้นหา</label>
                             <input type="text" name="search" id="search" onkeyup="checkNameBrand()" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" />
                         </div>
