@@ -314,16 +314,35 @@ class ManageMenuController extends Controller
     }
     public function deleteAccess(Request $request)
     {
-        if($request->submenuId > 0) {
-            $delete = menu_relation::where('position_id', $request->input('pos_id'))
-                ->where('menu_id', $request->input('menu_id'))
-                ->where('submenu_id', $request->submenuId)
-                ->whereNotNull('submenu_id')
-                ->delete();
+        // dd($request);
+        $menu_state = $request->input('state');
+
+        if ($request->submenuId > 0) {
+            if ($request->action == "view") {
+                $delete = menu_relation::where('position_id', $request->input('pos_id'))
+                    ->where('menu_id', $request->input('menu_id'))
+                    ->where('submenu_id', $request->submenuId)
+                    ->whereNotNull('submenu_id')
+                    ->delete();
+            } else {
+                $delete = menu_relation::where('position_id', $request->input('pos_id'))
+                    ->where('menu_id', $request->input('menu_id'))
+                    ->where('submenu_id', $request->submenuId)
+                    ->whereNotNull('submenu_id')
+                    ->update([
+                        $request->action => $menu_state
+                    ]);
+            }
+        } else if ($request->action == "view") {
+                $delete = menu_relation::where('position_id', $request->input('pos_id'))
+                    ->where('menu_id', $request->input('menu_id'))
+                    ->delete();
         } else {
             $delete = menu_relation::where('position_id', $request->input('pos_id'))
-            ->where('menu_id', $request->input('menu_id'))
-            ->delete();
+                ->where('menu_id', $request->input('menu_id'))
+                ->update([
+                    $request->action => $menu_state
+                ]);
         }
 
         return response()->json($delete);
@@ -386,7 +405,7 @@ class ManageMenuController extends Controller
 
             if (!is_null($request->inputs_submenu[0]['submenu_name'])) {
                 $createMenuRelation  = menu_relation::create([
-                    'position_id' => $createMenu->id,
+                    'position_id' => Auth::user()->id,
                     'menu_id' => $createMenu->id,
                     'status' => 1,
                 ]);
@@ -402,7 +421,7 @@ class ManageMenuController extends Controller
                     ]);
                     ++$x;
                     $createSubMenuRelation = menu_relation::create([
-                        'position_id' => $createMenu->id,
+                        'position_id' => Auth::user()->id,
                         'menu_id' => $createMenu->id,
                         'submenu_id' => $createSubmenu->id,
                         'status' => 1,

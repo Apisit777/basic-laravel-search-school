@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 30, 2024 at 12:48 PM
+-- Generation Time: Sep 06, 2024 at 10:22 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -88,11 +88,11 @@ CREATE TABLE `barcodes` (
 --
 
 INSERT INTO `barcodes` (`ID`, `BRAND`, `B_CODE`, `NUMBER`, `REMARK`, `STATUS`) VALUES
-(1, 'OP', '88500802', 2, '8279', 'OP'),
+(1, 'OP', '88500802', 9, '8279', 'OP'),
 (2, 'OTHER', '', 0, 'ไม่ต้องมี Barcode', 'ALL'),
-(3, 'RI', '88500802', 3, 'Brand Ri En', 'OP'),
+(3, 'RI', '88500802', 3, 'Brand Ri En', 'RI'),
 (4, 'BD', '88500803', 1, '0', 'CP'),
-(5, 'CPS', '88500807', 1, '0', 'CP'),
+(5, 'CPS', '88500807', 3, '0', 'CP'),
 (6, 'HOUSE HOLD', '88500808', 1, '0', 'CP'),
 (7, 'MM', '88500803', 1, '0', 'CP'),
 (8, 'OT', '88500803', 1, '0', 'CP'),
@@ -355,9 +355,16 @@ CREATE TABLE `documents` (
 --
 
 INSERT INTO `documents` (`DOC_TP`, `DOC_SYS`, `DOC_NO`, `NUMBER`, `FIELD`, `DOC_ST`, `REMARK`, `REMARK_EDIT`) VALUES
-('CPS', '', '', 1, '', 1, '', ''),
-('OP', '', '', 1, '', 1, '', ''),
-('RI', '', '', 2, '', 1, '', '');
+('BD', '', '', 0, '', 1, '', ''),
+('CPS', '', '', 3, '', 1, '', ''),
+('HOUSE HOLD', '', '', 0, '', 1, '', ''),
+('MM', '', '', 0, '', 1, '', ''),
+('OP', '', '', 9, '', 1, '', ''),
+('OT', '', '', 0, '', 1, '', ''),
+('OTHER', '', '', 0, '', 1, '', ''),
+('RI', '', '', 3, '', 1, '', ''),
+('SPICES', '', '', 0, '', 1, '', ''),
+('VN', '', '', 0, '', 1, '', '');
 
 -- --------------------------------------------------------
 
@@ -505,16 +512,15 @@ INSERT INTO `menu_relations` (`id`, `position_id`, `menu_id`, `submenu_id`, `vie
 (114, 3, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (116, 7, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (123, 6, 2, NULL, 1, 1, 1, 1, NULL, NULL, NULL, NULL, NULL),
-(153, 1, 5, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(154, 1, 5, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(155, 1, 5, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(156, 1, 5, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(157, 1, 42, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (158, 6, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (159, 7, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (160, 6, 3, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (161, 6, 5, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(162, 6, 5, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(162, 6, 5, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(163, 1, 5, NULL, 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL),
+(173, 1, 5, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(174, 1, 5, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(175, 1, 5, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -879,7 +885,7 @@ INSERT INTO `posts` (`id`, `user_id`, `created_at`, `updated_at`) VALUES
 
 CREATE TABLE `product1s` (
   `BRAND` varchar(10) DEFAULT NULL,
-  `PRODUCT` varchar(15) DEFAULT NULL,
+  `PRODUCT` varchar(15) NOT NULL,
   `BARCODE` varchar(15) NOT NULL,
   `COLOR` varchar(50) DEFAULT NULL,
   `GRP_P` varchar(10) DEFAULT NULL,
@@ -944,8 +950,8 @@ CREATE TABLE `product1s` (
 --
 
 INSERT INTO `product1s` (`BRAND`, `PRODUCT`, `BARCODE`, `COLOR`, `GRP_P`, `SUPPLIER`, `NAME_THAI`, `NAME_ENG`, `SHORT_THAI`, `SHORT_ENG`, `VENDOR`, `PRICE`, `COST`, `UNIT`, `UNIT_Q`, `SOLUTION`, `SERIES`, `CATEGORY`, `NON_VAT`, `STATUS`, `S_CAT`, `PDM_GROUP`, `BRAND_P`, `REGISTER`, `CONDITION_SALE`, `WHOLE_SALE`, `GP`, `RETURN`, `O_PRODUCT`, `BAR_PACK1`, `BAR_PACK2`, `BAR_PACK3`, `BAR_PACK4`, `PACK_SIZE1`, `PACK_SIZE2`, `PACK_SIZE3`, `PACK_SIZE4`, `REG_DATE`, `AGE`, `STORAGE_TEMP`, `WIDTH`, `HEIGHT`, `WIDE`, `NAME_EXP`, `NET_WEIGHT`, `UNIT_TYPE`, `TYPE_G`, `CONTROL_STK`, `TESTER`, `OPT_DATE1`, `OPT_DATE2`, `OPT_TXT1`, `OPT_TXT2`, `OPT_NUM1`, `OPT_NUM2`, `ACC_TYPE`, `ACC_DT`, `USER_EDIT`, `EDIT_DT`) VALUES
-('OP', NULL, '00001', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '26', NULL),
-('OP', '001', '8850080200010', 'Yellow', '001', 'บริษัท', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', '-', '', '', '', '', '', '', 100.00, 0.00, '', '', '', '', '', '', 0, 0, 0, 0, '2001-05-28 00:00:00', '', '', 0.00, 0.00, 0.00, '', 0.00, '', '01', 'N', 'N', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', 'transfer', '2005-12-24 00:00:00');
+('OP', '20001', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '26', NULL),
+('OP', '20002', '8850080200010', 'Yellow', '001', 'บริษัท', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', '-', '', '', '', '', '', '', 100.00, 0.00, '', '', '', '', '', '', 0, 0, 0, 0, '2001-05-28 00:00:00', '', '', 0.00, 0.00, 0.00, '', 0.00, '', '01', 'N', 'N', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', 'transfer', '2005-12-24 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -1010,7 +1016,7 @@ CREATE TABLE `pro_develops` (
   `DOC_NO` varchar(20) DEFAULT '',
   `REF_DOC` varchar(20) DEFAULT '',
   `REVISE_NO` decimal(6,0) DEFAULT 0,
-  `EDIT_DT` date DEFAULT '1900-01-01',
+  `EDIT_DT` datetime DEFAULT '1900-01-01 00:00:00',
   `USER_EDIT` varchar(15) DEFAULT '',
   `STATUS` varchar(5) DEFAULT '',
   `REMARK_ST` varchar(100) DEFAULT '',
@@ -1020,7 +1026,7 @@ CREATE TABLE `pro_develops` (
   `NPD` varchar(50) DEFAULT '',
   `PDM` varchar(50) DEFAULT '',
   `NAME_ENG` varchar(70) DEFAULT '',
-  `PRODUCT` varchar(15) DEFAULT '',
+  `PRODUCT` varchar(15) NOT NULL DEFAULT '',
   `BARCODE` varchar(15) NOT NULL DEFAULT '',
   `CATEGORY` varchar(20) DEFAULT '',
   `CAPACITY` varchar(20) DEFAULT '',
@@ -1063,10 +1069,11 @@ CREATE TABLE `pro_develops` (
 --
 
 INSERT INTO `pro_develops` (`BRAND`, `DOC_NO`, `REF_DOC`, `REVISE_NO`, `EDIT_DT`, `USER_EDIT`, `STATUS`, `REMARK_ST`, `CUST_OEM`, `JOB_REFNO`, `DOC_DT`, `NPD`, `PDM`, `NAME_ENG`, `PRODUCT`, `BARCODE`, `CATEGORY`, `CAPACITY`, `Q_SMELL`, `Q_COLOR`, `TARGET_GRP`, `TARGET_STK`, `PRICE_FG`, `PRICE_COST`, `PRICE_BULK`, `P_CONCEPT`, `P_BENEFIT`, `TEXTURE`, `TEXTURE_OT`, `COLOR1`, `COLOR2`, `COLOR3`, `FRANGRANCE`, `INGREDIENT`, `STD`, `PK`, `OTHER`, `DOCUMENT`, `FIRST_ORD`, `OEM`, `REASON1`, `REASON1_DES`, `REASON2`, `REASON2_DES`, `REASON3`, `REASON3_DES`, `REF_COLOR`, `REF_FRAGRANCE`, `OEM_STD`, `PACKAGE_BOX`) VALUES
-('OP', 'OP00001', 'IBH-F155', 0, '1900-01-01', '', 'OP', '', '2', '2', '2024-08-21', NULL, '001', 'Cuticle Hair Treatment 13', '', '8850080200010', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2', '2', NULL, '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'N', 'N', '', 'N', '2', 'N', '2', '2', '2', '2', NULL),
-('OP', 'OP00002', 'IBH-F155', 0, '1900-01-01', '32', 'OP', '', NULL, NULL, '2024-08-30', NULL, NULL, NULL, '', '8850080200027', NULL, NULL, NULL, NULL, NULL, '2024-08-30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', '', 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL),
-('RI', 'OP000015', 'IBH-F155', 0, '1900-01-01', '32', 'RI', '', '2', '2', '2024-08-22', '002', '001', 'Cuticle Hair Treatment 15', '', '8850080700022', '001', '2', 2.00, 2.00, '2', '2024-08-22', '2', '2', '2', '2', '2', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'N', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('RI', NULL, 'IBH-F155', 0, '1900-01-01', '32', 'RI', '', NULL, NULL, '2024-08-30', NULL, NULL, NULL, '', '8850080700039', NULL, NULL, NULL, NULL, NULL, '2024-08-30', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', '', 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL);
+('OP', '', 'IBH-F155', 0, '2024-09-03 03:35:49', '26', 'OP', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '20002', '8850080200027', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
+('OP', '', 'IBH-F155', 0, '2024-09-05 04:42:27', '32', 'OP', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '20003', '8850080200034', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
+('OP', '', 'IBH-F155', 0, '2024-09-06 08:42:15', '32', 'OP', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '20004', '8850080200041', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
+('OP', '', 'IBH-F155', 0, '2024-09-06 08:45:32', '32', 'OP', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '20005', '8850080200058', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
+('OP', '', 'IBH-F155', 0, '2024-09-06 10:19:28', '32', 'OP', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '20006', '8850080200065', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL);
 
 -- --------------------------------------------------------
 
@@ -2773,13 +2780,13 @@ INSERT INTO `users` (`id`, `username`, `name`, `email`, `email_verified_at`, `pa
 (11, 'bo', 'ช่างโบ้', 'test@gmail.com', NULL, '$2y$10$qNXabFcf0l5rqJOoS/iaMOg0X0ljVJ4m8TxMvxE5WFJPXRO5DBZem', 'TyE0I46e23zpM6lWHXHXww79aNFKikpGWJo94KEWkoclxikPwWhW9Nqu3tZA', 1, '2022-02-28 15:21:57', '2022-10-02 22:22:30'),
 (12, 'file', 'ช่างฟิล์ม', 'test2@gmail.com', NULL, '$2y$10$oDK5H2V30XtEany.YHQDs.P56/0L2Bx/W/dgVkKT8Fi6w2gajl5re', NULL, 1, '2022-02-28 15:23:35', '2022-02-28 15:23:35'),
 (21, NULL, 'test1', 'test1@gmail.com', NULL, '$2y$10$XY8os2I.PICMI9eznO96CuUVO2EkiNSpVh9FJ.lJyF.idv.3b7iLm', NULL, 1, '2024-06-07 03:19:36', '2024-06-07 03:19:36'),
-(25, '00d750', NULL, NULL, NULL, NULL, 'MQnZLy5XbUoVsmp5mJQxwH7WdcJHwkCTOXClB65Ai1rs7fs2aOjtkY77HICv', 1, '2024-08-05 03:22:25', '2024-08-05 03:22:25'),
-(26, '00d752', NULL, NULL, NULL, NULL, 'kmhbk54d0ukRhADvz4UQ85o8sgHtfevRY3zfKCWmyUJEYcZhea0yoHAsop25', 1, '2024-08-05 18:50:00', '2024-08-05 18:50:00'),
+(25, '00d750', NULL, NULL, NULL, NULL, 'e0SBZKGPcM1EiArz5DeCxRXmWPgF3NRcRJMvJmDclfx9WUUroT8ZkFRRX5uV', 1, '2024-08-05 03:22:25', '2024-08-05 03:22:25'),
+(26, '00d752', NULL, NULL, NULL, NULL, 'V9hlRaxyQofl5Db3reBtM5Cpd4wCyBSZJXGrgqtALYloVsVZ1TD7RUS7oIoK', 1, '2024-08-05 18:50:00', '2024-08-05 18:50:00'),
 (27, '006631', NULL, NULL, NULL, NULL, 'IRnZ0kDtYPOaO68d1QtsreqPQIpjxYc8i8yxmCx0T4ExbXX9i1dH61NhQBAm', 1, '2024-08-07 01:15:19', '2024-08-07 01:15:19'),
 (28, '006935', NULL, NULL, NULL, NULL, NULL, 1, '2024-08-07 01:17:59', '2024-08-07 01:17:59'),
 (29, '003559', NULL, NULL, NULL, NULL, 'wKeR7kAzlvANIeBaD71ADpPAyyLtvWVp16tpqWP4MABt6wfjOezYf3wiNYdU', 1, '2024-08-07 23:41:47', '2024-08-07 23:41:47'),
 (30, '00C648', NULL, NULL, NULL, NULL, 'JYg0S1VU15z1n33xE6Aq4rFE6132Nrw6GAbZ7sszVxHvainm423rJ2wG4XfO', 1, '2024-08-07 23:50:00', '2024-08-07 23:50:00'),
-(32, '00d751', NULL, NULL, NULL, NULL, 'zsAS1QywYTIwv3I4X7nAAJ8jeF8Ko5PPwHhM9ItQI6toGHELXL198GOvUvJl', 1, '2024-08-08 23:37:47', '2024-08-08 23:37:47'),
+(32, '00d751', NULL, NULL, NULL, NULL, 'DAhn0niC0MXVUozmAG61Xxv12hhpGfetCUc2BDLyMG7O4QeqtEl2CM7bH7bt', 1, '2024-08-08 23:37:47', '2024-08-08 23:37:47'),
 (34, '009166', NULL, NULL, NULL, NULL, 'lqSixX6J7ViOl4Zh9yk4WckiTs1IyaUHrK6ENWi0Grb30orn3KlSoXjBbOsv', 1, '2024-08-23 01:12:24', '2024-08-23 01:12:24');
 
 -- --------------------------------------------------------
@@ -3024,7 +3031,8 @@ ALTER TABLE `posts`
 -- Indexes for table `product1s`
 --
 ALTER TABLE `product1s`
-  ADD PRIMARY KEY (`BARCODE`);
+  ADD PRIMARY KEY (`PRODUCT`),
+  ADD UNIQUE KEY `BARCODE` (`BARCODE`);
 
 --
 -- Indexes for table `products`
@@ -3042,7 +3050,8 @@ ALTER TABLE `product_images`
 -- Indexes for table `pro_develops`
 --
 ALTER TABLE `pro_develops`
-  ADD PRIMARY KEY (`BARCODE`) USING BTREE;
+  ADD PRIMARY KEY (`PRODUCT`),
+  ADD UNIQUE KEY `BARCODE` (`BARCODE`);
 
 --
 -- Indexes for table `p_statuses`
@@ -3179,7 +3188,7 @@ ALTER TABLE `menus`
 -- AUTO_INCREMENT for table `menu_relations`
 --
 ALTER TABLE `menu_relations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=163;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=176;
 
 --
 -- AUTO_INCREMENT for table `migrations`
