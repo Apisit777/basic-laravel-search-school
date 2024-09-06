@@ -61,65 +61,59 @@
         </div>
         <!-- <div id="create_product">
         </div> -->
-        <div class="fixed flex bottom-5 right-5 z-10">
+        <!-- <div class="fixed flex bottom-5 right-5 z-10">
             <a href="{{ route('product.create') }}" class="bg-[#303030] hover:bg-[#404040] text-white font-bold cursor-pointer py-2 px-2 mr-2 mt-20 rounded-full group">
                 <svg xmlns="http:www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
                     <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
                 </svg>
             </a>
-        </div>
+        </div> -->
         <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
             <div class="lg:col-span-4 xl:grid-cols-4">
                 <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                    <div class="md:col-span-3" >
-                        <label for="countries" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Sarch Column</label>
-                        <select class="js-example-basic-single w-full rounded-sm text-xs text-center" name="">
-                            <option class="" value=""> --- กรุณาเลือก ---</option>
-                            @foreach ($product_seq as $key => $product_seqs)
-                                <option value={{ $product_seqs->id }}>{{ $product_seqs->seq }}</option>
+                    <div class="md:col-span-3">
+                        <label for="BRAND" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Brand</label>
+                        <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND">
+                            <option value=""> --- กรุณาเลือก ---</option>
+                            @foreach ($brands as $key => $brand)
+                                <option value={{ $brand }}>{{ $brand }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="md:col-span-3" >
-                        <label for="">ชื่อพนักงาน<span class="text-danger"> *</span></label>
-                        <input type="text" name="name" id="id_brand" onkeyup="checkNameBrand()" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                        <label for="">ค้นหา</label>
+                        <input type="text" name="search" id="search" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" />
                     </div>
-                    <div class="md:col-span-3" >
-                        <label for="">ช่วงวันที่</label>
-                        <input type="date" style="height: 38px;" class="form-control bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="date_start" id="date_start" placeholder="คลิ๊กเพื่อเลือกวัน" autocomplete="off">
-                        </span>
-                    </div>
-                    <div class="md:col-span-3" >
-                        <label for="">ช่วงวันที่</label>
-                        <input type="date" style="height: 38px;" class="form-control bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="date_start" id="date_start" placeholder="คลิ๊กเพื่อเลือกวัน" autocomplete="off">
-                        </span>
-                    </div>
-                    <div class="md:col-span-6 text-center mt-4">
+                    <div class="md:col-span-6 text-center">
                         <div class="inline-flex items-center">
-                            <!-- <label></label>
-                            <button id="btnSerarch" type="button" class="btn btn-warning btn-sm form-control form-border title-search"><i class="fa fa-search" aria-hidden="true"></i> ค้นหา</button> -->
-                            <a href="#" id="btnSerarch" class="text-gray-100 bg-[#303030] hover:bg-[#404040] text-white font-bold py-2 px-4 mr-2 rounded group">
+                            <a href="#" id="btnSerarch" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                     <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
                                 </svg>
                                 ค้นหา
                             </a>
+                            <!-- <button  id="" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group cursor-pointer btn-rotate" type="reset">
+                                <svg class="hidden h-6 w-6 md:inline-block rotate"
+                                    viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                    <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 93,62 C 83,82 65,96 48,96 32,96 19,89 15,79 L 5,90 5,53 40,53 29,63 c 0,0 5,14 26,14 16,0 38,-15 38,-15 z"/>
+                                    <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 5,38 C 11,18 32,4 49,4 65,4 78,11 85,21 L 95,10 95,47 57,47 68,37 C 68,37 63,23 42,23 26,23 5,38 5,38 z"/>
+                                </svg>
+                                ล้างข้อมูล
+                            </button> -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
-        <!-- <div class="absolute right-24 top-76">
-            <a href="{{ route('product.create') }}">
-                <button type="submit" class="inline-flex items-center px-3 py-2 text-sm text-gray-100 font-medium text-center bg-blue-800 shadow-lg shadow-gray-500 rounded-sm hover:bg-blue-900 focus:outline-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                        <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
-                    </svg>
-                    Add
-                </button>
+        <div class="flex right-12 z-10 absolute">
+            <a href="{{ route('product.create') }}" type="button" class="mt-1 px-3 py-2 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group" name="add" id="add">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                    <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                </svg>
+                Add
             </a>
-        </div> -->
+        </div>
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
             <div id="containerexample" class="text-gray-900 dark:text-gray-100">
                 <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
@@ -302,11 +296,6 @@
                         let disabledRoute = "{{route('product.update', 0)}}".replace('/0', "/" + row.BARCODE)
                         let text = "#"
                             return `<div class="inline-flex flex items-center rounded-md shadow-sm">
-                                        <button onclick="disableAppointment('${disabledRoute}',this,'${row.BARCODE}')" class="bclose btn btn-sm btn-success refersh_btn">
-                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
-                                            <path fill-rule="evenodd" d="M19.5 21a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3h-5.379a.75.75 0 0 1-.53-.22L11.47 3.66A2.25 2.25 0 0 0 9.879 3H4.5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h15Zm-6.75-10.5a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25v2.25a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V10.5Z" clip-rule="evenodd" />
-                                            </svg>
-                                        </button>
                                         <a href="{{route('product.edit', 0)}}" 
                                             type="button" class="px-2 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group">
                                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="-mt-1.5 hidden h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
@@ -325,7 +314,7 @@
         });
 
         // <div class="inline-flex flex items-center rounded-md shadow-sm">
-        //     <button onclick="disableAppointment('${disabledRoute}',this,'${row.id}')" class="bclose btn btn-sm btn-success refersh_btn">
+        //     <button onclick="disableAppointment('${disabledRoute}',this,'${row.BARCODE}')" class="bclose btn btn-sm btn-success refersh_btn">
         //         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
         //         <path fill-rule="evenodd" d="M19.5 21a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3h-5.379a.75.75 0 0 1-.53-.22L11.47 3.66A2.25 2.25 0 0 0 9.879 3H4.5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h15Zm-6.75-10.5a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25v2.25a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V10.5Z" clip-rule="evenodd" />
         //         </svg>

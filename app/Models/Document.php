@@ -9,6 +9,11 @@ class Document extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    public $primaryKey = null;
-    protected $guarded = [];
+    // public $primaryKey = null;
+    // protected $guarded = [];
+    public $primaryKey = "DOC_TP";
+    protected $fillable = [
+        'DOC_TP',
+        'NUMBER'
+    ];
 }

@@ -47,7 +47,33 @@ class ProductController extends Controller
 
         $product_seq = Product::select('seq')->get();
 
-        return view('product.index', compact('user', 'product_seq'));
+        $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
+        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        $userpermission = Auth::user()->getUserPermission->name_position;
+        // dd($userpermission);
+        if (in_array($userpermission, [$isSuperAdmin])) {
+            $brands = Barcode::select(
+                'BRAND')
+            // ->whereNotIn('STATUS', ['ALL'])
+            ->pluck('BRAND')
+            ->toArray();
+        } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+            $brands = Barcode::select(
+                'BRAND',
+                'STATUS')
+            ->whereIn('STATUS', ['OP'])
+            ->pluck('BRAND')
+            ->toArray();
+        } else if (in_array($userpermission, ['Marketing - CPS'])) {
+            $brands = Barcode::select(
+                'BRAND',
+                'STATUS')
+            ->whereIn('STATUS', ['CP'])
+            ->pluck('BRAND')
+            ->toArray();
+        }
+
+        return view('product.index', compact('user', 'product_seq', 'brands'));
     }
 
     public function productMasterGetBrandListAjax(Request $request)
@@ -60,8 +86,37 @@ class ProductController extends Controller
             ->orderby('Code')
             ->get();
 
+        $digits_barcode = $this->ean13_check_digit($request);
         // dd($productCodes);
-        return response()->json(['productCodes' => $productCodes]);
+        return response()->json(['productCodes' => $productCodes, 'digits_barcode' => $digits_barcode]);
+    }
+
+    private function ean13_check_digit()
+    {
+        $request = request();
+            $lastElement = Pro_develops::max('BARCODE');
+            if ($request->BRAND == 'OP') {
+                $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->where('STATUS', '=', 'OP')->max('BARCODE');
+            }
+            if ($request->BRAND == 'RI') {
+                $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->where('STATUS', '=', 'RI')->max('BARCODE');
+            }
+            if ($request->BRAND == 'CPS') {
+                $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->where('STATUS', '=', 'CPS')->max('BARCODE');
+            }
+            $barcodeMax = substr_replace($lastElement, '', -1);
+            $barcodeNumber =  preg_replace('/[^0-9]/', '', $barcodeMax) + 1;
+            $barcode = sprintf('%04d', $barcodeNumber);
+
+            $digits =(string)$barcode;
+            $even_sum = $digits[1] + $digits[3] + $digits[5] + $digits[7] + $digits[9] + $digits[11];
+            $even_sum_three = $even_sum * 3;
+            $odd_sum = $digits[0] + $digits[2] + $digits[4] + $digits[6] + $digits[8] + $digits[10];
+            $total_sum = $even_sum_three + $odd_sum;
+            $next_ten = (ceil($total_sum/10))*10;
+            $check_digit = $next_ten - $total_sum;
+
+        return $digits . $check_digit;
     }
 
     /**
@@ -69,6 +124,11 @@ class ProductController extends Controller
      */
     public function create(Request $request)
     {
+        // $digits_barcode = $this->ean13_check_digit();
+        // $ = $this->productMasterGetBrandListAjax();
+
+        // dd($digits_barcode);
+
         $owners = Owner::all();
         $grp_ps = Grp_p::all();
         $brand_ps = Brand_p::all();
@@ -134,33 +194,15 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // DB::beginTransaction();
-        // try {
-        //     $data_product = [
-        //         'name' => $request->input('name')
-        //     ];
-        //     $product = Product::create($data_product);
-        //     $productCodeMax = Product::max('seq');
-        //     $productCodeNumber =  preg_replace( '/[^0-9]/', '', $productCodeMax ) + 1;
-        //     $productCode = 'T'.sprintf('%06d', $productCodeNumber);
-        //     $response = Product::where('id', $product->id)->update([
-        //         'seq' => $productCode,
-        //     ]);
-        //     DB::commit();
-        //     $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
-        //     return response()->json(['success' => true]);
-        // } catch (\Exception $e) {
-        //     DB::rollback();
-        //     $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
-        //     return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
-        // }
+        $digits_barcode = $this->ean13_check_digit();
+        $digits_code = substr($digits_barcode, 7, 5);
 
-        // dd($request);
+        dd($digits_code, $request);
         DB::beginTransaction();
         try {
             $data_product = [
                 'BRAND' => $request->input('BRAND'),
-                'PRODUCT' => $request->input('PRODUCT'),
+                'PRODUCT' => $digits_code,
                 'BARCODE' => $request->input('BARCODE'),
                 'COLOR' => $request->input('COLOR'),
                 'GRP_P' => $request->input('GRP_P'),
@@ -194,7 +236,7 @@ class ProductController extends Controller
                 'PACK_SIZE2' => $request->input('PACK_SIZE2'),
                 'PACK_SIZE3' => $request->input('PACK_SIZE3'),
                 'PACK_SIZE4' => $request->input('PACK_SIZE4'),
-                'REG_DATE' => $request->input('REG_DATE'),
+                'REG_DATE' => date("Y/m/d h:i:s"),
                 'AGE' => $request->input('AGE'),
                 'WIDTH' => $request->input('WIDTH'),
                 'HEIGHT' => $request->input('HEIGHT'),

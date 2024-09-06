@@ -745,8 +745,6 @@
                         jQuery("#barcodeTest").val('');
                         jQuery("#code").val('');
                     }
-
-
                     if (data.productCodes) {
                         datass = data.productCodes
                         select.find("option").remove();

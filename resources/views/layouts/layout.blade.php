@@ -58,12 +58,18 @@
         let dataLogin = sessionStorage.getItem("credetail");
         let dataJson = JSON.parse(dataLogin)
         $('#auth_img').append(
-            `<button id="dropdown-button-1" data-dropdown-toggle="dropdown-search-city-1" class="flex-shrink-0 z-10 inline-flex items-center " type="button">
+            `<button id="dropdown-button-1" class="flex-shrink-0 z-10 inline-flex items-center " type="button">
                 <img class="w-8 h-8 rounded" src="${dataJson.data.photo}">   
             </button>
             `
         );
         $('#auth_fullname_login').append(
+            `<span class="text-gray-900 dark:text-white">${dataJson.data.fullname}</span>`
+        );
+        $('#auth_email_login').append(
+            `<span class="text-gray-900 dark:text-white">${dataJson.data.email}</span>`
+        );
+        $('#auth_personcode_login').append(
             `<span class="text-gray-900 dark:text-white">${dataJson.data.emp_tiger.personcode}</span>`
         );
         $('#auth_departmant_login').append(

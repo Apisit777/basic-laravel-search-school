@@ -64,7 +64,7 @@
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 0px;
-        grid-auto-rows: minmax(45px, auto);
+        grid-auto-rows: minmax(40px, auto);
     }
 
     .wrapper > div {
@@ -98,7 +98,6 @@
 
     .wrapper .eight {
         grid-column: 1/4;
-        /* border-top: none; */
         border-left: none;
         border-right: none;
         border-bottom: 1px solid #000;
@@ -106,6 +105,66 @@
     .wrapper .nine {
         border-bottom: 1px solid #000;
         border-left: 1px solid #000;
+    }
+    .wrapper .eight_1 {
+        grid-column: 1/4;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid #000;
+    }
+    .wrapper .eight_2 {
+        grid-column: 1/1;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid #000;
+    }
+    .wrapper .eight_3 {
+        border-top: none;
+        
+        border-bottom: 1px solid #000;
+        border-left: 1px solid #000;
+    }
+    .wrapper .eight_4 {
+        grid-column: 1/2;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid #000;
+    }
+    .wrapper .eight_5 {
+        grid-column: 2/3;
+        border-left: 1px solid #000;
+        /* border-right: none; */
+        border-bottom: 1px solid #000;
+    }
+    .wrapper .eight_6 {
+        grid-column: 3/4;
+        border-left: 1px solid #000;
+        /* border-right: none; */
+        border-bottom: 1px solid #000;
+    }
+    .wrapper .eight_7 {
+        grid-column: 4/5;
+        border-left: 1px solid #000;
+        /* border-right: none; */
+        border-bottom: 1px solid #000;
+    }
+    .wrapper .eight_8 {
+        grid-column: 5/6;
+        border-left: 1px solid #000;
+        /* border-right: none; */
+        border-bottom: 1px solid #000;
+    }
+    .wrapper .nine_1 {
+        border-bottom: 1px solid #000;
+        border-left: 1px solid #000;
+    }
+    .wrapper .nine_2 {
+        grid-column: 2/4;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid #000;
     }
     .wrapper .ten {
         grid-column: 1/6;
@@ -133,6 +192,27 @@
         border-bottom: 1px solid #000;
         border-left: none;;
     }
+    .rcorners1 {
+        border-radius: 0px;
+        border: 1px solid #000;
+        /* padding: 20px;  */
+        width: 25px;
+        height: 20px;  
+    }
+    .rcorners2 {
+        border-radius: 0px;
+        border: 1px solid #000;
+        /* padding: 20px;  */
+        width: 25px;
+        height: 20px;  
+    }
+    .rcorners3 {
+        border-radius: 0px;
+        border: 1px solid #000;
+        /* padding: 20px;  */
+        width: 25px;
+        height: 20px;  
+    }
     p {
         /* width: 500px; */
         /* line-height: 1.3; */
@@ -153,9 +233,6 @@
 @section('content')
     <div class="bg-white rounded shadow-lg duration-500 md:p-4 mt-10">
         <div class="justify-center items-center">
-            <!-- <div class="mt-5 flex justify-items-start">
-                <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">New Product Development Request</p>
-            </div> -->
             <div id="print_page">
                 <div class="md:col-span-6 text-right mt-4 no-print">
                     <div class="inline-flex items-end">
@@ -219,17 +296,11 @@
                     </div>
                 </div>
                 <ul class="m-1 font-medium border-t border-2 border-black"></ul>
-                <!-- <div class="justify-items-start mt-1 mb-3">
-                    <span class="m-1 text-xl font-semibold text-black" style="font-size: 20px;">New Product Development Project Brief</span>
-                </div> -->
 
                 <div class="flex justify-between ...">
                     <span class="m-1 text-xl font-semibold text-black" style="font-size: 20px;">New Product Development Project Brief</span>
-                    <!-- <div>02</div> -->
-                    <!-- <div>03</div> -->
                     <div style="margin-top: 2px; margin-right: 85px; margin-left: 50px;">
                         <img src="{{URL::asset('media/ibhs_img.png')}}">
-                        {{-- <img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQaOvxEZSnjYjoYtsSJUJMgaPq3WPTVvkqUywlyynplww2bv6A0" style=""> --}}
                     </div>
                     </div>
                 <div class="row m-1 text-black" style="">
@@ -289,7 +360,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="wrapper mt-2" style="position: relative;">
+                <div class="wrapper" style="position: relative;">
                     <div class="one" style="border-left: none; border-right: none;">
                         <div class="text-xs" style="position: absolute">BRAND</div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->BRAND }}</div>
@@ -306,6 +377,9 @@
                         <div class="text-xs" style="position:absolute">PROJECT REF. NO.</div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
                     </div>
+                </div>
+
+                <div class="wrapper" style="position: relative;">
                     <div class="five" style="border-right: none;">
                         <div class="text-xs" style="position:absolute">PROJECT NAME</div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">Beneficial Lipstick - KISS FROM A ROSE SHEENY TINT&GLOSS</div>
@@ -319,6 +393,7 @@
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">No</div>
                     </div>
                 </div>
+
                 <div style="position: relative;">
                     <div class="">
                         <div class="text-xs" style="position: absolute">
@@ -355,12 +430,12 @@
                 </div>
                 <div class="wrapper mt-10" style="position: relative;">
                     <div class="eight" style="border-right: none;">
-                        <div class="text-xs" style="position:absolute">PROJECT NAME</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">Beneficial Lipstick - KISS FROM A ROSE SHEENY TINT&GLOSS</div>
+                        <div class="text-xs" style="position:absolute">ACTIVE INGREDIENT</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
                     </div>
                     <div class="nine" style="border-right: none; grid-column: 4/6;">
-                        <div class="text-xs" style="position:absolute">TARGET GROUP</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">18-35</div>
+                        <div class="text-xs" style="position:absolute">TEXTURE</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">Other</div>
                     </div>
                     <div class="ten" style="border-right: none;">
                         <div class="text-xs" style="position:absolute">REF. PRODUCT / BENCHMARK (PLEASE IDENTIFY)</div>
@@ -376,47 +451,209 @@
                     </div>
                     <div class="thirteen" style="grid-column: 4/6;">
                         <div class="text-xs" style="position:absolute">REF. OF COLOR</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
+                    </div>
+                    <div class="elevent" style="border-right: none;">
+                        <div class="text-xs" style="position:absolute">TOTAL FRAGRANCE</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">0</div>
+                    </div>
+                    <div class="twel" style="grid-column: 2/4;">
+                        <div class="text-xs" style="position:absolute">FRAGRANCE TYPE OR CONCEPT</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">แดง,ส้มอมน้ําตาล,ชมพูเข็ม</div>
+                    </div>
+                    <div class="thirteen" style="grid-column: 4/6;">
+                        <div class="text-xs" style="position:absolute">REF. OF FRAGRANCE</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
+                    </div>
+                </div>
+
+                <div style="position: relative;">
+                    <div class="">
+                        
+                        <div class="text-md font-semibold" style="position:absolute">Special Test Requirements</div>
+                    </div>
+                </div>
+
+                <div class="wrapper mt-10" style="position: relative;">
+                    <div class="eight_1" style="border-right: none;">
+                        <div class="text-xs" style="position: absolute">EFFICACY TEST</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
+                    </div>
+                    <div class="nine_1" style="border-right: none; grid-column: 4/6;">
+                        <div class="text-xs" style="position: absolute">COMPARING WITH OEM OR BENCHMARK / OTHERS</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">Other</div>
+                    </div>
+                    <div class="eight_2" style="border-right: none; border-bottom: none;">
+                        <div class="text-xs" style="position: absolute">REASON OF USE</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="nine_2" style="border-right: none; border-bottom: none;">
+                        <div class="text-xs rcorners1" style="position: absolute; top: 50px;"></div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">To claim in advertising media</div>
+                    </div>
+                    <div class="eight_3" style="border-right: none; border-left: none; grid-column: 4/6; border-bottom: none;">
+                        <div class="text-xs rcorners1" style="position: absolute; top: 50px;">
+                            <div style="margin-left: 30px;">
+                                Others
+                            </div>
+                        </div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 135%;">---------------------------------------------</div>
+                        <div class="" style="position: absolute; top: -13px; right: 8px; display:flex; justify-content:center; align-items: center; height: 100%;">----------</div>
+                    </div>
+                    <div class="eight_2" style="border-right: none; border-bottom: none;">
+                        <div class="text-xs" style="position: absolute"></div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="nine_2" style="border-right: none; border-bottom: none;">
+                        <div class="text-xs rcorners2" style="position: absolute; top: 90px;"></div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">To compare with OEM/Benchmark</div>
+                    </div>
+                    <div class="eight_3" style="border-right: none; border-left: none; grid-column: 4/6; border-bottom: none;">
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">----------------------------------------------------------------</div>
+                    </div>
+                    <div class="eight" style="border-right: none;">
+                        <div class="text-xs" style="position:absolute">PRIMARY PACKAGING</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">ร่วมกับ 22657</div>
+                    </div>
+                    <div class="nine" style="border-right: none; grid-column: 4/5; border-left: none;">
+                        <div class="text-xs rcorners3" style="position: absolute; top: 131px;">
+                        </div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">With an outer box</div>
+                    </div>
+                    <div class="nine" style="border-right: none; grid-column: 5/6; border-left: none;">
+                        <div class="text-xs rcorners3" style="position: absolute; top: 131px;">
+                        </div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">With an outer box</div>
+                    </div>
+                </div>
+
+                <div style="position: relative;">
+                    <div class="">
+                        
+                        <div class="text-md font-semibold" style="position:absolute">Target Cost & Launching Plan</div>
+                    </div>
+                </div>
+                <div class="wrapper mt-10" style="position: relative;">
+                    <div class="eight_4" style="border-right: none;">
+                        <div class="text-xs" style="position: absolute">TARGET BULK COST [BATH/KG]</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">3.65</div>
+                    </div>
+                    <div class="eight_5" style="border-right: none;">
+                        <div class="text-xs" style="position: absolute">NET QUANTITY [g or ml]</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">4.5g x 2</div>
+                    </div>
+                    <div class="eight_6" style="border-right: none;">
+                        <div class="text-xs" style="position: absolute">TARGET BULK COST [BATH/KG]</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">5,000</div>
+                    </div>
+                    <div class="eight_5" style="border-right: none; grid-column: 4/6;">
+                        <div class="text-xs" style="position: absolute">TARGET LAUNCH DATE</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">30/11/2009</div>
+                    </div>
+                </div>
+
+                <div style="position: relative;">
+                    <div class="">
+                        <div class="text-md font-semibold" style="position:absolute">Target Cost & Launching Plan</div>
+                    </div>
+                </div>
+                <div class="wrapper mt-10" style="position: relative;">
+                    <div class="eight_4" style="border-right: none;">
+                        <div class="text-xs" style="position: absolute">NPD COORDINATOR</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="eight_5" style="border-right: none;">
+                        <div class="text-xs" style="position: absolute">PRODUCT EXECUTIVE</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="eight_6" style="border-right: none;">
+                        <div class="text-xs" style="position: absolute">PRODUCT/CATEGORY MANAGER</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="eight_7" style="border-right: none;">
+                        <div class="text-xs" style="position: absolute">MARKETING MANAGER/DIRECTOR</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="eight_8" style="border-right: none;">
+                        <div class="text-xs" style="position: absolute">CEO</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="eight_4" style="border-right: none; border-top: none;">
+                        <div class="text-xs" style="position: absolute">DATE</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="eight_5" style="border-right: none; border-top: none;">
+                        <div class="text-xs" style="position: absolute">DATE</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="eight_6" style="border-right: none; border-top: none;">
+                        <div class="text-xs" style="position: absolute">DATE</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="eight_7" style="border-right: none; border-top: none;">
+                        <div class="text-xs" style="position: absolute">DATE</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="eight_8" style="border-right: none; border-top: none;">
+                        <div class="text-xs" style="position: absolute">DATE</div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
                     </div>
                 </div>
 
-                {{-- <div style="position: relative;">
-                    <div class="">
-                        <div class="text-xs" style="position:absolute">PRODUCT CONCEPT</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; top: 5px;">
-                            <p class="font-normal">
-                                2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ริมฝีปาก
-                            </p>
-                        </div>
-                    </div>
-                </div>
-                <ul class="mt-4 font-medium border-t border-2 border-black"></ul>
                 <div style="position: relative;">
                     <div class="">
-                        <div class="text-xs" style="position:absolute">PRODUCT BENEFIT</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; top: 5px;">
-                            <p class="font-normal">
-                                สีทาปากสูตรน้ําที่ให้การติดทน พร้อมลิปกลอสที่ช่วยเพิ่มความชุ่มชื้นให้ริมฝีปาก อวบอิ่มเป็นประกายแวววาว พร้อมลิปกลอสที่ช่วยเพิ่มความชุ่มชื้นให้ริมฝีปาก อวบอิ่มเป็นประกายแวววาว พร้อมลิปกลอสที่ช่วยเพิ่มความชุ่มชื้นให้ริมฝีปาก อวบอิ่มเป็นประกายแวววาว พร้อมลิปกลอสที่ช่วยเพิ่มความชุ่มชื้นให้ริมฝีปาก อวบอิ่มเป็นประกายแวววาว
-                            </p>
-                        </div>
+                        <div class="text-md font-semibold" style="position:absolute">Customer Service/KM</div>
                     </div>
                 </div>
-                <div style="position: relative;">
-                    <div class="">
-                        <div class="text-md font-semibold" style="position:absolute">Formulation Requirements</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center;">-</div>
+                <div class="wrapper mt-10" style="position: relative;">
+                    <div class="" style="position: absolute; border-left: 1px solid #000; border-right: none; border-top: none; border-bottom: none; top: -40px; height: 40px; left: 206px; grid-column: 1/4;">
+                        <div class="text-md font-semibold">
+                            IBHS Project Review & Authorization
+                        </div>
                     </div>
-                </div> --}}
-                <!-- <ul class="mt-10 font-medium border-t border-2 border-black"></ul>
-
-                <div class="divide-y-2 divide-dashed">
-                    <p>หมายเหตุ : </p>
-                    <div></div>
-                </div> -->
-
+                    <div class="eight_4" style="border-right: none;">
+                        <div class="text-xs" style="position: absolute">CS MANAGER/KM</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="eight_5" style="border-right: none;">
+                        <div class="text-xs" style="position: absolute">CUSTOMER SERVICE/IBHS</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="eight_6" style="border-right: none;">
+                        <div class="text-xs" style="position: absolute">RESEARCHER</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="eight_7" style="border-right: none;">
+                        <div class="text-xs" style="position: absolute">DEPT. MANAGER</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="eight_8" style="border-right: none;">
+                        <div class="text-xs" style="position: absolute">DIRECTOR OF IBHS</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="eight_4" style="border-right: none; border-top: none;">
+                        <div class="text-xs" style="position: absolute">DATE</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="eight_5" style="border-right: none; border-top: none;">
+                        <div class="text-xs" style="position: absolute">DATE</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="eight_6" style="border-right: none; border-top: none;">
+                        <div class="text-xs" style="position: absolute">DATE</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="eight_7" style="border-right: none; border-top: none;">
+                        <div class="text-xs" style="position: absolute">DATE</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                    <div class="eight_8" style="border-right: none; border-top: none;">
+                        <div class="text-xs" style="position: absolute">DATE</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700 no-print"></ul> -->
     </div>
 
     <script src="https://cdn.tailwindcss.com"></script>

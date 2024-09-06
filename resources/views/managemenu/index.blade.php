@@ -376,9 +376,7 @@
             <div data-twe-modal-dialog-ref class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px]">
                 <div class="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-clip-padding text-current shadow-4 outline-none bg-gray-100 dark:bg-[#202020]">
                     <div class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 p-4 dark:border-white/10">
-                        <h5 class="text-xl font-medium leading-normal text-surface dark:text-white" id="exampleModalLabel">
-                            เพิ่มสิทธิ์
-                        </h5>
+                        <h5 class="text-xl font-medium leading-normal text-surface dark:text-white" id="staticBackdropLabel"></h5>
                         <!-- Close button -->
                         <button
                             type="button"
@@ -402,24 +400,26 @@
                             </span>
                         </button>
                     </div>
-                    <div class=" p-4 text-gray-900 dark:text-gray-100">
-                        <label for="name">ชื่อสิทธิ์</label>
-                        <input type="text" id="menu_id" name="menu_name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-
-                    </div>
-                    <div class="p-2 ">
-                        <ul class="space-y-2 font-large border-t border-gray-200 dark:border-gray-500"></ul>
-                    </div>
-                    <div class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md p-2">
-                        <a class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 rounded cursor-pointer group" onclick="createRole()">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                                <path d="M0 0h24v24H0V0z" fill="none"></path>
-                                <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
-                                <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
-                            </svg>
-                            Save
-                        </a>
-                    </div>
+                    <form id="form_menu" class="" method="POST">
+                        <input class="" type="hidden" id="edit_id_role" name="edit_id_role" value="">
+                        <div class=" p-4 text-gray-900 dark:text-gray-100">
+                            <label for="name">ชื่อสิทธิ์</label>
+                            <input type="text" id="name_position" name="name_position" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                        </div>
+                        <div class="p-2 ">
+                            <ul class="space-y-2 font-large border-t border-gray-200 dark:border-gray-500"></ul>
+                        </div>
+                        <div class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md p-2">
+                            <a class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 rounded cursor-pointer group" onclick="createRole()">
+                                <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                    <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                    <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
+                                    <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
+                                </svg>
+                                Save
+                            </a>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -460,6 +460,7 @@
                                     <table id="positionTable" class="table table-bordered text-gray-900 dark:text-white cursor-pointer" style="width: 100%;">
                                         <thead>
                                             <tr>
+                                                <th style="width: 30px">Action</th>
                                                 <th style="width: 30px">ID</th>
                                                 <th>ชื่อสิทธิ์</th>
                                             </tr>
@@ -467,6 +468,31 @@
                                         <tbody>
                                             @foreach ($position as $pos_data)
                                                 <tr id="pos_{{ $pos_data->id }}" onclick="setAccess({{  $pos_data->id  }})">
+                                                    <td class="flex">
+                                                        <button
+                                                            type="button"
+                                                            class="px-2 py-1 left-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group"
+                                                            data-twe-toggle="modal"
+                                                            data-twe-target="#staticBackdrop"
+                                                            data-twe-ripple-init
+                                                            data-twe-ripple-color="light"
+                                                            onclick="modelManageRole('{{ $pos_data->id }}', '{{ $pos_data->name_position }}')"
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                                                <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                                                <path d="M5 18.08V19h.92l9.06-9.06-.92-.92z" opacity=".3"></path>
+                                                                <path d="M20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29s-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83zM3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM5.92 19H5v-.92l9.06-9.06.92.92L5.92 19z"></path>
+                                                            </svg>
+                                                        </button>
+                                                        <!-- <button
+                                                            type="button"
+                                                            class="px-2 py-1 font-medium tracking-wide bg-[#c72121] hover:bg-[#c23737e3] text-white rounded group"
+                                                        >
+                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                                                <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" />
+                                                            </svg>
+                                                        </button> -->
+                                                    </td>
                                                     <td>{{ $pos_data->id }}</td>
                                                     <td>{{ $pos_data->name_position }}</td>
                                                 </tr>
@@ -616,9 +642,20 @@
         }
         const dlayMessage = 500;
         let menusAuthPosition = <?php echo json_encode($menusAuthPosition); ?>;
-        // console.log("🚀 ~ menusAuthPosition:", menusAuthPosition)
+
+        function modelManageRole(id, name_position) {
+            if (id) {
+                    jQuery("#edit_id_role").val(id)
+                    jQuery("#name_position").val(name_position)
+                    jQuery("#staticBackdropLabel").text('แก้ไขสิทธิ์การใช้งาน')
+            } else {
+                jQuery("#edit_id_role").val('')
+                jQuery("#name_position").val('')
+                jQuery("#staticBackdropLabel").text('เพิ่มสิทธิ์การใช้งาน')
+            }
+        }
+
         function modelManageMenu(id, menu_name, submenus_name) {
-            // console.log("🚀 ~ modelManageMenu ~ submenus_name:", submenus_name.submenus)
             jQuery(".table_submenu").remove('')
             let url = ""
             if(id){
@@ -722,7 +759,6 @@
         function setMenu(data){
             if(select_pos){
                 if($(data).prop("checked")){
-                    // console.log("🚀 ~ setMenu ~ data:", data)
                     $.ajaxSetup({
                         headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -789,6 +825,7 @@
                     });
 
                     const payload = data.id.split('_')
+                    let action = payload[1]
                     let submenuId = payload[3] || null
 
                     $.ajax({
@@ -797,7 +834,9 @@
                         data: {
                             pos_id:select_pos,
                             menu_id:$(data).val(),
-                            action_name: jQuery(data).attr('name'),
+                            action: action,
+                            state: data.checked ? 1 : 0,
+                            // action_name: jQuery(data).attr('name'),
                             submenuId: submenuId
                         },
                         beforeSend: function () {
@@ -808,6 +847,7 @@
                                 // console.log('checked : '+$(data).val());
                                 setTimeout(function() {
                                     successMessage("Create User Successfully!");
+                                    // $('#menuTable').draw();
                                 },dlayMessage)
                                 setTimeout(function() {
                                     toastr.success("Delete Menu Successfully!");
@@ -886,7 +926,6 @@
                     let menuAll = <?php echo json_encode($menus); ?>;
                     let menupermission = res.submenu_array.length ? res.submenu_array : []
                     const result = Object.groupBy(menupermission, ({ menu_id }) => menu_id);
-                    console.log("🚀 ~ ajaxGetMenuAccess ~ result:", result)
                     if(true) {
                         menuAll.forEach(menu => {
                             const currentMenu = result[menu.id]
