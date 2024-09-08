@@ -73,7 +73,25 @@ class ProductController extends Controller
             ->toArray();
         }
 
-        return view('product.index', compact('user', 'product_seq', 'brands'));
+        $data = Pro_develops::select(
+            'BRAND',
+            'REF_DOC',
+            'DOC_NO',
+            'BARCODE'
+        )
+        ->orderBy('BARCODE', 'ASC');
+        $productCodes = $data->select('BARCODE')->pluck('BARCODE')->toArray();
+
+        $productCodeArr = [];
+        foreach($productCodes as $productCodeLast) {
+            $productCodeArrLast = [];
+            $productCodeArrLast[] = substr_replace($productCodeLast, '', -1);
+            foreach($productCodeArrLast as $productCodeFirst) {
+                $productCodeArr[] = substr($productCodeFirst, 7, 11);
+            }
+        }
+
+        return view('product.index', compact('user', 'product_seq', 'brands', 'productCodeArr'));
     }
 
     public function productMasterGetBrandListAjax(Request $request)
@@ -258,7 +276,7 @@ class ProductController extends Controller
                 'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',
                 'STORAGE_TEMP' => is_null($request->input('STORAGE_TEMP')) ? 'N' : 'Y',
                 'CONTROL_STK' => is_null($request->input('CONTROL_STK')) ? 'N' : 'Y',
-                'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',     
+                'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
                 'USER_EDIT' => Auth::user()->id
             ];
 
@@ -351,11 +369,12 @@ class ProductController extends Controller
         // $field_detail = [
         //     'pro_develops.DOC_NO',
         //     'pro_develops.NAME_ENG',
-        //     'pro_develops.BARCODE', 
+        //     'pro_develops.BARCODE',
         // ];
 
         $data = Product1::select(
             'BRAND',
+            'PRODUCT',
             'BARCODE',
             'NAME_THAI'
         )
@@ -378,7 +397,7 @@ class ProductController extends Controller
 
         return response()->json($response);
     }
-    
+
     public function checkname_brand(Request $request) {
 
         $data = User::select('id')
