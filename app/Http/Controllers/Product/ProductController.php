@@ -62,7 +62,7 @@ class ProductController extends Controller
             $brands = Barcode::select(
                 'BRAND',
                 'STATUS')
-            ->whereIn('STATUS', ['OP'])
+                ->whereIn('STATUS', ['OP', 'RI'])
             ->pluck('BRAND')
             ->toArray();
         } else if (in_array($userpermission, ['Marketing - CPS'])) {
@@ -126,6 +126,16 @@ class ProductController extends Controller
 
         // dd($productCodes);
         return response()->json(['productCodes' => $productCodes]);
+    }
+
+    public function check_product(Request $request) 
+    {
+        // dd($request);
+        $data = Product1::select('PRODUCT')
+            ->where('PRODUCT', $request->PRODUCT)
+            ->count();
+
+        return response()->json($data > 0 ? false : true);
     }
 
     public function productMasterGetBrandListAjax(Request $request)
@@ -556,12 +566,44 @@ class ProductController extends Controller
         ];
 
         $data = Product1::select(
-            'BRAND',
+   'BRAND',
             'PRODUCT',
             'BARCODE',
             'NAME_THAI'
         )
         ->orderBy('PRODUCT', 'DESC');
+
+        $userpermission = Auth::user()->getUserPermission->name_position;
+        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        if (in_array($userpermission, [$isSuperAdmin])) {
+                $data = Product1::select(
+       'BRAND',
+                'PRODUCT',
+                'BARCODE',
+                'NAME_THAI'
+            )
+            ->orderBy('BARCODE', 'DESC');
+        } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+            $data = Product1::select(
+           'BRAND',
+                    'PRODUCT',
+                    'BARCODE',
+                    'NAME_THAI'
+                )
+                // ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
+                ->whereIn('BRAND', ['OP', 'RI', 'KM'])
+                ->orderBy('BARCODE', 'DESC');
+        } else if (in_array($userpermission, ['Marketing - CPS'])) {
+            $data = Product1::select(
+       'BRAND',
+                'PRODUCT',
+                'BARCODE',
+                'NAME_THAI'
+            )
+            // ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
+            ->whereIn('BRAND', ['CP', 'KM'])
+            ->orderBy('BARCODE', 'DESC');
+        }
 
         if ($BRAND != null) {
             $data->where('product1s.BRAND', $BRAND);

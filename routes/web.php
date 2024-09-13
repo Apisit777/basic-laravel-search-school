@@ -31,6 +31,7 @@ Route::get('/get_users', [ProductController::class, 'get_users'])->name('get_use
 
 Route::get('/product_detail_create', [ProductController::class, 'productDetailCreate'])->name('product_detail_create');
 Route::post('/checknamebrand', [ProductController::class, 'checkname_brand'])->name('checknamebrand');
+// Route::post('/checkproduct', [ProductController::class, 'check_product'])->name('checkproduct');
 
 Route::get('/get_brand_list_ajax', [ProductFormController::class, 'getBrandListAjax'])->name('get_brand_list_ajax');
 
@@ -96,6 +97,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
         Route::get('', [ProductController::class, 'index'])->name('index');
         Route::get('/get_barcode', [ProductController::class, 'getBarcode'])->name('get_barcode');
+        Route::get('/checkproduct', [ProductController::class, 'check_product'])->name('checkproduct');
         Route::post('/list_products', [ProductController::class, 'list_products'])->name('list_products');
         Route::get('/product_master_get_brand_list_ajax', [ProductController::class, 'productMasterGetBrandListAjax'])->name('product_master_get_brand_list_ajax');
         Route::post('/', [ProductController::class, 'store'])->name('store');
