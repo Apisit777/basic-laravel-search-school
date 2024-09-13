@@ -758,7 +758,7 @@ class ProductFormController extends Controller
                 'pro_develops.NAME_ENG AS NAME_ENG'
             )
             ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
-            ->whereIn('pro_develops.STATUS', ['CPS'])
+            ->whereIn('pro_develops.STATUS', ['CP'])
             ->orderBy('BARCODE', 'DESC');
         }
 

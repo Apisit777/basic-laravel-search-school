@@ -197,9 +197,9 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-    <!-- <script type="text/javascript"  src="../node_modules/tw-elements/dist/js/tw-elements.umd.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript"  src="../node_modules/tw-elements/dist/js/tw-elements.umd.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
@@ -219,7 +219,22 @@
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
+
+    <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
+    <script src="{{ asset('js/flowbite-2.3.0.min.js') }}"></script>
+    <script src="{{ asset('js/3.10.1-jszip.min.js') }}"></script>
+    <script src="{{ asset('js/2.0.5-dataTables.js') }}"></script>
+    <script src="{{ asset('js/3.0.2-dataTables.buttons.js') }}"></script>
+    <script src="{{ asset('js/3.0.2-buttons.bootstrap5.js') }}"></script>
+    <script src="{{ asset('js/dataTables.bootstrap5.js') }}"></script>
+    <script src="{{ asset('js/buttons-html5.min.js') }}"></script>
+    <script src="{{ asset('js/buttons-print.min.js') }}"></script>
+    <script src="{{ asset('js/buttons-colVis.min.js') }}"></script>
+    <script src="{{ asset('js/toastr.min.js') }}"></script>
+    <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    
     @if (session('status'))
         <script>
             toastr.options = {
