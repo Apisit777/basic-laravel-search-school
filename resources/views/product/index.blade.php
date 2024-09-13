@@ -1,6 +1,5 @@
 @extends('layouts.layout')
 @section('title', '')
-
     <style>
         .loaderslide {
             width: 100%;
@@ -53,10 +52,18 @@
         .select2-container--open {
             z-index: 99999999999999;
         }
+        .loading_create_menu {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <!-- @vite(['resources/css/app.css', 'resources/js/app.js']) -->
 
     <div id="slide" class="loaderslide"></div>
 
@@ -65,47 +72,21 @@
         <div class="mt-6 mb-4 flex justify-center items-center">
             <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">@lang('global.content.product_registration_list')</p>
         </div>
-        <!-- <div id="create_product">
-        </div> -->
-        <!-- <div class="fixed flex bottom-5 right-5 z-10">
-            <a href="{{ route('product.create') }}" class="bg-[#303030] hover:bg-[#404040] text-white font-bold cursor-pointer py-2 px-2 mr-2 mt-20 rounded-full group">
-                <svg xmlns="http:www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-8">
-                    <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
-                </svg>
-            </a>
-        </div> -->
-
-        <div class="fixed flex bottom-16 right-5 z-10">
-            <a
-                type="button"
-                class="bg-[#303030] hover:bg-[#404040] text-white font-bold cursor-pointer py-2 px-2 mr-2 mt-20 rounded-full group"
-                data-twe-toggle="modal"
-                data-twe-target="#staticBackdrop"
-                data-twe-ripple-init
-                data-twe-ripple-color="light"
-                onclick="modelManageRole()"
-            >
-                <svg fill="currentColor" class="size-7" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1600 1066.667c117.653 0 213.333 95.68 213.333 213.333v106.667H1920V1760c0 88.213-71.787 160-160 160h-320c-88.213 0-160-71.787-160-160v-373.333h106.667V1280c0-117.653 95.68-213.333 213.333-213.333ZM800 0c90.667 0 179.2 25.6 254.933 73.6 29.867 18.133 58.667 40.533 84.267 66.133 49.067 49.067 84.8 106.88 108.053 169.814 11.307 30.4 20.8 61.44 25.814 94.08l2.24 14.613 3.626 20.16-.533.32v.213l-52.693 32.427c-44.694 28.907-95.467 61.547-193.067 61.867-.427 0-.747.106-1.173.106-24.534 0-46.08-2.133-65.28-5.653-.64-.107-1.067-.32-1.707-.427-56.32-10.773-93.013-34.24-126.293-55.68-9.6-6.293-18.774-12.16-28.16-17.6-27.947-16-57.92-27.306-108.16-27.306h-.32c-57.814.106-88.747 15.893-121.387 36.266-4.48 2.88-8.853 5.44-13.44 8.427-3.093 2.027-6.72 4.16-9.92 6.187-6.293 4.053-12.693 8.106-19.627 12.16-4.48 2.666-9.493 5.013-14.293 7.573-6.933 3.627-13.973 7.147-21.76 10.453-6.613 2.987-13.76 5.547-21.12 8.107-6.933 2.347-14.507 4.267-22.187 6.293-8.96 2.347-17.813 4.587-27.84 6.187-1.173.213-2.133.533-3.306.747v57.6c0 17.066 1.066 34.133 4.266 50.133C454.4 819.2 611.2 960 800 960c195.2 0 356.267-151.467 371.2-342.4 48-14.933 82.133-37.333 108.8-54.4v23.467c0 165.546-84.373 311.786-212.373 398.08h4.906a1641.19 1641.19 0 0 1 294.08 77.76C1313.28 1119.68 1280 1195.733 1280 1280h-106.667v480c0 1.387.427 2.667.427 4.16-142.933 37.547-272.427 49.173-373.76 49.173-345.493 0-612.053-120.32-774.827-221.333L0 1576.32v-196.373c0-140.054 85.867-263.04 218.667-313.28 100.373-38.08 204.586-64.96 310.186-82.347h4.8C419.52 907.413 339.2 783.787 323.2 640c-2.133-17.067-3.2-35.2-3.2-53.333V480c0-56.533 9.6-109.867 27.733-160C413.867 133.333 592 0 800 0Zm800 1173.333c-58.773 0-106.667 47.894-106.667 106.667v106.667h213.334V1280c0-58.773-47.894-106.667-106.667-106.667Z" fill-rule="evenodd"/>
-                </svg>
-            </a>
-        </div>
-
         <!-- Modal -->
         <div
             data-twe-modal-init
             class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
-            id="staticBackdrop"
+            id="exampleModal"
             data-twe-backdrop="static"
             data-twe-keyboard="false"
             tabindex="-1"
-            aria-labelledby="staticBackdropLabel"
+            aria-labelledby="exampleModalLabel"
             aria-hidden="true"
         >
             <div data-twe-modal-dialog-ref class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px]">
                 <div class="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-clip-padding text-current shadow-4 outline-none bg-gray-100 dark:bg-[#202020]">
                     <div class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 p-4 dark:border-white/10">
-                        <h5 class="text-xl font-medium leading-normal text-surface dark:text-white" id="staticBackdropLabel">
+                        <h5 class="text-xl font-medium leading-normal text-surface dark:text-white" id="exampleModalLabel">
                             Copy ข้อมูล
                         </h5>
                         <!-- Close button -->
@@ -131,31 +112,40 @@
                             </span>
                         </button>
                     </div>
-                    <form id="form_menu" class="" method="POST">
+                    <form id="form_copy" class="" method="POST">
                         <div class="p-4 lg:col-span-4 text-gray-900 dark:text-gray-100">
                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
-                                <div class="md:col-span-3" style="position: relative;">
-                                    <label for="NAME_THAI">ชื่อภาษาไทย</label>
-                                    <input type="text" name="NAME_THAI" id="NAME_THAI" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                <div class="md:col-span-3" >
+                                    <label for="countries" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Copy ข้อมูล<span class="text-danger"> *</span></label>
+                                    <select class="js-example-basic-single w-full rounded-sm text-xs text-center" id="data_coppy" name="PRODUCT">
+                                        <option class="" value=""> --- กรุณาเลือก ---</option>
+                                        @foreach ($dataProductMasterArr as $key => $dataProductMaster)
+                                            <option value={{ $dataProductMaster }}>{{ $dataProductMaster }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                <div class="md:col-span-3" style="position: relative;">
-                                    <label for="SHORT_THAI">ชื่อย่อภาษาไทย</label>
-                                    <input type="text" name="SHORT_THAI" id="SHORT_THAI" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                <div class="md:col-span-3" >
+                                    <label for="NUMBER" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Code ที่ต้องการ<span class="text-danger"> *</span></label>
+                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="NUMBER" name="NUMBER" onchange="barcodeChange(this, 'BARCODE')">
+                                        <option value=""> --- กรุณาเลือก ---</option>
+                                        @foreach ($productCodeArr as $key => $productCode)
+                                            <option value={{ $productCode }}>{{ $productCode }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                         </div>
-
-                        <input class="" type="hidden" id="edit_id_role" name="edit_id_role" value="">
                         <div class="p-4 text-gray-900 dark:text-gray-100">
-                            <label for="name">ชื่อสิทธิ์</label>
-                            <input type="text" id="name_position" name="name_position" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                            <label for="barcodeTest">Barcode ที่ต้องการ<span class="text-danger"> *</span></label>
+                            <input type="text" id="BARCODE" name="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled />
                         </div>
 
                         <div class="p-2 ">
                             <ul class="space-y-2 font-large border-t border-gray-200 dark:border-gray-500"></ul>
                         </div>
+
                         <div class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md p-2">
-                            <a class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 rounded cursor-pointer group" onclick="createRole()">
+                            <a id="saveButton" type="submit" class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-4 rounded cursor-pointer group" onclick="createCopy()">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                     <path d="M0 0h24v24H0V0z" fill="none"></path>
                                     <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
@@ -165,10 +155,15 @@
                             </a>
                         </div>
                     </form>
+                    <div id="loader_create_menu" class="loading_create_menu absolute hidden bg-[#e4e4e4e3] dark:bg-[#2a2a2afa] z-auto">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 animate-spin dark:text-white">
+                            <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
+                            <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
                 </div>
             </div>
         </div>
-
         <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
             <div class="lg:col-span-4 xl:grid-cols-4">
                 <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
@@ -178,15 +173,6 @@
                             <option value=""> --- กรุณาเลือก ---</option>
                             @foreach ($brands as $key => $brand)
                                 <option value={{ $brand }}>{{ $brand }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="md:col-span-2" >
-                        <label for="countries" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Sarch Column</label>
-                        <select class="js-example-basic-single w-full rounded-sm text-xs text-center" id="BARCODE" name="BARCODE">
-                            <option class="" value=""> --- กรุณาเลือก ---</option>
-                            @foreach ($productCodeArr as $key => $productCode)
-                                <option value={{ $productCode }}>{{ $productCode }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -202,14 +188,6 @@
                                 </svg>
                                 ค้นหา
                             </a>
-                            <!-- <button  id="" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group cursor-pointer btn-rotate" type="reset">
-                                <svg class="hidden h-6 w-6 md:inline-block rotate"
-                                    viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
-                                    <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 93,62 C 83,82 65,96 48,96 32,96 19,89 15,79 L 5,90 5,53 40,53 29,63 c 0,0 5,14 26,14 16,0 38,-15 38,-15 z"/>
-                                    <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 5,38 C 11,18 32,4 49,4 65,4 78,11 85,21 L 95,10 95,47 57,47 68,37 C 68,37 63,23 42,23 26,23 5,38 5,38 z"/>
-                                </svg>
-                                ล้างข้อมูล
-                            </button> -->
                         </div>
                     </div>
                 </div>
@@ -217,11 +195,38 @@
         </div>
         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
         <div class="flex right-12 z-10 absolute">
-            <a href="{{ route('product.create') }}" type="button" class="mt-1 px-3 py-2 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group" name="add" id="add">
+            <a href="{{ route('product.create') }}" type="button" class="mt-1 mr-1 px-3 py-2 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group" name="add" id="add">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                     <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
                 </svg>
                 Add
+            </a>
+            <a
+                type="button" 
+                class="mt-1 mr-1 px-3 py-2 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group cursor-pointer"
+                data-twe-toggle="modal"
+                data-twe-target="#exampleModal"
+                data-twe-ripple-init
+                data-twe-ripple-color="light"
+                onclick="modelCopy()"
+            >
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="hidden h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block"
+                        viewBox="0 0 512 512" xml:space="preserve">
+                    <path d="M509.099,189.867l-145.067-128c-1.707-1.536-3.84-2.219-6.059-2.133H307.2v-51.2C307.2,3.84,303.36,0,298.667,0H8.533
+                        C3.84,0,0,3.84,0,8.533V435.2c0,4.693,3.84,8.533,8.533,8.533H128v59.733c0,4.693,3.84,8.533,8.533,8.533h366.933
+                        c4.693,0,8.533-3.84,8.533-8.533v-307.2C512,193.792,510.976,191.488,509.099,189.867z M366.933,87.211l113.92,100.523h-113.92
+                        V87.211z M128,68.267v358.4H17.067v-409.6h273.067v42.667H137.301C132.437,59.221,128,63.317,128,68.267z M494.933,494.933H145.067
+                        V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059c1.621,1.536,3.755,2.475,6.059,2.475h136.533V494.933z"/>
+                    <g>
+                        <polygon style="fill:#7E939E;" points="480.853,187.733 366.933,187.733 366.933,87.211 	"/>
+                        <rect x="452.267" y="204.8" style="fill:#7E939E;" width="42.667" height="290.133"/>
+                    </g>
+                    <path style="fill:#AFAFAF;" d="M452.267,204.8v290.133h-307.2V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059
+                        c1.621,1.536,3.755,2.475,6.059,2.475H452.267z"/>
+                    <path style="fill:#7E939E;" d="M290.133,17.067v42.667H137.301c-4.864-0.512-9.301,3.584-9.301,8.533v358.4H17.067v-409.6H290.133z"
+                        />
+                </svg>
+                Copy
             </a>
         </div>
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
@@ -232,6 +237,7 @@
                             <th>ID</th>
                             <th>รหัสสินค้า</th>
                             <th>ชื้อสินค้า</th>
+                            <th>Barcode</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -244,7 +250,6 @@
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
@@ -264,6 +269,7 @@
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tw-elements/1.0.0-alpha.6/tw-elements.min.js"></script>
     @if (session('status'))
         <script>
             toastr.options = {
@@ -336,7 +342,7 @@
 
         const mytableDatatable = $('#example').DataTable({
             // new DataTable('#example', {
-                'searching': false,
+            'searching': false,
             "serverSide": true,
             searching: false,
             resposive: true,
@@ -361,14 +367,9 @@
                 "type": "POST",
                 'data': function(data) {
                     // Read values
-                    const doc_no = $('#doc_no').val();
-                    const date_start = $('#date_start').val();
-                    const date_end = $('#date_end').val();
-
-                    // Append to data
-                    data.doc_no = doc_no;
-                    data.date_start = date_start;
-                    data.date_end = date_end;
+                    data.brand_id = $('#brand_id').val();
+                    data.BARCODE = $('#BARCODE').val();
+                    data.search = $('#search').val();
 
                     data._token = $('meta[name="csrf-token"]').attr('content');
                 }
@@ -398,9 +399,16 @@
                 {
                     targets: 3,
                     orderable: true,
+                    render: function(data, type, row) {
+                        return row.BARCODE;
+                    }
+                },
+                {
+                    targets: 4,
+                    orderable: true,
                     className: 'text-center',
                     render: function(data, type, row) {
-                        let disabledRoute = "{{route('product.update', 0)}}".replace('/0', "/" + row.BARCODE)
+                        let disabledRoute = "{{route('product.update', 0)}}".replace('/0', "/" + row.PRODUCT)
                         let text = "#"
                             return `<div class="inline-flex flex items-center rounded-md shadow-sm">
                                         <a href="{{route('product.edit', 0)}}"
@@ -412,119 +420,109 @@
                                             </svg>
                                             Edit
                                         </a>
-                                        <a onclick="disableAppointment('${disabledRoute}',this,'${row.BARCODE}', '${row.PRODUCT}')"
-                                            type="button" class="px-1 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group cursor-pointer">
-                                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="hidden h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block"
-                                                    viewBox="0 0 512 512" xml:space="preserve">
-                                                <path d="M509.099,189.867l-145.067-128c-1.707-1.536-3.84-2.219-6.059-2.133H307.2v-51.2C307.2,3.84,303.36,0,298.667,0H8.533
-                                                    C3.84,0,0,3.84,0,8.533V435.2c0,4.693,3.84,8.533,8.533,8.533H128v59.733c0,4.693,3.84,8.533,8.533,8.533h366.933
-                                                    c4.693,0,8.533-3.84,8.533-8.533v-307.2C512,193.792,510.976,191.488,509.099,189.867z M366.933,87.211l113.92,100.523h-113.92
-                                                    V87.211z M128,68.267v358.4H17.067v-409.6h273.067v42.667H137.301C132.437,59.221,128,63.317,128,68.267z M494.933,494.933H145.067
-                                                    V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059c1.621,1.536,3.755,2.475,6.059,2.475h136.533V494.933z"/>
-                                                <g>
-                                                    <polygon style="fill:#7E939E;" points="480.853,187.733 366.933,187.733 366.933,87.211 	"/>
-                                                    <rect x="452.267" y="204.8" style="fill:#7E939E;" width="42.667" height="290.133"/>
-                                                </g>
-                                                <path style="fill:#AFAFAF;" d="M452.267,204.8v290.133h-307.2V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059
-                                                    c1.621,1.536,3.755,2.475,6.059,2.475H452.267z"/>
-                                                <path style="fill:#7E939E;" d="M290.133,17.067v42.667H137.301c-4.864-0.512-9.301,3.584-9.301,8.533v358.4H17.067v-409.6H290.133z"
-                                                    />
-                                            </svg>
-                                            Copy
-                                        </a>
                                     </div>
-                                `.replaceAll('/0', "/" + row.BARCODE);
+                                `.replaceAll('/0', "/" + row.PRODUCT);
 
                     }
                 }
             ]
         });
 
-        // <div class="inline-flex flex items-center rounded-md shadow-sm">
-        //     <button onclick="disableAppointment('${disabledRoute}',this,'${row.BARCODE}')" class="bclose btn btn-sm btn-success refersh_btn">
-        //         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
-        //         <path fill-rule="evenodd" d="M19.5 21a3 3 0 0 0 3-3V9a3 3 0 0 0-3-3h-5.379a.75.75 0 0 1-.53-.22L11.47 3.66A2.25 2.25 0 0 0 9.879 3H4.5a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3h15Zm-6.75-10.5a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25v2.25a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V10.5Z" clip-rule="evenodd" />
-        //         </svg>
-        //     </button>
-        //     <button type="button" class="px-2 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group">
-        //         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="-mt-1.5 hidden h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-        //             <path d="M0 0h24v24H0V0z" fill="none"></path>
-        //             <path d="M5 18.08V19h.92l9.06-9.06-.92-.92z" opacity=".3"></path>
-        //             <path d="M20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29s-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83zM3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM5.92 19H5v-.92l9.06-9.06.92.92L5.92 19z"></path>
-        //         </svg>
-        //         Edit
-        //     </button>
-        // </div>
+        $('#btnSerarch').click(function() {
+            mytableDatatable.draw();
+            return false;
+        });
+        
+        jQuery("#data_coppy").val('');
+        function modelCopy(id, name_position) {
+            jQuery("#NUMBER").val('').change();
+            jQuery("#BARCODE").val('');
+        }
 
-        // const { value: fruit } = await Swal.fire({
-        // title: "Select field validation",
-        // input: "select",
-        // inputOptions: {
-        //     Fruits: {
-        //     apples: "Apples",
-        //     bananas: "Bananas",
-        //     grapes: "Grapes",
-        //     oranges: "Oranges"
-        //     },
-        //     Vegetables: {
-        //     potato: "Potato",
-        //     broccoli: "Broccoli",
-        //     carrot: "Carrot"
-        //     },
-        //     icecream: "Ice cream"
-        // },
-        // inputPlaceholder: "Select a fruit",
-        // showCancelButton: true,
-        // inputValidator: (value) => {
-        //     return new Promise((resolve) => {
-        //     if (value === "oranges") {
-        //         resolve();
-        //     } else {
-        //         resolve("You need to select oranges :)");
-        //     }
-        //     });
-        // }
-        // });
-        // if (fruit) {
-        // Swal.fire(`You selected: ${fruit}`);
-        // }
+        function barcodeChange(e, params) {
+            console.log("🚀 ~ barcodeChange ~ e:", e.value)
+            if (params === 'BARCODE') {
+                url = '{{ route('product.get_barcode') }}?BARCODE=' + e.value;
+            }
+            jQuery.ajax({
+                method: "GET",
+                url,
+                dataType: 'json',
+                success: function (data) {
+                    if (e.value) {
+                        jQuery("#BARCODE").val(data.productCodes.BARCODE);
+                    } else {
+                        jQuery("#BARCODE").val('');
+                    }
+                },
+                error: function (params) {
+                    console.log('ajax error ::', params);
+                }
+            });
+        }
+
+        const dlayMessage = 500;
+        function createCopy() {
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                }
+            });
+                jQuery.ajax({
+                    method: "POST",
+                    url: "{{ route('product.create_copy') }}",
+                    data: $("#form_copy").serialize(),
+                    beforeSend: function () {
+                        $('#loader_create_menu').removeClass('hidden')
+                    },
+                    success: function(res){
+                        if(res.success == true) {
+                            setTimeout(function() {
+                                successMessage("Success!");
+                            },dlayMessage)
+                            setTimeout(function() {
+                                toastr.success("Create menu successfully!");
+                            },dlayMessage)
+                            mytableDatatable.draw();
+                        }
+                        else if (res.status == 'fail') {
+                            setTimeout(function() {
+                                errorMessage("Error!");
+                            },dlayMessage)
+                            setTimeout(function() {
+                                toastr.error("Can't create menu!");
+                            },dlayMessage)
+                        }
+                    },
+                    error: function(error) {
+                    }
+                });
+        }
+
+        function successMessage(text) {
+            $('#loader_create_menu').addClass('hidden');
+            $('#exampleModal').hide('');
+            $('.w-screen').remove('');
+            $('#data_coppy').val('').change();
+            $("#NUMBER").val('').change();
+            $("#BARCODE").val('')
+        }
+        function errorMessage(text) {
+            $('#loader_create_menu').addClass('hidden');
+            $('#data_coppy').val('').change();
+            $("#NUMBER").val('').change();
+            $("#BARCODE").val('')
+        }
 
         let menusAuthPosition = <?php echo json_encode($productCodeArr); ?>;
-        console.log("🚀 ~ menusAuthPosition:", menusAuthPosition)
-
         let codeOptionList = {}
-            console.log("🚀 ~ disableAppointment ~ menusAuthPosition:", menusAuthPosition)
          menusAuthPosition.forEach( function(f) {
-
              codeOptionList[f] = f
          })
         function disableAppointment(url, e, id, PRODUCT) {
             const mytableDatatable = $('#example').DataTable();
-
-            // Swal.fire({
-            //     title: 'Are you sure?',
-            //     text: "You won't be able to revert this!",
-            //     icon: 'warning',
-            //     showCancelButton: true,
-            //     confirmButtonColor: '#303030',
-            //     cancelButtonColor: '#e13636',
-            //     confirmButtonText: `
-            //         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" class="size-6 hidden h-6 w-6 md:inline-block">
-            //             <path d="M0 0h24v24H0V0z" fill="none"></path>
-            //             <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
-            //             <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
-            //         </svg>
-            //         Save
-            //     `,
-            //     cancelButtonText: `Cancle`,
-            //     color: "#ffffff",
-            //     background: "#202020",
-
-            // })
-
             (async () => {
                 const { value: fruit } = await Swal.fire({
-                    // text: "You won't be able to revert this!",
                     title: "<h5 style='color:red'>" + PRODUCT + "</h5>",
                     icon: 'warning',
                     showCancelButton: true,
@@ -549,14 +547,6 @@
                             language: "it"
                         });
                     },
-                    // onOpen: function () {
-                    //     $('.js-example-basic-single').select2({
-                    //         minimumResultsForSearch: 15,
-                    //         width: '100%',
-                    //         placeholder: "Seleziona",
-                    //         language: "it"
-                    //     });
-                    // },
                     background: "#202020",
                     inputOptions: codeOptionList,
                     inputPlaceholder: '--- กรุณาเลือก ---',
@@ -616,15 +606,32 @@
             });
         }
 
-        $('select[name=your_name]').on('select2:open', ()=>{
-            $('.select2-container').css('z-index', 99999999);
-        });
-
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
         });
 
-        // function disableAppointment(url, e, id, PRODUCT) {
+        // <a onclick="disableAppointment('${disabledRoute}',this,'${row.BARCODE}', '${row.PRODUCT}')"
+        //     type="button" class="px-1 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group cursor-pointer">
+        //     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="hidden h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block"
+        //             viewBox="0 0 512 512" xml:space="preserve">
+        //         <path d="M509.099,189.867l-145.067-128c-1.707-1.536-3.84-2.219-6.059-2.133H307.2v-51.2C307.2,3.84,303.36,0,298.667,0H8.533
+        //             C3.84,0,0,3.84,0,8.533V435.2c0,4.693,3.84,8.533,8.533,8.533H128v59.733c0,4.693,3.84,8.533,8.533,8.533h366.933
+        //             c4.693,0,8.533-3.84,8.533-8.533v-307.2C512,193.792,510.976,191.488,509.099,189.867z M366.933,87.211l113.92,100.523h-113.92
+        //             V87.211z M128,68.267v358.4H17.067v-409.6h273.067v42.667H137.301C132.437,59.221,128,63.317,128,68.267z M494.933,494.933H145.067
+        //             V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059c1.621,1.536,3.755,2.475,6.059,2.475h136.533V494.933z"/>
+        //         <g>
+        //             <polygon style="fill:#7E939E;" points="480.853,187.733 366.933,187.733 366.933,87.211 	"/>
+        //             <rect x="452.267" y="204.8" style="fill:#7E939E;" width="42.667" height="290.133"/>
+        //         </g>
+        //         <path style="fill:#AFAFAF;" d="M452.267,204.8v290.133h-307.2V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059
+        //             c1.621,1.536,3.755,2.475,6.059,2.475H452.267z"/>
+        //         <path style="fill:#7E939E;" d="M290.133,17.067v42.667H137.301c-4.864-0.512-9.301,3.584-9.301,8.533v358.4H17.067v-409.6H290.133z"
+        //             />
+        //     </svg>
+        //     Copy
+        // </a>
+
+        // function disableAppointment(url, e, id) {
         //     const mytableDatatable = $('#example').DataTable();
         //     Swal.fire({
         //         title: 'Are you sure?',
