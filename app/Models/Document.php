@@ -11,7 +11,7 @@ class Document extends Model
     public $timestamps = false;
     // public $primaryKey = null;
     // protected $guarded = [];
-    public $primaryKey = "DOC_TP";
+    public $primaryKey = "BRAND";
     protected $fillable = [
         'DOC_TP',
         'NUMBER'

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-use App\models\position;
+use App\Models\position;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller

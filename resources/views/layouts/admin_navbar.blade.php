@@ -81,18 +81,16 @@
                 </button> -->
 
                 <button id="dropdownAvatarNameButton" data-dropdown-toggle="dropdownAvatarName" class="flex items-center text-sm pe-1 font-medium outline-none text-gray-900 hover:text-red-600 dark:hover:text-red-500 md:me-0 focus:ring-4 dark:text-white group" type="button">
-                    <div id="auth_img" class="mr-1">
-                    </div>
-                    <div id="auth_personcode_login" class="flex">
-                    </div>
-                    <div id="auth_departmant_login" class="hidden md:inline-block">
-                    </div>
+                    <div id="auth_img" class="mr-1"></div>
+                    <div id="auth_personcode_login" class="flex"></div>
+                    <div id="auth_departmant_login" class="hidden md:inline-block"></div>
                     <svg class="w-2.5 h-2.5 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
                     </svg>
                 </button>
                 <div id="dropdownAvatarName" class="p-1.5 z-10 hidden text-center bg-white divide-y divide-gray-600 rounded-sm shadow w-auto md:w-60 border-none dark:bg-[#303030] dark:divide-gray-600">
                     <div class="text-black dark:text-white text-sm py-2 px-2">
+                        <div id="profile_img" class="mb-1"></div>
                         <div id="auth_fullname_login" class=""></div>
                         <div id="auth_department" class=""></div>
                         <div id="auth_email_login" class=""></div>

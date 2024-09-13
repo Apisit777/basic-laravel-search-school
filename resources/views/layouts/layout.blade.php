@@ -57,6 +57,12 @@
 
         let dataLogin = sessionStorage.getItem("credetail");
         let dataJson = JSON.parse(dataLogin)
+        $('#profile_img').append(
+            `<button id="dropdown-button-1" class="flex-shrink-0 z-10 inline-flex items-center " type="button">
+                <img class="w-16 h-16 md:w-24 md:h-24 rounded-full border-2 border-white dark:border-gray-600 mx-auto" src="${dataJson.data.photo}">   
+            </button>
+            `
+        );
         $('#auth_img').append(
             `<button id="dropdown-button-1" class="flex-shrink-0 z-10 inline-flex items-center " type="button">
                 <img class="w-8 h-8 rounded" src="${dataJson.data.photo}">   

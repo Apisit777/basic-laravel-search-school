@@ -540,7 +540,7 @@
                                                 <th>delete</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="item-tbody">
                                             @foreach($menus as $menu)
                                                 <tr class="main-menu">
                                                     <td class="flex relative">
@@ -720,10 +720,9 @@
                         },dlayMessage)
                         setTimeout(function() {
                             toastr.success("Create menu successfully!");
+                            // window.location.reload();
                         },dlayMessage)
-                        setTimeout(function() {
-                            window.location.reload();
-                        },dlayMessage)
+                        // $('#menuTable').reload();
                     }
                     else if (res.status == 'fail') {
                         setTimeout(function() {
@@ -734,8 +733,7 @@
                         },dlayMessage)
                     }
                 },
-                error: function(error) {
-
+                    error: function(error) {
                 }
             });
         }
@@ -755,6 +753,9 @@
             $("#submenu_id").val('')
             $("#submenu_url_id").val('')
         }
+
+        // $('#item-tbody').html('');
+
         let select_pos;
         function setMenu(data){
             if(select_pos){
@@ -847,7 +848,8 @@
                                 // console.log('checked : '+$(data).val());
                                 setTimeout(function() {
                                     successMessage("Create User Successfully!");
-                                    // $('#menuTable').draw();
+                                    // $('#menuTable').reload();
+                                    // window.location.reload();
                                 },dlayMessage)
                                 setTimeout(function() {
                                     toastr.success("Delete Menu Successfully!");
@@ -940,9 +942,6 @@
                                     $(`#action_create_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.create);
                                     $(`#action_edit_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.edit);
                                     $(`#action_delete_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.delete);
-
-
-
                                     if(submenu_id === 0 && menu.submenus.length){
                                         let isHaveSubmenu = false;
                                         menu.submenus.forEach(submenu => {
@@ -972,9 +971,7 @@
                                             $(`#action_delete_${menu.id}_${submenu.id}`).prop("checked",false);
                                         })
                                     }
-
                                 })
-
                                 let dummy = [...currentMenu]
                                 dummy.shift()
                                 if(dummy.every(e => !e.view)){
@@ -1008,7 +1005,6 @@
                                     })
                                 }
                             }
-
                         });
                     }else {
                         console.log('no data');
