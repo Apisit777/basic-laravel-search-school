@@ -121,7 +121,7 @@
     }
     .wrapper .eight_3 {
         border-top: none;
-        
+
         border-bottom: 1px solid #000;
         border-left: 1px solid #000;
     }
@@ -197,21 +197,21 @@
         border: 1px solid #000;
         /* padding: 20px;  */
         width: 25px;
-        height: 20px;  
+        height: 20px;
     }
     .rcorners2 {
         border-radius: 0px;
         border: 1px solid #000;
         /* padding: 20px;  */
         width: 25px;
-        height: 20px;  
+        height: 20px;
     }
     .rcorners3 {
         border-radius: 0px;
         border: 1px solid #000;
         /* padding: 20px;  */
         width: 25px;
-        height: 20px;  
+        height: 20px;
     }
     p {
         /* width: 500px; */
@@ -469,7 +469,7 @@
 
                 <div style="position: relative;">
                     <div class="">
-                        
+
                         <div class="text-md font-semibold" style="position:absolute">Special Test Requirements</div>
                     </div>
                 </div>
@@ -529,7 +529,7 @@
 
                 <div style="position: relative;">
                     <div class="">
-                        
+
                         <div class="text-md font-semibold" style="position:absolute">Target Cost & Launching Plan</div>
                     </div>
                 </div>
@@ -600,17 +600,15 @@
                     </div>
                 </div>
 
-                <div style="position: relative;">
-                    <div class="">
-                        <div class="text-md font-semibold" style="position:absolute">Customer Service/KM</div>
-                    </div>
-                </div>
-                <div class="wrapper mt-10" style="position: relative;">
-                    <div class="" style="position: absolute; border-left: 1px solid #000; border-right: none; border-top: none; border-bottom: none; top: -40px; height: 40px; left: 206px; grid-column: 1/4;">
-                        <div class="text-md font-semibold">
+                <div class="wrapper" style="position: relative;">
+                        <div class="text-md font-semibold" style="border-left: none; border-right: none; border-top: none; border-bottom: none; grid-column: 1/2;">
+                            Customer Service/KM
+                        </div>
+                        <div class="text-md font-semibold" style="border-left: 1px solid #000; border-right: none; border-top: none; border-bottom: none; top: -40px; height: 40px; left: 206px; grid-column: 2/5;">
                             IBHS Project Review & Authorization
                         </div>
-                    </div>
+                </div>
+                <div class="wrapper" style="position: relative;">
                     <div class="eight_4" style="border-right: none;">
                         <div class="text-xs" style="position: absolute">CS MANAGER/KM</div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>

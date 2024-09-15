@@ -9,13 +9,13 @@
 
     <link rel="stylesheet" href="{{ asset('css/twitter-bootstrap4.0.0/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/select2@4.1.0.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap5.css') }}" />
-    
+    {{-- <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap5.css') }}" /> --}}
+
     <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
     <script src="{{ asset('js/flowbite-2.3.0.min.js') }}"></script>
     <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
     <script src="{{ asset('js/toastr.min.js') }}"></script>
-    
+
     <!-- <link rel="stylesheet" href="{{ asset('css/twitter-bootstrap5.0.0/bootstrap.min.css') }}" /> -->
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"> -->
     <!-- <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.5.0/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/5.0.1/css/fixedColumns.bootstrap5.css"> -->
-    
+
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> -->
 
     <style>
@@ -68,13 +68,13 @@
         let dataJson = JSON.parse(dataLogin)
         $('#profile_img').append(
             `<button id="dropdown-button-1" class="flex-shrink-0 z-10 inline-flex items-center " type="button">
-                <img class="w-16 h-16 md:w-24 md:h-24 rounded-full border-2 border-white dark:border-gray-600 mx-auto" src="${dataJson.data.photo}">   
+                <img class="w-16 h-16 md:w-24 md:h-24 rounded-full border-2 border-white dark:border-gray-600 mx-auto" src="${dataJson.data.photo}">
             </button>
             `
         );
         $('#auth_img').append(
             `<button id="dropdown-button-1" class="flex-shrink-0 z-10 inline-flex items-center " type="button">
-                <img class="w-8 h-8 rounded" src="${dataJson.data.photo}">   
+                <img class="w-8 h-8 rounded" src="${dataJson.data.photo}">
             </button>
             `
         );
