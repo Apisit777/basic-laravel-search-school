@@ -74,29 +74,14 @@ class ProductController extends Controller
             ->toArray();
         }
 
-        $data = Pro_develops::select(
-            'BRAND',
-            'REF_DOC',
-            'DOC_NO',
-            'BARCODE'
-        )
-        ->orderBy('BARCODE', 'ASC');
-        $productCodes = $data->select('BARCODE')->pluck('BARCODE')->toArray();
-
-        $productCodeArr = [];
-        foreach($productCodes as $productCodeLast) {
-            $productCodeArrLast = [];
-            $productCodeArrLast[] = substr_replace($productCodeLast, '', -1);
-            foreach($productCodeArrLast as $productCodeFirst) {
-                $productCodeArr[] = substr($productCodeFirst, 7, 11);
-            }
-        }
-
-        $dataProductMaster= Product1::select(
-            'PRODUCT'
-        )
-        ->orderBy('PRODUCT', 'ASC');
-        $dataProductMasterArr = $dataProductMaster->select('PRODUCT')->pluck('PRODUCT')->toArray();
+        // $data = Pro_develops::select(
+        //     'BRAND',
+        //     'REF_DOC',
+        //     'DOC_NO',
+        //     'BARCODE'
+        // )
+        // ->orderBy('BARCODE', 'ASC');
+        // $productCodes = $data->select('BARCODE')->pluck('BARCODE')->toArray();
 
         // $productCodeArr = [];
         // foreach($productCodes as $productCodeLast) {
@@ -106,6 +91,12 @@ class ProductController extends Controller
         //         $productCodeArr[] = substr($productCodeFirst, 7, 11);
         //     }
         // }
+
+        $dataProductMasterArr = Product1::select('PRODUCT')->pluck('PRODUCT')->toArray();
+        $data_PRODUCT = Product1::select('PRODUCT')->pluck('PRODUCT')->toArray();
+
+        $dataProductMaster = Pro_develops::select('PRODUCT')->whereNotIn('PRODUCT', $data_PRODUCT)->get();
+        $productCodeArr = $dataProductMaster->select('PRODUCT')->pluck('PRODUCT')->toArray();
 
         $data_barcode = Pro_develops::select(
             'BARCODE'
@@ -128,7 +119,7 @@ class ProductController extends Controller
         return response()->json(['productCodes' => $productCodes]);
     }
 
-    public function check_product(Request $request) 
+    public function check_product(Request $request)
     {
         // dd($request);
         $data = Product1::select('PRODUCT')
@@ -222,7 +213,7 @@ class ProductController extends Controller
                 'COMPANY',
                 'DESCRIPTION')
             ->get();
-        } 
+        }
         else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
             $brands = Accessery::select(
                 'COMPANY',
@@ -230,7 +221,7 @@ class ProductController extends Controller
                 ->where('COMPANY', 'OP')
                 ->whereIn('DESCRIPTION', ['OP', 'KM'])
             ->get();
-        } 
+        }
         // else if (in_array($userpermission, ['Marketing - CPS'])) {
         //     $brands = Barcode::select(
         //         'BRAND',
@@ -639,7 +630,7 @@ class ProductController extends Controller
         return response()->json($response);
     }
 
-    public function checkname_brand(Request $request) 
+    public function checkname_brand(Request $request)
     {
         // dd($request);
         $data = Product1::select('PRODUCT')
