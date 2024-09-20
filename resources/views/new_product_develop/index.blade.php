@@ -38,11 +38,10 @@
             transition: 0.5s all;
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/select2@4.1.0.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap.css') }}" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <div id="slide" class="loaderslide"></div>
 
     <div class="justify-center items-center">
         <div class="mt-6 mb-4 flex justify-center items-center">
@@ -217,11 +216,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
 
     <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
+    <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
     <script src="{{ asset('js/flowbite-2.3.0.min.js') }}"></script>
     <script src="{{ asset('js/3.10.1-jszip.min.js') }}"></script>
     <script src="{{ asset('js/2.0.5-dataTables.js') }}"></script>
