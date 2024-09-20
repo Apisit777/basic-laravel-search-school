@@ -52,7 +52,7 @@ class ProductController extends Controller
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
         // dd($userpermission);
-        if (in_array($userpermission, [$isSuperAdmin])) {
+        if (in_array($userpermission, [$isSuperAdmin, 'Admin'])) {
             $brands = Barcode::select(
                 'BRAND')
             // ->whereNotIn('STATUS', ['ALL'])
@@ -74,28 +74,19 @@ class ProductController extends Controller
             ->toArray();
         }
 
-        // $data = Pro_develops::select(
-        //     'BRAND',
-        //     'REF_DOC',
-        //     'DOC_NO',
-        //     'BARCODE'
-        // )
-        // ->orderBy('BARCODE', 'ASC');
-        // $productCodes = $data->select('BARCODE')->pluck('BARCODE')->toArray();
+        $dataProductMasterArr = Product1::select(
+            'PRODUCT')
+            ->whereNotIn('STATUS', ['OP - OP', 'OP - KM'])
+            ->pluck('PRODUCT')
+            ->toArray();
 
-        // $productCodeArr = [];
-        // foreach($productCodes as $productCodeLast) {
-        //     $productCodeArrLast = [];
-        //     $productCodeArrLast[] = substr_replace($productCodeLast, '', -1);
-        //     foreach($productCodeArrLast as $productCodeFirst) {
-        //         $productCodeArr[] = substr($productCodeFirst, 7, 11);
-        //     }
-        // }
-
-        $dataProductMasterArr = Product1::select('PRODUCT')->pluck('PRODUCT')->toArray();
+        // dd($dataProductMasterArr);
         $data_PRODUCT = Product1::select('PRODUCT')->pluck('PRODUCT')->toArray();
+        $dataProductMaster = Pro_develops::select(
+            'PRODUCT')
+            ->whereNotIn('PRODUCT', $data_PRODUCT)
+            ->get();
 
-        $dataProductMaster = Pro_develops::select('PRODUCT')->whereNotIn('PRODUCT', $data_PRODUCT)->get();
         $productCodeArr = $dataProductMaster->select('PRODUCT')->pluck('PRODUCT')->toArray();
 
         $data_barcode = Pro_develops::select(
@@ -234,6 +225,50 @@ class ProductController extends Controller
         // dd($brands);
         return view('product.create', compact('productCode', 'list_position', 'brands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
     }
+    public function createConsumables(Request $request)
+    {
+        // dd($accessery);
+        $owners = Owner::all();
+        $grp_ps = Grp_p::all();
+        $brand_ps = Brand_p::all();
+        $venders = Vendor::all();
+        $type_gs = Type_g::all();
+        $solutions = Solution::all();
+        $series = Series::all();
+        $categorys = Category::all();
+        $sub_categorys = Sub_category::all();
+        $pdms = Pdm::all();
+        $p_statuss = P_status::all();
+        $unit_ps = Unit_p::all();
+        $unit_types = Unit_type::all();
+        $acctypes = Acctype::all();
+        $conditions = Condition::all();
+
+        $productCodeMax = Product::max('seq');
+        $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
+        $productCode = 'P'.sprintf('%05d', $productCodeNumber);
+
+        $list_position = position::select('id', 'name_position')->get();
+        $brands = Accessery::all();
+        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        $userpermission = Auth::user()->getUserPermission->name_position;
+        if (in_array($userpermission, [$isSuperAdmin])) {
+            $brands = Accessery::select(
+                'COMPANY',
+                'DESCRIPTION')
+            ->get();
+        }
+        else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+            $brands = Accessery::select(
+                'COMPANY',
+                'DESCRIPTION')
+                ->where('COMPANY', 'OP')
+                ->whereIn('DESCRIPTION', ['OP', 'KM'])
+            ->get();
+        }
+        // dd($brands);
+        return view('product.create_consumables', compact('productCode', 'list_position', 'brands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
+    }
     public function productDetailCreate(Request $request)
     {
         $productCodeMax = Product::max('seq');
@@ -367,7 +402,8 @@ class ProductController extends Controller
         // $digits_code = substr($digits_barcode, 7, 5);
         $company = substr($request->BRAND, 0, 2);
         $description = substr($request->BRAND, 2, 2);
-        // dd($description);
+        $status = $company.' - '.$description;
+        dd($status);
         // DB::beginTransaction();
         try {
             $data_product = [
@@ -390,7 +426,7 @@ class ProductController extends Controller
                 'SOLUTION' => $request->input('SOLUTION'),
                 'SERIES' => $request->input('SERIES'),
                 'CATEGORY' => $request->input('CATEGORY'),
-                'STATUS' => $request->input('STATUS'),
+                'STATUS' => $status,
                 'S_CAT' => $request->input('S_CAT'),
                 'PDM_GROUP' => $request->input('PDM_GROUP'),
                 'BRAND_P' => $request->input('BRAND_P'),
@@ -566,7 +602,7 @@ class ProductController extends Controller
 
         $userpermission = Auth::user()->getUserPermission->name_position;
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
-        if (in_array($userpermission, [$isSuperAdmin])) {
+        if (in_array($userpermission, [$isSuperAdmin, 'Admin'])) {
                 $data = Product1::select(
        'BRAND',
                 'PRODUCT',

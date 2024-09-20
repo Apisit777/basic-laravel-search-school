@@ -4,10 +4,11 @@ import persist from '@alpinejs/persist'
 import {
     Modal,
     Ripple,
+    Tooltip,
     initTWE,
   } from "tw-elements";
 
-initTWE({ Modal, Ripple });
+initTWE({ Modal, Ripple, Tooltip });
 
 window.Alpine = Alpine
 

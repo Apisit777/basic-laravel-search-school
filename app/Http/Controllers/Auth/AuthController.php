@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\user_permission;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -13,9 +14,28 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use App\Models\position;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use App\Providers\RouteServiceProvider;
 
 class AuthController extends Controller
 {
+    /**
+     * Where to redirect users after login.
+     *
+     * @var string
+     */
+    protected $redirectTo = RouteServiceProvider::HOME;
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('guest')->except('apiByPassLogout');
+    }
+    
     public function index()
     {
         $response = Http::withHeaders([
@@ -110,6 +130,105 @@ class AuthController extends Controller
         }
     }
 
+    public function apiByPassLoginUser(Request $request)
+    {
+        // $validator = Validator::make($request->all(), [
+        //     'username' => 'required',
+        //     'password' => 'required',
+        // ]);
+
+        // if ($validator->fails()) {
+        //     return response()->json(['status' => 'fail', 'message' => $validator->errors()]);
+        // }
+
+        // $credentials = $request->only('username', 'password');
+        // $setAuth = [
+        //     'username' => $credentials['username'],
+        //     'password' => $credentials['password'],
+        // ];
+
+        // if (!Auth::attempt($setAuth, !empty($request->post('remember')))) {
+        //     return response([
+        //         'message' => 'Provided email address or password is incorrect'
+        //     ], 422);
+        // }
+
+        // /** @var User $user */
+        // $user = Auth::user();
+        // $token = $user->createToken('main')->plainTextToken;
+        // return response()->json(['status' => 'success', 'token' => $token, 'route' => 'product']);
+
+        // if (Auth::attempt($setAuth, ! empty($request->post('remember')))) {
+        //     $request->session()->regenerate();
+
+        //     return response()->json(['status' => 'success', 'route' => 'product']);
+        // } else {
+        //     return response()->json(['error' => 'Check Username Or Password.'], 401);
+        // }
+
+        $validator = Validator::make($request->all(), [
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['status' => 'fail', 'message' => $validator->errors()]);
+        }
+
+        $loginUrl = 'https://extrassup.ssup.co.th/api/apps/auth/login';
+        $credentials = $request->only('username', 'password');
+        $setAuth = [
+            'username' => $credentials['username'],
+            'password' => $credentials['password'],
+        ];
+        $headers = [
+            'Accept' => 'application/json',
+            'Content-Type' => 'application/json',
+            'app_key' => 'iBnauPU1C7-H2WXee2OkJATb'
+        ];
+        $data = Http::withHeaders($headers)->post($loginUrl, $setAuth);
+        if ($data->successful()) {
+            $response = $data->json();
+            if (Auth::attempt($setAuth, !empty($request->post('remember')))) {
+                $request->session()->regenerate();
+            }
+            $user = User::select('id')
+                ->where('username', $request->username)
+                ->first(); 
+            if($user == NULL) {
+                $createUser = User::create([
+                    'username' => $request->username
+                ]);
+                $namePosition = position::select('id', 'name_position')->where('name_position', '=', $response['data']['roles'][0])->first();
+                if ($response['data']['roles'][0] != $namePosition) {
+                    $createPosition = position::updateOrCreate(['id' => $namePosition->id],
+                [
+                            'name_position' => $response['data']['roles'][0]
+                        ]);
+                }
+                $positionId = position::select('id', 'name_position')
+                    ->where('name_position', '=', $response['data']['roles'][0])
+                    ->first();
+                $createUserPermission = user_permission::create([
+                    'user_id' => $createUser->id,
+                    'position_id' => $positionId->id
+                ]);
+                $user = User::select('id')
+                ->where('username', $request->username)
+                ->first();
+            }
+            $user->setRememberToken(Str::random(60));
+            $user->save();
+            Auth::login($user, true);
+            return response()->json(['status' => 'success', 'response' => $response, 'route' => 'product']);
+        } 
+        else if ($data->failed()) {
+            $error = $data->json();
+            return response()->json(['error' => $error], 401);
+        } else {
+            return response()->json(['error' => 'Unexpected response status', 'response' => $data->status()]);
+        }
+    }
     public function apiByPassLogin(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -139,20 +258,30 @@ class AuthController extends Controller
             $user = User::select('id')
                 ->where('username', $request->username)
                 ->first(); 
-
             if($user == NULL) {
                 $createUser = User::create([
                     'username' => $request->username
                 ]);
-                $createUser = user_permission::create([
+                $namePosition = position::select('id', 'name_position')->where('name_position', '=', $response['data']['roles'][0])->first();
+                if ($response['data']['roles'][0] != $namePosition) {
+                    $createPosition = position::updateOrCreate(['id' => $namePosition->id],
+            [
+                        'name_position' => $response['data']['roles'][0]
+                    ]);
+                }
+                $positionId = position::select('id', 'name_position')
+                    ->where('name_position', '=', $response['data']['roles'][0])
+                    ->first();
+                $createUserPermission = user_permission::create([
                     'user_id' => $createUser->id,
-                    'position_id' => $request->input('position_id')
+                    'position_id' => $positionId->id
                 ]);
-
                 $user = User::select('id')
                 ->where('username', $request->username)
-                ->first(); 
+                ->first();
             }
+            $user->setRememberToken(Str::random(60));
+            $user->save();
             Auth::login($user, true);
             return response()->json(['status' => 'success', 'response' => $response]);
         } elseif ($data->failed()) {
