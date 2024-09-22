@@ -732,7 +732,9 @@
         function checkNameBrand() {
             const PRODUCT = jQuery('#ID_PRODUCT').val();
 
+            console.log("🚀 ~ checkNameBrand ~ PRODUCT.length:", PRODUCT)
             if (PRODUCT.length > 5) {
+
                 jQuery.ajax({
                     method: "POST",
                     url: '{{ route('checknamebrand') }}',
@@ -748,20 +750,24 @@
                         jQuery('#username_loading').hide();
                         jQuery("#correct_username").hide();
                         let checkvalue = checkValueSelect2();
+                        console.log("🚀 ~ checkNameBrand ~ checkvalue:", !checkvalue)
+                        console.log("🚀 ~ checkNameBrand ~ !checknamebrand:", checknamebrand)
+                        console.log("🚀 ~ checkNameBrand ~ !checkvalue || checknamebrand:", !checkvalue || checknamebrand)
                         if (PRODUCT == '') {
                             jQuery("#submitButton").attr("disabled", true);
                             jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
                             jQuery("#correct_username").hide();
                             jQuery("#username_alert").hide();
                             jQuery("#ID_PRODUCT").removeClass("is-invalid");
-                        } else if (checkvalue || !checknamebrand) {
+                        } else if (!checkvalue || checknamebrand) {
                             jQuery("#submitButton").attr("disabled", true);
                             jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
                             jQuery("#correct_username").show();
                             jQuery("#username_alert").hide();
                             jQuery("#ID_PRODUCT").removeClass("is-invalid");
                         } else {
-                            jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                            jQuery("#submitButton").attr("disabled", false);
+                            jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
                             jQuery("#username_alert").hide();
                             jQuery("#correct_username").show();
                         }
@@ -769,47 +775,54 @@
                     error: function (params) {
                     }
                 });
+            } else {
+                jQuery("#submitButton").attr("disabled", true);
+                jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                jQuery("#ID_PRODUCT").addClass("is-invalid");
+                jQuery("#correct_username").hide();
             }
-            jQuery("#submitButton").attr("disabled", true);
-            jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
-            jQuery("#ID_PRODUCT").addClass("is-invalid");
-            jQuery("#correct_username").hide();
         }
 
         function checkValueSelect2(id) {
-            console.log("🚀 ~ checkValueSelect2 ~ test:")
             const VENDOR = jQuery('#VENDOR').val();
+            console.log("🚀 ~ checkValueSelect2 ~ VENDOR:", VENDOR)
             const GRP_P = jQuery('#GRP_P').val();
+            console.log("🚀 ~ checkValueSelect2 ~ GRP_P:", GRP_P)
             // const BRAND_P = jQuery('#BRAND_P').val();
             const SUPPLIER = jQuery('#SUPPLIER').val();
-            
+            console.log("🚀 ~ checkValueSelect2 ~ SUPPLIER:", SUPPLIER)
+
             if (VENDOR) {
                 jQuery('#VENDOR_textalert').addClass('hidden');
             } else {
                 jQuery('#VENDOR_textalert').removeClass('hidden');
-            } if (GRP_P) {
+            }
+
+            if (GRP_P) {
                 jQuery('#GRP_P_textalert').addClass('hidden');
             } else {
                 jQuery('#GRP_P_textalert').removeClass('hidden');
-            } 
+            }
             // if (BRAND_P) {
             //     jQuery('#BRAND_P_textalert').addClass('hidden');
             // } else {
             //     jQuery('#BRAND_P_textalert').removeClass('hidden');
-            // } 
+            // }
             if (SUPPLIER) {
                 jQuery('#SUPPLIER_textalert').addClass('hidden');
             } else {
                 jQuery('#SUPPLIER_textalert').removeClass('hidden');
             }
 
+            console.log("🚀 ~ checkValueSelect2 ~ !SUPPLIER:", !!SUPPLIER)
+            console.log("🚀 ~ checkValueSelect2 ~  !!GRP_P:",  !!GRP_P)
+            console.log("🚀 ~ checkValueSelect2 ~ !!VENDOR:", !!VENDOR)
             return !!VENDOR && !!GRP_P && !!SUPPLIER
         }
 
         function onchangeValueSelect2() {
 
             let checkvalue = checkValueSelect2();
-            console.log("🚀 ~ onchangeValueSelect2 ~ checkvalue:", checkvalue)
             if (checkvalue) {
                 jQuery("#submitButton").attr("disabled", false);
                 jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
@@ -872,7 +885,6 @@
 
                 },
                 success: function (data) {
-                    console.log("🚀 ~ brandIdChange ~ data:", data)
                     if (e.value) {
                        jQuery("#code").val(data.digits_barcode.substring(7, 12));
                     } else {
@@ -900,7 +912,6 @@
         }
 
         function onSelect(BARCODE) {
-            console.log("🚀 ~ onSelect ~ datas:", BARCODE)
             let curData = datass.find(f => f.BARCODE === BARCODE.value) || {}
             console.log("🚀 ~ onSelect ~ curData:", curData)
             if (curData.BARCODE) {

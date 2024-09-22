@@ -42,8 +42,6 @@
             /* ... the rest of the rules ... */
         }
 
-
-
         @media print {
 
             .no-print,
@@ -52,6 +50,8 @@
             }
 
             #print_page{
+                position: relative !important;
+                top: -50px !important;
                 width: auto !important;
                 height: auto !important;
                 overflow: visible !important;

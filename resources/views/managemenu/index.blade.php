@@ -977,14 +977,22 @@
                                 dummy.shift()
                                 if(dummy.every(e => !e.view)){
                                     $(`#action_view_${menu.id}_${0}`).prop("disabled", false);
+                                } else {
+                                    $(`#action_view_${menu.id}_${0}`).prop("disabled", true);
                                 }
                                 if(dummy.every(e => !e.create)){
                                     $(`#action_create_${menu.id}_${0}`).prop("disabled", false);
+                                } else {
+                                    $(`#action_create_${menu.id}_${0}`).prop("disabled", true);
                                 }
                                 if(dummy.every(e => !e.edit)){
                                     $(`#action_edit_${menu.id}_${0}`).prop("disabled", false);
+                                } else {
+                                    $(`#action_edit_${menu.id}_${0}`).prop("disabled", true);
                                 }
                                 if(dummy.every(e => !e.delete)){
+                                    $(`#action_delete_${menu.id}_${0}`).prop("disabled", false);
+                                } else {
                                     $(`#action_delete_${menu.id}_${0}`).prop("disabled", false);
                                 }
                             } else {
@@ -992,6 +1000,12 @@
                                 $(`#action_create_${menu.id}_${0}`).prop("checked",false);
                                 $(`#action_edit_${menu.id}_${0}`).prop("checked",false);
                                 $(`#action_delete_${menu.id}_${0}`).prop("checked",false);
+
+                                $(`#action_view_${menu.id}_${0}`).prop("disabled", false);
+                                $(`#action_create_${menu.id}_${0}`).prop("disabled", false);
+                                $(`#action_edit_${menu.id}_${0}`).prop("disabled", false);
+                                $(`#action_delete_${menu.id}_${0}`).prop("disabled", false);
+
                                 if(menu.submenus.length){
                                     menu.submenus.forEach(submenu => {
                                         $(`#action_view_${menu.id}_${submenu.id}`).prop("disabled", true);
