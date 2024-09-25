@@ -343,7 +343,7 @@
                             <ul class="space-y-2 font-large border-t border-gray-200 dark:border-gray-500"></ul>
                         </div>
                         <div class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md p-2">
-                            <a class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 rounded cursor-pointer group" onclick="createMenu()">
+                            <a data-twe-modal-dismiss class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 rounded cursor-pointer group" onclick="createMenu()">
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                     <path d="M0 0h24v24H0V0z" fill="none"></path>
                                     <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
@@ -765,9 +765,9 @@
             $("#url_id").val('')
             $("#submenu_id").val('')
             $("#submenu_url_id").val('')
-            $('#exampleModalLg').removeClass('opacity-50 transition-all duration-300 ease-in-out fixed top-0 left-0 z-[1040] bg-black w-screen h-screen')
+            // $('#exampleModalLg').removeClass('opacity-50 transition-all duration-300 ease-in-out fixed top-0 left-0 z-[1040] bg-black w-screen h-screen')
             // $('#exampleModalLg').hide()
-            $('body').css('overflow', 'auto');
+            // $('body').css('overflow', 'auto');
             // $('#exampleModalLg').dialog('close')
             // $('#exampleModalLg').hide('');
             // $('.w-screen').remove('');
