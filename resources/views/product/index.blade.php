@@ -118,7 +118,7 @@
 
         .btn-left, .btn-right {
             position: absolute;
-            top: -2.5em; 
+            top: -2.5em;
             right: -105px;
             z-index: 999;
         }
@@ -288,7 +288,7 @@
                                             <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
                                             <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
                                         </svg>
-                                        <svg id="correct_username" style="margin-right: 2.5px;" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                        <svg id="correct_username" style="margin-right: 2.5px;" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                             viewBox="0 0 507.2 507.2" xml:space="preserve">
                                             <circle style="fill:#32BA7C;" cx="253.6" cy="253.6" r="253.6"/>
                                             <path style="fill:#0AA06E;" d="M188.8,368l130.4,130.4c108-28.8,188-127.2,188-244.8c0-2.4,0-4.8,0-7.2L404.8,152L188.8,368z"/>
@@ -299,7 +299,7 @@
                                                     c-11.2,11.2-30.4,11.2-41.6,0l-23.2-23.2c-11.2-11.2-11.2-30.4,0-41.6L348.8,133.6z"/>
                                             </g>
                                         </svg>
-                                        <svg id="username_alert" style="margin-right: 2.5px;" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                        <svg id="username_alert" style="margin-right: 2.5px;" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                                 viewBox="0 0 507.2 507.2" xml:space="preserve">
                                             <circle style="fill:#F15249;" cx="253.6" cy="253.6" r="253.6"/>
                                             <path style="fill:#AD0E0E;" d="M147.2,368L284,504.8c115.2-13.6,206.4-104,220.8-219.2L367.2,148L147.2,368z"/>
@@ -397,14 +397,14 @@
                                     </select>
                                 </div>
                                 <div class="md:col-span-6" style="position: relative;">
-                                    <label for="">Barcode ที่ต้องการ<span class="text-danger"> *</span></label>
+                                    <label for="">รหัสที่ต้องการ<span class="text-danger"> *</span></label>
                                     <input type="text" id="PRODUCT_Consumables" name="BARCODE" onkeyup="barcodeConsumablesChange()" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" />
                                     <div class="col-auto" style="position: absolute; right: 0%; top: 60%;">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="username_loading_consumables" style="margin-right: -2.5px;" class="w-6 h-6 animate-spin -mt-1">
                                             <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
                                             <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
                                         </svg>
-                                        <svg id="correct_username_consumables" style="margin-right: 2.5px;" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                        <svg id="correct_username_consumables" style="margin-right: 2.5px;" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                             viewBox="0 0 507.2 507.2" xml:space="preserve">
                                             <circle style="fill:#32BA7C;" cx="253.6" cy="253.6" r="253.6"/>
                                             <path style="fill:#0AA06E;" d="M188.8,368l130.4,130.4c108-28.8,188-127.2,188-244.8c0-2.4,0-4.8,0-7.2L404.8,152L188.8,368z"/>
@@ -415,7 +415,7 @@
                                                     c-11.2,11.2-30.4,11.2-41.6,0l-23.2-23.2c-11.2-11.2-11.2-30.4,0-41.6L348.8,133.6z"/>
                                             </g>
                                         </svg>
-                                        <svg id="username_alert_consumables" style="margin-right: 2.5px;" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                        <svg id="username_alert_consumables" style="margin-right: 2.5px;" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                                 viewBox="0 0 507.2 507.2" xml:space="preserve">
                                             <circle style="fill:#F15249;" cx="253.6" cy="253.6" r="253.6"/>
                                             <path style="fill:#AD0E0E;" d="M147.2,368L284,504.8c115.2-13.6,206.4-104,220.8-219.2L367.2,148L147.2,368z"/>
@@ -440,7 +440,7 @@
                         </div>
 
                         <div class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md p-2">
-                            <button id="submitButtonConsumables" type="button" class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-4 rounded cursor-not-allowed opacity-50 group" onclick="createCopyConsumables()" disabled>
+                            <button data-twe-modal-dismiss id="submitButtonConsumables" type="button" class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-4 rounded cursor-not-allowed opacity-50 group" onclick="createCopyConsumables()" disabled>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                     <path d="M0 0h24v24H0V0z" fill="none"></path>
                                     <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
@@ -488,44 +488,23 @@
                     data-twe-dropdown-menu-ref>
                     <li>
                         <a href="{{ route('product.create') }}" class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group">
-                            <svg class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-                                    viewBox="0 0 451.39 451.39" xml:space="preserve">
+                            <svg class="h-5 w-5 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                fill="currentColor" viewBox="0 0 512 512"  xml:space="preserve">
                                 <g>
-                                    <g id="XMLID_28_">
-                                        <g>
-                                            <path style="fill:#FFFFFF;" d="M437.029,439.43c0,0.79-0.31,1.54-0.87,2.1c-1.12,1.11-3.08,1.12-4.2,0l-11.91-11.92l4.2-4.19
-                                                l11.91,11.91C436.719,437.89,437.029,438.64,437.029,439.43z"/>
-                                            <path d="M18.269,68.58l9.13,9.13l44.94-44.94l-9.13-9.13c-2.51-2.51-5.86-3.9-9.41-3.9c-3.56,0-6.9,1.39-9.41,3.9l-26.12,26.12
-                                                c-2.51,2.51-3.9,5.85-3.9,9.41C14.369,62.72,15.759,66.06,18.269,68.58z M280.849,353.05c11.07,11.07,23.02,21.04,35.74,29.88
-                                                l60.97-60.97c-8.85-12.72-18.82-24.66-29.89-35.73L105.479,44.04l-66.82,66.82L280.849,353.05z M324.209,388.04
-                                                c11.5,7.4,23.59,13.92,36.23,19.49l47.86,21.11l14.96-14.97l-21.1-47.85c-5.57-12.64-12.09-24.74-19.5-36.23L324.209,388.04z
-                                                M431.959,441.53c1.12,1.12,3.08,1.11,4.2,0c0.56-0.56,0.87-1.31,0.87-2.1c0-0.79-0.31-1.54-0.87-2.1l-11.91-11.91l-4.2,4.19
-                                                L431.959,441.53z M442.519,430.97c4.67,4.66,4.67,12.25,0,16.92c-2.33,2.33-5.4,3.5-8.46,3.5s-6.13-1.17-8.46-3.5l-11.91-11.91
-                                                l-3.38,3.38l-53.5-23.59c-30.81-13.59-58.51-32.55-82.32-56.36l-255.81-255.8c-2.29-2.3-3.55-5.35-3.55-8.6
-                                                c0-3.24,1.26-6.29,3.55-8.59l2.36-2.35l-9.13-9.13c-4.22-4.21-6.54-9.81-6.54-15.77s2.32-11.56,6.54-15.78l26.12-26.11
-                                                c4.21-4.22,9.81-6.54,15.77-6.54s11.56,2.32,15.77,6.54l9.13,9.12l2.35-2.34c4.73-4.74,12.44-4.74,17.18,0l26.87,26.87
-                                                l10.78-10.78l-33.79-33.79l6.37-6.36l173.59,173.6c10.05,10.04,24.41,14.56,38.4,12.07l1.57,8.86c-3.05,0.54-6.13,0.81-9.18,0.81
-                                                c-13.81,0-27.22-5.45-37.15-15.38L142.239,46.51l-10.78,10.78l222.58,222.57c23.81,23.82,42.77,51.51,56.36,82.32l23.58,53.5
-                                                l-3.37,3.37L442.519,430.97z M32.299,104.49l66.82-66.82l-7.25-7.25c-0.62-0.61-1.42-0.92-2.23-0.92c-0.81,0-1.61,0.31-2.23,0.92
-                                                l-62.36,62.37c-0.6,0.59-0.92,1.38-0.92,2.22c0,0.85,0.32,1.64,0.92,2.23L32.299,104.49z"/>
-                                            <path style="fill:#A7B6C4;" d="M382.659,329.59c7.41,11.49,13.93,23.59,19.5,36.23l21.1,47.85l-14.96,14.97l-47.86-21.11
-                                                c-12.64-5.57-24.73-12.09-36.23-19.49L382.659,329.59z"/>
-                                            <path style="fill:#4489D3;" d="M347.669,286.23c11.07,11.07,21.04,23.01,29.89,35.73l-60.97,60.97
-                                                c-12.72-8.84-24.67-18.81-35.74-29.88L38.659,110.86l66.82-66.82L347.669,286.23z"/>
-                                            <path style="fill:#A7B6C4;" d="M89.639,29.5c0.81,0,1.61,0.31,2.23,0.92l7.25,7.25l-66.82,66.82l-7.25-7.25
-                                                c-0.6-0.59-0.92-1.38-0.92-2.23c0-0.84,0.32-1.63,0.92-2.22l62.36-62.37C88.029,29.81,88.829,29.5,89.639,29.5z"/>
-                                            <path style="fill:#4489D3;" d="M44.389,23.64c2.51-2.51,5.85-3.9,9.41-3.9c3.55,0,6.9,1.39,9.41,3.9l9.13,9.13l-44.94,44.94
-                                                l-9.13-9.13c-2.51-2.52-3.9-5.86-3.9-9.41c0-3.56,1.39-6.9,3.9-9.41L44.389,23.64z"/>
-                                        </g>
-                                    </g>
+                                    <path class="st0" d="M504.262,66.75L445.226,7.706c-10.291-10.284-26.938-10.267-37.222,0l-38.278,38.278l96.282,96.266
+                                        l38.254-38.295C514.537,93.672,514.554,77.017,504.262,66.75z"/>
+                                    <path class="st0" d="M32.815,382.921L0.025,512l129.055-32.83l319.398-319.431l-96.249-96.265L32.815,382.921z M93.179,404.792
+                                        l-21.871-21.871l278.289-278.289l21.887,21.887L93.179,404.792z"/>
                                 </g>
                             </svg>
-                            เพิ่มข้อมูลสิ้นค้า
+                            <span class="ml-2.5">
+                                เพิ่มข้อมูลสิ้นค้า
+                            </span>
                         </a>
                     </li>
                     <li>
                         <a
-                            type="button" 
+                            type="button"
                             class="cursor-pointer block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group"
                             data-twe-toggle="modal"
                             data-twe-target="#exampleModal"
@@ -533,21 +512,19 @@
                             data-twe-ripple-color="light"
                             onclick="modelCopy()"
                         >
-                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block"
-                                viewBox="0 0 512 512" xml:space="preserve">
-                                <path d="M509.099,189.867l-145.067-128c-1.707-1.536-3.84-2.219-6.059-2.133H307.2v-51.2C307.2,3.84,303.36,0,298.667,0H8.533
-                                    C3.84,0,0,3.84,0,8.533V435.2c0,4.693,3.84,8.533,8.533,8.533H128v59.733c0,4.693,3.84,8.533,8.533,8.533h366.933
-                                    c4.693,0,8.533-3.84,8.533-8.533v-307.2C512,193.792,510.976,191.488,509.099,189.867z M366.933,87.211l113.92,100.523h-113.92
-                                    V87.211z M128,68.267v358.4H17.067v-409.6h273.067v42.667H137.301C132.437,59.221,128,63.317,128,68.267z M494.933,494.933H145.067
-                                    V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059c1.621,1.536,3.755,2.475,6.059,2.475h136.533V494.933z"/>
-                                <g>
-                                    <polygon style="fill:#7E939E;" points="480.853,187.733 366.933,187.733 366.933,87.211 	"/>
-                                    <rect x="452.267" y="204.8" style="fill:#7E939E;" width="42.667" height="290.133"/>
-                                </g>
-                                <path style="fill:#AFAFAF;" d="M452.267,204.8v290.133h-307.2V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059
-                                    c1.621,1.536,3.755,2.475,6.059,2.475H452.267z"/>
-                                <path style="fill:#7E939E;" d="M290.133,17.067v42.667H137.301c-4.864-0.512-9.301,3.584-9.301,8.533v358.4H17.067v-409.6H290.133z"
-                                    />
+                            <svg class="-ml-1 h-8 w-8 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" viewBox="0 0 1024 1024" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M589.3 260.9v30H371.4v-30H268.9v513h117.2v-304l109.7-99.1h202.1V260.9z" fill="#E1F0FF" />
+                                <path d="M516.1 371.1l-122.9 99.8v346.8h370.4V371.1z" fill="#E1F0FF" />
+                                <path d="M752.7 370.8h21.8v435.8h-21.8z" fill="#446EB1" />
+                                <path d="M495.8 370.8h277.3v21.8H495.8z" fill="#446EB1" />
+                                <path d="M495.8 370.8h21.8v124.3h-21.8z" fill="#446EB1" />
+                                <path d="M397.7 488.7l-15.4-15.4 113.5-102.5 15.4 15.4z" fill="#446EB1" />
+                                <path d="M382.3 473.3h135.3v21.8H382.3z" fill="#446EB1" />
+                                <path d="M382.3 479.7h21.8v348.6h-21.8zM404.1 806.6h370.4v21.8H404.1z" fill="#446EB1" />
+                                <path d="M447.7 545.1h261.5v21.8H447.7zM447.7 610.5h261.5v21.8H447.7zM447.7 675.8h261.5v21.8H447.7z" fill="#6D9EE8" />
+                                <path d="M251.6 763h130.7v21.8H251.6z" fill="#446EB1" /><path d="M251.6 240.1h21.8v544.7h-21.8zM687.3 240.1h21.8v130.7h-21.8zM273.4 240.1h108.9v21.8H273.4z" fill="#446EB1" />
+                                <path d="M578.4 240.1h130.7v21.8H578.4zM360.5 196.5h21.8v108.9h-21.8zM382.3 283.7h196.1v21.8H382.3zM534.8 196.5h65.4v21.8h-65.4z" fill="#446EB1" />
+                                <path d="M360.5 196.5h65.4v21.8h-65.4zM404.1 174.7h152.5v21.8H404.1zM578.4 196.5h21.8v108.9h-21.8z" fill="#446EB1" />
                             </svg>
                             <span class="text-black dark:text-white">
                                 Copy ข้อมูลสิ้นค้า
@@ -556,44 +533,23 @@
                     </li>
                     <li>
                         <a href="{{ route('product.create_consumables') }}" class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group">
-                            <svg class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
-                                    viewBox="0 0 451.39 451.39" xml:space="preserve">
+                            <svg class="h-5 w-5 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                fill="currentColor" viewBox="0 0 512 512"  xml:space="preserve">
                                 <g>
-                                    <g id="XMLID_28_">
-                                        <g>
-                                            <path style="fill:#FFFFFF;" d="M437.029,439.43c0,0.79-0.31,1.54-0.87,2.1c-1.12,1.11-3.08,1.12-4.2,0l-11.91-11.92l4.2-4.19
-                                                l11.91,11.91C436.719,437.89,437.029,438.64,437.029,439.43z"/>
-                                            <path d="M18.269,68.58l9.13,9.13l44.94-44.94l-9.13-9.13c-2.51-2.51-5.86-3.9-9.41-3.9c-3.56,0-6.9,1.39-9.41,3.9l-26.12,26.12
-                                                c-2.51,2.51-3.9,5.85-3.9,9.41C14.369,62.72,15.759,66.06,18.269,68.58z M280.849,353.05c11.07,11.07,23.02,21.04,35.74,29.88
-                                                l60.97-60.97c-8.85-12.72-18.82-24.66-29.89-35.73L105.479,44.04l-66.82,66.82L280.849,353.05z M324.209,388.04
-                                                c11.5,7.4,23.59,13.92,36.23,19.49l47.86,21.11l14.96-14.97l-21.1-47.85c-5.57-12.64-12.09-24.74-19.5-36.23L324.209,388.04z
-                                                M431.959,441.53c1.12,1.12,3.08,1.11,4.2,0c0.56-0.56,0.87-1.31,0.87-2.1c0-0.79-0.31-1.54-0.87-2.1l-11.91-11.91l-4.2,4.19
-                                                L431.959,441.53z M442.519,430.97c4.67,4.66,4.67,12.25,0,16.92c-2.33,2.33-5.4,3.5-8.46,3.5s-6.13-1.17-8.46-3.5l-11.91-11.91
-                                                l-3.38,3.38l-53.5-23.59c-30.81-13.59-58.51-32.55-82.32-56.36l-255.81-255.8c-2.29-2.3-3.55-5.35-3.55-8.6
-                                                c0-3.24,1.26-6.29,3.55-8.59l2.36-2.35l-9.13-9.13c-4.22-4.21-6.54-9.81-6.54-15.77s2.32-11.56,6.54-15.78l26.12-26.11
-                                                c4.21-4.22,9.81-6.54,15.77-6.54s11.56,2.32,15.77,6.54l9.13,9.12l2.35-2.34c4.73-4.74,12.44-4.74,17.18,0l26.87,26.87
-                                                l10.78-10.78l-33.79-33.79l6.37-6.36l173.59,173.6c10.05,10.04,24.41,14.56,38.4,12.07l1.57,8.86c-3.05,0.54-6.13,0.81-9.18,0.81
-                                                c-13.81,0-27.22-5.45-37.15-15.38L142.239,46.51l-10.78,10.78l222.58,222.57c23.81,23.82,42.77,51.51,56.36,82.32l23.58,53.5
-                                                l-3.37,3.37L442.519,430.97z M32.299,104.49l66.82-66.82l-7.25-7.25c-0.62-0.61-1.42-0.92-2.23-0.92c-0.81,0-1.61,0.31-2.23,0.92
-                                                l-62.36,62.37c-0.6,0.59-0.92,1.38-0.92,2.22c0,0.85,0.32,1.64,0.92,2.23L32.299,104.49z"/>
-                                            <path style="fill:#A7B6C4;" d="M382.659,329.59c7.41,11.49,13.93,23.59,19.5,36.23l21.1,47.85l-14.96,14.97l-47.86-21.11
-                                                c-12.64-5.57-24.73-12.09-36.23-19.49L382.659,329.59z"/>
-                                            <path style="fill:#4489D3;" d="M347.669,286.23c11.07,11.07,21.04,23.01,29.89,35.73l-60.97,60.97
-                                                c-12.72-8.84-24.67-18.81-35.74-29.88L38.659,110.86l66.82-66.82L347.669,286.23z"/>
-                                            <path style="fill:#A7B6C4;" d="M89.639,29.5c0.81,0,1.61,0.31,2.23,0.92l7.25,7.25l-66.82,66.82l-7.25-7.25
-                                                c-0.6-0.59-0.92-1.38-0.92-2.23c0-0.84,0.32-1.63,0.92-2.22l62.36-62.37C88.029,29.81,88.829,29.5,89.639,29.5z"/>
-                                            <path style="fill:#4489D3;" d="M44.389,23.64c2.51-2.51,5.85-3.9,9.41-3.9c3.55,0,6.9,1.39,9.41,3.9l9.13,9.13l-44.94,44.94
-                                                l-9.13-9.13c-2.51-2.52-3.9-5.86-3.9-9.41c0-3.56,1.39-6.9,3.9-9.41L44.389,23.64z"/>
-                                        </g>
-                                    </g>
+                                    <path class="st0" d="M504.262,66.75L445.226,7.706c-10.291-10.284-26.938-10.267-37.222,0l-38.278,38.278l96.282,96.266
+                                        l38.254-38.295C514.537,93.672,514.554,77.017,504.262,66.75z"/>
+                                    <path class="st0" d="M32.815,382.921L0.025,512l129.055-32.83l319.398-319.431l-96.249-96.265L32.815,382.921z M93.179,404.792
+                                        l-21.871-21.871l278.289-278.289l21.887,21.887L93.179,404.792z"/>
                                 </g>
                             </svg>
-                            เพิ่มวัสดุสิ้นเปลือง
+                            <span class="ml-2.5">
+                                เพิ่มวัสดุสิ้นเปลือง
+                            </span>
                         </a>
                     </li>
                     <li>
                         <a
-                            type="button" 
+                            type="button"
                             class="cursor-pointer block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group"
                             data-twe-toggle="modal"
                             data-twe-target="#exampleModalCopy"
@@ -601,21 +557,19 @@
                             data-twe-ripple-color="light"
                             onclick="modelCopyConsumables()"
                         >
-                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block"
-                                viewBox="0 0 512 512" xml:space="preserve">
-                                <path d="M509.099,189.867l-145.067-128c-1.707-1.536-3.84-2.219-6.059-2.133H307.2v-51.2C307.2,3.84,303.36,0,298.667,0H8.533
-                                    C3.84,0,0,3.84,0,8.533V435.2c0,4.693,3.84,8.533,8.533,8.533H128v59.733c0,4.693,3.84,8.533,8.533,8.533h366.933
-                                    c4.693,0,8.533-3.84,8.533-8.533v-307.2C512,193.792,510.976,191.488,509.099,189.867z M366.933,87.211l113.92,100.523h-113.92
-                                    V87.211z M128,68.267v358.4H17.067v-409.6h273.067v42.667H137.301C132.437,59.221,128,63.317,128,68.267z M494.933,494.933H145.067
-                                    V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059c1.621,1.536,3.755,2.475,6.059,2.475h136.533V494.933z"/>
-                                <g>
-                                    <polygon style="fill:#7E939E;" points="480.853,187.733 366.933,187.733 366.933,87.211 	"/>
-                                    <rect x="452.267" y="204.8" style="fill:#7E939E;" width="42.667" height="290.133"/>
-                                </g>
-                                <path style="fill:#AFAFAF;" d="M452.267,204.8v290.133h-307.2V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059
-                                    c1.621,1.536,3.755,2.475,6.059,2.475H452.267z"/>
-                                <path style="fill:#7E939E;" d="M290.133,17.067v42.667H137.301c-4.864-0.512-9.301,3.584-9.301,8.533v358.4H17.067v-409.6H290.133z"
-                                    />
+                            <svg class="-ml-1 h-8 w-8 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" viewBox="0 0 1024 1024" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M589.3 260.9v30H371.4v-30H268.9v513h117.2v-304l109.7-99.1h202.1V260.9z" fill="#E1F0FF" />
+                                <path d="M516.1 371.1l-122.9 99.8v346.8h370.4V371.1z" fill="#E1F0FF" />
+                                <path d="M752.7 370.8h21.8v435.8h-21.8z" fill="#446EB1" />
+                                <path d="M495.8 370.8h277.3v21.8H495.8z" fill="#446EB1" />
+                                <path d="M495.8 370.8h21.8v124.3h-21.8z" fill="#446EB1" />
+                                <path d="M397.7 488.7l-15.4-15.4 113.5-102.5 15.4 15.4z" fill="#446EB1" />
+                                <path d="M382.3 473.3h135.3v21.8H382.3z" fill="#446EB1" />
+                                <path d="M382.3 479.7h21.8v348.6h-21.8zM404.1 806.6h370.4v21.8H404.1z" fill="#446EB1" />
+                                <path d="M447.7 545.1h261.5v21.8H447.7zM447.7 610.5h261.5v21.8H447.7zM447.7 675.8h261.5v21.8H447.7z" fill="#6D9EE8" />
+                                <path d="M251.6 763h130.7v21.8H251.6z" fill="#446EB1" /><path d="M251.6 240.1h21.8v544.7h-21.8zM687.3 240.1h21.8v130.7h-21.8zM273.4 240.1h108.9v21.8H273.4z" fill="#446EB1" />
+                                <path d="M578.4 240.1h130.7v21.8H578.4zM360.5 196.5h21.8v108.9h-21.8zM382.3 283.7h196.1v21.8H382.3zM534.8 196.5h65.4v21.8h-65.4z" fill="#446EB1" />
+                                <path d="M360.5 196.5h65.4v21.8h-65.4zM404.1 174.7h152.5v21.8H404.1zM578.4 196.5h21.8v108.9h-21.8z" fill="#446EB1" />
                             </svg>
                             <span class="text-black dark:text-white">
                                 Copy วัสดุสิ้นเปลือง
@@ -636,7 +590,7 @@
             <div id="dropdownAvatarNameTest" class="float-left p-1.5 z-10 hidden text-center bg-white divide-y divide-gray-600 rounded-sm shadow w-48 md:w-52 border-none dark:bg-[#303030] dark:divide-gray-600">
                 <div class="flex items-center justify-start text-black dark:text-white text-sm font-bold hover:bg-gray-100 dark:hover:bg-[#404040]">
                     <a href="{{ route('product.create') }}" class="text-black dark:text-white py-2 px-2 rounded-sm group">
-                        <svg class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                        <svg class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 viewBox="0 0 451.39 451.39" xml:space="preserve">
                             <g>
                                 <g id="XMLID_28_">
@@ -673,7 +627,7 @@
                 </div>
                 <div class="flex items-center justify-start text-black dark:text-white text-sm font-bold hover:bg-gray-100 dark:hover:bg-[#404040]">
                     <a
-                        type="button" 
+                        type="button"
                         class="font-bold text-black dark:text-white py-2 px-2 rounded-sm group"
                         data-twe-toggle="modal"
                         data-twe-target="#exampleModal"
@@ -702,7 +656,7 @@
                 </div>
                 <div class="flex items-center justify-start text-black dark:text-white text-sm font-bold hover:bg-gray-100 dark:hover:bg-[#404040]">
                     <a href="{{ route('product.create_consumables') }}" class="text-black dark:text-white py-2 px-2 rounded-sm group">
-                        <svg class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                        <svg class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 viewBox="0 0 451.39 451.39" xml:space="preserve">
                             <g>
                                 <g id="XMLID_28_">
@@ -739,7 +693,7 @@
                 </div>
                 <div class="flex items-center justify-start text-black dark:text-white text-sm font-bold hover:bg-gray-100 dark:hover:bg-[#404040]">
                     <a
-                        type="button" 
+                        type="button"
                         class="font-bold text-black dark:text-white py-2 px-2 rounded-sm group"
                         data-twe-toggle="modal"
                         data-twe-target="#exampleModalCopy"
@@ -780,7 +734,7 @@
             <div id="dropdown" class="p-2 z-10 hidden text-center bg-white divide-y divide-gray-600 rounded-sm shadow w-48 border-none dark:bg-[#303030] dark:divide-gray-600">
                 <div class="flex items-center justify-start text-black dark:text-white text-sm hover:bg-gray-100 dark:hover:bg-[#404040] cursor-pointer">
                     <a href="{{ route('product.create') }}" class="text-black dark:text-white py-2 px-2 rounded-sm group">
-                        <svg class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                        <svg class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 viewBox="0 0 451.39 451.39" xml:space="preserve">
                             <g>
                                 <g id="XMLID_28_">
@@ -817,7 +771,7 @@
                 </div>
                 <div class="flex items-center justify-start text-black dark:text-white text-sm hover:bg-gray-100 dark:hover:bg-[#404040] cursor-pointer">
                     <a
-                        type="button" 
+                        type="button"
                         class="font-bold text-black dark:text-white py-2 px-2 rounded-sm group"
                         data-twe-toggle="modal"
                         data-twe-target="#exampleModal"
@@ -846,7 +800,7 @@
                 </div>
                 <div class="flex items-center justify-start text-black dark:text-white text-sm hover:bg-gray-100 dark:hover:bg-[#404040] cursor-pointer">
                     <a href="{{ route('product.create_consumables') }}" class="text-black dark:text-white py-2 px-2 rounded-sm group">
-                        <svg class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                        <svg class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 viewBox="0 0 451.39 451.39" xml:space="preserve">
                             <g>
                                 <g id="XMLID_28_">
@@ -883,7 +837,7 @@
                 </div>
                 <div class="flex items-center justify-start text-black dark:text-white text-sm hover:bg-gray-100 dark:hover:bg-[#404040] cursor-pointer">
                     <a
-                        type="button" 
+                        type="button"
                         class="font-bold text-black dark:text-white py-2 px-2 rounded-sm group"
                         data-twe-toggle="modal"
                         data-twe-target="#exampleModalCopy"
@@ -921,7 +875,7 @@
                 Add
             </a>
             <a
-                type="button" 
+                type="button"
                 class="mt-1 mr-1 px-3 py-2 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group cursor-pointer"
                 data-twe-toggle="modal"
                 data-twe-target="#exampleModal"
@@ -968,7 +922,7 @@
         </div>
     </div>
 
-    
+
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
@@ -1188,9 +1142,9 @@
             mytableDatatable.draw();
             return false;
         });
-        
-        jQuery("#data_coppy").val('');
+
         function modelCopy(id, name_position) {
+            jQuery("#data_coppy").val('').change();
             jQuery("#NUMBER").val('').change();
             jQuery("#BARCODE").val('');
         }
@@ -1203,7 +1157,7 @@
             console.log("🚀 ~ barcodeChange ~ e:", e.value)
             let PRODUCT = e.value;
             console.log("🚀 ~ barcodeChange ~ product:", PRODUCT)
-            
+
             if (params === 'BARCODE') {
                 url = '{{ route('product.get_barcode') }}?BARCODE=' + e.value;
             }
@@ -1261,7 +1215,7 @@
             });
         }
 
-        const dlayMessage = 500;
+        const dlayMessage = 100;
         function createCopy() {
             jQuery.ajaxSetup({
                 headers: {
@@ -1408,6 +1362,7 @@
                     success: function(res){
                         // $('#exampleModalLg').hide('');
                         // $('.w-screen').remove('');
+                        console.log("🚀 ~ createCopyConsumables ~ res:", res)
                         if(res.success == true) {
                             setTimeout(function() {
                                 successMessageConsumables("Success!");
@@ -1425,32 +1380,28 @@
                                 toastr.error("Can't Copy data!");
                             },dlayMessage)
                         }
+                        $('#loader_create_menu_consumables').addClass('hidden');
                     },
                     error: function(error) {
+                        $('#loader_create_menu_consumables').addClass('hidden');
                     }
                 });
+
         }
 
         function successMessageConsumables(text) {
             $('#loader_create_menu_consumables').addClass('hidden');
             // $('#exampleModalCopy').remove('');
-            $('#exampleModalCopy').hide('');
-            $('.w-screen').remove('');
+            // $('#exampleModalCopy').hide('');
+            // $('.w-screen').remove('');
             $("#data_coppy_consumables").val('').change();
             $("#PRODUCT_Consumables").val('')
-
-            // $('#exampleModal').adClass("aria-label='Close'");
-            // $('body').css('overflow', 'auto');
-            // $('body').removeClass('no-scroll');
-            // setTimeout(function() {
-            //     $('body').css('overflow', 'auto');
-            // }, 3);
 
         }
         function errorMessageConsumables(text) {
             $('#loader_create_menu_consumables').addClass('hidden');
-            $('#data_coppy').val('').change();
             $("#data_coppy_consumables").val('').change();
+            $('#data_coppy').val('').change();
             $("#PRODUCT_Consumables").val('')
         }
 
