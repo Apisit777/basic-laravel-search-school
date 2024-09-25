@@ -66,10 +66,12 @@ Route::middleware('auth')->group(function() {
         Route::get('', [ProductController::class, 'index'])->name('index');
         Route::get('/get_barcode', [ProductController::class, 'getBarcode'])->name('get_barcode');
         Route::get('/checkproduct', [ProductController::class, 'check_product'])->name('checkproduct');
+        Route::get('/checkproduct_consumables', [ProductController::class, 'check_product_consumables'])->name('checkproduct_consumables');
         Route::post('/list_products', [ProductController::class, 'list_products'])->name('list_products');
         Route::get('/product_master_get_brand_list_ajax', [ProductController::class, 'productMasterGetBrandListAjax'])->name('product_master_get_brand_list_ajax');
         Route::post('/', [ProductController::class, 'store'])->name('store');
         Route::post('/create_copy', [ProductController::class, 'createCopy'])->name('create_copy');
+        Route::post('/create_copy_consumables', [ProductController::class, 'createCopyConsumables'])->name('create_copy_consumables');
         Route::get('/create', [ProductController::class, 'create'])->name('create');
         Route::get('/create_consumables', [ProductController::class, 'createConsumables'])->name('create_consumables');
         Route::get('/edit/{PRODUCT}', [ProductController::class, 'edit'])->name('edit');

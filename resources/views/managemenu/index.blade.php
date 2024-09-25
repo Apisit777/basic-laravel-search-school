@@ -38,8 +38,8 @@
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"> -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/select2@4.1.0.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap.css') }}" />
 
 @section('content')
     <div class="justify-center items-center">
@@ -243,7 +243,7 @@
         </div>
         <div
             data-twe-modal-init
-            class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+            class="data-twe-backdrop-show fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
             id="exampleModalLg"
             data-twe-backdrop="static"
             data-twe-keyboard="false"
@@ -401,7 +401,7 @@
                             </span>
                         </button>
                     </div>
-                    <form id="form_menu" class="" method="POST">
+                    <form id="form_menu_permission" class="" method="POST">
                         <input class="" type="hidden" id="edit_id_role" name="edit_id_role" value="">
                         <div class=" p-4 text-gray-900 dark:text-gray-100">
                             <label for="name">ชื่อสิทธิ์</label>
@@ -571,10 +571,10 @@
                                                     </td>
                                                     <td class="text-center">{{ $menu['id'] }}</td>
                                                     <td>{{ $menu['menu_name'] }}</td>
-                                                    <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-300 disabled:checked:border-slate-300" id="action_view_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
-                                                    <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-300 disabled:checked:border-slate-300" id="action_create_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
-                                                    <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-300 disabled:checked:border-slate-300" id="action_edit_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
-                                                    <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-300 disabled:checked:border-slate-300" id="action_delete_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                    <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-400 disabled:checked:border-slate-400" id="action_view_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                    <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-400 disabled:checked:border-slate-400" id="action_create_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                    <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-400 disabled:checked:border-slate-400" id="action_edit_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                    <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-400 disabled:checked:border-slate-400" id="action_delete_{{ $menu['id'] }}_0" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
                                                 </tr>
                                                 @if(!is_null($menu['submenus']))
                                                     @foreach($menu['submenus'] as $submenu)
@@ -582,10 +582,10 @@
                                                             <td></td>
                                                             <td></td>
                                                             <td class="">&nbsp;&nbsp;&nbsp;{{ $submenu['name'] }}</td>
-                                                            <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-300 disabled:checked:border-slate-300" id="action_view_{{ $menu['id'] }}_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
-                                                            <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-300 disabled:checked:border-slate-300" id="action_create_{{ $menu['id'] }}_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
-                                                            <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-300 disabled:checked:border-slate-300" id="action_edit_{{ $menu['id'] }}_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
-                                                            <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-300 disabled:checked:border-slate-300" id="action_delete_{{ $menu['id'] }}_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                            <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-400 disabled:checked:border-slate-400" id="action_view_{{ $menu['id'] }}_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                            <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-400 disabled:checked:border-slate-400" id="action_create_{{ $menu['id'] }}_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                            <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-400 disabled:checked:border-slate-400" id="action_edit_{{ $menu['id'] }}_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
+                                                            <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-400 disabled:checked:border-slate-400" id="action_delete_{{ $menu['id'] }}_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
                                                         </tr>
                                                     @endforeach
                                                 @endif
@@ -606,10 +606,9 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+    <!-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-    {{-- <script src="https://cdn.tailwindcss.com"></script> --}}
-    {{-- <script type="text/javascript"  src="../node_modules/tw-elements/dist/js/tw-elements.umd.min.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
@@ -622,7 +621,23 @@
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.colVis.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+
+    <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
+    <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
+    <script src="{{ asset('js/flowbite-2.3.0.min.js') }}"></script>
+    <script src="{{ asset('js/3.10.1-jszip.min.js') }}"></script>
+    <script src="{{ asset('js/2.0.5-dataTables.js') }}"></script>
+    <script src="{{ asset('js/3.0.2-dataTables.buttons.js') }}"></script>
+    <script src="{{ asset('js/3.0.2-buttons.bootstrap5.js') }}"></script>
+    <script src="{{ asset('js/dataTables.bootstrap5.js') }}"></script>
+    <script src="{{ asset('js/buttons-html5.min.js') }}"></script>
+    <script src="{{ asset('js/buttons-print.min.js') }}"></script>
+    <script src="{{ asset('js/buttons-colVis.min.js') }}"></script>
+    <script src="{{ asset('js/toastr.min.js') }}"></script>
+    <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+
     <script>
         toastr.options = {
             "closeButton": true,
@@ -715,6 +730,10 @@
                     $('#loader_create_menu').removeClass('hidden')
                 },
                 success: function(res){
+                    console.log("🚀 ~ createMenu ~ res:", res)
+                    $('#exampleModalLg').hide('');
+                    $('.w-screen').remove('');
+                    $('#exampleModalLg').removeClass('opacity-50 transition-all duration-300 ease-in-out fixed top-0 left-0 z-[1040] bg-black w-screen h-screen')
                     if(res.success == true) {
                         setTimeout(function() {
                             successMessage("Success!");
@@ -740,12 +759,18 @@
         }
 
         function successMessage(text) {
+            console.log("🚀 ~ successMessage ~ text:", text)
             $('#loader_create_menu').addClass('hidden');
             $('#menu_id').val('')
             $("#url_id").val('')
             $("#submenu_id").val('')
             $("#submenu_url_id").val('')
-            $('#exampleModalLg').addClass('hidden')
+            $('#exampleModalLg').removeClass('opacity-50 transition-all duration-300 ease-in-out fixed top-0 left-0 z-[1040] bg-black w-screen h-screen')
+            // $('#exampleModalLg').hide()
+            $('body').css('overflow', 'auto');
+            // $('#exampleModalLg').dialog('close')
+            // $('#exampleModalLg').hide('');
+            // $('.w-screen').remove('');
         }
         function errorMessage(text) {
             $('#loader_create_menu').addClass('hidden');

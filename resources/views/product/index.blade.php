@@ -51,7 +51,25 @@
         .select2-container--open {
             z-index: 99999999999999;
         }
+        .select2-container--default .select2-selection--single .select2-selection__clear {
+            float: right;
+            cursor: pointer;
+            --tw-text-opacity: 1;
+            color: rgb(200 30 30 / var(--tw-text-opacity));
+            margin-right: 24px!important;
+            margin-top: -1px!important;
+            font-size: 20px!important;
+        }
         .loading_create_menu {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+        .loading_create_menu_consumables {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -366,28 +384,22 @@
                             </span>
                         </button>
                     </div>
-                    <form id="form_copy" class="" method="POST">
-                        <div class="p-8 lg:col-span-4 text-gray-900 dark:text-gray-100">
+                    <form id="form_copy_consumables" class="" method="POST">
+                        <div class="p-4 lg:col-span-4 text-gray-900 dark:text-gray-100">
                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
-                                <div class="md:col-span-3" >
+                                <div class="md:col-span-6" >
                                     <label for="countries" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Copy ข้อมูล<span class="text-danger"> *</span></label>
-                                    <!-- <select class="js-example-basic-single w-full rounded-sm text-xs text-center" id="data_coppy" name="PRODUCT">
-                                        <option class="" value=""> --- กรุณาเลือก ---</option>
-                                        @foreach ($dataProductMasterArr as $key => $dataProductMaster)
-                                            <option value={{ $dataProductMaster }}>{{ $dataProductMaster }}</option>
+                                    <select class="js-example-placeholder-single select2 w-full rounded-sm text-xs text-center" id="data_coppy_consumables" name="PRODUCT" onchange="barcodeConsumablesChange()">
+                                        <option></option>
+                                        @foreach ($dataProductMasterConsumablesArr as $key => $dataProductMasterConsumables)
+                                            <option value={{ $dataProductMasterConsumables }}>{{ $dataProductMasterConsumables }}</option>
                                         @endforeach
-                                    </select> -->
+                                    </select>
                                 </div>
-
-                                <div class="md:col-span-3" style="position: relative;">
-                                    <label for="NUMBER" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Code ที่ต้องการ<span class="text-danger"> *</span></label>
-                                    <!-- <select class="js-example-basic-single w-full rounded-sm text-xs" id="NUMBER" name="NUMBER" onchange="barcodeChange(this, 'BARCODE')">
-                                        <option value=""> --- กรุณาเลือก ---</option>
-                                        @foreach ($productCodeArr as $key => $productCode)
-                                            <option value={{ $productCode }}>{{ $productCode }}</option>
-                                        @endforeach
-                                    </select> -->
-                                    <div class="col-auto" style="position: absolute; right: -18%; top: 55%; z-index: 10000;">
+                                <div class="md:col-span-6" style="position: relative;">
+                                    <label for="">Barcode ที่ต้องการ<span class="text-danger"> *</span></label>
+                                    <input type="text" id="PRODUCT_Consumables" name="BARCODE" onkeyup="barcodeConsumablesChange()" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" />
+                                    <div class="col-auto" style="position: absolute; right: 0%; top: 60%;">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="username_loading_consumables" style="margin-right: -2.5px;" class="w-6 h-6 animate-spin -mt-1">
                                             <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
                                             <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
@@ -418,17 +430,17 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="p-4 text-gray-900 dark:text-gray-100">
+                        <!-- <div class="p-4 text-gray-900 dark:text-gray-100">
                             <label for="">Barcode ที่ต้องการ<span class="text-danger"> *</span></label>
                             <input type="text" id="" name="" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled />
-                        </div>
+                        </div> -->
 
                         <div class="p-2 ">
                             <ul class="space-y-2 font-large border-t border-gray-200 dark:border-gray-500"></ul>
                         </div>
 
                         <div class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md p-2">
-                            <button id="submitButton" type="button" class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-4 rounded cursor-not-allowed opacity-50 group" onclick="createCopy()" disabled>
+                            <button id="submitButtonConsumables" type="button" class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-4 rounded cursor-not-allowed opacity-50 group" onclick="createCopyConsumables()" disabled>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                     <path d="M0 0h24v24H0V0z" fill="none"></path>
                                     <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
@@ -438,7 +450,7 @@
                             </button>
                         </div>
                     </form>
-                    <div id="loader_create_menu" class="loading_create_menu absolute hidden bg-[#e4e4e4e3] dark:bg-[#2a2a2afa] z-auto">
+                    <div id="loader_create_menu_consumables" class="loading_create_menu_consumables absolute hidden bg-[#e4e4e4e3] dark:bg-[#2a2a2afa] z-auto">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 animate-spin dark:text-white">
                             <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
                             <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
@@ -447,8 +459,317 @@
                 </div>
             </div>
         </div>
-        
-        <div class="flex right-32 z-10 top-80 absolute">
+
+        <div class="flex right-12 z-10 absolute" style="top: 307px">
+            <div class="relative" data-twe-dropdown-position="dropstart">
+                <button
+                    class="flex items-center rounded bg-[#303030] hover:bg-[#404040] px-4 pb-[5px] pt-[6px] text-sm font-bold uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out focus:outline-none focus:ring-0 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                    type="button"
+                    id="dropdownMenuButton1s"
+                    data-twe-dropdown-toggle-ref
+                    aria-expanded="false"
+                    data-twe-ripple-init
+                    data-twe-ripple-color="light">
+                    <span class="me-2 [&>svg]:h-5 [&>svg]:w-5">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path
+                        fill-rule="evenodd"
+                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                        clip-rule="evenodd" />
+                    </svg>
+                    </span>
+                        เพิ่มข้อมูลสิ้นค้า
+                </button>
+                <ul class="absolute divide-y divide-gray-600 rounded-sm w-48 md:w-52 dark:divide-gray-600 z-[1000] float-left m-0 hidden min-w-max list-none overflow-hidden border-none bg-white bg-clip-padding text-base shadow-lg data-[twe-dropdown-show]:block dark:bg-surface-dark"
+                    aria-labelledby="dropdownMenuButton1s"
+                    data-twe-dropdown-menu-ref>
+                    <li>
+                        <a href="{{ route('product.create') }}" class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group">
+                            <svg class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                    viewBox="0 0 451.39 451.39" xml:space="preserve">
+                                <g>
+                                    <g id="XMLID_28_">
+                                        <g>
+                                            <path style="fill:#FFFFFF;" d="M437.029,439.43c0,0.79-0.31,1.54-0.87,2.1c-1.12,1.11-3.08,1.12-4.2,0l-11.91-11.92l4.2-4.19
+                                                l11.91,11.91C436.719,437.89,437.029,438.64,437.029,439.43z"/>
+                                            <path d="M18.269,68.58l9.13,9.13l44.94-44.94l-9.13-9.13c-2.51-2.51-5.86-3.9-9.41-3.9c-3.56,0-6.9,1.39-9.41,3.9l-26.12,26.12
+                                                c-2.51,2.51-3.9,5.85-3.9,9.41C14.369,62.72,15.759,66.06,18.269,68.58z M280.849,353.05c11.07,11.07,23.02,21.04,35.74,29.88
+                                                l60.97-60.97c-8.85-12.72-18.82-24.66-29.89-35.73L105.479,44.04l-66.82,66.82L280.849,353.05z M324.209,388.04
+                                                c11.5,7.4,23.59,13.92,36.23,19.49l47.86,21.11l14.96-14.97l-21.1-47.85c-5.57-12.64-12.09-24.74-19.5-36.23L324.209,388.04z
+                                                M431.959,441.53c1.12,1.12,3.08,1.11,4.2,0c0.56-0.56,0.87-1.31,0.87-2.1c0-0.79-0.31-1.54-0.87-2.1l-11.91-11.91l-4.2,4.19
+                                                L431.959,441.53z M442.519,430.97c4.67,4.66,4.67,12.25,0,16.92c-2.33,2.33-5.4,3.5-8.46,3.5s-6.13-1.17-8.46-3.5l-11.91-11.91
+                                                l-3.38,3.38l-53.5-23.59c-30.81-13.59-58.51-32.55-82.32-56.36l-255.81-255.8c-2.29-2.3-3.55-5.35-3.55-8.6
+                                                c0-3.24,1.26-6.29,3.55-8.59l2.36-2.35l-9.13-9.13c-4.22-4.21-6.54-9.81-6.54-15.77s2.32-11.56,6.54-15.78l26.12-26.11
+                                                c4.21-4.22,9.81-6.54,15.77-6.54s11.56,2.32,15.77,6.54l9.13,9.12l2.35-2.34c4.73-4.74,12.44-4.74,17.18,0l26.87,26.87
+                                                l10.78-10.78l-33.79-33.79l6.37-6.36l173.59,173.6c10.05,10.04,24.41,14.56,38.4,12.07l1.57,8.86c-3.05,0.54-6.13,0.81-9.18,0.81
+                                                c-13.81,0-27.22-5.45-37.15-15.38L142.239,46.51l-10.78,10.78l222.58,222.57c23.81,23.82,42.77,51.51,56.36,82.32l23.58,53.5
+                                                l-3.37,3.37L442.519,430.97z M32.299,104.49l66.82-66.82l-7.25-7.25c-0.62-0.61-1.42-0.92-2.23-0.92c-0.81,0-1.61,0.31-2.23,0.92
+                                                l-62.36,62.37c-0.6,0.59-0.92,1.38-0.92,2.22c0,0.85,0.32,1.64,0.92,2.23L32.299,104.49z"/>
+                                            <path style="fill:#A7B6C4;" d="M382.659,329.59c7.41,11.49,13.93,23.59,19.5,36.23l21.1,47.85l-14.96,14.97l-47.86-21.11
+                                                c-12.64-5.57-24.73-12.09-36.23-19.49L382.659,329.59z"/>
+                                            <path style="fill:#4489D3;" d="M347.669,286.23c11.07,11.07,21.04,23.01,29.89,35.73l-60.97,60.97
+                                                c-12.72-8.84-24.67-18.81-35.74-29.88L38.659,110.86l66.82-66.82L347.669,286.23z"/>
+                                            <path style="fill:#A7B6C4;" d="M89.639,29.5c0.81,0,1.61,0.31,2.23,0.92l7.25,7.25l-66.82,66.82l-7.25-7.25
+                                                c-0.6-0.59-0.92-1.38-0.92-2.23c0-0.84,0.32-1.63,0.92-2.22l62.36-62.37C88.029,29.81,88.829,29.5,89.639,29.5z"/>
+                                            <path style="fill:#4489D3;" d="M44.389,23.64c2.51-2.51,5.85-3.9,9.41-3.9c3.55,0,6.9,1.39,9.41,3.9l9.13,9.13l-44.94,44.94
+                                                l-9.13-9.13c-2.51-2.52-3.9-5.86-3.9-9.41c0-3.56,1.39-6.9,3.9-9.41L44.389,23.64z"/>
+                                        </g>
+                                    </g>
+                                </g>
+                            </svg>
+                            เพิ่มข้อมูลสิ้นค้า
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            type="button" 
+                            class="cursor-pointer block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group"
+                            data-twe-toggle="modal"
+                            data-twe-target="#exampleModal"
+                            data-twe-ripple-init
+                            data-twe-ripple-color="light"
+                            onclick="modelCopy()"
+                        >
+                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block"
+                                viewBox="0 0 512 512" xml:space="preserve">
+                                <path d="M509.099,189.867l-145.067-128c-1.707-1.536-3.84-2.219-6.059-2.133H307.2v-51.2C307.2,3.84,303.36,0,298.667,0H8.533
+                                    C3.84,0,0,3.84,0,8.533V435.2c0,4.693,3.84,8.533,8.533,8.533H128v59.733c0,4.693,3.84,8.533,8.533,8.533h366.933
+                                    c4.693,0,8.533-3.84,8.533-8.533v-307.2C512,193.792,510.976,191.488,509.099,189.867z M366.933,87.211l113.92,100.523h-113.92
+                                    V87.211z M128,68.267v358.4H17.067v-409.6h273.067v42.667H137.301C132.437,59.221,128,63.317,128,68.267z M494.933,494.933H145.067
+                                    V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059c1.621,1.536,3.755,2.475,6.059,2.475h136.533V494.933z"/>
+                                <g>
+                                    <polygon style="fill:#7E939E;" points="480.853,187.733 366.933,187.733 366.933,87.211 	"/>
+                                    <rect x="452.267" y="204.8" style="fill:#7E939E;" width="42.667" height="290.133"/>
+                                </g>
+                                <path style="fill:#AFAFAF;" d="M452.267,204.8v290.133h-307.2V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059
+                                    c1.621,1.536,3.755,2.475,6.059,2.475H452.267z"/>
+                                <path style="fill:#7E939E;" d="M290.133,17.067v42.667H137.301c-4.864-0.512-9.301,3.584-9.301,8.533v358.4H17.067v-409.6H290.133z"
+                                    />
+                            </svg>
+                            <span class="text-black dark:text-white">
+                                Copy ข้อมูลสิ้นค้า
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('product.create_consumables') }}" class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group">
+                            <svg class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                    viewBox="0 0 451.39 451.39" xml:space="preserve">
+                                <g>
+                                    <g id="XMLID_28_">
+                                        <g>
+                                            <path style="fill:#FFFFFF;" d="M437.029,439.43c0,0.79-0.31,1.54-0.87,2.1c-1.12,1.11-3.08,1.12-4.2,0l-11.91-11.92l4.2-4.19
+                                                l11.91,11.91C436.719,437.89,437.029,438.64,437.029,439.43z"/>
+                                            <path d="M18.269,68.58l9.13,9.13l44.94-44.94l-9.13-9.13c-2.51-2.51-5.86-3.9-9.41-3.9c-3.56,0-6.9,1.39-9.41,3.9l-26.12,26.12
+                                                c-2.51,2.51-3.9,5.85-3.9,9.41C14.369,62.72,15.759,66.06,18.269,68.58z M280.849,353.05c11.07,11.07,23.02,21.04,35.74,29.88
+                                                l60.97-60.97c-8.85-12.72-18.82-24.66-29.89-35.73L105.479,44.04l-66.82,66.82L280.849,353.05z M324.209,388.04
+                                                c11.5,7.4,23.59,13.92,36.23,19.49l47.86,21.11l14.96-14.97l-21.1-47.85c-5.57-12.64-12.09-24.74-19.5-36.23L324.209,388.04z
+                                                M431.959,441.53c1.12,1.12,3.08,1.11,4.2,0c0.56-0.56,0.87-1.31,0.87-2.1c0-0.79-0.31-1.54-0.87-2.1l-11.91-11.91l-4.2,4.19
+                                                L431.959,441.53z M442.519,430.97c4.67,4.66,4.67,12.25,0,16.92c-2.33,2.33-5.4,3.5-8.46,3.5s-6.13-1.17-8.46-3.5l-11.91-11.91
+                                                l-3.38,3.38l-53.5-23.59c-30.81-13.59-58.51-32.55-82.32-56.36l-255.81-255.8c-2.29-2.3-3.55-5.35-3.55-8.6
+                                                c0-3.24,1.26-6.29,3.55-8.59l2.36-2.35l-9.13-9.13c-4.22-4.21-6.54-9.81-6.54-15.77s2.32-11.56,6.54-15.78l26.12-26.11
+                                                c4.21-4.22,9.81-6.54,15.77-6.54s11.56,2.32,15.77,6.54l9.13,9.12l2.35-2.34c4.73-4.74,12.44-4.74,17.18,0l26.87,26.87
+                                                l10.78-10.78l-33.79-33.79l6.37-6.36l173.59,173.6c10.05,10.04,24.41,14.56,38.4,12.07l1.57,8.86c-3.05,0.54-6.13,0.81-9.18,0.81
+                                                c-13.81,0-27.22-5.45-37.15-15.38L142.239,46.51l-10.78,10.78l222.58,222.57c23.81,23.82,42.77,51.51,56.36,82.32l23.58,53.5
+                                                l-3.37,3.37L442.519,430.97z M32.299,104.49l66.82-66.82l-7.25-7.25c-0.62-0.61-1.42-0.92-2.23-0.92c-0.81,0-1.61,0.31-2.23,0.92
+                                                l-62.36,62.37c-0.6,0.59-0.92,1.38-0.92,2.22c0,0.85,0.32,1.64,0.92,2.23L32.299,104.49z"/>
+                                            <path style="fill:#A7B6C4;" d="M382.659,329.59c7.41,11.49,13.93,23.59,19.5,36.23l21.1,47.85l-14.96,14.97l-47.86-21.11
+                                                c-12.64-5.57-24.73-12.09-36.23-19.49L382.659,329.59z"/>
+                                            <path style="fill:#4489D3;" d="M347.669,286.23c11.07,11.07,21.04,23.01,29.89,35.73l-60.97,60.97
+                                                c-12.72-8.84-24.67-18.81-35.74-29.88L38.659,110.86l66.82-66.82L347.669,286.23z"/>
+                                            <path style="fill:#A7B6C4;" d="M89.639,29.5c0.81,0,1.61,0.31,2.23,0.92l7.25,7.25l-66.82,66.82l-7.25-7.25
+                                                c-0.6-0.59-0.92-1.38-0.92-2.23c0-0.84,0.32-1.63,0.92-2.22l62.36-62.37C88.029,29.81,88.829,29.5,89.639,29.5z"/>
+                                            <path style="fill:#4489D3;" d="M44.389,23.64c2.51-2.51,5.85-3.9,9.41-3.9c3.55,0,6.9,1.39,9.41,3.9l9.13,9.13l-44.94,44.94
+                                                l-9.13-9.13c-2.51-2.52-3.9-5.86-3.9-9.41c0-3.56,1.39-6.9,3.9-9.41L44.389,23.64z"/>
+                                        </g>
+                                    </g>
+                                </g>
+                            </svg>
+                            เพิ่มวัสดุสิ้นเปลือง
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            type="button" 
+                            class="cursor-pointer block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group"
+                            data-twe-toggle="modal"
+                            data-twe-target="#exampleModalCopy"
+                            data-twe-ripple-init
+                            data-twe-ripple-color="light"
+                            onclick="modelCopyConsumables()"
+                        >
+                            <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block"
+                                viewBox="0 0 512 512" xml:space="preserve">
+                                <path d="M509.099,189.867l-145.067-128c-1.707-1.536-3.84-2.219-6.059-2.133H307.2v-51.2C307.2,3.84,303.36,0,298.667,0H8.533
+                                    C3.84,0,0,3.84,0,8.533V435.2c0,4.693,3.84,8.533,8.533,8.533H128v59.733c0,4.693,3.84,8.533,8.533,8.533h366.933
+                                    c4.693,0,8.533-3.84,8.533-8.533v-307.2C512,193.792,510.976,191.488,509.099,189.867z M366.933,87.211l113.92,100.523h-113.92
+                                    V87.211z M128,68.267v358.4H17.067v-409.6h273.067v42.667H137.301C132.437,59.221,128,63.317,128,68.267z M494.933,494.933H145.067
+                                    V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059c1.621,1.536,3.755,2.475,6.059,2.475h136.533V494.933z"/>
+                                <g>
+                                    <polygon style="fill:#7E939E;" points="480.853,187.733 366.933,187.733 366.933,87.211 	"/>
+                                    <rect x="452.267" y="204.8" style="fill:#7E939E;" width="42.667" height="290.133"/>
+                                </g>
+                                <path style="fill:#AFAFAF;" d="M452.267,204.8v290.133h-307.2V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059
+                                    c1.621,1.536,3.755,2.475,6.059,2.475H452.267z"/>
+                                <path style="fill:#7E939E;" d="M290.133,17.067v42.667H137.301c-4.864-0.512-9.301,3.584-9.301,8.533v358.4H17.067v-409.6H290.133z"
+                                    />
+                            </svg>
+                            <span class="text-black dark:text-white">
+                                Copy วัสดุสิ้นเปลือง
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- <button id="dropdownAvatarNameButton" data-dropdown-toggle="dropdownAvatarNameTest" class="flex items-center text-sm pe-1 text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group" type="button">
+                <div class="mr-1">
+                เพิ่มข้อมูล
+                </div>
+                <svg class="w-2.5 h-2.5 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
+                </svg>
+            </button>
+            <div id="dropdownAvatarNameTest" class="float-left p-1.5 z-10 hidden text-center bg-white divide-y divide-gray-600 rounded-sm shadow w-48 md:w-52 border-none dark:bg-[#303030] dark:divide-gray-600">
+                <div class="flex items-center justify-start text-black dark:text-white text-sm font-bold hover:bg-gray-100 dark:hover:bg-[#404040]">
+                    <a href="{{ route('product.create') }}" class="text-black dark:text-white py-2 px-2 rounded-sm group">
+                        <svg class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                viewBox="0 0 451.39 451.39" xml:space="preserve">
+                            <g>
+                                <g id="XMLID_28_">
+                                    <g>
+                                        <path style="fill:#FFFFFF;" d="M437.029,439.43c0,0.79-0.31,1.54-0.87,2.1c-1.12,1.11-3.08,1.12-4.2,0l-11.91-11.92l4.2-4.19
+                                            l11.91,11.91C436.719,437.89,437.029,438.64,437.029,439.43z"/>
+                                        <path d="M18.269,68.58l9.13,9.13l44.94-44.94l-9.13-9.13c-2.51-2.51-5.86-3.9-9.41-3.9c-3.56,0-6.9,1.39-9.41,3.9l-26.12,26.12
+                                            c-2.51,2.51-3.9,5.85-3.9,9.41C14.369,62.72,15.759,66.06,18.269,68.58z M280.849,353.05c11.07,11.07,23.02,21.04,35.74,29.88
+                                            l60.97-60.97c-8.85-12.72-18.82-24.66-29.89-35.73L105.479,44.04l-66.82,66.82L280.849,353.05z M324.209,388.04
+                                            c11.5,7.4,23.59,13.92,36.23,19.49l47.86,21.11l14.96-14.97l-21.1-47.85c-5.57-12.64-12.09-24.74-19.5-36.23L324.209,388.04z
+                                            M431.959,441.53c1.12,1.12,3.08,1.11,4.2,0c0.56-0.56,0.87-1.31,0.87-2.1c0-0.79-0.31-1.54-0.87-2.1l-11.91-11.91l-4.2,4.19
+                                            L431.959,441.53z M442.519,430.97c4.67,4.66,4.67,12.25,0,16.92c-2.33,2.33-5.4,3.5-8.46,3.5s-6.13-1.17-8.46-3.5l-11.91-11.91
+                                            l-3.38,3.38l-53.5-23.59c-30.81-13.59-58.51-32.55-82.32-56.36l-255.81-255.8c-2.29-2.3-3.55-5.35-3.55-8.6
+                                            c0-3.24,1.26-6.29,3.55-8.59l2.36-2.35l-9.13-9.13c-4.22-4.21-6.54-9.81-6.54-15.77s2.32-11.56,6.54-15.78l26.12-26.11
+                                            c4.21-4.22,9.81-6.54,15.77-6.54s11.56,2.32,15.77,6.54l9.13,9.12l2.35-2.34c4.73-4.74,12.44-4.74,17.18,0l26.87,26.87
+                                            l10.78-10.78l-33.79-33.79l6.37-6.36l173.59,173.6c10.05,10.04,24.41,14.56,38.4,12.07l1.57,8.86c-3.05,0.54-6.13,0.81-9.18,0.81
+                                            c-13.81,0-27.22-5.45-37.15-15.38L142.239,46.51l-10.78,10.78l222.58,222.57c23.81,23.82,42.77,51.51,56.36,82.32l23.58,53.5
+                                            l-3.37,3.37L442.519,430.97z M32.299,104.49l66.82-66.82l-7.25-7.25c-0.62-0.61-1.42-0.92-2.23-0.92c-0.81,0-1.61,0.31-2.23,0.92
+                                            l-62.36,62.37c-0.6,0.59-0.92,1.38-0.92,2.22c0,0.85,0.32,1.64,0.92,2.23L32.299,104.49z"/>
+                                        <path style="fill:#A7B6C4;" d="M382.659,329.59c7.41,11.49,13.93,23.59,19.5,36.23l21.1,47.85l-14.96,14.97l-47.86-21.11
+                                            c-12.64-5.57-24.73-12.09-36.23-19.49L382.659,329.59z"/>
+                                        <path style="fill:#4489D3;" d="M347.669,286.23c11.07,11.07,21.04,23.01,29.89,35.73l-60.97,60.97
+                                            c-12.72-8.84-24.67-18.81-35.74-29.88L38.659,110.86l66.82-66.82L347.669,286.23z"/>
+                                        <path style="fill:#A7B6C4;" d="M89.639,29.5c0.81,0,1.61,0.31,2.23,0.92l7.25,7.25l-66.82,66.82l-7.25-7.25
+                                            c-0.6-0.59-0.92-1.38-0.92-2.23c0-0.84,0.32-1.63,0.92-2.22l62.36-62.37C88.029,29.81,88.829,29.5,89.639,29.5z"/>
+                                        <path style="fill:#4489D3;" d="M44.389,23.64c2.51-2.51,5.85-3.9,9.41-3.9c3.55,0,6.9,1.39,9.41,3.9l9.13,9.13l-44.94,44.94
+                                            l-9.13-9.13c-2.51-2.52-3.9-5.86-3.9-9.41c0-3.56,1.39-6.9,3.9-9.41L44.389,23.64z"/>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                        เพิ่มข้อมูลสิ้นค้า
+                    </a>
+                </div>
+                <div class="flex items-center justify-start text-black dark:text-white text-sm font-bold hover:bg-gray-100 dark:hover:bg-[#404040]">
+                    <a
+                        type="button" 
+                        class="font-bold text-black dark:text-white py-2 px-2 rounded-sm group"
+                        data-twe-toggle="modal"
+                        data-twe-target="#exampleModal"
+                        data-twe-ripple-init
+                        data-twe-ripple-color="light"
+                        onclick="modelCopy()"
+                    >
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block"
+                            viewBox="0 0 512 512" xml:space="preserve">
+                            <path d="M509.099,189.867l-145.067-128c-1.707-1.536-3.84-2.219-6.059-2.133H307.2v-51.2C307.2,3.84,303.36,0,298.667,0H8.533
+                                C3.84,0,0,3.84,0,8.533V435.2c0,4.693,3.84,8.533,8.533,8.533H128v59.733c0,4.693,3.84,8.533,8.533,8.533h366.933
+                                c4.693,0,8.533-3.84,8.533-8.533v-307.2C512,193.792,510.976,191.488,509.099,189.867z M366.933,87.211l113.92,100.523h-113.92
+                                V87.211z M128,68.267v358.4H17.067v-409.6h273.067v42.667H137.301C132.437,59.221,128,63.317,128,68.267z M494.933,494.933H145.067
+                                V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059c1.621,1.536,3.755,2.475,6.059,2.475h136.533V494.933z"/>
+                            <g>
+                                <polygon style="fill:#7E939E;" points="480.853,187.733 366.933,187.733 366.933,87.211 	"/>
+                                <rect x="452.267" y="204.8" style="fill:#7E939E;" width="42.667" height="290.133"/>
+                            </g>
+                            <path style="fill:#AFAFAF;" d="M452.267,204.8v290.133h-307.2V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059
+                                c1.621,1.536,3.755,2.475,6.059,2.475H452.267z"/>
+                            <path style="fill:#7E939E;" d="M290.133,17.067v42.667H137.301c-4.864-0.512-9.301,3.584-9.301,8.533v358.4H17.067v-409.6H290.133z"
+                                />
+                        </svg>
+                        Copy ข้อมูลสิ้นค้า
+                    </a>
+                </div>
+                <div class="flex items-center justify-start text-black dark:text-white text-sm font-bold hover:bg-gray-100 dark:hover:bg-[#404040]">
+                    <a href="{{ route('product.create_consumables') }}" class="text-black dark:text-white py-2 px-2 rounded-sm group">
+                        <svg class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                viewBox="0 0 451.39 451.39" xml:space="preserve">
+                            <g>
+                                <g id="XMLID_28_">
+                                    <g>
+                                        <path style="fill:#FFFFFF;" d="M437.029,439.43c0,0.79-0.31,1.54-0.87,2.1c-1.12,1.11-3.08,1.12-4.2,0l-11.91-11.92l4.2-4.19
+                                            l11.91,11.91C436.719,437.89,437.029,438.64,437.029,439.43z"/>
+                                        <path d="M18.269,68.58l9.13,9.13l44.94-44.94l-9.13-9.13c-2.51-2.51-5.86-3.9-9.41-3.9c-3.56,0-6.9,1.39-9.41,3.9l-26.12,26.12
+                                            c-2.51,2.51-3.9,5.85-3.9,9.41C14.369,62.72,15.759,66.06,18.269,68.58z M280.849,353.05c11.07,11.07,23.02,21.04,35.74,29.88
+                                            l60.97-60.97c-8.85-12.72-18.82-24.66-29.89-35.73L105.479,44.04l-66.82,66.82L280.849,353.05z M324.209,388.04
+                                            c11.5,7.4,23.59,13.92,36.23,19.49l47.86,21.11l14.96-14.97l-21.1-47.85c-5.57-12.64-12.09-24.74-19.5-36.23L324.209,388.04z
+                                            M431.959,441.53c1.12,1.12,3.08,1.11,4.2,0c0.56-0.56,0.87-1.31,0.87-2.1c0-0.79-0.31-1.54-0.87-2.1l-11.91-11.91l-4.2,4.19
+                                            L431.959,441.53z M442.519,430.97c4.67,4.66,4.67,12.25,0,16.92c-2.33,2.33-5.4,3.5-8.46,3.5s-6.13-1.17-8.46-3.5l-11.91-11.91
+                                            l-3.38,3.38l-53.5-23.59c-30.81-13.59-58.51-32.55-82.32-56.36l-255.81-255.8c-2.29-2.3-3.55-5.35-3.55-8.6
+                                            c0-3.24,1.26-6.29,3.55-8.59l2.36-2.35l-9.13-9.13c-4.22-4.21-6.54-9.81-6.54-15.77s2.32-11.56,6.54-15.78l26.12-26.11
+                                            c4.21-4.22,9.81-6.54,15.77-6.54s11.56,2.32,15.77,6.54l9.13,9.12l2.35-2.34c4.73-4.74,12.44-4.74,17.18,0l26.87,26.87
+                                            l10.78-10.78l-33.79-33.79l6.37-6.36l173.59,173.6c10.05,10.04,24.41,14.56,38.4,12.07l1.57,8.86c-3.05,0.54-6.13,0.81-9.18,0.81
+                                            c-13.81,0-27.22-5.45-37.15-15.38L142.239,46.51l-10.78,10.78l222.58,222.57c23.81,23.82,42.77,51.51,56.36,82.32l23.58,53.5
+                                            l-3.37,3.37L442.519,430.97z M32.299,104.49l66.82-66.82l-7.25-7.25c-0.62-0.61-1.42-0.92-2.23-0.92c-0.81,0-1.61,0.31-2.23,0.92
+                                            l-62.36,62.37c-0.6,0.59-0.92,1.38-0.92,2.22c0,0.85,0.32,1.64,0.92,2.23L32.299,104.49z"/>
+                                        <path style="fill:#A7B6C4;" d="M382.659,329.59c7.41,11.49,13.93,23.59,19.5,36.23l21.1,47.85l-14.96,14.97l-47.86-21.11
+                                            c-12.64-5.57-24.73-12.09-36.23-19.49L382.659,329.59z"/>
+                                        <path style="fill:#4489D3;" d="M347.669,286.23c11.07,11.07,21.04,23.01,29.89,35.73l-60.97,60.97
+                                            c-12.72-8.84-24.67-18.81-35.74-29.88L38.659,110.86l66.82-66.82L347.669,286.23z"/>
+                                        <path style="fill:#A7B6C4;" d="M89.639,29.5c0.81,0,1.61,0.31,2.23,0.92l7.25,7.25l-66.82,66.82l-7.25-7.25
+                                            c-0.6-0.59-0.92-1.38-0.92-2.23c0-0.84,0.32-1.63,0.92-2.22l62.36-62.37C88.029,29.81,88.829,29.5,89.639,29.5z"/>
+                                        <path style="fill:#4489D3;" d="M44.389,23.64c2.51-2.51,5.85-3.9,9.41-3.9c3.55,0,6.9,1.39,9.41,3.9l9.13,9.13l-44.94,44.94
+                                            l-9.13-9.13c-2.51-2.52-3.9-5.86-3.9-9.41c0-3.56,1.39-6.9,3.9-9.41L44.389,23.64z"/>
+                                    </g>
+                                </g>
+                            </g>
+                        </svg>
+                        เพิ่มวัสดุสิ้นเปลือง
+                    </a>
+                </div>
+                <div class="flex items-center justify-start text-black dark:text-white text-sm font-bold hover:bg-gray-100 dark:hover:bg-[#404040]">
+                    <a
+                        type="button" 
+                        class="font-bold text-black dark:text-white py-2 px-2 rounded-sm group"
+                        data-twe-toggle="modal"
+                        data-twe-target="#exampleModalCopy"
+                        data-twe-ripple-init
+                        data-twe-ripple-color="light"
+                        onclick="modelCopyConsumables()"
+                    >
+                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block"
+                            viewBox="0 0 512 512" xml:space="preserve">
+                            <path d="M509.099,189.867l-145.067-128c-1.707-1.536-3.84-2.219-6.059-2.133H307.2v-51.2C307.2,3.84,303.36,0,298.667,0H8.533
+                                C3.84,0,0,3.84,0,8.533V435.2c0,4.693,3.84,8.533,8.533,8.533H128v59.733c0,4.693,3.84,8.533,8.533,8.533h366.933
+                                c4.693,0,8.533-3.84,8.533-8.533v-307.2C512,193.792,510.976,191.488,509.099,189.867z M366.933,87.211l113.92,100.523h-113.92
+                                V87.211z M128,68.267v358.4H17.067v-409.6h273.067v42.667H137.301C132.437,59.221,128,63.317,128,68.267z M494.933,494.933H145.067
+                                V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059c1.621,1.536,3.755,2.475,6.059,2.475h136.533V494.933z"/>
+                            <g>
+                                <polygon style="fill:#7E939E;" points="480.853,187.733 366.933,187.733 366.933,87.211 	"/>
+                                <rect x="452.267" y="204.8" style="fill:#7E939E;" width="42.667" height="290.133"/>
+                            </g>
+                            <path style="fill:#AFAFAF;" d="M452.267,204.8v290.133h-307.2V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059
+                                c1.621,1.536,3.755,2.475,6.059,2.475H452.267z"/>
+                            <path style="fill:#7E939E;" d="M290.133,17.067v42.667H137.301c-4.864-0.512-9.301,3.584-9.301,8.533v358.4H17.067v-409.6H290.133z"
+                                />
+                        </svg>
+                        Copy วัสดุสิ้นเปลือง
+                    </a>
+                </div>
+            </div> -->
+        </div>
+
+        <!-- <div class="flex right-32 z-10 top-80 absolute">
             <button id="dropdownAvatar" data-dropdown-toggle="dropdown" class="" type="button">
                 <ul class="dropbtn color-[#303030] dark:color-white icons btn-right showLeft absolute" data-twe-toggle="tooltip" title="เพิ่มข้อมูล" onclick="showDropdown()">
                     <li class="bg-[#303030] dark:bg-white"></li>
@@ -459,10 +780,6 @@
             <div id="dropdown" class="p-2 z-10 hidden text-center bg-white divide-y divide-gray-600 rounded-sm shadow w-48 border-none dark:bg-[#303030] dark:divide-gray-600">
                 <div class="flex items-center justify-start text-black dark:text-white text-sm hover:bg-gray-100 dark:hover:bg-[#404040] cursor-pointer">
                     <a href="{{ route('product.create') }}" class="text-black dark:text-white py-2 px-2 rounded-sm group">
-                        <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6 inline-block md:inline-block">
-                            <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
-                            <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
-                        </svg> -->
                         <svg class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
                                 viewBox="0 0 451.39 451.39" xml:space="preserve">
                             <g>
@@ -501,7 +818,7 @@
                 <div class="flex items-center justify-start text-black dark:text-white text-sm hover:bg-gray-100 dark:hover:bg-[#404040] cursor-pointer">
                     <a
                         type="button" 
-                        class="mt-1 mr-1 px-3 py-2 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group cursor-pointer"
+                        class="font-bold text-black dark:text-white py-2 px-2 rounded-sm group"
                         data-twe-toggle="modal"
                         data-twe-target="#exampleModal"
                         data-twe-ripple-init
@@ -567,7 +884,7 @@
                 <div class="flex items-center justify-start text-black dark:text-white text-sm hover:bg-gray-100 dark:hover:bg-[#404040] cursor-pointer">
                     <a
                         type="button" 
-                        class="mt-1 mr-1 px-3 py-2 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group cursor-pointer"
+                        class="font-bold text-black dark:text-white py-2 px-2 rounded-sm group"
                         data-twe-toggle="modal"
                         data-twe-target="#exampleModalCopy"
                         data-twe-ripple-init
@@ -594,7 +911,7 @@
                     </a>
                 </div>
             </div>
-        </div>
+        </div> -->
 
         <!-- <div class="flex right-12 z-10 absolute">
             <a href="{{ route('product.create') }}" type="button" class="mt-1 mr-1 px-3 py-2 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group" name="add" id="add">
@@ -636,7 +953,8 @@
                 <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>แบรนด์</th>
+                            <th>สินค้าของบริษัท</th>
                             <th>รหัสสินค้า</th>
                             <th>ชื้อสินค้า</th>
                             <th>Barcode</th>
@@ -817,25 +1135,32 @@
                     targets: 1,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.PRODUCT;
+                        return row.GRP_P;
                     }
                 },
                 {
                     targets: 2,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.NAME_THAI;
+                        return row.PRODUCT;
                     }
                 },
                 {
                     targets: 3,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.BARCODE;
+                        return row.NAME_THAI;
                     }
                 },
                 {
                     targets: 4,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.BARCODE;
+                    }
+                },
+                {
+                    targets: 5,
                     orderable: true,
                     className: 'text-center',
                     render: function(data, type, row) {
@@ -869,15 +1194,6 @@
             jQuery("#NUMBER").val('').change();
             jQuery("#BARCODE").val('');
         }
-
-        function modelCopyConsumables(id, name_position) {
-            // jQuery("#NUMBER").val('').change();
-            // jQuery("#BARCODE").val('');
-        }
-
-        jQuery('#username_loading_consumables').hide();
-        jQuery("#correct_username_consumables").hide();
-        jQuery("#username_alert_consumables").hide();
 
         jQuery('#username_loading').hide();
         jQuery("#username_alert").hide();
@@ -986,7 +1302,7 @@
         function successMessage(text) {
             $('#loader_create_menu').addClass('hidden');
             $('#exampleModal').hide('');
-            $('.w-screen').remove('');
+            $('.w-screen').hide('');
             $('#data_coppy').val('').change();
             $("#NUMBER").val('').change();
             $("#BARCODE").val('')
@@ -1003,6 +1319,141 @@
          menusAuthPosition.forEach( function(f) {
              codeOptionList[f] = f
          })
+
+         let barcodeConsumables = {}
+         console.log("🚀 ~ barcodeConsumables:", barcodeConsumables)
+         $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+            $('.js-example-placeholder-single').select2({
+                placeholder: "--- กรุณาเลือก ---",
+                allowClear: true
+            }).on('change', function(e) {
+                barcodeConsumables = $(".select2 option:selected").text();
+                console.log("🚀 ~ $ ~ barcodeConsumables:", barcodeConsumables)
+                $("#PRODUCT_Consumables").val(barcodeConsumables);
+            });
+        });
+
+        function modelCopyConsumables(id, name_position) {
+            jQuery("#data_coppy_consumables").val('').change();
+            jQuery("#PRODUCT_Consumables").val('');
+        }
+
+        jQuery('#username_loading_consumables').hide();
+        jQuery("#correct_username_consumables").hide();
+        jQuery("#username_alert_consumables").hide();
+
+        function barcodeConsumablesChange() {
+            let PRODUCT_Consumables = $("#PRODUCT_Consumables").val()
+            if (PRODUCT_Consumables.length > 9) {
+                jQuery.ajax({
+                    method: "GET",
+                    url: '{{ route('product.checkproduct_consumables') }}',
+                    data: { PRODUCT_Consumables },
+                    dataType: 'json',
+                    beforeSend: function () {
+                        jQuery("#submitButtonConsumables").attr("disabled", true);
+                        jQuery('#username_loading_consumables').show();
+                        jQuery("#correct_username_consumables").hide();
+                        jQuery("#username_alert_consumables").hide();
+                    },
+                    success: function (checkProductConsumables) {
+                        jQuery('#username_loading_consumables').hide();
+                        jQuery("#correct_username_consumables").hide();
+
+                        if (PRODUCT_Consumables == '') {
+                            jQuery("#submitButtonConsumables").attr("disabled", true);
+                            jQuery("#submitButtonConsumables").addClass('cursor-not-allowed opacity-50');
+                            jQuery("#correct_username_consumables").hide();
+                            jQuery("#username_alert_consumables").hide();
+                            jQuery("#PRODUCT_Consumables").removeClass("is-invalid");
+                        } else if (checkProductConsumables == true) {
+                            jQuery("#submitButtonConsumables").attr("disabled", false);
+                            jQuery("#submitButtonConsumables").removeClass('cursor-not-allowed opacity-50');
+                            jQuery("#username_alert_consumables").hide();
+                            jQuery("#PRODUCT_Consumables").removeClass("is-invalid");
+                            jQuery("#correct_username_consumables").show();
+                        } else {
+                            jQuery("#submitButtonConsumables").addClass('cursor-not-allowed opacity-50');
+                            jQuery("#username_alert_consumables").show();
+                            jQuery("#PRODUCT_Consumables").addClass("is-invalid");
+                            jQuery("#correct_username_consumables").hide();
+                        }
+                    },
+                    error: function (params) {
+                    }
+                });
+            } else {
+                jQuery("#submitButtonConsumables").attr("disabled", true);
+                jQuery("#submitButtonConsumables").addClass('cursor-not-allowed opacity-50');
+                jQuery("#PRODUCT_Consumables").addClass("is-invalid");
+                jQuery("#username_alert_consumables").hide();
+                jQuery("#correct_username_consumables").hide();
+            }
+        }
+
+        function createCopyConsumables() {
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                }
+            });
+                jQuery.ajax({
+                    method: "POST",
+                    url: "{{ route('product.create_copy_consumables') }}",
+                    data: $("#form_copy_consumables").serialize(),
+                    beforeSend: function () {
+                        $('#loader_create_menu_consumables').removeClass('hidden')
+                    },
+                    success: function(res){
+                        // $('#exampleModalLg').hide('');
+                        // $('.w-screen').remove('');
+                        if(res.success == true) {
+                            setTimeout(function() {
+                                successMessageConsumables("Success!");
+                            },dlayMessage)
+                            setTimeout(function() {
+                                toastr.success("Copy data successfully!");
+                            },dlayMessage)
+                            mytableDatatable.draw();
+                        }
+                        else if (res.status == 'fail') {
+                            setTimeout(function() {
+                                errorMessageConsumables("Error!");
+                            },dlayMessage)
+                            setTimeout(function() {
+                                toastr.error("Can't Copy data!");
+                            },dlayMessage)
+                        }
+                    },
+                    error: function(error) {
+                    }
+                });
+        }
+
+        function successMessageConsumables(text) {
+            $('#loader_create_menu_consumables').addClass('hidden');
+            // $('#exampleModalCopy').remove('');
+            $('#exampleModalCopy').hide('');
+            $('.w-screen').remove('');
+            $("#data_coppy_consumables").val('').change();
+            $("#PRODUCT_Consumables").val('')
+
+            // $('#exampleModal').adClass("aria-label='Close'");
+            // $('body').css('overflow', 'auto');
+            // $('body').removeClass('no-scroll');
+            // setTimeout(function() {
+            //     $('body').css('overflow', 'auto');
+            // }, 3);
+
+        }
+        function errorMessageConsumables(text) {
+            $('#loader_create_menu_consumables').addClass('hidden');
+            $('#data_coppy').val('').change();
+            $("#data_coppy_consumables").val('').change();
+            $("#PRODUCT_Consumables").val('')
+        }
+
         function disableAppointment(url, e, id, PRODUCT) {
             const mytableDatatable = $('#example').DataTable();
             (async () => {
@@ -1089,10 +1540,6 @@
                 }
             });
         }
-
-        $(document).ready(function() {
-            $('.js-example-basic-single').select2();
-        });
 
         // <a onclick="disableAppointment('${disabledRoute}',this,'${row.BARCODE}', '${row.PRODUCT}')"
         //     type="button" class="px-1 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group cursor-pointer">

@@ -732,6 +732,7 @@
         function checkNameBrand() {
             const PRODUCT = jQuery('#ID_PRODUCT').val();
 
+            console.log("🚀 ~ checkNameBrand ~ PRODUCT.length:", PRODUCT)
             if (PRODUCT.length > 5) {
                 jQuery.ajax({
                     method: "POST",
@@ -748,6 +749,9 @@
                         jQuery('#username_loading').hide();
                         jQuery("#correct_username").hide();
                         let checkvalue = checkValueSelect2();
+                        console.log("🚀 ~ checkNameBrand ~ checkvalue:", !checkvalue)
+                        console.log("🚀 ~ checkNameBrand ~ !checknamebrand:", checknamebrand)
+                        console.log("🚀 ~ checkNameBrand ~ !checkvalue || checknamebrand:", !checkvalue || checknamebrand)
                         if (PRODUCT == '') {
                             jQuery("#submitButton").attr("disabled", true);
                             jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
@@ -757,8 +761,8 @@
                         } else if (checkvalue || !checknamebrand) {
                             jQuery("#submitButton").attr("disabled", true);
                             jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
-                            jQuery("#correct_username").show();
-                            jQuery("#username_alert").hide();
+                            jQuery("#correct_username").hide();
+                            jQuery("#username_alert").show();
                             jQuery("#ID_PRODUCT").removeClass("is-invalid");
                         } else {
                             jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
@@ -769,11 +773,12 @@
                     error: function (params) {
                     }
                 });
+            } else {
+                jQuery("#submitButton").attr("disabled", true);
+                jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                jQuery("#ID_PRODUCT").addClass("is-invalid");
+                jQuery("#correct_username").hide();
             }
-            jQuery("#submitButton").attr("disabled", true);
-            jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
-            jQuery("#ID_PRODUCT").addClass("is-invalid");
-            jQuery("#correct_username").hide();
         }
 
         function checkValueSelect2(id) {
@@ -787,16 +792,18 @@
                 jQuery('#VENDOR_textalert').addClass('hidden');
             } else {
                 jQuery('#VENDOR_textalert').removeClass('hidden');
-            } if (GRP_P) {
+            }
+
+            if (GRP_P) {
                 jQuery('#GRP_P_textalert').addClass('hidden');
             } else {
                 jQuery('#GRP_P_textalert').removeClass('hidden');
-            } 
+            }
             // if (BRAND_P) {
             //     jQuery('#BRAND_P_textalert').addClass('hidden');
             // } else {
             //     jQuery('#BRAND_P_textalert').removeClass('hidden');
-            // } 
+            // }
             if (SUPPLIER) {
                 jQuery('#SUPPLIER_textalert').addClass('hidden');
             } else {
