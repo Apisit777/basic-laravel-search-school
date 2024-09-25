@@ -283,7 +283,7 @@ class AuthController extends Controller
             $user->setRememberToken(Str::random(60));
             $user->save();
             Auth::login($user, true);
-            return response()->json(['status' => 'success', 'response' => $response]);
+            return response()->json(['status' => 'success', 'response' => $response, 'route' => 'product']);
         } elseif ($data->failed()) {
             $error = $data->json();
             return response()->json(['error' => $error], 401);

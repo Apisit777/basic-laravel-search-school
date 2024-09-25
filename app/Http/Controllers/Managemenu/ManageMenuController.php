@@ -412,7 +412,7 @@ class ManageMenuController extends Controller
                 $x = 1;
                 foreach ($request->inputs_submenu as $key => $value) {
                     $createSubmenu = submenu::create([
-                        'menu_relation_id' => $createMenuRelation->id,
+                        // 'menu_relation_id' => $createMenuRelation->id,
                         'menu_id' => $createMenu->id,
                         'name' => $value['submenu_name'],
                         'url' => $value['submenu_url'],

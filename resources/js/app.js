@@ -5,10 +5,11 @@ import {
     Modal,
     Ripple,
     Tooltip,
+    Dropdown,
     initTWE,
   } from "tw-elements";
 
-initTWE({ Modal, Ripple, Tooltip });
+initTWE({ Modal, Ripple, Tooltip, Dropdown });
 
 window.Alpine = Alpine
 

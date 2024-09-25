@@ -80,7 +80,13 @@ class ProductController extends Controller
             ->pluck('PRODUCT')
             ->toArray();
 
-        // dd($dataProductMasterArr);
+        $dataProductMasterConsumablesArr = Product1::select(
+            'PRODUCT')
+            ->whereIn('STATUS', ['OP - OP', 'OP - KM'])
+            ->pluck('PRODUCT')
+            ->toArray();
+
+        // dd($dataProductMasterConsumablesArr);
         $data_PRODUCT = Product1::select('PRODUCT')->pluck('PRODUCT')->toArray();
         $dataProductMaster = Pro_develops::select(
             'PRODUCT')
@@ -95,7 +101,7 @@ class ProductController extends Controller
         ->pluck('BARCODE')->toArray();
         // dd($dataProductMasterArr);
 
-        return view('product.index', compact('user', 'product_seq', 'brands', 'productCodeArr', 'dataProductMasterArr', 'data_barcode'));
+        return view('product.index', compact('user', 'product_seq', 'brands', 'productCodeArr', 'dataProductMasterArr', 'dataProductMasterConsumablesArr', 'data_barcode'));
     }
 
     public function getBarcode(Request $request)
@@ -115,6 +121,16 @@ class ProductController extends Controller
         // dd($request);
         $data = Product1::select('PRODUCT')
             ->where('PRODUCT', $request->PRODUCT)
+            ->count();
+
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function check_product_consumables(Request $request)
+    {
+        // dd($request);
+        $data = Product1::select('PRODUCT')
+            ->where('PRODUCT', $request->PRODUCT_Consumables)
             ->count();
 
         return response()->json($data > 0 ? false : true);
@@ -195,22 +211,38 @@ class ProductController extends Controller
 
         $list_position = position::select('id', 'name_position')->get();
 
-        // $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
-        $brands = Accessery::all();
+        $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
+        // create brands consumables
+        // $brands = Accessery::all();
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
+
+        // create brands consumables
+        // if (in_array($userpermission, [$isSuperAdmin])) {
+        //     $brands = Accessery::select(
+        //         'COMPANY',
+        //         'DESCRIPTION')
+        //     ->get();
+        // }
+        // else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+        //     $brands = Accessery::select(
+        //         'COMPANY',
+        //         'DESCRIPTION')
+        //         ->where('COMPANY', 'OP')
+        //         ->whereIn('DESCRIPTION', ['OP', 'KM'])
+        //     ->get();
+        // }
+
+        // create brands
         if (in_array($userpermission, [$isSuperAdmin])) {
-            $brands = Accessery::select(
-                'COMPANY',
-                'DESCRIPTION')
+            $brands = Barcode::select(
+            'BRAND')
             ->get();
         }
         else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
-            $brands = Accessery::select(
-                'COMPANY',
-                'DESCRIPTION')
-                ->where('COMPANY', 'OP')
-                ->whereIn('DESCRIPTION', ['OP', 'KM'])
+            $brands = Barcode::select(
+                'BRAND')
+                ->whereIn('BRAND', ['OP', 'RI'])
             ->get();
         }
         // else if (in_array($userpermission, ['Marketing - CPS'])) {
@@ -225,9 +257,14 @@ class ProductController extends Controller
         // dd($brands);
         return view('product.create', compact('productCode', 'list_position', 'brands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
     }
+
     public function createConsumables(Request $request)
     {
+        // $digits_barcode = $this->ean13_check_digit();
+        // $ = $this->productMasterGetBrandListAjax();
+
         // dd($accessery);
+
         $owners = Owner::all();
         $grp_ps = Grp_p::all();
         $brand_ps = Brand_p::all();
@@ -249,9 +286,14 @@ class ProductController extends Controller
         $productCode = 'P'.sprintf('%05d', $productCodeNumber);
 
         $list_position = position::select('id', 'name_position')->get();
+
+        // $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
+        // create brands consumables
         $brands = Accessery::all();
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
+
+        // create brands consumables
         if (in_array($userpermission, [$isSuperAdmin])) {
             $brands = Accessery::select(
                 'COMPANY',
@@ -266,6 +308,28 @@ class ProductController extends Controller
                 ->whereIn('DESCRIPTION', ['OP', 'KM'])
             ->get();
         }
+
+        // create brands
+        // if (in_array($userpermission, [$isSuperAdmin])) {
+        //     $brands = Barcode::select(
+        //     'BRAND')
+        //     ->get();
+        // }
+        // else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+        //     $brands = Barcode::select(
+        //         'BRAND')
+        //         ->whereIn('BRAND', ['OP', 'RI'])
+        //     ->get();
+        // }
+        // else if (in_array($userpermission, ['Marketing - CPS'])) {
+        //     $brands = Barcode::select(
+        //         'BRAND',
+        //         'STATUS')
+        //     ->whereIn('STATUS', ['CP', 'ALL'])
+        //     ->pluck('BRAND')
+        //     ->toArray();
+        // }
+
         // dd($brands);
         return view('product.create_consumables', compact('productCode', 'list_position', 'brands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
     }
@@ -280,14 +344,117 @@ class ProductController extends Controller
         return view('product_detail.create', compact('productCode', 'list_position'));
     }
 
+    public function createCopyConsumables(Request $request)
+    {
+        // dd($request);
+        // $dataProductBarcode = Pro_develops::select(
+        //     'PRODUCT',
+        //     'BARCODE',
+        // )
+        // ->firstWhere('PRODUCT', '=', $request->NUMBER);
+
+        $data = Product1::select(
+            'product1s.*',
+            'owners.OWNER AS VENDOR', // ในเอกสารสลับกัน
+            'grp_ps.GRP_P AS GRP_P',
+            'brand_ps.ID AS ID',
+            'vendors.VEN_ID AS SUPPLIER', // ในเอกสารสลับกัน
+            'type_gs.ID AS TYPE_G',
+        )
+        ->leftJoin('owners', 'product1s.VENDOR', '=', 'owners.OWNER') // ในเอกสารสลับกัน
+        ->leftJoin('grp_ps', 'product1s.GRP_P', '=', 'grp_ps.GRP_P')
+        ->leftJoin('brand_ps', 'product1s.BRAND_P', '=', 'brand_ps.ID')
+        ->leftJoin('vendors', 'product1s.SUPPLIER', '=', 'vendors.VEN_ID') // ในเอกสารสลับกัน
+        ->leftJoin('type_gs', 'product1s.TYPE_G', '=', 'type_gs.ID')
+        ->firstWhere('PRODUCT', '=', $request->PRODUCT);
+
+        // dd($data, $request->BARCODE);
+        DB::beginTransaction();
+        try {
+            $data_product = [
+                'BRAND' => $data->BRAND,
+                'PRODUCT' => $request->BARCODE,
+                'BARCODE' => $request->BARCODE,
+                'COLOR' => $data->COLOR,
+                'GRP_P' => $data->GRP_P,
+                'SUPPLIER' => $data->SUPPLIER,
+                'NAME_THAI' => $data->NAME_THAI,
+                'NAME_ENG' => $data->NAME_ENG,
+                'SHORT_THAI' => $data->SHORT_THAI,
+                'SHORT_ENG' => $data->SHORT_ENG,
+                'VENDOR' => $data->VENDOR,
+                'PRICE' => $data->PRICE,
+                'COST' => $data->COST,
+                'UNIT' => $data->UNIT,
+                'UNIT_Q' => $data->UNIT_Q,
+                'SOLUTION' => $data->SOLUTION,
+                'SERIES' => $data->SERIES,
+                'CATEGORY' => $data->CATEGORY,
+                'STATUS' => $data->STATUS,
+                'S_CAT' => $data->S_CAT,
+                'PDM_GROUP' => $data->PDM_GROUP,
+                'BRAND_P' => $data->BRAND_P,
+                'REGISTER' => $data->REGISTER,
+                'CONDITION_SALE' => $data->CONDITION_SALE,
+                'WHOLE_SALE' => $data->WHOLE_SALE,
+                'GP' => $data->GP,
+                'O_PRODUCT' => $data->O_PRODUCT,
+                'BAR_PACK1' => $data->BAR_PACK1,
+                'BAR_PACK2' => $data->BAR_PACK2,
+                'BAR_PACK3' => $data->BAR_PACK3,
+                'BAR_PACK4' => $data->BAR_PACK4,
+                'PACK_SIZE1' => $data->PACK_SIZE1,
+                'PACK_SIZE2' => $data->PACK_SIZE2,
+                'PACK_SIZE3' => $data->PACK_SIZE3,
+                'PACK_SIZE4' => $data->PACK_SIZE4,
+                'REG_DATE' => date("Y/m/d h:i:s"),
+                'AGE' => $data->AGE,
+                'WIDTH' => $data->WIDTH,
+                'HEIGHT' => $data->HEIGHT,
+                'WIDE' => $data->WIDE,
+                'NAME_EXP' => $data->NAME_EXP,
+                'NET_WEIGHT' => $data->NET_WEIGHT,
+                'UNIT_TYPE' => $data->UNIT_TYPE,
+                'TYPE_G' => $data->TYPE_G,
+                'OPT_DATE1' => $data->OPT_DATE1,
+                'OPT_DATE2' => $data->OPT_DATE2,
+                'OPT_TXT1' => $data->OPT_TXT1,
+                'OPT_TXT2' => $data->OPT_TXT2,
+                'OPT_NUM1' => $data->OPT_NUM1,
+                'OPT_NUM2' => $data->OPT_NUM2,
+                'ACC_TYPE' => $data->ACC_TYPE,
+                'ACC_DT' => $data->ACC_DT,
+                'EDIT_DT' => $data->EDIT_DT,
+                'RETURN' => is_null($data->RETURN) ? 'N' : 'Y',
+                'NON_VAT' => is_null($data->NON_VAT) ? 'N' : 'Y',
+                'STORAGE_TEMP' => is_null($data->STORAGE_TEMP) ? 'N' : 'Y',
+                'CONTROL_STK' => is_null($data->CONTROL_STK) ? 'N' : 'Y',
+                'TESTER' =>  is_null($data->TESTER) ? 'N' : 'Y',
+                'USER_EDIT' => Auth::user()->id
+            ];
+
+            $copyProductMaster = Product1::create($data_product);
+            // dd($copyProductMaster);
+            DB::commit();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
     public function createCopy(Request $request)
     {
         // dd($request);
         $dataProductBarcode = Pro_develops::select(
+            'BRAND',
             'PRODUCT',
             'BARCODE',
         )
         ->firstWhere('PRODUCT', '=', $request->NUMBER);
+
+        // dd($dataProductBarcode);
 
         // $venders = Vendor::all();
         // $type_gs = Type_g::all();
@@ -324,7 +491,7 @@ class ProductController extends Controller
                 'PRODUCT' => $dataProductBarcode->PRODUCT,
                 'BARCODE' => $dataProductBarcode->BARCODE,
                 'COLOR' => $data->COLOR,
-                'GRP_P' => $data->GRP_P,
+                'GRP_P' => $dataProductBarcode->BRAND,
                 'SUPPLIER' => $data->SUPPLIER,
                 'NAME_THAI' => $data->NAME_THAI,
                 'NAME_ENG' => $data->NAME_ENG,
@@ -403,7 +570,7 @@ class ProductController extends Controller
         $company = substr($request->BRAND, 0, 2);
         $description = substr($request->BRAND, 2, 2);
         $status = $company.' - '.$description;
-        dd($status);
+        // dd($status);
         // DB::beginTransaction();
         try {
             $data_product = [
@@ -594,6 +761,7 @@ class ProductController extends Controller
 
         $data = Product1::select(
    'BRAND',
+            'GRP_P',
             'PRODUCT',
             'BARCODE',
             'NAME_THAI'
@@ -605,6 +773,7 @@ class ProductController extends Controller
         if (in_array($userpermission, [$isSuperAdmin, 'Admin'])) {
                 $data = Product1::select(
        'BRAND',
+                'GRP_P',
                 'PRODUCT',
                 'BARCODE',
                 'NAME_THAI'
@@ -613,16 +782,18 @@ class ProductController extends Controller
         } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
             $data = Product1::select(
            'BRAND',
+                    'GRP_P',
                     'PRODUCT',
                     'BARCODE',
                     'NAME_THAI'
                 )
                 // ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
-                ->whereIn('BRAND', ['OP', 'RI', 'KM'])
+                ->whereIn('BRAND', ['OP', 'KM'])
                 ->orderBy('BARCODE', 'DESC');
         } else if (in_array($userpermission, ['Marketing - CPS'])) {
             $data = Product1::select(
        'BRAND',
+                'GRP_P',
                 'PRODUCT',
                 'BARCODE',
                 'NAME_THAI'
