@@ -207,7 +207,126 @@
                 </div>
             </div>
         </div>
-        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
+        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700 relative"></ul>
+        <div class="flex right-12 z-10 absolute mt-3">
+            <div class="relative" data-twe-dropdown-position="dropstart">
+                <button
+                    class="flex items-center rounded bg-[#303030] hover:bg-[#404040] px-4 pb-[5px] pt-[6px] text-sm font-bold uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out focus:outline-none focus:ring-0 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                    type="button"
+                    id="dropdownMenuButton1s"
+                    data-twe-dropdown-toggle-ref
+                    aria-expanded="false"
+                    data-twe-ripple-init
+                    data-twe-ripple-color="light">
+                    <span class="me-2 [&>svg]:h-5 [&>svg]:w-5">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path
+                        fill-rule="evenodd"
+                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                        clip-rule="evenodd" />
+                    </svg>
+                    </span>
+                        เพิ่มข้อมูลสิ้นค้า
+                </button>
+                <ul style="z-index: 999999999;" class="absolute divide-y divide-gray-600 rounded-sm w-48 md:w-52 dark:divide-gray-600 float-left m-0 hidden min-w-max list-none overflow-hidden border-none bg-white bg-clip-padding text-base shadow-lg data-[twe-dropdown-show]:block dark:bg-surface-dark"
+                    aria-labelledby="dropdownMenuButton1s"
+                    data-twe-dropdown-menu-ref>
+                    <li>
+                        <a href="{{ route('product.create') }}" class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group">
+                            <svg class="h-5 w-5 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                fill="currentColor" viewBox="0 0 512 512"  xml:space="preserve">
+                                <g>
+                                    <path class="st0" d="M504.262,66.75L445.226,7.706c-10.291-10.284-26.938-10.267-37.222,0l-38.278,38.278l96.282,96.266
+                                        l38.254-38.295C514.537,93.672,514.554,77.017,504.262,66.75z"/>
+                                    <path class="st0" d="M32.815,382.921L0.025,512l129.055-32.83l319.398-319.431l-96.249-96.265L32.815,382.921z M93.179,404.792
+                                        l-21.871-21.871l278.289-278.289l21.887,21.887L93.179,404.792z"/>
+                                </g>
+                            </svg>
+                            <span class="ml-2.5">
+                                เพิ่มข้อมูลสิ้นค้า
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            type="button"
+                            class="cursor-pointer block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group"
+                            data-twe-toggle="modal"
+                            data-twe-target="#exampleModal"
+                            data-twe-ripple-init
+                            data-twe-ripple-color="light"
+                            onclick="modelCopy()"
+                        >
+                            <svg class="-ml-1 h-8 w-8 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" viewBox="0 0 1024 1024" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M589.3 260.9v30H371.4v-30H268.9v513h117.2v-304l109.7-99.1h202.1V260.9z" fill="#E1F0FF" />
+                                <path d="M516.1 371.1l-122.9 99.8v346.8h370.4V371.1z" fill="#E1F0FF" />
+                                <path d="M752.7 370.8h21.8v435.8h-21.8z" fill="#446EB1" />
+                                <path d="M495.8 370.8h277.3v21.8H495.8z" fill="#446EB1" />
+                                <path d="M495.8 370.8h21.8v124.3h-21.8z" fill="#446EB1" />
+                                <path d="M397.7 488.7l-15.4-15.4 113.5-102.5 15.4 15.4z" fill="#446EB1" />
+                                <path d="M382.3 473.3h135.3v21.8H382.3z" fill="#446EB1" />
+                                <path d="M382.3 479.7h21.8v348.6h-21.8zM404.1 806.6h370.4v21.8H404.1z" fill="#446EB1" />
+                                <path d="M447.7 545.1h261.5v21.8H447.7zM447.7 610.5h261.5v21.8H447.7zM447.7 675.8h261.5v21.8H447.7z" fill="#6D9EE8" />
+                                <path d="M251.6 763h130.7v21.8H251.6z" fill="#446EB1" /><path d="M251.6 240.1h21.8v544.7h-21.8zM687.3 240.1h21.8v130.7h-21.8zM273.4 240.1h108.9v21.8H273.4z" fill="#446EB1" />
+                                <path d="M578.4 240.1h130.7v21.8H578.4zM360.5 196.5h21.8v108.9h-21.8zM382.3 283.7h196.1v21.8H382.3zM534.8 196.5h65.4v21.8h-65.4z" fill="#446EB1" />
+                                <path d="M360.5 196.5h65.4v21.8h-65.4zM404.1 174.7h152.5v21.8H404.1zM578.4 196.5h21.8v108.9h-21.8z" fill="#446EB1" />
+                            </svg>
+                            <span class="text-black dark:text-white">
+                                Copy ข้อมูลสิ้นค้า
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('product.create_consumables') }}" class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group">
+                            <svg class="h-5 w-5 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                fill="currentColor" viewBox="0 0 512 512"  xml:space="preserve">
+                                <g>
+                                    <path class="st0" d="M504.262,66.75L445.226,7.706c-10.291-10.284-26.938-10.267-37.222,0l-38.278,38.278l96.282,96.266
+                                        l38.254-38.295C514.537,93.672,514.554,77.017,504.262,66.75z"/>
+                                    <path class="st0" d="M32.815,382.921L0.025,512l129.055-32.83l319.398-319.431l-96.249-96.265L32.815,382.921z M93.179,404.792
+                                        l-21.871-21.871l278.289-278.289l21.887,21.887L93.179,404.792z"/>
+                                </g>
+                            </svg>
+                            <span class="ml-2.5">
+                                เพิ่มวัสดุสิ้นเปลือง
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            type="button"
+                            class="cursor-pointer block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group"
+                            data-twe-toggle="modal"
+                            data-twe-target="#exampleModalCopy"
+                            data-twe-ripple-init
+                            data-twe-ripple-color="light"
+                            onclick="modelCopyConsumables()"
+                        >
+                            <svg class="-ml-1 h-8 w-8 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" viewBox="0 0 1024 1024" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M589.3 260.9v30H371.4v-30H268.9v513h117.2v-304l109.7-99.1h202.1V260.9z" fill="#E1F0FF" />
+                                <path d="M516.1 371.1l-122.9 99.8v346.8h370.4V371.1z" fill="#E1F0FF" />
+                                <path d="M752.7 370.8h21.8v435.8h-21.8z" fill="#446EB1" />
+                                <path d="M495.8 370.8h277.3v21.8H495.8z" fill="#446EB1" />
+                                <path d="M495.8 370.8h21.8v124.3h-21.8z" fill="#446EB1" />
+                                <path d="M397.7 488.7l-15.4-15.4 113.5-102.5 15.4 15.4z" fill="#446EB1" />
+                                <path d="M382.3 473.3h135.3v21.8H382.3z" fill="#446EB1" />
+                                <path d="M382.3 479.7h21.8v348.6h-21.8zM404.1 806.6h370.4v21.8H404.1z" fill="#446EB1" />
+                                <path d="M447.7 545.1h261.5v21.8H447.7zM447.7 610.5h261.5v21.8H447.7zM447.7 675.8h261.5v21.8H447.7z" fill="#6D9EE8" />
+                                <path d="M251.6 763h130.7v21.8H251.6z" fill="#446EB1" /><path d="M251.6 240.1h21.8v544.7h-21.8zM687.3 240.1h21.8v130.7h-21.8zM273.4 240.1h108.9v21.8H273.4z" fill="#446EB1" />
+                                <path d="M578.4 240.1h130.7v21.8H578.4zM360.5 196.5h21.8v108.9h-21.8zM382.3 283.7h196.1v21.8H382.3zM534.8 196.5h65.4v21.8h-65.4z" fill="#446EB1" />
+                                <path d="M360.5 196.5h65.4v21.8h-65.4zM404.1 174.7h152.5v21.8H404.1zM578.4 196.5h21.8v108.9h-21.8z" fill="#446EB1" />
+                            </svg>
+                            <span class="text-black dark:text-white">
+                                Copy วัสดุสิ้นเปลือง
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
         <!-- Modal -->
         <div
@@ -460,269 +579,6 @@
             </div>
         </div>
 
-        <div class="flex right-12 z-10 absolute" style="top: 307px">
-            <div class="relative" data-twe-dropdown-position="dropstart">
-                <button
-                    class="flex items-center rounded bg-[#303030] hover:bg-[#404040] px-4 pb-[5px] pt-[6px] text-sm font-bold uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out focus:outline-none focus:ring-0 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-                    type="button"
-                    id="dropdownMenuButton1s"
-                    data-twe-dropdown-toggle-ref
-                    aria-expanded="false"
-                    data-twe-ripple-init
-                    data-twe-ripple-color="light">
-                    <span class="me-2 [&>svg]:h-5 [&>svg]:w-5">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor">
-                        <path
-                        fill-rule="evenodd"
-                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                        clip-rule="evenodd" />
-                    </svg>
-                    </span>
-                        เพิ่มข้อมูลสิ้นค้า
-                </button>
-                <ul class="absolute divide-y divide-gray-600 rounded-sm w-48 md:w-52 dark:divide-gray-600 z-[1000] float-left m-0 hidden min-w-max list-none overflow-hidden border-none bg-white bg-clip-padding text-base shadow-lg data-[twe-dropdown-show]:block dark:bg-surface-dark"
-                    aria-labelledby="dropdownMenuButton1s"
-                    data-twe-dropdown-menu-ref>
-                    <li>
-                        <a href="{{ route('product.create') }}" class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group">
-                            <svg class="h-5 w-5 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                fill="currentColor" viewBox="0 0 512 512"  xml:space="preserve">
-                                <g>
-                                    <path class="st0" d="M504.262,66.75L445.226,7.706c-10.291-10.284-26.938-10.267-37.222,0l-38.278,38.278l96.282,96.266
-                                        l38.254-38.295C514.537,93.672,514.554,77.017,504.262,66.75z"/>
-                                    <path class="st0" d="M32.815,382.921L0.025,512l129.055-32.83l319.398-319.431l-96.249-96.265L32.815,382.921z M93.179,404.792
-                                        l-21.871-21.871l278.289-278.289l21.887,21.887L93.179,404.792z"/>
-                                </g>
-                            </svg>
-                            <span class="ml-2.5">
-                                เพิ่มข้อมูลสิ้นค้า
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            type="button"
-                            class="cursor-pointer block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group"
-                            data-twe-toggle="modal"
-                            data-twe-target="#exampleModal"
-                            data-twe-ripple-init
-                            data-twe-ripple-color="light"
-                            onclick="modelCopy()"
-                        >
-                            <svg class="-ml-1 h-8 w-8 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" viewBox="0 0 1024 1024" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M589.3 260.9v30H371.4v-30H268.9v513h117.2v-304l109.7-99.1h202.1V260.9z" fill="#E1F0FF" />
-                                <path d="M516.1 371.1l-122.9 99.8v346.8h370.4V371.1z" fill="#E1F0FF" />
-                                <path d="M752.7 370.8h21.8v435.8h-21.8z" fill="#446EB1" />
-                                <path d="M495.8 370.8h277.3v21.8H495.8z" fill="#446EB1" />
-                                <path d="M495.8 370.8h21.8v124.3h-21.8z" fill="#446EB1" />
-                                <path d="M397.7 488.7l-15.4-15.4 113.5-102.5 15.4 15.4z" fill="#446EB1" />
-                                <path d="M382.3 473.3h135.3v21.8H382.3z" fill="#446EB1" />
-                                <path d="M382.3 479.7h21.8v348.6h-21.8zM404.1 806.6h370.4v21.8H404.1z" fill="#446EB1" />
-                                <path d="M447.7 545.1h261.5v21.8H447.7zM447.7 610.5h261.5v21.8H447.7zM447.7 675.8h261.5v21.8H447.7z" fill="#6D9EE8" />
-                                <path d="M251.6 763h130.7v21.8H251.6z" fill="#446EB1" /><path d="M251.6 240.1h21.8v544.7h-21.8zM687.3 240.1h21.8v130.7h-21.8zM273.4 240.1h108.9v21.8H273.4z" fill="#446EB1" />
-                                <path d="M578.4 240.1h130.7v21.8H578.4zM360.5 196.5h21.8v108.9h-21.8zM382.3 283.7h196.1v21.8H382.3zM534.8 196.5h65.4v21.8h-65.4z" fill="#446EB1" />
-                                <path d="M360.5 196.5h65.4v21.8h-65.4zM404.1 174.7h152.5v21.8H404.1zM578.4 196.5h21.8v108.9h-21.8z" fill="#446EB1" />
-                            </svg>
-                            <span class="text-black dark:text-white">
-                                Copy ข้อมูลสิ้นค้า
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{ route('product.create_consumables') }}" class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group">
-                            <svg class="h-5 w-5 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                fill="currentColor" viewBox="0 0 512 512"  xml:space="preserve">
-                                <g>
-                                    <path class="st0" d="M504.262,66.75L445.226,7.706c-10.291-10.284-26.938-10.267-37.222,0l-38.278,38.278l96.282,96.266
-                                        l38.254-38.295C514.537,93.672,514.554,77.017,504.262,66.75z"/>
-                                    <path class="st0" d="M32.815,382.921L0.025,512l129.055-32.83l319.398-319.431l-96.249-96.265L32.815,382.921z M93.179,404.792
-                                        l-21.871-21.871l278.289-278.289l21.887,21.887L93.179,404.792z"/>
-                                </g>
-                            </svg>
-                            <span class="ml-2.5">
-                                เพิ่มวัสดุสิ้นเปลือง
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            type="button"
-                            class="cursor-pointer block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group"
-                            data-twe-toggle="modal"
-                            data-twe-target="#exampleModalCopy"
-                            data-twe-ripple-init
-                            data-twe-ripple-color="light"
-                            onclick="modelCopyConsumables()"
-                        >
-                            <svg class="-ml-1 h-8 w-8 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" viewBox="0 0 1024 1024" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M589.3 260.9v30H371.4v-30H268.9v513h117.2v-304l109.7-99.1h202.1V260.9z" fill="#E1F0FF" />
-                                <path d="M516.1 371.1l-122.9 99.8v346.8h370.4V371.1z" fill="#E1F0FF" />
-                                <path d="M752.7 370.8h21.8v435.8h-21.8z" fill="#446EB1" />
-                                <path d="M495.8 370.8h277.3v21.8H495.8z" fill="#446EB1" />
-                                <path d="M495.8 370.8h21.8v124.3h-21.8z" fill="#446EB1" />
-                                <path d="M397.7 488.7l-15.4-15.4 113.5-102.5 15.4 15.4z" fill="#446EB1" />
-                                <path d="M382.3 473.3h135.3v21.8H382.3z" fill="#446EB1" />
-                                <path d="M382.3 479.7h21.8v348.6h-21.8zM404.1 806.6h370.4v21.8H404.1z" fill="#446EB1" />
-                                <path d="M447.7 545.1h261.5v21.8H447.7zM447.7 610.5h261.5v21.8H447.7zM447.7 675.8h261.5v21.8H447.7z" fill="#6D9EE8" />
-                                <path d="M251.6 763h130.7v21.8H251.6z" fill="#446EB1" /><path d="M251.6 240.1h21.8v544.7h-21.8zM687.3 240.1h21.8v130.7h-21.8zM273.4 240.1h108.9v21.8H273.4z" fill="#446EB1" />
-                                <path d="M578.4 240.1h130.7v21.8H578.4zM360.5 196.5h21.8v108.9h-21.8zM382.3 283.7h196.1v21.8H382.3zM534.8 196.5h65.4v21.8h-65.4z" fill="#446EB1" />
-                                <path d="M360.5 196.5h65.4v21.8h-65.4zM404.1 174.7h152.5v21.8H404.1zM578.4 196.5h21.8v108.9h-21.8z" fill="#446EB1" />
-                            </svg>
-                            <span class="text-black dark:text-white">
-                                Copy วัสดุสิ้นเปลือง
-                            </span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- <button id="dropdownAvatarNameButton" data-dropdown-toggle="dropdownAvatarNameTest" class="flex items-center text-sm pe-1 text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group" type="button">
-                <div class="mr-1">
-                เพิ่มข้อมูล
-                </div>
-                <svg class="w-2.5 h-2.5 ms-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 4 4 4-4"/>
-                </svg>
-            </button>
-            <div id="dropdownAvatarNameTest" class="float-left p-1.5 z-10 hidden text-center bg-white divide-y divide-gray-600 rounded-sm shadow w-48 md:w-52 border-none dark:bg-[#303030] dark:divide-gray-600">
-                <div class="flex items-center justify-start text-black dark:text-white text-sm font-bold hover:bg-gray-100 dark:hover:bg-[#404040]">
-                    <a href="{{ route('product.create') }}" class="text-black dark:text-white py-2 px-2 rounded-sm group">
-                        <svg class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                viewBox="0 0 451.39 451.39" xml:space="preserve">
-                            <g>
-                                <g id="XMLID_28_">
-                                    <g>
-                                        <path style="fill:#FFFFFF;" d="M437.029,439.43c0,0.79-0.31,1.54-0.87,2.1c-1.12,1.11-3.08,1.12-4.2,0l-11.91-11.92l4.2-4.19
-                                            l11.91,11.91C436.719,437.89,437.029,438.64,437.029,439.43z"/>
-                                        <path d="M18.269,68.58l9.13,9.13l44.94-44.94l-9.13-9.13c-2.51-2.51-5.86-3.9-9.41-3.9c-3.56,0-6.9,1.39-9.41,3.9l-26.12,26.12
-                                            c-2.51,2.51-3.9,5.85-3.9,9.41C14.369,62.72,15.759,66.06,18.269,68.58z M280.849,353.05c11.07,11.07,23.02,21.04,35.74,29.88
-                                            l60.97-60.97c-8.85-12.72-18.82-24.66-29.89-35.73L105.479,44.04l-66.82,66.82L280.849,353.05z M324.209,388.04
-                                            c11.5,7.4,23.59,13.92,36.23,19.49l47.86,21.11l14.96-14.97l-21.1-47.85c-5.57-12.64-12.09-24.74-19.5-36.23L324.209,388.04z
-                                            M431.959,441.53c1.12,1.12,3.08,1.11,4.2,0c0.56-0.56,0.87-1.31,0.87-2.1c0-0.79-0.31-1.54-0.87-2.1l-11.91-11.91l-4.2,4.19
-                                            L431.959,441.53z M442.519,430.97c4.67,4.66,4.67,12.25,0,16.92c-2.33,2.33-5.4,3.5-8.46,3.5s-6.13-1.17-8.46-3.5l-11.91-11.91
-                                            l-3.38,3.38l-53.5-23.59c-30.81-13.59-58.51-32.55-82.32-56.36l-255.81-255.8c-2.29-2.3-3.55-5.35-3.55-8.6
-                                            c0-3.24,1.26-6.29,3.55-8.59l2.36-2.35l-9.13-9.13c-4.22-4.21-6.54-9.81-6.54-15.77s2.32-11.56,6.54-15.78l26.12-26.11
-                                            c4.21-4.22,9.81-6.54,15.77-6.54s11.56,2.32,15.77,6.54l9.13,9.12l2.35-2.34c4.73-4.74,12.44-4.74,17.18,0l26.87,26.87
-                                            l10.78-10.78l-33.79-33.79l6.37-6.36l173.59,173.6c10.05,10.04,24.41,14.56,38.4,12.07l1.57,8.86c-3.05,0.54-6.13,0.81-9.18,0.81
-                                            c-13.81,0-27.22-5.45-37.15-15.38L142.239,46.51l-10.78,10.78l222.58,222.57c23.81,23.82,42.77,51.51,56.36,82.32l23.58,53.5
-                                            l-3.37,3.37L442.519,430.97z M32.299,104.49l66.82-66.82l-7.25-7.25c-0.62-0.61-1.42-0.92-2.23-0.92c-0.81,0-1.61,0.31-2.23,0.92
-                                            l-62.36,62.37c-0.6,0.59-0.92,1.38-0.92,2.22c0,0.85,0.32,1.64,0.92,2.23L32.299,104.49z"/>
-                                        <path style="fill:#A7B6C4;" d="M382.659,329.59c7.41,11.49,13.93,23.59,19.5,36.23l21.1,47.85l-14.96,14.97l-47.86-21.11
-                                            c-12.64-5.57-24.73-12.09-36.23-19.49L382.659,329.59z"/>
-                                        <path style="fill:#4489D3;" d="M347.669,286.23c11.07,11.07,21.04,23.01,29.89,35.73l-60.97,60.97
-                                            c-12.72-8.84-24.67-18.81-35.74-29.88L38.659,110.86l66.82-66.82L347.669,286.23z"/>
-                                        <path style="fill:#A7B6C4;" d="M89.639,29.5c0.81,0,1.61,0.31,2.23,0.92l7.25,7.25l-66.82,66.82l-7.25-7.25
-                                            c-0.6-0.59-0.92-1.38-0.92-2.23c0-0.84,0.32-1.63,0.92-2.22l62.36-62.37C88.029,29.81,88.829,29.5,89.639,29.5z"/>
-                                        <path style="fill:#4489D3;" d="M44.389,23.64c2.51-2.51,5.85-3.9,9.41-3.9c3.55,0,6.9,1.39,9.41,3.9l9.13,9.13l-44.94,44.94
-                                            l-9.13-9.13c-2.51-2.52-3.9-5.86-3.9-9.41c0-3.56,1.39-6.9,3.9-9.41L44.389,23.64z"/>
-                                    </g>
-                                </g>
-                            </g>
-                        </svg>
-                        เพิ่มข้อมูลสิ้นค้า
-                    </a>
-                </div>
-                <div class="flex items-center justify-start text-black dark:text-white text-sm font-bold hover:bg-gray-100 dark:hover:bg-[#404040]">
-                    <a
-                        type="button"
-                        class="font-bold text-black dark:text-white py-2 px-2 rounded-sm group"
-                        data-twe-toggle="modal"
-                        data-twe-target="#exampleModal"
-                        data-twe-ripple-init
-                        data-twe-ripple-color="light"
-                        onclick="modelCopy()"
-                    >
-                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block"
-                            viewBox="0 0 512 512" xml:space="preserve">
-                            <path d="M509.099,189.867l-145.067-128c-1.707-1.536-3.84-2.219-6.059-2.133H307.2v-51.2C307.2,3.84,303.36,0,298.667,0H8.533
-                                C3.84,0,0,3.84,0,8.533V435.2c0,4.693,3.84,8.533,8.533,8.533H128v59.733c0,4.693,3.84,8.533,8.533,8.533h366.933
-                                c4.693,0,8.533-3.84,8.533-8.533v-307.2C512,193.792,510.976,191.488,509.099,189.867z M366.933,87.211l113.92,100.523h-113.92
-                                V87.211z M128,68.267v358.4H17.067v-409.6h273.067v42.667H137.301C132.437,59.221,128,63.317,128,68.267z M494.933,494.933H145.067
-                                V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059c1.621,1.536,3.755,2.475,6.059,2.475h136.533V494.933z"/>
-                            <g>
-                                <polygon style="fill:#7E939E;" points="480.853,187.733 366.933,187.733 366.933,87.211 	"/>
-                                <rect x="452.267" y="204.8" style="fill:#7E939E;" width="42.667" height="290.133"/>
-                            </g>
-                            <path style="fill:#AFAFAF;" d="M452.267,204.8v290.133h-307.2V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059
-                                c1.621,1.536,3.755,2.475,6.059,2.475H452.267z"/>
-                            <path style="fill:#7E939E;" d="M290.133,17.067v42.667H137.301c-4.864-0.512-9.301,3.584-9.301,8.533v358.4H17.067v-409.6H290.133z"
-                                />
-                        </svg>
-                        Copy ข้อมูลสิ้นค้า
-                    </a>
-                </div>
-                <div class="flex items-center justify-start text-black dark:text-white text-sm font-bold hover:bg-gray-100 dark:hover:bg-[#404040]">
-                    <a href="{{ route('product.create_consumables') }}" class="text-black dark:text-white py-2 px-2 rounded-sm group">
-                        <svg class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                viewBox="0 0 451.39 451.39" xml:space="preserve">
-                            <g>
-                                <g id="XMLID_28_">
-                                    <g>
-                                        <path style="fill:#FFFFFF;" d="M437.029,439.43c0,0.79-0.31,1.54-0.87,2.1c-1.12,1.11-3.08,1.12-4.2,0l-11.91-11.92l4.2-4.19
-                                            l11.91,11.91C436.719,437.89,437.029,438.64,437.029,439.43z"/>
-                                        <path d="M18.269,68.58l9.13,9.13l44.94-44.94l-9.13-9.13c-2.51-2.51-5.86-3.9-9.41-3.9c-3.56,0-6.9,1.39-9.41,3.9l-26.12,26.12
-                                            c-2.51,2.51-3.9,5.85-3.9,9.41C14.369,62.72,15.759,66.06,18.269,68.58z M280.849,353.05c11.07,11.07,23.02,21.04,35.74,29.88
-                                            l60.97-60.97c-8.85-12.72-18.82-24.66-29.89-35.73L105.479,44.04l-66.82,66.82L280.849,353.05z M324.209,388.04
-                                            c11.5,7.4,23.59,13.92,36.23,19.49l47.86,21.11l14.96-14.97l-21.1-47.85c-5.57-12.64-12.09-24.74-19.5-36.23L324.209,388.04z
-                                            M431.959,441.53c1.12,1.12,3.08,1.11,4.2,0c0.56-0.56,0.87-1.31,0.87-2.1c0-0.79-0.31-1.54-0.87-2.1l-11.91-11.91l-4.2,4.19
-                                            L431.959,441.53z M442.519,430.97c4.67,4.66,4.67,12.25,0,16.92c-2.33,2.33-5.4,3.5-8.46,3.5s-6.13-1.17-8.46-3.5l-11.91-11.91
-                                            l-3.38,3.38l-53.5-23.59c-30.81-13.59-58.51-32.55-82.32-56.36l-255.81-255.8c-2.29-2.3-3.55-5.35-3.55-8.6
-                                            c0-3.24,1.26-6.29,3.55-8.59l2.36-2.35l-9.13-9.13c-4.22-4.21-6.54-9.81-6.54-15.77s2.32-11.56,6.54-15.78l26.12-26.11
-                                            c4.21-4.22,9.81-6.54,15.77-6.54s11.56,2.32,15.77,6.54l9.13,9.12l2.35-2.34c4.73-4.74,12.44-4.74,17.18,0l26.87,26.87
-                                            l10.78-10.78l-33.79-33.79l6.37-6.36l173.59,173.6c10.05,10.04,24.41,14.56,38.4,12.07l1.57,8.86c-3.05,0.54-6.13,0.81-9.18,0.81
-                                            c-13.81,0-27.22-5.45-37.15-15.38L142.239,46.51l-10.78,10.78l222.58,222.57c23.81,23.82,42.77,51.51,56.36,82.32l23.58,53.5
-                                            l-3.37,3.37L442.519,430.97z M32.299,104.49l66.82-66.82l-7.25-7.25c-0.62-0.61-1.42-0.92-2.23-0.92c-0.81,0-1.61,0.31-2.23,0.92
-                                            l-62.36,62.37c-0.6,0.59-0.92,1.38-0.92,2.22c0,0.85,0.32,1.64,0.92,2.23L32.299,104.49z"/>
-                                        <path style="fill:#A7B6C4;" d="M382.659,329.59c7.41,11.49,13.93,23.59,19.5,36.23l21.1,47.85l-14.96,14.97l-47.86-21.11
-                                            c-12.64-5.57-24.73-12.09-36.23-19.49L382.659,329.59z"/>
-                                        <path style="fill:#4489D3;" d="M347.669,286.23c11.07,11.07,21.04,23.01,29.89,35.73l-60.97,60.97
-                                            c-12.72-8.84-24.67-18.81-35.74-29.88L38.659,110.86l66.82-66.82L347.669,286.23z"/>
-                                        <path style="fill:#A7B6C4;" d="M89.639,29.5c0.81,0,1.61,0.31,2.23,0.92l7.25,7.25l-66.82,66.82l-7.25-7.25
-                                            c-0.6-0.59-0.92-1.38-0.92-2.23c0-0.84,0.32-1.63,0.92-2.22l62.36-62.37C88.029,29.81,88.829,29.5,89.639,29.5z"/>
-                                        <path style="fill:#4489D3;" d="M44.389,23.64c2.51-2.51,5.85-3.9,9.41-3.9c3.55,0,6.9,1.39,9.41,3.9l9.13,9.13l-44.94,44.94
-                                            l-9.13-9.13c-2.51-2.52-3.9-5.86-3.9-9.41c0-3.56,1.39-6.9,3.9-9.41L44.389,23.64z"/>
-                                    </g>
-                                </g>
-                            </g>
-                        </svg>
-                        เพิ่มวัสดุสิ้นเปลือง
-                    </a>
-                </div>
-                <div class="flex items-center justify-start text-black dark:text-white text-sm font-bold hover:bg-gray-100 dark:hover:bg-[#404040]">
-                    <a
-                        type="button"
-                        class="font-bold text-black dark:text-white py-2 px-2 rounded-sm group"
-                        data-twe-toggle="modal"
-                        data-twe-target="#exampleModalCopy"
-                        data-twe-ripple-init
-                        data-twe-ripple-color="light"
-                        onclick="modelCopyConsumables()"
-                    >
-                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block"
-                            viewBox="0 0 512 512" xml:space="preserve">
-                            <path d="M509.099,189.867l-145.067-128c-1.707-1.536-3.84-2.219-6.059-2.133H307.2v-51.2C307.2,3.84,303.36,0,298.667,0H8.533
-                                C3.84,0,0,3.84,0,8.533V435.2c0,4.693,3.84,8.533,8.533,8.533H128v59.733c0,4.693,3.84,8.533,8.533,8.533h366.933
-                                c4.693,0,8.533-3.84,8.533-8.533v-307.2C512,193.792,510.976,191.488,509.099,189.867z M366.933,87.211l113.92,100.523h-113.92
-                                V87.211z M128,68.267v358.4H17.067v-409.6h273.067v42.667H137.301C132.437,59.221,128,63.317,128,68.267z M494.933,494.933H145.067
-                                V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059c1.621,1.536,3.755,2.475,6.059,2.475h136.533V494.933z"/>
-                            <g>
-                                <polygon style="fill:#7E939E;" points="480.853,187.733 366.933,187.733 366.933,87.211 	"/>
-                                <rect x="452.267" y="204.8" style="fill:#7E939E;" width="42.667" height="290.133"/>
-                            </g>
-                            <path style="fill:#AFAFAF;" d="M452.267,204.8v290.133h-307.2V76.8h204.8v119.467c0,2.304,0.853,4.437,2.475,6.059
-                                c1.621,1.536,3.755,2.475,6.059,2.475H452.267z"/>
-                            <path style="fill:#7E939E;" d="M290.133,17.067v42.667H137.301c-4.864-0.512-9.301,3.584-9.301,8.533v358.4H17.067v-409.6H290.133z"
-                                />
-                        </svg>
-                        Copy วัสดุสิ้นเปลือง
-                    </a>
-                </div>
-            </div> -->
-        </div>
-
         <!-- <div class="flex right-32 z-10 top-80 absolute">
             <button id="dropdownAvatar" data-dropdown-toggle="dropdown" class="" type="button">
                 <ul class="dropbtn color-[#303030] dark:color-white icons btn-right showLeft absolute" data-twe-toggle="tooltip" title="เพิ่มข้อมูล" onclick="showDropdown()">
@@ -947,6 +803,7 @@
     <script src="{{ asset('js/buttons-colVis.min.js') }}"></script>
     <script src="{{ asset('js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
+    <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 
     @if (session('status'))
@@ -1299,7 +1156,7 @@
 
         function barcodeConsumablesChange() {
             let PRODUCT_Consumables = $("#PRODUCT_Consumables").val()
-            if (PRODUCT_Consumables.length > 9) {
+            if (PRODUCT_Consumables.length > 6) {
                 jQuery.ajax({
                     method: "GET",
                     url: '{{ route('product.checkproduct_consumables') }}',

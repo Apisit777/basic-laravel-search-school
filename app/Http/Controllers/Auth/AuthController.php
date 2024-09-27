@@ -302,4 +302,11 @@ class AuthController extends Controller
 
         return redirect('/login');
     }
+
+    public function tokenExpired()
+    {
+        dd(true);
+        return response()->json(['true' => true, 'route' => 'login']);
+        // return true;
+    }
 }

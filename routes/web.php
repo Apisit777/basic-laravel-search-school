@@ -40,6 +40,9 @@ Route::post('/api_bypass_login_user', [AuthController::class, 'apiByPassLoginUse
 Route::get('/api_bypass_login', [AuthController::class, 'apiByPassLogin'])->name('api_bypass_login');
 
 Route::middleware('auth')->group(function() {
+
+    Route::get('/check_token', [AuthController::class, 'tokenExpired'])->name('auth.tokenExpired');
+
     // npd
     Route::group(['prefix' => 'new_product_develop', 'as' => 'new_product_develop.'], function () {
         Route::get('', [ProductFormController::class, 'index'])->name('index');
