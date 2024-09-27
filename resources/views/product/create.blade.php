@@ -156,21 +156,49 @@
                         <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                             <div class="md:col-span-3">
                                 <label for="BRAND">Brand</label>
-                                <!-- <select class="js-example-basic-single w-full rounded-sm text-xs" id="BRAND" name="BRAND" onchange="brandIdChange(this, 'BRAND')"> -->
-                                <select class="js-example-basic-single w-full rounded-sm text-xs" id="BRAND" name="BRAND">
+                                <select class="js-example-basic-single w-full rounded-sm text-xs" id="BRAND" name="BRAND" onchange="brandIdChange(this, 'BRAND')">
+                                <!-- <select class="js-example-basic-single w-full rounded-sm text-xs" id="BRAND" name="BRAND"> -->
                                     <option value=""> --- กรุณาเลือก ---</option>
                                     @foreach ($brands as $key => $brand)
-                                        <option value={{ $brand->COMPANY }}{{ $brand->DESCRIPTION }}>{{ $brand->COMPANY.' - ('.$brand->DESCRIPTION.')' }}</option>
+                                        <option value={{ $brand->COMPANY }}>{{ $brand->COMPANY }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <!-- <div class="md:col-span-3" >
-                                <label for="NUMBER">รหัส</label>
-                                <select class="js-example-basic-single w-full rounded-sm text-xs" id="NUMBER" name="NUMBER" onchange="onSelect(this)">
+                            <div class="md:col-span-3" >
+                                <label for="NUMBER">รหัสที่ต้องการ</label>
+                                <select class="js-example-basic-single w-full rounded-sm text-xs" id="NUMBER" name="NUMBER" onchange="onSelect(this, 'BARCODE')">
                                     <option value=""> --- กรุณาเลือก ---</option>
                                 </select>
-                            </div> -->
-                            <div class="md:col-span-3" style="position: relative;">
+                            </div>
+                            <div class="col-auto" style="position: absolute; right: 5.5%; top: 23.2%;">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="username_loading" style="margin-right: -2.5px;" class="w-6 h-6 animate-spin -mt-1">
+                                    <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
+                                    <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
+                                </svg>
+                                <svg id="correct_username" style="margin-right: 2.5px;" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                    viewBox="0 0 507.2 507.2" xml:space="preserve">
+                                    <circle style="fill:#32BA7C;" cx="253.6" cy="253.6" r="253.6"/>
+                                    <path style="fill:#0AA06E;" d="M188.8,368l130.4,130.4c108-28.8,188-127.2,188-244.8c0-2.4,0-4.8,0-7.2L404.8,152L188.8,368z"/>
+                                    <g>
+                                        <path style="fill:#FFFFFF;" d="M260,310.4c11.2,11.2,11.2,30.4,0,41.6l-23.2,23.2c-11.2,11.2-30.4,11.2-41.6,0L93.6,272.8
+                                            c-11.2-11.2-11.2-30.4,0-41.6l23.2-23.2c11.2-11.2,30.4-11.2,41.6,0L260,310.4z"/>
+                                        <path style="fill:#FFFFFF;" d="M348.8,133.6c11.2-11.2,30.4-11.2,41.6,0l23.2,23.2c11.2,11.2,11.2,30.4,0,41.6l-176,175.2
+                                            c-11.2,11.2-30.4,11.2-41.6,0l-23.2-23.2c-11.2-11.2-11.2-30.4,0-41.6L348.8,133.6z"/>
+                                    </g>
+                                </svg>
+                                <svg id="username_alert" style="margin-right: 2.5px;" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        viewBox="0 0 507.2 507.2" xml:space="preserve">
+                                    <circle style="fill:#F15249;" cx="253.6" cy="253.6" r="253.6"/>
+                                    <path style="fill:#AD0E0E;" d="M147.2,368L284,504.8c115.2-13.6,206.4-104,220.8-219.2L367.2,148L147.2,368z"/>
+                                    <path style="fill:#FFFFFF;" d="M373.6,309.6c11.2,11.2,11.2,30.4,0,41.6l-22.4,22.4c-11.2,11.2-30.4,11.2-41.6,0l-176-176
+                                        c-11.2-11.2-11.2-30.4,0-41.6l23.2-23.2c11.2-11.2,30.4-11.2,41.6,0L373.6,309.6z"/>
+                                    <path style="fill:#D6D6D6;" d="M280.8,216L216,280.8l93.6,92.8c11.2,11.2,30.4,11.2,41.6,0l23.2-23.2c11.2-11.2,11.2-30.4,0-41.6
+                                        L280.8,216z"/>
+                                    <path style="fill:#FFFFFF;" d="M309.6,133.6c11.2-11.2,30.4-11.2,41.6,0l23.2,23.2c11.2,11.2,11.2,30.4,0,41.6L197.6,373.6
+                                        c-11.2,11.2-30.4,11.2-41.6,0l-22.4-22.4c-11.2-11.2-11.2-30.4,0-41.6L309.6,133.6z"/>
+                                </svg>
+                            </div>
+                            <!-- <div class="md:col-span-3" style="position: relative;">
                                 <label for="PRODUCT">รหัสสินค้า<span class="text-danger"> *</span></label>
                                 <input type="text" name="PRODUCT" id="ID_PRODUCT" onkeyup="checkNameBrand()" class="text-compleace-auto1 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
                                 <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">Please enter a valid password</span>
@@ -202,7 +230,7 @@
                                             c-11.2,11.2-30.4,11.2-41.6,0l-22.4-22.4c-11.2-11.2-11.2-30.4,0-41.6L309.6,133.6z"/>
                                     </svg>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -725,101 +753,6 @@
             });
         });
 
-        jQuery('#username_loading').hide();
-        jQuery("#username_alert").hide();
-        jQuery("#correct_username").hide();
-
-        function checkNameBrand() {
-            const PRODUCT = jQuery('#ID_PRODUCT').val();
-
-            console.log("🚀 ~ checkNameBrand ~ PRODUCT.length:", PRODUCT)
-            if (PRODUCT.length > 5) {
-
-                jQuery.ajax({
-                    method: "POST",
-                    url: '{{ route('checknamebrand') }}',
-                    data: { PRODUCT },
-                    dataType: 'json',
-                    beforeSend: function () {
-                        jQuery("#submitButton").attr("disabled", true);
-                        jQuery('#username_loading').show();
-                        jQuery("#correct_username").hide();
-                        jQuery("#username_alert").hide();
-                    },
-                    success: function (checknamebrand) {
-                        jQuery('#username_loading').hide();
-                        jQuery("#correct_username").hide();
-                        let checkvalue = checkValueSelect2();
-                        console.log("🚀 ~ checkNameBrand ~ checkvalue:", !checkvalue)
-                        console.log("🚀 ~ checkNameBrand ~ !checknamebrand:", checknamebrand)
-                        console.log("🚀 ~ checkNameBrand ~ !checkvalue || checknamebrand:", !checkvalue || checknamebrand)
-                        if (PRODUCT == '') {
-                            jQuery("#submitButton").attr("disabled", true);
-                            jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
-                            jQuery("#correct_username").hide();
-                            jQuery("#username_alert").hide();
-                            jQuery("#ID_PRODUCT").removeClass("is-invalid");
-                        } else if (!checkvalue || checknamebrand) {
-                            jQuery("#submitButton").attr("disabled", true);
-                            jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
-                            jQuery("#correct_username").show();
-                            jQuery("#username_alert").hide();
-                            jQuery("#ID_PRODUCT").removeClass("is-invalid");
-                        } else {
-                            jQuery("#submitButton").attr("disabled", false);
-                            jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
-                            jQuery("#username_alert").hide();
-                            jQuery("#correct_username").show();
-                        }
-                    },
-                    error: function (params) {
-                    }
-                });
-            } else {
-                jQuery("#submitButton").attr("disabled", true);
-                jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
-                jQuery("#ID_PRODUCT").addClass("is-invalid");
-                jQuery("#correct_username").hide();
-            }
-        }
-
-        function checkValueSelect2(id) {
-            const VENDOR = jQuery('#VENDOR').val();
-            console.log("🚀 ~ checkValueSelect2 ~ VENDOR:", VENDOR)
-            const GRP_P = jQuery('#GRP_P').val();
-            console.log("🚀 ~ checkValueSelect2 ~ GRP_P:", GRP_P)
-            // const BRAND_P = jQuery('#BRAND_P').val();
-            const SUPPLIER = jQuery('#SUPPLIER').val();
-            console.log("🚀 ~ checkValueSelect2 ~ SUPPLIER:", SUPPLIER)
-
-            if (VENDOR) {
-                jQuery('#VENDOR_textalert').addClass('hidden');
-            } else {
-                jQuery('#VENDOR_textalert').removeClass('hidden');
-            }
-
-            if (GRP_P) {
-                jQuery('#GRP_P_textalert').addClass('hidden');
-            } else {
-                jQuery('#GRP_P_textalert').removeClass('hidden');
-            }
-            // if (BRAND_P) {
-            //     jQuery('#BRAND_P_textalert').addClass('hidden');
-            // } else {
-            //     jQuery('#BRAND_P_textalert').removeClass('hidden');
-            // }
-            if (SUPPLIER) {
-                jQuery('#SUPPLIER_textalert').addClass('hidden');
-            } else {
-                jQuery('#SUPPLIER_textalert').removeClass('hidden');
-            }
-
-            console.log("🚀 ~ checkValueSelect2 ~ !SUPPLIER:", !!SUPPLIER)
-            console.log("🚀 ~ checkValueSelect2 ~  !!GRP_P:",  !!GRP_P)
-            console.log("🚀 ~ checkValueSelect2 ~ !!VENDOR:", !!VENDOR)
-            return !!VENDOR && !!GRP_P && !!SUPPLIER
-        }
-
         function onchangeValueSelect2() {
 
             let checkvalue = checkValueSelect2();
@@ -885,18 +818,18 @@
 
                 },
                 success: function (data) {
-                    if (e.value) {
-                       jQuery("#code").val(data.digits_barcode.substring(7, 12));
-                    } else {
-                        jQuery("#code").val('');
-                    }
+                    // if (e.value) {
+                    //    jQuery("#code").val(data.digits_barcode.substring(7, 12));
+                    // } else {
+                    //     jQuery("#code").val('');
+                    // }
                     if (data.productCodes) {
                         datass = data.productCodes
                         select.find("option").remove();
                         const newop = new Option("--- กรุณาเลือก ---", "");
                         jQuery(newop).appendTo(select)
                         data.productCodes.map((item, index) => {
-                            // console.log('item', item)
+                            console.log('item', item)
                             const newoption = new Option(item.Code, item.BARCODE);
                             jQuery(newoption).appendTo(select)
                         });
@@ -911,47 +844,151 @@
             });
         }
 
-        function onSelect(BARCODE) {
-            let curData = datass.find(f => f.BARCODE === BARCODE.value) || {}
-            console.log("🚀 ~ onSelect ~ curData:", curData)
-            if (curData.BARCODE) {
-                console.log('1')
-                $('#NAME_THAI').val(curData.NAME_THAI);
-                $('#SHORT_THAI').val(curData.SHORT_THAI);
-                $('#NAME_ENG').val(curData.NAME_ENG);
-                $('#SHORT_ENG').val(curData.SHORT_ENG);
-                $('#AGE').val(curData.AGE);
-                $('#WHOLE_SALE').val(curData.WHOLE_SALE);
-                $('#REGISTER').val(curData.REGISTER);
-                $('#WIDTH').val(curData.WIDTH);
-                $('#WIDE').val(curData.WIDE);
-                $('#HEIGHT').val(curData.HEIGHT);
-                $('#PRICE').val(curData.PRICE);
-                $('#COST').val(curData.COST);
-                $('#UNIT_Q').val(curData.UNIT_Q);
-                $('#GP').val(curData.GP);
-                $('#BARCODE').val(curData.BARCODE);
+        jQuery('#username_loading').hide();
+        jQuery("#username_alert").hide();
+        jQuery("#correct_username").hide();
+
+        function onSelect(BARCODE, params) {
+            // let curData = datass.find(f => f.BARCODE === BARCODE.value) || {}
+            // console.log("🚀 ~ onSelect ~ curData:", curData)
+            // if (curData.BARCODE) {
+            //     console.log('1')
+            //     $('#NAME_THAI').val(curData.NAME_THAI);
+            //     $('#SHORT_THAI').val(curData.SHORT_THAI);
+            //     $('#NAME_ENG').val(curData.NAME_ENG);
+            //     $('#SHORT_ENG').val(curData.SHORT_ENG);
+            //     $('#AGE').val(curData.AGE);
+            //     $('#WHOLE_SALE').val(curData.WHOLE_SALE);
+            //     $('#REGISTER').val(curData.REGISTER);
+            //     $('#WIDTH').val(curData.WIDTH);
+            //     $('#WIDE').val(curData.WIDE);
+            //     $('#HEIGHT').val(curData.HEIGHT);
+            //     $('#PRICE').val(curData.PRICE);
+            //     $('#COST').val(curData.COST);
+            //     $('#UNIT_Q').val(curData.UNIT_Q);
+            //     $('#GP').val(curData.GP);
+            //     $('#BARCODE').val(curData.BARCODE);
+            // } else {
+            //     $('#NAME_THAI').val('');
+            //     $('#SHORT_THAI').val('');
+            //     $('#NAME_ENG').val('');
+            //     $('#SHORT_ENG').val('');
+            //     $('#AGE').val('');
+            //     $('#WHOLE_SALE').val('');
+            //     $('#REGISTER').val('');
+            //     $('#WIDTH').val('');
+            //     $('#WIDE').val('');
+            //     $('#HEIGHT').val('');
+            //     $('#PRICE').val('');
+            //     $('#COST').val('');
+            //     $('#UNIT_Q').val('');
+            //     $('#GP').val('');
+            //     $('#BARCODE').val('');
+            // }
+            let PRODUCT = BARCODE.value;
+            if (params === 'BARCODE') {
+                url = '{{ route('product.get_barcode') }}?BARCODE=' + BARCODE.value;
+            }
+            jQuery.ajax({
+                method: "GET",
+                url,
+                dataType: 'json',
+                success: function (data) {
+                    console.log("🚀 ~ checkNameBrand ~ data:", data)
+                    if (BARCODE.value) {
+                        jQuery("#BARCODE").val(data.productCodes.BARCODE);
+                    } else {
+                        jQuery("#BARCODE").val('');
+                    }
+                },
+                error: function (params) {
+                    console.log('ajax error ::', params);
+                }
+            });
+            if (PRODUCT != '') {
+                jQuery.ajax({
+                    method: "GET",
+                    url: '{{ route('product.checkproduct') }}',
+                    data: { PRODUCT },
+                    dataType: 'json',
+                    beforeSend: function () {
+                        jQuery("#submitButton").attr("disabled", true);
+                        jQuery('#username_loading').show();
+                        jQuery("#correct_username").hide();
+                        jQuery("#username_alert").hide();
+                    },
+                    success: function (checknamebrand) {
+                        jQuery('#username_loading').hide();
+                        jQuery("#correct_username").hide();
+                        let checkvalue = checkValueSelect2();
+                        // console.log("🚀 ~ checkNameBrand ~ !checkvalue:", !checkvalue)
+                        // console.log("🚀 ~ checkNameBrand ~ checknamebrand:", checknamebrand)
+                        // console.log("🚀 ~ checkNameBrand ~ !checkvalue || checknamebrand:", !checkvalue || checknamebrand)
+                        if (PRODUCT == '') {
+                            jQuery("#submitButton").attr("disabled", true);
+                            jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                            jQuery("#correct_username").hide();
+                            jQuery("#username_alert").hide();
+                            jQuery("#ID_PRODUCT").removeClass("is-invalid");
+                        } else if (!checkvalue || !checknamebrand) {
+                            jQuery("#submitButton").attr("disabled", false);
+                            jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                            jQuery("#correct_username").show();
+                            jQuery("#username_alert").hide();
+                            jQuery("#ID_PRODUCT").removeClass("is-invalid");
+                        } else {
+                            jQuery("#submitButton").attr("disabled", false);
+                            jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
+                            jQuery("#username_alert").hide();
+                            jQuery("#correct_username").show();
+                        }
+                    },
+                    error: function (params) {
+                    }
+                });
             } else {
-                $('#NAME_THAI').val('');
-                $('#SHORT_THAI').val('');
-                $('#NAME_ENG').val('');
-                $('#SHORT_ENG').val('');
-                $('#AGE').val('');
-                $('#WHOLE_SALE').val('');
-                $('#REGISTER').val('');
-                $('#WIDTH').val('');
-                $('#WIDE').val('');
-                $('#HEIGHT').val('');
-                $('#PRICE').val('');
-                $('#COST').val('');
-                $('#UNIT_Q').val('');
-                $('#GP').val('');
-                $('#BARCODE').val('');
+                jQuery("#submitButton").attr("disabled", true);
+                jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                jQuery("#ID_PRODUCT").addClass("is-invalid");
+                jQuery("#correct_username").hide();
             }
         }
 
-        const dlayMessage = 1000;
+        function checkValueSelect2(id) {
+            const VENDOR = jQuery('#VENDOR').val();
+            const GRP_P = jQuery('#GRP_P').val();
+            // const BRAND_P = jQuery('#BRAND_P').val();
+            const SUPPLIER = jQuery('#SUPPLIER').val();
 
+            if (VENDOR) {
+                jQuery('#VENDOR_textalert').addClass('hidden');
+            } else {
+                jQuery('#VENDOR_textalert').removeClass('hidden');
+            }
+
+            if (GRP_P) {
+                jQuery('#GRP_P_textalert').addClass('hidden');
+            } else {
+                jQuery('#GRP_P_textalert').removeClass('hidden');
+            }
+            // if (BRAND_P) {
+            //     jQuery('#BRAND_P_textalert').addClass('hidden');
+            // } else {
+            //     jQuery('#BRAND_P_textalert').removeClass('hidden');
+            // }
+            if (SUPPLIER) {
+                jQuery('#SUPPLIER_textalert').addClass('hidden');
+            } else {
+                jQuery('#SUPPLIER_textalert').removeClass('hidden');
+            }
+
+            // console.log("🚀 ~ checkValueSelect2 ~ !SUPPLIER:", !!SUPPLIER)
+            // console.log("🚀 ~ checkValueSelect2 ~  !!GRP_P:",  !!GRP_P)
+            // console.log("🚀 ~ checkValueSelect2 ~ !!VENDOR:", !!VENDOR)
+            return !!VENDOR && !!GRP_P && !!SUPPLIER
+        }
+
+        const dlayMessage = 1000;
         function createProductMaster() {
 
             jQuery.ajaxSetup({

@@ -45,7 +45,28 @@
 
     <!-- contents lg:pointer-events-auto lg:block lg:w-72 lg:overflow-y-auto lg:border-r lg:border-zinc-900/10 lg:px-6 lg:pb-8 lg:pt-4 xl:w-80 lg:dark:border-white/10 -->
 
+    <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
     <script>
+    // $( document ).ready(function() {
+    //     setInterval(()=>{
+    //         $.get("{{ route('auth.tokenExpired') }}", function(data) {
+    //         }).fail(function() {
+    //             Swal.fire({
+    //                 title: 'Session Expired',
+    //                 text: "กรุณารีโหลดหน้าใหม่",
+    //                 icon: 'warning',
+    //                 showConfirmButton: true,
+    //                 confirmButtonColor: '#00385B',
+    //             }).then((result)=>{
+    //                 console.log("🚀 result:", result)
+    //                 window.location.reload()
+    //             })
+
+    //         });
+
+    //     },10000 )
+    // });
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

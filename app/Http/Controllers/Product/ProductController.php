@@ -138,11 +138,14 @@ class ProductController extends Controller
 
     public function productMasterGetBrandListAjax(Request $request)
     {
-        $productCodes = Product1::select(
-                'product1s.*',
+        $data_PRODUCT = Product1::select('PRODUCT')->pluck('PRODUCT')->toArray();
+
+        $productCodes = Pro_develops::select(
+                // 'product1s.*',
                 DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code')
             )
             ->where('BRAND', $request->input('BRAND'))
+            ->whereNotIn('PRODUCT', $data_PRODUCT)
             ->orderby('Code')
             ->get();
 
@@ -211,38 +214,23 @@ class ProductController extends Controller
 
         $list_position = position::select('id', 'name_position')->get();
 
-        $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
-        // create brands consumables
-        // $brands = Accessery::all();
+        // $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
+        $brands = Accessery::all();
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
 
-        // create brands consumables
-        // if (in_array($userpermission, [$isSuperAdmin])) {
-        //     $brands = Accessery::select(
-        //         'COMPANY',
-        //         'DESCRIPTION')
-        //     ->get();
-        // }
-        // else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
-        //     $brands = Accessery::select(
-        //         'COMPANY',
-        //         'DESCRIPTION')
-        //         ->where('COMPANY', 'OP')
-        //         ->whereIn('DESCRIPTION', ['OP', 'KM'])
-        //     ->get();
-        // }
-
-        // create brands
         if (in_array($userpermission, [$isSuperAdmin])) {
-            $brands = Barcode::select(
-            'BRAND')
+            $brands = Accessery::select(
+                'COMPANY',
+                'DESCRIPTION')
             ->get();
         }
         else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
-            $brands = Barcode::select(
-                'BRAND')
-                ->whereIn('BRAND', ['OP', 'RI'])
+            $brands = Accessery::select(
+                'COMPANY',
+                'DESCRIPTION')
+                ->where('COMPANY', 'OP')
+                ->where('DESCRIPTION', 'OP')
             ->get();
         }
         // else if (in_array($userpermission, ['Marketing - CPS'])) {
@@ -310,17 +298,6 @@ class ProductController extends Controller
         }
 
         // create brands
-        // if (in_array($userpermission, [$isSuperAdmin])) {
-        //     $brands = Barcode::select(
-        //     'BRAND')
-        //     ->get();
-        // }
-        // else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
-        //     $brands = Barcode::select(
-        //         'BRAND')
-        //         ->whereIn('BRAND', ['OP', 'RI'])
-        //     ->get();
-        // }
         // else if (in_array($userpermission, ['Marketing - CPS'])) {
         //     $brands = Barcode::select(
         //         'BRAND',

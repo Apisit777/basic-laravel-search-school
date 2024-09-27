@@ -47,7 +47,7 @@
     <div class="p-4 bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4 mt-10">
         <div class="justify-center items-center">
             <div class="mt-5 flex justify-items-start">
-                <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">ทะเบียนสินค้า</p>
+                <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">วัสดุสิ้นเปลือง</p>
             </div>
             <div class="fixed flex bottom-5 right-5 z-10 invisible" id="add_other">
                 <a
@@ -312,12 +312,13 @@
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">ประเภทสินค้า</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="TYPE_G" id="TYPE_G">
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="TYPE_G" id="TYPE_G" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($type_gs as $key => $type_g)
                                                                             <option value={{ $type_g->ID }}>{{ $type_g->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <span id="TYPE_G_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="name">รหัสสินค้าอ้างอิง</label>
@@ -325,12 +326,13 @@
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Solution</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="SOLUTION" id="SOLUTION">
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="SOLUTION" id="SOLUTION" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($solutions as $key => $solution)
                                                                         <option value={{ $solution->ID }}>{{ $solution->ID. ' - (' .$solution->DESCRIPTION .')' }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <span id="SOLUTION_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <!-- <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="name">&nbsp;</label>
@@ -338,12 +340,13 @@
                                                                 </div> -->
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Series</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="SERIES" id="SERIES">
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="SERIES" id="SERIES" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($series as $key => $serie)
                                                                         <option value={{ $serie->ID }}>{{ $serie->ID.' - ('.$serie->DESCRIPTION.')' }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <span id="SERIES_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <!-- <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="name">&nbsp;</label>
@@ -351,12 +354,13 @@
                                                                 </div> -->
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Category</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="CATEGORY" id="CATEGORY">
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="CATEGORY" id="CATEGORY" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($categorys as $key => $category)
                                                                             <option value={{ $category->ID }}>{{ $category->ID.' - ('.$category->DESCRIPTION.')' }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <span id="CATEGORY_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <!-- <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="name">&nbsp;</label>
@@ -364,12 +368,13 @@
                                                                 </div> -->
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Sub Category</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="S_CAT" id="S_CAT">
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="S_CAT" id="S_CAT" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($sub_categorys as $key => $sub_category)
                                                                         <option value={{ $sub_category->ID }}>{{ $sub_category->ID.' - ('.$sub_category->DESCRIPTION.')' }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <span id="S_CAT_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <!-- <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="name">&nbsp;</label>
@@ -377,12 +382,13 @@
                                                                 </div> -->
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">PDM GROUP</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="PDM_GROUP" id="PDM_GROUP">
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="PDM_GROUP" id="PDM_GROUP" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($pdms as $key => $pdm)
                                                                         <option value={{ $pdm->ID }}>{{ $pdm->ID.' - ('. $pdm->REMARK.')' }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <span id="PDM_GROUP_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <!-- <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="name">&nbsp;</label>
@@ -390,12 +396,13 @@
                                                                 </div> -->
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">สถานะสินค้า</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="STATUS" id="STATUS">
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="STATUS" id="STATUS" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($p_statuss as $key => $p_status)
                                                                             <option value={{ $p_status->ID  }}>{{ $p_status->ID.' - ('.$p_status->DESCRIPTION.')' }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <span id="STATUS_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <!-- <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="name">&nbsp;</label>
@@ -546,39 +553,43 @@
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">หน่วยสินค้า</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="UNIT" id="UNIT">
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="UNIT" id="UNIT" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($unit_ps as $key => $unit_p)
                                                                             <option value={{ $unit_p->ID }}>{{ $unit_p->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <span id="UNIT_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">หน่วยปริมาณ</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="UNIT_TYPE" id="UNIT_TYPE">
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="UNIT_TYPE" id="UNIT_TYPE" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($unit_types as $key => $unit_type)
                                                                             <option value={{ $unit_type->ID }}>{{ $unit_type->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <span id="UNIT_TYPE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">ประเภทสินค้า [บัญชี]</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="ACC_TYPE" id="ACC_TYPE">
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="ACC_TYPE" id="ACC_TYPE" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($acctypes as $key => $acctype)
                                                                             <option value={{ $acctype->ID }}>{{ $acctype->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <span id="ACC_TYPE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">เงื่อนไขชำระเงิน</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="CONDITION_SALE" id="CONDITION_SALE">
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="CONDITION_SALE" id="CONDITION_SALE" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($conditions as $key => $condition)
                                                                             <option value={{ $condition->ID }}>{{ $condition->ID .' ('. $condition->DESCRIPTION .')' }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <span id="CONDITION_SALE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <!-- <div class="md:col-span-2" style="position: relative;">
                                                                     <label for="name">&nbsp;</label>
@@ -730,11 +741,8 @@
         jQuery("#correct_username_consumables").hide();
 
         let codeConsumables = ''
-
         function checkNameBrand() {
             const PRODUCT = jQuery('#ID_PRODUCT').val();
-
-            console.log("🚀 ~ checkNameBrand ~ PRODUCT.length:", PRODUCT)
             if (PRODUCT.length > 5) {
                 jQuery.ajax({
                     method: "POST",
@@ -752,9 +760,6 @@
                         jQuery('#username_loading_consumables').hide();
                         jQuery("#correct_username_consumables").hide();
                         let checkvalue = checkValueSelect2();
-                        console.log("🚀 ~ checkNameBrand ~ checkvalue:", !checkvalue)
-                        console.log("🚀 ~ checkNameBrand ~ checknamebrand:", checknamebrand)
-                        console.log("🚀 ~ checkNameBrand ~ !checkvalue || checknamebrand:", !checkvalue || checknamebrand)
                         if (PRODUCT == '') {
                             jQuery("#submitButton_consumables").attr("disabled", true);
                             jQuery("#submitButton_consumables").addClass('cursor-not-allowed opacity-50');
@@ -785,7 +790,6 @@
                     }
                 });
             } else {
-                // alert('Test')
                 jQuery("#submitButton_consumables").attr("disabled", true);
                 jQuery("#submitButton_consumables").addClass('cursor-not-allowed opacity-50');
                 jQuery("#ID_PRODUCT").addClass("is-invalid");
@@ -800,13 +804,23 @@
             const GRP_P = jQuery('#GRP_P').val();
             // const BRAND_P = jQuery('#BRAND_P').val();
             const SUPPLIER = jQuery('#SUPPLIER').val();
+            const TYPE_G = jQuery('#TYPE_G').val();
+            const SOLUTION = jQuery('#SOLUTION').val();
+            const SERIES = jQuery('#SERIES').val();
+            const CATEGORY = jQuery('#CATEGORY').val();
+            const S_CAT = jQuery('#S_CAT').val();
+            const PDM_GROUP = jQuery('#PDM_GROUP').val();
+            const STATUS = jQuery('#STATUS').val();
+            const UNIT = jQuery('#UNIT').val();
+            const UNIT_TYPE = jQuery('#UNIT_TYPE').val();
+            const ACC_TYPE = jQuery('#ACC_TYPE').val();
+            const CONDITION_SALE = jQuery('#CONDITION_SALE').val();
 
             if (VENDOR) {
                 jQuery('#VENDOR_textalert').addClass('hidden');
             } else {
                 jQuery('#VENDOR_textalert').removeClass('hidden');
             }
-
             if (GRP_P) {
                 jQuery('#GRP_P_textalert').addClass('hidden');
             } else {
@@ -822,14 +836,67 @@
             } else {
                 jQuery('#SUPPLIER_textalert').removeClass('hidden');
             }
+            if (TYPE_G) {
+                jQuery('#TYPE_G_textalert').addClass('hidden');
+            } else {
+                jQuery('#TYPE_G_textalert').removeClass('hidden');
+            }
+            if (SOLUTION) {
+                jQuery('#SOLUTION_textalert').addClass('hidden');
+            } else {
+                jQuery('#SOLUTION_textalert').removeClass('hidden');
+            }
+            if (SERIES) {
+                jQuery('#SERIES_textalert').addClass('hidden');
+            } else {
+                jQuery('#SERIES_textalert').removeClass('hidden');
+            }
+            if (CATEGORY) {
+                jQuery('#CATEGORY_textalert').addClass('hidden');
+            } else {
+                jQuery('#CATEGORY_textalert').removeClass('hidden');
+            }
+            if (S_CAT) {
+                jQuery('#S_CAT_textalert').addClass('hidden');
+            } else {
+                jQuery('#S_CAT_textalert').removeClass('hidden');
+            }
+            if (PDM_GROUP) {
+                jQuery('#PDM_GROUP_textalert').addClass('hidden');
+            } else {
+                jQuery('#PDM_GROUP_textalert').removeClass('hidden');
+            }
+            if (STATUS) {
+                jQuery('#STATUS_textalert').addClass('hidden');
+            } else {
+                jQuery('#STATUS_textalert').removeClass('hidden');
+            }
+            if (UNIT) {
+                jQuery('#UNIT_textalert').addClass('hidden');
+            } else {
+                jQuery('#UNIT_textalert').removeClass('hidden');
+            }
+            if (UNIT_TYPE) {
+                jQuery('#UNIT_TYPE_textalert').addClass('hidden');
+            } else {
+                jQuery('#UNIT_TYPE_textalert').removeClass('hidden');
+            }
+            if (ACC_TYPE) {
+                jQuery('#ACC_TYPE_textalert').addClass('hidden');
+            } else {
+                jQuery('#ACC_TYPE_textalert').removeClass('hidden');
+            }
+            if (CONDITION_SALE) {
+                jQuery('#CONDITION_SALE_textalert').addClass('hidden');
+            } else {
+                jQuery('#CONDITION_SALE_textalert').removeClass('hidden');
+            }
 
-            return !!VENDOR && !!GRP_P && !!SUPPLIER
+            return !!VENDOR && !!GRP_P && !!SUPPLIER && !!TYPE_G && !!SOLUTION && !!SERIES && !!CATEGORY && !!S_CAT && !!PDM_GROUP && !!STATUS && !!UNIT && !!UNIT_TYPE && !!ACC_TYPE && !!CONDITION_SALE
         }
 
         function onchangeValueSelect2() {
-
             let checkvalue = checkValueSelect2();
-            console.log("🚀 ~ onchangeValueSelect2 ~ checkvalue:", checkvalue)
             const PRODUCT = jQuery('#ID_PRODUCT').val();
                 if (checkvalue && codeConsumables) {
                     jQuery("#submitButton_consumables").attr("disabled", false);
@@ -839,7 +906,6 @@
                 jQuery("#submitButton_consumables").addClass('cursor-not-allowed opacity-50');
             }
         }
-
 
         let datass = {}
         function brandIdChange(e, params) {
@@ -961,7 +1027,6 @@
         }
 
         const dlayMessage = 1000;
-
         function createProductMaster() {
 
             jQuery.ajaxSetup({

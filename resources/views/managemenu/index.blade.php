@@ -656,7 +656,7 @@
             "showMethod": "fadeIn",
             "hideMethod": "fadeOut"
         }
-        const dlayMessage = 500;
+        const dlayMessage = 100;
         let menusAuthPosition = <?php echo json_encode($menusAuthPosition); ?>;
 
         function modelManageRole(id, name_position) {
@@ -730,10 +730,6 @@
                     $('#loader_create_menu').removeClass('hidden')
                 },
                 success: function(res){
-                    console.log("🚀 ~ createMenu ~ res:", res)
-                    $('#exampleModalLg').hide('');
-                    $('.w-screen').remove('');
-                    $('#exampleModalLg').removeClass('opacity-50 transition-all duration-300 ease-in-out fixed top-0 left-0 z-[1040] bg-black w-screen h-screen')
                     if(res.success == true) {
                         setTimeout(function() {
                             successMessage("Success!");
@@ -765,10 +761,6 @@
             $("#url_id").val('')
             $("#submenu_id").val('')
             $("#submenu_url_id").val('')
-            // $('#exampleModalLg').removeClass('opacity-50 transition-all duration-300 ease-in-out fixed top-0 left-0 z-[1040] bg-black w-screen h-screen')
-            // $('#exampleModalLg').hide()
-            // $('body').css('overflow', 'auto');
-            // $('#exampleModalLg').dialog('close')
             // $('#exampleModalLg').hide('');
             // $('.w-screen').remove('');
         }
@@ -779,8 +771,6 @@
             $("#submenu_id").val('')
             $("#submenu_url_id").val('')
         }
-
-        // $('#item-tbody').html('');
 
         let select_pos;
         function setMenu(data){
@@ -953,13 +943,13 @@
                 success:function(res){
                     let menuAll = <?php echo json_encode($menus); ?>;
                     let menupermission = res.submenu_array.length ? res.submenu_array : []
-                    console.log("🚀 ~ ajaxGetMenuAccess ~ menupermission:", menupermission)
+                    // console.log("🚀 ~ ajaxGetMenuAccess ~ menupermission:", menupermission)
                     const result = Object.groupBy(menupermission, ({ menu_id }) => menu_id);
-                    console.log("🚀 ~ ajaxGetMenuAccess ~ result:", result)
+                    // console.log("🚀 ~ ajaxGetMenuAccess ~ result:", result)
                     if(true) {
                         menuAll.forEach(menu => {
                             const currentMenu = result[menu.id]
-                            console.log("🚀 ~ ajaxGetMenuAccess ~ currentMenu:", currentMenu)
+                            // console.log("🚀 ~ ajaxGetMenuAccess ~ currentMenu:", currentMenu)
                             if(currentMenu != undefined){
                                 const menu_id = menu.id
                                 currentMenu.forEach(fmenu => {
