@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\ProductForm\ProductFormController;
 use App\Http\Controllers\Managemenu\ManageMenuController;
+use App\Http\Controllers\Warehouse\ComProductController;
 use App\Http\Controllers\Tool\ToolController;
 use App\Http\Controllers\PusherController;
 use App\Http\Controllers\BrandController;
@@ -81,6 +82,19 @@ Route::middleware('auth')->group(function() {
         Route::delete('/update/{id}', [ProductController::class, 'upate_product_status'])->name('update');
     });
 
+    // Tool
+    Route::group(['prefix' => 'auther', 'as' => 'auther.'], function () {
+        Route::get('/tool', [ToolController::class, 'index'])->name('index');
+        Route::get('/images', [ProductImageController::class, 'index'])->name('indexImage');
+    });
+
+    // Km
+    Route::group(['prefix' => 'warehouse', 'as' => 'warehouse.'], function () {
+        Route::get('', [ComProductController::class, 'index'])->name('index');
+        Route::post('/list_warehouse', [ComProductController::class, 'listWarehouse'])->name('list_warehouse');
+        Route::get('/create', [ComProductController::class, 'create'])->name('create');
+    });
+
     // Logout
     Route::get('/logout', [AuthController::class, 'apiByPassLogout'])->name('logout');
 });
@@ -111,7 +125,7 @@ Route::get('/menu_access', [ManageMenuController::class, 'menuAccess'])->name('m
 Route::post('/create_access', [ManageMenuController::class, 'createAccess'])->name('create_access');
 Route::post('/delete_access', [ManageMenuController::class, 'deleteAccess'])->name('delete_access');
 
-Route::get('/tool', [ToolController::class, 'index'])->name('tool');
+// Route::get('/tool', [ToolController::class, 'index'])->name('tool');
 
 // Notify
 Route::get('/test', [PusherController::class, 'index']);

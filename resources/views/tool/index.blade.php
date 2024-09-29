@@ -5,6 +5,10 @@
     
     </style>
 
+    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/select2@4.1.0.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap.css') }}" />
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 @section('content')
@@ -249,7 +253,7 @@
                 </div>
                 <div class="md:col-span-6 text-right mt-4">
                     <div class="inline-flex items-end">
-                        <a href="{{ route('product') }}" class="text-gray-100 bg-[#303030] hover:bg-[#404040] text-white font-bold py-2 px-4 mr-2 rounded group">
+                        <a href="{{ route('auther.index') }}" class="text-gray-100 bg-[#303030] hover:bg-[#404040] text-white font-bold py-2 px-4 mr-2 rounded group">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                 <path fill-rule="evenodd" d="M9.53 2.47a.75.75 0 0 1 0 1.06L4.81 8.25H15a6.75 6.75 0 0 1 0 13.5h-3a.75.75 0 0 1 0-1.5h3a5.25 5.25 0 1 0 0-10.5H4.81l4.72 4.72a.75.75 0 1 1-1.06 1.06l-6-6a.75.75 0 0 1 0-1.06l6-6a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
                             </svg>
@@ -270,9 +274,25 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script> --}}
+
+    <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
+    <script src="{{ asset('js/flowbite-2.3.0.min.js') }}"></script>
+    <script src="{{ asset('js/3.10.1-jszip.min.js') }}"></script>
+    <script src="{{ asset('js/2.0.5-dataTables.js') }}"></script>
+    <script src="{{ asset('js/3.0.2-dataTables.buttons.js') }}"></script>
+    <script src="{{ asset('js/3.0.2-buttons.bootstrap5.js') }}"></script>
+    <script src="{{ asset('js/dataTables.bootstrap5.js') }}"></script>
+    <script src="{{ asset('js/buttons-html5.min.js') }}"></script>
+    <script src="{{ asset('js/buttons-print.min.js') }}"></script>
+    <script src="{{ asset('js/buttons-colVis.min.js') }}"></script>
+    <script src="{{ asset('js/toastr.min.js') }}"></script>
+    <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
+    <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+
     <script>
         let i = 0;
         $('#add').click(function() {

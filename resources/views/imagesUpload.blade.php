@@ -183,8 +183,11 @@
             z-index: 1000;
         }
     </style>
+
+    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/select2@4.1.0.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap.css') }}" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
 @section('content')
     <div class="mt-5 mb-3 flex justify-center items-center">
@@ -255,10 +258,26 @@
         </div>
     </div>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    {{-- <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script> --}}
+
+    <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
+    <script src="{{ asset('js/flowbite-2.3.0.min.js') }}"></script>
+    <script src="{{ asset('js/3.10.1-jszip.min.js') }}"></script>
+    <script src="{{ asset('js/2.0.5-dataTables.js') }}"></script>
+    <script src="{{ asset('js/3.0.2-dataTables.buttons.js') }}"></script>
+    <script src="{{ asset('js/3.0.2-buttons.bootstrap5.js') }}"></script>
+    <script src="{{ asset('js/dataTables.bootstrap5.js') }}"></script>
+    <script src="{{ asset('js/buttons-html5.min.js') }}"></script>
+    <script src="{{ asset('js/buttons-print.min.js') }}"></script>
+    <script src="{{ asset('js/buttons-colVis.min.js') }}"></script>
+    <script src="{{ asset('js/toastr.min.js') }}"></script>
+    <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
+    <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
+    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    
     <script>
         toastr.options = {
             "closeButton": true,
