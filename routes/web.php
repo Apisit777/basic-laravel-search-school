@@ -82,17 +82,17 @@ Route::middleware('auth')->group(function() {
         Route::delete('/update/{id}', [ProductController::class, 'upate_product_status'])->name('update');
     });
 
-    // Tool
-    Route::group(['prefix' => 'auther', 'as' => 'auther.'], function () {
-        Route::get('/tool', [ToolController::class, 'index'])->name('index');
-        Route::get('/images', [ProductImageController::class, 'index'])->name('indexImage');
-    });
-
     // Km
     Route::group(['prefix' => 'warehouse', 'as' => 'warehouse.'], function () {
-        Route::get('', [ComProductController::class, 'index'])->name('index');
+        Route::get('/dimension', [ComProductController::class, 'index'])->name('index');
         Route::post('/list_warehouse', [ComProductController::class, 'listWarehouse'])->name('list_warehouse');
-        Route::get('/create', [ComProductController::class, 'create'])->name('create');
+        Route::get('/dimension/create', [ComProductController::class, 'create'])->name('create');
+    });
+
+    // Manage general information
+    Route::group(['prefix' => 'manage_general_information', 'as' => 'manage_general_information.'], function () {
+        Route::get('/tool', [ToolController::class, 'index'])->name('index');
+        Route::get('/images', [ProductImageController::class, 'index'])->name('indexImage');
     });
 
     // Logout
