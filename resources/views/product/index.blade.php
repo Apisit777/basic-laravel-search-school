@@ -164,6 +164,9 @@
         /* .dropdown a:hover {background-color: rgb(229 231 235);} */
 
         .show {display:block;}
+        span.dt-column-order {
+            display: none;
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -443,7 +446,7 @@
                         </div>
 
                         <div class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md p-2">
-                            <button id="submitButton" type="button" class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-4 rounded cursor-not-allowed opacity-50 group" onclick="createCopy()" disabled>
+                            <button data-twe-modal-dismiss id="submitButton" type="button" class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-4 rounded cursor-not-allowed opacity-50 group" onclick="createCopy()" disabled>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                     <path d="M0 0h24v24H0V0z" fill="none"></path>
                                     <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
@@ -880,7 +883,7 @@
         function getParmeterLogin() {
             let dataLogin = sessionStorage.getItem("credetail");
             let dataJson = JSON.parse(dataLogin)
-            console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
+            // console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
         }
 
         const pusher  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
@@ -1011,9 +1014,9 @@
         jQuery("#correct_username").hide();
 
         function barcodeChange(e, params) {
-            console.log("🚀 ~ barcodeChange ~ e:", e.value)
+            // console.log("🚀 ~ barcodeChange ~ e:", e.value)
             let PRODUCT = e.value;
-            console.log("🚀 ~ barcodeChange ~ product:", PRODUCT)
+            // console.log("🚀 ~ barcodeChange ~ product:", PRODUCT)
 
             if (params === 'BARCODE') {
                 url = '{{ route('product.get_barcode') }}?BARCODE=' + e.value;
@@ -1127,20 +1130,20 @@
 
         let menusAuthPosition = <?php echo json_encode($productCodeArr); ?>;
         let codeOptionList = {}
-         menusAuthPosition.forEach( function(f) {
-             codeOptionList[f] = f
-         })
+        menusAuthPosition.forEach( function(f) {
+            codeOptionList[f] = f
+        })
 
-         let barcodeConsumables = {}
-         console.log("🚀 ~ barcodeConsumables:", barcodeConsumables)
-         $(document).ready(function() {
+        let barcodeConsumables = {}
+        // console.log("🚀 ~ barcodeConsumables:", barcodeConsumables)
+        $(document).ready(function() {
             $('.js-example-basic-single').select2();
             $('.js-example-placeholder-single').select2({
                 placeholder: "--- กรุณาเลือก ---",
                 allowClear: true
             }).on('change', function(e) {
                 barcodeConsumables = $(".select2 option:selected").text();
-                console.log("🚀 ~ $ ~ barcodeConsumables:", barcodeConsumables)
+                // console.log("🚀 ~ $ ~ barcodeConsumables:", barcodeConsumables)
                 $("#PRODUCT_Consumables").val(barcodeConsumables);
             });
         });
@@ -1219,7 +1222,7 @@
                     success: function(res){
                         // $('#exampleModalLg').hide('');
                         // $('.w-screen').remove('');
-                        console.log("🚀 ~ createCopyConsumables ~ res:", res)
+                        // console.log("🚀 ~ createCopyConsumables ~ res:", res)
                         if(res.success == true) {
                             setTimeout(function() {
                                 successMessageConsumables("Success!");
@@ -1279,7 +1282,7 @@
                         </svg>
                         Save
                     `,
-                    cancelButtonText: `Cancle`,
+                    cancelButtonText: `Cancel`,
                     color: "#ffffff",
                     input: 'select',
                     // didOpen: function () {
@@ -1308,7 +1311,7 @@
                     Swal.fire('You selected: ' + fruit)
                 }
             })().then(result => {
-                console.log("🚀 ~ disableAppointment ~ result:", result)
+                // console.log("🚀 ~ disableAppointment ~ result:", result)
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "POST",
@@ -1387,7 +1390,7 @@
         //             </svg>
         //             Save
         //         `,
-        //         cancelButtonText: `Cancle`,
+        //         cancelButtonText: `Cancel`,
         //         color: "#ffffff",
         //         background: "#202020",
 

@@ -64,7 +64,12 @@
             display: none;
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"> -->
+
+    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/select2@4.1.0.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap.css') }}" />
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <div id="slide" class="loaderslide"></div>

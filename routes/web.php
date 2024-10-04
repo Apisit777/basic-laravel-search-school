@@ -74,12 +74,14 @@ Route::middleware('auth')->group(function() {
         Route::post('/list_products', [ProductController::class, 'list_products'])->name('list_products');
         Route::get('/product_master_get_brand_list_ajax', [ProductController::class, 'productMasterGetBrandListAjax'])->name('product_master_get_brand_list_ajax');
         Route::post('/', [ProductController::class, 'store'])->name('store');
+        Route::post('/store_consumables', [ProductController::class, 'storeConsumables'])->name('store_consumables');
         Route::post('/create_copy', [ProductController::class, 'createCopy'])->name('create_copy');
         Route::post('/create_copy_consumables', [ProductController::class, 'createCopyConsumables'])->name('create_copy_consumables');
         Route::get('/create', [ProductController::class, 'create'])->name('create');
         Route::get('/create_consumables', [ProductController::class, 'createConsumables'])->name('create_consumables');
         Route::get('/edit/{PRODUCT}', [ProductController::class, 'edit'])->name('edit');
-        Route::delete('/update/{id}', [ProductController::class, 'upate_product_status'])->name('update');
+        Route::post('/update/{PRODUCT}', [ProductController::class, 'update'])->name('update');
+        Route::delete('/update_product_status/{id}', [ProductController::class, 'upate_product_status'])->name('update_product_status');
     });
 
     // Km
@@ -87,12 +89,16 @@ Route::middleware('auth')->group(function() {
         Route::get('/dimension', [ComProductController::class, 'index'])->name('index');
         Route::post('/list_warehouse', [ComProductController::class, 'listWarehouse'])->name('list_warehouse');
         Route::get('/dimension/create', [ComProductController::class, 'create'])->name('create');
+        Route::post('/', [ComProductController::class, 'store'])->name('store');
+        Route::get('/dimension/edit/{product_id}', [ComProductController::class, 'edit'])->name('edit');
+        Route::post('/update/{product_id}', [ComProductController::class, 'update'])->name('update');
     });
 
     // Manage general information
     Route::group(['prefix' => 'manage_general_information', 'as' => 'manage_general_information.'], function () {
         Route::get('/tool', [ToolController::class, 'index'])->name('index');
         Route::get('/images', [ProductImageController::class, 'index'])->name('indexImage');
+        Route::get('/camera', [ProductImageController::class, 'show'])->name('camera');
     });
 
     // Logout
