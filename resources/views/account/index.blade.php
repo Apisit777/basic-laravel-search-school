@@ -270,7 +270,7 @@
                     </svg>
                     Save
                 `,
-                cancelButtonText: `Cancle`,
+                cancelButtonText: `Cancel`,
                 color: "#ffffff",
                 background: "#202020",
 

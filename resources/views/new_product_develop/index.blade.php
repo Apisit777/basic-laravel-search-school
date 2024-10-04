@@ -37,6 +37,9 @@
         .rotate{
             transition: 0.5s all;
         }
+        span.dt-column-order {
+            display: none;
+        }
     </style>
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/select2@4.1.0.min.css') }}" />
@@ -49,48 +52,6 @@
         </div>
 
         <form action="#">
-            @if (Auth::user()->getUserPermission->user_id == Auth::user()->id)
-                <!-- <div class="fixed flex bottom-5 right-5 z-10">
-                    <a href="{{ route('new_product_develop.create') }}" class="bg-[#303030] hover:bg-[#404040] text-white font-bold cursor-pointer py-2 px-2 mr-2 mt-20 rounded-full group">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                            <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
-                        </svg>
-                        <svg fill="currentColor" class="size-8" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                            viewBox="0 0 496 496" xml:space="preserve">
-                            <g>
-                                <g>
-                                    <g>
-                                        <path d="M486.624,300.168L432,252.368V144C432,64.6,367.4,0,288,0h-88C123.304,0,60.592,60.328,56.408,136H32
-                                            c-17.648,0-32,14.352-32,32s14.352,32,32,32h24v144c0,54.656,42.376,99.592,96,103.696V496h16v-64h-8c-48.52,0-88-39.48-88-88
-                                            V200h32v16h16v-16h21.24c2.56,8,6,15.536,10.288,22.52l-13.352,13.36l33.936,33.936l13.352-13.344
-                                            c9.448,5.848,19.672,10.08,30.528,12.632V288h48v-18.888c10.856-2.552,21.088-6.784,30.528-12.632l13.352,13.344l33.936-33.936
-                                            l-13.344-13.352c5.848-9.456,10.08-19.68,12.632-30.528H360v-48h-18.888c-2.552-10.848-6.784-21.08-12.632-30.528l13.344-13.352
-                                            l-33.936-33.936l-13.352,13.344c-9.456-5.848-19.68-10.08-30.528-12.632V48h-48v18.888c-10.848,2.552-21.08,6.784-30.528,12.632
-                                            l-13.352-13.344l-33.936,33.936l13.352,13.36C147.24,120.464,143.808,128,141.24,136H120v-16h-16v16H72.408
-                                            C76.568,69.152,132.12,16,200,16h88c70.576,0,128,57.424,128,128v115.632l60.088,52.568c2.48,2.184,3.912,5.32,3.912,8.624
-                                            c0,5.256-3.56,9.824-8.664,11.104L416,345.76V400c0,17.648-14.352,32-32,32h-48v64h16v-48h32c26.472,0,48-21.528,48-48v-41.76
-                                            l43.208-10.808C487.456,344.384,496,333.44,496,320.824C496,312.912,492.584,305.384,486.624,300.168z M120,152h33.456l1.552-6
-                                            c2.736-10.632,7.216-20.36,13.312-28.92l3.92-5.512l-11.44-11.456L172.112,88.8l11.456,11.44l5.504-3.92
-                                            c10.848-7.728,23.048-12.776,36.248-14.992L232,80.2V64h16v16.2l6.672,1.128c13.2,2.216,25.4,7.264,36.248,14.992l5.504,3.92
-                                            L307.88,88.8l11.312,11.312l-11.44,11.456l3.92,5.512c7.728,10.848,12.776,23.048,14.992,36.248L327.8,160H344v16h-16.2
-                                            l-1.128,6.672c-2.216,13.2-7.264,25.4-14.992,36.248l-3.92,5.504l11.44,11.456l-11.312,11.312l-11.456-11.456l-5.504,3.928
-                                            c-10.848,7.736-23.048,12.784-36.248,15L248,255.8V272h-16v-16.2l-6.672-1.128c-13.2-2.216-25.4-7.264-36.248-15l-5.504-3.928
-                                            L172.12,247.2l-11.312-11.312l11.44-11.456l-3.92-5.504c-6.096-8.56-10.576-18.288-13.312-28.92l-1.56-6.008H120V152z M104,152
-                                            v32H32c-8.824,0-16-7.176-16-16c0-8.824,7.176-16,16-16H104z"/>
-                                        <path d="M240,232c35.288,0,64-28.712,64-64c0-35.288-28.712-64-64-64c-35.288,0-64,28.712-64,64C176,203.288,204.712,232,240,232
-                                            z M240,120c26.472,0,48,21.528,48,48s-21.528,48-48,48s-48-21.528-48-48S213.528,120,240,120z"/>
-                                        <rect x="232" y="304" width="16" height="16"/>
-                                        <rect x="232" y="336" width="16" height="16"/>
-                                        <rect x="232" y="368" width="16" height="16"/>
-                                        <rect x="232" y="400" width="16" height="16"/>
-                                        <rect x="232" y="432" width="16" height="16"/>
-                                    </g>
-                                </g>
-                            </g>
-                        </svg>
-                    </a>
-                </div> -->
-            @endif
             <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
                 <div class="lg:col-span-4 xl:grid-cols-4">
                     <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
@@ -124,9 +85,6 @@
                                     </svg>
                                     ค้นหา
                                 </a>
-                                <!-- <button id="btnClearSerarch" style="margin-left:auto;" type="reset" class="btn btn-warning btn-sm btn-qrcode clear">
-                                    ล้างข้อมูล
-                                </button> -->
                                 <button  id="" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group cursor-pointer btn-rotate" type="reset">
                                     <svg class="hidden h-6 w-6 md:inline-block rotate"
                                         viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
@@ -142,39 +100,12 @@
             </div>
         </form>
         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700 relative"></ul>
-        <div class="flex right-12 z-10 absolute">
+        <div class="flex right-12 z-10 absolute mt-3">
             <a href="{{ route('new_product_develop.create') }}" type="button" class="mt-1 px-3 py-1 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group" name="add" id="add">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                     <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
                 </svg>
                 Add
-                <!-- <svg fill="currentColor" class="h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                        viewBox="0 0 473.599 473.6"
-                        xml:space="preserve">
-                    <g>
-                        <g>
-                            <path d="M124.499,117.678c1.745,6.28,4.286,12.002,7.522,17.318l13.968,51.323l2.571,1.13
-                                c1.174,0.511,29.056,12.547,68.238,12.547c23.051,0,45.222-4.202,65.913-12.473l3.138-1.259l6.46-43.138
-                                c6.02-7.498,10.556-15.747,13.225-25.287c0.629,0.133,1.21,0.379,1.887,0.379c5.09,0,9.214-4.127,9.214-9.235V84.069
-                                c0-5.095-4.124-9.231-9.214-9.231c-0.568,0-1.041,0.218-1.578,0.314C296.244,33.167,259.275,0,215.039,0
-                                c-44.3,0-81.312,33.259-90.854,75.333c-0.801-0.23-1.583-0.495-2.456-0.495c-5.094,0-9.223,4.127-9.223,9.231v24.915
-                                c0,5.099,4.129,9.235,9.223,9.235C122.718,118.235,123.613,117.958,124.499,117.678z M272.046,156.498
-                                c-51.832,18.211-99.33,4.771-113.995-0.369v-30.617h113.995V156.498z M275.212,177.809c-18.406,6.919-38.037,10.419-58.406,10.419
-                                c-30.082,0-53.461-7.74-60.967-10.554l-2.951-10.848c9.379,3.462,33.095,10.928,63.712,10.928
-                                c18.178,0,38.764-2.701,60.167-10.361L275.212,177.809z M158.051,108.248c0-9.962,8.073-18.031,18.035-18.031h77.931
-                                c9.967,0,18.029,8.069,18.029,18.031v5.479H158.051V108.248z"/>
-                            <path d="M290.785,473.6c0-3.13,0.354-6.524,0.935-10.067c-30.581-19.832-50.891-54.208-50.891-93.292
-                                c0-61.33,49.893-111.219,111.218-111.219c20.462,0,39.582,5.65,56.057,15.329c0.22-5.675,0.336-11.754,0.336-18.402
-                                c0-42.379-128.35-97.992-128.35-46.116c0,51.875-62.847,46.116-62.847,46.116s-62.84,5.759-62.84-46.116
-                                c0-51.876-128.354,3.737-128.354,46.116c0,42.387,4.014,64.062,18.717,75.283c14.703,11.232,44.116,18.831,44.116,18.831
-                                s54.824,82.196,54.824,123.537h73.532H290.785z"/>
-                            <path d="M406.8,292.051c-15.509-10.896-34.372-17.336-54.762-17.336c-52.746,0-95.517,42.764-95.517,95.517
-                                c0,31.655,15.473,59.639,39.2,77.023c15.797,11.569,35.233,18.494,56.316,18.494c52.742,0,95.513-42.764,95.513-95.518
-                                C447.551,337.88,431.414,309.323,406.8,292.051z M410.455,383.549h-45.268v45.275h-26.625v-45.275h-13.333h-31.947v-26.626h45.28
-                                v-45.271h26.625v32.083v13.188h45.268V383.549z"/>
-                        </g>
-                    </g>
-                </svg> -->
             </a>
         </div>
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
@@ -275,7 +206,7 @@
         function getParameterSearce() {
             let dataSearch = localStorage.getItem("get_refun_url");
             let dataJson = JSON.parse(dataSearch)
-            console.log("🚀 ~ getParameterSearce ~ dataJson:", dataJson)
+            // console.log("🚀 ~ getParameterSearce ~ dataJson:", dataJson)
         }
 
         getParmeterLogin()
@@ -463,7 +394,7 @@
                     </svg>
                     Save
                 `,
-                cancelButtonText: `Cancle`,
+                cancelButtonText: `Cancel`,
                 color: "#ffffff",
                 background: "#202020",
 

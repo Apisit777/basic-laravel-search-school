@@ -65,21 +65,17 @@
             <div class="mt-5 flex justify-items-start">
                 <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">ทะเบียนคลังสินค้า</p>
             </div>
-            <form class="" action="" method="POST" id="create_product_master">
+            <form class="" action="" method="POST" id="create_warehouse_dimension">
                 <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
                     <div class="lg:col-span-4 xl:grid-cols-4">
                         <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                             <div class="md:col-span-3">
-                                <label for="BRAND">Brand</label>
-                                <select class="js-example-basic-single w-full rounded-sm text-xs" id="BRAND" name="BRAND" onchange="brandIdChange(this, 'BRAND')">
-                                    <option value=""> --- กรุณาเลือก ---</option>
-                                </select>
+                                <label for="barcode">Baocode</label>
+                                <input type="text" name="barcode" id="barcode" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->barcode }}" readonly>
                             </div>
                             <div class="md:col-span-3" >
-                                <label for="NUMBER">รหัสที่ต้องการ</label>
-                                <select class="js-example-basic-single w-full rounded-sm text-xs" id="NUMBER" name="NUMBER" onchange="onSelect(this, 'BARCODE')">
-                                    <option value=""> --- กรุณาเลือก ---</option>
-                                </select>
+                                <label for="NUMBER">รหัส</label>
+                                <input type="text" name="product_id" id="product_id" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->product_id }}" readonly>
                             </div>
                             <div class="col-auto" style="position: absolute; right: 5.5%; top: 23.2%;">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="username_loading" style="margin-right: -2.5px;" class="w-6 h-6 animate-spin -mt-1">
@@ -131,7 +127,7 @@
                                                 <input type="checkbox" class="setcheckbox peer absolute top-0 inset-x-0 w-full h-12 opacity-0 cursor-pointer">
                                                 <div class="bg-[#d7d8db] dark:bg-[#303030] text-white h-12 w-full pl-5 flex items-center">
                                                     <h1 class="text-gray-900 dark:text-white text-lg">
-                                                        รายละเอียด1
+                                                        Dimension
                                                     </h1>
                                                 </div>
                                                 <div class="absolute top-3 right-3 text-white transition-tranform duration-500 rotate-180 peer-checked:rotate-0">
@@ -143,103 +139,64 @@
                                                     <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
+                                                                
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="NAME_THAI">ชื่อภาษาไทย</label>
-                                                                    <input type="text" name="NAME_THAI" id="NAME_THAI" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="SHORT_THAI">ชื่อย่อภาษาไทย</label>
-                                                                    <input type="text" name="SHORT_THAI" id="SHORT_THAI" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="NAME_ENG">ชื่อภาษาอังกฤษ</label>
-                                                                    <input type="text" name="NAME_ENG" id="NAME_ENG" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="SHORT_ENG">ชื่อย่อภาษาอังกฤษ</label>
-                                                                    <input type="text" name="SHORT_ENG" id="SHORT_ENG" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3">
-                                                                    <label for="name">เจ้าของสินค้า<span class="text-danger"> *</span></label>
-                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="VENDOR" id="VENDOR" onchange="onchangeValueSelect2()">
-                                                                        <option value=""> --- กรุณาเลือก ---</option>
-                                                                    </select>
-                                                                    <span id="VENDOR_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="REG_DATE">วันที่สรา้งทะเบียน</label>
-                                                                    <input type="date" name="REG_DATE" id="REG_DATE" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" data-date-format="dd/mm/yyyy" placeholder="" autocomplete="off" value="<?php echo date('Y-m-d'); ?>" />
-                                                                </div>
-
-                                                                <div class="md:col-span-3">
-                                                                    <label for="name">สินค้าของบริษัท<span class="text-danger"> *</span></label>
-                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="GRP_P" id="GRP_P" onchange="onchangeValueSelect2()">
-                                                                        <option value=""> --- กรุณาเลือก ---</option>
-                                                                    </select>
-                                                                    <span id="GRP_P_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="AGE">อายุการใช้งาน</label>
-                                                                    <input type="text" name="AGE" id="AGE" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3">
-                                                                    <label for="name">กลุ่มสินค้า<span class="text-danger"> *</span></label>
-                                                                    <select  class="js-example-basic-single w-full rounded-sm text-xs select2" name="BRAND_P" id="BRAND_P">
-                                                                        <option value=""> --- กรุณาเลือก ---</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="WHOLE_SALE">ราคาใบสั่งซื้อ</label>
-                                                                    <input type="text" name="WHOLE_SALE" id="WHOLE_SALE" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3">
-                                                                    <label for="name">ผู้ขาย/ผู้ผลิต<span class="text-danger"> *</span></label>
-                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="SUPPLIER" id="SUPPLIER" onchange="onchangeValueSelect2()">
-                                                                        <option value=""> --- กรุณาเลือก ---</option>
-                                                                    </select>
-                                                                    <span id="SUPPLIER_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="REGISTER">เลขที่ อย.</label>
-                                                                    <input type="text" name="REGISTER" id="REGISTER" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-
-                                                                <div class="md:col-span-6" style="position: relative;">
-                                                                    {{-- <input type="text" name="name" class="form-control" placeholder="Name" /> <br/>
-                                                                    <input type="text" name="email" class="form-control" placeholder="Email Address" /><br/>
-                                                                    <input type="password" name="password" class="form-control" placeholder="Password" /><br/> --}}
-                                                                </div>
-                                                                {{-- <div class="md:col-span-6 text-center" style="position: relative;">
-                                                                    <br/>
-                                                                    <button class="btn btn-success">Submit</button>
-                                                                </div> --}}
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <input type="button" class="btn btn-sm btn-primary" id="open_camera" value ="Open Camera"><br/>
-                                                                    <div id="my_camera" class="d-none"></div>
-                                                                    <br/>
-                                                                </div> 
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <div id="results"></div>
-                                                                    <input type="button" id="take_snap" value="Take Snapshot" onClick="take_snapshot()" class="d-none btn btn-info btn-sm" >
-                                                                    <input type="hidden" name="image" class="image-tag">
+                                                                    <div class="panel">
+                                                                        <button id="switchFrontBtn" type="button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">
+                                                                            เปิดกล้อง
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class=" justify-items-center">
+                                                                        <video id="cam" autoplay muted playsinline>Not available</video>
+                                                                        <canvas id="canvas" style="display:none"></canvas>
+                                                                    </div>
                                                                 </div>
 
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <div class="panel">
-                                                                        <button id="switchFrontBtn">Front Camera</button>
+                                                                        <button id="snapBtn" type="button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">
+                                                                            ถ่ายรูป
+                                                                        </button>
                                                                     </div>
-                                                                    <!-- add autoplay muted playsinline for iOS -->
-                                                                    <video id="cam" autoplay muted playsinline>Not available</video>
-                                                                    <canvas id="canvas" style="display:none"></canvas>
-                                                                </div>
-                                                                
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <button id="snapBtn">Snap</button>
                                                                     <div style="width:100%">
                                                                         <img id="photo" alt="The screen capture will appear in this box.">  
                                                                     </div>
                                                                 </div>
-                                                                {{-- <button id="switchBackBtn">Back Camera</button> --}}
+                                                            </div>
+                                                            <div class="p-2 ">
+                                                                <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-500"></ul>
+                                                            </div>
+                                                            <div class="lg:col-span-6">
+                                                                <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
+                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ความกว้าง</label>
+                                                                    <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ความยาว</label>
+                                                                    <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
+
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ความสูง</label>
+                                                                    <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">พื้นที่</label>
+                                                                    <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
+
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ชิ้น/ลัง</label>
+                                                                    <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ลัง/พาเลท</label>
+                                                                    <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก</label>
+                                                                    <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">g</label>
+                                                                </div>
+                                                            </div>
+                                                    
+                                                            <div class="p-2 ">
+                                                                <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-500"></ul>
+                                                            </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -295,6 +252,88 @@
     <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
 
     <script>
+
+        // reference to the current media stream
+        var mediaStream = null;
+        // Prefer camera resolution nearest to 1280x720.
+        var constraints = { 
+        audio: false, 
+        video: { 
+            width: {ideal: 640}, 
+            height: {ideal: 480},
+            facingMode: "environment"
+        } 
+        }; 
+        async function getMediaStream(constraints) {
+            try {
+                mediaStream =  await navigator.mediaDevices.getUserMedia(constraints);
+                let video = document.getElementById('cam');    
+                video.srcObject = mediaStream;
+                video.onloadedmetadata = (event) => {
+                video.play();
+                };
+            } catch (err)  {    
+                console.error(err.message);   
+            }
+        };
+        async function switchCamera(cameraMode) {  
+            try {
+                // stop the current video stream
+                if (mediaStream != null && mediaStream.active) {
+                    var tracks = mediaStream.getVideoTracks();
+                    tracks.forEach(track => {
+                        track.stop();
+                    })      
+                }
+                // set the video source to null
+                document.getElementById('cam').srcObject = null;
+                // change "facingMode"
+                constraints.video.facingMode = cameraMode;
+                // get new media stream
+                await getMediaStream(constraints);
+            } catch (err)  {    
+                console.error(err.message); 
+                alert(err.message);
+            }
+        }
+        function takePicture() {  
+            let canvas = document.getElementById('canvas');
+            let video = document.getElementById('cam');
+            let photo = document.getElementById('photo');  
+            let context = canvas.getContext('2d');
+            
+            const height = video.videoHeight;
+            const width = video.videoWidth;
+            
+            if (width && height) {    
+                canvas.width = width;
+                canvas.height = height;
+                context.drawImage(video, 0, 0, width, height);    
+                var data = canvas.toDataURL('image/png');
+                photo.setAttribute('src', data);
+            } else {
+                clearphoto();
+            }
+        }
+        function clearPhoto() {
+            let canvas = document.getElementById('canvas');
+            let photo = document.getElementById('photo');
+            let context = canvas.getContext('2d');
+            
+            context.fillStyle = "#AAA";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            var data = canvas.toDataURL('image/png');
+            photo.setAttribute('src', data);
+        }
+        document.getElementById('switchFrontBtn').onclick = (event) => {
+            switchCamera("user");
+        }
+        document.getElementById('snapBtn').onclick = (event) => {  
+            takePicture();
+            event.preventDefault();
+        }
+        clearPhoto();
+
         function onOpenhandler(params) {
             document.querySelectorAll('.setpcollep').forEach((element, index) => {
                 element.addEventListener('click', function (params) {
@@ -329,116 +368,6 @@
                 });
             });
         });
-
-        $("#open_camera").click(function() {
-            $("#my_camera").removeClass('d-none');
-            $("#take_snap").removeClass('d-none');
-
-            Webcam.set({
-                width: 250,
-                height: 190,
-                image_format: 'jpeg',
-                jpeg_quality: 90
-            });
-            Webcam.attach('#my_camera');
-        });
-
-        function take_snapshot() {
-            $("#my_camera").addClass('d-none');
-            $("#take_snap").addClass('d-none');
-            Webcam.snap( function(data_uri) {
-                $(".image-tag").val(data_uri);
-                document.getElementById('results').innerHTML = '<img src="'+data_uri+'"/>';
-            } );
-        }
-
-        // reference to the current media stream
-        var mediaStream = null;
-        // Prefer camera resolution nearest to 1280x720.
-        var constraints = { 
-        audio: false, 
-        video: { 
-            width: {ideal: 640}, 
-            height: {ideal: 480},
-            facingMode: "environment"
-        } 
-        }; 
-        async function getMediaStream(constraints) {
-            try {
-                mediaStream =  await navigator.mediaDevices.getUserMedia(constraints);
-                let video = document.getElementById('cam');    
-                video.srcObject = mediaStream;
-                video.onloadedmetadata = (event) => {
-                video.play();
-                };
-            } catch (err)  {    
-                console.error(err.message);   
-            }
-        };
-
-        async function switchCamera(cameraMode) {  
-            try {
-                // stop the current video stream
-                if (mediaStream != null && mediaStream.active) {
-                var tracks = mediaStream.getVideoTracks();
-                tracks.forEach(track => {
-                    track.stop();
-                })      
-                }
-                // set the video source to null
-                document.getElementById('cam').srcObject = null;
-                // change "facingMode"
-                constraints.video.facingMode = cameraMode;
-                // get new media stream
-                await getMediaStream(constraints);
-            } catch (err)  {    
-                console.error(err.message); 
-                alert(err.message);
-            }
-        }
-
-        function takePicture() {  
-            let canvas = document.getElementById('canvas');
-            let video = document.getElementById('cam');
-            let photo = document.getElementById('photo');  
-            let context = canvas.getContext('2d');
-            
-            const height = video.videoHeight;
-            const width = video.videoWidth;
-            
-            if (width && height) {    
-                canvas.width = width;
-                canvas.height = height;
-                context.drawImage(video, 0, 0, width, height);    
-                var data = canvas.toDataURL('image/png');
-                photo.setAttribute('src', data);
-            } else {
-                clearphoto();
-            }
-        }
-
-        function clearPhoto() {
-            let canvas = document.getElementById('canvas');
-            let photo = document.getElementById('photo');
-            let context = canvas.getContext('2d');
-            
-            context.fillStyle = "#AAA";
-            context.fillRect(0, 0, canvas.width, canvas.height);
-            var data = canvas.toDataURL('image/png');
-            photo.setAttribute('src', data);
-        }
-        document.getElementById('switchFrontBtn').onclick = (event) => {
-            switchCamera("user");
-        }
-        // document.getElementById('switchBackBtn').onclick = (event) => {  
-        //     switchCamera("environment");
-        // }
-
-        document.getElementById('snapBtn').onclick = (event) => {  
-            takePicture();
-            event.preventDefault();
-        }
-        clearPhoto();
 
         function onchangeValueSelect2() {
 
@@ -524,8 +453,8 @@
             });
             $.ajax({
                 method: "POST",
-                url: "{{ route('product.store') }}",
-                data: $("#create_product_master").serialize(),
+                url: "{{ route('warehouse.store') }}",
+                data: $("#create_warehouse_dimension").serialize(),
                 beforeSend: function () {
                     $('#loader').removeClass('hidden')
                 },
@@ -556,6 +485,5 @@
             $('#loader').addClass('hidden');
             $('#name').val('')
         }
-    </script>
     </script>
 @endsection

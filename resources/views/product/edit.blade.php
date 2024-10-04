@@ -37,13 +37,13 @@
                         </div>
                         <div class="md:col-span-3" style="position: relative;">
                             <label for="Code">รหัส</label>
-                            <input type="text" name="Code" id="Code" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->PRODUCT }}" readonly>
+                            <input type="text" name="Code" id="Code" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->PRODUCT }}" readonly>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="fixed flex bottom-5 right-5 z-10 invisible" id="add_other">
+            <!-- <div class="fixed flex bottom-5 right-5 z-10 invisible" id="add_other">
                 <a
                     type="button"
                     class="bg-[#303030] hover:bg-[#404040] text-white font-bold cursor-pointer py-2 px-2 mr-2 mt-20 rounded-full group"
@@ -143,10 +143,10 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class='w-12/12 mt-4 relative'>
-                <form class="" action="" method="POST" id="create_product">
+                <form class="" action="" method="POST" id="update_product_master">
                     <div class="p-4">
                         <ul class="relative m-0 w-full list-none overflow-hidden p-0 transition-[height] duration-200 ease-in-out" data-twe-stepper-init="" data-twe-stepper-type="vertical">
                             <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
@@ -177,6 +177,10 @@
                                                     <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
+                                                                <div class="md:col-span-6" style="position: relative;">
+                                                                    <label for="BARCODE">รหัส Barcode</label>
+                                                                    <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="{{ $data->BARCODE }}"  disabled/>
+                                                                </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="NAME_THAI">ชื่อภาษาไทย</label>
                                                                     <input type="text" name="NAME_THAI" id="NAME_THAI" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->NAME_THAI }}" />
@@ -401,12 +405,6 @@
                                                                     <label for="name">&nbsp;</label>
                                                                     <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
-                                                                
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="BARCODE">รหัส Barcode</label>
-                                                                    <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="{{ $data->BARCODE }}"  disabled/>
-                                                                </div>
-                                                                
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="WIDTH">ความกว้าง</label>
                                                                     <input type="text" name="WIDTH" id="WIDTH" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
@@ -543,7 +541,7 @@
                                     </svg>
                                     Back
                                 </a>
-                                <a class=" bg-[#3b5998] hover:bg-[#48639d] text-white font-bold py-1.5 px-4 rounded cursor-pointer" onclick="createNPDRequest()">
+                                <a class=" bg-[#3b5998] hover:bg-[#48639d] text-white font-bold py-1.5 px-4 rounded cursor-pointer" onclick="editProductMaster()" disabled>
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF" class="-mt-1 w-5 h-5 hidden md:inline-block">
                                         <path d="M0 0h24v24H0V0z" fill="none"></path>
                                         <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
@@ -663,6 +661,48 @@
                 error: function (params) {
                 }
             });
+        }
+
+        const dlayMessage = 1000;
+        function editProductMaster() {
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                method: "POST",
+                url: "{{ route('product.update', $data->PRODUCT) }}",
+                data: $("#update_product_master").serialize(),
+                beforeSend: function () {
+                    $('#loader').removeClass('hidden')
+                },
+                success: function(res){
+                    if(res.success == true) {
+                        window.location = "/product";
+                    } else {
+                        toastr.error("Can't Create Product!");
+                    }
+                    return false;
+                },
+                error: function (params) {
+                    setTimeout(function() {
+                        errorMessage("Can't Create Username!");
+                    },dlayMessage)
+                    setTimeout(function() {
+                        toastr.error("Can't Create Username!");
+                    },dlayMessage)
+                }
+            });
+        }
+
+        function successMessage(text) {
+            $('#loader').addClass('hidden');
+            $('#name').val('')
+        }
+        function errorMessage(text) {
+            $('#loader').addClass('hidden');
+            $('#name').val('')
         }
     </script>
 @endsection

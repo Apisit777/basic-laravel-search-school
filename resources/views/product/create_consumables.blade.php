@@ -150,7 +150,7 @@
                     </div>
                 </div>
             </div>
-            <form class="" action="" method="POST" id="create_product_master">
+            <form class="" action="" method="POST" id="create_product_master_consumables">
                 <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
                     <div class="lg:col-span-4 xl:grid-cols-4">
                         <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
@@ -237,6 +237,11 @@
                                                     <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
+                                                                <div class="md:col-span-6" style="position: relative;">
+                                                                    <label for="BARCODE">รหัส Barcode<span class="text-danger"> *</span></label>
+                                                                    <!-- <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled> -->
+                                                                    <input type="text" name="BARCODE" id="BARCODE" class="text-compleace-auto2 h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled>
+                                                                </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="NAME_THAI">ชื่อภาษาไทย</label>
                                                                     <input type="text" name="NAME_THAI" id="NAME_THAI" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
@@ -517,11 +522,6 @@
                                                                     <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div> -->
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="BARCODE">รหัส Barcode<span class="text-danger"> *</span></label>
-                                                                    <!-- <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled> -->
-                                                                    <input type="text" name="BARCODE" id="BARCODE" class="text-compleace-auto2 h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled>
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="WIDTH">ความกว้าง</label>
                                                                     <input type="text" name="WIDTH" id="WIDTH" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
@@ -741,8 +741,10 @@
         jQuery("#correct_username_consumables").hide();
 
         let codeConsumables = ''
+        let PRODUCT = ''
         function checkNameBrand() {
-            const PRODUCT = jQuery('#ID_PRODUCT').val();
+            PRODUCT = jQuery('#ID_PRODUCT').val();
+            console.log("🚀 ~ checkNameBrand ~ PRODUCT:", PRODUCT)
             if (PRODUCT.length > 5) {
                 jQuery.ajax({
                     method: "POST",
@@ -1034,28 +1036,54 @@
                     'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
                 }
             });
-            $.ajax({
-                method: "POST",
-                url: "{{ route('product.store') }}",
-                data: $("#create_product_master").serialize(),
-                beforeSend: function () {
-                    $('#loader').removeClass('hidden')
-                },
-                success: function(res){
-                    if(res.success == true) {
-                        window.location = "/product";
-                    } else {
-                        toastr.error("Can't Create Product!");
-                    }
-                    return false;
-                },
-                error: function (params) {
-                    setTimeout(function() {
-                        errorMessage("Can't Create Username!");
-                    },dlayMessage)
-                    setTimeout(function() {
-                        toastr.error("Can't Create Username!");
-                    },dlayMessage)
+            Swal.fire({
+                title: 'Are you sure?',
+                width: 300,
+                text: 'ข้อมูลรหัสบาร์โค้ด ' + PRODUCT + '      ' + 'ข้อมูลรหัส ' + PRODUCT,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#303030',
+                cancelButtonColor: '#e13636',
+                confirmButtonText: `
+                <a href="#"
+                    type="button" class="px-1 py-1 font-medium tracking-wide text-white py-0.5 px-1 rounded group">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                        <path d="M0 0h24v24H0V0z" fill="none"></path>
+                        <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
+                        <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
+                    </svg>
+                    Save
+                `,
+                cancelButtonText: `Cancel`,
+                color: "#ffffff",
+                background: "#202020",
+
+            }).then(result => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        method: "POST",
+                        url: "{{ route('product.store_consumables') }}",
+                        data: $("#create_product_master_consumables").serialize(),
+                        beforeSend: function () {
+                            $('#loader').removeClass('hidden')
+                        },
+                        success: function(res){
+                            if(res.success == true) {
+                                window.location = "/product";
+                            } else {
+                                toastr.error("Can't Create Product!");
+                            }
+                            return false;
+                        },
+                        error: function (params) {
+                            setTimeout(function() {
+                                errorMessage("Can't Create Username!");
+                            },dlayMessage)
+                            setTimeout(function() {
+                                toastr.error("Can't Create Username!");
+                            },dlayMessage)
+                        }
+                    });
                 }
             });
         }

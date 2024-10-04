@@ -164,6 +164,10 @@
         /* .dropdown a:hover {background-color: rgb(229 231 235);} */
 
         .show {display:block;}
+
+        span.dt-column-order {
+            display: none;
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -182,6 +186,9 @@
                         <label for="BRAND" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Brand</label>
                         <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND">
                             <option value=""> --- กรุณาเลือก ---</option>
+                            @foreach ($brands as $key => $brand)
+                                <option value={{ $brand->COMPANY }}{{ $brand->DESCRIPTION }}>{{ $brand->COMPANY.' - ('.$brand->DESCRIPTION.')' }}</option>
+                            @endforeach
                         </select>
                     </div>
 
@@ -203,7 +210,7 @@
             </div>
         </div>
         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700 relative"></ul>
-        <div class="flex right-12 z-10 absolute mt-3">
+        <!-- <div class="flex right-12 z-10 absolute mt-3">
             <div class="relative" data-twe-dropdown-position="dropstart">
                 <button
                     class="flex items-center rounded bg-[#303030] hover:bg-[#404040] px-4 pb-[5px] pt-[6px] text-sm font-bold uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out focus:outline-none focus:ring-0 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
@@ -247,18 +254,18 @@
                     </li>
                 </ul>
             </div>
-        </div>
+        </div> -->
 
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
             <div id="containerexample" class="text-gray-900 dark:text-gray-100">
                 <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
                     <thead>
                         <tr>
-                            <th>แบรนด์</th>
-                            <th>สินค้าของบริษัท</th>
+                            <th>รหัสบริษัท</th>
                             <th>รหัสสินค้า</th>
-                            <th>ชื้อสินค้า</th>
                             <th>Barcode</th>
+                            <th>รหัสผู้ขาย</th>
+                            <th>ชื่อภาษาไทย</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -310,6 +317,9 @@
     @endif
     <script>
 
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
         function changeLanguage(language) {
             var element = document.getElementById("url");
             element.value = language;
@@ -343,6 +353,7 @@
 
         const mytableDatatable = $('#example').DataTable({
             // new DataTable('#example', {
+
             'searching': false,
             "serverSide": true,
             searching: false,
@@ -364,7 +375,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
 
-                "url": "{{ route('product.list_products') }}",
+                "url": "{{ route('warehouse.list_warehouse') }}",
                 "type": "POST",
                 'data': function(data) {
                     // Read values
@@ -380,35 +391,35 @@
                     targets: 0,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.BRAND;
+                        return row.company_id;
                     }
                 },
                 {
                     targets: 1,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.GRP_P;
+                        return row.product_id;
                     }
                 },
                 {
                     targets: 2,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.PRODUCT;
+                        return row.barcode;
                     }
                 },
                 {
                     targets: 3,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.NAME_THAI;
+                        return row.vendor_id;
                     }
                 },
                 {
                     targets: 4,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.BARCODE;
+                        return row.name_thai;
                     }
                 },
                 {
@@ -416,10 +427,10 @@
                     orderable: true,
                     className: 'text-center',
                     render: function(data, type, row) {
-                        let disabledRoute = "{{route('product.update', 0)}}".replace('/0', "/" + row.PRODUCT)
+                        let disabledRoute = "{{route('warehouse.update', 0)}}".replace('/0', "/" + row.product_id)
                         let text = "#"
                             return `<div class="inline-flex flex items-center rounded-md shadow-sm">
-                                        <a href="{{route('product.edit', 0)}}"
+                                        <a href="{{route('warehouse.edit', 0)}}"
                                             type="button" class="px-2 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group">
                                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="-mt-1.5 hidden h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                                 <path d="M0 0h24v24H0V0z" fill="none"></path>
@@ -429,12 +440,20 @@
                                             Edit
                                         </a>
                                     </div>
-                                `.replaceAll('/0', "/" + row.PRODUCT);
+                                `.replaceAll('/0', "/" + row.product_id);
 
                     }
                 }
             ]
         });
+
+        var filteredData = mytableDatatable
+            .column( 0 )
+            .data()
+            .filter( function ( value, index ) {
+                return false;
+                // return value > 20 ? true : false;
+        } );
 
         $('#btnSerarch').click(function() {
             mytableDatatable.draw();

@@ -70,7 +70,7 @@ class ProductImageController extends Controller
      */
     public function show(ProductImage $productImage)
     {
-        //
+        return view('warehouse.camera');
     }
 
     /**

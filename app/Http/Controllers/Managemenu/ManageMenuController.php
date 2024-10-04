@@ -387,7 +387,7 @@ class ManageMenuController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'menu_name' => 'required',
-                'url' => 'required',
+                'menu_url' => 'required',
             ]);
 
             if ($validator->fails()) {

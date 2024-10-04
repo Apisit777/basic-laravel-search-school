@@ -196,6 +196,31 @@
     <div class="justify-center items-center duration-500" style="position: relative;">
         <!-- <div class="" style="position: relative;"> -->
             {{-- <div class="" style="position: absolute; right: 10px;"> --}}
+
+            <div class="lg:col-span-4 py-2 px-10">
+                <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
+                    <div class="md:col-span-1 mb-5">
+                        <a href="#lightbox">
+                            <img
+                                class="rounded-md"
+                                src="https://images.unsplash.com/photo-1565191999001-551c187427bb?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                alt="Thumbnail"
+                            />
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div id="lightbox" class="hidden target:block fixed inset-0 p-10 bg-black/75 overflow-auto z-100000">
+                <a href="#" class="bg-white px-3 py-1 text-black absolute right-0 top-0 rounded-sm"
+                    >X</a
+                >
+                <img
+                    class="rounded-sm 2xl:size-auto xl:size-auto md:size-auto sm:size-auto xs:size-auto"
+                    src="https://images.unsplash.com/photo-1565191999001-551c187427bb?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    alt="Gambar Kucing"
+                />
+            </div>
+
         <div class="hide-success" style="position: absolute; right: 10;">
             <div class="alert alert-success @if(!$message = Session::get('success')) active @endif" id="messageSuccess" style="display: flex; flex-wrap: wrap; align-items: center;">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Warning:">
@@ -232,7 +257,7 @@
                     </label>
                 </div>
                 <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
-                    <div class="upload__img-wrap bg-[#d7d8db] dark:bg-[#303030] p-3 relative">
+                    <div class="upload__img-wrap bg-[#d7d8db] dark:bg-[#303030] p-3">
                     </div>
                     <div id="loader" class="loading absolute hidden bg-[#e4e4e4e3] dark:bg-[#2a2a2afa]">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 animate-spin dark:text-white">

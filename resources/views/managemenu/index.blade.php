@@ -286,7 +286,7 @@
                                 </div>
                                 <div class="md:col-span-3" style="position: relative;">
                                     <label for="">เมนู URL<span class="text-danger"> *</span></label>
-                                    <input type="text" name="url" id="url_id" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" placeholder="EX. manage_menu" />
+                                    <input type="text" name="menu_url" id="url_id" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" placeholder="EX. manage_menu" />
                                 </div>
                             </div>
                             <table class="table table-sm table-bordered text-gray-900 dark:text-gray-100 mt-5 relative" id="table">
@@ -1070,7 +1070,7 @@
                     </svg>
                     Save
                 `,
-                cancelButtonText: `Cancle`,
+                cancelButtonText: `Cancel`,
                 color: "#ffffff",
                 background: "#202020",
 
