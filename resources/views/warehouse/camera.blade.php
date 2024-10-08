@@ -59,6 +59,13 @@
             border-color: black;
             border-style: dashed;
         }
+
+        #photoFont {
+            width: 100%;
+        }
+        #photoBack {
+            width: 100%;
+        }
         /* ************************************************************************************************* */
 
         *{
@@ -75,14 +82,25 @@
         .copyright{
             font-size: 150%;
         }
+        .camera-center {
+            display: flex;
+            justify-content: center;
+        }
+        .img-center {
+            display: flex;
+            justify-content: center;
+            height: 90%;
+            width: 100%;
+        }
         .wrapper{
             position: relative;
-            height: 500px;
-            /* width: 750px; */
+            height: 50%;
+            width: 68%;
             overflow: hidden;
             background: #fff;
             border: 7px solid #fff;
             box-shadow: 0px 0px 15px rgba(0,0,0,0.15);
+            /* left: 215px; */
         }
         .wrapper .images{
             height: 100%;
@@ -94,14 +112,16 @@
             width: 100%;
             /* background-image: url(https://render.fineartamerica.com/images/rendered/default/greeting-card/images/artworkimages/medium/3/black-sports-car-on-carbon-fiber-background-gualtiero-boffi.jpg?&targetx=-112&targety=0&imagewidth=924&imageheight=500&modelwidth=700&modelheight=500&backgroundcolor=41454A&orientation=0); */
             background: url(https://www.orientalprincess.com/pub/media/wysiwyg/block-img-m2/beneficial/Getthelook-Website-04.jpg) no-repeat;
+            /* background-size: cover; */
         }
         .wrapper .images .img-2{
             position: absolute;
             height: 100%;
-            width: 50%;
+            width: 100%;
             /* filter: blur(5px); */
             /* background-image: url(https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2019/6/10/738354/595097.jpg); */
             background: url(https://www.orientalprincess.com/pub/media/wysiwyg/block-img-m2/beneficial/Getthelook-Website-05.jpg) no-repeat;
+            /* background-size: cover; */
         }
         .wrapper .slider{
             position: absolute;
@@ -212,45 +232,63 @@
                                             </svg>
                                         </div>
                                         <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
+                                            <div class="camera-center mt-5">
+                                                <div class="panel">
+                                                    <button id="switchFrontBtn" type="button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">
+                                                        เปิดกล้อง
+                                                    </button>
+                                                </div>
+                                                <div class="flex justify-items-center">
+                                                    <video id="cam" autoplay muted playsinline>Not available</video>
+                                                    <canvas id="canvas" style="display:none"></canvas>
+                                                </div>
+                                            </div>
                                             <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                 <div class="lg:col-span-4">
-                                                    <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
-
+                                                    <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6 mb-5">
                                                         <div class="md:col-span-3" style="position: relative;">
                                                             <div class="panel">
-                                                                <button id="switchFrontBtn">Front Camera</button>
-                                                            </div>
-                                                            <div class=" justify-items-center">
-                                                                <video id="cam" autoplay muted playsinline>Not available</video>
-                                                                <canvas id="canvas" style="display:none"></canvas>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="md:col-span-3" style="position: relative;">
-                                                            <div class="panel">
-                                                                <button id="snapBtn">Snap</button>
+                                                                <button id="snapBtnFont" type="button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">Snap หน้า</button>
                                                             </div>
                                                             <div style="width:100%">
-                                                                <img id="photo" alt="The screen capture will appear in this box.">  
+                                                                <img id="photoFont" alt="The screen capture will appear in this box.">
                                                             </div>
                                                         </div>
+                                                        <div class="md:col-span-3" style="position: relative;">
+                                                            <div class="panel">
+                                                                <button id="snapBtnBack" type="button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">Snap หลัง</button>
+                                                            </div>
+                                                            <div style="width:100%">
+                                                                <img id="photoBack" alt="The screen capture will appear in this box.">
+                                                            </div>
+                                                        </div>
+
                                                     </div>
-                                                    <div class="p-2 ">
+                                                    <div class="p-2 mb-5">
                                                         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-500"></ul>
                                                     </div>
-
-                                                    <div class="wrapper">
-                                                        <div class="images">
-                                                            <div class="img-1"></div>
-                                                            <div class="img-2"></div>
-                                                        </div>
-                                                        <div class="slider">
-                                                            <div class="drag-line">
-                                                                <span></span>
+                                                    <div class="img-center mb-96">
+                                                        <div class="wrapper">
+                                                            <div class="images">
+                                                                <div id="img-1" class="img-1"></div>
+                                                                <div id="img-2" class="img-2"></div>
                                                             </div>
-                                                            <input type="range" min="0" max="100" value="50">
+                                                            <div class="slider">
+                                                                <div class="drag-line">
+                                                                    <span></span>
+                                                                </div>
+                                                                <input type="range" min="0" max="100" value="50">
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                    {{-- <div class="p-2 mt-5">
+                                                        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-500"></ul>
+                                                    </div>
+                                                    <div>
+                                                        <button id="" type="button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">
+                                                            เปิดกล้อง
+                                                        </button>
+                                                    </div> --}}
                                                 </div>
                                             </div>
                                         </div>
@@ -316,7 +354,7 @@
             dragLine.style.left = sliderVal + "%";
             img.style.width = sliderVal + "%";
         }
-        
+
         const add_element = () => {
             const template = document.createElement('div');
             template.classList.add("loaderslide");
@@ -335,34 +373,34 @@
         // reference to the current media stream
         var mediaStream = null;
         // Prefer camera resolution nearest to 1280x720.
-        var constraints = { 
-        audio: false, 
-        video: { 
-            width: {ideal: 640}, 
+        var constraints = {
+        audio: false,
+        video: {
+            width: {ideal: 640},
             height: {ideal: 480},
             facingMode: "environment"
-        } 
-        }; 
+        }
+        };
         async function getMediaStream(constraints) {
             try {
                 mediaStream =  await navigator.mediaDevices.getUserMedia(constraints);
-                let video = document.getElementById('cam');    
+                let video = document.getElementById('cam');
                 video.srcObject = mediaStream;
                 video.onloadedmetadata = (event) => {
                 video.play();
                 };
-            } catch (err)  {    
-                console.error(err.message);   
+            } catch (err)  {
+                console.error(err.message);
             }
         };
-        async function switchCamera(cameraMode) {  
+        async function switchCamera(cameraMode) {
             try {
                 // stop the current video stream
                 if (mediaStream != null && mediaStream.active) {
                     var tracks = mediaStream.getVideoTracks();
                     tracks.forEach(track => {
                         track.stop();
-                    })      
+                    })
                 }
                 // set the video source to null
                 document.getElementById('cam').srcObject = null;
@@ -370,50 +408,88 @@
                 constraints.video.facingMode = cameraMode;
                 // get new media stream
                 await getMediaStream(constraints);
-            } catch (err)  {    
-                console.error(err.message); 
+            } catch (err)  {
+                console.error(err.message);
                 alert(err.message);
             }
         }
-        function takePicture() {  
+        function takePictureFont() {
             let canvas = document.getElementById('canvas');
             let video = document.getElementById('cam');
-            let photo = document.getElementById('photo');  
+            let photoFont = document.getElementById('photoFont');
             let context = canvas.getContext('2d');
-            
+
             const height = video.videoHeight;
             const width = video.videoWidth;
-            
-            if (width && height) {    
+
+            if (width && height) {
                 canvas.width = width;
                 canvas.height = height;
-                context.drawImage(video, 0, 0, width, height);    
+                context.drawImage(video, 0, 0, width, height);
                 var data = canvas.toDataURL('image/png');
-                photo.setAttribute('src', data);
+                photoFont.setAttribute('src', data);
+                document.getElementById("img-1").style.backgroundImage = `url(${data})`;
             } else {
                 clearphoto();
             }
         }
-        function clearPhoto() {
+        function takePictureBack() {
             let canvas = document.getElementById('canvas');
-            let photo = document.getElementById('photo');
+            let video = document.getElementById('cam');
+            let photoBack = document.getElementById('photoBack');
             let context = canvas.getContext('2d');
-            
+
+            const height = video.videoHeight;
+            const width = video.videoWidth;
+
+            if (width && height) {
+                canvas.width = width;
+                canvas.height = height;
+                context.drawImage(video, 0, 0, width, height);
+                var data = canvas.toDataURL('image/png');
+                photoBack.setAttribute('src', data);
+                document.getElementById("img-2").style.backgroundImage = `url(${data})`;
+            } else {
+                clearphotoFont();
+                clearphotoBack();
+            }
+        }
+
+        function clearPhotoFont() {
+            let canvas = document.getElementById('canvas');
+            let photoFont = document.getElementById('photoFont');
+            let context = canvas.getContext('2d');
+
             context.fillStyle = "#AAA";
             context.fillRect(0, 0, canvas.width, canvas.height);
             var data = canvas.toDataURL('image/png');
-            photo.setAttribute('src', data);
+            photoFont.setAttribute('src', data);
+        }
+        function clearPhotoBack() {
+            let canvas = document.getElementById('canvas');
+            let photoBack = document.getElementById('photoBack');
+            let context = canvas.getContext('2d');
+
+            context.fillStyle = "#AAA";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            var data = canvas.toDataURL('image/png');
+            photoBack.setAttribute('src', data);
         }
         document.getElementById('switchFrontBtn').onclick = (event) => {
             switchCamera("user");
         }
-        document.getElementById('snapBtn').onclick = (event) => {  
-            takePicture();
+        document.getElementById('snapBtnFont').onclick = (event) => {
+            takePictureFont();
             event.preventDefault();
         }
-        clearPhoto();
+        document.getElementById('snapBtnBack').onclick = (event) => {
+            takePictureBack();
+            event.preventDefault();
+        }
+        clearPhotoFont();
+        clearPhotoBack();
 
-        
+
         function onOpenhandler(params) {
             document.querySelectorAll('.setpcollep').forEach((element, index) => {
                 element.addEventListener('click', function (params) {
