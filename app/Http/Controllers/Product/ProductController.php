@@ -192,9 +192,35 @@ class ProductController extends Controller
 
         // dd($accessery);
 
+        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        $userpermission = Auth::user()->getUserPermission->name_position;
+
         $owners = Owner::all();
         $grp_ps = Grp_p::all();
+
         $brand_ps = Brand_p::all();
+
+        if (in_array($userpermission, [$isSuperAdmin])) {
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK')
+            ->get();
+        }
+        else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK')
+            ->where('BRAND', 'GNC')
+            ->get();
+        }
+        else if (in_array($userpermission, ['Marketing - CPS'])) {
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK')
+            ->where('BRAND', 'CP')
+            ->get();
+        }
+
         $venders = Vendor::all();
         $type_gs = Type_g::all();
         $solutions = Solution::all();
@@ -216,8 +242,6 @@ class ProductController extends Controller
 
         // $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
         $brands = Accessery::all();
-        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
-        $userpermission = Auth::user()->getUserPermission->name_position;
 
         if (in_array($userpermission, [$isSuperAdmin])) {
             $brands = Accessery::select(
@@ -234,7 +258,7 @@ class ProductController extends Controller
             ->get();
         }
         else if (in_array($userpermission, ['Marketing - CPS'])) {
-            $brands = Barcode::select(
+            $brands = Accessery::select(
                 'COMPANY',
                 'DESCRIPTION')
             ->where('COMPANY', 'CP')
@@ -253,9 +277,35 @@ class ProductController extends Controller
 
         // dd($accessery);
 
+        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        $userpermission = Auth::user()->getUserPermission->name_position;
+
         $owners = Owner::all();
         $grp_ps = Grp_p::all();
+
         $brand_ps = Brand_p::all();
+
+        if (in_array($userpermission, [$isSuperAdmin])) {
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK')
+            ->get();
+        }
+        else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK')
+            ->where('BRAND', 'GNC')
+            ->get();
+        }
+        else if (in_array($userpermission, ['Marketing - CPS'])) {
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK')
+            ->where('BRAND', 'CP')
+            ->get();
+        }
+
         $venders = Vendor::all();
         $type_gs = Type_g::all();
         $solutions = Solution::all();
@@ -278,8 +328,6 @@ class ProductController extends Controller
         // $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
         // create brands consumables
         $brands = Accessery::all();
-        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
-        $userpermission = Auth::user()->getUserPermission->name_position;
 
         // create brands consumables
         if (in_array($userpermission, [$isSuperAdmin])) {
@@ -554,7 +602,7 @@ class ProductController extends Controller
         $company = substr($request->BRAND, 0, 2);
         $description = substr($request->BRAND, 2, 2);
         $status = $company.' - '.$description;
-        // dd($request);
+        dd($request);
         DB::beginTransaction();
         try {
             $data_product = [
@@ -577,7 +625,7 @@ class ProductController extends Controller
                 'SOLUTION' => $request->input('SOLUTION'),
                 'SERIES' => $request->input('SERIES'),
                 'CATEGORY' => $request->input('CATEGORY'),
-                'STATUS' => $status,
+                'STATUS' => $request->input('STATUS'),
                 'S_CAT' => $request->input('S_CAT'),
                 'PDM_GROUP' => $request->input('PDM_GROUP'),
                 'BRAND_P' => $request->input('BRAND_P'),
@@ -741,6 +789,8 @@ class ProductController extends Controller
             'series.ID AS SERIES',
             'categories.ID AS CATEGORY',
             'sub_categories.ID AS S_CAT',
+            'pdms.ID AS PDM_GROUP',
+            'p_statuses.ID AS STATUS',
         )
         ->leftJoin('owners', 'product1s.VENDOR', '=', 'owners.OWNER') // ในเอกสารสลับกัน
         ->leftJoin('grp_ps', 'product1s.GRP_P', '=', 'grp_ps.GRP_P')
@@ -751,6 +801,8 @@ class ProductController extends Controller
         ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
         ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
         ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+        ->leftJoin('pdms', 'product1s.PDM_GROUP', '=', 'pdms.ID')
+        ->leftJoin('p_statuses', 'product1s.STATUS', '=', 'p_statuses.ID')
         ->firstWhere('PRODUCT', '=', $PRODUCT);
 
         // $sub_categorys = Sub_category::all();
@@ -761,19 +813,52 @@ class ProductController extends Controller
         // $acctypes = Acctype::all();
         // $conditions = Condition::all();
 
+        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        $userpermission = Auth::user()->getUserPermission->name_position;
+
         $owners = Owner::select('OWNER AS VENDOR', 'REMARK')->get();
         $grp_ps = Grp_p::select('GRP_P AS GRP_P', 'REMARK')->get();
+
         $brand_ps = Brand_p::select('ID AS BRAND_P', 'REMARK')->get();
+
+        if (in_array($userpermission, [$isSuperAdmin])) {
+            $brand_ps = Brand_p::select(
+                'ID AS BRAND_P',
+                'REMARK')
+            ->get();
+        }
+        else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+            $brand_ps = Brand_p::select(
+                'ID AS BRAND_P',
+                'REMARK')
+            ->where('BRAND', 'GNC')
+            ->get();
+        }
+        else if (in_array($userpermission, ['Marketing - CPS'])) {
+            $brand_ps = Brand_p::select(
+                'ID AS BRAND_P',
+                'REMARK')
+            ->where('BRAND', 'CP')
+            ->get();
+        }
+
         $venders = Vendor::select('VEN_ID AS SUPPLIER', 'VEN_NTHAI')->get();
         $type_gs = Type_g::select('ID AS TYPE_G', 'DESCRIPTION')->get();
         $solutions = Solution::select('ID AS SOLUTION', 'DESCRIPTION')->get();
         $series = Series::select('ID AS SERIES	', 'DESCRIPTION')->get();
         $categorys = Category::select('ID AS CATEGORY', 'DESCRIPTION')->get();
         $sub_categorys = Sub_category::select('ID AS S_CAT', 'DESCRIPTION')->get();
+        $pdms = Pdm::select('ID AS PDM_GROUP', 'REMARK')->get();
+        $p_statuss = P_status::select('ID AS STATUS', 'DESCRIPTION')->get();
 
-        // dd($data);
+        $unit_ps = Unit_p::all();
+        $unit_types = Unit_type::all();
+        $acctypes = Acctype::all();
+        $conditions = Condition::all();
 
-        return view('product.edit', compact('data', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions'));
+        // dd($series);
+
+        return view('product.edit', compact('data', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss'));
     }
 
     /**
@@ -782,74 +867,145 @@ class ProductController extends Controller
     public function update(Request $request, $PRODUCT)
     {
         // dd($request);
+        // dd(strlen($PRODUCT));
         DB::beginTransaction();
         try {
-            $data_product_upddate = [
-                'BRAND' => $request->input('BRAND'),
-                'PRODUCT' => $request->input('PRODUCT'),
-                'BARCODE' => $request->input('PRODUCT'),
-                'COLOR' => $request->input('COLOR'),
-                'GRP_P' => $request->input('GRP_P'),
-                'SUPPLIER' => $request->input('SUPPLIER'),
-                'NAME_THAI' => $request->input('NAME_THAI'),
-                'NAME_ENG' => $request->input('NAME_ENG'),
-                'SHORT_THAI' => $request->input('SHORT_THAI'),
-                'SHORT_ENG' => $request->input('SHORT_ENG'),
-                'VENDOR' => $request->input('VENDOR'),
-                'PRICE' => $request->input('PRICE'),
-                'COST' => $request->input('COST'),
-                'UNIT' => $request->input('UNIT'),
-                'UNIT_Q' => $request->input('UNIT_Q'),
-                'SOLUTION' => $request->input('SOLUTION'),
-                'SERIES' => $request->input('SERIES'),
-                'CATEGORY' => $request->input('CATEGORY'),
-                'STATUS' => $request->input('STATUS'),
-                'S_CAT' => $request->input('S_CAT'),
-                'PDM_GROUP' => $request->input('PDM_GROUP'),
-                'BRAND_P' => $request->input('BRAND_P'),
-                'REGISTER' => $request->input('REGISTER'),
-                'CONDITION_SALE' => $request->input('CONDITION_SALE'),
-                'WHOLE_SALE' => $request->input('WHOLE_SALE'),
-                'GP' => $request->input('GP'),
-                'O_PRODUCT' => $request->input('O_PRODUCT'),
-                'BAR_PACK1' => $request->input('BAR_PACK1'),
-                'BAR_PACK2' => $request->input('BAR_PACK2'),
-                'BAR_PACK3' => $request->input('BAR_PACK3'),
-                'BAR_PACK4' => $request->input('BAR_PACK4'),
-                'PACK_SIZE1' => $request->input('PACK_SIZE1'),
-                'PACK_SIZE2' => $request->input('PACK_SIZE2'),
-                'PACK_SIZE3' => $request->input('PACK_SIZE3'),
-                'PACK_SIZE4' => $request->input('PACK_SIZE4'),
-                'REG_DATE' => date("Y/m/d h:i:s"),
-                'AGE' => $request->input('AGE'),
-                'WIDTH' => $request->input('WIDTH'),
-                'HEIGHT' => $request->input('HEIGHT'),
-                'WIDE' => $request->input('WIDE'),
-                'NAME_EXP' => $request->input('NAME_EXP'),
-                'NET_WEIGHT' => $request->input('NET_WEIGHT'),
-                'UNIT_TYPE' => $request->input('UNIT_TYPE'),
-                'TYPE_G' => $request->input('TYPE_G'),
-                'OPT_DATE1' => $request->input('OPT_DATE1'),
-                'OPT_DATE2' => $request->input('OPT_DATE2'),
-                'OPT_TXT1' => $request->input('OPT_TXT1'),
-                'OPT_TXT2' => $request->input('OPT_TXT2'),
-                'OPT_NUM1' => $request->input('OPT_NUM1'),
-                'OPT_NUM2' => $request->input('OPT_NUM2'),
-                'ACC_TYPE' => $request->input('ACC_TYPE'),
-                'ACC_DT' => $request->input('ACC_DT'),
-                'EDIT_DT' => $request->input('EDIT_DT'),
-                'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
-                'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',
-                'STORAGE_TEMP' => is_null($request->input('STORAGE_TEMP')) ? 'N' : 'Y',
-                'CONTROL_STK' => is_null($request->input('CONTROL_STK')) ? 'N' : 'Y',
-                'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
-                'USER_EDIT' => Auth::user()->id
-            ];
-
-            $productUpddate = Pro_develops::where('BARCODE', $PRODUCT)->update($data_product_upddate);
-            DB::commit();
-            $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
-            return response()->json(['success' => true]);
+            if (strlen($PRODUCT) > 5) {
+                $data_product_upddate = [
+                    'BRAND' => $request->input('BRAND'),
+                    'PRODUCT' => $request->input('Code'),
+                    'BARCODE' => $request->input('Code'),
+                    'COLOR' => $request->input('COLOR'),
+                    'GRP_P' => $request->input('GRP_P'),
+                    'SUPPLIER' => $request->input('SUPPLIER'),
+                    'NAME_THAI' => $request->input('NAME_THAI'),
+                    'NAME_ENG' => $request->input('NAME_ENG'),
+                    'SHORT_THAI' => $request->input('SHORT_THAI'),
+                    'SHORT_ENG' => $request->input('SHORT_ENG'),
+                    'VENDOR' => $request->input('VENDOR'),
+                    'PRICE' => $request->input('PRICE'),
+                    'COST' => $request->input('COST'),
+                    'UNIT' => $request->input('UNIT'),
+                    'UNIT_Q' => $request->input('UNIT_Q'),
+                    'SOLUTION' => $request->input('SOLUTION'),
+                    'SERIES' => $request->input('SERIES'),
+                    'CATEGORY' => $request->input('CATEGORY'),
+                    'STATUS' => $request->input('STATUS'),
+                    'S_CAT' => $request->input('S_CAT'),
+                    'PDM_GROUP' => $request->input('PDM_GROUP'),
+                    'BRAND_P' => $request->input('BRAND_P'),
+                    'REGISTER' => $request->input('REGISTER'),
+                    'CONDITION_SALE' => $request->input('CONDITION_SALE'),
+                    'WHOLE_SALE' => $request->input('WHOLE_SALE'),
+                    'GP' => $request->input('GP'),
+                    'O_PRODUCT' => $request->input('O_PRODUCT'),
+                    'BAR_PACK1' => $request->input('BAR_PACK1'),
+                    'BAR_PACK2' => $request->input('BAR_PACK2'),
+                    'BAR_PACK3' => $request->input('BAR_PACK3'),
+                    'BAR_PACK4' => $request->input('BAR_PACK4'),
+                    'PACK_SIZE1' => $request->input('PACK_SIZE1'),
+                    'PACK_SIZE2' => $request->input('PACK_SIZE2'),
+                    'PACK_SIZE3' => $request->input('PACK_SIZE3'),
+                    'PACK_SIZE4' => $request->input('PACK_SIZE4'),
+                    'REG_DATE' => date("Y/m/d h:i:s"),
+                    'AGE' => $request->input('AGE'),
+                    'WIDTH' => $request->input('WIDTH'),
+                    'HEIGHT' => $request->input('HEIGHT'),
+                    'WIDE' => $request->input('WIDE'),
+                    'NAME_EXP' => $request->input('NAME_EXP'),
+                    'NET_WEIGHT' => $request->input('NET_WEIGHT'),
+                    'UNIT_TYPE' => $request->input('UNIT_TYPE'),
+                    'TYPE_G' => $request->input('TYPE_G'),
+                    'OPT_DATE1' => $request->input('OPT_DATE1'),
+                    'OPT_DATE2' => $request->input('OPT_DATE2'),
+                    'OPT_TXT1' => $request->input('OPT_TXT1'),
+                    'OPT_TXT2' => $request->input('OPT_TXT2'),
+                    'OPT_NUM1' => $request->input('OPT_NUM1'),
+                    'OPT_NUM2' => $request->input('OPT_NUM2'),
+                    'ACC_TYPE' => $request->input('ACC_TYPE'),
+                    'ACC_DT' => $request->input('ACC_DT'),
+                    'EDIT_DT' => $request->input('EDIT_DT'),
+                    'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
+                    'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',
+                    'STORAGE_TEMP' => is_null($request->input('STORAGE_TEMP')) ? 'N' : 'Y',
+                    'CONTROL_STK' => is_null($request->input('CONTROL_STK')) ? 'N' : 'Y',
+                    'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
+                    'USER_EDIT' => Auth::user()->id
+                ];
+    
+                $productUpddateConsumables = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
+                DB::commit();
+                $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
+                return response()->json(['success' => true]);
+            } else {
+                $data_product_upddate = [
+                    'BRAND' => $request->input('BRAND'),
+                    'PRODUCT' => $request->input('Code'),
+                    'BARCODE' => $request->input('BARCODE'),
+                    'COLOR' => $request->input('COLOR'),
+                    'GRP_P' => $request->input('GRP_P'),
+                    'SUPPLIER' => $request->input('SUPPLIER'),
+                    'NAME_THAI' => $request->input('NAME_THAI'),
+                    'NAME_ENG' => $request->input('NAME_ENG'),
+                    'SHORT_THAI' => $request->input('SHORT_THAI'),
+                    'SHORT_ENG' => $request->input('SHORT_ENG'),
+                    'VENDOR' => $request->input('VENDOR'),
+                    'PRICE' => $request->input('PRICE'),
+                    'COST' => $request->input('COST'),
+                    'UNIT' => $request->input('UNIT'),
+                    'UNIT_Q' => $request->input('UNIT_Q'),
+                    'SOLUTION' => $request->input('SOLUTION'),
+                    'SERIES' => $request->input('SERIES'),
+                    'CATEGORY' => $request->input('CATEGORY'),
+                    'STATUS' => $request->input('STATUS'),
+                    'S_CAT' => $request->input('S_CAT'),
+                    'PDM_GROUP' => $request->input('PDM_GROUP'),
+                    'BRAND_P' => $request->input('BRAND_P'),
+                    'REGISTER' => $request->input('REGISTER'),
+                    'CONDITION_SALE' => $request->input('CONDITION_SALE'),
+                    'WHOLE_SALE' => $request->input('WHOLE_SALE'),
+                    'GP' => $request->input('GP'),
+                    'O_PRODUCT' => $request->input('O_PRODUCT'),
+                    'BAR_PACK1' => $request->input('BAR_PACK1'),
+                    'BAR_PACK2' => $request->input('BAR_PACK2'),
+                    'BAR_PACK3' => $request->input('BAR_PACK3'),
+                    'BAR_PACK4' => $request->input('BAR_PACK4'),
+                    'PACK_SIZE1' => $request->input('PACK_SIZE1'),
+                    'PACK_SIZE2' => $request->input('PACK_SIZE2'),
+                    'PACK_SIZE3' => $request->input('PACK_SIZE3'),
+                    'PACK_SIZE4' => $request->input('PACK_SIZE4'),
+                    'REG_DATE' => date("Y/m/d h:i:s"),
+                    'AGE' => $request->input('AGE'),
+                    'WIDTH' => $request->input('WIDTH'),
+                    'HEIGHT' => $request->input('HEIGHT'),
+                    'WIDE' => $request->input('WIDE'),
+                    'NAME_EXP' => $request->input('NAME_EXP'),
+                    'NET_WEIGHT' => $request->input('NET_WEIGHT'),
+                    'UNIT_TYPE' => $request->input('UNIT_TYPE'),
+                    'TYPE_G' => $request->input('TYPE_G'),
+                    'OPT_DATE1' => $request->input('OPT_DATE1'),
+                    'OPT_DATE2' => $request->input('OPT_DATE2'),
+                    'OPT_TXT1' => $request->input('OPT_TXT1'),
+                    'OPT_TXT2' => $request->input('OPT_TXT2'),
+                    'OPT_NUM1' => $request->input('OPT_NUM1'),
+                    'OPT_NUM2' => $request->input('OPT_NUM2'),
+                    'ACC_TYPE' => $request->input('ACC_TYPE'),
+                    'ACC_DT' => $request->input('ACC_DT'),
+                    'EDIT_DT' => $request->input('EDIT_DT'),
+                    'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
+                    'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',
+                    'STORAGE_TEMP' => is_null($request->input('STORAGE_TEMP')) ? 'N' : 'Y',
+                    'CONTROL_STK' => is_null($request->input('CONTROL_STK')) ? 'N' : 'Y',
+                    'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
+                    'USER_EDIT' => Auth::user()->id
+                ];
+    
+                $productUpddate = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
+                // dd($productUpddate);
+                DB::commit();
+                $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
+                return response()->json(['success' => true]);
+            }
         } catch (\Exception $e) {
             DB::rollback();
             $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');

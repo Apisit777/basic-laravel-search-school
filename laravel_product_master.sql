@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 13, 2024 at 12:14 PM
+-- Generation Time: Oct 08, 2024 at 12:41 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -114,8 +114,8 @@ CREATE TABLE `barcodes` (
 
 INSERT INTO `barcodes` (`ID`, `COMPANY`, `BRAND`, `B_CODE`, `NUMBER`, `REMARK`, `STATUS`) VALUES
 (1, 'OP', 'OP', '88500802', 10, '', 'OP'),
-(3, 'OP', 'RI', '88500802', 9005, 'Brand Ri En', 'RI'),
-(5, 'CP', 'CP', '88500807', 1, '0', 'CP');
+(3, 'OP', 'RI', '88500802', 9007, 'Brand Ri En', 'RI'),
+(5, 'CP', 'CP', '88500807', 3, '0', 'CP');
 
 -- --------------------------------------------------------
 
@@ -149,8 +149,40 @@ INSERT INTO `brands` (`id`, `company_name`, `status`, `created_by`, `updated_by`
 
 CREATE TABLE `brand_ps` (
   `ID` varchar(10) NOT NULL DEFAULT '',
-  `REMARK` varchar(50) NOT NULL DEFAULT ''
+  `REMARK` varchar(50) NOT NULL DEFAULT '',
+  `BRAND` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `brand_ps`
+--
+
+INSERT INTO `brand_ps` (`ID`, `REMARK`, `BRAND`) VALUES
+('0000', 'Not Define', NULL),
+('0001', 'Basic Nutrition', 'GNC'),
+('0002', 'Challenge', 'GNC'),
+('0003', 'Gingseng Gold', 'GNC'),
+('0004', 'GNC', 'GNC'),
+('0005', 'Herbal Plus', 'GNC'),
+('0006', 'Natural Brand', 'GNC'),
+('0007', 'Nature\'s Fingerprint', 'GNC'),
+('0008', 'Optibolic', 'GNC'),
+('0009', 'Preventive Nutrition', 'GNC'),
+('0010', 'Pro Performance', 'GNC'),
+('C0001', 'Coolly', 'CP'),
+('C0002', 'Cute Press', 'CP'),
+('D0001', 'Diva', 'CP'),
+('F0001', 'Feminise', 'CP'),
+('G0001', 'GNC', 'CP'),
+('KM001', 'KM Brand', 'CP'),
+('M0001', 'Mew Mew', 'CP'),
+('N0001', 'Naris', 'CP'),
+('N0002', 'Natureal', 'CP'),
+('O0001', 'OP Salon', 'CP'),
+('P0001', 'Primahome', 'CP'),
+('S0001', 'Shoop Shoop', 'CP'),
+('S0002', 'Spices', 'CP'),
+('S0003', 'Swiss Formula', 'CP');
 
 -- --------------------------------------------------------
 
@@ -335,6 +367,112 @@ INSERT INTO `comments` (`id`, `post_id`, `user_id`, `created_at`, `updated_at`) 
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `com_products`
+--
+
+CREATE TABLE `com_products` (
+  `id` int(10) NOT NULL,
+  `corporation_id` varchar(10) NOT NULL DEFAULT '' COMMENT 'รหัสข้อมูลบริษัท',
+  `company_id` varchar(10) NOT NULL DEFAULT '' COMMENT 'รหัสบริษัท',
+  `product_id` varchar(15) NOT NULL DEFAULT '' COMMENT 'รหัสสินค้า',
+  `barcode` varchar(15) NOT NULL DEFAULT '' COMMENT 'barcode',
+  `vendor_id` varchar(15) NOT NULL DEFAULT '' COMMENT 'รหัสผู้ขาย',
+  `name_thai` varchar(70) NOT NULL DEFAULT '' COMMENT 'ชื่อภาษาไทย',
+  `name_eng` varchar(70) NOT NULL DEFAULT '' COMMENT 'ชื่อภาษาอังกฤษ',
+  `short_thai` varchar(30) NOT NULL DEFAULT '' COMMENT 'ชื่อย่อภาษาไทย',
+  `short_eng` varchar(30) NOT NULL DEFAULT '' COMMENT 'ชื่อย่อภาษาอังกฤษ',
+  `price` decimal(15,2) NOT NULL DEFAULT 0.00 COMMENT 'ราคาขาย',
+  `cost` decimal(15,2) NOT NULL DEFAULT 0.00 COMMENT 'ต้นทุน',
+  `unit_id` varchar(10) NOT NULL DEFAULT '' COMMENT 'รหัสหน่วยสินค้า',
+  `currency_id` varchar(10) NOT NULL DEFAULT '' COMMENT 'รหัสสกุลเงิน',
+  `capacity_id` varchar(10) NOT NULL DEFAULT '' COMMENT 'รหัสหน่วยบรรจุ',
+  `capacity` decimal(15,2) NOT NULL DEFAULT 0.00 COMMENT 'ปริมาณบรรจุ',
+  `non_vat` char(1) NOT NULL DEFAULT '' COMMENT 'ไม่คำนวณภาษี',
+  `status` varchar(10) NOT NULL DEFAULT '' COMMENT 'รหัสสถานะสินค้า',
+  `warrant_no` varchar(20) NOT NULL DEFAULT '' COMMENT 'เลขที่ใบอนุญาต',
+  `gp` decimal(15,2) NOT NULL DEFAULT 0.00 COMMENT 'ส่วนลด',
+  `return` char(1) NOT NULL DEFAULT '' COMMENT 'คืนซาก',
+  `o_product` varchar(15) NOT NULL DEFAULT '' COMMENT 'รหัสสินค้าเก่า',
+  `shelf_life` decimal(15,2) NOT NULL DEFAULT 0.00 COMMENT 'อายุการเก็บรักษา (ปี)',
+  `storage_temp` char(1) NOT NULL DEFAULT '' COMMENT 'จัดเก็บในห้องรักษาอุณหภูมิ',
+  `size_id` varchar(10) NOT NULL DEFAULT '' COMMENT 'รหัสหน่วยความยาว',
+  `width` decimal(15,2) NOT NULL DEFAULT 0.00 COMMENT 'ความกว้าง',
+  `long` decimal(15,2) NOT NULL DEFAULT 0.00 COMMENT 'ความยาว',
+  `height` decimal(15,2) NOT NULL DEFAULT 0.00 COMMENT 'ความสูง',
+  `weight_id` varchar(10) NOT NULL DEFAULT '' COMMENT 'รหัสหน่วยน้ำหนัก',
+  `weight` decimal(15,2) NOT NULL DEFAULT 0.00 COMMENT 'น้ำหนัก',
+  `control_stk` char(1) NOT NULL DEFAULT '' COMMENT 'คุมสินค้าคงเหลือของสาขา',
+  `make_buy` char(1) NOT NULL DEFAULT '' COMMENT 'km ผลิตสินค้า',
+  `safety_stock` decimal(15,2) NOT NULL DEFAULT 0.00 COMMENT 'สินค้าคงเหลือขั้นต่ำ',
+  `lot_size_min` decimal(15,2) NOT NULL DEFAULT 0.00 COMMENT 'จำนวนการสั่งสินค้าขั้นต่ำ',
+  `lot_size_multi` char(1) NOT NULL DEFAULT '0' COMMENT 'สั่งสินค้าเป็น lot',
+  `buyer_id` varchar(10) NOT NULL DEFAULT '' COMMENT 'รหัสผู้ขอซื้อ',
+  `planner_id` varchar(10) NOT NULL DEFAULT '' COMMENT 'รหัสผู้วางแผนการผลิต',
+  `lead_time_po` decimal(15,2) NOT NULL DEFAULT 0.00 COMMENT 'lead time การสั่งซื้อ',
+  `lead_time_pn` decimal(15,2) NOT NULL DEFAULT 0.00 COMMENT 'lead time การวางแผน',
+  `lead_time_inspec` decimal(15,2) NOT NULL DEFAULT 0.00 COMMENT 'lead time การตรวจสอบ',
+  `acc_type` varchar(10) NOT NULL DEFAULT '' COMMENT 'ประเภทสินค้าบัญชี',
+  `acc_date` date NOT NULL DEFAULT '1900-01-01' COMMENT 'วันที่บันทึก',
+  `acc_time` time NOT NULL DEFAULT '00:00:00' COMMENT 'เวลาที่บันทึก',
+  `acc_user` varchar(10) NOT NULL DEFAULT '' COMMENT 'ผู้บันทึก',
+  `reg_date` date NOT NULL DEFAULT '1900-01-01' COMMENT 'วันที่สร้าง',
+  `reg_time` time NOT NULL DEFAULT '00:00:00' COMMENT 'เวลาที่สร้าง',
+  `reg_user` varchar(10) NOT NULL DEFAULT '' COMMENT 'ผู้สร้าง',
+  `upd_date` date NOT NULL DEFAULT '1900-01-01' COMMENT 'วันที่แก้ไข',
+  `upd_time` time NOT NULL DEFAULT '00:00:00' COMMENT 'เวลาที่แก้ไข',
+  `upd_user` varchar(10) NOT NULL DEFAULT '' COMMENT 'ผู้แก้ไข',
+  `lock` char(1) NOT NULL DEFAULT '' COMMENT 'สถานะการใช้งาน',
+  `area` decimal(14,4) NOT NULL DEFAULT 0.0000 COMMENT 'พื้นที่ widht*long*hight',
+  `pick_qty` decimal(14,4) NOT NULL DEFAULT 0.0000 COMMENT 'Pack_size',
+  `pick_type` char(1) NOT NULL COMMENT 'ประการจัด  1= qty_pick ต่อ 1 ใบ Pick',
+  `qty_pick` decimal(14,4) NOT NULL DEFAULT 0.0000 COMMENT 'จำนวนชิ้นต่อใบpick',
+  `box_qty` decimal(14,4) NOT NULL DEFAULT 0.0000 COMMENT 'จำนวนชิ้นต่อลัง',
+  `pallet_qty` decimal(14,4) NOT NULL DEFAULT 0.0000 COMMENT 'จำนวนชิ้นต่อ Pallet',
+  `group` varchar(10) NOT NULL,
+  `name_export` varchar(100) NOT NULL DEFAULT '**',
+  `series` varchar(10) NOT NULL DEFAULT 'no',
+  `solution` varchar(10) NOT NULL DEFAULT 'no',
+  `category` varchar(10) NOT NULL DEFAULT 'no',
+  `group2` varchar(10) NOT NULL DEFAULT 'no',
+  `net_weight` decimal(14,2) NOT NULL DEFAULT 0.00,
+  `check` varchar(1) NOT NULL DEFAULT 'N',
+  `duplicate` varchar(1) NOT NULL DEFAULT 'N',
+  `active_sta` varchar(1) NOT NULL,
+  `product_status` varchar(10) NOT NULL,
+  `height_old` decimal(15,2) NOT NULL DEFAULT 0.00 COMMENT 'ความสูงเดิม',
+  `time_stamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `run_newsize` varchar(10) NOT NULL DEFAULT 'Y',
+  `height_edit` decimal(15,2) NOT NULL DEFAULT 0.00,
+  `area_edit` decimal(14,4) NOT NULL DEFAULT 0.0000,
+  `box_pallet` varchar(20) NOT NULL,
+  `img_url` text NOT NULL,
+  `box_ecom` varchar(10) NOT NULL,
+  `lead_time_group` int(11) NOT NULL,
+  `lead_time_by_product` int(11) NOT NULL,
+  `time_stampLeadTime` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
+  `on_wh_stock` varchar(10) NOT NULL COMMENT 'ยังมีอยู่ใน wh_stock ไหม'
+) ENGINE=MyISAM DEFAULT CHARSET=tis620 COLLATE=tis620_thai_ci COMMENT='ทะเบียนสินค้า' ROW_FORMAT=DYNAMIC;
+
+--
+-- Dumping data for table `com_products`
+--
+
+INSERT INTO `com_products` (`id`, `corporation_id`, `company_id`, `product_id`, `barcode`, `vendor_id`, `name_thai`, `name_eng`, `short_thai`, `short_eng`, `price`, `cost`, `unit_id`, `currency_id`, `capacity_id`, `capacity`, `non_vat`, `status`, `warrant_no`, `gp`, `return`, `o_product`, `shelf_life`, `storage_temp`, `size_id`, `width`, `long`, `height`, `weight_id`, `weight`, `control_stk`, `make_buy`, `safety_stock`, `lot_size_min`, `lot_size_multi`, `buyer_id`, `planner_id`, `lead_time_po`, `lead_time_pn`, `lead_time_inspec`, `acc_type`, `acc_date`, `acc_time`, `acc_user`, `reg_date`, `reg_time`, `reg_user`, `upd_date`, `upd_time`, `upd_user`, `lock`, `area`, `pick_qty`, `pick_type`, `qty_pick`, `box_qty`, `pallet_qty`, `group`, `name_export`, `series`, `solution`, `category`, `group2`, `net_weight`, `check`, `duplicate`, `active_sta`, `product_status`, `height_old`, `time_stamp`, `run_newsize`, `height_edit`, `area_edit`, `box_pallet`, `img_url`, `box_ecom`, `lead_time_group`, `lead_time_by_product`, `time_stampLeadTime`, `on_wh_stock`) VALUES
+(219027, '', 'BB', '40435', '885008060400', 'KM', 'บีซู บีซู อิน ฟูล บลูม บอดี้ โลชั่น70 ml', 'In Full Bloom Body Lotion70', '', '', 259.00, 59.48, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', '', 0.00, '', '', 0.00, 0.00, 0.00, '', 0.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2018-11-03', '06:30:12', 'system', '', 0.0000, 0.0000, '', 0.0000, 0.0000, 0.0000, '', '**', 'I0009', 'B0001', 'P2000', '01', 0.00, 'N', 'N', '', '', 0.00, '2019-11-12 11:02:09', 'Y', 0.00, 0.0000, '', '', '', 0, 0, '1900-01-01 00:00:00', ''),
+(216829, '', 'BB', '60001', '8801310001013', 'KM', 'Diamond Powder Pact-bag#1(1295)', 'D.POWDER PACT-BAG#1', '', '', 1295.00, 174.16, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', '', 0.00, '', '', 0.00, 0.00, 0.00, '', 0.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2020-01-06', '10:49:08', 'system', '', 0.0000, 0.0000, '', 0.0000, 0.0000, 0.0000, '', '**', 'D0018', 'M0001', 'M1000', '01', 0.00, 'N', 'N', '', '', 0.00, '2020-01-06 03:49:08', 'Y', 0.00, 0.0000, '', '', '', 0, 0, '1900-01-01 00:00:00', ''),
+(216830, '', 'BB', '60002', '8801310001020', 'KM', 'Diamond Powder Pact-bag#2(1295)', 'D. POWDER PACT-BAG#2', '', '', 1295.00, 174.16, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', '', 0.00, '', '', 0.00, 0.00, 0.00, '', 0.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2020-01-06', '10:49:36', 'system', '', 0.0000, 0.0000, '', 0.0000, 0.0000, 0.0000, '', '**', 'D0018', 'M0001', 'M1000', '01', 0.00, 'N', 'N', '', '', 0.00, '2020-01-06 03:49:36', 'Y', 0.00, 0.0000, '', '', '', 0, 0, '1900-01-01 00:00:00', ''),
+(216831, '', 'BB', '60003', '8800110004019', 'KM', 'Set-Miracle White Two Way Cake#1(1495)', 'SET-MW. TWO WAY#1', '', '', 1495.00, 138.60, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', '', 0.00, '', '', 5.00, 12.50, 15.50, '', 110.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2020-01-06', '10:50:04', 'system', '', 968.7500, 0.0000, '', 0.0000, 0.0000, 0.0000, '', '**', 'M0019', 'M0001', 'M1000', '01', 0.00, 'N', 'N', '', '', 0.00, '2020-01-06 03:50:04', 'Y', 0.00, 0.0000, '', 'http://192.169.0.5/putaway/com_product/upload/IMG_60003.jpg', '', 0, 0, '1900-01-01 00:00:00', ''),
+(216832, '', 'BB', '60004', '8800110004026', 'KM', 'Set-Miracle White Two Way Cake#2(1495)', 'SET-MW. TWO WAY#2', '', '', 1495.00, 138.60, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', '', 0.00, '', '', 5.00, 12.50, 15.00, '', 115.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2020-01-06', '10:50:33', 'system', '', 937.5000, 0.0000, '', 0.0000, 10.0000, 250.0000, 'BB', '**', 'M0019', 'M0001', 'M1000', '01', 0.00, 'N', 'N', '', '', 0.00, '2020-01-06 03:50:33', 'Y', 0.00, 0.0000, '', 'http://192.169.0.5/putaway/com_product/upload/20160704095937.jpg', '', 0, 0, '1900-01-01 00:00:00', ''),
+(216833, '', 'BB', '60005', '8800110005016', 'KM', 'Set-Brigntening FD Powder#1(1495)', 'SET-BRIGN FDPOWDER#1', '', '', 1495.00, 188.38, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', '', 0.00, '', '', 5.00, 12.50, 15.50, '', 110.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2020-01-06', '10:51:03', 'system', '', 968.7500, 0.0000, '', 0.0000, 10.0000, 250.0000, 'BB', '**', 'B0021', 'P0004', 'M1000', '01', 0.00, 'N', 'N', '', '', 0.00, '2020-01-06 03:51:03', 'Y', 0.00, 0.0000, '', 'http://192.169.0.5/putaway/com_product/upload/20160704115508.jpg', '', 0, 0, '1900-01-01 00:00:00', ''),
+(220614, '', 'CP', '75455', '8850080754551', 'KM', 'สกินนี่เบราว์เพ็นซิล - 01', 'skinny brow pencil - 01', '', '', 129.00, 26.57, '', '', '', 0.00, '', '', '', 0.00, '', '', 3.00, '', '', 4.80, 1.00, 20.50, '', 6.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2024-09-03', '09:25:05', 'system', '', 98.4000, 0.0000, '', 0.0000, 864.0000, 0.0000, '', '**', 'Z0006', 'E0002', 'M1000', '01', 0.00, 'N', 'N', '', '', 0.00, '2024-09-03 02:25:06', 'Y', 0.00, 0.0000, '', 'http://192.169.0.5/putaway/com_product/upload/20230909085307.jpg', '', 0, 0, '1900-01-01 00:00:00', ''),
+(208211, '', 'OP', '20528', '8850080205282', 'KM', 'EYE CLOURS REF.02', 'EYE CLOURS REF.02', '', '', 20.00, 27.00, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', 'OCEC02', 0.00, '', '', 0.00, 0.00, 0.00, '', 0.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2018-04-07', '06:31:15', 'system', '', 0.0000, 0.0000, '', 0.0000, 0.0000, 0.0000, '', '**', '99999', '99999', '99999', '01', 0.00, 'N', 'N', '', '', 0.00, '2018-08-21 08:10:23', 'Y', 0.00, 0.0000, '', '', '', 0, 0, '1900-01-01 00:00:00', ''),
+(208212, '', 'OP', '20529', '8850080205299', 'KM', 'EYE CLOURS REF.03', 'EYE CLOURS REF.03', '', '', 20.00, 27.00, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', 'OCEC03', 0.00, '', '', 0.00, 0.00, 0.00, '', 0.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2018-04-07', '06:31:16', 'system', '', 0.0000, 0.0000, '', 0.0000, 0.0000, 0.0000, '', '**', '99999', '99999', '99999', '01', 0.00, 'N', 'N', '', '', 0.00, '2018-08-21 08:10:23', 'Y', 0.00, 0.0000, '', '', '', 0, 0, '1900-01-01 00:00:00', ''),
+(208213, '', 'OP', '20530', '8850080205305', 'KM', 'EYE CLOURS REF.04', 'EYE CLOURS REF.04', '', '', 20.00, 27.00, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', 'OCEC04', 0.00, '', '', 0.00, 0.00, 0.00, '', 0.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2018-04-07', '06:31:18', 'system', '', 0.0000, 0.0000, '', 0.0000, 0.0000, 0.0000, '', '**', '99999', '99999', '99999', '01', 0.00, 'N', 'N', '', '', 0.00, '2018-08-21 08:10:23', 'Y', 0.00, 0.0000, '', '', '', 0, 0, '1900-01-01 00:00:00', ''),
+(195795, '', 'KM', 'HTSGOE4000', 'HTSGOE4000', 'KM', 'ORIENTAL ESSENCE SHOWER GEL', 'ORIENTAL ESSENCE SHOWER GEL', '', '', 150.50, 0.00, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', '', 0.00, '', '', 1.00, 1.00, 1.00, '', 1.00, '', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '', 1.0000, 0.0000, '', 0.0000, 12.0000, 300.0000, 'KM', '', '00000', '00002', '00001', '01', 1.00, 'N', 'N', 'Y', '', 1.00, '2016-05-18 06:54:05', 'Y', 1.00, 1.0000, '', '', '', 0, 0, '1900-01-01 00:00:00', '');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `conditions`
 --
 
@@ -375,9 +513,9 @@ CREATE TABLE `documents` (
 --
 
 INSERT INTO `documents` (`COMPANY`, `BRAND`, `DOC_TP`, `DOC_NO`, `NUMBER`, `FIELD`, `DOC_ST`, `REMARK`, `REMARK_EDIT`, `STATUS`) VALUES
-('CP', 'CP', 'NPD', 'NCP', 1, '', 1, '', '', 'CP'),
+('CP', 'CP', 'NPD', 'NCP', 3, '', 1, '', '', 'CP'),
 ('OP', 'OP', 'NPD', 'NOP', 10, '', 0, 'new product op (20)', '', 'OP'),
-('OP', 'RI', 'NPD', 'NRI', 9005, '', 0, 'new product ri (29)', '', 'RI');
+('OP', 'RI', 'NPD', 'NRI', 9007, '', 0, 'new product ri (29)', '', 'RI');
 
 -- --------------------------------------------------------
 
@@ -477,10 +615,11 @@ INSERT INTO `menus` (`id`, `menu_name`, `url`, `seq`, `status`, `created_at`, `u
 (1, 'NPD Request', 'new_product_develop', 1, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
 (2, 'Product Master', 'product', 2, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
 (3, 'Product Detail', 'get_users', 3, 1, '2021-04-03 18:58:21', '2021-04-03 18:58:21'),
-(4, 'Managemenu', 'manage_menu', 4, 1, '2024-06-28 07:48:31', '2024-06-28 07:48:34'),
-(5, 'จัดการข้อมูลทั่วไป', NULL, 5, 1, '2024-07-02 03:36:12', '2024-07-02 03:36:12'),
-(6, 'Approve', NULL, 6, 1, NULL, NULL),
-(42, 'Account', 'account', 7, 1, '2024-08-20 01:49:18', '2024-08-20 01:49:18');
+(4, 'Warehouse', 'warehouse', 4, 1, '2024-06-28 07:48:31', '2024-06-28 07:48:34'),
+(5, 'Account', 'account', 5, 1, '2024-07-02 03:36:12', '2024-07-02 03:36:12'),
+(6, 'Managemenu', 'manage_menu', 6, 1, NULL, NULL),
+(7, 'Approve', NULL, 7, 1, '2024-08-20 01:49:18', '2024-08-20 01:49:18'),
+(8, 'จัดการข้อมูลทั่วไป', 'manage_general_information', 8, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -512,25 +651,29 @@ INSERT INTO `menu_relations` (`id`, `position_id`, `menu_id`, `submenu_id`, `vie
 (1, 1, 1, NULL, 1, 1, 1, 1, 1, NULL, NULL, '2023-01-19 18:07:36', '2023-01-19 18:07:36'),
 (3, 5, 1, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, '2023-01-19 18:07:38', '2023-01-19 18:07:38'),
 (50, 1, 2, NULL, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL),
-(51, 1, 3, NULL, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL),
 (90, 1, 4, NULL, 1, 1, 1, 1, 1, NULL, NULL, NULL, NULL),
-(94, 7, 5, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(95, 7, 5, 1, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(96, 7, 5, 2, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(106, 6, 5, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(107, 6, 5, 1, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL),
-(111, 3, 42, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (112, 3, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (113, 3, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(114, 3, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(114, 1, 6, NULL, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (116, 7, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (158, 6, 1, NULL, 1, 1, 1, 1, NULL, NULL, NULL, NULL, NULL),
 (159, 7, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(161, 6, 5, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(162, 6, 5, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(163, 1, 5, NULL, 1, 1, 0, 0, NULL, NULL, NULL, NULL, NULL),
-(181, 1, 5, 1, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(182, 6, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(163, 1, 8, NULL, 1, 0, 0, 0, NULL, NULL, NULL, NULL, NULL),
+(181, 1, 8, 1, 1, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(182, 6, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(183, 8, 1, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(184, 8, 2, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(185, 8, 8, NULL, 1, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
+(186, 8, 8, 1, 1, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
+(194, 6, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(195, 1, 8, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(196, 1, 4, 9, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(197, 6, 4, 9, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(199, 7, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(200, 7, 4, 9, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(205, 6, 8, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(206, 6, 8, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(207, 6, 8, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -835,7 +978,20 @@ INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `n
 (75, 'App\\Models\\User', 21, 'productMastertoken', '6e5d7791ecf6c1665c255bfe8b5c30156570317313dd33a2d57a904b015facad', '[\"*\"]', NULL, NULL, '2024-07-03 02:30:58', '2024-07-03 02:30:58'),
 (76, 'App\\Models\\User', 21, 'productMastertoken', '3c5759db270e42321fca1548ebdca314b9e7c08cc156a2792b9931ce5a09c6f2', '[\"*\"]', NULL, NULL, '2024-07-03 18:53:50', '2024-07-03 18:53:50'),
 (77, 'App\\Models\\User', 21, 'productMastertoken', '04c89c067bb465919e63339cf378527c17b2d8912e1ff5f4a88262499932bd62', '[\"*\"]', NULL, NULL, '2024-07-03 23:40:51', '2024-07-03 23:40:51'),
-(78, 'App\\Models\\User', 21, 'productMastertoken', '965dc19202395d8cd9a51c37a4f5e7e5431b0242ad1010e6c83ab81a64abb852', '[\"*\"]', NULL, NULL, '2024-07-04 20:29:28', '2024-07-04 20:29:28');
+(78, 'App\\Models\\User', 21, 'productMastertoken', '965dc19202395d8cd9a51c37a4f5e7e5431b0242ad1010e6c83ab81a64abb852', '[\"*\"]', NULL, NULL, '2024-07-04 20:29:28', '2024-07-04 20:29:28'),
+(79, 'App\\Models\\User', 36, 'main', 'b3403024c8cfa64dc874305791b849029ffebae500bd4591d1669262df99124c', '[\"*\"]', NULL, NULL, '2024-09-20 06:43:34', '2024-09-20 06:43:34'),
+(80, 'App\\Models\\User', 36, 'main', '7ff393a19226d420f823f84b98a27db792f35c9b1e9c11200e9a6de7351bf227', '[\"*\"]', NULL, NULL, '2024-09-20 06:44:13', '2024-09-20 06:44:13'),
+(81, 'App\\Models\\User', 36, 'main', 'd2ad972033296101fa50316a7bd3b9c2dc56f2c59ccdd5f4f0aab896a1d5a891', '[\"*\"]', NULL, NULL, '2024-09-20 06:45:10', '2024-09-20 06:45:10'),
+(82, 'App\\Models\\User', 36, 'main', '0efd7af1f9c20b6a72c9b2ea80e29343c5c5501c21458b6cbca365401355c865', '[\"*\"]', NULL, NULL, '2024-09-20 06:49:08', '2024-09-20 06:49:08'),
+(83, 'App\\Models\\User', 36, 'main', '7c0689ffc4338746702541063e05d046019572096ca199675ce0803d58d3a004', '[\"*\"]', NULL, NULL, '2024-09-20 06:50:15', '2024-09-20 06:50:15'),
+(84, 'App\\Models\\User', 36, 'main', 'cd32c6c34de988195abc4c52e6201abfb39c8166c95f7d87a784d637c4c69e93', '[\"*\"]', NULL, NULL, '2024-09-20 06:51:06', '2024-09-20 06:51:06'),
+(85, 'App\\Models\\User', 36, 'main', '8b1b8a9e59d1b04041895a4c2eb0f19b30866a28bf86d7971b4778209c1743b9', '[\"*\"]', NULL, NULL, '2024-09-20 06:51:38', '2024-09-20 06:51:38'),
+(86, 'App\\Models\\User', 36, 'main', 'bc5c6fbfe262a50786e07f57ef9a74db2d4d524c88a56c1222ea2e609f21d9fc', '[\"*\"]', NULL, NULL, '2024-09-20 06:53:56', '2024-09-20 06:53:56'),
+(87, 'App\\Models\\User', 36, 'main', '16d48e3da6c56c62a75b13e73dbfcc89a66478a01a0cbc2147221c1b992f91bd', '[\"*\"]', NULL, NULL, '2024-09-20 06:55:26', '2024-09-20 06:55:26'),
+(88, 'App\\Models\\User', 36, 'main', '00020004b5fdee81209e0dc2d7624508abe3ab75a78e91f056fbb386b1f8a638', '[\"*\"]', NULL, NULL, '2024-09-20 06:57:15', '2024-09-20 06:57:15'),
+(89, 'App\\Models\\User', 36, 'main', '2f74f7449f542a2d1cfdbd8702faa0b106117bf4e7498f91c5dd51a191c161d7', '[\"*\"]', NULL, NULL, '2024-09-20 07:00:16', '2024-09-20 07:00:16'),
+(90, 'App\\Models\\User', 36, 'main', '294e18408ca4d564db9fde0e8476d43b5218884a83b6a9043ea01d17ce2aaac8', '[\"*\"]', NULL, NULL, '2024-09-20 07:00:46', '2024-09-20 07:00:46'),
+(91, 'App\\Models\\User', 36, 'main', 'c81a6ee2c202a26fe006468e3f5f12f53973ebaef16a8ffe5abcda696b66f155', '[\"*\"]', NULL, NULL, '2024-09-20 07:01:41', '2024-09-20 07:01:41');
 
 -- --------------------------------------------------------
 
@@ -864,8 +1020,7 @@ INSERT INTO `positions` (`id`, `name_position`, `created_by`, `updated_by`, `cre
 (5, 'Product - OP', NULL, NULL, NULL, NULL),
 (6, 'E-Commerce - OP', NULL, NULL, NULL, NULL),
 (7, 'Marketing - CPS', NULL, NULL, NULL, NULL),
-(8, 'Manager_IBSH', NULL, NULL, NULL, NULL),
-(9, 'IBSH', NULL, NULL, NULL, NULL);
+(8, 'Admin', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -913,7 +1068,7 @@ CREATE TABLE `product1s` (
   `SERIES` varchar(10) DEFAULT NULL,
   `CATEGORY` varchar(10) DEFAULT NULL,
   `NON_VAT` varchar(1) DEFAULT NULL,
-  `STATUS` varchar(1) DEFAULT NULL,
+  `STATUS` varchar(10) DEFAULT NULL,
   `S_CAT` varchar(10) DEFAULT NULL,
   `PDM_GROUP` varchar(10) DEFAULT NULL,
   `BRAND_P` varchar(10) DEFAULT NULL,
@@ -960,23 +1115,20 @@ CREATE TABLE `product1s` (
 --
 
 INSERT INTO `product1s` (`BRAND`, `PRODUCT`, `BARCODE`, `COLOR`, `GRP_P`, `SUPPLIER`, `NAME_THAI`, `NAME_ENG`, `SHORT_THAI`, `SHORT_ENG`, `VENDOR`, `PRICE`, `COST`, `UNIT`, `UNIT_Q`, `SOLUTION`, `SERIES`, `CATEGORY`, `NON_VAT`, `STATUS`, `S_CAT`, `PDM_GROUP`, `BRAND_P`, `REGISTER`, `CONDITION_SALE`, `WHOLE_SALE`, `GP`, `RETURN`, `O_PRODUCT`, `BAR_PACK1`, `BAR_PACK2`, `BAR_PACK3`, `BAR_PACK4`, `PACK_SIZE1`, `PACK_SIZE2`, `PACK_SIZE3`, `PACK_SIZE4`, `REG_DATE`, `AGE`, `STORAGE_TEMP`, `WIDTH`, `HEIGHT`, `WIDE`, `NAME_EXP`, `NET_WEIGHT`, `UNIT_TYPE`, `TYPE_G`, `CONTROL_STK`, `TESTER`, `OPT_DATE1`, `OPT_DATE2`, `OPT_TXT1`, `OPT_TXT2`, `OPT_NUM1`, `OPT_NUM2`, `ACC_TYPE`, `ACC_DT`, `USER_EDIT`, `EDIT_DT`) VALUES
-('OP', '20001', '8850080200010', 'Yellow', 'CM', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2001-05-28 00:00:00', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', 'transfer', '2005-12-24 00:00:00'),
-('OP', '20002', '8850080200027', 'Yellow', 'CM', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-10 08:30:13', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
-('OP', '20003', '8850080200034', 'Yellow', 'CM', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-10 08:32:23', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
-('OP', '20004', '8850080200041', 'Yellow', 'CM', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-10 08:36:57', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
-('OP', '20005', '8850080200058', 'Yellow', 'CM', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-10 10:45:49', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
-('OP', '20007', '8850080200072', 'Yellow', 'CM', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-10 02:58:32', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
-('OP', '20008', '8850080200089', 'Yellow', 'CM', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-12 02:42:57', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
-('OP', '20010', '8850080200102', 'Yellow', 'CM', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-13 03:18:19', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
-('RI', '29001', '8850080290011', 'Yellow', 'CM', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-13 08:15:27', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
-('RI', '29002', '8850080290028', 'Yellow', 'CM', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-13 08:17:27', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
-('RI', '29003', '8850080290035', 'Yellow', 'CM', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-13 02:33:05', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
+('KM', '111111', '111111', NULL, 'OP', '5050', NULL, NULL, NULL, NULL, 'KM', NULL, NULL, '01', NULL, '80001', '80001', '80001', 'N', 'D', 'DF', '99999', NULL, NULL, 'C', NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01 04:31:37', NULL, 'N', NULL, NULL, NULL, NULL, NULL, '01', '02', 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, '80004', NULL, '32', NULL),
+('OP', '20001', '8850080200010', 'Yellow', 'OP', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2001-05-28 00:00:00', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', 'transfer', '2005-12-24 00:00:00'),
+('OP', '20002', '8850080200027', 'Yellow', 'OP', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-10 08:30:13', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
+('OP', '20003', '8850080200034', 'Yellow', 'OP', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-10 08:32:23', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
+('OP', '20004', '8850080200041', 'Yellow', 'OP', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-10 08:36:57', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
+('OP', '20005', '8850080200058', NULL, 'OP', '5050', NULL, NULL, NULL, NULL, 'OP', NULL, NULL, NULL, NULL, '80001', NULL, '80001', 'N', 'X', 'DF', 'G0001', '0001', NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-08 05:39:29', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL),
+('OP', '20006', '8850080200065', NULL, 'OP', '5050', NULL, NULL, NULL, NULL, 'OP', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-07 04:00:36', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL),
+('OP', '29001', '8850080290011', 'Yellow', 'RE', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-13 08:15:27', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
+('OP', '29002', '8850080290028', 'Yellow', 'RE', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-13 08:17:27', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
 ('CP', '70001', '8850080700015', 'Yellow', 'CM', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-13 08:35:03', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
-('KM', 'NPD0000001', 'NPD0000001', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-09-13 03:22:12', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL),
-('OP', 'NPD0000111', 'NPD0000111', 'Yellow', 'CM', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-10 02:13:51', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
-('KM', 'NPD0000112', 'NPD0000112', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-09-12 04:07:21', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL),
-('KM', 'NPD0000113', 'NPD0000113', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-09-12 04:10:06', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL),
-('KM', 'NPD0000114', 'NPD0000114', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-09-12 04:11:15', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL);
+('KM', 'NPD0000001', 'NPD0000001', NULL, 'OP', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'E', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-07 03:05:56', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL),
+('KM', 'NPD0000002', 'NPD0000002', NULL, 'OP', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '80001', NULL, '80001', 'Y', 'E', 'DF', 'G0001', NULL, 'XX-X-XXXXXXXXXX', NULL, NULL, NULL, 'Y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-07 02:59:49', NULL, 'Y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Y', 'Y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL),
+('OP', 'NPD0000111', 'NPD0000111', NULL, 'OP', '5050', NULL, NULL, NULL, NULL, 'KM', NULL, NULL, NULL, NULL, '80001', NULL, '80001', 'N', 'L', 'DF', '99999', NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-08 08:33:55', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, '01', 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL),
+('KM', 'NPD0000113', 'NPD0000113', NULL, 'OP', '5050', NULL, NULL, NULL, NULL, 'OP', NULL, NULL, NULL, NULL, '80001', NULL, '80001', 'N', 'X', 'DF', 'G0001', NULL, 'XX-X-XXXXXXXXXX', NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-08 05:34:59', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, '01', 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL);
 
 -- --------------------------------------------------------
 
@@ -1099,16 +1251,21 @@ INSERT INTO `pro_develops` (`BRAND`, `DOC_NO`, `REF_DOC`, `REVISE_NO`, `EDIT_DT`
 ('OP', '', 'IBH-F155', 0, '2024-09-10 08:29:14', '32', 'OP', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '20003', '8850080200034', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
 ('OP', '', 'IBH-F155', 0, '2024-09-10 08:29:21', '32', 'OP', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '20004', '8850080200041', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
 ('OP', '', 'IBH-F155', 0, '2024-09-10 08:30:32', '32', 'OP', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '20005', '8850080200058', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('OP', '', 'IBH-F155', 0, '2024-09-10 08:30:36', '32', 'OP', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '20006', '8850080200065', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('OP', '', 'IBH-F155', 0, '2024-09-10 08:31:36', '32', 'OP', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '20007', '8850080200072', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('OP', '', 'IBH-F155', 0, '2024-09-12 02:29:03', '32', 'OP', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '20008', '8850080200089', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('OP', '', 'IBH-F155', 0, '2024-09-12 02:34:25', '32', 'OP', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '20010', '8850080200102', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
+('OP', '', 'IBH-F155', 0, '2024-09-16 02:30:23', '32', 'OP', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '20006', '8850080200065', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
+('OP', '', 'IBH-F155', 0, '2024-09-17 10:53:07', '32', 'OP', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '20007', '8850080200072', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
+('OP', NULL, 'IBH-F155', 0, '2024-09-17 00:00:00', '32', 'OP', '', NULL, NULL, '2024-09-17', '002', '001', NULL, '20008', '8850080200089', '001', NULL, NULL, NULL, NULL, '2024-09-17', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', '', 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL),
+('OP', NULL, 'IBH-F155', 0, '2024-10-01 00:00:00', '32', 'OP', '', NULL, NULL, '2024-10-01', '002', '001', NULL, '20009', '8850080200096', '001', NULL, NULL, NULL, NULL, '2024-10-01', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', '', 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL),
+('OP', NULL, 'IBH-F155', 0, '2024-10-07 00:00:00', '32', 'OP', '', NULL, NULL, '2024-10-07', '002', '001', NULL, '20010', '8850080200102', '001', NULL, NULL, NULL, NULL, '2024-10-07', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', '', 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL),
 ('Ri', '', 'IBH-F155', 0, '2024-09-06 10:19:28', '32', 'Ri', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '29001', '8850080290011', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
 ('Ri', '', 'IBH-F155', 0, '2024-09-10 08:30:55', '32', 'Ri', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '29002', '8850080290028', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
 ('Ri', '', 'IBH-F155', 0, '2024-09-10 08:30:59', '32', 'Ri', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '29003', '8850080290035', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
 ('Ri', '', 'IBH-F155', 0, '2024-09-10 08:31:05', '32', 'Ri', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '29004', '8850080290042', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
 ('Ri', '', 'IBH-F155', 0, '2024-09-10 08:31:25', '32', 'Ri', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '29005', '8850080290059', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('CP', '', 'IBH-F155', 0, '2024-09-12 02:32:35', '32', 'CP', '', '2', '2', '2024-08-21', '002', '001', 'CP Cuticle Hair Treatment 1', '70001', '8850080700015', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL);
+('Ri', '', 'IBH-F155', 0, '2024-09-17 10:53:00', '32', 'Ri', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '29006', '8850080290066', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
+('RI', NULL, 'IBH-F155', 0, '2024-09-17 00:00:00', '32', 'RI', '', NULL, NULL, '2024-09-17', '002', '001', NULL, '29007', '8850080290073', '001', NULL, NULL, NULL, NULL, '2024-09-17', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', '', 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL),
+('CP', '', 'IBH-F155', 0, '2024-09-12 02:32:35', '32', 'CP', '', '2', '2', '2024-08-21', '002', '001', 'CP Cuticle Hair Treatment 1', '70001', '8850080700015', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
+('CP', '', 'IBH-F155', 0, '2024-09-17 10:53:38', '25', 'CP', '', '2', '2', '2024-08-21', '002', '001', 'CP Cuticle Hair Treatment 1', '70002', '8850080700022', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
+('CP', '', 'IBH-F155', 0, '2024-09-17 10:53:49', '25', 'CP', '', '2', '2', '2024-08-21', '002', '001', 'CP Cuticle Hair Treatment 1', '70003', '8850080700039', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL);
 
 -- --------------------------------------------------------
 
@@ -1434,11 +1591,11 @@ CREATE TABLE `submenus` (
 --
 
 INSERT INTO `submenus` (`id`, `menu_id`, `name`, `url`, `seq`, `status`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 5, 'จัดการเเบรนด์', '1', 1, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
-(2, 5, 'จัดการสินค้า', '2', 2, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
-(3, 5, 'จัดการบิล', '3', 3, 1, NULL, NULL, '2024-07-09 01:00:47', '2024-07-09 01:00:47'),
-(9, 6, 'Approve1', '5.1', 1, 1, NULL, NULL, '2024-07-31 04:28:26', '2024-07-31 04:28:26'),
-(10, 6, 'Approve2', '5.2', 2, 1, NULL, NULL, '2024-07-31 04:28:26', '2024-07-31 04:28:26');
+(1, 8, 'จัดการเครื่องมือ', 'tool', 1, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
+(2, 8, 'จัดการรูป', 'images', 2, 1, NULL, NULL, '2024-07-09 07:51:44', '2024-07-09 07:51:44'),
+(3, 8, 'Camera', 'camera', 3, 1, NULL, NULL, '2024-07-09 01:00:47', '2024-07-09 01:00:47'),
+(9, 4, 'Dimension', 'dimension', 1, 1, NULL, NULL, '2024-07-31 04:28:26', '2024-07-31 04:28:26'),
+(10, 4, 'Approve2', '5.2', 2, 1, NULL, NULL, '2024-07-31 04:28:26', '2024-07-31 04:28:26');
 
 -- --------------------------------------------------------
 
@@ -2815,14 +2972,17 @@ INSERT INTO `users` (`id`, `username`, `name`, `email`, `email_verified_at`, `pa
 (11, 'bo', 'ช่างโบ้', 'test@gmail.com', NULL, '$2y$10$qNXabFcf0l5rqJOoS/iaMOg0X0ljVJ4m8TxMvxE5WFJPXRO5DBZem', 'TyE0I46e23zpM6lWHXHXww79aNFKikpGWJo94KEWkoclxikPwWhW9Nqu3tZA', 1, '2022-02-28 15:21:57', '2022-10-02 22:22:30'),
 (12, 'file', 'ช่างฟิล์ม', 'test2@gmail.com', NULL, '$2y$10$oDK5H2V30XtEany.YHQDs.P56/0L2Bx/W/dgVkKT8Fi6w2gajl5re', NULL, 1, '2022-02-28 15:23:35', '2022-02-28 15:23:35'),
 (21, NULL, 'test1', 'test1@gmail.com', NULL, '$2y$10$XY8os2I.PICMI9eznO96CuUVO2EkiNSpVh9FJ.lJyF.idv.3b7iLm', NULL, 1, '2024-06-07 03:19:36', '2024-06-07 03:19:36'),
-(25, '00d750', NULL, NULL, NULL, NULL, 'JoaJFLCDesTtydmWdq3d9qe219hczmMSO3v6qi8sYN4sS2dvq17Bg0AY69wn', 1, '2024-08-05 03:22:25', '2024-08-05 03:22:25'),
-(26, '00d752', NULL, NULL, NULL, NULL, 'HWBtEIxzTsUq4UYO6tE2RpRttqrixQIZ36u36llFnGX31tPcOg6GwzcVXTZO', 1, '2024-08-05 18:50:00', '2024-08-05 18:50:00'),
+(25, '00d750', NULL, NULL, NULL, NULL, 'VBeCZqOy9YJbwGnHbI8EJkVQ2zUX4Zi8i0DdVVGYHCDrC9Ys07MM531oFGSK', 1, '2024-08-05 03:22:25', '2024-10-07 08:56:04'),
+(26, '00d752', NULL, NULL, NULL, NULL, 'Wf5XVVPpShcqkiRHIktVeouL38hvtRuTbatC7XCnB4xj9nY40UoSwlOZzoiC', 1, '2024-08-05 18:50:00', '2024-10-08 08:08:02'),
 (27, '006631', NULL, NULL, NULL, NULL, 'IRnZ0kDtYPOaO68d1QtsreqPQIpjxYc8i8yxmCx0T4ExbXX9i1dH61NhQBAm', 1, '2024-08-07 01:15:19', '2024-08-07 01:15:19'),
 (28, '006935', NULL, NULL, NULL, NULL, NULL, 1, '2024-08-07 01:17:59', '2024-08-07 01:17:59'),
-(29, '003559', NULL, NULL, NULL, NULL, 'wKeR7kAzlvANIeBaD71ADpPAyyLtvWVp16tpqWP4MABt6wfjOezYf3wiNYdU', 1, '2024-08-07 23:41:47', '2024-08-07 23:41:47'),
+(29, '003559', NULL, NULL, NULL, NULL, '4EmIPplF1U6iG4Sp4CHgNrezDmQdiG176iaaZqt4Qn5IAdy6cPa0zfWsBeVK', 1, '2024-08-07 23:41:47', '2024-10-01 10:14:38'),
 (30, '00C648', NULL, NULL, NULL, NULL, 'JYg0S1VU15z1n33xE6Aq4rFE6132Nrw6GAbZ7sszVxHvainm423rJ2wG4XfO', 1, '2024-08-07 23:50:00', '2024-08-07 23:50:00'),
-(32, '00d751', NULL, NULL, NULL, NULL, 'G0hM0IIfzC84ezup2en3ZYq4tmj19CP2e4YWvUC52vvUmtla5inG0fzBJncB', 1, '2024-08-08 23:37:47', '2024-08-08 23:37:47'),
-(34, '009166', NULL, NULL, NULL, NULL, 'lqSixX6J7ViOl4Zh9yk4WckiTs1IyaUHrK6ENWi0Grb30orn3KlSoXjBbOsv', 1, '2024-08-23 01:12:24', '2024-08-23 01:12:24');
+(32, '00d751', NULL, NULL, NULL, NULL, 'HSBItRZb0OE2qXRjeGEJkqLGdDoFKxZfpaFQR0R3ycEChUacfmdDMtglpH0I', 1, '2024-08-08 23:37:47', '2024-10-08 09:58:25'),
+(34, '009166', NULL, NULL, NULL, NULL, 'lqSixX6J7ViOl4Zh9yk4WckiTs1IyaUHrK6ENWi0Grb30orn3KlSoXjBbOsv', 1, '2024-08-23 01:12:24', '2024-08-23 01:12:24'),
+(35, '005879', NULL, NULL, NULL, NULL, '90s5YUryuNgsYOOySZv7vnXyidKG9r6TjYzysLtPqcW7fMDFSY69Ol03i69u', 1, '2024-09-18 07:09:47', '2024-09-18 07:09:47'),
+(36, 'admin', 'admin', 'admin111@gmail.com', NULL, '$2y$10$zdySVo5DfkOvX/VGdUCGXePLQ3TQELvw.ao4iWRl4a5wR1zCIn.7m', NULL, 1, '2024-09-20 04:25:54', '2024-09-20 04:25:54'),
+(39, '000069', NULL, NULL, NULL, NULL, 'VYx4XS8dyW5zsVElUXzjnJs6m5Lws71ynZ0k4QG1ZvVHVBg2swYxfh0Dtqmw', 1, '2024-09-26 01:20:42', '2024-09-26 01:20:42');
 
 -- --------------------------------------------------------
 
@@ -2845,7 +3005,7 @@ CREATE TABLE `user_permission` (
 
 INSERT INTO `user_permission` (`id`, `user_id`, `tent_id`, `position_id`, `created_at`, `updated_at`) VALUES
 (1, 1, NULL, 2, NULL, '2021-06-09 12:28:31'),
-(2, 21, 1, 2, '2021-03-24 15:33:51', '2021-03-24 15:33:51'),
+(2, 36, 1, 8, '2021-03-24 15:33:51', '2021-03-24 15:33:51'),
 (15, 25, NULL, 7, '2022-03-01 12:30:07', '2022-03-01 12:30:07'),
 (22, 29, NULL, 4, '2022-03-01 12:30:41', '2022-03-01 12:30:41'),
 (23, 30, NULL, 5, '2022-03-01 12:30:47', '2022-03-01 12:30:47'),
@@ -2853,7 +3013,9 @@ INSERT INTO `user_permission` (`id`, `user_id`, `tent_id`, `position_id`, `creat
 (46, 46, 235, 8, '2022-09-07 11:25:30', '2022-09-07 11:25:30'),
 (47, 47, 235, 8, '2022-09-07 11:25:30', '2022-09-07 11:25:30'),
 (51, 32, NULL, 6, '2024-08-09 06:37:48', '2024-08-09 06:37:48'),
-(53, 34, NULL, 3, '2024-08-23 08:12:24', '2024-08-23 08:12:24');
+(53, 34, NULL, 3, '2024-08-23 08:12:24', '2024-08-23 08:12:24'),
+(54, 35, NULL, 8, '2024-09-18 14:09:47', '2024-09-18 14:09:47'),
+(55, 39, NULL, 8, '2024-09-26 08:20:42', '2024-09-26 08:20:42');
 
 -- --------------------------------------------------------
 
@@ -2944,6 +3106,19 @@ ALTER TABLE `categories`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `com_products`
+--
+ALTER TABLE `com_products`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `company_id_2` (`company_id`,`product_id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `barcode` (`barcode`),
+  ADD KEY `no_wh_stock` (`on_wh_stock`),
+  ADD KEY `category` (`category`),
+  ADD KEY `product_id_2` (`product_id`,`category`),
+  ADD KEY `company_id` (`company_id`);
 
 --
 -- Indexes for table `conditions`
@@ -3202,6 +3377,12 @@ ALTER TABLE `comments`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `com_products`
+--
+ALTER TABLE `com_products`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=221971;
+
+--
 -- AUTO_INCREMENT for table `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
@@ -3229,13 +3410,13 @@ ALTER TABLE `manage_menus`
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=76;
 
 --
 -- AUTO_INCREMENT for table `menu_relations`
 --
 ALTER TABLE `menu_relations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=183;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=208;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -3247,7 +3428,7 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=79;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
 
 --
 -- AUTO_INCREMENT for table `positions`
@@ -3277,7 +3458,7 @@ ALTER TABLE `product_images`
 -- AUTO_INCREMENT for table `submenus`
 --
 ALTER TABLE `submenus`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `trn_dona_totambons`
@@ -3289,13 +3470,13 @@ ALTER TABLE `trn_dona_totambons`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT for table `user_permission`
 --
 ALTER TABLE `user_permission`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
