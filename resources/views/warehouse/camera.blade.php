@@ -59,6 +59,119 @@
             border-color: black;
             border-style: dashed;
         }
+        /* ************************************************************************************************* */
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* html,body{
+        display: grid;
+        height: 100%;
+        place-items: center;
+        background: #efefef;
+        } */
+        .copyright{
+            font-size: 150%;
+        }
+        .wrapper{
+            position: relative;
+            height: 500px;
+            /* width: 750px; */
+            overflow: hidden;
+            background: #fff;
+            border: 7px solid #fff;
+            box-shadow: 0px 0px 15px rgba(0,0,0,0.15);
+        }
+        .wrapper .images{
+            height: 100%;
+            width: 100%;
+            display: flex;
+        }
+        .wrapper .images .img-1{
+            height: 100%;
+            width: 100%;
+            /* background-image: url(https://render.fineartamerica.com/images/rendered/default/greeting-card/images/artworkimages/medium/3/black-sports-car-on-carbon-fiber-background-gualtiero-boffi.jpg?&targetx=-112&targety=0&imagewidth=924&imageheight=500&modelwidth=700&modelheight=500&backgroundcolor=41454A&orientation=0); */
+            background: url(https://www.orientalprincess.com/pub/media/wysiwyg/block-img-m2/beneficial/Getthelook-Website-04.jpg) no-repeat;
+        }
+        .wrapper .images .img-2{
+            position: absolute;
+            height: 100%;
+            width: 50%;
+            /* filter: blur(5px); */
+            /* background-image: url(https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2019/6/10/738354/595097.jpg); */
+            background: url(https://www.orientalprincess.com/pub/media/wysiwyg/block-img-m2/beneficial/Getthelook-Website-05.jpg) no-repeat;
+        }
+        .wrapper .slider{
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: 99;
+        }
+        .wrapper .slider input{
+            width: 100%;
+            outline: none;
+            background: none;
+            -webkit-appearance: none;
+        }
+        .slider input::-webkit-slider-thumb{
+            height: 486px;
+            width: 3px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: col-resize;
+        }
+        .slider .drag-line{
+            width: 3px;
+            height: 486px;
+            position: absolute;
+            left: 49.85%;
+            pointer-events: none;
+        }
+        .slider .drag-line::before,
+        .slider .drag-line::after{
+            position: absolute;
+            content: "";
+            width: 100%;
+            height: 222px;
+            background: #fff;
+        }
+        .slider .drag-line::before{
+            top: 0;
+        }
+        .slider .drag-line::after{
+            bottom: 0;
+        }
+        .slider .drag-line span{
+            height: 42px;
+            width: 42px;
+            border: 3px solid #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .slider .drag-line span::before,
+        .slider .drag-line span::after{
+            position: absolute;
+            content: "";
+            top: 50%;
+            border: 10px solid transparent;
+            border-bottom-width: 0px;
+            border-right-width: 0px;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+        .slider .drag-line span::before{
+            left: 40%;
+            border-left-color: #fff;
+        }
+        .slider .drag-line span::after{
+            left: 60%;
+            border-top-color: #fff;
+        }
+
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -125,6 +238,19 @@
                                                     <div class="p-2 ">
                                                         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-500"></ul>
                                                     </div>
+
+                                                    <div class="wrapper">
+                                                        <div class="images">
+                                                            <div class="img-1"></div>
+                                                            <div class="img-2"></div>
+                                                        </div>
+                                                        <div class="slider">
+                                                            <div class="drag-line">
+                                                                <span></span>
+                                                            </div>
+                                                            <input type="range" min="0" max="100" value="50">
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -134,7 +260,7 @@
                         </div>
                     </li>
                 </ul>
-                    <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
+                <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
                     <div id="loader" class="loading absolute hidden bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 animate-spin dark:text-white">
                             <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
@@ -180,6 +306,31 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
 
     <script>
+
+        // Image comparison
+        const slider = document.querySelector(".slider input");
+        const img = document.querySelector(".images .img-2");
+        const dragLine = document.querySelector(".slider .drag-line");
+        slider.oninput = ()=> {
+            let sliderVal = slider.value;
+            dragLine.style.left = sliderVal + "%";
+            img.style.width = sliderVal + "%";
+        }
+        
+        const add_element = () => {
+            const template = document.createElement('div');
+            template.classList.add("loaderslide");
+            template.setAttribute("id","slide");
+            document.body.appendChild(template);
+        }
+
+        if (sessionStorage.getItem("first_login") === 'Y') {
+            sessionStorage.setItem("first_login", "yes")
+            $("#slide").addClass("loaderslide");
+        } else {
+            $("#slide").remove();
+        }
+        // End Image comparison
 
         // reference to the current media stream
         var mediaStream = null;

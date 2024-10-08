@@ -38,6 +38,7 @@ class ProductImageController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
         // $validator = $request->validate([
         $validator = Validator::make($request->all(), [
             'files' => 'required|mimes:jpg,png,jpeg,gif,svg'

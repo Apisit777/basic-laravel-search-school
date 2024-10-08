@@ -37,6 +37,38 @@
         select.select2:required:valid + .select2-container .select2-selection--single {
             border-color: black;
         }
+
+        .select2-container--default .select2-selection--multiple { 
+            height: 55%!important;
+            min-height: 50%!important;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+            cursor: default;
+            padding-left: 12px!important;
+            padding-right: 5px;
+        }
+
+        .select2-container .select2-selection--multiple .select2-selection__rendered {
+            /* display: inline-block!important; */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding-left: 0.5rem;
+            display: flex!important;
+        }
+
+        .select2-container .select2-search--inline .select2-search__field {
+            margin-top: 0.35rem!important;
+            /* margin-bottom: 0.25rem; */
+            box-sizing: border-box;
+            width: 100%;
+            border-width: 1px;
+            --tw-border-opacity: 1;
+            border-color: rgb(0 0 0 / var(--tw-border-opacity));
+            padding-left: 0.25rem;
+            font-size: 1rem;
+            line-height: 1.5rem;
+        }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -237,10 +269,18 @@
                                                     <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
-                                                                <div class="md:col-span-6" style="position: relative;">
+                                                                <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="BARCODE">รหัส Barcode<span class="text-danger"> *</span></label>
                                                                     <!-- <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled> -->
                                                                     <input type="text" name="BARCODE" id="BARCODE" class="text-compleace-auto2 h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled>
+                                                                </div>
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="NUMBER">Sele Channel</label>
+                                                                    <select class="js-example-basic-multiple w-full rounded-sm text-xs focus:ring-none" name="sele_channel" multiple="multiple">
+                                                                        <option>orange</option>
+                                                                        <option>white</option>
+                                                                        <option>purple</option>
+                                                                    </select>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="NAME_THAI">ชื่อภาษาไทย</label>
@@ -724,6 +764,11 @@
 
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
+            let placeholder = "--- กรุณาเลือก ---";
+            $('.js-example-basic-multiple').select2({
+                placeholder: placeholder,
+            });
+
             onOpenhandler()
             document.querySelectorAll('.setcheckbox')[0].checked = true
             document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')

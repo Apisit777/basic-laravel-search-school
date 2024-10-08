@@ -37,6 +37,37 @@
         select.select2:required:valid + .select2-container .select2-selection--single {
             border-color: black;
         }
+        .select2-container--default .select2-selection--multiple { 
+            height: 55%!important;
+            min-height: 50%!important;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+            cursor: default;
+            padding-left: 12px!important;
+            padding-right: 5px;
+        }
+
+        /* .select2-container .select2-selection--multiple .select2-selection__rendered {
+            display: inline-block!important;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding-left: 0.5rem;
+            display: flex!important;
+        }
+
+        .select2-container .select2-search--inline .select2-search__field {
+            margin-top: 0.35rem!important;
+            margin-bottom: 0.25rem;
+            box-sizing: border-box;
+            width: 100%;
+            border-width: 1px;
+            --tw-border-opacity: 1;
+            border-color: rgb(0 0 0 / var(--tw-border-opacity));
+            padding-left: 0.25rem;
+            font-size: 1rem;
+            line-height: 1.5rem;
+        } */
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -265,11 +296,36 @@
                                                     <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
-                                                            <div class="md:col-span-6" style="position: relative;">
+                                                                <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="BARCODE">รหัส Barcode<span class="text-danger"> *</span></label>
                                                                     <!-- <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled> -->
                                                                     <input type="text" name="PRODUCT" id="BARCODE" class="text-compleace-auto2 h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled>
                                                                 </div>
+                                                                <!-- <div class="md:col-span-3 mb-2" style="position: relative;">
+                                                                    <label for="NUMBER">Sele Channel</label>
+                                                                    <select class="js-example-basic-multiple js-states w-full rounded-sm text-xs" multiple="multiple" name="pickup_day[]" id="multiSelect">
+                                                                        <option value="monday">Monday</option>
+                                                                        <option value="tuesday">Tuesday</option>
+                                                                        <option value="wednesday">Wednesday</option>
+                                                                        <option value="thursday">Thursday</option>
+                                                                        <option value="friday">Friday</option>
+                                                                        <option value="saturday">Saturday</option>
+                                                                        <option value="sunday">Sunday</option>
+                                                                    </select>
+                                                                </div> -->
+
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="sele_channel">Sele Channel</label>
+                                                                    <select class="js-example-basic-multiple w-full rounded-sm text-xs focus:ring-none" id="multiSelect" name="sele_channel[]" multiple="multiple">
+                                                                        <option>KU</option>
+                                                                        <option>BB</option>
+                                                                        <option>CP</option>
+                                                                        <option>GNC</option>
+                                                                        <option>LL</option>
+                                                                        <option>OP</option>
+                                                                    </select>
+                                                                </div>
+
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="NAME_THAI">ชื่อภาษาไทย</label>
                                                                     <input type="text" name="NAME_THAI" id="NAME_THAI" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
@@ -320,7 +376,7 @@
                                                                     <select  class="js-example-basic-single w-full rounded-sm text-xs select2" name="BRAND_P" id="BRAND_P">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($brand_ps as $key => $brand_p)
-                                                                            <option value={{ $brand_p->ID }}>{{ $brand_p->REMARK }}</option>
+                                                                            <option value={{ $brand_p->ID }}>{{ $brand_p->ID. ' - (' .$brand_p->REMARK .')' }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <!-- <span id="BRAND_P_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span> -->
@@ -742,6 +798,64 @@
 
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
+            let placeholder = "--- กรุณาเลือก ---";
+            $('.js-example-basic-multiple').select2({
+                placeholder: placeholder,
+                closeOnSelect: false,
+                allowClear: true,
+            });
+
+            // $('.js-example-basic-multiple').select2({
+            //     placeholder: '--- กรุณาเลือก ---',
+            //     closeOnSelect: false,
+            //     templateResult: formatState,
+            //     allowHtml: true,
+            //     allowClear: true,
+            //     tags: true
+            // });
+
+            // $('#multiSelect').on('select2:select', function(e) {
+            //     updateCheckboxState();
+            // });
+
+            // $('#multiSelect').on('select2:unselect', function(e) {
+            //     updateCheckboxState();
+            // });
+
+            // function updateCheckboxState() {
+            //     var selectedOptions = $('.select2-results__option[aria-selected=true]');
+            //     selectedOptions.each(function() {
+            //         var $checkbox = $(this).find('.select2-checkbox');
+            //         $checkbox.prop('checked', true);
+            //     });
+
+            //     var unselectedOptions = $('.select2-results__option[aria-selected=false]');
+            //     unselectedOptions.each(function() {
+            //         var $checkbox = $(this).find('.select2-checkbox');
+            //         $checkbox.prop('checked', false);
+            //     });
+            // }
+
+            // function formatState(state) {
+            //     if (!state.id) {
+            //         return state.text;
+            //     }
+
+            //     var $state = $(
+            //         '<span><input type="checkbox" class="select2-checkbox" /> ' + state.text + '</span>'
+            //     );
+
+            //     $state.find('.select2-checkbox').prop('checked', state.selected);
+
+            //     $state.find('.select2-checkbox').on('click', function() {
+            //         state.selected = !state.selected;
+            //         $(this).prop('checked', state.selected);
+            //         $('#multiSelect').trigger('change');
+            //     });
+
+            //     return $state;
+            // }
+
             onOpenhandler()
             document.querySelectorAll('.setcheckbox')[0].checked = true
             document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
