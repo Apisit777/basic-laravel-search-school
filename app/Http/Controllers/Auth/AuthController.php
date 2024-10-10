@@ -263,12 +263,28 @@ class AuthController extends Controller
                     'username' => $request->username
                 ]);
                 $namePosition = position::select('id', 'name_position')->where('name_position', '=', $response['data']['roles'][0])->first();
-                if ($response['data']['roles'][0] != $namePosition) {
-                    $createPosition = position::updateOrCreate(['id' => $namePosition->id],
+                // dd($namePosition);
+            //     if ($response['data']['roles'][0] != $namePosition) {
+            //         $createPosition = position::updateOrCreate(['id' => $namePosition->id],
+            // [
+            //             'name_position' => $response['data']['roles'][0]
+            //         ]);
+            //     }
+                if ($namePosition) {
+                    $brand = substr($response['data']['roles'][0], -2);
+                    $createPosition = position::update(['id' => $namePosition->id],
             [
-                        'name_position' => $response['data']['roles'][0]
+                        'name_position' => $response['data']['roles'][0],
+                        'brand' => $brand
+                    ]);
+                } else {
+                    $brand = substr($response['data']['roles'][0], -2);
+                    $createPosition = position::create([
+                        'name_position' => $response['data']['roles'][0],
+                        'brand' => $brand
                     ]);
                 }
+                // dd($createPosition);
                 $positionId = position::select('id', 'name_position')
                     ->where('name_position', '=', $response['data']['roles'][0])
                     ->first();
@@ -280,6 +296,7 @@ class AuthController extends Controller
                 ->where('username', $request->username)
                 ->first();
             }
+            // dd(1);
             $user->setRememberToken(Str::random(60));
             $user->save();
             Auth::login($user, true);

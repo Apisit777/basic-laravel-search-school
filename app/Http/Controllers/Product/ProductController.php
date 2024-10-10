@@ -43,28 +43,64 @@ class ProductController extends Controller
     public function index()
     {
         $data = Product1::all();
-        // dd($data );
         $user = User::all();
-
         $product_seq = Product::select('seq')->get();
-
         $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
         // dd($userpermission);
+        
         if (in_array($userpermission, [$isSuperAdmin, 'Admin'])) {
             $brands = Barcode::select(
-                'BRAND')
+            'BRAND')
             // ->whereNotIn('STATUS', ['ALL'])
             ->pluck('BRAND')
             ->toArray();
+
+            $dataProductMasterArr = Product1::select(
+            'PRODUCT')
+            ->pluck('PRODUCT')
+            ->toArray();
+
+            $data_PRODUCT = Product1::select('PRODUCT')->pluck('PRODUCT')->toArray();
+            $dataProductMaster = Pro_develops::select(
+            'PRODUCT')
+            ->whereNotIn('PRODUCT', $data_PRODUCT)
+            ->get();
+
+            $dataProductMasterConsumablesArr = Product1::select(
+            'PRODUCT')
+            ->pluck('PRODUCT')
+            ->toArray();
+
         } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
             $brands = Barcode::select(
-                'BRAND',
+            'BRAND',
                 'STATUS')
-                ->whereIn('STATUS', ['OP', 'RI'])
+            ->whereIn('STATUS', ['OP', 'RI'])
             ->pluck('BRAND')
             ->toArray();
+
+            $dataProductMasterArr = Product1::select(
+            'PRODUCT')
+            ->whereNotIn('BRAND', ['CP', 'KM'])
+            ->pluck('PRODUCT')
+            ->toArray();
+
+            $data_PRODUCT = Product1::select('PRODUCT')->pluck('PRODUCT')->toArray();
+            $dataProductMaster = Pro_develops::select(
+            'PRODUCT')
+            ->whereIn('BRAND', ['OP', 'RI'])
+            ->whereNotIn('PRODUCT', $data_PRODUCT)
+            ->get();
+
+            $dataProductMasterConsumablesArr = Product1::select(
+            'PRODUCT')
+            ->where('BRAND', 'KM')
+            ->where('GRP_P', 'OP')
+            ->pluck('PRODUCT')
+            ->toArray();
+
         } else if (in_array($userpermission, ['Marketing - CPS'])) {
             $brands = Barcode::select(
                 'BRAND',
@@ -72,34 +108,34 @@ class ProductController extends Controller
             ->whereIn('STATUS', ['CP'])
             ->pluck('BRAND')
             ->toArray();
-        }
 
-        $dataProductMasterArr = Product1::select(
+            $dataProductMasterArr = Product1::select(
             'PRODUCT')
-            ->whereNotIn('STATUS', ['OP - OP', 'OP - KM'])
+            ->whereNotIn('BRAND', ['OP', 'KM'])
             ->pluck('PRODUCT')
             ->toArray();
 
-        $dataProductMasterConsumablesArr = Product1::select(
+            $data_PRODUCT = Product1::select('PRODUCT')->pluck('PRODUCT')->toArray();
+            $dataProductMaster = Pro_develops::select(
             'PRODUCT')
-            ->whereIn('STATUS', ['OP - OP', 'OP - KM'])
-            ->pluck('PRODUCT')
-            ->toArray();
-
-        // dd($dataProductMasterConsumablesArr);
-        $data_PRODUCT = Product1::select('PRODUCT')->pluck('PRODUCT')->toArray();
-        $dataProductMaster = Pro_develops::select(
-            'PRODUCT')
+            ->whereIn('BRAND', ['CP'])
             ->whereNotIn('PRODUCT', $data_PRODUCT)
             ->get();
 
-        $productCodeArr = $dataProductMaster->select('PRODUCT')->pluck('PRODUCT')->toArray();
+            $dataProductMasterConsumablesArr = Product1::select(
+            'PRODUCT')
+            ->where('BRAND', 'KM')
+            ->where('GRP_P', 'CP')
+            ->pluck('PRODUCT')
+            ->toArray();
 
+        }
+        
+        // dd($dataProductMasterConsumablesArr);
+        $productCodeArr = $dataProductMaster->select('PRODUCT')->pluck('PRODUCT')->toArray();
         $data_barcode = Pro_develops::select(
-            'BARCODE'
-        )
+        'BARCODE')
         ->pluck('BARCODE')->toArray();
-        // dd($dataProductMasterArr);
 
         return view('product.index', compact('user', 'product_seq', 'brands', 'productCodeArr', 'dataProductMasterArr', 'dataProductMasterConsumablesArr', 'data_barcode'));
     }
@@ -107,10 +143,9 @@ class ProductController extends Controller
     public function getBarcode(Request $request)
     {
         $productCodes = Pro_develops::select(
-                'BARCODE'
-            )
-            ->where('PRODUCT', $request->input('BARCODE'))
-            ->first();
+            'BARCODE')
+        ->where('PRODUCT', $request->input('BARCODE'))
+        ->first();
 
         // dd($productCodes);
         return response()->json(['productCodes' => $productCodes]);
@@ -241,15 +276,31 @@ class ProductController extends Controller
         $list_position = position::select('id', 'name_position')->get();
 
         // $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
+        $allBrands = Accessery::select('BRAND')->whereIn('BRAND', ['OP', 'CP', 'KU'])->get();
+        // $allBrands = Accessery::select('COMPANY')->get();
+        $defaultBrands = Accessery::all();
+
         $brands = Accessery::all();
 
         if (in_array($userpermission, [$isSuperAdmin])) {
+            // $defaultBrands = Accessery::select(
+            //     'COMPANY',
+            //     'DESCRIPTION')
+            // ->get();
+
             $brands = Accessery::select(
                 'COMPANY',
                 'DESCRIPTION')
             ->get();
         }
         else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+            $defaultBrands = Accessery::select(
+                'BRAND')
+            ->where('COMPANY', 'OP')
+            ->where('BRAND', 'OP')
+            ->pluck('BRAND')
+            ->toArray();
+
             $brands = Accessery::select(
                 'COMPANY',
                 'DESCRIPTION')
@@ -266,8 +317,8 @@ class ProductController extends Controller
             ->get();
         }
 
-        // dd($brands);
-        return view('product.create', compact('productCode', 'list_position', 'brands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
+        // dd($defaultBrands);
+        return view('product.create', compact('productCode', 'list_position', 'brands', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
     }
 
     public function createConsumables(Request $request)

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 08, 2024 at 12:41 PM
+-- Generation Time: Oct 10, 2024 at 12:21 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -40,10 +40,11 @@ CREATE TABLE `accesseries` (
 --
 
 INSERT INTO `accesseries` (`ID`, `COMPANY`, `BRAND`, `DESCRIPTION`, `REMARK`) VALUES
-(1, 'OP', '', 'OP', ''),
+(1, 'OP', 'OP', 'OP', ''),
 (2, 'OP', '', 'KM', 'KM วัสดุสิ้นเปลือง'),
-(3, 'CP', '', 'CP', ''),
-(4, 'CP', '', 'KM', 'KM วัสดุสิ้นเปลือง');
+(3, 'CP', 'CP', 'CP', ''),
+(4, 'CP', '', 'KM', 'KM วัสดุสิ้นเปลือง'),
+(5, 'KU', 'KU', 'KU', '');
 
 -- --------------------------------------------------------
 
@@ -115,7 +116,8 @@ CREATE TABLE `barcodes` (
 INSERT INTO `barcodes` (`ID`, `COMPANY`, `BRAND`, `B_CODE`, `NUMBER`, `REMARK`, `STATUS`) VALUES
 (1, 'OP', 'OP', '88500802', 10, '', 'OP'),
 (3, 'OP', 'RI', '88500802', 9007, 'Brand Ri En', 'RI'),
-(5, 'CP', 'CP', '88500807', 3, '0', 'CP');
+(5, 'CP', 'CP', '88500807', 3, '0', 'CP'),
+(11, 'KU', 'KU', '885008011', 0, '', 'KU');
 
 -- --------------------------------------------------------
 
@@ -468,7 +470,14 @@ INSERT INTO `com_products` (`id`, `corporation_id`, `company_id`, `product_id`, 
 (208211, '', 'OP', '20528', '8850080205282', 'KM', 'EYE CLOURS REF.02', 'EYE CLOURS REF.02', '', '', 20.00, 27.00, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', 'OCEC02', 0.00, '', '', 0.00, 0.00, 0.00, '', 0.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2018-04-07', '06:31:15', 'system', '', 0.0000, 0.0000, '', 0.0000, 0.0000, 0.0000, '', '**', '99999', '99999', '99999', '01', 0.00, 'N', 'N', '', '', 0.00, '2018-08-21 08:10:23', 'Y', 0.00, 0.0000, '', '', '', 0, 0, '1900-01-01 00:00:00', ''),
 (208212, '', 'OP', '20529', '8850080205299', 'KM', 'EYE CLOURS REF.03', 'EYE CLOURS REF.03', '', '', 20.00, 27.00, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', 'OCEC03', 0.00, '', '', 0.00, 0.00, 0.00, '', 0.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2018-04-07', '06:31:16', 'system', '', 0.0000, 0.0000, '', 0.0000, 0.0000, 0.0000, '', '**', '99999', '99999', '99999', '01', 0.00, 'N', 'N', '', '', 0.00, '2018-08-21 08:10:23', 'Y', 0.00, 0.0000, '', '', '', 0, 0, '1900-01-01 00:00:00', ''),
 (208213, '', 'OP', '20530', '8850080205305', 'KM', 'EYE CLOURS REF.04', 'EYE CLOURS REF.04', '', '', 20.00, 27.00, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', 'OCEC04', 0.00, '', '', 0.00, 0.00, 0.00, '', 0.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2018-04-07', '06:31:18', 'system', '', 0.0000, 0.0000, '', 0.0000, 0.0000, 0.0000, '', '**', '99999', '99999', '99999', '01', 0.00, 'N', 'N', '', '', 0.00, '2018-08-21 08:10:23', 'Y', 0.00, 0.0000, '', '', '', 0, 0, '1900-01-01 00:00:00', ''),
-(195795, '', 'KM', 'HTSGOE4000', 'HTSGOE4000', 'KM', 'ORIENTAL ESSENCE SHOWER GEL', 'ORIENTAL ESSENCE SHOWER GEL', '', '', 150.50, 0.00, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', '', 0.00, '', '', 1.00, 1.00, 1.00, '', 1.00, '', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '', 1.0000, 0.0000, '', 0.0000, 12.0000, 300.0000, 'KM', '', '00000', '00002', '00001', '01', 1.00, 'N', 'N', 'Y', '', 1.00, '2016-05-18 06:54:05', 'Y', 1.00, 1.0000, '', '', '', 0, 0, '1900-01-01 00:00:00', '');
+(195795, '', 'KM', 'HTSGOE4000', 'HTSGOE4000', 'KM', 'ORIENTAL ESSENCE SHOWER GEL', 'ORIENTAL ESSENCE SHOWER GEL', '', '', 150.50, 0.00, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', '', 0.00, '', '', 1.00, 1.00, 1.00, '', 1.00, '', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '', 1.0000, 0.0000, '', 0.0000, 12.0000, 300.0000, 'KM', '', '00000', '00002', '00001', '01', 1.00, 'N', 'N', 'Y', '', 1.00, '2016-05-18 06:54:05', 'Y', 1.00, 1.0000, '', '', '', 0, 0, '1900-01-01 00:00:00', ''),
+(217561, '', 'KU', '001', '001', 'KM', 'ตู้ใสหนังสือ', '-', '', '', 350.00, 350.00, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', '', 0.00, '', '', 0.00, 0.00, 0.00, '', 0.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2017-04-09', '10:30:26', 'system', '', 0.0000, 0.0000, '', 0.0000, 0.0000, 0.0000, '', '**', 'no', 'no', 'no', '06', 0.00, 'N', 'N', '', '', 0.00, '2018-08-21 08:10:23', 'Y', 0.00, 0.0000, '', '', '', 0, 0, '1900-01-01 00:00:00', ''),
+(205139, '', 'KU', '0801001', '0801001', 'KM', 'โฟร์โมสต์ 225ml รสหวาน', 'โฟร์โมสต์ 225ml รสหวาน', '', '', 10.00, 9.36, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', '', 0.00, '', '', 0.00, 0.00, 0.00, '', 0.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2011-04-29', '10:24:41', 'system', '', 0.0000, 0.0000, '', 0.0000, 0.0000, 0.0000, '', '', '01', '01', '02', '01', 0.00, 'N', 'N', '', '', 0.00, '0000-00-00 00:00:00', 'Y', 0.00, 0.0000, '', '', '', 0, 0, '1900-01-01 00:00:00', ''),
+(203191, '', 'KU', '11001', '8850080110012', 'KM', 'น้ำดื่มกตัญญู ขนาด 600 ml', 'น้ำดื่มกตัญญู ขนาด 600 ml', '', '', 7.00, 3.27, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', '', 0.00, '', '', 1.00, 1.00, 1.00, '', 1.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2016-05-18', '00:26:13', 'system', '', 1.0000, 0.0000, '', 0.0000, 12.0000, 300.0000, 'KM', '', '0101', '0001', '0002', '01', 0.00, 'N', 'N', '', '', 1.00, '2016-05-17 17:26:13', 'Y', 1.00, 1.0000, '', '', '', 0, 0, '1900-01-01 00:00:00', ''),
+(203192, '', 'KU', '11002', '8850080110029', 'KM', 'ข้าวหอมมะลิกตัญญู ขนาด 5 kg', 'ข้าวหอมมะลิกตัญญู ขนาด 5 kg', '', '', 249.00, 191.74, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', '', 0.00, '', '', 1.00, 1.00, 1.00, '', 5.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2016-05-18', '00:26:15', 'system', '', 1.0000, 0.0000, '', 0.0000, 12.0000, 300.0000, 'KM', '', '0101', '0001', '0001', '01', 0.00, 'N', 'N', 'Y', 'Y', 1.00, '2016-05-17 17:26:15', 'Y', 1.00, 1.0000, '', '', '', 0, 0, '1900-01-01 00:00:00', ''),
+(203193, '', 'KU', '11003', '8850080110036', 'KM', 'ข้าวหอมมะลิกตัญญู ขนาด 2 kg', 'ข้าวหอมมะลิกตัญญู ขนาด 2 kg', '', '', 109.00, 67.89, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', '', 0.00, '', '', 18.50, 32.00, 6.50, '', 2.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2016-05-18', '00:26:16', 'system', '', 3848.0000, 0.0000, '', 0.0000, 12.0000, 300.0000, 'KM', '', '0101', '0001', '0001', '01', 0.00, 'N', 'N', '', '', 6.50, '2016-05-17 17:26:16', 'Y', 6.50, 3848.0000, '', '', '', 0, 0, '1900-01-01 00:00:00', ''),
+(203194, '', 'KU', '11004', '8850080110043', 'KM', 'สบู่กตัญญู ขนาด 115 g', 'สบู่กตัญญู ขนาด 115 g', '', '', 0.00, 0.00, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', '', 0.00, '', '', 1.00, 1.00, 1.00, '', 1.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2011-04-25', '10:23:19', 'system', '', 1.0000, 0.0000, '', 0.0000, 10.0000, 300.0000, 'KM', '', '0301', '0003', '0005', '01', 0.00, 'N', 'N', '', '', 1.00, '2013-07-11 05:23:30', 'Y', 1.00, 1.0000, '', '', '', 0, 0, '1900-01-01 00:00:00', ''),
+(203195, '', 'KU', '11005', '8850080110050', 'KM', 'น้ำดื่มกตัญญู ขนาด 220 ml บรรจุ 48 ถ้วย', 'KATANYU Drinking Water 220 ml 48 priece', '', '', 79.40, 65.00, 'ชิ้น', '', '', 0.00, '', '', '', 0.00, '', '', 0.00, '', '', 1.00, 1.00, 1.00, '', 1.00, 'N', '', 0.00, 0.00, '0', '', '', 0.00, 0.00, 0.00, '', '1900-01-01', '00:00:00', '', '1900-01-01', '00:00:00', '', '2016-05-18', '00:26:18', 'system', '', 1.0000, 0.0000, '', 0.0000, 12.0000, 300.0000, 'KU', '', '0101', '0001', '0002', '01', 0.00, 'N', 'N', 'Y', 'Y', 1.00, '2016-09-14 07:47:02', 'Y', 1.00, 1.0000, '', '', '', 0, 0, '1900-01-01 00:00:00', '');
 
 -- --------------------------------------------------------
 
@@ -673,7 +682,9 @@ INSERT INTO `menu_relations` (`id`, `position_id`, `menu_id`, `submenu_id`, `vie
 (200, 7, 4, 9, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (205, 6, 8, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (206, 6, 8, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(207, 6, 8, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(207, 6, 8, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(208, 15, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(209, 15, 4, 9, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1002,6 +1013,7 @@ INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `n
 CREATE TABLE `positions` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `name_position` varchar(255) DEFAULT NULL COMMENT 'ชื่อบทบาท',
+  `brand` varchar(10) DEFAULT NULL,
   `created_by` int(11) DEFAULT NULL,
   `updated_by` int(11) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -1012,15 +1024,15 @@ CREATE TABLE `positions` (
 -- Dumping data for table `positions`
 --
 
-INSERT INTO `positions` (`id`, `name_position`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
-(1, 'Superadmin', NULL, NULL, NULL, NULL),
-(2, 'Manager_Account', NULL, NULL, NULL, NULL),
-(3, 'Accounting', NULL, NULL, NULL, NULL),
-(4, 'Category - OP', NULL, NULL, NULL, NULL),
-(5, 'Product - OP', NULL, NULL, NULL, NULL),
-(6, 'E-Commerce - OP', NULL, NULL, NULL, NULL),
-(7, 'Marketing - CPS', NULL, NULL, NULL, NULL),
-(8, 'Admin', NULL, NULL, NULL, NULL);
+INSERT INTO `positions` (`id`, `name_position`, `brand`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES
+(1, 'Superadmin', NULL, NULL, NULL, NULL, NULL),
+(2, 'Manager_Account', NULL, NULL, NULL, NULL, NULL),
+(3, 'Accounting', NULL, NULL, NULL, NULL, NULL),
+(4, 'Category - OP', 'OP', NULL, NULL, NULL, NULL),
+(5, 'Product - OP', NULL, NULL, NULL, NULL, NULL),
+(6, 'E-Commerce - OP', 'OP', NULL, NULL, NULL, NULL),
+(7, 'Marketing - CPS', 'CP', NULL, NULL, NULL, NULL),
+(8, 'Admin', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1115,7 +1127,6 @@ CREATE TABLE `product1s` (
 --
 
 INSERT INTO `product1s` (`BRAND`, `PRODUCT`, `BARCODE`, `COLOR`, `GRP_P`, `SUPPLIER`, `NAME_THAI`, `NAME_ENG`, `SHORT_THAI`, `SHORT_ENG`, `VENDOR`, `PRICE`, `COST`, `UNIT`, `UNIT_Q`, `SOLUTION`, `SERIES`, `CATEGORY`, `NON_VAT`, `STATUS`, `S_CAT`, `PDM_GROUP`, `BRAND_P`, `REGISTER`, `CONDITION_SALE`, `WHOLE_SALE`, `GP`, `RETURN`, `O_PRODUCT`, `BAR_PACK1`, `BAR_PACK2`, `BAR_PACK3`, `BAR_PACK4`, `PACK_SIZE1`, `PACK_SIZE2`, `PACK_SIZE3`, `PACK_SIZE4`, `REG_DATE`, `AGE`, `STORAGE_TEMP`, `WIDTH`, `HEIGHT`, `WIDE`, `NAME_EXP`, `NET_WEIGHT`, `UNIT_TYPE`, `TYPE_G`, `CONTROL_STK`, `TESTER`, `OPT_DATE1`, `OPT_DATE2`, `OPT_TXT1`, `OPT_TXT2`, `OPT_NUM1`, `OPT_NUM2`, `ACC_TYPE`, `ACC_DT`, `USER_EDIT`, `EDIT_DT`) VALUES
-('KM', '111111', '111111', NULL, 'OP', '5050', NULL, NULL, NULL, NULL, 'KM', NULL, NULL, '01', NULL, '80001', '80001', '80001', 'N', 'D', 'DF', '99999', NULL, NULL, 'C', NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01 04:31:37', NULL, 'N', NULL, NULL, NULL, NULL, NULL, '01', '02', 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, '80004', NULL, '32', NULL),
 ('OP', '20001', '8850080200010', 'Yellow', 'OP', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2001-05-28 00:00:00', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', 'transfer', '2005-12-24 00:00:00'),
 ('OP', '20002', '8850080200027', 'Yellow', 'OP', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-10 08:30:13', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
 ('OP', '20003', '8850080200034', 'Yellow', 'OP', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-10 08:32:23', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
@@ -1125,9 +1136,9 @@ INSERT INTO `product1s` (`BRAND`, `PRODUCT`, `BARCODE`, `COLOR`, `GRP_P`, `SUPPL
 ('OP', '29001', '8850080290011', 'Yellow', 'RE', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-13 08:15:27', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
 ('OP', '29002', '8850080290028', 'Yellow', 'RE', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-13 08:17:27', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
 ('CP', '70001', '8850080700015', 'Yellow', 'CM', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-13 08:35:03', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
+('KM', 'CP111111', 'CP111111', NULL, 'CP', '5050', NULL, NULL, NULL, NULL, 'KM', NULL, NULL, '01', NULL, '80001', '80001', '80001', 'N', 'D', 'DF', '99999', NULL, NULL, 'C', NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-01 04:31:37', NULL, 'N', NULL, NULL, NULL, NULL, NULL, '01', '02', 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, '80004', NULL, '32', NULL),
 ('KM', 'NPD0000001', 'NPD0000001', NULL, 'OP', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'E', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-07 03:05:56', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL),
 ('KM', 'NPD0000002', 'NPD0000002', NULL, 'OP', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '80001', NULL, '80001', 'Y', 'E', 'DF', 'G0001', NULL, 'XX-X-XXXXXXXXXX', NULL, NULL, NULL, 'Y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-07 02:59:49', NULL, 'Y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Y', 'Y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL),
-('OP', 'NPD0000111', 'NPD0000111', NULL, 'OP', '5050', NULL, NULL, NULL, NULL, 'KM', NULL, NULL, NULL, NULL, '80001', NULL, '80001', 'N', 'L', 'DF', '99999', NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-08 08:33:55', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, '01', 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL),
 ('KM', 'NPD0000113', 'NPD0000113', NULL, 'OP', '5050', NULL, NULL, NULL, NULL, 'OP', NULL, NULL, NULL, NULL, '80001', NULL, '80001', 'N', 'X', 'DF', 'G0001', NULL, 'XX-X-XXXXXXXXXX', NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-08 05:34:59', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, '01', 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL);
 
 -- --------------------------------------------------------
@@ -2972,17 +2983,17 @@ INSERT INTO `users` (`id`, `username`, `name`, `email`, `email_verified_at`, `pa
 (11, 'bo', 'ช่างโบ้', 'test@gmail.com', NULL, '$2y$10$qNXabFcf0l5rqJOoS/iaMOg0X0ljVJ4m8TxMvxE5WFJPXRO5DBZem', 'TyE0I46e23zpM6lWHXHXww79aNFKikpGWJo94KEWkoclxikPwWhW9Nqu3tZA', 1, '2022-02-28 15:21:57', '2022-10-02 22:22:30'),
 (12, 'file', 'ช่างฟิล์ม', 'test2@gmail.com', NULL, '$2y$10$oDK5H2V30XtEany.YHQDs.P56/0L2Bx/W/dgVkKT8Fi6w2gajl5re', NULL, 1, '2022-02-28 15:23:35', '2022-02-28 15:23:35'),
 (21, NULL, 'test1', 'test1@gmail.com', NULL, '$2y$10$XY8os2I.PICMI9eznO96CuUVO2EkiNSpVh9FJ.lJyF.idv.3b7iLm', NULL, 1, '2024-06-07 03:19:36', '2024-06-07 03:19:36'),
-(25, '00d750', NULL, NULL, NULL, NULL, 'VBeCZqOy9YJbwGnHbI8EJkVQ2zUX4Zi8i0DdVVGYHCDrC9Ys07MM531oFGSK', 1, '2024-08-05 03:22:25', '2024-10-07 08:56:04'),
-(26, '00d752', NULL, NULL, NULL, NULL, 'Wf5XVVPpShcqkiRHIktVeouL38hvtRuTbatC7XCnB4xj9nY40UoSwlOZzoiC', 1, '2024-08-05 18:50:00', '2024-10-08 08:08:02'),
+(25, '00d750', NULL, NULL, NULL, NULL, '2Qoh4sKDLBQvh96MqwrfaNiVguXjBLi5gM8AtCLW946YKx9j2y35YmlPQhnt', 1, '2024-08-05 03:22:25', '2024-10-10 04:13:22'),
+(26, '00d752', NULL, NULL, NULL, NULL, '4v4AV5QfiJXTjiIY8PeuwtKD6GNsMkp5NpFywfGiGs2w571hmg9GdrboKnNl', 1, '2024-08-05 18:50:00', '2024-10-10 06:56:01'),
 (27, '006631', NULL, NULL, NULL, NULL, 'IRnZ0kDtYPOaO68d1QtsreqPQIpjxYc8i8yxmCx0T4ExbXX9i1dH61NhQBAm', 1, '2024-08-07 01:15:19', '2024-08-07 01:15:19'),
 (28, '006935', NULL, NULL, NULL, NULL, NULL, 1, '2024-08-07 01:17:59', '2024-08-07 01:17:59'),
-(29, '003559', NULL, NULL, NULL, NULL, '4EmIPplF1U6iG4Sp4CHgNrezDmQdiG176iaaZqt4Qn5IAdy6cPa0zfWsBeVK', 1, '2024-08-07 23:41:47', '2024-10-01 10:14:38'),
 (30, '00C648', NULL, NULL, NULL, NULL, 'JYg0S1VU15z1n33xE6Aq4rFE6132Nrw6GAbZ7sszVxHvainm423rJ2wG4XfO', 1, '2024-08-07 23:50:00', '2024-08-07 23:50:00'),
-(32, '00d751', NULL, NULL, NULL, NULL, 'HSBItRZb0OE2qXRjeGEJkqLGdDoFKxZfpaFQR0R3ycEChUacfmdDMtglpH0I', 1, '2024-08-08 23:37:47', '2024-10-08 09:58:25'),
+(32, '00d751', NULL, NULL, NULL, NULL, 'Yh8aMJPgNAYTPHGNE2LJh3IWVcEsr3bh5NHMjL7KAbMCXg9Gxg6GJLhUYvRY', 1, '2024-08-08 23:37:47', '2024-10-10 06:59:25'),
 (34, '009166', NULL, NULL, NULL, NULL, 'lqSixX6J7ViOl4Zh9yk4WckiTs1IyaUHrK6ENWi0Grb30orn3KlSoXjBbOsv', 1, '2024-08-23 01:12:24', '2024-08-23 01:12:24'),
 (35, '005879', NULL, NULL, NULL, NULL, '90s5YUryuNgsYOOySZv7vnXyidKG9r6TjYzysLtPqcW7fMDFSY69Ol03i69u', 1, '2024-09-18 07:09:47', '2024-09-18 07:09:47'),
 (36, 'admin', 'admin', 'admin111@gmail.com', NULL, '$2y$10$zdySVo5DfkOvX/VGdUCGXePLQ3TQELvw.ao4iWRl4a5wR1zCIn.7m', NULL, 1, '2024-09-20 04:25:54', '2024-09-20 04:25:54'),
-(39, '000069', NULL, NULL, NULL, NULL, 'VYx4XS8dyW5zsVElUXzjnJs6m5Lws71ynZ0k4QG1ZvVHVBg2swYxfh0Dtqmw', 1, '2024-09-26 01:20:42', '2024-09-26 01:20:42');
+(39, '000069', NULL, NULL, NULL, NULL, 'VYx4XS8dyW5zsVElUXzjnJs6m5Lws71ynZ0k4QG1ZvVHVBg2swYxfh0Dtqmw', 1, '2024-09-26 01:20:42', '2024-09-26 01:20:42'),
+(47, '003559', NULL, NULL, NULL, NULL, 'znlbAKvQMfGouAIA8nMvK2LsUU21F7rQG3BXCc7AEDCzGSZo5D0RVUbRxkK3', 1, '2024-10-10 06:53:31', '2024-10-10 06:57:34');
 
 -- --------------------------------------------------------
 
@@ -3007,15 +3018,14 @@ INSERT INTO `user_permission` (`id`, `user_id`, `tent_id`, `position_id`, `creat
 (1, 1, NULL, 2, NULL, '2021-06-09 12:28:31'),
 (2, 36, 1, 8, '2021-03-24 15:33:51', '2021-03-24 15:33:51'),
 (15, 25, NULL, 7, '2022-03-01 12:30:07', '2022-03-01 12:30:07'),
-(22, 29, NULL, 4, '2022-03-01 12:30:41', '2022-03-01 12:30:41'),
 (23, 30, NULL, 5, '2022-03-01 12:30:47', '2022-03-01 12:30:47'),
 (25, 26, NULL, 1, '2022-03-01 12:32:54', '2022-03-01 12:32:54'),
 (46, 46, 235, 8, '2022-09-07 11:25:30', '2022-09-07 11:25:30'),
-(47, 47, 235, 8, '2022-09-07 11:25:30', '2022-09-07 11:25:30'),
 (51, 32, NULL, 6, '2024-08-09 06:37:48', '2024-08-09 06:37:48'),
 (53, 34, NULL, 3, '2024-08-23 08:12:24', '2024-08-23 08:12:24'),
 (54, 35, NULL, 8, '2024-09-18 14:09:47', '2024-09-18 14:09:47'),
-(55, 39, NULL, 8, '2024-09-26 08:20:42', '2024-09-26 08:20:42');
+(55, 39, NULL, 8, '2024-09-26 08:20:42', '2024-09-26 08:20:42'),
+(59, 47, NULL, 15, '2024-10-10 13:53:31', '2024-10-10 13:53:31');
 
 -- --------------------------------------------------------
 
@@ -3350,7 +3360,7 @@ ALTER TABLE `vendors`
 -- AUTO_INCREMENT for table `accesseries`
 --
 ALTER TABLE `accesseries`
-  MODIFY `ID` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID` int(2) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `accounts`
@@ -3362,7 +3372,7 @@ ALTER TABLE `accounts`
 -- AUTO_INCREMENT for table `barcodes`
 --
 ALTER TABLE `barcodes`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `brands`
@@ -3416,7 +3426,7 @@ ALTER TABLE `menus`
 -- AUTO_INCREMENT for table `menu_relations`
 --
 ALTER TABLE `menu_relations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=208;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=210;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -3434,7 +3444,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `positions`
 --
 ALTER TABLE `positions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `posts`
@@ -3470,13 +3480,13 @@ ALTER TABLE `trn_dona_totambons`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `user_permission`
 --
 ALTER TABLE `user_permission`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

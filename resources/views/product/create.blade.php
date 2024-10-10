@@ -181,6 +181,7 @@
                     </div>
                 </div>
             </div>
+
             <form class="" action="" method="POST" id="create_product_master">
                 <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
                     <div class="lg:col-span-4 xl:grid-cols-4">
@@ -314,15 +315,13 @@
                                                                     </select>
                                                                 </div> -->
 
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="sele_channel">Sele Channel</label>
-                                                                    <select class="js-example-basic-multiple w-full rounded-sm text-xs focus:ring-none" id="multiSelect" name="sele_channel[]" multiple="multiple">
-                                                                        <option>KU</option>
-                                                                        <option>BB</option>
-                                                                        <option>CP</option>
-                                                                        <option>GNC</option>
-                                                                        <option>LL</option>
-                                                                        <option>OP</option>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Sele Channel</label>
+                                                                    <select class="js-example-basic-multiple w-full rounded-sm text-xs" id="multiSelect" name="sele_channel[]" multiple="multiple">
+                                                                        <!-- <option value=""> --- กรุณาเลือก ---</option> -->
+                                                                        @foreach ($allBrands as $key => $allBrand)
+                                                                                <option value={{ $allBrand->ID }}>{{ $allBrand->BRAND }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
 
@@ -799,62 +798,31 @@
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
             let placeholder = "--- กรุณาเลือก ---";
-            $('.js-example-basic-multiple').select2({
-                placeholder: placeholder,
+
+            // let s2 = $('.js-example-basic-multiple').select2({
+            let s2 = $('#multiSelect').select2({
+                // placeholder: placeholder,
                 closeOnSelect: false,
-                allowClear: true,
+                // allowClear: true,
+                tags: true
             });
 
-            // $('.js-example-basic-multiple').select2({
-            //     placeholder: '--- กรุณาเลือก ---',
-            //     closeOnSelect: false,
-            //     templateResult: formatState,
-            //     allowHtml: true,
-            //     allowClear: true,
-            //     tags: true
+            // An Object
+            // let obj = <?php echo json_encode($defaultBrands); ?>;
+            // console.log("🚀 ~ obj:", obj)
+            // let result = Object.keys(obj).map(function (key) {
+            //     return [obj[key]];
             // });
+            // console.log("🚀 ~ result:", result[0])
 
-            // $('#multiSelect').on('select2:select', function(e) {
-            //     updateCheckboxState();
-            // });
-
-            // $('#multiSelect').on('select2:unselect', function(e) {
-            //     updateCheckboxState();
-            // });
-
-            // function updateCheckboxState() {
-            //     var selectedOptions = $('.select2-results__option[aria-selected=true]');
-            //     selectedOptions.each(function() {
-            //         var $checkbox = $(this).find('.select2-checkbox');
-            //         $checkbox.prop('checked', true);
-            //     });
-
-            //     var unselectedOptions = $('.select2-results__option[aria-selected=false]');
-            //     unselectedOptions.each(function() {
-            //         var $checkbox = $(this).find('.select2-checkbox');
-            //         $checkbox.prop('checked', false);
-            //     });
-            // }
-
-            // function formatState(state) {
-            //     if (!state.id) {
-            //         return state.text;
-            //     }
-
-            //     var $state = $(
-            //         '<span><input type="checkbox" class="select2-checkbox" /> ' + state.text + '</span>'
-            //     );
-
-            //     $state.find('.select2-checkbox').prop('checked', state.selected);
-
-            //     $state.find('.select2-checkbox').on('click', function() {
-            //         state.selected = !state.selected;
-            //         $(this).prop('checked', state.selected);
-            //         $('#multiSelect').trigger('change');
-            //     });
-
-            //     return $state;
-            // }
+            // let brand = result[0];
+            let obj = ["Trade"];
+            console.log("🚀 ~ obj:", obj)
+            obj.forEach(function(e){
+                if(!s2.find('option:contains(' + e + ')').length) 
+                s2.append($('<option>').text(e));
+            });
+            s2.val(obj).trigger("change"); 
 
             onOpenhandler()
             document.querySelectorAll('.setcheckbox')[0].checked = true

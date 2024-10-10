@@ -430,7 +430,7 @@
                 photoFont.setAttribute('src', data);
                 document.getElementById("img-1").style.backgroundImage = `url(${data})`;
             } else {
-                clearphoto();
+                clearphotoFont();
             }
         }
         function takePictureBack() {
@@ -450,7 +450,6 @@
                 photoBack.setAttribute('src', data);
                 document.getElementById("img-2").style.backgroundImage = `url(${data})`;
             } else {
-                clearphotoFont();
                 clearphotoBack();
             }
         }
