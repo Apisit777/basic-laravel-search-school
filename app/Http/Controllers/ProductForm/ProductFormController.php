@@ -318,6 +318,9 @@ class ProductFormController extends Controller
             if ($request->BRAND == 'RI') {
                 $lastElement = Barcode::where('COMPANY', '=', 'OP')->where('STATUS', '=', 'RI')->max('NUMBER');
             }
+            if ($request->BRAND == 'KU') {
+                $lastElement = Barcode::where('COMPANY', '=', 'KU')->where('STATUS', '=', 'KU')->max('NUMBER');
+            }
             if ($request->BRAND == 'CP') {
                 $lastElement = Barcode::where('COMPANY', '=', $request->BRAND)->where('STATUS', '=', 'CP')->max('NUMBER');
             }
@@ -329,16 +332,30 @@ class ProductFormController extends Controller
             } else {
                 $prefixBarcode = Barcode::select('B_CODE')->where('BRAND', 'OP')->pluck('B_CODE')->toArray();
             }
-            $suffixBarcode = sprintf('%04d', $barcodeNumber);
-            $barcode = $prefixBarcode[0].$suffixBarcode;
-            
-            $digits = (string)$barcode;
-            $even_sum = $digits[1] + $digits[3] + $digits[5] + $digits[7] + $digits[9] + $digits[11];
-            $even_sum_three = $even_sum * 3;
-            $odd_sum = $digits[0] + $digits[2] + $digits[4] + $digits[6] + $digits[8] + $digits[10];
-            $total_sum = $even_sum_three + $odd_sum;
-            $next_ten = (ceil($total_sum/10))*10;
-            $check_digit = $next_ten - $total_sum;
+
+            if ($request->BRAND == 'KU') {
+                $suffixBarcode = sprintf('%03d', $barcodeNumber);
+                $barcode = $prefixBarcode[0].$suffixBarcode;
+                
+                $digits = (string)$barcode;
+                $even_sum = $digits[1] + $digits[3] + $digits[5] + $digits[7] + $digits[9] + $digits[11];
+                $even_sum_three = $even_sum * 3;
+                $odd_sum = $digits[0] + $digits[2] + $digits[4] + $digits[6] + $digits[8] + $digits[10];
+                $total_sum = $even_sum_three + $odd_sum;
+                $next_ten = (ceil($total_sum/10))*10;
+                $check_digit = $next_ten - $total_sum;
+            } else {
+                $suffixBarcode = sprintf('%04d', $barcodeNumber);
+                $barcode = $prefixBarcode[0].$suffixBarcode;
+                
+                $digits = (string)$barcode;
+                $even_sum = $digits[1] + $digits[3] + $digits[5] + $digits[7] + $digits[9] + $digits[11];
+                $even_sum_three = $even_sum * 3;
+                $odd_sum = $digits[0] + $digits[2] + $digits[4] + $digits[6] + $digits[8] + $digits[10];
+                $total_sum = $even_sum_three + $odd_sum;
+                $next_ten = (ceil($total_sum/10))*10;
+                $check_digit = $next_ten - $total_sum;
+            }
 
         // $lastElement = Pro_develops::where('BRAND', '=', 'CPS')->max('BARCODE');
         // $barcodeMax = substr_replace($lastElement, '', -1);
@@ -416,14 +433,14 @@ class ProductFormController extends Controller
             $brands = Barcode::select(
                 'BRAND',
                 'STATUS')
-            ->whereIn('STATUS', ['OP', 'RI'])
+            ->whereIn('STATUS', ['OP', 'RI', 'KU'])
             ->pluck('BRAND')
             ->toArray();
         } else if (in_array($userpermission, ['Marketing - CPS'])) {
             $brands = Barcode::select(
                 'BRAND',
                 'STATUS')
-            ->whereIn('STATUS', ['CP'])
+            ->whereIn('STATUS', ['CP', 'KU'])
             ->pluck('BRAND')
             ->toArray();
         }
@@ -501,6 +518,34 @@ class ProductFormController extends Controller
                 'EDIT_DT' => date("Y/m/d"),
                 'USER_EDIT' => Auth::user()->id
             ];
+
+            $arr_barcode = [];
+            for ($i = 1; $i <= 10; $i++) {
+
+                if ($request->BRAND == 'KU') {
+                    $barcode = '885008011'.str_pad((string)$i, 3, '0', STR_PAD_LEFT);
+                }
+                if ($request->BRAND == 'OP') {
+                    $barcode = '88500802'.str_pad((string)$i, 4, '0', STR_PAD_LEFT);
+                }
+                if ($request->BRAND == 'RI') {
+                    $barcode = '885008029'.str_pad((string)$i, 3, '0', STR_PAD_LEFT);
+                }
+
+                $digits = (string)$barcode;
+                $even_sum = $digits[1] + $digits[3] + $digits[5] + $digits[7] + $digits[9] + $digits[11];
+                $even_sum_three = $even_sum * 3;
+                $odd_sum = $digits[0] + $digits[2] + $digits[4] + $digits[6] + $digits[8] + $digits[10];
+                $total_sum = $even_sum_three + $odd_sum;
+                $next_ten = (ceil($total_sum/10))*10;
+                $check_digit = $next_ten - $total_sum;
+                array_push($arr_barcode, $barcode.$check_digit);
+            }
+            
+            dd([
+                'Request' => $request->BRAND,
+                'Arr_barcode' => $arr_barcode
+            ]);
 
             $npdRequest = Pro_develops::create($data_product);
 
