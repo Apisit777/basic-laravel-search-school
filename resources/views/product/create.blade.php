@@ -37,7 +37,7 @@
         select.select2:required:valid + .select2-container .select2-selection--single {
             border-color: black;
         }
-        .select2-container--default .select2-selection--multiple { 
+        .select2-container--default .select2-selection--multiple {
             height: 55%!important;
             min-height: 50%!important;
         }
@@ -300,28 +300,16 @@
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="BARCODE">รหัส Barcode<span class="text-danger"> *</span></label>
                                                                     <!-- <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled> -->
-                                                                    <input type="text" name="PRODUCT" id="BARCODE" class="text-compleace-auto2 h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled>
+                                                                    <input type="text" name="PRODUCT" id="BARCODE" class="text-compleace-auto2 h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="" readonly>
                                                                 </div>
-                                                                <!-- <div class="md:col-span-3 mb-2" style="position: relative;">
-                                                                    <label for="NUMBER">Sele Channel</label>
-                                                                    <select class="js-example-basic-multiple js-states w-full rounded-sm text-xs" multiple="multiple" name="pickup_day[]" id="multiSelect">
-                                                                        <option value="monday">Monday</option>
-                                                                        <option value="tuesday">Tuesday</option>
-                                                                        <option value="wednesday">Wednesday</option>
-                                                                        <option value="thursday">Thursday</option>
-                                                                        <option value="friday">Friday</option>
-                                                                        <option value="saturday">Saturday</option>
-                                                                        <option value="sunday">Sunday</option>
-                                                                    </select>
-                                                                </div> -->
 
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Sele Channel</label>
-                                                                    <select class="js-example-basic-multiple w-full rounded-sm text-xs" id="multiSelect" name="sele_channel[]" multiple="multiple">
+                                                                    <select class="js-example-basic-multiple w-full rounded-sm text-xs select2" id="multiSelect" name="sele_channel[]" multiple="multiple">
                                                                         <!-- <option value=""> --- กรุณาเลือก ---</option> -->
-                                                                        @foreach ($allBrands as $key => $allBrand)
+                                                                        {{-- @foreach ($allBrands as $key => $allBrand)
                                                                                 <option value={{ $allBrand->ID }}>{{ $allBrand->BRAND }}</option>
-                                                                        @endforeach
+                                                                        @endforeach --}}
                                                                     </select>
                                                                 </div>
 
@@ -794,21 +782,54 @@
                 })
             });
         }
-
-        $(document).ready(function() {
+        // $(document).ready(function() {
+        $(window).on('load', function() {
             $('.js-example-basic-single').select2();
             let placeholder = "--- กรุณาเลือก ---";
 
-            // let s2 = $('.js-example-basic-multiple').select2({
-            let s2 = $('#multiSelect').select2({
-                // placeholder: placeholder,
+            // let s2 = $('#multiSelect').select2({
+            $('#multiSelect').select2({
                 closeOnSelect: false,
-                // allowClear: true,
-                tags: true
             });
 
+            // Set default selected values (from PHP)
+            // var defaultValues = <?php echo json_encode(array_map('strval', $defaultBrands)); ?>;
+            // console.log("🚀 ~ defaultValues:", defaultValues)
+            // let defaultValues = ["Trade","Trade111"];
+
+            // setTimeout(function() {
+            //     console.log('After setting default values:', $('#multiSelect').val(''));
+            //     $('#multiSelect').val(defaultValues).trigger('change');
+            //     console.log('After setting default values:', $('#multiSelect').val());
+            // }, 200);
+
+            let obj = <?php echo json_encode($defaultBrands); ?>;
+            let allObj = <?php echo json_encode($allBrands); ?>;
+            console.log("🚀 ~ allObj:", allObj)
+            // const obj = ["Trade","Trade111"];
+            // console.log("🚀 ~ obj:",  obj[0])
+            allObj.forEach(function(e){
+                console.log("🚀 ~ obj.forEach ~ e:", e)
+
+                if(! $('#multiSelect').find('option:contains(' + e + ')').length) {
+                    var newOption = new Option(e, e, false, false);
+
+                    // Append the new option to the select element
+                    $('#multiSelect').append(newOption).trigger('change');
+                    // s2.append($('<option value=''>').text(e));
+                }
+            });
+
+            setTimeout(function() {
+                console.log("🚀 ~ setTimeout ~ obj:", obj)
+                $('#multiSelect').val(obj).trigger("change");
+                // $('#multiSelect').val(obj).trigger('change');
+                console.log('After setting default values:', $('#multiSelect').val());
+            }, 600);
+
+
             // An Object
-            // let obj = <?php echo json_encode($defaultBrands); ?>;
+
             // console.log("🚀 ~ obj:", obj)
             // let result = Object.keys(obj).map(function (key) {
             //     return [obj[key]];
@@ -816,13 +837,9 @@
             // console.log("🚀 ~ result:", result[0])
 
             // let brand = result[0];
-            let obj = ["Trade"];
-            console.log("🚀 ~ obj:", obj)
-            obj.forEach(function(e){
-                if(!s2.find('option:contains(' + e + ')').length) 
-                s2.append($('<option>').text(e));
-            });
-            s2.val(obj).trigger("change"); 
+            // let obj = ["Trade","Trade111"];
+
+
 
             onOpenhandler()
             document.querySelectorAll('.setcheckbox')[0].checked = true
@@ -1069,7 +1086,7 @@
             // console.log("🚀 ~ checkValueSelect2 ~ !!VENDOR:", !!VENDOR)
             return !!VENDOR && !!GRP_P && !!SUPPLIER
         }
-        
+
         function onchangeValueSelect2() {
             let checkvalue = checkValueSelect2();
             const code = jQuery('#NUMBER').val();

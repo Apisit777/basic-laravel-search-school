@@ -49,7 +49,7 @@ class ProductController extends Controller
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
         // dd($userpermission);
-        
+
         if (in_array($userpermission, [$isSuperAdmin, 'Admin'])) {
             $brands = Barcode::select(
             'BRAND')
@@ -130,7 +130,7 @@ class ProductController extends Controller
             ->toArray();
 
         }
-        
+
         // dd($dataProductMasterConsumablesArr);
         $productCodeArr = $dataProductMaster->select('PRODUCT')->pluck('PRODUCT')->toArray();
         $data_barcode = Pro_develops::select(
@@ -276,7 +276,7 @@ class ProductController extends Controller
         $list_position = position::select('id', 'name_position')->get();
 
         // $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
-        $allBrands = Accessery::select('BRAND')->whereIn('BRAND', ['OP', 'CP', 'KU'])->get();
+        $allBrands = Accessery::select('BRAND')->whereIn('BRAND', ['OP', 'CP', 'KU'])->pluck('BRAND')->toArray();
         // $allBrands = Accessery::select('COMPANY')->get();
         $defaultBrands = Accessery::all();
 
@@ -317,7 +317,7 @@ class ProductController extends Controller
             ->get();
         }
 
-        // dd($defaultBrands);
+        // dd($allBrands);
         return view('product.create', compact('productCode', 'list_position', 'brands', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
     }
 
@@ -983,7 +983,7 @@ class ProductController extends Controller
                     'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
                     'USER_EDIT' => Auth::user()->id
                 ];
-    
+
                 $productUpddateConsumables = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
                 DB::commit();
                 $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
@@ -1050,7 +1050,7 @@ class ProductController extends Controller
                     'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
                     'USER_EDIT' => Auth::user()->id
                 ];
-    
+
                 $productUpddate = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
                 // dd($productUpddate);
                 DB::commit();
