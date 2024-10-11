@@ -306,10 +306,6 @@
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Sele Channel</label>
                                                                     <select class="js-example-basic-multiple w-full rounded-sm text-xs select2" id="multiSelect" name="sele_channel[]" multiple="multiple">
-                                                                        <!-- <option value=""> --- กรุณาเลือก ---</option> -->
-                                                                        {{-- @foreach ($allBrands as $key => $allBrand)
-                                                                                <option value={{ $allBrand->ID }}>{{ $allBrand->BRAND }}</option>
-                                                                        @endforeach --}}
                                                                     </select>
                                                                 </div>
 
@@ -782,64 +778,25 @@
                 })
             });
         }
-        // $(document).ready(function() {
-        $(window).on('load', function() {
+        $(document).ready(function() {
             $('.js-example-basic-single').select2();
             let placeholder = "--- กรุณาเลือก ---";
-
-            // let s2 = $('#multiSelect').select2({
             $('#multiSelect').select2({
                 closeOnSelect: false,
             });
 
-            // Set default selected values (from PHP)
-            // var defaultValues = <?php echo json_encode(array_map('strval', $defaultBrands)); ?>;
-            // console.log("🚀 ~ defaultValues:", defaultValues)
-            // let defaultValues = ["Trade","Trade111"];
-
-            // setTimeout(function() {
-            //     console.log('After setting default values:', $('#multiSelect').val(''));
-            //     $('#multiSelect').val(defaultValues).trigger('change');
-            //     console.log('After setting default values:', $('#multiSelect').val());
-            // }, 200);
-
             let obj = <?php echo json_encode($defaultBrands); ?>;
             let allObj = <?php echo json_encode($allBrands); ?>;
-            console.log("🚀 ~ allObj:", allObj)
-            // const obj = ["Trade","Trade111"];
-            // console.log("🚀 ~ obj:",  obj[0])
             allObj.forEach(function(e){
-                console.log("🚀 ~ obj.forEach ~ e:", e)
-
-                if(! $('#multiSelect').find('option:contains(' + e + ')').length) {
+                if(!$('#multiSelect').find('option:contains(' + e + ')').length) {
                     var newOption = new Option(e, e, false, false);
-
-                    // Append the new option to the select element
                     $('#multiSelect').append(newOption).trigger('change');
-                    // s2.append($('<option value=''>').text(e));
                 }
             });
 
             setTimeout(function() {
-                console.log("🚀 ~ setTimeout ~ obj:", obj)
                 $('#multiSelect').val(obj).trigger("change");
-                // $('#multiSelect').val(obj).trigger('change');
-                console.log('After setting default values:', $('#multiSelect').val());
             }, 600);
-
-
-            // An Object
-
-            // console.log("🚀 ~ obj:", obj)
-            // let result = Object.keys(obj).map(function (key) {
-            //     return [obj[key]];
-            // });
-            // console.log("🚀 ~ result:", result[0])
-
-            // let brand = result[0];
-            // let obj = ["Trade","Trade111"];
-
-
 
             onOpenhandler()
             document.querySelectorAll('.setcheckbox')[0].checked = true

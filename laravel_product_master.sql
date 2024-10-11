@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 10, 2024 at 12:21 PM
+-- Generation Time: Oct 11, 2024 at 01:21 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -30,7 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `accesseries` (
   `ID` int(2) NOT NULL,
   `COMPANY` varchar(20) NOT NULL DEFAULT '',
-  `BRAND` varchar(20) NOT NULL DEFAULT '',
+  `BRAND` varchar(20) DEFAULT NULL,
   `DESCRIPTION` varchar(50) NOT NULL DEFAULT '',
   `REMARK` varchar(100) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -603,6 +603,33 @@ CREATE TABLE `manage_menus` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `master_brands`
+--
+
+CREATE TABLE `master_brands` (
+  `ID` int(10) UNSIGNED NOT NULL,
+  `BRAND` varchar(10) DEFAULT NULL,
+  `BRAND_NAME` varchar(255) NOT NULL,
+  `REMARK` varchar(255) NOT NULL,
+  `UPDATED_BY` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `master_brands`
+--
+
+INSERT INTO `master_brands` (`ID`, `BRAND`, `BRAND_NAME`, `REMARK`, `UPDATED_BY`) VALUES
+(1, 'OP', '', '', NULL),
+(2, 'CPS', '', '', NULL),
+(3, 'KM', '', '', NULL),
+(4, 'BB', '', '', NULL),
+(5, 'LL', '', '', NULL),
+(6, 'KTY', '', '', NULL),
+(7, 'GNC', '', '', NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `menus`
 --
 
@@ -676,7 +703,6 @@ INSERT INTO `menu_relations` (`id`, `position_id`, `menu_id`, `submenu_id`, `vie
 (186, 8, 8, 1, 1, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL),
 (194, 6, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (195, 1, 8, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(196, 1, 4, 9, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (197, 6, 4, 9, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (199, 7, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (200, 7, 4, 9, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -684,7 +710,8 @@ INSERT INTO `menu_relations` (`id`, `position_id`, `menu_id`, `submenu_id`, `vie
 (206, 6, 8, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (207, 6, 8, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (208, 15, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(209, 15, 4, 9, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(209, 15, 4, 9, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(210, 1, 4, 9, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1029,9 +1056,9 @@ INSERT INTO `positions` (`id`, `name_position`, `brand`, `created_by`, `updated_
 (2, 'Manager_Account', NULL, NULL, NULL, NULL, NULL),
 (3, 'Accounting', NULL, NULL, NULL, NULL, NULL),
 (4, 'Category - OP', 'OP', NULL, NULL, NULL, NULL),
-(5, 'Product - OP', NULL, NULL, NULL, NULL, NULL),
+(5, 'Product - OP', 'OP', NULL, NULL, NULL, NULL),
 (6, 'E-Commerce - OP', 'OP', NULL, NULL, NULL, NULL),
-(7, 'Marketing - CPS', 'CP', NULL, NULL, NULL, NULL),
+(7, 'Marketing - CP', 'CP', NULL, NULL, NULL, NULL),
 (8, 'Admin', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
@@ -1133,6 +1160,7 @@ INSERT INTO `product1s` (`BRAND`, `PRODUCT`, `BARCODE`, `COLOR`, `GRP_P`, `SUPPL
 ('OP', '20004', '8850080200041', 'Yellow', 'OP', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-10 08:36:57', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
 ('OP', '20005', '8850080200058', NULL, 'OP', '5050', NULL, NULL, NULL, NULL, 'OP', NULL, NULL, NULL, NULL, '80001', NULL, '80001', 'N', 'X', 'DF', 'G0001', '0001', NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-08 05:39:29', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL),
 ('OP', '20006', '8850080200065', NULL, 'OP', '5050', NULL, NULL, NULL, NULL, 'OP', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-07 04:00:36', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL),
+('OP', '20007', '8850080200072', NULL, 'CM', '5050', NULL, NULL, NULL, NULL, 'KM', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-11 05:43:41', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL),
 ('OP', '29001', '8850080290011', 'Yellow', 'RE', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-13 08:15:27', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
 ('OP', '29002', '8850080290028', 'Yellow', 'RE', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-13 08:17:27', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
 ('CP', '70001', '8850080700015', 'Yellow', 'CM', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-13 08:35:03', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
@@ -1174,6 +1202,33 @@ INSERT INTO `products` (`id`, `brand_id`, `product_id`, `name`, `company_product
 (6, 1, 20006, 'ttttt', 'OP', 'T000006', 2, NULL, NULL, '2024-06-10 19:35:45', '2024-06-16 16:26:32'),
 (7, 2, 70001, 'jjj', 'Cute Press', 'T000007', 2, NULL, NULL, '2024-06-16 17:57:36', '2024-06-16 20:18:42'),
 (8, NULL, NULL, NULL, NULL, 'T000008', 1, NULL, NULL, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_channels`
+--
+
+CREATE TABLE `product_channels` (
+  `ID` int(10) NOT NULL,
+  `PRODUCT` varchar(15) DEFAULT NULL,
+  `BRAND` varchar(255) DEFAULT NULL,
+  `UPDATED_BY` varchar(30) DEFAULT NULL COMMENT 'ผู้แก้ไข\r\n',
+  `UPDATED_AT` datetime NOT NULL DEFAULT '1900-01-01 00:00:00' COMMENT 'วันแก้ไขล่าสุด'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_channels`
+--
+
+INSERT INTO `product_channels` (`ID`, `PRODUCT`, `BRAND`, `UPDATED_BY`, `UPDATED_AT`) VALUES
+(6, '20007', 'BB', '00d751', '2024-10-11 17:43:41'),
+(7, '20007', 'CPS', '00d751', '2024-10-11 17:43:41'),
+(8, '20007', 'GNC', '00d751', '2024-10-11 17:43:41'),
+(9, '20007', 'KM', '00d751', '2024-10-11 17:43:41'),
+(10, '20007', 'KTY', '00d751', '2024-10-11 17:43:41'),
+(11, '20007', 'LL', '00d751', '2024-10-11 17:43:41'),
+(12, '20007', 'OP', '00d751', '2024-10-11 17:43:41');
 
 -- --------------------------------------------------------
 
@@ -2983,12 +3038,12 @@ INSERT INTO `users` (`id`, `username`, `name`, `email`, `email_verified_at`, `pa
 (11, 'bo', 'ช่างโบ้', 'test@gmail.com', NULL, '$2y$10$qNXabFcf0l5rqJOoS/iaMOg0X0ljVJ4m8TxMvxE5WFJPXRO5DBZem', 'TyE0I46e23zpM6lWHXHXww79aNFKikpGWJo94KEWkoclxikPwWhW9Nqu3tZA', 1, '2022-02-28 15:21:57', '2022-10-02 22:22:30'),
 (12, 'file', 'ช่างฟิล์ม', 'test2@gmail.com', NULL, '$2y$10$oDK5H2V30XtEany.YHQDs.P56/0L2Bx/W/dgVkKT8Fi6w2gajl5re', NULL, 1, '2022-02-28 15:23:35', '2022-02-28 15:23:35'),
 (21, NULL, 'test1', 'test1@gmail.com', NULL, '$2y$10$XY8os2I.PICMI9eznO96CuUVO2EkiNSpVh9FJ.lJyF.idv.3b7iLm', NULL, 1, '2024-06-07 03:19:36', '2024-06-07 03:19:36'),
-(25, '00d750', NULL, NULL, NULL, NULL, '2Qoh4sKDLBQvh96MqwrfaNiVguXjBLi5gM8AtCLW946YKx9j2y35YmlPQhnt', 1, '2024-08-05 03:22:25', '2024-10-10 04:13:22'),
-(26, '00d752', NULL, NULL, NULL, NULL, '4v4AV5QfiJXTjiIY8PeuwtKD6GNsMkp5NpFywfGiGs2w571hmg9GdrboKnNl', 1, '2024-08-05 18:50:00', '2024-10-10 06:56:01'),
+(25, '00d750', NULL, NULL, NULL, NULL, '57s3EQOFDAEAlEFU1FbYBat5IdS8sKMs1K9kAUqarSNQNV4yhaXtUFStF51k', 1, '2024-08-05 03:22:25', '2024-10-11 02:18:32'),
+(26, '00d752', NULL, NULL, NULL, NULL, 'zz3yO6suGNjgwxfXSMcXFsZ6RJqXO8c9efL5tyHcnabST6oyiZpVGXsXlAEb', 1, '2024-08-05 18:50:00', '2024-10-11 06:42:02'),
 (27, '006631', NULL, NULL, NULL, NULL, 'IRnZ0kDtYPOaO68d1QtsreqPQIpjxYc8i8yxmCx0T4ExbXX9i1dH61NhQBAm', 1, '2024-08-07 01:15:19', '2024-08-07 01:15:19'),
 (28, '006935', NULL, NULL, NULL, NULL, NULL, 1, '2024-08-07 01:17:59', '2024-08-07 01:17:59'),
 (30, '00C648', NULL, NULL, NULL, NULL, 'JYg0S1VU15z1n33xE6Aq4rFE6132Nrw6GAbZ7sszVxHvainm423rJ2wG4XfO', 1, '2024-08-07 23:50:00', '2024-08-07 23:50:00'),
-(32, '00d751', NULL, NULL, NULL, NULL, 'Yh8aMJPgNAYTPHGNE2LJh3IWVcEsr3bh5NHMjL7KAbMCXg9Gxg6GJLhUYvRY', 1, '2024-08-08 23:37:47', '2024-10-10 06:59:25'),
+(32, '00d751', NULL, NULL, NULL, NULL, 'k6qeHUrGZ9qbGPlFUoYJ7vKqfrLVErzjxH8qlmSy19qh0Keob4RbgN1Se7US', 1, '2024-08-08 23:37:47', '2024-10-11 03:38:16'),
 (34, '009166', NULL, NULL, NULL, NULL, 'lqSixX6J7ViOl4Zh9yk4WckiTs1IyaUHrK6ENWi0Grb30orn3KlSoXjBbOsv', 1, '2024-08-23 01:12:24', '2024-08-23 01:12:24'),
 (35, '005879', NULL, NULL, NULL, NULL, '90s5YUryuNgsYOOySZv7vnXyidKG9r6TjYzysLtPqcW7fMDFSY69Ol03i69u', 1, '2024-09-18 07:09:47', '2024-09-18 07:09:47'),
 (36, 'admin', 'admin', 'admin111@gmail.com', NULL, '$2y$10$zdySVo5DfkOvX/VGdUCGXePLQ3TQELvw.ao4iWRl4a5wR1zCIn.7m', NULL, 1, '2024-09-20 04:25:54', '2024-09-20 04:25:54'),
@@ -3174,6 +3229,13 @@ ALTER TABLE `manage_menus`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `master_brands`
+--
+ALTER TABLE `master_brands`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `BRAND` (`BRAND`);
+
+--
 -- Indexes for table `menus`
 --
 ALTER TABLE `menus`
@@ -3265,6 +3327,13 @@ ALTER TABLE `product1s`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `product_channels`
+--
+ALTER TABLE `product_channels`
+  ADD PRIMARY KEY (`ID`),
+  ADD UNIQUE KEY `PRODUCT` (`PRODUCT`,`BRAND`);
 
 --
 -- Indexes for table `product_images`
@@ -3417,6 +3486,12 @@ ALTER TABLE `manage_menus`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `master_brands`
+--
+ALTER TABLE `master_brands`
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
@@ -3426,7 +3501,7 @@ ALTER TABLE `menus`
 -- AUTO_INCREMENT for table `menu_relations`
 --
 ALTER TABLE `menu_relations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=210;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -3457,6 +3532,12 @@ ALTER TABLE `posts`
 --
 ALTER TABLE `products`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT for table `product_channels`
+--
+ALTER TABLE `product_channels`
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `product_images`

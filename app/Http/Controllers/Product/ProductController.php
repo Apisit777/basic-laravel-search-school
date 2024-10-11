@@ -34,6 +34,9 @@ use App\Models\Unit_p;
 use App\Models\Unit_type;
 use App\Models\Acctype;
 use App\Models\Condition;
+use App\Models\MasterBrand;
+use App\Models\SeleChannel;
+use App\Models\ProductChannel;
 
 class ProductController extends Controller
 {
@@ -101,7 +104,7 @@ class ProductController extends Controller
             ->pluck('PRODUCT')
             ->toArray();
 
-        } else if (in_array($userpermission, ['Marketing - CPS'])) {
+        } else if (in_array($userpermission, ['Marketing - CP'])) {
             $brands = Barcode::select(
                 'BRAND',
                 'STATUS')
@@ -276,7 +279,8 @@ class ProductController extends Controller
         $list_position = position::select('id', 'name_position')->get();
 
         // $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
-        $allBrands = Accessery::select('BRAND')->whereIn('BRAND', ['OP', 'CP', 'KU'])->pluck('BRAND')->toArray();
+        // $allBrands = Accessery::select('BRAND')->whereIn('BRAND', ['OP', 'CP', 'KU'])->pluck('BRAND')->toArray();
+        $allBrands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
         // $allBrands = Accessery::select('COMPANY')->get();
         $defaultBrands = Accessery::all();
 
@@ -308,7 +312,14 @@ class ProductController extends Controller
             ->where('DESCRIPTION', 'OP')
             ->get();
         }
-        else if (in_array($userpermission, ['Marketing - CPS'])) {
+        else if (in_array($userpermission, ['Marketing - CP'])) {
+            $defaultBrands = Accessery::select(
+                'BRAND')
+            ->where('COMPANY', 'CP')
+            ->where('BRAND', 'CP')
+            ->pluck('BRAND')
+            ->toArray();
+
             $brands = Accessery::select(
                 'COMPANY',
                 'DESCRIPTION')
@@ -653,7 +664,7 @@ class ProductController extends Controller
         $company = substr($request->BRAND, 0, 2);
         $description = substr($request->BRAND, 2, 2);
         $status = $company.' - '.$description;
-        dd($request);
+        // dd($request);
         DB::beginTransaction();
         try {
             $data_product = [
@@ -720,7 +731,38 @@ class ProductController extends Controller
             ];
 
             $productMaster = Product1::create($data_product);
-            // dd($productMaster);
+            
+            // dd($request);
+            // if(!is_null($request->sele_channel[0])) {
+            //     foreach ($request->sele_channel as $key => $value) {
+            //         $createSeleChannel = SeleChannel::updateOrCreate(['PRODUCT' => $data_product['PRODUCT']],
+            // [
+            //             $value => is_null($value) ? 0 : 1,
+            //             'UPDATED_BY' => Auth::user()->id,
+            //         ]);
+            //     }
+            // }
+
+            if (!is_null($request->sele_channel[0])) {
+
+                // ProductChannel::select('id')->where('PRODUCT', $data_product['PRODUCT'])->whereNotIn('BRAND', $request->sele_channel)->delete();
+
+                $user = Auth::user()->username;
+                $dateTime = date('Y-m-d H:i:s');
+
+                $updateData = [
+                    'UPDATED_BY' => $user,
+                    'UPDATED_AT' => $dateTime
+                ];
+
+                foreach ($request->sele_channel as $value) {
+                    $createSeleChannel = ProductChannel::updateOrCreate(
+            ['PRODUCT' => $data_product['PRODUCT'], 'BRAND' => $value], 
+                $updateData
+                    );
+                }
+            }
+
             DB::commit();
             $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
             return response()->json(['success' => true]);
