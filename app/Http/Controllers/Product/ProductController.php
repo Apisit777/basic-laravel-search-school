@@ -45,6 +45,19 @@ class ProductController extends Controller
      */
     public function index()
     {
+    //     $data = Product1::select(
+    // 'product1s.BRAND AS BRAND',
+    //         'GRP_P',
+    //         'product1s.PRODUCT AS PRODUCT',
+    //         'BARCODE',
+    //         'NAME_THAI'
+    //     )
+    //     ->leftJoin('product_channels', 'product1s.PRODUCT', '=', 'product_channels.PRODUCT')
+    //     ->where('product_channels.BRAND', '=', 'OP')
+    //     ->get();
+
+    //     dd($data);
+
         $data = Product1::all();
         $user = User::all();
         $product_seq = Product::select('seq')->get();
@@ -86,7 +99,7 @@ class ProductController extends Controller
 
             $dataProductMasterArr = Product1::select(
             'PRODUCT')
-            ->whereNotIn('BRAND', ['CP', 'KM'])
+            ->whereNotIn('BRAND', ['CPS', 'KM', 'KTY'])
             ->pluck('PRODUCT')
             ->toArray();
 
@@ -104,37 +117,65 @@ class ProductController extends Controller
             ->pluck('PRODUCT')
             ->toArray();
 
-        } else if (in_array($userpermission, ['Marketing - CP'])) {
+        } else if (in_array($userpermission, ['Marketing - CPS'])) {
             $brands = Barcode::select(
                 'BRAND',
                 'STATUS')
-            ->whereIn('STATUS', ['CP'])
+            ->whereIn('STATUS', ['CPS'])
             ->pluck('BRAND')
             ->toArray();
 
             $dataProductMasterArr = Product1::select(
             'PRODUCT')
-            ->whereNotIn('BRAND', ['OP', 'KM'])
+            ->whereNotIn('BRAND', ['OP', 'KM', 'KTY'])
             ->pluck('PRODUCT')
             ->toArray();
 
             $data_PRODUCT = Product1::select('PRODUCT')->pluck('PRODUCT')->toArray();
             $dataProductMaster = Pro_develops::select(
             'PRODUCT')
-            ->whereIn('BRAND', ['CP'])
+            ->whereIn('BRAND', ['CPS'])
             ->whereNotIn('PRODUCT', $data_PRODUCT)
             ->get();
 
             $dataProductMasterConsumablesArr = Product1::select(
             'PRODUCT')
             ->where('BRAND', 'KM')
-            ->where('GRP_P', 'CP')
+            ->where('GRP_P', 'CPS')
+            ->pluck('PRODUCT')
+            ->toArray();
+
+        } else if (in_array($userpermission, ['Procurement - KTY'])) {
+            $brands = Barcode::select(
+                'BRAND',
+                'STATUS')
+            ->whereIn('STATUS', ['KTY'])
+            ->pluck('BRAND')
+            ->toArray();
+
+            $dataProductMasterArr = Product1::select(
+            'PRODUCT')
+            ->whereNotIn('BRAND', ['OP', 'CPS', 'KM'])
+            ->pluck('PRODUCT')
+            ->toArray();
+
+            $data_PRODUCT = Product1::select('PRODUCT')->pluck('PRODUCT')->toArray();
+            $dataProductMaster = Pro_develops::select(
+            'PRODUCT')
+            ->whereIn('BRAND', ['KTY'])
+            ->whereNotIn('PRODUCT', $data_PRODUCT)
+            ->get();
+
+            $dataProductMasterConsumablesArr = Product1::select(
+            'PRODUCT')
+            ->where('BRAND', 'KM')
+            ->where('GRP_P', 'KTY')
             ->pluck('PRODUCT')
             ->toArray();
 
         }
 
-        // dd($dataProductMasterConsumablesArr);
+        // dd($dataProductMaster);
         $productCodeArr = $dataProductMaster->select('PRODUCT')->pluck('PRODUCT')->toArray();
         $data_barcode = Pro_develops::select(
         'BARCODE')
@@ -248,14 +289,26 @@ class ProductController extends Controller
             $brand_ps = Brand_p::select(
                 'ID',
                 'REMARK')
-            ->where('BRAND', 'GNC')
+            ->where('BRAND', 'OP')
+            ->get();
+
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK')
+            ->where('BRAND', 'OP')
             ->get();
         }
         else if (in_array($userpermission, ['Marketing - CPS'])) {
             $brand_ps = Brand_p::select(
                 'ID',
                 'REMARK')
-            ->where('BRAND', 'CP')
+            ->where('BRAND', 'CPS')
+            ->get();
+
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK')
+            ->where('BRAND', 'CPS')
             ->get();
         }
 
@@ -279,12 +332,12 @@ class ProductController extends Controller
         $list_position = position::select('id', 'name_position')->get();
 
         // $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
-        // $allBrands = Accessery::select('BRAND')->whereIn('BRAND', ['OP', 'CP', 'KU'])->pluck('BRAND')->toArray();
+        // $allBrands = Accessery::select('BRAND')->whereIn('BRAND', ['OP', 'CPS', 'KU'])->pluck('BRAND')->toArray();
         $allBrands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
         // $allBrands = Accessery::select('COMPANY')->get();
-        $defaultBrands = Accessery::all();
+        $defaultBrands = MasterBrand::all();
 
-        $brands = Accessery::all();
+        $brands = MasterBrand::all();
 
         if (in_array($userpermission, [$isSuperAdmin])) {
             // $defaultBrands = Accessery::select(
@@ -292,42 +345,44 @@ class ProductController extends Controller
             //     'DESCRIPTION')
             // ->get();
 
-            $brands = Accessery::select(
-                'COMPANY',
-                'DESCRIPTION')
+            $brands = MasterBrand::select(
+                'BRAND')
             ->get();
         }
         else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
-            $defaultBrands = Accessery::select(
+            $defaultBrands = MasterBrand::select(
                 'BRAND')
-            ->where('COMPANY', 'OP')
             ->where('BRAND', 'OP')
             ->pluck('BRAND')
             ->toArray();
 
-            $brands = Accessery::select(
-                'COMPANY',
-                'DESCRIPTION')
-            ->where('COMPANY', 'OP')
-            ->where('DESCRIPTION', 'OP')
-            ->get();
-        }
-        else if (in_array($userpermission, ['Marketing - CP'])) {
-            $defaultBrands = Accessery::select(
+            $brands = MasterBrand::select(
                 'BRAND')
-            ->where('COMPANY', 'CP')
-            ->where('BRAND', 'CP')
+            ->where('BRAND', 'OP')
+            ->get();
+        } else if (in_array($userpermission, ['Marketing - CPS'])) {
+            $defaultBrands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'CPS')
             ->pluck('BRAND')
             ->toArray();
 
-            $brands = Accessery::select(
-                'COMPANY',
-                'DESCRIPTION')
-            ->where('COMPANY', 'CP')
-            ->where('DESCRIPTION', 'CP')
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+        } else if (in_array($userpermission, ['Procurement - KTY'])) {
+            $defaultBrands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'KTY')
+            ->pluck('BRAND')
+            ->toArray();
+
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'KTY')
             ->get();
         }
-
         // dd($allBrands);
         return view('product.create', compact('productCode', 'list_position', 'brands', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
     }
@@ -364,7 +419,7 @@ class ProductController extends Controller
             $brand_ps = Brand_p::select(
                 'ID',
                 'REMARK')
-            ->where('BRAND', 'CP')
+            ->where('BRAND', 'CPS')
             ->get();
         }
 
@@ -389,36 +444,59 @@ class ProductController extends Controller
 
         // $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
         // create brands consumables
-        $brands = Accessery::all();
+        $allBrands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
+        // $allBrands = Accessery::select('COMPANY')->get();
+        $defaultBrands = MasterBrand::all();
 
-        // create brands consumables
+        $brands = MasterBrand::all();
+
         if (in_array($userpermission, [$isSuperAdmin])) {
-            $brands = Accessery::select(
-                'COMPANY',
-                'DESCRIPTION')
+            // $defaultBrands = Accessery::select(
+            //     'COMPANY',
+            //     'DESCRIPTION')
+            // ->get();
+
+            $brands = MasterBrand::select(
+                'BRAND')
             ->get();
         }
         else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
-            $brands = Accessery::select(
-                'COMPANY',
-                'DESCRIPTION')
-                ->where('COMPANY', 'OP')
-                ->whereIn('DESCRIPTION', ['OP', 'KM'])
+            $defaultBrands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->pluck('BRAND')
+            ->toArray();
+
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+        } else if (in_array($userpermission, ['Marketing - CPS'])) {
+            $defaultBrands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->pluck('BRAND')
+            ->toArray();
+
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+        } else if (in_array($userpermission, ['Procurement - KTY'])) {
+            $defaultBrands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'KTY')
+            ->pluck('BRAND')
+            ->toArray();
+
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'KTY')
             ->get();
         }
 
-        // create brands
-        // else if (in_array($userpermission, ['Marketing - CPS'])) {
-        //     $brands = Barcode::select(
-        //         'BRAND',
-        //         'STATUS')
-        //     ->whereIn('STATUS', ['CP', 'ALL'])
-        //     ->pluck('BRAND')
-        //     ->toArray();
-        // }
-
         // dd($brands);
-        return view('product.create_consumables', compact('productCode', 'list_position', 'brands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
+        return view('product.create_consumables', compact('productCode', 'list_position', 'brands', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
     }
     public function productDetailCreate(Request $request)
     {
@@ -884,6 +962,7 @@ class ProductController extends Controller
             'sub_categories.ID AS S_CAT',
             'pdms.ID AS PDM_GROUP',
             'p_statuses.ID AS STATUS',
+            // 'product_channels.BRAND AS BRAND',
         )
         ->leftJoin('owners', 'product1s.VENDOR', '=', 'owners.OWNER') // ในเอกสารสลับกัน
         ->leftJoin('grp_ps', 'product1s.GRP_P', '=', 'grp_ps.GRP_P')
@@ -896,8 +975,11 @@ class ProductController extends Controller
         ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
         ->leftJoin('pdms', 'product1s.PDM_GROUP', '=', 'pdms.ID')
         ->leftJoin('p_statuses', 'product1s.STATUS', '=', 'p_statuses.ID')
-        ->firstWhere('PRODUCT', '=', $PRODUCT);
+        // ->leftJoin('product_channels', 'product1s.PRODUCT', '=', 'product_channels.PRODUCT')
+        ->firstWhere('product1s.PRODUCT', '=', $PRODUCT);
 
+        $multiChannels = ProductChannel::select('BRAND')->where('PRODUCT', '=', $PRODUCT)->pluck('BRAND')->toArray();
+        $allBrands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
         // $sub_categorys = Sub_category::all();
         // $pdms = Pdm::all();
         // $p_statuss = P_status::all();
@@ -931,7 +1013,7 @@ class ProductController extends Controller
             $brand_ps = Brand_p::select(
                 'ID AS BRAND_P',
                 'REMARK')
-            ->where('BRAND', 'CP')
+            ->where('BRAND', 'CPS')
             ->get();
         }
 
@@ -949,9 +1031,10 @@ class ProductController extends Controller
         $acctypes = Acctype::all();
         $conditions = Condition::all();
 
-        // dd($series);
+        // dd($multiChannels);
+        // dd($data->BRAND);
 
-        return view('product.edit', compact('data', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss'));
+        return view('product.edit', compact('data', 'multiChannels', 'allBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss'));
     }
 
     /**
@@ -1093,6 +1176,32 @@ class ProductController extends Controller
                     'USER_EDIT' => Auth::user()->id
                 ];
 
+                if (!is_null($request->sele_channel[0])) {
+
+                    $multiChannels = ProductChannel::select('BRAND')->where('PRODUCT', $data_product_upddate['PRODUCT'])->whereNotIn('BRAND', $request->sele_channel)->delete();
+    
+                    $user = Auth::user()->username;
+                    $dateTime = date('Y-m-d H:i:s');
+    
+                    $updateData = [
+                        'UPDATED_BY' => $user,
+                        'UPDATED_AT' => $dateTime
+                    ];
+    
+                    foreach ($request->sele_channel as $value) {
+                        $createSeleChannel = ProductChannel::updateOrCreate(
+            ['PRODUCT' => $data_product_upddate['PRODUCT'], 'BRAND' => $value], 
+                    $updateData
+                        );
+                    }
+                }
+
+                // dd(
+                // $test = [
+                //         'data_product_upddate' => $data_product_upddate,
+                //         'multiChannels' => $multiChannels
+                //     ]);
+
                 $productUpddate = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
                 // dd($productUpddate);
                 DB::commit();
@@ -1157,6 +1266,8 @@ class ProductController extends Controller
             'BARCODE',
             'NAME_THAI'
         )
+        // ->leftJoin('product_channels', 'product1s.PRODUCT', '=', 'product_channels.PRODUCT')
+        // ->where('product1s.BRAND', '=', 'product_channels.BRAND')
         ->orderBy('PRODUCT', 'DESC');
 
         $userpermission = Auth::user()->getUserPermission->name_position;
@@ -1190,7 +1301,7 @@ class ProductController extends Controller
                 'NAME_THAI'
             )
             // ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
-            ->whereIn('BRAND', ['CP', 'KM'])
+            ->whereIn('BRAND', ['CPS', 'KM'])
             ->orderBy('BARCODE', 'DESC');
         }
 

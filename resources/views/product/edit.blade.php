@@ -17,6 +17,22 @@
         .select2 {
             width: 100%!important; /* force fluid responsive */
         }
+        select.select2:required + .select2-container .select2-selection--single {
+            border-color: #FF0000;
+        }
+
+        select.select2:required:valid + .select2-container .select2-selection--single {
+            border-color: black;
+        }
+        .select2-container--default .select2-selection--multiple {
+            height: 55%!important;
+            min-height: 50%!important;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+            cursor: default;
+            padding-left: 12px!important;
+            padding-right: 5px;
+        }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -181,12 +197,17 @@
                                                                     <label for="BARCODE">รหัส Barcode</label>
                                                                     <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->BARCODE }}" readonly/>
                                                                 </div>
-                                                                <div class="md:col-span-3" >
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Sele Channel</label>
+                                                                    <select class="js-example-basic-multiple w-full rounded-sm text-xs select2" id="multiSelect" name="sele_channel[]" multiple="multiple">
+                                                                    </select>
+                                                                </div>
+                                                                <!-- <div class="md:col-span-3" >
                                                                     <label for="NUMBER">Sele Channel</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" id="katanyu" name="katanyu" onchange="onSelect(this, 'BARCODE')">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                     </select>
-                                                                </div>
+                                                                </div> -->
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="NAME_THAI">ชื่อภาษาไทย</label>
                                                                     <input type="text" name="NAME_THAI" id="NAME_THAI" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->NAME_THAI }}" />
@@ -613,6 +634,25 @@
 
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
+            let placeholder = "--- กรุณาเลือก ---";
+            $('#multiSelect').select2({
+                closeOnSelect: false,
+            });
+
+            let obj = <?php echo json_encode($multiChannels); ?>;
+            console.log("🚀 ~ $ ~ obj:", obj)
+            let allObj = <?php echo json_encode($allBrands); ?>;
+            allObj.forEach(function(e){
+                if(!$('#multiSelect').find('option:contains(' + e + ')').length) {
+                    var newOption = new Option(e, e, false, false);
+                    $('#multiSelect').append(newOption).trigger('change');
+                }
+            });
+
+            setTimeout(function() {
+                $('#multiSelect').val(obj).trigger("change");
+            }, 600);
+
             onOpenhandler()
             document.querySelectorAll('.setcheckbox')[0].checked = true
             document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')

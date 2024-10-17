@@ -37,6 +37,19 @@
         select.select2:required:valid + .select2-container .select2-selection--single {
             border-color: black;
         }
+        .select2-container--default .select2-selection--multiple {
+            height: 55%!important;
+            min-height: 50%!important;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+            cursor: default;
+            padding-left: 12px!important;
+            padding-right: 5px;
+        }
+
+        select.select2:required:valid + .select2-container .select2-selection--single {
+            border-color: black;
+        }
 
         .select2-container--default .select2-selection--multiple { 
             height: 55%!important;
@@ -192,7 +205,8 @@
                                 <select class="js-example-basic-single w-full rounded-sm text-xs" id="BRAND" name="BRAND">
                                     <option value=""> --- กรุณาเลือก ---</option>
                                     @foreach ($brands as $key => $brand)
-                                        <option value={{ $brand->COMPANY }}{{ $brand->DESCRIPTION }}>{{ $brand->COMPANY.' - ('.$brand->DESCRIPTION.')' }}</option>
+                                        <option value={{ $brand->BRAND }}>{{ $brand->BRAND }}</option>
+                                        <!-- <option value={{ $brand->COMPANY }}{{ $brand->DESCRIPTION }}>{{ $brand->COMPANY.' - ('.$brand->DESCRIPTION.')' }}</option> -->
                                     @endforeach
                                 </select>
                             </div>
@@ -274,12 +288,9 @@
                                                                     <!-- <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled> -->
                                                                     <input type="text" name="BARCODE" id="BARCODE" class="text-compleace-auto2 h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled>
                                                                 </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="NUMBER">Sele Channel</label>
-                                                                    <select class="js-example-basic-multiple w-full rounded-sm text-xs focus:ring-none" name="sele_channel" multiple="multiple">
-                                                                        <option>orange</option>
-                                                                        <option>white</option>
-                                                                        <option>purple</option>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Product Channel</label>
+                                                                    <select class="js-example-basic-multiple w-full rounded-sm text-xs select2" id="multiSelect" name="sele_channel[]" multiple="multiple">
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
@@ -765,9 +776,23 @@
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
             let placeholder = "--- กรุณาเลือก ---";
-            $('.js-example-basic-multiple').select2({
-                placeholder: placeholder,
+            $('#multiSelect').select2({
+                closeOnSelect: false,
             });
+
+            let obj = <?php echo json_encode($defaultBrands); ?>;
+            console.log("🚀 ~ $ ~ obj:", obj)
+            let allObj = <?php echo json_encode($allBrands); ?>;
+            allObj.forEach(function(e){
+                if(!$('#multiSelect').find('option:contains(' + e + ')').length) {
+                    var newOption = new Option(e, e, false, false);
+                    $('#multiSelect').append(newOption).trigger('change');
+                }
+            });
+
+            setTimeout(function() {
+                $('#multiSelect').val(obj).trigger("change");
+            }, 600);
 
             onOpenhandler()
             document.querySelectorAll('.setcheckbox')[0].checked = true
