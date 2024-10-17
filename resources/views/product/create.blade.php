@@ -787,7 +787,6 @@
                 console.log("🚀 ~ $ ~ obj[0]:", obj[0])
                 console.log("🚀 ~ $ ~ data:", data.id)
                 if (data.id == obj[0]) {
-                    // e.preventDefault();
                     let asd = [...$('#multiSelect').val(), ...obj]
                     $('#multiSelect').val(asd).trigger("change");
                 }
