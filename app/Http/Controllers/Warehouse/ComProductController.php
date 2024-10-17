@@ -38,8 +38,8 @@ class ComProductController extends Controller
             $brands = Accessery::select(
                 'COMPANY',
                 'DESCRIPTION')
-            ->where('COMPANY', 'CP')
-            ->whereIn('DESCRIPTION', ['CP', 'KM'])
+            ->where('COMPANY', 'CPS')
+            ->whereIn('DESCRIPTION', ['CPS', 'KM'])
             ->get();
         }
 
@@ -101,7 +101,7 @@ class ComProductController extends Controller
         //         'vendor_id',
         //         'name_thai'
         //     )
-        //     ->whereIn('company_id', ['CP', 'KM'])
+        //     ->whereIn('company_id', ['CPS', 'KM'])
         //     ->orderBy('barcode', 'DESC');
         // }
 

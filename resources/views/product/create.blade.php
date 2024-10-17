@@ -192,7 +192,7 @@
                                 <!-- <select class="js-example-basic-single w-full rounded-sm text-xs" id="BRAND" name="BRAND"> -->
                                     <option value=""> --- กรุณาเลือก ---</option>
                                     @foreach ($brands as $key => $brand)
-                                        <option value={{ $brand->COMPANY }}>{{ $brand->COMPANY }}</option>
+                                        <option value={{ $brand->BRAND }}>{{ $brand->BRAND }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -304,7 +304,7 @@
                                                                 </div>
 
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name">Sele Channel</label>
+                                                                    <label for="name">Product Channel</label>
                                                                     <select class="js-example-basic-multiple w-full rounded-sm text-xs select2" id="multiSelect" name="sele_channel[]" multiple="multiple">
                                                                     </select>
                                                                 </div>
@@ -786,6 +786,7 @@
             });
 
             let obj = <?php echo json_encode($defaultBrands); ?>;
+            console.log("🚀 ~ $ ~ obj:", obj)
             let allObj = <?php echo json_encode($allBrands); ?>;
             allObj.forEach(function(e){
                 if(!$('#multiSelect').find('option:contains(' + e + ')').length) {
