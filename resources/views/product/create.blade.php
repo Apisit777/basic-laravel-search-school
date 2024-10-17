@@ -779,15 +779,29 @@
             });
         }
         $(document).ready(function() {
+            let obj = <?php echo json_encode($defaultBrands); ?>;
+            console.log("🚀 ~ $ ~ obj:", obj)
+            let allObj = <?php echo json_encode($allBrands); ?>;
+            $('select').on('select2:unselect', function(e) {
+                let data = e.params.data;
+                console.log("🚀 ~ $ ~ obj[0]:", obj[0])
+                console.log("🚀 ~ $ ~ data:", data.id)
+                if (data.id == obj[0]) {
+                    // e.preventDefault();
+                    let asd = [...$('#multiSelect').val(), ...obj]
+                    $('#multiSelect').val(asd).trigger("change");
+                }
+                console.log("🚀 ~ $ ~  $('#multiSelect').val(obj):",  $('#multiSelect').val())
+                // console.log(data.id);
+                // console.log(data.text);
+            });
+
             $('.js-example-basic-single').select2();
             let placeholder = "--- กรุณาเลือก ---";
             $('#multiSelect').select2({
                 closeOnSelect: false,
             });
 
-            let obj = <?php echo json_encode($defaultBrands); ?>;
-            console.log("🚀 ~ $ ~ obj:", obj)
-            let allObj = <?php echo json_encode($allBrands); ?>;
             allObj.forEach(function(e){
                 if(!$('#multiSelect').find('option:contains(' + e + ')').length) {
                     var newOption = new Option(e, e, false, false);
