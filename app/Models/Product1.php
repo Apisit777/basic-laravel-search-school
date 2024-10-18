@@ -10,4 +10,9 @@ class Product1 extends Model
     use HasFactory;
     public $timestamps = false;
     protected $guarded = [];
+
+    public function productChannel()
+    {
+        return $this->hasMAny(ProductChannel::class, 'PRODUCT', 'PRODUCT');
+    }
 }

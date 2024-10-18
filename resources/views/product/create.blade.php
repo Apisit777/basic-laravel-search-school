@@ -345,7 +345,7 @@
                                                                     <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="GRP_P" id="GRP_P" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($grp_ps as $key => $grp_p)
-                                                                            <option value={{ $grp_p->GRP_P }}>{{ $grp_p->REMARK }}</option>
+                                                                            <option value={{ $grp_p->GRP_P }}>{{ $grp_p->BRAND.' - (' .$grp_p->REMARK.')' }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <span id="GRP_P_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
@@ -359,7 +359,7 @@
                                                                     <select  class="js-example-basic-single w-full rounded-sm text-xs select2" name="BRAND_P" id="BRAND_P">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($brand_ps as $key => $brand_p)
-                                                                            <option value={{ $brand_p->ID }}>{{ $brand_p->ID. ' - (' .$brand_p->REMARK .')' }}</option>
+                                                                            <option value={{ $brand_p->ID }}>{{ $brand_p->BRAND.' - '.$brand_p->ID. ' - (' .$brand_p->REMARK .')' }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <!-- <span id="BRAND_P_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span> -->

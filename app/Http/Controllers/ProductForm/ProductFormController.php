@@ -600,6 +600,9 @@ class ProductFormController extends Controller
                 if ($request->BRAND == 'CPS') {
                     $productCodeMax = Barcode::where('COMPANY', '=', 'CPS')->where('STATUS', '=', 'CPS')->max('NUMBER');
                 }
+                if ($request->BRAND == 'KTY') {
+                    $productCodeMax = Barcode::where('COMPANY', '=', 'KTY')->where('STATUS', '=', 'KTY')->max('NUMBER');
+                }
 
                 $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
                 $productCode = $productCodeNumber;
@@ -618,6 +621,9 @@ class ProductFormController extends Controller
                 }
                 if ($request->BRAND == 'CPS') {
                     $productCodeMax = Document::where('COMPANY', '=', 'CPS')->where('STATUS', '=', 'CPS')->max('NUMBER');
+                }
+                if ($request->BRAND == 'KTY') {
+                    $productCodeMax = Document::where('COMPANY', '=', 'KTY')->where('STATUS', '=', 'KTY')->max('NUMBER');
                 }
 
                 $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;

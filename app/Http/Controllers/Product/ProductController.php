@@ -53,10 +53,24 @@ class ProductController extends Controller
     //         'NAME_THAI'
     //     )
     //     ->leftJoin('product_channels', 'product1s.PRODUCT', '=', 'product_channels.PRODUCT')
-    //     ->where('product_channels.BRAND', '=', 'OP')
+    //     ->where('product_channels.BRAND', '=', 'KTY')
     //     ->get();
 
-    //     dd($data);
+        // $datas = Product1::select('BRAND', 'GRP_P','PRODUCT', 'BARCODE', 'NAME_THAI',)->get();
+        // foreach ($datas as $data) {
+        //     $product_channel_array = [];
+
+        //     $item_channel = ProductChannel::select('PRODUCT', 'BRAND')
+        //         ->where('PRODUCT', '=', $data->PRODUCT)
+        //         ->get();
+
+        //     foreach ($item_channel as $dataitem_channel) {
+        //         $product_channel_array[] = $dataitem_channel->BRAND;
+        //     }
+
+        //     $data->product_channel_array = $product_channel_array;
+        // }
+        // dd($datas);
 
         $data = Product1::all();
         $user = User::all();
@@ -288,26 +302,30 @@ class ProductController extends Controller
         else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
             $brand_ps = Brand_p::select(
                 'ID',
-                'REMARK')
+                'REMARK',
+                'BRAND')
             ->where('BRAND', 'OP')
             ->get();
 
             $grp_ps = Grp_p::select(
                 'GRP_P',
-                'REMARK')
+                'REMARK',
+                'BRAND')
             ->where('BRAND', 'OP')
             ->get();
         }
         else if (in_array($userpermission, ['Marketing - CPS'])) {
             $brand_ps = Brand_p::select(
                 'ID',
-                'REMARK')
+                'REMARK',
+                'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
 
             $grp_ps = Grp_p::select(
                 'GRP_P',
-                'REMARK')
+                'REMARK',
+                'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
         }
@@ -1031,8 +1049,50 @@ class ProductController extends Controller
         $acctypes = Acctype::all();
         $conditions = Condition::all();
 
-        // dd($multiChannels);
-        // dd($data->BRAND);
+        // $allBrands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
+        // $defaultBrands = MasterBrand::all();
+        // $brands = MasterBrand::all();
+
+        // if (in_array($userpermission, [$isSuperAdmin])) {
+
+        //     $brands = MasterBrand::select(
+        //         'BRAND')
+        //     ->get();
+        // }
+        // else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+        //     $defaultBrands = MasterBrand::select(
+        //         'BRAND')
+        //     ->where('BRAND', 'OP')
+        //     ->pluck('BRAND')
+        //     ->toArray();
+
+        //     $brands = MasterBrand::select(
+        //         'BRAND')
+        //     ->where('BRAND', 'OP')
+        //     ->get();
+        // } else if (in_array($userpermission, ['Marketing - CPS'])) {
+        //     $defaultBrands = MasterBrand::select(
+        //         'BRAND')
+        //     ->where('BRAND', 'CPS')
+        //     ->pluck('BRAND')
+        //     ->toArray();
+
+        //     $brands = MasterBrand::select(
+        //         'BRAND')
+        //     ->where('BRAND', 'CPS')
+        //     ->get();
+        // } else if (in_array($userpermission, ['Procurement - KTY'])) {
+        //     $defaultBrands = MasterBrand::select(
+        //         'BRAND')
+        //     ->where('BRAND', 'KTY')
+        //     ->pluck('BRAND')
+        //     ->toArray();
+
+        //     $brands = MasterBrand::select(
+        //         'BRAND')
+        //     ->where('BRAND', 'KTY')
+        //     ->get();
+        // }
 
         return view('product.edit', compact('data', 'multiChannels', 'allBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss'));
     }
@@ -1266,10 +1326,23 @@ class ProductController extends Controller
             'BARCODE',
             'NAME_THAI'
         )
-        // ->leftJoin('product_channels', 'product1s.PRODUCT', '=', 'product_channels.PRODUCT')
-        // ->where('product1s.BRAND', '=', 'product_channels.BRAND')
         ->orderBy('PRODUCT', 'DESC');
 
+        $datas = Product1::select('BRAND', 'GRP_P','PRODUCT', 'BARCODE', 'NAME_THAI',)->get();
+        foreach ($datas as $data) {
+            $product_channel_array = [];
+
+            $item_channel = ProductChannel::select('PRODUCT', 'BRAND')
+                ->where('PRODUCT', '=', $data->PRODUCT)
+                ->get();
+
+            foreach ($item_channel as $dataitem_channel) {
+                $product_channel_array[] = $dataitem_channel->BRAND;
+            }
+
+            $data->product_channel_array = $product_channel_array;
+        }
+        
         $userpermission = Auth::user()->getUserPermission->name_position;
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         if (in_array($userpermission, [$isSuperAdmin, 'Admin'])) {
@@ -1289,8 +1362,10 @@ class ProductController extends Controller
                     'BARCODE',
                     'NAME_THAI'
                 )
-                // ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
                 ->whereIn('BRAND', ['OP', 'KM'])
+                ->orWhereHas('productChannel', function ($q) {
+                    $q->whereIn('BRAND', ['OP', 'KM']);
+                })
                 ->orderBy('BARCODE', 'DESC');
         } else if (in_array($userpermission, ['Marketing - CPS'])) {
             $data = Product1::select(
@@ -1325,7 +1400,7 @@ class ProductController extends Controller
         //     $productCodes = $data->where(DB::raw('SUBSTRING(BARCODE, 8, 5)'), $request->input('BARCODE'))->pluck('BARCODE');
         // }
 
-        // dd($data);
+        // dd($data->toSql());
         $data = $data->paginate($limit);
         $totalRecords = $data->total();
         $totalRecordwithFilter = $data->count();
