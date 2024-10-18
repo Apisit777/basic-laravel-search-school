@@ -210,6 +210,32 @@
                 </div>
             </div>
         </div>
+
+        <!-- <a href="#" id="fetchDataBtn" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
+            </svg>
+            Fetch School Balance Data
+        </a>
+        <div id="responseData" class="mt-5 text-gray-900 dark:text-white"></div>
+
+        <div class="container mx-auto py-8">
+            <div id="cards-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+        </div>
+
+        <div id="pagination-controls" class="mt-8 flex flex-wrap justify-center space-x-2">
+            <button id="prev-btn" 
+                    class="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700 disabled:bg-gray-500 w-full sm:w-auto text-center mb-2 sm:mb-0"
+                    disabled>
+                Prev
+            </button>
+            <div id="pagination-numbers" class="flex flex-wrap justify-center space-x-2"></div>
+            <button id="next-btn" 
+                    class="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700 disabled:bg-gray-500 w-full sm:w-auto text-center mb-2 sm:mb-0">
+                Next
+            </button>
+        </div> -->
+
         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700 relative"></ul>
         <div class="flex right-12 z-10 absolute mt-3">
             <div class="relative" data-twe-dropdown-position="dropstart">
@@ -834,6 +860,139 @@
         </script>
     @endif
     <script>
+
+        // $(document).ready(function () {
+        //     $('#fetchDataBtn').click(function () {
+        //         fetch('https://ins.schicher.com/api/users', {
+        //             method: 'GET',  // Or 'POST' if the API requires it
+        //             headers: {
+        //                 'Content-Type': 'application/json'
+        //             },
+        //         })
+        //         .then(response => response.json()) // Assuming the API returns JSON
+        //         .then(data => {
+        //             $('#responseData').html(`<p>Response from API:</p><pre>${JSON.stringify(data, null, 2)}</pre>`);
+        //         })
+        //         .catch(error => console.error('Error:', error));
+        //     });
+        // });
+
+        $(document).ready(function () {
+            let currentPage = 1;
+            const cardsPerPage = 12;
+            let allData = [];
+
+            function fetchData() {
+                fetch('https://ins.schicher.com/api/users', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    allData = data;
+                    renderCards(currentPage);
+                    renderPagination();
+                })
+                .catch(error => console.error('Error:', error));
+            }
+
+            function renderCards(page) {
+                $('#cards-container').empty();
+                const start = (page - 1) * cardsPerPage;
+                const end = start + cardsPerPage;
+                const pageData = allData.slice(start, end);
+
+                pageData.forEach(item => {
+                    const card = `
+                        <div class="bg-white p-4 rounded shadow">
+                            <h2 class="text-xl font-bold mb-2">${item.name || 'Unknown School'}</h2>
+                            <p>Balance: ${item.role || 'N/A'}</p>
+                            <p>Updated: ${item.status || 'N/A'}</p>
+                        </div>`;
+                    $('#cards-container').append(card);
+                });
+
+                updatePaginationControls();
+            }
+
+            function renderPagination() {
+                $('#pagination-numbers').empty();
+                const totalPages = Math.ceil(allData.length / cardsPerPage);
+                const maxVisiblePages = 5; // You can adjust this value
+
+                function addPageButton(page, isActive = false) {
+                    const pageButton = `<button class="px-4 py-1 mb-2 sm:mb-0 ${isActive ? 'bg-gray-800 text-white' : 'bg-white text-gray-800 border border-gray-300'} rounded hover:bg-gray-100" data-page="${page}">${page}</button>`;
+                    $('#pagination-numbers').append(pageButton);
+                }
+
+                if (totalPages <= maxVisiblePages) {
+                    // If total pages are less than max visible pages, show all
+                    for (let i = 1; i <= totalPages; i++) {
+                        addPageButton(i, i === currentPage);
+                    }
+                } else {
+                    // Show first page
+                    addPageButton(1, currentPage === 1);
+
+                    // Show an ellipsis if currentPage is far from the first page
+                    if (currentPage > 3) {
+                        $('#pagination-numbers').append('<span class="px-2">...</span>');
+                    }
+
+                    // Show pages around the current page
+                    let startPage = Math.max(2, currentPage - 1);
+                    let endPage = Math.min(currentPage + 1, totalPages - 1);
+
+                    for (let i = startPage; i <= endPage; i++) {
+                        addPageButton(i, i === currentPage);
+                    }
+
+                    // Show an ellipsis if currentPage is far from the last page
+                    if (currentPage < totalPages - 2) {
+                        $('#pagination-numbers').append('<span class="px-2">...</span>');
+                    }
+
+                    // Show last page
+                    addPageButton(totalPages, currentPage === totalPages);
+                }
+
+                // Add event listeners to page buttons
+                $('#pagination-numbers button').click(function () {
+                    const page = $(this).data('page');
+                    currentPage = page;
+                    renderCards(currentPage);
+                    renderPagination();
+                });
+            }
+
+            function updatePaginationControls() {
+                const totalPages = Math.ceil(allData.length / cardsPerPage);
+                $('#prev-btn').prop('disabled', currentPage === 1);
+                $('#next-btn').prop('disabled', currentPage === totalPages);
+            }
+
+            $('#prev-btn').click(function () {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderCards(currentPage);
+                    renderPagination();
+                }
+            });
+
+            $('#next-btn').click(function () {
+                const totalPages = Math.ceil(allData.length / cardsPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderCards(currentPage);
+                    renderPagination();
+                }
+            });
+
+            fetchData();
+        });
+
         // getParmeterLogin()
         // function getParmeterLogin() {
         //     let dataLogin = sessionStorage.getItem("credetail");
