@@ -827,7 +827,7 @@ class ProductController extends Controller
             ];
 
             $productMaster = Product1::create($data_product);
-            
+
             // dd($request);
             // if(!is_null($request->sele_channel[0])) {
             //     foreach ($request->sele_channel as $key => $value) {
@@ -853,7 +853,7 @@ class ProductController extends Controller
 
                 foreach ($request->sele_channel as $value) {
                     $createSeleChannel = ProductChannel::updateOrCreate(
-            ['PRODUCT' => $data_product['PRODUCT'], 'BRAND' => $value], 
+            ['PRODUCT' => $data_product['PRODUCT'], 'BRAND' => $value],
                 $updateData
                     );
                 }
@@ -996,8 +996,6 @@ class ProductController extends Controller
         // ->leftJoin('product_channels', 'product1s.PRODUCT', '=', 'product_channels.PRODUCT')
         ->firstWhere('product1s.PRODUCT', '=', $PRODUCT);
 
-        $multiChannels = ProductChannel::select('BRAND')->where('PRODUCT', '=', $PRODUCT)->pluck('BRAND')->toArray();
-        $allBrands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
         // $sub_categorys = Sub_category::all();
         // $pdms = Pdm::all();
         // $p_statuss = P_status::all();
@@ -1049,52 +1047,53 @@ class ProductController extends Controller
         $acctypes = Acctype::all();
         $conditions = Condition::all();
 
-        // $allBrands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
-        // $defaultBrands = MasterBrand::all();
-        // $brands = MasterBrand::all();
+        $multiChannels = ProductChannel::select('BRAND')->where('PRODUCT', '=', $PRODUCT)->pluck('BRAND')->toArray();
+        $allBrands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
+        $defaultBrands = MasterBrand::all();
+        $brands = MasterBrand::all();
 
-        // if (in_array($userpermission, [$isSuperAdmin])) {
+        if (in_array($userpermission, [$isSuperAdmin])) {
 
-        //     $brands = MasterBrand::select(
-        //         'BRAND')
-        //     ->get();
-        // }
-        // else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
-        //     $defaultBrands = MasterBrand::select(
-        //         'BRAND')
-        //     ->where('BRAND', 'OP')
-        //     ->pluck('BRAND')
-        //     ->toArray();
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->get();
+        }
+        else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+            $defaultBrands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->pluck('BRAND')
+            ->toArray();
 
-        //     $brands = MasterBrand::select(
-        //         'BRAND')
-        //     ->where('BRAND', 'OP')
-        //     ->get();
-        // } else if (in_array($userpermission, ['Marketing - CPS'])) {
-        //     $defaultBrands = MasterBrand::select(
-        //         'BRAND')
-        //     ->where('BRAND', 'CPS')
-        //     ->pluck('BRAND')
-        //     ->toArray();
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+        } else if (in_array($userpermission, ['Marketing - CPS'])) {
+            $defaultBrands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->pluck('BRAND')
+            ->toArray();
 
-        //     $brands = MasterBrand::select(
-        //         'BRAND')
-        //     ->where('BRAND', 'CPS')
-        //     ->get();
-        // } else if (in_array($userpermission, ['Procurement - KTY'])) {
-        //     $defaultBrands = MasterBrand::select(
-        //         'BRAND')
-        //     ->where('BRAND', 'KTY')
-        //     ->pluck('BRAND')
-        //     ->toArray();
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+        } else if (in_array($userpermission, ['Procurement - KTY'])) {
+            $defaultBrands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'KTY')
+            ->pluck('BRAND')
+            ->toArray();
 
-        //     $brands = MasterBrand::select(
-        //         'BRAND')
-        //     ->where('BRAND', 'KTY')
-        //     ->get();
-        // }
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'KTY')
+            ->get();
+        }
 
-        return view('product.edit', compact('data', 'multiChannels', 'allBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss'));
+        return view('product.edit', compact('data', 'multiChannels', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss'));
     }
 
     /**
@@ -1239,18 +1238,18 @@ class ProductController extends Controller
                 if (!is_null($request->sele_channel[0])) {
 
                     $multiChannels = ProductChannel::select('BRAND')->where('PRODUCT', $data_product_upddate['PRODUCT'])->whereNotIn('BRAND', $request->sele_channel)->delete();
-    
+
                     $user = Auth::user()->username;
                     $dateTime = date('Y-m-d H:i:s');
-    
+
                     $updateData = [
                         'UPDATED_BY' => $user,
                         'UPDATED_AT' => $dateTime
                     ];
-    
+
                     foreach ($request->sele_channel as $value) {
                         $createSeleChannel = ProductChannel::updateOrCreate(
-            ['PRODUCT' => $data_product_upddate['PRODUCT'], 'BRAND' => $value], 
+            ['PRODUCT' => $data_product_upddate['PRODUCT'], 'BRAND' => $value],
                     $updateData
                         );
                     }
@@ -1342,7 +1341,7 @@ class ProductController extends Controller
 
             $data->product_channel_array = $product_channel_array;
         }
-        
+
         $userpermission = Auth::user()->getUserPermission->name_position;
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         if (in_array($userpermission, [$isSuperAdmin, 'Admin'])) {
