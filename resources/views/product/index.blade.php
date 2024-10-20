@@ -211,7 +211,7 @@
             </div>
         </div>
 
-        <!-- <a href="#" id="fetchDataBtn" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
+        {{-- <a href="#" id="fetchDataBtn" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                 <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
             </svg>
@@ -224,17 +224,17 @@
         </div>
 
         <div id="pagination-controls" class="mt-8 flex flex-wrap justify-center space-x-2">
-            <button id="prev-btn" 
+            <button id="prev-btn"
                     class="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700 disabled:bg-gray-500 w-full sm:w-auto text-center mb-2 sm:mb-0"
                     disabled>
                 Prev
             </button>
             <div id="pagination-numbers" class="flex flex-wrap justify-center space-x-2"></div>
-            <button id="next-btn" 
+            <button id="next-btn"
                     class="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700 disabled:bg-gray-500 w-full sm:w-auto text-center mb-2 sm:mb-0">
                 Next
             </button>
-        </div> -->
+        </div> --}}
 
         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700 relative"></ul>
         <div class="flex right-12 z-10 absolute mt-3">

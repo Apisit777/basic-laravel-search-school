@@ -414,7 +414,7 @@
                                                                     <label for="name">&nbsp;</label>
                                                                     <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
-                                                                
+
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">รหัส Packsize2</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE2" id="PACK_SIZE2">
@@ -425,7 +425,7 @@
                                                                     <label for="name">&nbsp;</label>
                                                                     <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
-                                                    
+
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">รหัส Packsize3</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE3" id="PACK_SIZE3">
@@ -436,7 +436,7 @@
                                                                     <label for="name">&nbsp;</label>
                                                                     <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
-                                                                
+
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">รหัส Packsize4</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE4" id="PACK_SIZE4">
@@ -451,12 +451,12 @@
                                                                     <label for="WIDTH">ความกว้าง</label>
                                                                     <input type="text" name="WIDTH" id="WIDTH" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
-                                                                
+
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="WIDE">ความยาว</label>
                                                                     <input type="text" name="WIDE" id="WIDE" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
-                                                                
+
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="HEIGHT">ความสูง</label>
                                                                     <input type="text" name="HEIGHT" id="HEIGHT" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
@@ -608,7 +608,7 @@
     <script src="{{ asset('js/flowbite-2.3.0.min.js') }}"></script>
     <script src="{{ asset('js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
-    
+
     <script>
 
         function onOpenhandler(params) {
@@ -633,15 +633,29 @@
         }
 
         $(document).ready(function() {
+            let obj = <?php echo json_encode($defaultBrands); ?>;
+            console.log("🚀 ~ $ ~ obj:", obj)
+            let allObj = <?php echo json_encode($allBrands); ?>;
+            let allObjSelect = <?php echo json_encode($multiChannels); ?>;
+            $('select').on('select2:unselect', function(e) {
+                let data = e.params.data;
+                console.log("🚀 ~ $ ~ obj[0]:", obj[0])
+                console.log("🚀 ~ $ ~ data:", data.id)
+                if (data.id == obj[0]) {
+                    let asd = [...$('#multiSelect').val(), ...obj]
+                    $('#multiSelect').val(asd).trigger("change");
+                }
+                console.log("🚀 ~ $ ~  $('#multiSelect').val(obj):",  $('#multiSelect').val())
+                // console.log(data.id);
+                // console.log(data.text);
+            });
+
             $('.js-example-basic-single').select2();
             let placeholder = "--- กรุณาเลือก ---";
             $('#multiSelect').select2({
                 closeOnSelect: false,
             });
 
-            let obj = <?php echo json_encode($multiChannels); ?>;
-            console.log("🚀 ~ $ ~ obj:", obj)
-            let allObj = <?php echo json_encode($allBrands); ?>;
             allObj.forEach(function(e){
                 if(!$('#multiSelect').find('option:contains(' + e + ')').length) {
                     var newOption = new Option(e, e, false, false);
@@ -650,7 +664,7 @@
             });
 
             setTimeout(function() {
-                $('#multiSelect').val(obj).trigger("change");
+                $('#multiSelect').val(allObjSelect).trigger("change");
             }, 600);
 
             onOpenhandler()
