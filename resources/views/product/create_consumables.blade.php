@@ -829,7 +829,7 @@
         function checkNameBrand() {
             PRODUCT = jQuery('#ID_PRODUCT').val();
             console.log("🚀 ~ checkNameBrand ~ PRODUCT:", PRODUCT)
-            if (PRODUCT.length > 5) {
+            if (PRODUCT.length > 4) {
                 jQuery.ajax({
                     method: "POST",
                     url: '{{ route('checknamebrand') }}',

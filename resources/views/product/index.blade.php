@@ -919,125 +919,125 @@
         //             $('#cards-container').append(card);
         //         });
 
-        $(document).ready(function () {
-            let currentPage = 1;
-            const cardsPerPage = 9;
-            let allData = [];
+        // $(document).ready(function () {
+        //     let currentPage = 1;
+        //     const cardsPerPage = 9;
+        //     let allData = [];
 
-            function fetchData() {
-                fetch('https://ott-details.p.rapidapi.com/advancedsearch', {
-                    method: "GET",
-                    headers: {
-                        'X-RapidAPI-Key': '7115427d56mshfff5805283a13cep190338jsn4bc3f4689eb8',
-                        'X-RapidAPI-Host': 'ott-details.p.rapidapi.com'
-                    },
-                })
-                .then(response => response.json())
-                .then(data => {
-                    allData = data.results;
-                    renderCards(currentPage);
-                    renderPagination();
-                })
-                .catch(error => console.error('Error:', error));
-            }
+        //     function fetchData() {
+        //         fetch('https://ott-details.p.rapidapi.com/advancedsearch', {
+        //             method: "GET",
+        //             headers: {
+        //                 'X-RapidAPI-Key': '7115427d56mshfff5805283a13cep190338jsn4bc3f4689eb8',
+        //                 'X-RapidAPI-Host': 'ott-details.p.rapidapi.com'
+        //             },
+        //         })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             allData = data.results;
+        //             renderCards(currentPage);
+        //             renderPagination();
+        //         })
+        //         .catch(error => console.error('Error:', error));
+        //     }
             
-            function renderCards(page) {
-                console.log("🚀 ~ fetchData ~ allData:", allData)
-                $('#cards-container').empty();
-                const start = (page - 1) * cardsPerPage;
-                const end = start + cardsPerPage;
-                const pageData = allData.slice(start, end);
+        //     function renderCards(page) {
+        //         console.log("🚀 ~ fetchData ~ allData:", allData)
+        //         $('#cards-container').empty();
+        //         const start = (page - 1) * cardsPerPage;
+        //         const end = start + cardsPerPage;
+        //         const pageData = allData.slice(start, end);
 
-                pageData.forEach(item => {
-                    const card = `
-                        <div class="bg-[#eaeaea] p-4 cursor-pointer rounded shadow-sm hover:shadow-lg hover:shadow-gray-400 dark:hover:shadow-lg dark:hover:shadow-gray-400 transition-shadow duration-300 ease-in-out">
-                            <img class="w-20 h-20 rounded-md mx-auto" src="${item.imageurl}" alt="${item.title || 'Unknown'}">
-                            <div class="text-center mt-4">
-                                <h2 class="text-xl font-bold mb-2">${item.title || 'Unknown School'}</h2>
-                            </div>
+        //         pageData.forEach(item => {
+        //             const card = `
+        //                 <div class="bg-[#eaeaea] p-4 cursor-pointer rounded shadow-sm hover:shadow-lg hover:shadow-gray-400 dark:hover:shadow-lg dark:hover:shadow-gray-400 transition-shadow duration-300 ease-in-out">
+        //                     <img class="w-20 h-20 rounded-md mx-auto" src="${item.imageurl}" alt="${item.title || 'Unknown'}">
+        //                     <div class="text-center mt-4">
+        //                         <h2 class="text-xl font-bold mb-2">${item.title || 'Unknown School'}</h2>
+        //                     </div>
 
-                        </div>`;
-                    $('#cards-container').append(card);
-                });
+        //                 </div>`;
+        //             $('#cards-container').append(card);
+        //         });
 
-                updatePaginationControls();
-            }
+        //         updatePaginationControls();
+        //     }
 
-            function renderPagination() {
-                $('#pagination-numbers').empty();
-                const totalPages = Math.ceil(allData.length / cardsPerPage);
-                const maxVisiblePages = 5; // You can adjust this value
+        //     function renderPagination() {
+        //         $('#pagination-numbers').empty();
+        //         const totalPages = Math.ceil(allData.length / cardsPerPage);
+        //         const maxVisiblePages = 5; // You can adjust this value
 
-                function addPageButton(page, isActive = false) {
-                    const pageButton = `<button class="px-4 py-1 mb-2 sm:mb-0 ${isActive ? 'bg-[#303030] text-white' : 'bg-white text-gray-800 border border-gray-300'} rounded hover:bg-[#505050]" data-page="${page}">${page}</button>`;
-                    $('#pagination-numbers').append(pageButton);
-                }
+        //         function addPageButton(page, isActive = false) {
+        //             const pageButton = `<button class="px-4 py-1 mb-2 sm:mb-0 ${isActive ? 'bg-[#303030] text-white' : 'bg-white text-gray-800 border border-gray-300'} rounded hover:bg-[#505050]" data-page="${page}">${page}</button>`;
+        //             $('#pagination-numbers').append(pageButton);
+        //         }
 
-                if (totalPages <= maxVisiblePages) {
-                    // If total pages are less than max visible pages, show all
-                    for (let i = 1; i <= totalPages; i++) {
-                        addPageButton(i, i === currentPage);
-                    }
-                } else {
-                    // Show first page
-                    addPageButton(1, currentPage === 1);
+        //         if (totalPages <= maxVisiblePages) {
+        //             // If total pages are less than max visible pages, show all
+        //             for (let i = 1; i <= totalPages; i++) {
+        //                 addPageButton(i, i === currentPage);
+        //             }
+        //         } else {
+        //             // Show first page
+        //             addPageButton(1, currentPage === 1);
 
-                    // Show an ellipsis if currentPage is far from the first page
-                    if (currentPage > 3) {
-                        $('#pagination-numbers').append('<span class="px-2 text-black dark:text-white">...</span>');
-                    }
+        //             // Show an ellipsis if currentPage is far from the first page
+        //             if (currentPage > 3) {
+        //                 $('#pagination-numbers').append('<span class="px-2 text-black dark:text-white">...</span>');
+        //             }
 
-                    // Show pages around the current page
-                    let startPage = Math.max(2, currentPage - 1);
-                    let endPage = Math.min(currentPage + 1, totalPages - 1);
+        //             // Show pages around the current page
+        //             let startPage = Math.max(2, currentPage - 1);
+        //             let endPage = Math.min(currentPage + 1, totalPages - 1);
 
-                    for (let i = startPage; i <= endPage; i++) {
-                        addPageButton(i, i === currentPage);
-                    }
+        //             for (let i = startPage; i <= endPage; i++) {
+        //                 addPageButton(i, i === currentPage);
+        //             }
 
-                    // Show an ellipsis if currentPage is far from the last page
-                    if (currentPage < totalPages - 2) {
-                        $('#pagination-numbers').append('<span class="px-2 text-black dark:text-white">...</span>');
-                    }
+        //             // Show an ellipsis if currentPage is far from the last page
+        //             if (currentPage < totalPages - 2) {
+        //                 $('#pagination-numbers').append('<span class="px-2 text-black dark:text-white">...</span>');
+        //             }
 
-                    // Show last page
-                    addPageButton(totalPages, currentPage === totalPages);
-                }
+        //             // Show last page
+        //             addPageButton(totalPages, currentPage === totalPages);
+        //         }
 
-                // Add event listeners to page buttons
-                $('#pagination-numbers button').click(function () {
-                    const page = $(this).data('page');
-                    currentPage = page;
-                    renderCards(currentPage);
-                    renderPagination();
-                });
-            }
+        //         // Add event listeners to page buttons
+        //         $('#pagination-numbers button').click(function () {
+        //             const page = $(this).data('page');
+        //             currentPage = page;
+        //             renderCards(currentPage);
+        //             renderPagination();
+        //         });
+        //     }
 
-            function updatePaginationControls() {
-                const totalPages = Math.ceil(allData.length / cardsPerPage);
-                $('#prev-btn').prop('disabled', currentPage === 1);
-                $('#next-btn').prop('disabled', currentPage === totalPages);
-            }
+        //     function updatePaginationControls() {
+        //         const totalPages = Math.ceil(allData.length / cardsPerPage);
+        //         $('#prev-btn').prop('disabled', currentPage === 1);
+        //         $('#next-btn').prop('disabled', currentPage === totalPages);
+        //     }
 
-            $('#prev-btn').click(function () {
-                if (currentPage > 1) {
-                    currentPage--;
-                    renderCards(currentPage);
-                    renderPagination();
-                }
-            });
+        //     $('#prev-btn').click(function () {
+        //         if (currentPage > 1) {
+        //             currentPage--;
+        //             renderCards(currentPage);
+        //             renderPagination();
+        //         }
+        //     });
 
-            $('#next-btn').click(function () {
-                const totalPages = Math.ceil(allData.length / cardsPerPage);
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    renderCards(currentPage);
-                    renderPagination();
-                }
-            });
+        //     $('#next-btn').click(function () {
+        //         const totalPages = Math.ceil(allData.length / cardsPerPage);
+        //         if (currentPage < totalPages) {
+        //             currentPage++;
+        //             renderCards(currentPage);
+        //             renderPagination();
+        //         }
+        //     });
 
-            fetchData();
-        });
+        //     fetchData();
+        // });
 
         // getParmeterLogin()
         // function getParmeterLogin() {
