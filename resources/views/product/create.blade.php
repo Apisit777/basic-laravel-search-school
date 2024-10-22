@@ -71,6 +71,7 @@
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
@@ -1114,7 +1115,16 @@
                             if(res.success == true) {
                                 window.location = "/product";
                             } else {
-                                toastr.error("Can't Create Product!");
+                                setTimeout(function() {
+                                    toastr.error("เพิ่มขู้อมูลไม่สำเร็จ!");
+                                },dlayMessage)
+                                setTimeout(function() {
+                                    $('#loader').addClass('hidden')
+                                },dlayMessage)
+                                setTimeout(function() {
+                                    $('#BRAND').val('')
+                                    $("#NUMBER").val('').change();
+                                },dlayMessage)
                             }
                             return false;
                         },

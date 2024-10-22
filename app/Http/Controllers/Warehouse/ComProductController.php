@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Barcode;
 use App\Models\Accessery;
+use App\Models\MasterBrand;
 
 
 class ComProductController extends Controller
@@ -17,31 +18,26 @@ class ComProductController extends Controller
      */
     public function index()
     {
-        $brands = Accessery::all();
-        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
-        $userpermission = Auth::user()->getUserPermission->name_position;
+        $brands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
+        // dd($brands);
+        // $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        // $userpermission = Auth::user()->getUserPermission->name_position;
 
-        // create brands consumables
-        if (in_array($userpermission, [$isSuperAdmin])) {
-            $brands = Accessery::select(
-                'COMPANY',
-                'DESCRIPTION')
-            ->get();
-        } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
-            $brands = Accessery::select(
-                'COMPANY',
-                'DESCRIPTION')
-            ->where('COMPANY', 'OP')
-            ->whereIn('DESCRIPTION', ['OP', 'KM'])
-            ->get();
-        } else if (in_array($userpermission, ['Marketing - CPS'])) {
-            $brands = Accessery::select(
-                'COMPANY',
-                'DESCRIPTION')
-            ->where('COMPANY', 'CPS')
-            ->whereIn('DESCRIPTION', ['CPS', 'KM'])
-            ->get();
-        }
+        // if (in_array($userpermission, [$isSuperAdmin])) {
+        //     $brands = MasterBrand::select(
+        //         'BRAND')
+        //     ->get();
+        // } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+        //     $brands = MasterBrand::select(
+        //         'BRAND')
+        //     ->whereIn('BRAND', $brands)
+        //     ->get();
+        // } else if (in_array($userpermission, ['Marketing - CPS'])) {
+        //     $brands = MasterBrand::select(
+        //         'BRAND')
+        //     ->whereIn('DESCRIPTION', $brands)
+        //     ->get();
+        // }
 
         return view('warehouse.index', compact('brands'));
     }
@@ -53,14 +49,13 @@ class ComProductController extends Controller
             'page' => ceil(($request->input('start') + 1) / $limit),
         ]);
 
-        $company = $request->input('company_id');
-        $PRODUCT = $request->input('PRODUCT');
+        $company_id = $request->input('brand_id');
         // $BARCODE = $request->input('BARCODE');
         $DOC_NO = $request->search;
         $field_detail = [
-            'product1s.PRODUCT',
-            'product1s.NAME_THAI',
-            'product1s.BARCODE',
+            'com_products.product_id',
+            'com_products.name_thai',
+            'com_products.barcode',
         ];
 
         $data = Com_product::select(
@@ -72,41 +67,8 @@ class ComProductController extends Controller
         )
         ->orderBy('product_id', 'DESC');
 
-        // $userpermission = Auth::user()->getUserPermission->name_position;
-        // $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
-        // if (in_array($userpermission, [$isSuperAdmin, 'Admin'])) {
-        //         $data = Com_product::select(
-        //         'company_id',
-        //         'product_id',
-        //         'barcode',
-        //         'vendor_id',
-        //         'name_thai'
-        //     )
-        //     ->orderBy('BARCODE', 'DESC');
-        // } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
-        //     $data = Com_product::select(
-        //             'company_id',
-        //             'product_id',
-        //             'barcode',
-        //             'vendor_id',
-        //             'name_thai'
-        //         )
-        //         ->whereIn('company_id', ['OP', 'KM'])
-        //         ->orderBy('barcode', 'DESC');
-        // } else if (in_array($userpermission, ['Marketing - CPS'])) {
-        //     $data = Com_product::select(
-        //         'company_id',
-        //         'product_id',
-        //         'barcode',
-        //         'vendor_id',
-        //         'name_thai'
-        //     )
-        //     ->whereIn('company_id', ['CPS', 'KM'])
-        //     ->orderBy('barcode', 'DESC');
-        // }
-
-        if ($company != null) {
-            $data->where('com_products.company_id', $company);
+        if ($company_id != null) {
+            $data->where('com_products.company_id', $company_id);
         }
 
         if (null != $DOC_NO) {
@@ -116,6 +78,10 @@ class ComProductController extends Controller
                 }
             });
         }
+
+        // if (null != $BARCODE) {
+        //     $productCodes = $data->where(DB::raw('SUBSTRING(BARCODE, 8, 5)'), $request->input('BARCODE'))->pluck('BARCODE');
+        // }
 
         // dd($data);
         $data = $data->paginate($limit);

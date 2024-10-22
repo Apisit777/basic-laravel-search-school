@@ -85,6 +85,7 @@
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
 
@@ -774,15 +775,28 @@
         }
 
         $(document).ready(function() {
+            let obj = <?php echo json_encode($defaultBrands); ?>;
+            console.log("🚀 ~ $ ~ obj:", obj)
+            let allObj = <?php echo json_encode($allBrands); ?>;
+            $('select').on('select2:unselect', function(e) {
+                let data = e.params.data;
+                console.log("🚀 ~ $ ~ obj[0]:", obj[0])
+                console.log("🚀 ~ $ ~ data:", data.id)
+                if (data.id == obj[0]) {
+                    let asd = [...$('#multiSelect').val(), ...obj]
+                    $('#multiSelect').val(asd).trigger("change");
+                }
+                console.log("🚀 ~ $ ~  $('#multiSelect').val(obj):",  $('#multiSelect').val())
+                // console.log(data.id);
+                // console.log(data.text);
+            });
+
             $('.js-example-basic-single').select2();
             let placeholder = "--- กรุณาเลือก ---";
             $('#multiSelect').select2({
                 closeOnSelect: false,
             });
-
-            let obj = <?php echo json_encode($defaultBrands); ?>;
-            console.log("🚀 ~ $ ~ obj:", obj)
-            let allObj = <?php echo json_encode($allBrands); ?>;
+            
             allObj.forEach(function(e){
                 if(!$('#multiSelect').find('option:contains(' + e + ')').length) {
                     var newOption = new Option(e, e, false, false);
@@ -1141,7 +1155,16 @@
                             if(res.success == true) {
                                 window.location = "/product";
                             } else {
-                                toastr.error("Can't Create Product!");
+                                setTimeout(function() {
+                                    toastr.error("เพิ่มขู้อมูลไม่สำเร็จ!");
+                                },dlayMessage)
+                                setTimeout(function() {
+                                    $('#loader').addClass('hidden')
+                                },dlayMessage)
+                                setTimeout(function() {
+                                    $('#BRAND').val('')
+                                    $("#ID_PRODUCT").val('').change();
+                                },dlayMessage)
                             }
                             return false;
                         },
