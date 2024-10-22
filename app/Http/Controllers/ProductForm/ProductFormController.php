@@ -836,7 +836,7 @@ class ProductFormController extends Controller
                     'pro_develops.NAME_ENG AS NAME_ENG'
                 )
                 ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
-                ->whereIn('pro_develops.STATUS', ['OP', 'RI'])
+                ->whereIn('barcodes.BRAND', ['OP', 'RI'])
                 ->orderBy('BARCODE', 'DESC');
         } else if (in_array($userpermission, ['Marketing - CPS'])) {
             $data = Pro_develops::select(
@@ -846,7 +846,7 @@ class ProductFormController extends Controller
                 'pro_develops.NAME_ENG AS NAME_ENG'
             )
             ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
-            ->whereIn('pro_develops.STATUS', ['CPS'])
+            ->whereIn('barcodes.BRAND', ['CPS'])
             ->orderBy('BARCODE', 'DESC');
         }
 

@@ -40,6 +40,7 @@
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 @section('content')
@@ -481,9 +482,8 @@
     <script src="{{ asset('js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
-    
-    <script>
 
+    <script>
         let barcodes = <?php echo json_encode($testBarcode); ?>;
 
         getParmeterLogin()
@@ -773,7 +773,16 @@
                             if(res.success == true) {
                                 window.location = "/new_product_develop";
                             } else {
-                                toastr.error("Can't Create Product!");
+                                    setTimeout(function() {
+                                        toastr.error("เพิ่มขู้อมูลไม่สำเร็จ!");
+                                    },dlayMessage)
+                                    setTimeout(function() {
+                                        $('#loader').addClass('hidden')
+                                    },dlayMessage)
+                                    setTimeout(function() {
+                                        $('#code').val('')
+                                        $("#brand_id").val('').change();
+                                    },dlayMessage)
                             }
                             return false;
                         },

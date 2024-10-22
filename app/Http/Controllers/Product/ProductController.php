@@ -81,11 +81,25 @@ class ProductController extends Controller
         // dd($userpermission);
 
         if (in_array($userpermission, [$isSuperAdmin, 'Admin'])) {
-            $brands = Barcode::select(
-            'BRAND')
-            // ->whereNotIn('STATUS', ['ALL'])
+
+            $brands = Product1::select(
+                'BRAND',
+            )
+            ->where(function ($query) {
+                $query->whereIn('BRAND', ['OP', 'KM']) 
+                    ->orWhereHas('productChannel', function ($q) {
+                        $q->whereIn('BRAND', ['OP', 'KM']);
+                    });
+            })
+            ->groupBy('BRAND')
             ->pluck('BRAND')
             ->toArray();
+
+            // $brands = Barcode::select(
+            // 'BRAND')
+            // // ->whereNotIn('STATUS', ['ALL'])
+            // ->pluck('BRAND')
+            // ->toArray();
 
             $dataProductMasterArr = Product1::select(
             'PRODUCT')
@@ -104,12 +118,26 @@ class ProductController extends Controller
             ->toArray();
 
         } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
-            $brands = Barcode::select(
-            'BRAND',
-                'STATUS')
-            ->whereIn('STATUS', ['OP', 'RI'])
+
+            $brands = Product1::select(
+                'BRAND',
+            )
+            ->where(function ($query) {
+                $query->whereIn('BRAND', ['OP', 'KM']) 
+                    ->orWhereHas('productChannel', function ($q) {
+                        $q->whereIn('BRAND', ['OP']);
+                    });
+            })
+            ->groupBy('BRAND')
             ->pluck('BRAND')
             ->toArray();
+
+            // $brands = Barcode::select(
+            // 'BRAND',
+            //     'STATUS')
+            // ->whereIn('STATUS', ['OP', 'RI'])
+            // ->pluck('BRAND')
+            // ->toArray();
 
             $dataProductMasterArr = Product1::select(
             'PRODUCT')
@@ -132,10 +160,23 @@ class ProductController extends Controller
             ->toArray();
 
         } else if (in_array($userpermission, ['Marketing - CPS'])) {
-            $brands = Barcode::select(
+            // $brands = Barcode::select(
+            //     'BRAND',
+            //     'STATUS')
+            // ->whereIn('STATUS', ['CPS'])
+            // ->pluck('BRAND')
+            // ->toArray();
+
+            $brands = Product1::select(
                 'BRAND',
-                'STATUS')
-            ->whereIn('STATUS', ['CPS'])
+            )
+            ->where(function ($query) {
+                $query->whereIn('BRAND', ['CPS', 'KM']) 
+                    ->orWhereHas('productChannel', function ($q) {
+                        $q->whereIn('BRAND', ['CPS']);
+                    });
+            })
+            ->groupBy('BRAND')
             ->pluck('BRAND')
             ->toArray();
 
@@ -827,7 +868,7 @@ class ProductController extends Controller
             ];
 
             $productMaster = Product1::create($data_product);
-
+            
             // dd($request);
             // if(!is_null($request->sele_channel[0])) {
             //     foreach ($request->sele_channel as $key => $value) {
@@ -853,7 +894,7 @@ class ProductController extends Controller
 
                 foreach ($request->sele_channel as $value) {
                     $createSeleChannel = ProductChannel::updateOrCreate(
-            ['PRODUCT' => $data_product['PRODUCT'], 'BRAND' => $value],
+            ['PRODUCT' => $data_product['PRODUCT'], 'BRAND' => $value], 
                 $updateData
                     );
                 }
@@ -1238,18 +1279,18 @@ class ProductController extends Controller
                 if (!is_null($request->sele_channel[0])) {
 
                     $multiChannels = ProductChannel::select('BRAND')->where('PRODUCT', $data_product_upddate['PRODUCT'])->whereNotIn('BRAND', $request->sele_channel)->delete();
-
+    
                     $user = Auth::user()->username;
                     $dateTime = date('Y-m-d H:i:s');
-
+    
                     $updateData = [
                         'UPDATED_BY' => $user,
                         'UPDATED_AT' => $dateTime
                     ];
-
+    
                     foreach ($request->sele_channel as $value) {
                         $createSeleChannel = ProductChannel::updateOrCreate(
-            ['PRODUCT' => $data_product_upddate['PRODUCT'], 'BRAND' => $value],
+            ['PRODUCT' => $data_product_upddate['PRODUCT'], 'BRAND' => $value], 
                     $updateData
                         );
                     }
@@ -1326,22 +1367,7 @@ class ProductController extends Controller
             'NAME_THAI'
         )
         ->orderBy('PRODUCT', 'DESC');
-
-        $datas = Product1::select('BRAND', 'GRP_P','PRODUCT', 'BARCODE', 'NAME_THAI',)->get();
-        foreach ($datas as $data) {
-            $product_channel_array = [];
-
-            $item_channel = ProductChannel::select('PRODUCT', 'BRAND')
-                ->where('PRODUCT', '=', $data->PRODUCT)
-                ->get();
-
-            foreach ($item_channel as $dataitem_channel) {
-                $product_channel_array[] = $dataitem_channel->BRAND;
-            }
-
-            $data->product_channel_array = $product_channel_array;
-        }
-
+        
         $userpermission = Auth::user()->getUserPermission->name_position;
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         if (in_array($userpermission, [$isSuperAdmin, 'Admin'])) {
@@ -1355,37 +1381,40 @@ class ProductController extends Controller
             ->orderBy('BARCODE', 'DESC');
         } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
             $data = Product1::select(
-           'BRAND',
-                    'GRP_P',
-                    'PRODUCT',
-                    'BARCODE',
-                    'NAME_THAI'
-                )
-                ->whereIn('BRAND', ['OP', 'KM'])
-                ->orWhereHas('productChannel', function ($q) {
-                    $q->whereIn('BRAND', ['OP', 'KM']);
-                })
-                ->orderBy('BARCODE', 'DESC');
-        } else if (in_array($userpermission, ['Marketing - CPS'])) {
-            $data = Product1::select(
-       'BRAND',
+                'BRAND',
                 'GRP_P',
                 'PRODUCT',
                 'BARCODE',
                 'NAME_THAI'
             )
-            // ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
-            ->whereIn('BRAND', ['CPS', 'KM'])
+            ->where(function ($query) {
+                $query->whereIn('BRAND', ['OP', 'KM']) // First check for BRAND in ['OP', 'KM']
+                    ->orWhereHas('productChannel', function ($q) {
+                        $q->whereIn('BRAND', ['OP']); // Check the relation productChannel
+                    });
+            })
+            ->orderBy('BARCODE', 'DESC');
+
+        } else if (in_array($userpermission, ['Marketing - CPS'])) {
+            $data = Product1::select(
+                'BRAND',
+                'GRP_P',
+                'PRODUCT',
+                'BARCODE',
+                'NAME_THAI'
+            )
+            ->where(function ($query) {
+                $query->whereIn('BRAND', ['CPS', 'KM']) // First check for BRAND in ['CPS', 'KM']
+                      ->orWhereHas('productChannel', function ($q) {
+                          $q->whereIn('BRAND', ['CPS']); // Check the relation productChannel
+                      });
+            })
             ->orderBy('BARCODE', 'DESC');
         }
 
         if ($BRAND != null) {
             $data->where('product1s.BRAND', $BRAND);
         }
-
-        // if ($PRODUCT != null) {
-        //     $data->where('product1s.PRODUCT', $PRODUCT);
-        // }
 
         if (null != $DOC_NO) {
             $data = $data->where(function ($data) use ($DOC_NO, $field_detail) {
@@ -1394,10 +1423,6 @@ class ProductController extends Controller
                 }
             });
         }
-
-        // if (null != $BARCODE) {
-        //     $productCodes = $data->where(DB::raw('SUBSTRING(BARCODE, 8, 5)'), $request->input('BARCODE'))->pluck('BARCODE');
-        // }
 
         // dd($data->toSql());
         $data = $data->paginate($limit);

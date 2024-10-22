@@ -211,7 +211,15 @@
             </div>
         </div>
 
-        {{-- <a href="#" id="fetchDataBtn" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
+        <!-- <div class="max-w-sm mx-auto bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md hover:shadow-lg dark:hover:shadow-xl transition-shadow duration-300 ease-in-out">
+            <img class="w-20 h-20 rounded-md mx-auto" src="https://via.placeholder.com/150" alt="Avatar">
+            <div class="text-center mt-4">
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Erin Lindford</h2>
+                <p class="text-gray-500 dark:text-gray-400">Product Engineer</p>
+            </div>
+        </div> -->
+
+        <!-- <a href="#" id="fetchDataBtn" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                 <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
             </svg>
@@ -224,17 +232,27 @@
         </div>
 
         <div id="pagination-controls" class="mt-8 flex flex-wrap justify-center space-x-2">
-            <button id="prev-btn"
-                    class="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700 disabled:bg-gray-500 w-full sm:w-auto text-center mb-2 sm:mb-0"
+
+            <svg id="prev-btn" fill="currentColor" class="size-8 mt-0.5 ml-0.5 text-black dark:text-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="m4.431 12.822 13 9A1 1 0 0 0 19 21V3a1 1 0 0 0-1.569-.823l-13 9a1.003 1.003 0 0 0 0 1.645z"/>
+            </svg>
+
+            <button 
+                    class="px-4 py-2 bg-[#303030] text-white rounded hover:bg-[#404040] disabled:bg-[#606060] w-full sm:w-auto text-center mb-2 sm:mb-0"
                     disabled>
                 Prev
             </button>
             <div id="pagination-numbers" class="flex flex-wrap justify-center space-x-2"></div>
-            <button id="next-btn"
-                    class="px-4 py-2 bg-gray-800 text-white rounded hover:bg-gray-700 disabled:bg-gray-500 w-full sm:w-auto text-center mb-2 sm:mb-0">
+
+            <button
+                    class="px-4 py-2 bg-[#303030] text-white rounded hover:bg-[#404040] disabled:bg-[#505050] w-full sm:w-auto text-center mb-2 sm:mb-0">
                 Next
             </button>
-        </div> --}}
+
+            <svg id="next-btn" fill="currentColor" class="size-8 mt-0.5 ml-0.5 text-black dark:text-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5.536 21.886a1.004 1.004 0 0 0 1.033-.064l13-9a1 1 0 0 0 0-1.644l-13-9A1 1 0 0 0 5 3v18a1 1 0 0 0 .536.886z"/>
+            </svg>
+        </div> -->
 
         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700 relative"></ul>
         <div class="flex right-12 z-10 absolute mt-3">
@@ -877,28 +895,54 @@
         //     });
         // });
 
+        // data: {
+        //     start_year: '1970',
+        //     end_year: '2020',
+        //     min_imdb: '6',
+        //     max_imdb: '7.8',
+        //     genre: 'action',
+        //     language: 'english',
+        //     type: 'movie',
+        //     sort: 'latest',
+        //     page: page
+        // },
+
+        //         pageData.forEach(item => {
+        //             const card = `
+        //                 <div class="bg-[#eaeaea] p-4 cursor-pointer rounded shadow-sm hover:shadow-lg hover:shadow-gray-400 dark:hover:shadow-lg dark:hover:shadow-gray-400 transition-shadow duration-300 ease-in-out">
+
+        //                     <h2 class="text-xl font-bold mb-2">${item.name || 'Unknown School'}</h2>
+        //                     <p>Balance: ${item.role || 'N/A'}</p>
+        //                     <p>Updated: ${item.status || 'N/A'}</p>
+
+        //                 </div>`;
+        //             $('#cards-container').append(card);
+        //         });
+
         $(document).ready(function () {
             let currentPage = 1;
-            const cardsPerPage = 12;
+            const cardsPerPage = 9;
             let allData = [];
 
             function fetchData() {
-                fetch('https://ins.schicher.com/api/users', {
-                    method: 'GET',
+                fetch('https://ott-details.p.rapidapi.com/advancedsearch', {
+                    method: "GET",
                     headers: {
-                        'Content-Type': 'application/json'
-                    }
+                        'X-RapidAPI-Key': '7115427d56mshfff5805283a13cep190338jsn4bc3f4689eb8',
+                        'X-RapidAPI-Host': 'ott-details.p.rapidapi.com'
+                    },
                 })
                 .then(response => response.json())
                 .then(data => {
-                    allData = data;
+                    allData = data.results;
                     renderCards(currentPage);
                     renderPagination();
                 })
                 .catch(error => console.error('Error:', error));
             }
-
+            
             function renderCards(page) {
+                console.log("🚀 ~ fetchData ~ allData:", allData)
                 $('#cards-container').empty();
                 const start = (page - 1) * cardsPerPage;
                 const end = start + cardsPerPage;
@@ -906,10 +950,12 @@
 
                 pageData.forEach(item => {
                     const card = `
-                        <div class="bg-white p-4 rounded shadow">
-                            <h2 class="text-xl font-bold mb-2">${item.name || 'Unknown School'}</h2>
-                            <p>Balance: ${item.role || 'N/A'}</p>
-                            <p>Updated: ${item.status || 'N/A'}</p>
+                        <div class="bg-[#eaeaea] p-4 cursor-pointer rounded shadow-sm hover:shadow-lg hover:shadow-gray-400 dark:hover:shadow-lg dark:hover:shadow-gray-400 transition-shadow duration-300 ease-in-out">
+                            <img class="w-20 h-20 rounded-md mx-auto" src="${item.imageurl}" alt="${item.title || 'Unknown'}">
+                            <div class="text-center mt-4">
+                                <h2 class="text-xl font-bold mb-2">${item.title || 'Unknown School'}</h2>
+                            </div>
+
                         </div>`;
                     $('#cards-container').append(card);
                 });
@@ -923,7 +969,7 @@
                 const maxVisiblePages = 5; // You can adjust this value
 
                 function addPageButton(page, isActive = false) {
-                    const pageButton = `<button class="px-4 py-1 mb-2 sm:mb-0 ${isActive ? 'bg-gray-800 text-white' : 'bg-white text-gray-800 border border-gray-300'} rounded hover:bg-gray-100" data-page="${page}">${page}</button>`;
+                    const pageButton = `<button class="px-4 py-1 mb-2 sm:mb-0 ${isActive ? 'bg-[#303030] text-white' : 'bg-white text-gray-800 border border-gray-300'} rounded hover:bg-[#505050]" data-page="${page}">${page}</button>`;
                     $('#pagination-numbers').append(pageButton);
                 }
 
@@ -938,7 +984,7 @@
 
                     // Show an ellipsis if currentPage is far from the first page
                     if (currentPage > 3) {
-                        $('#pagination-numbers').append('<span class="px-2">...</span>');
+                        $('#pagination-numbers').append('<span class="px-2 text-black dark:text-white">...</span>');
                     }
 
                     // Show pages around the current page
@@ -951,7 +997,7 @@
 
                     // Show an ellipsis if currentPage is far from the last page
                     if (currentPage < totalPages - 2) {
-                        $('#pagination-numbers').append('<span class="px-2">...</span>');
+                        $('#pagination-numbers').append('<span class="px-2 text-black dark:text-white">...</span>');
                     }
 
                     // Show last page

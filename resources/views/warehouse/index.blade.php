@@ -187,7 +187,7 @@
                         <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND">
                             <option value=""> --- กรุณาเลือก ---</option>
                             @foreach ($brands as $key => $brand)
-                                <option value={{ $brand->COMPANY }}{{ $brand->DESCRIPTION }}>{{ $brand->COMPANY.' - ('.$brand->DESCRIPTION.')' }}</option>
+                                <option value={{ $brand }}>{{ $brand }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -380,7 +380,7 @@
                 'data': function(data) {
                     // Read values
                     data.brand_id = $('#brand_id').val();
-                    data.BARCODE = $('#BARCODE').val();
+                    // data.BARCODE = $('#BARCODE').val();
                     data.search = $('#search').val();
 
                     data._token = $('meta[name="csrf-token"]').attr('content');
