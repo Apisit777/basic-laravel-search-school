@@ -4,8 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Product\ProductController;
 use App\Http\Controllers\ProductForm\ProductFormController;
+use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\ProductChannel\ProductChannelController;
 use App\Http\Controllers\Managemenu\ManageMenuController;
 use App\Http\Controllers\Warehouse\ComProductController;
 use App\Http\Controllers\Tool\ToolController;
@@ -82,6 +83,12 @@ Route::middleware('auth')->group(function() {
         Route::get('/edit/{PRODUCT}', [ProductController::class, 'edit'])->name('edit');
         Route::post('/update/{PRODUCT}', [ProductController::class, 'update'])->name('update');
         Route::delete('/update_product_status/{id}', [ProductController::class, 'upate_product_status'])->name('update_product_status');
+    });
+
+    // product_channel
+    Route::group(['prefix' => 'channel', 'as' => 'channel.'], function () {
+        Route::get('', [ProductChannelController::class, 'index'])->name('index');
+        Route::post('/list_product_channel', [ProductChannelController::class, 'list_product_channel'])->name('list_product_channel');
     });
 
     // Km

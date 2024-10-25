@@ -368,11 +368,22 @@
         <div class="mt-5 mb-3 flex justify-center items-center">
             <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการ Preview Images</p>
         </div>
+
         <div class="upload__box">
             <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
                 <div class="upload__img-wrap bg-[#d7d8db] dark:bg-[#303030] p-3"></div>
             <ul class="mt-2.5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
         </div>
+
+        <form id="uploadForm" enctype="multipart/form-data">
+            @csrf
+            <input type="file" name="images[]" id="images" multiple class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100">
+            <button type="submit" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600">Upload</button>
+        </form>
+
+        <div id="preview" class="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div> <!-- Preview before upload -->
+        <div id="imagePreview" class="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div> <!-- Images after upload -->
+
     </div>
 
     {{-- <script src="https://cdn.tailwindcss.com"></script>
@@ -396,6 +407,93 @@
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
     
     <script>
+
+        let imageFiles = []; // Store selected files here
+        console.log("🚀 ~ imageFiles:", imageFiles)
+
+        // Handle image selection and preview
+        document.getElementById('images').onchange = function(event) {
+            const preview = document.getElementById('preview');
+            const files = Array.from(event.target.files);
+            
+            // Append selected files to imageFiles array
+            files.forEach(file => {
+                imageFiles.push(file);
+            });
+
+            updatePreview(); // Call function to update the preview display
+        }
+
+        // Function to update the preview display
+        function updatePreview() {
+            const preview = document.getElementById('preview');
+            preview.innerHTML = ''; // Clear previous preview
+
+            imageFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgContainer = document.createElement('div');
+                    imgContainer.className = 'relative w-full h-64 object-cover rounded-lg shadow-md';
+
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = 'w-full h-full object-cover rounded-lg';
+
+                    const closeButton = document.createElement('button');
+                    closeButton.innerHTML = '&times;';
+                    closeButton.className = 'absolute top-2 right-2 bg-red-500 text-white rounded-full px-2 py-1 text-sm';
+                    closeButton.onclick = function() {
+                        removeImage(index); // Call the remove image function when clicked
+                    };
+
+                    imgContainer.appendChild(img);
+                    imgContainer.appendChild(closeButton);
+                    preview.appendChild(imgContainer);
+                }
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Remove image from preview and imageFiles array
+        function removeImage(index) {
+            imageFiles.splice(index, 1); // Remove image from array
+            updatePreview(); // Update the preview to reflect the change
+        }
+
+        // Handle form submission and upload
+        document.getElementById('uploadForm').onsubmit = function(event) {
+            event.preventDefault();
+            const formData = new FormData();
+            console.log("🚀 ~ document.getElementById ~ formData:", formData)
+
+            // Append files from imageFiles to the formData
+            imageFiles.forEach(file => {
+                formData.append('images[]', file);
+            });
+
+            $.ajax({
+                url: '{{ route('images.store') }}',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    $('#imagePreview').html(''); // Clear after success
+                    response.images.forEach(function(image) {
+                        $('#imagePreview').append(`
+                            <div class="relative">
+                                <img src="${image}" class="w-full h-64 object-cover rounded-lg shadow-md" alt="Image">
+                            </div>
+                        `);
+                    });
+                    // Clear preview after upload
+                    $('#preview').html('');
+                    document.getElementById('images').value = ''; // Reset the input
+                    imageFiles = []; // Clear imageFiles after upload
+                }
+            });
+        }
+
         toastr.options = {
             "closeButton": true,
             "debug": false,

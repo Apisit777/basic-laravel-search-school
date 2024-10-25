@@ -80,26 +80,26 @@ class ProductController extends Controller
         $userpermission = Auth::user()->getUserPermission->name_position;
         // dd($userpermission);
 
-        if (in_array($userpermission, [$isSuperAdmin, 'Admin'])) {
+        if (in_array($userpermission, [$isSuperAdmin, 'Admin', 'Accounting'])) {
 
-            $brands = Product1::select(
-                'BRAND',
-            )
-            ->where(function ($query) {
-                $query->whereIn('BRAND', ['OP', 'KM']) 
-                    ->orWhereHas('productChannel', function ($q) {
-                        $q->whereIn('BRAND', ['OP', 'KM']);
-                    });
-            })
-            ->groupBy('BRAND')
-            ->pluck('BRAND')
-            ->toArray();
-
-            // $brands = Barcode::select(
-            // 'BRAND')
-            // // ->whereNotIn('STATUS', ['ALL'])
+            // $brands = Product1::select(
+            //     'BRAND',
+            // )
+            // ->where(function ($query) {
+            //     $query->whereIn('BRAND', ['OP', 'KM']) 
+            //         ->orWhereHas('productChannel', function ($q) {
+            //             $q->whereIn('BRAND', ['OP', 'KM']);
+            //         });
+            // })
+            // ->groupBy('BRAND')
             // ->pluck('BRAND')
             // ->toArray();
+
+            $brands = Barcode::select(
+            'BRAND')
+            // ->whereNotIn('STATUS', ['ALL'])
+            ->pluck('BRAND')
+            ->toArray();
 
             $dataProductMasterArr = Product1::select(
             'PRODUCT')
@@ -119,25 +119,25 @@ class ProductController extends Controller
 
         } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
 
-            $brands = Product1::select(
-                'BRAND',
-            )
-            ->where(function ($query) {
-                $query->whereIn('BRAND', ['OP', 'KM']) 
-                    ->orWhereHas('productChannel', function ($q) {
-                        $q->whereIn('BRAND', ['OP']);
-                    });
-            })
-            ->groupBy('BRAND')
-            ->pluck('BRAND')
-            ->toArray();
-
-            // $brands = Barcode::select(
-            // 'BRAND',
-            //     'STATUS')
-            // ->whereIn('STATUS', ['OP', 'RI'])
+            // $brands = Product1::select(
+            //     'BRAND',
+            // )
+            // ->where(function ($query) {
+            //     $query->whereIn('BRAND', ['OP', 'KM']) 
+            //         ->orWhereHas('productChannel', function ($q) {
+            //             $q->whereIn('BRAND', ['OP']);
+            //         });
+            // })
+            // ->groupBy('BRAND')
             // ->pluck('BRAND')
             // ->toArray();
+
+            $brands = Barcode::select(
+            'BRAND',
+                'STATUS')
+            ->whereIn('STATUS', ['OP', 'RI'])
+            ->pluck('BRAND')
+            ->toArray();
 
             $dataProductMasterArr = Product1::select(
             'PRODUCT')
@@ -160,25 +160,25 @@ class ProductController extends Controller
             ->toArray();
 
         } else if (in_array($userpermission, ['Marketing - CPS'])) {
-            // $brands = Barcode::select(
-            //     'BRAND',
-            //     'STATUS')
-            // ->whereIn('STATUS', ['CPS'])
-            // ->pluck('BRAND')
-            // ->toArray();
-
-            $brands = Product1::select(
+            $brands = Barcode::select(
                 'BRAND',
-            )
-            ->where(function ($query) {
-                $query->whereIn('BRAND', ['CPS', 'KM']) 
-                    ->orWhereHas('productChannel', function ($q) {
-                        $q->whereIn('BRAND', ['CPS']);
-                    });
-            })
-            ->groupBy('BRAND')
+                'STATUS')
+            ->whereIn('STATUS', ['CPS'])
             ->pluck('BRAND')
             ->toArray();
+
+            // $brands = Product1::select(
+            //     'BRAND',
+            // )
+            // ->where(function ($query) {
+            //     $query->whereIn('BRAND', ['CPS', 'KM']) 
+            //         ->orWhereHas('productChannel', function ($q) {
+            //             $q->whereIn('BRAND', ['CPS']);
+            //         });
+            // })
+            // ->groupBy('BRAND')
+            // ->pluck('BRAND')
+            // ->toArray();
 
             $dataProductMasterArr = Product1::select(
             'PRODUCT')
@@ -1387,12 +1387,13 @@ class ProductController extends Controller
                 'BARCODE',
                 'NAME_THAI'
             )
-            ->where(function ($query) {
-                $query->whereIn('BRAND', ['OP', 'KM']) // First check for BRAND in ['OP', 'KM']
-                    ->orWhereHas('productChannel', function ($q) {
-                        $q->whereIn('BRAND', ['OP']); // Check the relation productChannel
-                    });
-            })
+            ->whereIn('BRAND', ['OP', 'KM'])
+            // ->where(function ($query) {
+            //     $query->whereIn('BRAND', ['OP', 'KM']) // First check for BRAND in ['OP', 'KM']
+            //         ->orWhereHas('productChannel', function ($q) {
+            //             $q->whereIn('BRAND', ['OP']); // Check the relation productChannel
+            //         });
+            // })
             ->orderBy('BARCODE', 'DESC');
 
         } else if (in_array($userpermission, ['Marketing - CPS'])) {
@@ -1403,15 +1404,26 @@ class ProductController extends Controller
                 'BARCODE',
                 'NAME_THAI'
             )
-            ->where(function ($query) {
-                $query->whereIn('BRAND', ['CPS', 'KM']) // First check for BRAND in ['CPS', 'KM']
-                      ->orWhereHas('productChannel', function ($q) {
-                          $q->whereIn('BRAND', ['CPS']); // Check the relation productChannel
-                      });
-            })
+            ->whereIn('BRAND', ['CPS', 'KM'])
+            // ->where(function ($query) {
+            //     $query->whereIn('BRAND', ['CPS', 'KM']) // First check for BRAND in ['CPS', 'KM']
+            //           ->orWhereHas('productChannel', function ($q) {
+            //               $q->whereIn('BRAND', ['CPS']); // Check the relation productChannel
+            //           });
+            // })
+            ->orderBy('BARCODE', 'DESC');
+        } else if (in_array($userpermission, ['Procurement - KTY'])) {
+            $data = Product1::select(
+                'BRAND',
+                'GRP_P',
+                'PRODUCT',
+                'BARCODE',
+                'NAME_THAI'
+            )
+            ->whereIn('BRAND', ['KTY'])
             ->orderBy('BARCODE', 'DESC');
         }
-
+        
         if ($BRAND != null) {
             $data->where('product1s.BRAND', $BRAND);
         }
