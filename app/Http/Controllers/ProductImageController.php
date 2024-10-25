@@ -39,6 +39,7 @@ class ProductImageController extends Controller
     public function store(Request $request)
     {
         dd($request);
+        // dd($request->file('images'));
         // dd($request->file('files'));
         // $validator = $request->validate([
         $validator = Validator::make($request->all(), [

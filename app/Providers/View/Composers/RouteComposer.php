@@ -14,6 +14,7 @@ class RouteComposer
         // dd(Auth::user());
         if ( Auth::check() ) {
             $id = Auth::user()->id;
+            $userPermission = Auth::user()->getUserPermission->name_position;
             $authPosition = User::where('id', $id)->first()->getUserPermission->position_id;
             $routeName = menu::with(['getPermissionSubmenus' => function ($query) use ($authPosition) {
                     $query->where('menu_relations.position_id', $authPosition)
@@ -31,12 +32,15 @@ class RouteComposer
             $view->with([
                 'routeName' => $routeName,
                 'authPosition' => $authPosition,
+                'userPermission' => $userPermission,
             ]);
         } else {          
             $view->with([
                 'routeName' => [],
                 'authPosition' => [],
+                'userPermission' => [],
             ]);
         }
+        // dd($userPermission);
     }
 }

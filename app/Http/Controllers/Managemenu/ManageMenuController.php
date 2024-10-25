@@ -382,7 +382,7 @@ class ManageMenuController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+        // dd($request);
         DB::beginTransaction();
         try {
             $validator = Validator::make($request->all(), [

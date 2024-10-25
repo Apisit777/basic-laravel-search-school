@@ -74,7 +74,7 @@
                             </div>
                             <div class="md:col-span-3" style="position: relative;">
                                 <label for="code">รหัสสินค้า<span class="text-danger"> *</span></label>
-                                <input type="text" name="code" id="code" onkeyup="checkCode()" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled>
+                                <input type="text" name="code" id="code" onkeyup="checkCodeAndBarcode()" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" readonly>
                                 <div class="col-auto" style="position: absolute; right: -0.5%; top: 53%;">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="username_loading" style="margin-right: -2.5px;" class="w-6 h-6 animate-spin -mt-1">
                                         <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
@@ -151,7 +151,7 @@
                                                                 </div> -->
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="barcodeTest">Barcode<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="barcodeTest" id="barcodeTest" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled>
+                                                                    <input type="text" name="barcodeTest" id="barcodeTest" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" readonly>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="JOB_REFNO">Job Ref. No.</label>
@@ -525,10 +525,71 @@
         jQuery("#username_alert").hide();
         jQuery("#correct_username").hide();
 
+        function checkCodeAndBarcode() {
+            // console.log("🚀 ~ barcodeChange ~ e:", e.value)
+            // let PRODUCT = e.value;
+            code = jQuery('#code').val();
+            console.log("🚀 ~ checkCodeAndBarcode ~ code:", code)
+            if (PRODUCT.length > 4) {
+                jQuery.ajax({
+                    method: "POST",
+                    url: '{{ route('checknamebrand') }}',
+                    data: { PRODUCT },
+                    dataType: 'json',
+                    beforeSend: function () {
+                        jQuery("#submitButton_consumables").attr("disabled", true);
+                        jQuery('#username_loading_consumables').show();
+                        jQuery("#correct_username_consumables").hide();
+                        jQuery("#username_alert_consumables").hide();
+                    },
+                    success: function (checknamebrand) {
+                        codeConsumables = checknamebrand
+                        jQuery('#username_loading_consumables').hide();
+                        jQuery("#correct_username_consumables").hide();
+                        let checkvalue = checkValueSelect2();
+                        if (PRODUCT == '') {
+                            jQuery("#submitButton_consumables").attr("disabled", true);
+                            jQuery("#submitButton_consumables").addClass('cursor-not-allowed opacity-50');
+                            jQuery("#correct_username_consumables").hide();
+                            jQuery("#username_alert_consumables").hide();
+                            jQuery("#ID_PRODUCT").removeClass("is-invalid");
+                        } else if (!checknamebrand) {
+                            jQuery("#submitButton_consumables").attr("disabled", true);
+                            jQuery("#submitButton_consumables").addClass('cursor-not-allowed opacity-50');
+                            jQuery("#correct_username_consumables").hide();
+                            jQuery("#username_alert_consumables").show();
+                            jQuery("#ID_PRODUCT").removeClass("is-invalid");
+                        } else {
+                            jQuery("#submitButton_consumables").attr("disabled", false);
+                            jQuery("#submitButton_consumables").removeClass('cursor-not-allowed opacity-50');
+                            jQuery("#username_alert_consumables").hide();
+                            jQuery("#correct_username_consumables").show();
+                        }
+                        if (!checkvalue) {
+                            jQuery("#submitButton_consumables").attr("disabled", true);
+                            jQuery("#submitButton_consumables").addClass('cursor-not-allowed opacity-50');
+                        } else {
+                            jQuery("#submitButton_consumables").attr("disabled", false);
+                            jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
+                        }
+                    },
+                    error: function (params) {
+                    }
+                });
+            } else {
+                jQuery("#submitButton_consumables").attr("disabled", true);
+                jQuery("#submitButton_consumables").addClass('cursor-not-allowed opacity-50');
+                jQuery("#ID_PRODUCT").addClass("is-invalid");
+                jQuery("#correct_username_consumables").hide();
+                jQuery("#username_alert_consumables").hide();
+            }
+        }
+
         let datass = {}
         let barcode = ''
         let code = ''
         function brandIdChange(e, params) {
+            console.log("🚀 ~ brandIdChange ~ e:", e.value)
             let url = "";
             let select = "";
 
@@ -589,7 +650,7 @@
                     if (e.value) {
                         // console.log("🚀 ~ brandIdChange ~ e.value:", e.value)
                         barcode = data.digits_barcode
-                        console.log("🚀 ~ brandIdChange ~ barcode:", barcode)
+                        // console.log("🚀 ~ brandIdChange ~ barcode:", barcode)
                         jQuery("#barcodeTest").val(data.digits_barcode);
                         code = data.digits_barcode.substring(7, 12)
                         jQuery("#code").val(data.digits_barcode.substring(7, 12));
