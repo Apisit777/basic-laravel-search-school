@@ -535,6 +535,10 @@
             document.querySelectorAll('.bg_step_color')[0].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
         });
 
+        jQuery('#username_loading').hide();
+        jQuery("#username_alert").hide();
+        jQuery("#correct_username").hide();
+        
         let datass = {}
         let barcode = ''
         let code = ''
