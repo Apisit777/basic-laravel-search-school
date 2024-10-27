@@ -256,6 +256,28 @@
             </div>
         </div> -->
 
+        {{-- <a href="#" id="fetchDataBtn" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
+            </svg>
+            Fetch School Balance Data
+        </a>
+
+        <div id="responseData" class="mt-5 text-gray-900 dark:text-white"></div> --}}
+
+        <div class="container mx-auto py-8">
+            <div id="cards-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+        </div>
+        <div id="pagination-controls" class="mt-8 flex flex-wrap justify-center space-x-2">
+            <svg id="prev-btn" fill="currentColor" class="size-9 mt-0.5 ml-0.5 text-[#303030] dark:text-[#EAEAEA] cursor-pointer" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="m4.431 12.822 13 9A1 1 0 0 0 19 21V3a1 1 0 0 0-1.569-.823l-13 9a1.003 1.003 0 0 0 0 1.645z"/>
+            </svg>
+            <div id="pagination-numbers" class="flex flex-wrap justify-center space-x-2"></div>
+            <svg id="next-btn" fill="currentColor" class="size-10 mb-1 ml-0.5 text-[#303030] dark:text-[#EAEAEA] cursor-pointer" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5.536 21.886a1.004 1.004 0 0 0 1.033-.064l13-9a1 1 0 0 0 0-1.644l-13-9A1 1 0 0 0 5 3v18a1 1 0 0 0 .536.886z"/>
+            </svg>
+        </div>
+
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
             <div id="containerexample" class="text-gray-900 dark:text-gray-100">
                 <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
@@ -316,6 +338,143 @@
         </script>
     @endif
     <script>
+
+        // $(document).ready(function () {
+        //     $('#fetchDataBtn').click(function () {
+        //         fetch('https://ins.schicher.com/api/users', {
+        //             method: 'GET',  // Or 'POST' if the API requires it
+        //             headers: {
+        //                 'Content-Type': 'application/json'
+        //             },
+        //         })
+        //         .then(response => response.json()) // Assuming the API returns JSON
+        //         .then(data => {
+        //             $('#responseData').html(`<p>Response from API:</p><pre>${JSON.stringify(data, null, 2)}</pre>`);
+        //         })
+        //         .catch(error => console.error('Error:', error));
+        //     });
+        // });
+
+        $(document).ready(function () {
+            let currentPage = 1;
+            const cardsPerPage = 8;
+            let allData = [];
+
+            function fetchData() {
+                fetch('https://ins.schicher.com/api/users', {
+                    method: "GET",
+                    headers: {
+                        'X-RapidAPI-Key': '7115427d56mshfff5805283a13cep190338jsn4bc3f4689eb8',
+                        'X-RapidAPI-Host': 'ott-details.p.rapidapi.com'
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    allData = data;
+                    renderCards(currentPage);
+                    renderPagination();
+                })
+                .catch(error => console.error('Error:', error));
+            }
+
+            function renderCards(page) {
+                console.log("🚀 ~ fetchData ~ allData:", allData)
+                $('#cards-container').empty();
+                const start = (page - 1) * cardsPerPage;
+                const end = start + cardsPerPage;
+                const pageData = allData.slice(start, end);
+
+                pageData.forEach(item => {
+                    const card = `
+                        <div class="bg-[#eaeaea] p-4 cursor-pointer rounded shadow-sm hover:shadow-lg hover:shadow-gray-400 dark:hover:shadow-lg dark:hover:shadow-gray-400 transition-shadow duration-300 ease-in-out">
+                            <img class="w-20 h-20 rounded-md mx-auto" src="${item.imageurl}" alt="${item.title || 'Unknown'}">
+                            <div class="text-center mt-4">
+                                <h2 class="text-xl font-bold mb-2">${item.name || 'Unknown School'}</h2>
+                                <p>${item.role || 'N/A'}</p>
+                            </div>
+
+                        </div>`;
+                    $('#cards-container').append(card);
+                });
+
+                updatePaginationControls();
+            }
+
+            function renderPagination() {
+                $('#pagination-numbers').empty();
+                const totalPages = Math.ceil(allData.length / cardsPerPage);
+                const maxVisiblePages = 5; // You can adjust this value
+
+                function addPageButton(page, isActive = false) {
+                    const pageButton = `<button class="px-4 py-1 mb-2 sm:mb-0 ${isActive ? 'bg-[#303030] text-white' : 'bg-white text-gray-800 border border-gray-300'} rounded hover:bg-[#505050]" data-page="${page}">${page}</button>`;
+                    $('#pagination-numbers').append(pageButton);
+                }
+
+                if (totalPages <= maxVisiblePages) {
+                    // If total pages are less than max visible pages, show all
+                    for (let i = 1; i <= totalPages; i++) {
+                        addPageButton(i, i === currentPage);
+                    }
+                } else {
+                    // Show first page
+                    addPageButton(1, currentPage === 1);
+
+                    // Show an ellipsis if currentPage is far from the first page
+                    if (currentPage > 3) {
+                        $('#pagination-numbers').append('<span class="px-2 text-black dark:text-white">...</span>');
+                    }
+
+                    // Show pages around the current page
+                    let startPage = Math.max(2, currentPage - 1);
+                    let endPage = Math.min(currentPage + 1, totalPages - 1);
+
+                    for (let i = startPage; i <= endPage; i++) {
+                        addPageButton(i, i === currentPage);
+                    }
+
+                    // Show an ellipsis if currentPage is far from the last page
+                    if (currentPage < totalPages - 2) {
+                        $('#pagination-numbers').append('<span class="px-2 text-black dark:text-white">...</span>');
+                    }
+
+                    // Show last page
+                    addPageButton(totalPages, currentPage === totalPages);
+                }
+
+                // Add event listeners to page buttons
+                $('#pagination-numbers button').click(function () {
+                    const page = $(this).data('page');
+                    currentPage = page;
+                    renderCards(currentPage);
+                    renderPagination();
+                });
+            }
+
+            function updatePaginationControls() {
+                const totalPages = Math.ceil(allData.length / cardsPerPage);
+                $('#prev-btn').prop('disabled', currentPage === 1);
+                $('#next-btn').prop('disabled', currentPage === totalPages);
+            }
+
+            $('#prev-btn').click(function () {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderCards(currentPage);
+                    renderPagination();
+                }
+            });
+
+            $('#next-btn').click(function () {
+                const totalPages = Math.ceil(allData.length / cardsPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderCards(currentPage);
+                    renderPagination();
+                }
+            });
+
+            fetchData();
+        });
 
         $(document).ready(function() {
             $('.js-example-basic-single').select2();

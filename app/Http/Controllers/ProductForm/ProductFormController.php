@@ -177,7 +177,7 @@ class ProductFormController extends Controller
             if ($request->BRAND == 'KTY') {
                 $suffixBarcode = sprintf('%03d', $barcodeNumber);
                 $barcode = $prefixBarcode[0].$suffixBarcode;
-                
+
                 $digits = (string)$barcode;
                 $even_sum = $digits[1] + $digits[3] + $digits[5] + $digits[7] + $digits[9] + $digits[11];
                 $even_sum_three = $even_sum * 3;
@@ -360,7 +360,7 @@ class ProductFormController extends Controller
             if ($request->BRAND == 'KTY') {
                 $suffixBarcode = sprintf('%03d', $barcodeNumber);
                 $barcode = $prefixBarcode[0].$suffixBarcode;
-                
+
                 $digits = (string)$barcode;
                 $even_sum = $digits[1] + $digits[3] + $digits[5] + $digits[7] + $digits[9] + $digits[11];
                 $even_sum_three = $even_sum * 3;
@@ -371,7 +371,7 @@ class ProductFormController extends Controller
             } else {
                 $suffixBarcode = sprintf('%04d', $barcodeNumber);
                 $barcode = $prefixBarcode[0].$suffixBarcode;
-                
+
                 $digits = (string)$barcode;
                 $even_sum = $digits[1] + $digits[3] + $digits[5] + $digits[7] + $digits[9] + $digits[11];
                 $even_sum_three = $even_sum * 3;
@@ -496,6 +496,7 @@ class ProductFormController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         DB::beginTransaction();
         try {
             $digits_barcode = $this->ean13_check_digit();
@@ -587,6 +588,14 @@ class ProductFormController extends Controller
         //         );
         //     }
 
+            $code = Pro_develops::select('PRODUCT')
+                ->where('PRODUCT', $request->code)
+                ->count();
+
+            $barcode = Pro_develops::select('BARCODE')
+                ->where('BARCODE', $request->barcodeTest)
+                ->count();
+
             $npdRequest = Pro_develops::create($data_product);
 
             if($request->BRAND) {
@@ -612,7 +621,7 @@ class ProductFormController extends Controller
             }
 
             if($request->BRAND) {
-                $productCodeMax = Document::max('NUMBER');      
+                $productCodeMax = Document::max('NUMBER');
                 if ($request->BRAND == 'OP') {
                     $productCodeMax = Document::where('COMPANY', '=', $request->BRAND)->where('STATUS', '=', 'OP')->max('NUMBER');
                 }
@@ -639,7 +648,7 @@ class ProductFormController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
-            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+            return response()->json(['success' => false, 'code' => $code > 0 ? false : true, 'barcode' => $barcode > 0 ? false : true, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
         }
     }
 
