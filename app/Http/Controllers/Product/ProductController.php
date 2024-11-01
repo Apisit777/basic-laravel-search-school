@@ -324,53 +324,13 @@ class ProductController extends Controller
     {
         // $digits_barcode = $this->ean13_check_digit();
         // $ = $this->productMasterGetBrandListAjax();
-
         // dd($accessery);
-
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
 
         $owners = Owner::all();
         $grp_ps = Grp_p::all();
-
         $brand_ps = Brand_p::all();
-
-        if (in_array($userpermission, [$isSuperAdmin])) {
-            $brand_ps = Brand_p::select(
-                'ID',
-                'REMARK')
-            ->get();
-        }
-        else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
-            $brand_ps = Brand_p::select(
-                'ID',
-                'REMARK',
-                'BRAND')
-            ->where('BRAND', 'OP')
-            ->get();
-
-            $grp_ps = Grp_p::select(
-                'GRP_P',
-                'REMARK',
-                'BRAND')
-            ->where('BRAND', 'OP')
-            ->get();
-        }
-        else if (in_array($userpermission, ['Marketing - CPS'])) {
-            $brand_ps = Brand_p::select(
-                'ID',
-                'REMARK',
-                'BRAND')
-            ->where('BRAND', 'CPS')
-            ->get();
-
-            $grp_ps = Grp_p::select(
-                'GRP_P',
-                'REMARK',
-                'BRAND')
-            ->where('BRAND', 'CPS')
-            ->get();
-        }
 
         $venders = Vendor::all();
         $type_gs = Type_g::all();
@@ -385,27 +345,36 @@ class ProductController extends Controller
         $acctypes = Acctype::all();
         $conditions = Condition::all();
 
-        $productCodeMax = Product::max('seq');
-        $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
-        $productCode = 'P'.sprintf('%05d', $productCodeNumber);
-
-        $list_position = position::select('id', 'name_position')->get();
-
-        // $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
-        // $allBrands = Accessery::select('BRAND')->whereIn('BRAND', ['OP', 'CPS', 'KU'])->pluck('BRAND')->toArray();
         $allBrands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
-        // $allBrands = Accessery::select('COMPANY')->get();
         $defaultBrands = MasterBrand::all();
-
         $brands = MasterBrand::all();
 
         if (in_array($userpermission, [$isSuperAdmin])) {
-            // $defaultBrands = Accessery::select(
-            //     'COMPANY',
-            //     'DESCRIPTION')
-            // ->get();
-
             $brands = MasterBrand::select(
+                'BRAND')
+            ->get();
+
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK')
+            ->get();
+
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->get();
+
+            $categorys = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->get();
+
+            $sub_categorys = Sub_category::select(
+                'ID',
+                'CATEGORY_ID',
+                'DESCRIPTION',
                 'BRAND')
             ->get();
         }
@@ -420,6 +389,35 @@ class ProductController extends Controller
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
+
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+
+            $categorys = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+
+            $sub_categorys = Sub_category::select(
+                'ID',
+                'CATEGORY_ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
         } else if (in_array($userpermission, ['Marketing - CPS'])) {
             $defaultBrands = MasterBrand::select(
                 'BRAND')
@@ -428,6 +426,28 @@ class ProductController extends Controller
             ->toArray();
 
             $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+
+            $sub_categorys = Sub_category::select(
+                'ID',
+                'CATEGORY_ID',
+                'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
@@ -442,9 +462,33 @@ class ProductController extends Controller
                 'BRAND')
             ->where('BRAND', 'KTY')
             ->get();
+
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+        } else if (in_array($userpermission, ['BB'])) {
+        } else if (in_array($userpermission, ['LL'])) {
+        } else if (in_array($userpermission, ['GNC'])) {
+        } else if (in_array($userpermission, ['KM'])) {
         }
+
+        // $productCodeMax = Product::max('seq');
+        // $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
+        // $productCode = 'P'.sprintf('%05d', $productCodeNumber);
+        // $list_position = position::select('id', 'name_position')->get();
         // dd($allBrands);
-        return view('product.create', compact('productCode', 'list_position', 'brands', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
+
+        return view('product.create', compact(  'brands', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
     }
 
     public function createConsumables(Request $request)

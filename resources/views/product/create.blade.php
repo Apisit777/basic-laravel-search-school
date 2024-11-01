@@ -427,7 +427,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="CATEGORY" id="CATEGORY">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($categorys as $key => $category)
-                                                                            <option value={{ $category->ID }}>{{ $category->ID.' - ('.$category->DESCRIPTION.')' }}</option>
+                                                                            <option value={{ $category->ID }}>{{ $category->BRAND.' - '.$category->ID.' - ('.$category->DESCRIPTION.')' }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -440,7 +440,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="S_CAT" id="S_CAT">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($sub_categorys as $key => $sub_category)
-                                                                        <option value={{ $sub_category->ID }}>{{ $sub_category->ID.' - ('.$sub_category->DESCRIPTION.')' }}</option>
+                                                                        <option value={{ $sub_category->ID }}>{{ $sub_category->BRAND.' - '.$sub_category->ID.' - ('.$sub_category->DESCRIPTION.')' }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
