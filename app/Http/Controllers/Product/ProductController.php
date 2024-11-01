@@ -37,6 +37,7 @@ use App\Models\Condition;
 use App\Models\MasterBrand;
 use App\Models\SeleChannel;
 use App\Models\ProductChannel;
+use App\Models\Account;
 
 class ProductController extends Controller
 {
@@ -78,7 +79,7 @@ class ProductController extends Controller
         $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
-        // dd($userpermission);
+        // dd($data);
 
         if (in_array($userpermission, [$isSuperAdmin, 'Admin', 'Accounting'])) {
 
@@ -869,6 +870,13 @@ class ProductController extends Controller
 
             $productMaster = Product1::create($data_product);
             
+            // dd($productMaster);
+
+            $craeteProductAccount = Account::updateOrCreate(['product' => $productMaster->PRODUCT], [
+                'COST' => $productMaster->COST,
+                'created_at' => date("Y/m/d h:i:s"),
+            ]);
+
             // dd($request);
             // if(!is_null($request->sele_channel[0])) {
             //     foreach ($request->sele_channel as $key => $value) {

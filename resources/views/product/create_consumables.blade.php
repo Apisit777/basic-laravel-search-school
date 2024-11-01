@@ -772,21 +772,35 @@
                     }
                 })
             });
+            document.querySelectorAll('.setcheckbox').forEach((element, index) => {
+                element.addEventListener('click', function (params) {
+                    let el = document.querySelectorAll('.setcheckbox')[index]
+                    let el_colr = document.querySelectorAll('.bg_step_color')[index]
+                    console.log("🚀 ~ el.checked:", el.checked)
+                    if( el.checked){
+                        el_colr.classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+                        el_colr.classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+                    } else {
+                        el_colr.classList.remove('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+                        el_colr.classList.add('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+                    }
+                })
+            });
         }
 
         $(document).ready(function() {
             let obj = <?php echo json_encode($defaultBrands); ?>;
-            console.log("🚀 ~ $ ~ obj:", obj)
+            // console.log("🚀 ~ $ ~ obj:", obj)
             let allObj = <?php echo json_encode($allBrands); ?>;
             $('select').on('select2:unselect', function(e) {
                 let data = e.params.data;
-                console.log("🚀 ~ $ ~ obj[0]:", obj[0])
-                console.log("🚀 ~ $ ~ data:", data.id)
+                // console.log("🚀 ~ $ ~ obj[0]:", obj[0])
+                // console.log("🚀 ~ $ ~ data:", data.id)
                 if (data.id == obj[0]) {
                     let asd = [...$('#multiSelect').val(), ...obj]
                     $('#multiSelect').val(asd).trigger("change");
                 }
-                console.log("🚀 ~ $ ~  $('#multiSelect').val(obj):",  $('#multiSelect').val())
+                // console.log("🚀 ~ $ ~  $('#multiSelect').val(obj):",  $('#multiSelect').val())
                 // console.log(data.id);
                 // console.log(data.text);
             });

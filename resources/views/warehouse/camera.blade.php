@@ -508,6 +508,20 @@
                     }
                 })
             });
+            document.querySelectorAll('.setcheckbox').forEach((element, index) => {
+                element.addEventListener('click', function (params) {
+                    let el = document.querySelectorAll('.setcheckbox')[index]
+                    let el_colr = document.querySelectorAll('.bg_step_color')[index]
+                    console.log("🚀 ~ el.checked:", el.checked)
+                    if( el.checked){
+                        el_colr.classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+                        el_colr.classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+                    } else {
+                        el_colr.classList.remove('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+                        el_colr.classList.add('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+                    }
+                })
+            });
         }
 
         $(document).ready(function() {

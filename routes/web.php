@@ -63,7 +63,8 @@ Route::middleware('auth')->group(function() {
         Route::get('', [ProductFormController::class, 'indexAccount'])->name('index');
         Route::post('/list_ajax_account', [ProductFormController::class, 'listAjaxAccount'])->name('list_ajax_account');
         Route::get('/create', [ProductFormController::class, 'createAccount'])->name('create');
-        Route::get('/edit/{id}', [ProductFormController::class, 'createAccount'])->name('edit');
+        Route::get('/edit/{product}', [ProductFormController::class, 'editAccount'])->name('edit');
+        Route::post('/update_account/{product}', [ProductFormController::class, 'updateAccount'])->name('update_account');
     });
     
     // product
