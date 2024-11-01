@@ -543,38 +543,38 @@
         let barcode = ''
         let code = ''
         function brandIdChange(e, params) {
-            console.log("🚀 ~ brandIdChange ~ e:", e.value)
+            // console.log("🚀 ~ brandIdChange ~ e:", e.value)
             let url = "";
             let select = "";
 
-            $('#NAME_ENG').val('');
-            $('#JOB_REFNO').val('');
-            $('#DOC_NO').val('');
-            $('#CUST_OEM').val('');
-            $('#CAPACITY').val('');
-            $('#Q_SMELL').val('');
-            $('#Q_COLOR').val('');
-            $('#TARGET_GRP').val('');
-            $('#PRICE_FG').val('');
-            $('#PRICE_COST').val('');
-            $('#PRICE_BULK').val('');
-            $('#FIRST_ORD').val('');
-            $('#P_CONCEPT').val('');
-            $('#P_BENEFIT').val('');
-            $('#TEXTURE_OT').val('');
-            $('#COLOR1').val('');
-            $('#FRANGRANCE').val('');
-            $('#INGREDIENT').val('');
-            $('#STD').val('');
-            $('#PK').val('');
-            $('#OTHER').val('');
-            $('#DOCUMENT').val('');
-            $('#REASON2_DES').val('');
-            $('#REASON3_DES').val('');
-            $('#REF_COLOR').val('');
-            $('#REF_FRAGRANCE').val('');
-            $('#OEM_STD').val('');
-            $("#barcodeTest").val('');
+            // $('#NAME_ENG').val('');
+            // $('#JOB_REFNO').val('');
+            // $('#DOC_NO').val('');
+            // $('#CUST_OEM').val('');
+            // $('#CAPACITY').val('');
+            // $('#Q_SMELL').val('');
+            // $('#Q_COLOR').val('');
+            // $('#TARGET_GRP').val('');
+            // $('#PRICE_FG').val('');
+            // $('#PRICE_COST').val('');
+            // $('#PRICE_BULK').val('');
+            // $('#FIRST_ORD').val('');
+            // $('#P_CONCEPT').val('');
+            // $('#P_BENEFIT').val('');
+            // $('#TEXTURE_OT').val('');
+            // $('#COLOR1').val('');
+            // $('#FRANGRANCE').val('');
+            // $('#INGREDIENT').val('');
+            // $('#STD').val('');
+            // $('#PK').val('');
+            // $('#OTHER').val('');
+            // $('#DOCUMENT').val('');
+            // $('#REASON2_DES').val('');
+            // $('#REASON3_DES').val('');
+            // $('#REF_COLOR').val('');
+            // $('#REF_FRAGRANCE').val('');
+            // $('#OEM_STD').val('');
+            // $("#barcodeTest").val('');
 
             if (params === 'BRAND') {
                 url = '{{ route('get_brand_list_ajax') }}?BRAND=' + e.value;
@@ -595,15 +595,11 @@
                     jQuery(newoption).appendTo(select);
                 },
                 success: function (data) {
-                    console.log("🚀 ~ brandIdChange ~ data:", data)
                     if (e.value) {
-                        // console.log("🚀 ~ brandIdChange ~ e.value:", e.value)
                         barcode = data.digits_barcode
-                        // console.log("🚀 ~ brandIdChange ~ barcode:", barcode)
                         jQuery("#barcodeTest").val(data.digits_barcode);
                         code = data.digits_barcode.substring(7, 12)
                         jQuery("#code").val(data.digits_barcode.substring(7, 12));
-                        console.log("🚀 ~ brandIdChange ~ code:", code)
                         jQuery("#submitButton").attr("disabled", false);
                         jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
                     } else {
@@ -712,7 +708,7 @@
             "onclick": null,
             "showDuration": "300",
             "hideDuration": "1000",
-            "timeOut": "5000",
+            "timeOut": "10000",
             "extendedTimeOut": "1000",
             "showEasing": "swing",
             "hideEasing": "linear",
@@ -723,7 +719,6 @@
         const dlayMessage = 1000;
 
         function createNPDRequest() {
-            console.log("🚀 barcode code:", barcode, code)
             jQuery.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
@@ -735,8 +730,8 @@
                 text: 'ข้อมูลรหัสบาร์โค้ด ' + barcode + '      ' + 'ข้อมูลรหัส ' + code,
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonColor: '#303030',
                 cancelButtonColor: '#e13636',
+                confirmButtonColor: '#303030',
                 confirmButtonText: `
                 <a href="#"
                     type="button" class="px-1 py-1 font-medium tracking-wide text-white py-0.5 px-1 rounded group">
@@ -761,14 +756,13 @@
                             $('#loader').removeClass('hidden')
                         },
                         success: function(res){
-                            console.log("🚀 ~ createNPDRequest ~ res:", res)
                             if(res.success == true) {
                                 window.location = "/new_product_develop";
                             } else {
                                 let message = ''
                                 setTimeout(function() {
                                     if (!res.code) {
-                                        toastr.error("Code Is Duplicate!");
+                                        toastr.error("Product Is Duplicate!");
                                     }
                                     if (!res.barcode) {
                                         toastr.error("Barcode Is Duplicate!");
@@ -787,7 +781,6 @@
                             return false;
                         },
                         error: function (params) {
-                            console.log("🚀 ~ createNPDRequest ~ params:", params)
                             setTimeout(function() {
                                 errorMessage("เพิ่มขู้อมูลไม่สำเร็จ!");
                             },dlayMessage)

@@ -16,6 +16,7 @@ use App\Models\Document;
 use App\Models\menu;
 use App\Models\Account;
 use App\Models\Product1;
+use App\Models\MasterBrand;
 use App\Models\TestNewBarcode;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -263,6 +264,8 @@ class ProductFormController extends Controller
 
     public function indexAccount()
     {
+        $brands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
+
         $data = Pro_develops::select(
             'BRAND',
             'REF_DOC',
@@ -280,7 +283,7 @@ class ProductFormController extends Controller
             }
         }
 
-        return view('account.index', compact('productCodeArr'));
+        return view('account.index', compact('productCodeArr', 'brands'));
     }
     public function createAccount(Request $request)
     {
@@ -289,8 +292,59 @@ class ProductFormController extends Controller
     }
     public function editAccount(Request $request)
     {
-        // dd($productCode);
-        return view('account.edit');
+        $data = Account::select(
+            'id',
+            'accounts.product AS product',
+            'accounts.cost AS cost',
+            'perfume_tax',
+            'cost_perfume_tax',
+            'cost5percent',
+            'cost10percent',
+            'cost_other',
+            'sale_km',
+            'sale_km20percent',
+            'sale_km_other',
+            'product1s.BRAND AS BRAND'
+        )
+        ->leftJoin('product1s', 'accounts.product', '=', 'product1s.PRODUCT')
+        ->where('accounts.product', $request->product)
+        ->first();
+
+        return view('account.edit', compact('data'));
+    }
+
+    public function updateAccount(Request $request)
+    {
+        DB::beginTransaction();
+        try {
+            // dd($request);
+            $data_product_account_upddate = [
+                'COST' => $request->COST,
+            ];
+
+            $productCostUpddate = Product1::where('PRODUCT', $request->product)->update($data_product_account_upddate);
+
+            $updateProductAccount = Account::updateOrCreate(['product' => $request->product], [
+                'COST' => $request->COST,
+                'perfume_tax' => $request->perfume_tax,
+                'cost_perfume_tax' => $request->cost_perfume_tax,
+                'cost5percent' => $request->cost5percent,
+                'cost10percent' => $request->cost10percent,
+                'cost_other' => $request->cost_other,
+                'sale_km' => $request->sale_km,
+                'sale_km20percent' => $request->sale_km20percent,
+                'sale_km_other' => $request->sale_km_other,
+                'updated_at' => date("Y/m/d h:i:s")
+            ]);
+
+            DB::commit();
+            $request->session()->flash('status', 'อัปเดตข้อมูลสำเร็จ');
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'อัปเดตข้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
     }
     public function listAjaxAccount(Request $request)
     {
@@ -299,9 +353,19 @@ class ProductFormController extends Controller
             'page' => ceil(($request->input('start') + 1) / $limit),
         ]);
 
+        $BRAND = $request->input('brand_id');
+        $PRODUCT = $request->input('PRODUCT');
+        $DOC_NO = $request->search;
+        $field_detail = [
+            'product1s.PRODUCT',
+            'product1s.NAME_THAI',
+            'product1s.NAME_ENG',
+        ];
+
         $data = Account::select(
                 'id',
-                'cost',
+                'accounts.product AS product',
+                'accounts.cost AS cost',
                 'perfume_tax',
                 'cost_perfume_tax',
                 'cost5percent',
@@ -310,9 +374,24 @@ class ProductFormController extends Controller
                 'sale_km',
                 'sale_km20percent',
                 'sale_km_other',
+                'product1s.BRAND AS BRAND',
+                'product1s.NAME_THAI AS NAME_THAI',
+                'product1s.NAME_ENG AS NAME_ENG',
         )
-        ->orderBy('id', 'ASC');
+        ->leftJoin('product1s', 'accounts.product', '=', 'product1s.PRODUCT')
+        ->orderBy('accounts.updated_at', 'DESC');
 
+        if ($BRAND != null) {
+            $data->where('product1s.BRAND', $BRAND);
+        }
+
+        if (null != $DOC_NO) {
+            $data = $data->where(function ($data) use ($DOC_NO, $field_detail) {
+                for ($i = 0; $i < count($field_detail); $i++) {
+                    $data->orWhere($field_detail[$i], 'like', '%'.$DOC_NO.'%');
+                }
+            });
+        }
         // dd($data);
         $data = $data->paginate($limit);
         $totalRecords = $data->total();

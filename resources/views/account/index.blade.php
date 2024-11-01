@@ -28,42 +28,97 @@
             max-height: 360px !important;
         }
         .select2 {
-            width: 100%!important;
+            width: 100%!important; /* force fluid responsive */
+        }
+        .swal2-select option {
+            background-color: #303030;
+        }
+        .select2-container--open {
+            z-index: 99999999999999;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__clear {
+            float: right;
+            cursor: pointer;
+            --tw-text-opacity: 1;
+            color: rgb(200 30 30 / var(--tw-text-opacity));
+            margin-right: 24px!important;
+            margin-top: -1px!important;
+            font-size: 20px!important;
+        }
+        .btn-rotate:hover .rotate{
+            transform: rotate(180deg);
+            transition: 0.5s all;
+        }
+        .rotate{
+            transition: 0.5s all;
+        }
+        span.dt-column-order {
+            display: none;
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <div id="slide" class="loaderslide"></div>
+    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
+    <!-- <link rel="stylesheet" href="{{ asset('css/select2@4.1.0.min.css') }}" /> -->
+    <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap.css') }}" />
 
     <div class="justify-center items-center">
         <div class="mt-6 mb-4 flex justify-center items-center">
             <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการทะเบียนบัญชี</p>
         </div>
-        <div class="fixed flex bottom-5 right-5 z-10">
+        <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
+            <div class="lg:col-span-4 xl:grid-cols-4">
+                <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
+                    <div class="md:col-span-3">
+                        <label for="BRAND" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Brand</label>
+                        <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND">
+                            <option value=""> --- กรุณาเลือก ---</option>
+                            @foreach ($brands as $key => $brand)
+                                <option value={{ $brand }}>{{ $brand }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="md:col-span-3" >
+                        <label for="">ค้นหา</label>
+                        <input type="text" name="search" id="search" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" />
+                    </div>
+                    <div class="md:col-span-6 text-center">
+                        <div class="inline-flex items-center">
+                            <a href="#" id="btnSerarch" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                    <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
+                                </svg>
+                                ค้นหา
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="fixed flex bottom-5 right-5 z-10">
             <a href="{{ route('account.create') }}" class="bg-[#303030] hover:bg-[#404040] text-white font-bold cursor-pointer py-2 px-2 mr-2 mt-20 rounded-full group">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                     <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
                 </svg>
             </a>
-        </div>
+        </div> -->
         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
             <div id="containerexample" class="text-gray-900 dark:text-gray-100">
                 <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>ต้นทุน</th>
-                            <th>ภาษีน้ำหอม</th>
+                            <!-- <th>ID</th> -->
+                            <th>Brand</th>
+                            <th>รหัสสินค้า</th>
+                            <!-- <th>ภาษีน้ำหอม</th>
                             <th>ต้นทุน + ภาษีน้ำหอม</th>
                             <th>ต้นทุน+5%</th>
                             <th>ต้นทุน+10%</th>
-                            <th>ต้นทุน+อื่นๆ</th>
-                            <th>ราคาขาย KM</th>
-                            <th>ราคาขาย KM + 20%</th>
-                            <th>ราคาขาย KM+อื่นๆ</th>
+                            <th>ต้นทุน+อื่นๆ</th> -->
+                            <th>ชื่อสินค้าภาษาไทย</th></th>
+                            <th>ชื่อสินค้าภาษาอังกฤษ</th></th>
+                            <!-- <th>ราคาขาย KM + 20%</th>
+                            <th>ราคาขาย KM+อื่นๆ</th> -->
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -74,27 +129,21 @@
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.colVis.min.js"></script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
+    <script src="{{ asset('js/flowbite-2.3.0.min.js') }}"></script>
+    <script src="{{ asset('js/3.10.1-jszip.min.js') }}"></script>
+    <script src="{{ asset('js/2.0.5-dataTables.js') }}"></script>
+    <script src="{{ asset('js/3.0.2-dataTables.buttons.js') }}"></script>
+    <script src="{{ asset('js/3.0.2-buttons.bootstrap5.js') }}"></script>
+    <script src="{{ asset('js/dataTables.bootstrap5.js') }}"></script>
+    <script src="{{ asset('js/buttons-html5.min.js') }}"></script>
+    <script src="{{ asset('js/buttons-print.min.js') }}"></script>
+    <script src="{{ asset('js/buttons-colVis.min.js') }}"></script>
+    <script src="{{ asset('js/toastr.min.js') }}"></script>
+    <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
+    <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     @if (session('status'))
         <script>
             toastr.options = {
@@ -154,81 +203,56 @@
                 },
 
                 "url": "{{ route('account.list_ajax_account') }}",
-                "type": "POST"
+                "type": "POST",
+                'data': function(data) {
+                    // Read values
+                    data.brand_id = $('#brand_id').val();
+                    data.search = $('#search').val();
+
+                    data._token = $('meta[name="csrf-token"]').attr('content');
+                }
             },
             orderable: true,
             columnDefs: [{
                     targets: 0,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.id;
+                        return row.BRAND;
                     }
                 },
                 {
                     targets: 1,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.cost;
+                        return row.product;
                     }
                 },
                 {
                     targets: 2,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.perfume_tax;
+                        return row.NAME_THAI;
                     }
                 },
                 {
                     targets: 3,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.cost_perfume_tax;
+                        return row.NAME_ENG;
                     }
                 },
+                // {
+                //     targets: 3,
+                //     orderable: true,
+                //     render: function(data, type, row) {
+                //         return new Intl.NumberFormat('en-US', {
+                //             minimumFractionDigits: 2,
+                //             maximumFractionDigits: 2
+                //         }).format(row.cost);
+                //     }
+                // },
                 {
                     targets: 4,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.cost5percent;
-                    }
-                },
-                {
-                    targets: 5,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.cost10percent;
-                    }
-                },
-                {
-                    targets: 6,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.cost_other;
-                    }
-                },
-                {
-                    targets: 7,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.sale_km;
-                    }
-                },
-                {
-                    targets: 8,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.sale_km20percent;
-                    }
-                },
-                {
-                    targets: 9,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.sale_km_other;
-                    }
-                },
-                {
-                    targets: 10,
                     orderable: true,
                     className: 'text-center',
                     render: function(data, type, row) {
@@ -244,7 +268,7 @@
                                         Edit
                                     </a>
                                 </div>
-                               `.replaceAll('/0', '/' + row.id);
+                               `.replaceAll('/0', '/' + row.product);
                     }
                 }
             ]
@@ -299,7 +323,7 @@
                         success: function (params) {
                             if(params.success){
                                 Swal.fire({
-                                    title:'อัปเดตข้อมูลเรียบร้อย',
+                                    title:'อัปเดตข้อมูลสำเร็จ',
                                     text:'',
                                     icon:'success',
                                     showConfirmButton: false,
@@ -736,10 +760,7 @@
         </div>
     </div>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
-
     $(document).ready(function() {
             $('.js-example-basic-single').select2();
         });

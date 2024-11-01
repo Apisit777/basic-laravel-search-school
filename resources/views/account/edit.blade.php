@@ -29,27 +29,23 @@
             <div class="mt-5 flex justify-items-start">
                 <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">Account Request</p>
             </div>
-            <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
-                <div class="lg:col-span-4 xl:grid-cols-4">
-                    <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                        <!-- <div class="md:col-span-3" >
-                            <label for="name">Customer</label>
-                            <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                        </div> -->
-                        <div class="md:col-span-3" >
-                            <label for="name">รหัสสินค้า</label>
-                            <select class="js-example-basic-single w-full rounded-sm text-xs" id="product_id" name="product_id" onchange="onSelect(this)">
-                                <option value=""> --- กรุณาเลือก ---</option>
-                            </select>
+            <form class="" action="" method="POST" id="update_product_account">
+                <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
+                    <div class="lg:col-span-4 xl:grid-cols-4">
+                        <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
+                            <div class="md:col-span-3" style="position: relative;">
+                                <label for="BRAND">Brand</label>
+                                <input type="text" name="BRAND" id="BRAND" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->BRAND }}" readonly>
+                            </div>
+                            <div class="md:col-span-3" style="position: relative;">
+                                <label for="Code">รหัส</label>
+                                <input type="text" name="Code" id="Code" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->product }}" readonly>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class='w-12/12 mt-4 relative'>
-                <form class="" action="" method="POST" id="create_NPDRequest">
-                    <input type="hidden" id="DOC_TP" name="DOC_TP" value="OP">
-                    <input type="hidden" id="BRAND" name="BRAND" value="OP">
+                <div class='w-12/12 mt-4 relative'>
                     <div class="p-4">
                         <ul class="relative m-0 w-full list-none overflow-hidden p-0 transition-[height] duration-200 ease-in-out" data-twe-stepper-init="" data-twe-stepper-type="vertical">
                             <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
@@ -80,37 +76,41 @@
                                                     <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="Account1">Account1</label>
-                                                                    <input type="text" name="Account1" id="Account1" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="Account2">Account2</label>
+                                                                <div class="md:col-span-2" style="position: relative;">
+                                                                        <label for="COST">ราคาต้นทุน</label>
+                                                                        <input type="text" name="COST" id="COST" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->cost, 2) }}" />
+                                                                    </div>
+                                                                <div class="md:col-span-2" style="position: relative;">
+                                                                    <label for="Account2">ภาษีน้ำหอม</label>
                                                                     <input type="text" name="Account2" id="Account2" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="Account3">Account3</label>
+                                                                <div class="md:col-span-2" style="position: relative;">
+                                                                    <label for="Account3">ต้นทุน + ภาษีน้ำหอม</label>
                                                                     <input type="text" name="Account3" id="Account3" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
-                                                                <div class="md:col-span-3" >
-                                                                    <label for="Account4">Account4</label>
+                                                                <div class="md:col-span-2" >
+                                                                    <label for="Account4">ต้นทุน+5%</label>
                                                                     <input type="text" name="Account4" id="Account4" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="Account5">Account5</label>
+                                                                <div class="md:col-span-2" style="position: relative;">
+                                                                    <label for="Account5">ต้นทุน+10%</label>
                                                                     <input type="text" name="Account5" id="Account5" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="CUST_OEM">Account6</label>
+                                                                <div class="md:col-span-2" style="position: relative;">
+                                                                    <label for="CUST_OEM">ต้นทุน+อื่นๆ</label>
                                                                     <input type="text" name="DOC_NO" id="DOC_NO" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="Account7">Account7</label>
+                                                                <div class="md:col-span-2" style="position: relative;">
+                                                                    <label for="Account7">ราคาขาย KM</label>
                                                                     <input type="text" name="Account7" id="Account7" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="Account8">Account8</label>
+                                                                <div class="md:col-span-2" style="position: relative;">
+                                                                    <label for="Account8">ราคาขาย KM + 20%</label>
                                                                     <input type="text" name="Account8" id="Account8" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                </div>
+                                                                <div class="md:col-span-2" style="position: relative;">
+                                                                    <label for="">ราคาขาย KM+อื่นๆ</label>
+                                                                    <input type="text" name="" id="" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -131,13 +131,13 @@
                         </div>
                         <div class="md:col-span-3 text-right mt-4">
                             <div class="inline-flex items-end">
-                                <a href="{{ route('account') }}" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
+                                <a href="{{ route('account.index') }}" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                         <path fill-rule="evenodd" d="M9.53 2.47a.75.75 0 0 1 0 1.06L4.81 8.25H15a6.75 6.75 0 0 1 0 13.5h-3a.75.75 0 0 1 0-1.5h3a5.25 5.25 0 1 0 0-10.5H4.81l4.72 4.72a.75.75 0 1 1-1.06 1.06l-6-6a.75.75 0 0 1 0-1.06l6-6a.75.75 0 0 1 1.06 0Z" clip-rule="evenodd" />
                                     </svg>
                                     Back
                                 </a>
-                                <a class="bg-[#3b5998] hover:bg-[#48639d] text-white font-bold py-2 px-4 rounded cursor-pointer" onclick="createAccount()">
+                                <a class="bg-[#3b5998] hover:bg-[#48639d] text-white font-bold py-2 px-4 rounded cursor-pointer" onclick="updateAccount()">
                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" class="size-6 hidden h-6 w-6 md:inline-block">
                                         <path d="M0 0h24v24H0V0z" fill="none"></path>
                                         <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
@@ -148,8 +148,8 @@
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -348,9 +348,51 @@
             "hideMethod": "fadeOut"
         }
 
-        const dlayMessage = 1000;
+        // const dlayMessage = 1000;
 
-        function createAccount() {
+        // function createAccount() {
+        //     jQuery.ajaxSetup({
+        //         headers: {
+        //             'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+        //         }
+        //     });
+        //     $.ajax({
+        //         method: "POST",
+        //         url: "/create_new_product_develop",
+        //         data: $("#create_NPDRequest").serialize(),
+        //         beforeSend: function () {
+        //             $('#loader').removeClass('hidden')
+        //         },
+        //         success: function(res){
+        //             if(res.success == true) {
+        //                 window.location = "/new_product_develop";
+        //             } else {
+        //                 toastr.error("Can't Create Product!");
+        //             }
+        //             return false;
+        //         },
+        //         error: function (params) {
+        //             setTimeout(function() {
+        //                 errorMessage("Can't Create Username!");
+        //             },dlayMessage)
+        //             setTimeout(function() {
+        //                 toastr.error("Can't Create Username!");
+        //             },dlayMessage)
+        //         }
+        //     });
+        // }
+
+        // function successMessage(text) {
+        //     $('#loader').addClass('hidden');
+        //     $('#name').val('')
+        // }
+        // function errorMessage(text) {
+        //     $('#loader').addClass('hidden');
+        //     $('#name').val('')
+        // }
+
+        const dlayMessage = 1000;
+        function updateAccount() {
             jQuery.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
@@ -358,14 +400,14 @@
             });
             $.ajax({
                 method: "POST",
-                url: "/create_new_product_develop",
-                data: $("#create_NPDRequest").serialize(),
+                url: "{{ route('account.update_account', $data->product) }}",
+                data: $("#update_product_account").serialize(),
                 beforeSend: function () {
                     $('#loader').removeClass('hidden')
                 },
                 success: function(res){
                     if(res.success == true) {
-                        window.location = "/new_product_develop";
+                        window.location = "/account";
                     } else {
                         toastr.error("Can't Create Product!");
                     }
@@ -390,5 +432,6 @@
             $('#loader').addClass('hidden');
             $('#name').val('')
         }
+
     </script>
 @endsection
