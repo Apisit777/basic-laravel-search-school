@@ -11,6 +11,7 @@ use App\Models\Npd_pdms;
 use App\Models\Npd_categorys;
 use App\Models\Npd_textures;
 use App\Models\Pro_develops;
+use App\Models\LogProDevelop;
 use App\Models\Barcode;
 use App\Models\Document;
 use App\Models\menu;
@@ -676,6 +677,7 @@ class ProductFormController extends Controller
                 ->count();
 
             $npdRequest = Pro_develops::create($data_product);
+            $logNpdRequest = LogProDevelop::create($data_product);
 
             if($request->BRAND) {
                 $productCodeMax = Barcode::max('NUMBER');
@@ -855,6 +857,7 @@ class ProductFormController extends Controller
             ];
 
             $npdRequest = Pro_develops::where('BARCODE', $id_barcode)->update($data_product);
+            $logNpdRequest = LogProDevelop::where('BARCODE', $id_barcode)->update($data_product);
             DB::commit();
             $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
             return response()->json(['success' => true]);

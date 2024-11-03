@@ -167,8 +167,8 @@
                                                                 </div>
                                                                 <div class="md:col-span-3" >
                                                                     <label for="NPD">Product Co-ordinator<span class="text-danger"> *</span></label>
-                                                                    <!-- <select required class="js-example-basic-single w-full rounded-sm text-xs select2" id="NPD" name="NPD" onchange="onchangeValueSelect2()"> -->
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs select2" id="NPD" name="NPD">
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" id="NPD" name="NPD" onchange="onchangeValueSelect2()">
+                                                                    {{-- <select class="js-example-basic-single w-full rounded-sm text-xs select2" id="NPD" name="NPD"> --}}
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($product_co_ordimators as $key => $product_co_ordimator)
                                                                             <option value={{ $product_co_ordimator->ID }}>{{ $product_co_ordimator->DESCRIPTION }}</option>
@@ -538,12 +538,12 @@
         jQuery('#username_loading').hide();
         jQuery("#username_alert").hide();
         jQuery("#correct_username").hide();
-        
+
         let datass = {}
         let barcode = ''
         let code = ''
         function brandIdChange(e, params) {
-            // console.log("🚀 ~ brandIdChange ~ e:", e.value)
+            console.log("🚀 ~ brandIdChange ~ e:", e.value)
             let url = "";
             let select = "";
 
@@ -595,16 +595,26 @@
                     jQuery(newoption).appendTo(select);
                 },
                 success: function (data) {
+                    let checkvalue = checkValueSelect2();
+                    if (!checkvalue) {
+                        jQuery("#submitButton").attr("disabled", true);
+                        jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                    } else {
+                        jQuery("#submitButton").attr("disabled", false);
+                        jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
+                    }
                     if (e.value) {
                         barcode = data.digits_barcode
                         jQuery("#barcodeTest").val(data.digits_barcode);
                         code = data.digits_barcode.substring(7, 12)
                         jQuery("#code").val(data.digits_barcode.substring(7, 12));
-                        jQuery("#submitButton").attr("disabled", false);
-                        jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
+                        // jQuery("#submitButton").attr("disabled", false);
+                        // jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
                     } else {
                         jQuery("#barcodeTest").val('');
                         jQuery("#code").val('');
+                        jQuery("#submitButton").attr("disabled", true);
+                        jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
                     }
                     if (data.productCodes) {
                         datass = data.productCodes
@@ -625,6 +635,31 @@
                     console.log('ajax error ::', params);
                 }
             });
+        }
+
+        function checkValueSelect2(id) {
+            const NPD = jQuery('#NPD').val();
+            console.log("🚀 ~ checkValueSelect2 ~ NPD:", NPD)
+
+            if (NPD) {
+                jQuery('#NPD_textalert').addClass('hidden');
+            } else {
+                jQuery('#NPD_textalert').removeClass('hidden');
+            }
+            return !!NPD
+            // return !!VENDOR && !!GRP_P && !!SUPPLIER
+        }
+
+        function onchangeValueSelect2() {
+            let checkvalue = checkValueSelect2();
+            console.log("🚀 ~ onchangeValueSelect2 ~ checkvalue:", checkvalue)
+            if (checkvalue) {
+                jQuery("#submitButton").attr("disabled", false);
+                jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
+            }else {
+                jQuery("#submitButton").attr("disabled", true);
+                jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+            }
         }
 
         // function checkValueSelect2(id) {

@@ -373,6 +373,7 @@
                     allData = data;
                     renderCards(currentPage);
                     renderPagination();
+                    
                 })
                 .catch(error => console.error('Error:', error));
             }

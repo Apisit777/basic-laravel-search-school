@@ -11,6 +11,7 @@ use App\Models\Npd_categorys;
 use App\Models\Npd_textures;
 use App\Models\Pro_develops;
 use App\Models\Product1;
+use App\Models\LogProduct1;
 use App\Models\Barcode;
 use App\Models\Document;
 use Illuminate\Support\Facades\Auth;
@@ -87,7 +88,7 @@ class ProductController extends Controller
             //     'BRAND',
             // )
             // ->where(function ($query) {
-            //     $query->whereIn('BRAND', ['OP', 'KM']) 
+            //     $query->whereIn('BRAND', ['OP', 'KM'])
             //         ->orWhereHas('productChannel', function ($q) {
             //             $q->whereIn('BRAND', ['OP', 'KM']);
             //         });
@@ -124,7 +125,7 @@ class ProductController extends Controller
             //     'BRAND',
             // )
             // ->where(function ($query) {
-            //     $query->whereIn('BRAND', ['OP', 'KM']) 
+            //     $query->whereIn('BRAND', ['OP', 'KM'])
             //         ->orWhereHas('productChannel', function ($q) {
             //             $q->whereIn('BRAND', ['OP']);
             //         });
@@ -172,7 +173,7 @@ class ProductController extends Controller
             //     'BRAND',
             // )
             // ->where(function ($query) {
-            //     $query->whereIn('BRAND', ['CPS', 'KM']) 
+            //     $query->whereIn('BRAND', ['CPS', 'KM'])
             //         ->orWhereHas('productChannel', function ($q) {
             //             $q->whereIn('BRAND', ['CPS']);
             //         });
@@ -364,7 +365,11 @@ class ProductController extends Controller
                 'REMARK',
                 'BRAND')
             ->get();
-
+            $series = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->get();
             $categorys = Category::select(
                 'ID',
                 'DESCRIPTION',
@@ -403,7 +408,12 @@ class ProductController extends Controller
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
-
+            $series = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
             $categorys = Category::select(
                 'ID',
                 'DESCRIPTION',
@@ -443,7 +453,18 @@ class ProductController extends Controller
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
-
+            $series = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+                ->where('BRAND', 'CPS')
+            ->get();
+            $categorys = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+                ->where('BRAND', 'CPS')
+            ->get();
             $sub_categorys = Sub_category::select(
                 'ID',
                 'CATEGORY_ID',
@@ -913,7 +934,8 @@ class ProductController extends Controller
             ];
 
             $productMaster = Product1::create($data_product);
-            
+            $logProductMaster = LogProduct1::create($data_product);
+
             // dd($productMaster);
 
             $craeteProductAccount = Account::updateOrCreate(['product' => $productMaster->PRODUCT], [
@@ -946,7 +968,7 @@ class ProductController extends Controller
 
                 foreach ($request->sele_channel as $value) {
                     $createSeleChannel = ProductChannel::updateOrCreate(
-            ['PRODUCT' => $data_product['PRODUCT'], 'BRAND' => $value], 
+            ['PRODUCT' => $data_product['PRODUCT'], 'BRAND' => $value],
                 $updateData
                     );
                 }
@@ -1036,6 +1058,7 @@ class ProductController extends Controller
             ];
 
             $productMaster = Product1::create($data_product);
+            $logProductMaster = LogProduct1::create($data_product);
             // dd($productMaster);
             DB::commit();
             $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
@@ -1262,6 +1285,7 @@ class ProductController extends Controller
                 ];
 
                 $productUpddateConsumables = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
+                $logProductUpddateConsumables = LogProduct1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
                 DB::commit();
                 $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
                 return response()->json(['success' => true]);
@@ -1331,18 +1355,18 @@ class ProductController extends Controller
                 if (!is_null($request->sele_channel[0])) {
 
                     $multiChannels = ProductChannel::select('BRAND')->where('PRODUCT', $data_product_upddate['PRODUCT'])->whereNotIn('BRAND', $request->sele_channel)->delete();
-    
+
                     $user = Auth::user()->username;
                     $dateTime = date('Y-m-d H:i:s');
-    
+
                     $updateData = [
                         'UPDATED_BY' => $user,
                         'UPDATED_AT' => $dateTime
                     ];
-    
+
                     foreach ($request->sele_channel as $value) {
                         $createSeleChannel = ProductChannel::updateOrCreate(
-            ['PRODUCT' => $data_product_upddate['PRODUCT'], 'BRAND' => $value], 
+            ['PRODUCT' => $data_product_upddate['PRODUCT'], 'BRAND' => $value],
                     $updateData
                         );
                     }
@@ -1355,6 +1379,7 @@ class ProductController extends Controller
                 //     ]);
 
                 $productUpddate = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
+                $logProductUpddate = LogProduct1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
                 // dd($productUpddate);
                 DB::commit();
                 $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
@@ -1419,7 +1444,7 @@ class ProductController extends Controller
             'NAME_THAI'
         )
         ->orderBy('PRODUCT', 'DESC');
-        
+
         $userpermission = Auth::user()->getUserPermission->name_position;
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         if (in_array($userpermission, [$isSuperAdmin, 'Admin'])) {
@@ -1475,7 +1500,7 @@ class ProductController extends Controller
             ->whereIn('BRAND', ['KTY'])
             ->orderBy('BARCODE', 'DESC');
         }
-        
+
         if ($BRAND != null) {
             $data->where('product1s.BRAND', $BRAND);
         }

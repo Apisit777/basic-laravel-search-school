@@ -401,7 +401,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="SOLUTION" id="SOLUTION">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($solutions as $key => $solution)
-                                                                        <option value={{ $solution->ID }}>{{ $solution->ID. ' - (' .$solution->DESCRIPTION .')' }}</option>
+                                                                        <option value={{ $solution->ID }}>{{  $solution->BRAND. ' - '.$solution->ID. ' - (' .$solution->DESCRIPTION .')' }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -414,7 +414,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="SERIES" id="SERIES">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($series as $key => $serie)
-                                                                        <option value={{ $serie->ID }}>{{ $serie->ID.' - ('.$serie->DESCRIPTION.')' }}</option>
+                                                                        <option value={{ $serie->ID }}>{{ $serie->BRAND.' - '.$serie->ID.' - ('.$serie->DESCRIPTION.')' }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
