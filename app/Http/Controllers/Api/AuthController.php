@@ -41,6 +41,7 @@ class AuthController extends Controller
             return response()->json(['status' => 'fail', 'message' => $validator->errors()]);
         }
 
+        // $credentials = $request->only('name');
         $credentials = $request->only('name', 'password');
         $setAuth = [
             'name' => $credentials['name'],

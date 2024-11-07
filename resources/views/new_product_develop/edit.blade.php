@@ -279,35 +279,49 @@
                                                             <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                                                                 <div class="md:col-span-3">
                                                                     <label for="OTHER">Other</label>
-                                                                    <input type="text" name="OTHER" id="OTHER" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PK }}" />
+                                                                    <input type="text" name="OTHER" id="OTHER" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->OTHER }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="DOCUMENT">เอกสารเพิ่มเติม</label>
-                                                                    <input type="text" name="DOCUMENT" id="DOCUMENT" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PK }}" />
+                                                                    <input type="text" name="DOCUMENT" id="DOCUMENT" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->DOCUMENT }}" />
                                                                 </div>
                                                                 <div class="md:col-span-6 mt-2">
                                                                     <label for="OEM">Candidate with OEM</label>
                                                                     <div class="md:col-span-4 mt-3">
-                                                                        <input type="radio" id="OEM_TYPE1" name="OEM" value="1" 
+                                                                        <input type="radio" id="OEM_TYPE1" name="OEM" value="Y" 
                                                                             {{ $data->OEM == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">yes</label>
-                                                                        <input type="radio" id="OEM_TYPE2" name="OEM" value="0"
+                                                                        <input type="radio" id="OEM_TYPE2" name="OEM" value=""
                                                                             {{ $data->OEM == 'N' ? 'checked' : '' }}>
                                                                         <label for="">no</label>
                                                                     </div>
                                                                     <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
                                                                 </div>
-                                                                <div class="md:col-span-6 mt-2">
+                                                                <!-- <div class="md:col-span-6 mt-2">
                                                                     <label for="name">Reason of use</label>
                                                                     <div class="md:col-span-4 mt-5">
                                                                         <input class="-mt-1" type="checkbox" id="REASON1" name="REASON1" value="1" @if ($data->REASON1 == 'Y') checked @endif>
                                                                         <label for="REASON1" class="mr-5">Claim in advertising media</label>
                                                                     </div>
                                                                     <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
-                                                                </div>
+                                                                </div> -->
+
                                                                 <div class="md:col-span-3">
                                                                     <div class="md:col-span-4 mt-5">
-                                                                        <input class="-mt-1" type="checkbox" id="REASON2" name="REASON2" value="1" @if ($data->REASON2 == 'Y') checked @endif>
+                                                                        <input class="-mt-1" type="checkbox" id="REASON1" name="REASON1" value="Y" @if ($data->REASON1 == 'Y') checked @endif>
+                                                                        <label for="REASON1" class="mr-5">Reason of use</label>
+                                                                        <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="REASON1_DES"></label>
+                                                                    <input type="text" name="REASON1_DES" id="REASON1_DES" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->REASON1_DES }}" />
+                                                                    <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
+                                                                </div>
+
+                                                                <div class="md:col-span-3">
+                                                                    <div class="md:col-span-4 mt-5">
+                                                                        <input class="-mt-1" type="checkbox" id="REASON2" name="REASON2" value="Y" @if ($data->REASON2 == 'Y') checked @endif>
                                                                         <label for="REASON2" class="mr-5">Compare with benchmark/OEM</label>
                                                                     </div>
                                                                 </div>
@@ -317,7 +331,7 @@
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <div class="md:col-span-4 mt-5">
-                                                                        <input class="-mt-1" type="checkbox" id="REASON3" name="REASON3" value="1" @if ($data->REASON3 == 'Y') checked @endif>
+                                                                        <input class="-mt-1" type="checkbox" id="REASON3" name="REASON3" value="Y" @if ($data->REASON3 == 'Y') checked @endif>
                                                                         <label for="REASON3" class="mr-5">Others</label>
                                                                         <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
                                                                     </div>
@@ -329,11 +343,11 @@
                                                                 </div>
                                                                 <div class="md:col-span-3 mt-2">
                                                                     <div class="md:col-span-4 mt-3">
-                                                                        <input type="radio" id="PACKAGE_BOX_TYPE1" name="PACKAGE_BOX" value="1"
+                                                                        <input type="radio" id="PACKAGE_BOX_TYPE1" name="PACKAGE_BOX" value="Y"
                                                                             {{ $data->PACKAGE_BOX == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">With an outer box</label>
-                                                                        <input type="radio" id="PACKAGE_BOX_TYPE2" name="PACKAGE_BOX" value="0"
-                                                                            {{ $data->PACKAGE_BOX == 'Y' ? 'checked' : '' }}>
+                                                                        <input type="radio" id="PACKAGE_BOX_TYPE2" name="PACKAGE_BOX" value=""
+                                                                            {{ $data->PACKAGE_BOX == 'N' ? 'checked' : '' }}>
                                                                         <label for="">Without an outer box</label>
                                                                     </div>
                                                                 </div>
@@ -433,6 +447,20 @@
                     if( el.checked){
                         el_colr.classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
                         el_colr.classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+                    }
+                })
+            });
+            document.querySelectorAll('.setcheckbox').forEach((element, index) => {
+                element.addEventListener('click', function (params) {
+                    let el = document.querySelectorAll('.setcheckbox')[index]
+                    let el_colr = document.querySelectorAll('.bg_step_color')[index]
+                    console.log("🚀 ~ el.checked:", el.checked)
+                    if( el.checked){
+                        el_colr.classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+                        el_colr.classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+                    } else {
+                        el_colr.classList.remove('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+                        el_colr.classList.add('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
                     }
                 })
             });

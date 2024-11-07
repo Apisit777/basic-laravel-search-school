@@ -263,22 +263,41 @@ class AuthController extends Controller
                     'username' => $request->username
                 ]);
                 $namePosition = position::select('id', 'name_position')->where('name_position', '=', $response['data']['roles'][0])->first();
+                // dd($namePosition);
                 if ($namePosition) {
+                    // dd(1);
                     $namePositionStr_3 = substr($response['data']['roles'][0], -3);
                     if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC') {
-                        $createPosition = position::update(['id' => $namePosition->id],
+                        // dd(1.1);
+
+                        // $productUpddate = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
+
+                        $createPosition = position::updateOrCreate(['id' => $namePosition->id],
                 [
                             'name_position' => $response['data']['roles'][0],
                             'brand' => $namePositionStr_3
                         ]);
+
+                        $createUserPermission = user_permission::create([
+                            'user_id' => $createUser->id,
+                            'position_id' => $createPosition->id
+                        ]);
+
                     } else {
+                        dd(1.2);
                         $namePositionStr_2 = substr($response['data']['roles'][0], -2);
                         $createPosition = position::create([
                             'name_position' => $response['data']['roles'][0],
                             'brand' => $namePositionStr_2
                         ]);
+
+                        $createUserPermission = user_permission::create([
+                            'user_id' => $createUser->id,
+                            'position_id' => $createPosition->id
+                        ]);
                     }
                 } else {
+                    // dd(2);
                     $namePositionStr_3 = substr($response['data']['roles'][0], -3);
                     if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC') {
                             $createPosition = position::create([
@@ -293,6 +312,7 @@ class AuthController extends Controller
                         ]);
                     }
                 }
+                // dd(3);
                 $positionId = position::select('id', 'name_position')
                     ->where('name_position', '=', $response['data']['roles'][0])
                     ->first();

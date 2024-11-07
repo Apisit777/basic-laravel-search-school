@@ -11,7 +11,7 @@ use App\Models\Npd_pdms;
 use App\Models\Npd_categorys;
 use App\Models\Npd_textures;
 use App\Models\Pro_develops;
-use App\Models\LogProDevelop;
+use App\Models\ProDevelopLog;
 use App\Models\Barcode;
 use App\Models\Document;
 use App\Models\menu;
@@ -32,9 +32,9 @@ class ProductFormController extends Controller
     public function index()
     {
         $user = User::toSql();
-        $product_seq = Product::select('seq')
-            ->where('seq', '=', 'P00001')
-            ->first();
+        // $product_seq = Product::select('seq')
+        //     ->where('seq', '=', 'P00001')
+        //     ->first();
 
         $data = Pro_develops::select(
             'BRAND',
@@ -92,7 +92,7 @@ class ProductFormController extends Controller
 
         // dd($product_seq);
 
-        return view('new_product_develop.index', compact('user', 'product_seq', 'productCodeArr', 'brands'));
+        return view('new_product_develop.index', compact('user', 'productCodeArr', 'brands'));
     }
 
     public function duplicateNpdRequest(Request $request, $id_barcode)
@@ -240,19 +240,21 @@ class ProductFormController extends Controller
                 'DOCUMENT' => $data->DOCUMENT,
                 'OEM' => $data->OEM,
                 'REASON1' => is_null($data->REASON1) ? 'N' : 'Y',
+                'REASON1_DES' => $data->REASON1_DES,
                 'REASON2' => is_null($data->REASON2) ? 'N' : 'Y',
                 'REASON2_DES' => $data->REASON2_DES,
                 'REASON3' => is_null($data->REASON3) ? 'N' : 'Y',
                 'REASON3_DES' => $data->REASON3_DES,
-                'PACKAGE_BOX' => $data->PACKAGE_BOX,
+                'PACKAGE_BOX' => is_null($data->PACKAGE_BOX) ? 'N' : 'Y',
                 'REF_COLOR' => $data->REF_COLOR,
                 'REF_FRAGRANCE' => $data->REF_FRAGRANCE,
                 'OEM_STD' => $data->OEM_STD,
-                'EDIT_DT' => date("Y/m/d h:i:s"),
-                'USER_EDIT' => Auth::user()->id
+                'USER_EDIT' => Auth::user()->username,
+                'EDIT_DT' => date("Y/m/d h:i:s")
             ];
 
             $dataNpdRequest = Pro_develops::create($dataDuplicateNpdRequest);
+
             DB::commit();
             $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
             return response()->json(['success' => true]);
@@ -619,16 +621,17 @@ class ProductFormController extends Controller
                 'DOCUMENT' => $request->input('DOCUMENT'),
                 'OEM' => $request->input('OEM'),
                 'REASON1' => is_null($request->input('REASON1')) ? 'N' : 'Y',
+                'REASON1_DES' => $request->input('REASON1_DES'),
                 'REASON2' => is_null($request->input('REASON2')) ? 'N' : 'Y',
                 'REASON2_DES' => $request->input('REASON2_DES'),
                 'REASON3' => is_null($request->input('REASON3')) ? 'N' : 'Y',
                 'REASON3_DES' => $request->input('REASON3_DES'),
-                'PACKAGE_BOX' => $request->input('PACKAGE_BOX'),
+                'PACKAGE_BOX' => is_null($request->input('PACKAGE_BOX')) ? 'N' : 'Y',
                 'REF_COLOR' => $request->input('REF_COLOR'),
                 'REF_FRAGRANCE' => $request->input('REF_FRAGRANCE'),
                 'OEM_STD' => $request->input('OEM_STD'),
-                'EDIT_DT' => date("Y/m/d"),
-                'USER_EDIT' => Auth::user()->id
+                'USER_EDIT' => Auth::user()->username,
+                'EDIT_DT' => date("Y/m/d h:i:s")
             ];
 
         //     $arr_barcode = [];
@@ -677,7 +680,17 @@ class ProductFormController extends Controller
                 ->count();
 
             $npdRequest = Pro_develops::create($data_product);
-            $logNpdRequest = LogProDevelop::create($data_product);
+
+            if ($request) {
+                $log = [
+                    'UPDATE_DT' => date("Y/m/d h:i:s"),
+                    'USER_UPDATE' => Auth::user()->username
+                ];
+
+                $data_product = array_merge($data_product, $log);
+                // dd($data_product);
+                $logProduct = ProDevelopLog::create($data_product);
+            }
 
             if($request->BRAND) {
                 $productCodeMax = Barcode::max('NUMBER');
@@ -814,6 +827,7 @@ class ProductFormController extends Controller
                 'BRAND' => $request->input('BRAND'),
                 'DOC_NO' => $request->input('DOC_NO'),
                 'REF_DOC' => 'IBH-F155',
+                'PRODUCT' => $request->input('Code'),
                 'BARCODE' => $request->input('BARCODE'),
                 'JOB_REFNO' => $request->input('JOB_REFNO'),
                 'DOC_DT' => $request->input('DOC_DT'),
@@ -844,20 +858,32 @@ class ProductFormController extends Controller
                 'DOCUMENT' => $request->input('DOCUMENT'),
                 'OEM' => is_null($request->input('OEM')) ? 'N' : 'Y',
                 'REASON1' => is_null($request->input('REASON1')) ? 'N' : 'Y',
+                'REASON1_DES' => $request->input('REASON1_DES'),
                 'REASON2' => is_null($request->input('REASON2')) ? 'N' : 'Y',
                 'REASON2_DES' => $request->input('REASON2_DES'),
                 'REASON3' => is_null($request->input('REASON3')) ? 'N' : 'Y',
                 'REASON3_DES' => $request->input('REASON3_DES'),
-                'PACKAGE_BOX' => $request->input('PACKAGE_BOX'),
+                'PACKAGE_BOX' => is_null($request->input('PACKAGE_BOX')) ? 'N' : 'Y',
                 'REF_COLOR' => $request->input('REF_COLOR'),
                 'REF_FRAGRANCE' => $request->input('REF_FRAGRANCE'),
                 'OEM_STD' => $request->input('OEM_STD'),
-                'EDIT_DT' => date("Y/m/d"),
-                'USER_EDIT' => Auth::user()->id
+                'USER_EDIT' => Auth::user()->username,
+                'EDIT_DT' => date("Y/m/d h:i:s")
             ];
 
             $npdRequest = Pro_develops::where('BARCODE', $id_barcode)->update($data_product);
-            $logNpdRequest = LogProDevelop::where('BARCODE', $id_barcode)->update($data_product);
+
+            if ($request) {
+                $log = [
+                    'UPDATE_DT' => date("Y/m/d h:i:s"),
+                    'USER_UPDATE' => Auth::user()->username
+                ];
+
+                $data_product = array_merge($data_product, $log);
+                // dd($data_product);
+                $logProduct = ProDevelopLog::create($data_product);
+            }
+
             DB::commit();
             $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
             return response()->json(['success' => true]);
@@ -938,6 +964,16 @@ class ProductFormController extends Controller
             )
             ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
             ->whereIn('barcodes.BRAND', ['CPS'])
+            ->orderBy('BARCODE', 'DESC');
+        } else if (in_array($userpermission, ['Procurement - KTY'])) {
+            $data = Pro_develops::select(
+                'pro_develops.BRAND AS BRAND',
+                DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
+                'pro_develops.BARCODE AS BARCODE',
+                'pro_develops.NAME_ENG AS NAME_ENG'
+            )
+            ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
+            ->whereIn('barcodes.BRAND', ['KTY'])
             ->orderBy('BARCODE', 'DESC');
         }
 
