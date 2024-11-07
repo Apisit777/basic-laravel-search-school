@@ -243,7 +243,7 @@
                                                     <canvas id="canvas" style="display:none"></canvas>
                                                 </div>
                                             </div>
-                                            <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
+                                            <div class="p-2 grid mt-5 mb-20 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                 <div class="lg:col-span-4">
                                                     <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6 mb-5">
                                                         <div class="md:col-span-3" style="position: relative;">
@@ -267,6 +267,7 @@
                                                     <div class="p-2 mb-5">
                                                         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-500"></ul>
                                                     </div>
+                                                    
                                                     <div class="img-center mb-96">
                                                         <div class="wrapper">
                                                             <div class="images">
@@ -281,6 +282,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                     {{-- <div class="p-2 mt-5">
                                                         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-500"></ul>
                                                     </div>

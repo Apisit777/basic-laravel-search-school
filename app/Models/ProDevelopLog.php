@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LogProDevelop extends Model
+class ProDevelopLog extends Model
 {
     use HasFactory;
     public $timestamps = false;

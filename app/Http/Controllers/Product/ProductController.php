@@ -11,7 +11,7 @@ use App\Models\Npd_categorys;
 use App\Models\Npd_textures;
 use App\Models\Pro_develops;
 use App\Models\Product1;
-use App\Models\LogProduct1;
+use App\Models\Product1Log;
 use App\Models\Barcode;
 use App\Models\Document;
 use Illuminate\Support\Facades\Auth;
@@ -76,7 +76,7 @@ class ProductController extends Controller
 
         $data = Product1::all();
         $user = User::all();
-        $product_seq = Product::select('seq')->get();
+        // $product_seq = Product::select('seq')->get();
         $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
@@ -238,7 +238,7 @@ class ProductController extends Controller
         'BARCODE')
         ->pluck('BARCODE')->toArray();
 
-        return view('product.index', compact('user', 'product_seq', 'brands', 'productCodeArr', 'dataProductMasterArr', 'dataProductMasterConsumablesArr', 'data_barcode'));
+        return view('product.index', compact('user',  'brands', 'productCodeArr', 'dataProductMasterArr', 'dataProductMasterConsumablesArr', 'data_barcode'));
     }
 
     public function getBarcode(Request $request)
@@ -285,38 +285,43 @@ class ProductController extends Controller
             ->orderby('Code')
             ->get();
 
-        $digits_barcode = $this->ean13_check_digit($request);
+        // $digits_barcode = $this->ean13_check_digit($request);
         // dd($productCodes);
-        return response()->json(['productCodes' => $productCodes, 'digits_barcode' => $digits_barcode]);
+        return response()->json(['productCodes' => $productCodes]);
+        // return response()->json(['productCodes' => $productCodes, 'digits_barcode' => $digits_barcode]);
     }
 
-    private function ean13_check_digit()
-    {
-        $request = request();
-            $lastElement = Pro_develops::max('BARCODE');
-            if ($request->BRAND == 'OP') {
-                $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->where('STATUS', '=', 'OP')->max('BARCODE');
-            }
-            if ($request->BRAND == 'RI') {
-                $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->where('STATUS', '=', 'RI')->max('BARCODE');
-            }
-            if ($request->BRAND == 'CPS') {
-                $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->where('STATUS', '=', 'CPS')->max('BARCODE');
-            }
-            $barcodeMax = substr_replace($lastElement, '', -1);
-            $barcodeNumber =  preg_replace('/[^0-9]/', '', $barcodeMax) + 1;
-            $barcode = sprintf('%04d', $barcodeNumber);
+    // private function ean13_check_digit()
+    // {
+    //     $request = request();
+    //         $lastElement = Pro_develops::max('BARCODE');
+    //         if ($request->BRAND == 'OP') {
+    //             // $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->where('STATUS', '=', 'OP')->max('BARCODE');
+    //             $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->max('BARCODE');
+    //         }
+    //         if ($request->BRAND == 'RI') {
+    //             $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->where('STATUS', '=', 'RI')->max('BARCODE');
+    //         }
+    //         if ($request->BRAND == 'CPS') {
+    //             // $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->where('STATUS', '=', 'CPS')->max('BARCODE');
+    //             $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->max('BARCODE');
+    //         }
+    //         // dd($lastElement);
+    //         $barcodeMax = substr_replace($lastElement, '', -1);
+    //         // dd($barcodeMax);
+    //         $barcodeNumber =  preg_replace('/[^0-9]/', '', $barcodeMax) + 1;
+    //         $barcode = sprintf('%04d', $barcodeNumber);
 
-            $digits =(string)$barcode;
-            $even_sum = $digits[1] + $digits[3] + $digits[5] + $digits[7] + $digits[9] + $digits[11];
-            $even_sum_three = $even_sum * 3;
-            $odd_sum = $digits[0] + $digits[2] + $digits[4] + $digits[6] + $digits[8] + $digits[10];
-            $total_sum = $even_sum_three + $odd_sum;
-            $next_ten = (ceil($total_sum/10))*10;
-            $check_digit = $next_ten - $total_sum;
+    //         $digits =(string)$barcode;
+    //         $even_sum = $digits[1] + $digits[3] + $digits[5] + $digits[7] + $digits[9] + $digits[11];
+    //         $even_sum_three = $even_sum * 3;
+    //         $odd_sum = $digits[0] + $digits[2] + $digits[4] + $digits[6] + $digits[8] + $digits[10];
+    //         $total_sum = $even_sum_three + $odd_sum;
+    //         $next_ten = (ceil($total_sum/10))*10;
+    //         $check_digit = $next_ten - $total_sum;
 
-        return $digits . $check_digit;
-    }
+    //     return $digits . $check_digit;
+    // }
 
     /**
      * Show the form for creating a new resource.
@@ -332,7 +337,6 @@ class ProductController extends Controller
         $owners = Owner::all();
         $grp_ps = Grp_p::all();
         $brand_ps = Brand_p::all();
-
         $venders = Vendor::all();
         $type_gs = Type_g::all();
         $solutions = Solution::all();
@@ -341,8 +345,8 @@ class ProductController extends Controller
         $sub_categorys = Sub_category::all();
         $pdms = Pdm::all();
         $p_statuss = P_status::all();
-        $unit_ps = Unit_p::all();
-        $unit_types = Unit_type::all();
+        $unit_ps = Unit_p::all();               // ไม่มี ID
+        $unit_types = Unit_type::all();         // ไม่มี ID
         $acctypes = Acctype::all();
         $conditions = Condition::all();
 
@@ -354,15 +358,23 @@ class ProductController extends Controller
             $brands = MasterBrand::select(
                 'BRAND')
             ->get();
-
+            $owners = Owner::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->get();
             $brand_ps = Brand_p::select(
                 'ID',
                 'REMARK')
             ->get();
-
-            $grp_ps = Grp_p::select(
-                'GRP_P',
-                'REMARK',
+            $solutions = Solution::select(
+                'ID',
+                'DESCRIPTION',
                 'BRAND')
             ->get();
             $series = Series::select(
@@ -380,6 +392,11 @@ class ProductController extends Controller
                 'ID',
                 'CATEGORY_ID',
                 'DESCRIPTION',
+                'BRAND')
+            ->get();
+            $pdms = Pdm::select(
+                'ID',
+                'REMARK',
                 'BRAND')
             ->get();
         }
@@ -389,42 +406,66 @@ class ProductController extends Controller
             ->where('BRAND', 'OP')
             ->pluck('BRAND')
             ->toArray();
-
             $brands = MasterBrand::select(
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
-
-            $brand_ps = Brand_p::select(
-                'ID',
+            $owners = Owner::select(
+                'OWNER AS VENDOR',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
-
             $grp_ps = Grp_p::select(
-                'GRP_P',
+                'GRP_P AS GRP_P',
                 'REMARK',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $brand_ps = Brand_p::select(
+                'ID AS BRAND_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $solutions = Solution::select(
+                'ID AS SOLUTION',
+                'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
             $series = Series::select(
-                'ID',
+                'ID AS SERIES',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
             $categorys = Category::select(
-                'ID',
+                'ID AS CATEGORY',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
-
             $sub_categorys = Sub_category::select(
-                'ID',
+                'ID AS S_CAT',
                 'CATEGORY_ID',
                 'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $pdms = Pdm::select(
+                'ID AS PDM_GROUP',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $unit_ps = Unit_p::select(
+                'DESCRIPTION AS UNIT',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
@@ -434,41 +475,66 @@ class ProductController extends Controller
             ->where('BRAND', 'CPS')
             ->pluck('BRAND')
             ->toArray();
-
             $brands = MasterBrand::select(
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
-
+            $owners = Owner::select(
+                'OWNER AS VENDOR',
+                'REMARK',
+                'BRAND')
+            ->whereIn('BRAND', ['CPS', 'KM'])
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P AS GRP_P',
+                'REMARK',
+                'BRAND')
+                ->whereIn('BRAND', ['CPS', 'KM'])
+            ->get();
             $brand_ps = Brand_p::select(
-                'ID',
+                'ID AS BRAND_P',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
-
-            $grp_ps = Grp_p::select(
-                'GRP_P',
-                'REMARK',
+            $solutions = Solution::select(
+                'ID AS SOLUTION',
+                'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
             $series = Series::select(
-                'ID',
+                'ID AS SERIES',
                 'DESCRIPTION',
                 'BRAND')
-                ->where('BRAND', 'CPS')
+            ->where('BRAND', 'CPS')
             ->get();
             $categorys = Category::select(
-                'ID',
+                'ID AS CATEGORY',
                 'DESCRIPTION',
                 'BRAND')
-                ->where('BRAND', 'CPS')
+            ->where('BRAND', 'CPS')
             ->get();
             $sub_categorys = Sub_category::select(
-                'ID',
+                'ID AS S_CAT',
                 'CATEGORY_ID',
                 'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+            $pdms = Pdm::select(
+                'ID AS PDM_GROUP',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+            $unit_ps = Unit_p::select(
+                'DESCRIPTION AS UNIT',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
@@ -478,25 +544,41 @@ class ProductController extends Controller
             ->where('BRAND', 'KTY')
             ->pluck('BRAND')
             ->toArray();
-
             $brands = MasterBrand::select(
                 'BRAND')
             ->where('BRAND', 'KTY')
             ->get();
-
-            $brand_ps = Brand_p::select(
-                'ID',
+            $owners = Owner::select(
+                'OWNER AS VENDOR',
                 'REMARK',
                 'BRAND')
-            ->where('BRAND', 'CPS')
+            ->where('BRAND', 'KTY')
             ->get();
-
             $grp_ps = Grp_p::select(
-                'GRP_P',
+                'GRP_P AS GRP_P',
                 'REMARK',
                 'BRAND')
-            ->where('BRAND', 'CPS')
+            ->where('BRAND', 'KTY')
             ->get();
+            $brand_ps = Brand_p::select(
+                'ID AS BRAND_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KTY')
+            ->get();
+            $solutions = Solution::select(
+                'ID AS SOLUTION',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'KTY')
+            ->get();
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
+                'BRAND')
+            ->where('BRAND', 'KTY')
+            ->get();
+
+            // KTY ไม่มี Series, Category, Sub_category, Pdm
         } else if (in_array($userpermission, ['BB'])) {
         } else if (in_array($userpermission, ['LL'])) {
         } else if (in_array($userpermission, ['GNC'])) {
@@ -516,37 +598,13 @@ class ProductController extends Controller
     {
         // $digits_barcode = $this->ean13_check_digit();
         // $ = $this->productMasterGetBrandListAjax();
-
         // dd($accessery);
-
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
 
         $owners = Owner::all();
         $grp_ps = Grp_p::all();
-
         $brand_ps = Brand_p::all();
-
-        if (in_array($userpermission, [$isSuperAdmin])) {
-            $brand_ps = Brand_p::select(
-                'ID',
-                'REMARK')
-            ->get();
-        }
-        else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
-            $brand_ps = Brand_p::select(
-                'ID',
-                'REMARK')
-            ->where('BRAND', 'GNC')
-            ->get();
-        }
-        else if (in_array($userpermission, ['Marketing - CPS'])) {
-            $brand_ps = Brand_p::select(
-                'ID',
-                'REMARK')
-            ->where('BRAND', 'CPS')
-            ->get();
-        }
 
         $venders = Vendor::all();
         $type_gs = Type_g::all();
@@ -556,32 +614,58 @@ class ProductController extends Controller
         $sub_categorys = Sub_category::all();
         $pdms = Pdm::all();
         $p_statuss = P_status::all();
-        $unit_ps = Unit_p::all();
-        $unit_types = Unit_type::all();
+        $unit_ps = Unit_p::all();               // ไม่มี ID
+        $unit_types = Unit_type::all();         // ไม่มี ID
         $acctypes = Acctype::all();
         $conditions = Condition::all();
 
-        $productCodeMax = Product::max('seq');
-        $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
-        $productCode = 'P'.sprintf('%05d', $productCodeNumber);
-
-        $list_position = position::select('id', 'name_position')->get();
-
-        // $brands = Barcode::select('BRAND')->pluck('BRAND')->toArray();
-        // create brands consumables
         $allBrands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
-        // $allBrands = Accessery::select('COMPANY')->get();
         $defaultBrands = MasterBrand::all();
-
         $brands = MasterBrand::all();
 
         if (in_array($userpermission, [$isSuperAdmin])) {
-            // $defaultBrands = Accessery::select(
-            //     'COMPANY',
-            //     'DESCRIPTION')
-            // ->get();
-
             $brands = MasterBrand::select(
+                'BRAND')
+            ->get();
+            $owners = Owner::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->get();
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK')
+            ->get();
+            $solutions = Solution::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->get();
+            $series = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->get();
+            $categorys = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->get();
+
+            $sub_categorys = Sub_category::select(
+                'ID',
+                'CATEGORY_ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->get();
+            $pdms = Pdm::select(
+                'ID',
+                'REMARK',
                 'BRAND')
             ->get();
         }
@@ -591,8 +675,66 @@ class ProductController extends Controller
             ->where('BRAND', 'OP')
             ->pluck('BRAND')
             ->toArray();
-
             $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $owners = Owner::select(
+                'OWNER AS VENDOR',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P AS GRP_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $brand_ps = Brand_p::select(
+                'ID AS BRAND_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $solutions = Solution::select(
+                'ID AS SOLUTION',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $series = Series::select(
+                'ID AS SERIES',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $categorys = Category::select(
+                'ID AS CATEGORY',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $sub_categorys = Sub_category::select(
+                'ID AS S_CAT',
+                'CATEGORY_ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $pdms = Pdm::select(
+                'ID AS PDM_GROUP',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $unit_ps = Unit_p::select(
+                'DESCRIPTION AS UNIT',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
@@ -602,8 +744,66 @@ class ProductController extends Controller
             ->where('BRAND', 'CPS')
             ->pluck('BRAND')
             ->toArray();
-
             $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+            $owners = Owner::select(
+                'OWNER AS VENDOR',
+                'REMARK',
+                'BRAND')
+            ->whereIn('BRAND', ['CPS', 'KM'])
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P AS GRP_P',
+                'REMARK',
+                'BRAND')
+                ->whereIn('BRAND', ['CPS', 'KM'])
+            ->get();
+            $brand_ps = Brand_p::select(
+                'ID AS BRAND_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+            $solutions = Solution::select(
+                'ID AS SOLUTION',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+            $series = Series::select(
+                'ID AS SERIES',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+            $categorys = Category::select(
+                'ID AS CATEGORY',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+            $sub_categorys = Sub_category::select(
+                'ID AS S_CAT',
+                'CATEGORY_ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+            $pdms = Pdm::select(
+                'ID AS PDM_GROUP',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+            $unit_ps = Unit_p::select(
+                'DESCRIPTION AS UNIT',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
@@ -613,15 +813,49 @@ class ProductController extends Controller
             ->where('BRAND', 'KTY')
             ->pluck('BRAND')
             ->toArray();
-
             $brands = MasterBrand::select(
                 'BRAND')
             ->where('BRAND', 'KTY')
             ->get();
+            $owners = Owner::select(
+                'OWNER AS VENDOR',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KTY')
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P AS GRP_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KTY')
+            ->get();
+            $brand_ps = Brand_p::select(
+                'ID AS BRAND_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KTY')
+            ->get();
+            $solutions = Solution::select(
+                'ID AS SOLUTION',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'KTY')
+            ->get();
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
+                'BRAND')
+            ->where('BRAND', 'KTY')
+            ->get();
+
+            // KTY ไม่มี Series, Category, Sub_category, Pdm
+        } else if (in_array($userpermission, ['BB'])) {
+        } else if (in_array($userpermission, ['LL'])) {
+        } else if (in_array($userpermission, ['GNC'])) {
+        } else if (in_array($userpermission, ['KM'])) {
         }
 
         // dd($brands);
-        return view('product.create_consumables', compact('productCode', 'list_position', 'brands', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
+        return view('product.create_consumables', compact(  'brands', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
     }
     public function productDetailCreate(Request $request)
     {
@@ -685,6 +919,7 @@ class ProductController extends Controller
                 'PDM_GROUP' => $data->PDM_GROUP,
                 'BRAND_P' => $data->BRAND_P,
                 'REGISTER' => $data->REGISTER,
+                'OPT_TXT1' => $data->OPT_TXT1,
                 'CONDITION_SALE' => $data->CONDITION_SALE,
                 'WHOLE_SALE' => $data->WHOLE_SALE,
                 'GP' => $data->GP,
@@ -708,22 +943,28 @@ class ProductController extends Controller
                 'TYPE_G' => $data->TYPE_G,
                 'OPT_DATE1' => $data->OPT_DATE1,
                 'OPT_DATE2' => $data->OPT_DATE2,
-                'OPT_TXT1' => $data->OPT_TXT1,
                 'OPT_TXT2' => $data->OPT_TXT2,
                 'OPT_NUM1' => $data->OPT_NUM1,
                 'OPT_NUM2' => $data->OPT_NUM2,
                 'ACC_TYPE' => $data->ACC_TYPE,
                 'ACC_DT' => $data->ACC_DT,
-                'EDIT_DT' => $data->EDIT_DT,
+                // 'PACKAGE_BOX' => is_null($data->PACKAGE_BOX) ? 'N' : 'Y',
                 'RETURN' => is_null($data->RETURN) ? 'N' : 'Y',
                 'NON_VAT' => is_null($data->NON_VAT) ? 'N' : 'Y',
                 'STORAGE_TEMP' => is_null($data->STORAGE_TEMP) ? 'N' : 'Y',
                 'CONTROL_STK' => is_null($data->CONTROL_STK) ? 'N' : 'Y',
                 'TESTER' =>  is_null($data->TESTER) ? 'N' : 'Y',
-                'USER_EDIT' => Auth::user()->id
+                'USER_EDIT' => Auth::user()->username,
+                'EDIT_DT' => date("Y/m/d h:i:s")
             ];
 
             $copyProductMaster = Product1::create($data_product);
+
+            $craeteProductAccount = Account::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
+                'COST' => $copyProductMaster->COST,
+                'created_at' => date("Y/m/d h:i:s"),
+            ]);
+
             // dd($copyProductMaster);
             DB::commit();
             $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
@@ -800,6 +1041,7 @@ class ProductController extends Controller
                 'PDM_GROUP' => $data->PDM_GROUP,
                 'BRAND_P' => $data->BRAND_P,
                 'REGISTER' => $data->REGISTER,
+                'OPT_TXT1' => $data->OPT_TXT1,
                 'CONDITION_SALE' => $data->CONDITION_SALE,
                 'WHOLE_SALE' => $data->WHOLE_SALE,
                 'GP' => $data->GP,
@@ -823,22 +1065,28 @@ class ProductController extends Controller
                 'TYPE_G' => $data->TYPE_G,
                 'OPT_DATE1' => $data->OPT_DATE1,
                 'OPT_DATE2' => $data->OPT_DATE2,
-                'OPT_TXT1' => $data->OPT_TXT1,
                 'OPT_TXT2' => $data->OPT_TXT2,
                 'OPT_NUM1' => $data->OPT_NUM1,
                 'OPT_NUM2' => $data->OPT_NUM2,
                 'ACC_TYPE' => $data->ACC_TYPE,
                 'ACC_DT' => $data->ACC_DT,
-                'EDIT_DT' => $data->EDIT_DT,
+                // 'PACKAGE_BOX' => is_null($data->PACKAGE_BOX) ? 'N' : 'Y',
                 'RETURN' => is_null($data->RETURN) ? 'N' : 'Y',
                 'NON_VAT' => is_null($data->NON_VAT) ? 'N' : 'Y',
                 'STORAGE_TEMP' => is_null($data->STORAGE_TEMP) ? 'N' : 'Y',
                 'CONTROL_STK' => is_null($data->CONTROL_STK) ? 'N' : 'Y',
                 'TESTER' =>  is_null($data->TESTER) ? 'N' : 'Y',
-                'USER_EDIT' => Auth::user()->id
+                'USER_EDIT' => Auth::user()->username,
+                'EDIT_DT' => date("Y/m/d h:i:s")
             ];
 
             $copyProductMaster = Product1::create($data_product);
+
+            $craeteProductAccount = Account::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
+                'COST' => $copyProductMaster->COST,
+                'created_at' => date("Y/m/d h:i:s"),
+            ]);
+
             // dd($copyProductMaster);
             DB::commit();
             $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
@@ -867,7 +1115,7 @@ class ProductController extends Controller
         $company = substr($request->BRAND, 0, 2);
         $description = substr($request->BRAND, 2, 2);
         $status = $company.' - '.$description;
-        // dd($request);
+        // dd($request->PACK_SIZE1);
         DB::beginTransaction();
         try {
             $data_product = [
@@ -895,6 +1143,7 @@ class ProductController extends Controller
                 'PDM_GROUP' => $request->input('PDM_GROUP'),
                 'BRAND_P' => $request->input('BRAND_P'),
                 'REGISTER' => $request->input('REGISTER'),
+                'OPT_TXT1' => $request->input('OPT_TXT1'),
                 'CONDITION_SALE' => $request->input('CONDITION_SALE'),
                 'WHOLE_SALE' => $request->input('WHOLE_SALE'),
                 'GP' => $request->input('GP'),
@@ -918,25 +1167,33 @@ class ProductController extends Controller
                 'TYPE_G' => $request->input('TYPE_G'),
                 'OPT_DATE1' => $request->input('OPT_DATE1'),
                 'OPT_DATE2' => $request->input('OPT_DATE2'),
-                'OPT_TXT1' => $request->input('OPT_TXT1'),
                 'OPT_TXT2' => $request->input('OPT_TXT2'),
                 'OPT_NUM1' => $request->input('OPT_NUM1'),
                 'OPT_NUM2' => $request->input('OPT_NUM2'),
                 'ACC_TYPE' => $request->input('ACC_TYPE'),
                 'ACC_DT' => $request->input('ACC_DT'),
-                'EDIT_DT' => $request->input('EDIT_DT'),
+                // 'PACKAGE_BOX' => is_null($request->input('PACKAGE_BOX')) ? 'N' : 'Y',
                 'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
                 'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',
                 'STORAGE_TEMP' => is_null($request->input('STORAGE_TEMP')) ? 'N' : 'Y',
                 'CONTROL_STK' => is_null($request->input('CONTROL_STK')) ? 'N' : 'Y',
                 'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
-                'USER_EDIT' => Auth::user()->id
+                'USER_EDIT' => Auth::user()->username,
+                'EDIT_DT' => date("Y/m/d h:i:s")
             ];
 
-            $productMaster = Product1::create($data_product);
-            $logProductMaster = LogProduct1::create($data_product);
+            if ($request) {
+                $log = [
+                    'UPDATE_DT' => date("Y/m/d h:i:s"),
+                    'USER_UPDATE' => Auth::user()->username
+                ];
 
-            // dd($productMaster);
+                $data_product_upddate = array_merge($data_product, $log);
+                // dd($data_product_upddate);
+                $logProductMaster = Product1Log::create($data_product);
+            }
+
+            $productMaster = Product1::create($data_product);
 
             $craeteProductAccount = Account::updateOrCreate(['product' => $productMaster->PRODUCT], [
                 'COST' => $productMaster->COST,
@@ -1019,6 +1276,7 @@ class ProductController extends Controller
                 'PDM_GROUP' => $request->input('PDM_GROUP'),
                 'BRAND_P' => $request->input('BRAND_P'),
                 'REGISTER' => $request->input('REGISTER'),
+                'OPT_TXT1' => $request->input('OPT_TXT1'),
                 'CONDITION_SALE' => $request->input('CONDITION_SALE'),
                 'WHOLE_SALE' => $request->input('WHOLE_SALE'),
                 'GP' => $request->input('GP'),
@@ -1042,23 +1300,38 @@ class ProductController extends Controller
                 'TYPE_G' => $request->input('TYPE_G'),
                 'OPT_DATE1' => $request->input('OPT_DATE1'),
                 'OPT_DATE2' => $request->input('OPT_DATE2'),
-                'OPT_TXT1' => $request->input('OPT_TXT1'),
                 'OPT_TXT2' => $request->input('OPT_TXT2'),
                 'OPT_NUM1' => $request->input('OPT_NUM1'),
                 'OPT_NUM2' => $request->input('OPT_NUM2'),
                 'ACC_TYPE' => $request->input('ACC_TYPE'),
                 'ACC_DT' => $request->input('ACC_DT'),
-                'EDIT_DT' => $request->input('EDIT_DT'),
+                // 'PACKAGE_BOX' => is_null($request->input('PACKAGE_BOX')) ? 'N' : 'Y',
                 'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
                 'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',
                 'STORAGE_TEMP' => is_null($request->input('STORAGE_TEMP')) ? 'N' : 'Y',
                 'CONTROL_STK' => is_null($request->input('CONTROL_STK')) ? 'N' : 'Y',
                 'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
-                'USER_EDIT' => Auth::user()->id
+                'USER_EDIT' => Auth::user()->username,
+                'EDIT_DT' => date("Y/m/d h:i:s")
             ];
 
+            if ($request) {
+                $log = [
+                    'UPDATE_DT' => date("Y/m/d h:i:s"),
+                    'USER_UPDATE' => Auth::user()->username
+                ];
+
+                $data_product_upddate = array_merge($data_product, $log);
+                // dd($data_product_upddate);
+                $logProductMaster = Product1Log::create($data_product);
+            }
+
             $productMaster = Product1::create($data_product);
-            $logProductMaster = LogProduct1::create($data_product);
+
+            $craeteProductAccount = Account::updateOrCreate(['product' => $productMaster->PRODUCT], [
+                'COST' => $productMaster->COST,
+                'created_at' => date("Y/m/d h:i:s"),
+            ]);
             // dd($productMaster);
             DB::commit();
             $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
@@ -1096,6 +1369,10 @@ class ProductController extends Controller
             'sub_categories.ID AS S_CAT',
             'pdms.ID AS PDM_GROUP',
             'p_statuses.ID AS STATUS',
+            'unit_ps.DESCRIPTION AS UNIT',
+            'unit_types.DESCRIPTION AS UNIT_TYPE',
+            'acctypes.ID AS ACC_TYPE',
+            'conditions.ID AS CONDITION_SALE',
             // 'product_channels.BRAND AS BRAND',
         )
         ->leftJoin('owners', 'product1s.VENDOR', '=', 'owners.OWNER') // ในเอกสารสลับกัน
@@ -1109,16 +1386,12 @@ class ProductController extends Controller
         ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
         ->leftJoin('pdms', 'product1s.PDM_GROUP', '=', 'pdms.ID')
         ->leftJoin('p_statuses', 'product1s.STATUS', '=', 'p_statuses.ID')
+        ->leftJoin('unit_ps', 'product1s.UNIT', '=', 'unit_ps.DESCRIPTION')
+        ->leftJoin('unit_types', 'product1s.UNIT_TYPE', '=', 'unit_types.DESCRIPTION')
+        ->leftJoin('acctypes', 'product1s.ACC_TYPE', '=', 'acctypes.ID')
+        ->leftJoin('conditions', 'product1s.CONDITION_SALE', '=', 'conditions.ID')
         // ->leftJoin('product_channels', 'product1s.PRODUCT', '=', 'product_channels.PRODUCT')
         ->firstWhere('product1s.PRODUCT', '=', $PRODUCT);
-
-        // $sub_categorys = Sub_category::all();
-        // $pdms = Pdm::all();
-        // $p_statuss = P_status::all();
-        // $unit_ps = Unit_p::all();
-        // $unit_types = Unit_type::all();
-        // $acctypes = Acctype::all();
-        // $conditions = Condition::all();
 
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
@@ -1126,51 +1399,94 @@ class ProductController extends Controller
         $owners = Owner::select('OWNER AS VENDOR', 'REMARK')->get();
         $grp_ps = Grp_p::select('GRP_P AS GRP_P', 'REMARK')->get();
 
-        $brand_ps = Brand_p::select('ID AS BRAND_P', 'REMARK')->get();
-
-        if (in_array($userpermission, [$isSuperAdmin])) {
-            $brand_ps = Brand_p::select(
-                'ID AS BRAND_P',
-                'REMARK')
-            ->get();
-        }
-        else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
-            $brand_ps = Brand_p::select(
-                'ID AS BRAND_P',
-                'REMARK')
-            ->where('BRAND', 'GNC')
-            ->get();
-        }
-        else if (in_array($userpermission, ['Marketing - CPS'])) {
-            $brand_ps = Brand_p::select(
-                'ID AS BRAND_P',
-                'REMARK')
-            ->where('BRAND', 'CPS')
-            ->get();
-        }
+        $brand_ps = Brand_p::select('ID AS BRAND_P', 'REMARK', 'BRAND')->get();
 
         $venders = Vendor::select('VEN_ID AS SUPPLIER', 'VEN_NTHAI')->get();
         $type_gs = Type_g::select('ID AS TYPE_G', 'DESCRIPTION')->get();
         $solutions = Solution::select('ID AS SOLUTION', 'DESCRIPTION')->get();
-        $series = Series::select('ID AS SERIES	', 'DESCRIPTION')->get();
+        $series = Series::select('ID AS SERIES', 'DESCRIPTION')->get();
         $categorys = Category::select('ID AS CATEGORY', 'DESCRIPTION')->get();
         $sub_categorys = Sub_category::select('ID AS S_CAT', 'DESCRIPTION')->get();
         $pdms = Pdm::select('ID AS PDM_GROUP', 'REMARK')->get();
         $p_statuss = P_status::select('ID AS STATUS', 'DESCRIPTION')->get();
 
-        $unit_ps = Unit_p::all();
-        $unit_types = Unit_type::all();
-        $acctypes = Acctype::all();
-        $conditions = Condition::all();
+        // $unit_ps = Unit_p::all();
+        $unit_ps = Unit_p::select('DESCRIPTION AS UNIT', 'BRAND')->get();
+        $unit_types = Unit_type::select('DESCRIPTION AS UNIT_TYPE', 'BRAND')->get();
+        $acctypes = Acctype::select('ID AS ACC_TYPE', 'DESCRIPTION')->get();
+        $conditions = Condition::select('ID AS CONDITION_SALE', 'DESCRIPTION')->get();
 
         $multiChannels = ProductChannel::select('BRAND')->where('PRODUCT', '=', $PRODUCT)->pluck('BRAND')->toArray();
         $allBrands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
         $defaultBrands = MasterBrand::all();
         $brands = MasterBrand::all();
 
-        if (in_array($userpermission, [$isSuperAdmin])) {
+        // dd($unit_ps);
+        // if (in_array($userpermission, [$isSuperAdmin])) {
 
+        //     $brand_ps = Brand_p::select(
+        //         'ID AS BRAND_P',
+        //         'REMARK')
+        //     ->get();
+        // }
+        // else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+        //     $brand_ps = Brand_p::select(
+        //         'ID AS BRAND_P',
+        //         'REMARK')
+        //     ->where('BRAND', 'GNC')
+        //     ->get();
+        // }
+        // else if (in_array($userpermission, ['Marketing - CPS'])) {
+        //     $brand_ps = Brand_p::select(
+        //         'ID AS BRAND_P',
+        //         'REMARK')
+        //     ->where('BRAND', 'CPS')
+        //     ->get();
+        // }
+
+        if (in_array($userpermission, [$isSuperAdmin])) {
             $brands = MasterBrand::select(
+                'BRAND')
+            ->get();
+            $owners = Owner::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->get();
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK')
+            ->get();
+            $solutions = Solution::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->get();
+            $series = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->get();
+            $categorys = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->get();
+
+            $sub_categorys = Sub_category::select(
+                'ID',
+                'CATEGORY_ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->get();
+            $pdms = Pdm::select(
+                'ID',
+                'REMARK',
                 'BRAND')
             ->get();
         }
@@ -1180,8 +1496,66 @@ class ProductController extends Controller
             ->where('BRAND', 'OP')
             ->pluck('BRAND')
             ->toArray();
-
             $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $owners = Owner::select(
+                'OWNER AS VENDOR',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P AS GRP_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $brand_ps = Brand_p::select(
+                'ID AS BRAND_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $solutions = Solution::select(
+                'ID AS SOLUTION',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $series = Series::select(
+                'ID AS SERIES',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $categorys = Category::select(
+                'ID AS CATEGORY',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $sub_categorys = Sub_category::select(
+                'ID AS S_CAT',
+                'CATEGORY_ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $pdms = Pdm::select(
+                'ID AS PDM_GROUP',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $unit_ps = Unit_p::select(
+                'DESCRIPTION AS UNIT',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
@@ -1191,8 +1565,66 @@ class ProductController extends Controller
             ->where('BRAND', 'CPS')
             ->pluck('BRAND')
             ->toArray();
-
             $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+            $owners = Owner::select(
+                'OWNER AS VENDOR',
+                'REMARK',
+                'BRAND')
+            ->whereIn('BRAND', ['CPS', 'KM'])
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P AS GRP_P',
+                'REMARK',
+                'BRAND')
+                ->whereIn('BRAND', ['CPS', 'KM'])
+            ->get();
+            $brand_ps = Brand_p::select(
+                'ID AS BRAND_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+            $solutions = Solution::select(
+                'ID AS SOLUTION',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+            $series = Series::select(
+                'ID AS SERIES',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+            $categorys = Category::select(
+                'ID AS CATEGORY',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+            $sub_categorys = Sub_category::select(
+                'ID AS S_CAT',
+                'CATEGORY_ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+            $pdms = Pdm::select(
+                'ID AS PDM_GROUP',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+            $unit_ps = Unit_p::select(
+                'DESCRIPTION AS UNIT',
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->get();
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
@@ -1202,14 +1634,87 @@ class ProductController extends Controller
             ->where('BRAND', 'KTY')
             ->pluck('BRAND')
             ->toArray();
-
             $brands = MasterBrand::select(
                 'BRAND')
             ->where('BRAND', 'KTY')
             ->get();
+            $owners = Owner::select(
+                'OWNER AS VENDOR',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KTY')
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P AS GRP_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KTY')
+            ->get();
+            $brand_ps = Brand_p::select(
+                'ID AS BRAND_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KTY')
+            ->get();
+            $solutions = Solution::select(
+                'ID AS SOLUTION',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'KTY')
+            ->get();
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
+                'BRAND')
+            ->where('BRAND', 'KTY')
+            ->get();
+
+            // KTY ไม่มี Series, Category, Sub_category, Pdm
         }
 
-        return view('product.edit', compact('data', 'multiChannels', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss'));
+        // dd($unit_ps);
+        // if (in_array($userpermission, [$isSuperAdmin])) {
+
+        //     $brands = MasterBrand::select(
+        //         'BRAND')
+        //     ->get();
+        // }
+        // else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+        //     $defaultBrands = MasterBrand::select(
+        //         'BRAND')
+        //     ->where('BRAND', 'OP')
+        //     ->pluck('BRAND')
+        //     ->toArray();
+
+        //     $brands = MasterBrand::select(
+        //         'BRAND')
+        //     ->where('BRAND', 'OP')
+        //     ->get();
+        // } else if (in_array($userpermission, ['Marketing - CPS'])) {
+        //     $defaultBrands = MasterBrand::select(
+        //         'BRAND')
+        //     ->where('BRAND', 'CPS')
+        //     ->pluck('BRAND')
+        //     ->toArray();
+
+        //     $brands = MasterBrand::select(
+        //         'BRAND')
+        //     ->where('BRAND', 'CPS')
+        //     ->get();
+        // } else if (in_array($userpermission, ['Procurement - KTY'])) {
+        //     $defaultBrands = MasterBrand::select(
+        //         'BRAND')
+        //     ->where('BRAND', 'KTY')
+        //     ->pluck('BRAND')
+        //     ->toArray();
+
+        //     $brands = MasterBrand::select(
+        //         'BRAND')
+        //     ->where('BRAND', 'KTY')
+        //     ->get();
+        // }
+
+        // dd($brand_ps, $userpermission, $defaultBrands);
+        return view('product.edit', compact('data', 'multiChannels', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
     }
 
     /**
@@ -1246,6 +1751,7 @@ class ProductController extends Controller
                     'PDM_GROUP' => $request->input('PDM_GROUP'),
                     'BRAND_P' => $request->input('BRAND_P'),
                     'REGISTER' => $request->input('REGISTER'),
+                    'OPT_TXT1' => $request->input('OPT_TXT1'),
                     'CONDITION_SALE' => $request->input('CONDITION_SALE'),
                     'WHOLE_SALE' => $request->input('WHOLE_SALE'),
                     'GP' => $request->input('GP'),
@@ -1269,23 +1775,32 @@ class ProductController extends Controller
                     'TYPE_G' => $request->input('TYPE_G'),
                     'OPT_DATE1' => $request->input('OPT_DATE1'),
                     'OPT_DATE2' => $request->input('OPT_DATE2'),
-                    'OPT_TXT1' => $request->input('OPT_TXT1'),
                     'OPT_TXT2' => $request->input('OPT_TXT2'),
                     'OPT_NUM1' => $request->input('OPT_NUM1'),
                     'OPT_NUM2' => $request->input('OPT_NUM2'),
                     'ACC_TYPE' => $request->input('ACC_TYPE'),
                     'ACC_DT' => $request->input('ACC_DT'),
-                    'EDIT_DT' => $request->input('EDIT_DT'),
+                    // 'PACKAGE_BOX' => is_null($request->input('PACKAGE_BOX')) ? 'N' : 'Y',
                     'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
                     'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',
                     'STORAGE_TEMP' => is_null($request->input('STORAGE_TEMP')) ? 'N' : 'Y',
                     'CONTROL_STK' => is_null($request->input('CONTROL_STK')) ? 'N' : 'Y',
                     'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
-                    'USER_EDIT' => Auth::user()->id
+                    'USER_EDIT' => Auth::user()->username,
+                    'EDIT_DT' => date("Y/m/d h:i:s")
                 ];
 
                 $productUpddateConsumables = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
-                $logProductUpddateConsumables = LogProduct1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
+
+                if ($request) {
+                    $data_product_upddate= [
+                        'UPDATE_DT' => date("Y/m/d h:i:s"),
+                        'USER_UPDATE' => Auth::user()->username
+                    ];
+                    // dd($data_product_upddate);
+                    $logProductUpddate = Product1Log::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
+                }
+
                 DB::commit();
                 $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
                 return response()->json(['success' => true]);
@@ -1314,6 +1829,7 @@ class ProductController extends Controller
                     'PDM_GROUP' => $request->input('PDM_GROUP'),
                     'BRAND_P' => $request->input('BRAND_P'),
                     'REGISTER' => $request->input('REGISTER'),
+                    'OPT_TXT1' => $request->input('OPT_TXT1'),
                     'CONDITION_SALE' => $request->input('CONDITION_SALE'),
                     'WHOLE_SALE' => $request->input('WHOLE_SALE'),
                     'GP' => $request->input('GP'),
@@ -1337,25 +1853,23 @@ class ProductController extends Controller
                     'TYPE_G' => $request->input('TYPE_G'),
                     'OPT_DATE1' => $request->input('OPT_DATE1'),
                     'OPT_DATE2' => $request->input('OPT_DATE2'),
-                    'OPT_TXT1' => $request->input('OPT_TXT1'),
                     'OPT_TXT2' => $request->input('OPT_TXT2'),
                     'OPT_NUM1' => $request->input('OPT_NUM1'),
                     'OPT_NUM2' => $request->input('OPT_NUM2'),
                     'ACC_TYPE' => $request->input('ACC_TYPE'),
                     'ACC_DT' => $request->input('ACC_DT'),
-                    'EDIT_DT' => $request->input('EDIT_DT'),
+                    // 'PACKAGE_BOX' => is_null($request->input('PACKAGE_BOX')) ? 'N' : 'Y',
                     'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
                     'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',
                     'STORAGE_TEMP' => is_null($request->input('STORAGE_TEMP')) ? 'N' : 'Y',
                     'CONTROL_STK' => is_null($request->input('CONTROL_STK')) ? 'N' : 'Y',
                     'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
-                    'USER_EDIT' => Auth::user()->id
+                    'USER_EDIT' => Auth::user()->username,
+                    'EDIT_DT' => date("Y/m/d h:i:s")
                 ];
 
                 if (!is_null($request->sele_channel[0])) {
-
                     $multiChannels = ProductChannel::select('BRAND')->where('PRODUCT', $data_product_upddate['PRODUCT'])->whereNotIn('BRAND', $request->sele_channel)->delete();
-
                     $user = Auth::user()->username;
                     $dateTime = date('Y-m-d H:i:s');
 
@@ -1371,15 +1885,25 @@ class ProductController extends Controller
                         );
                     }
                 }
-
                 // dd(
                 // $test = [
                 //         'data_product_upddate' => $data_product_upddate,
                 //         'multiChannels' => $multiChannels
                 //     ]);
-
+            
                 $productUpddate = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
-                $logProductUpddate = LogProduct1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
+
+                if ($request) {
+                    $log = [
+                        'UPDATE_DT' => date("Y/m/d h:i:s"),
+                        'USER_UPDATE' => Auth::user()->id
+                    ];
+
+                    $data_product_upddate = array_merge($data_product_upddate, $log);
+                    // dd($data_product_upddate);
+                    $logProductUpddate = Product1Log::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
+                }
+
                 // dd($productUpddate);
                 DB::commit();
                 $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');

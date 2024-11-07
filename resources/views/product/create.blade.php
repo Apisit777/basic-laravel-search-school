@@ -356,7 +356,7 @@
                                                                     <input type="text" name="AGE" id="AGE" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name">กลุ่มสินค้า<span class="text-danger"> *</span></label>
+                                                                    <label for="name">กลุ่มสินค้า</label>
                                                                     <select  class="js-example-basic-single w-full rounded-sm text-xs select2" name="BRAND_P" id="BRAND_P">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($brand_ps as $key => $brand_p)
@@ -384,26 +384,28 @@
                                                                     <input type="text" name="REGISTER" id="REGISTER" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name">ประเภทสินค้า</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="TYPE_G" id="TYPE_G">
+                                                                    <label for="name">ประเภทสินค้า<span class="text-danger"> *</span></label>
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="TYPE_G" id="TYPE_G" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($type_gs as $key => $type_g)
                                                                             <option value={{ $type_g->ID }}>{{ $type_g->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <span id="TYPE_G_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">รหัสสินค้าอ้างอิง</label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="OPT_TXT1">รหัสสินค้าอ้างอิง</label>
+                                                                    <input type="text" name="OPT_TXT1" id="OPT_TXT1" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name">Solution</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="SOLUTION" id="SOLUTION">
+                                                                    <label for="name">Solution<span class="text-danger"> *</span></label>
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="SOLUTION" id="SOLUTION" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($solutions as $key => $solution)
                                                                         <option value={{ $solution->ID }}>{{  $solution->BRAND. ' - '.$solution->ID. ' - (' .$solution->DESCRIPTION .')' }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <span id="SOLUTION_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <!-- <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="name">&nbsp;</label>
@@ -462,13 +464,14 @@
                                                                     <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div> -->
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name">สถานะสินค้า</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="STATUS" id="STATUS">
+                                                                    <label for="name">สถานะสินค้า<span class="text-danger"> *</span></label>
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="STATUS" id="STATUS" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($p_statuss as $key => $p_status)
                                                                             <option value={{ $p_status->ID  }}>{{ $p_status->ID.' - ('.$p_status->DESCRIPTION.')' }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <span id="STATUS_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <!-- <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="name">&nbsp;</label>
@@ -532,7 +535,6 @@
                                                                     <label for="name">รหัส Packsize2</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE2" id="PACK_SIZE2">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        <option value=""> --- กรุณาเลือก ---</option>
                                                                         <option value="3">3</option>
                                                                         <option value="6">6</option>
                                                                         <option value="9">9</option>
@@ -550,7 +552,6 @@
                                                                     <label for="name">รหัส Packsize3</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE3" id="PACK_SIZE3">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        <option value=""> --- กรุณาเลือก ---</option>
                                                                         <option value="3">3</option>
                                                                         <option value="6">6</option>
                                                                         <option value="9">9</option>
@@ -567,7 +568,6 @@
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">รหัส Packsize4</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE4" id="PACK_SIZE4">
-                                                                        <option value=""> --- กรุณาเลือก ---</option>
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         <option value="3">3</option>
                                                                         <option value="6">6</option>
@@ -621,64 +621,72 @@
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">หน่วยสินค้า</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="UNIT" id="UNIT">
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="UNIT" id="UNIT" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($unit_ps as $key => $unit_p)
-                                                                            <option value={{ $unit_p->ID }}>{{ $unit_p->DESCRIPTION }}</option>
+                                                                            <option value={{ $unit_p->UNIT }} >{{ $unit_p->BRAND.' - ('.$unit_p->UNIT.')' }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <span id="UNIT_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">หน่วยปริมาณ</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="UNIT_TYPE" id="UNIT_TYPE">
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="UNIT_TYPE" id="UNIT_TYPE" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($unit_types as $key => $unit_type)
-                                                                            <option value={{ $unit_type->ID }}>{{ $unit_type->DESCRIPTION }}</option>
+                                                                            <option value={{ $unit_type->UNIT_TYPE }}>{{ $unit_type->BRAND.' - ('.$unit_type->UNIT_TYPE.')' }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <span id="UNIT_TYPE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">ประเภทสินค้า [บัญชี]</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="ACC_TYPE" id="ACC_TYPE">
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="ACC_TYPE" id="ACC_TYPE" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($acctypes as $key => $acctype)
                                                                             <option value={{ $acctype->ID }}>{{ $acctype->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <span id="ACC_TYPE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name">เงื่อนไขชำระเงิน</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="CONDITION_SALE" id="CONDITION_SALE">
+                                                                    <label for="name">เงื่อนไขชำระเงิน<span class="text-danger"> *</span></label>
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="CONDITION_SALE" id="CONDITION_SALE" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($conditions as $key => $condition)
                                                                             <option value={{ $condition->ID }}>{{ $condition->ID .' ('. $condition->DESCRIPTION .')' }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <span id="CONDITION_SALE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <!-- <div class="md:col-span-2" style="position: relative;">
                                                                     <label for="name">&nbsp;</label>
                                                                     <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div> -->
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="">DL</label>
-                                                                    <input type="text" name="" id="" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="">CPS</label>
-                                                                    <input type="text" name="" id="" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="">EXP</label>
-                                                                    <input type="text" name="" id="" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                                                </div>
-                                                                <div class="md:col-span-3 mt-2">
+
+                                                                <!-- @if ($userPermission != 'E-Commerce - OP')
+                                                                    <div class="md:col-span-3" style="position: relative;">
+                                                                        <label for="">DL</label>
+                                                                        <input type="text" name="" id="" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    </div>
+                                                                    <div class="md:col-span-3" style="position: relative;">
+                                                                        <label for="">CPS</label>
+                                                                        <input type="text" name="" id="" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    </div>
+                                                                    <div class="md:col-span-3" style="position: relative;">
+                                                                        <label for="">EXP</label>
+                                                                        <input type="text" name="" id="" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    </div>
+                                                                @endif -->
+
+                                                                <!-- <div class="md:col-span-3 mt-2">
                                                                     <div class="md:col-span-4 mt-7">
                                                                         <input type="radio" id="PACKAGE_BOX_TYPE1" name="PACKAGE_BOX" value="1" />
                                                                         <label for="" class="mr-5">ไม่ Share</label>
                                                                         <input type="radio" id="PACKAGE_BOX_TYPE2" name="PACKAGE_BOX" value="0" />
                                                                         <label for="">Share</label>
                                                                     </div>
-                                                                </div>
+                                                                </div> -->
                                                                 <div class="md:col-span-6">
                                                                     <ul class="width-full pt-2.5 mt-3 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
                                                                     <div class="md:col-span-1 mt-2">
@@ -1051,6 +1059,13 @@
             const GRP_P = jQuery('#GRP_P').val();
             // const BRAND_P = jQuery('#BRAND_P').val();
             const SUPPLIER = jQuery('#SUPPLIER').val();
+            const TYPE_G = jQuery('#TYPE_G').val();
+            const SOLUTION = jQuery('#SOLUTION').val();
+            const STATUS = jQuery('#STATUS').val();
+            const UNIT = jQuery('#UNIT').val();
+            const UNIT_TYPE = jQuery('#UNIT_TYPE').val();
+            const ACC_TYPE = jQuery('#ACC_TYPE').val();
+            const CONDITION_SALE = jQuery('#CONDITION_SALE').val();
 
             if (VENDOR) {
                 jQuery('#VENDOR_textalert').addClass('hidden');
@@ -1073,11 +1088,43 @@
             } else {
                 jQuery('#SUPPLIER_textalert').removeClass('hidden');
             }
+            if (TYPE_G) {
+                jQuery('#TYPE_G_textalert').addClass('hidden');
+            } else {
+                jQuery('#TYPE_G_textalert').removeClass('hidden');
+            }
+            if (SOLUTION) {
+                jQuery('#SOLUTION_textalert').addClass('hidden');
+            } else {
+                jQuery('#SOLUTION_textalert').removeClass('hidden');
+            }
+            if (STATUS) {
+                jQuery('#STATUS_textalert').addClass('hidden');
+            } else {
+                jQuery('#STATUS_textalert').removeClass('hidden');
+            }
+            if (UNIT) {
+                jQuery('#UNIT_textalert').addClass('hidden');
+            } else {
+                jQuery('#UNIT_textalert').removeClass('hidden');
+            }
+            if (UNIT_TYPE) {
+                jQuery('#UNIT_TYPE_textalert').addClass('hidden');
+            } else {
+                jQuery('#UNIT_TYPE_textalert').removeClass('hidden');
+            }
+            if (ACC_TYPE) {
+                jQuery('#ACC_TYPE_textalert').addClass('hidden');
+            } else {
+                jQuery('#ACC_TYPE_textalert').removeClass('hidden');
+            }
+            if (CONDITION_SALE) {
+                jQuery('#CONDITION_SALE_textalert').addClass('hidden');
+            } else {
+                jQuery('#CONDITION_SALE_textalert').removeClass('hidden');
+            }
 
-            // console.log("🚀 ~ checkValueSelect2 ~ !SUPPLIER:", !!SUPPLIER)
-            // console.log("🚀 ~ checkValueSelect2 ~  !!GRP_P:",  !!GRP_P)
-            // console.log("🚀 ~ checkValueSelect2 ~ !!VENDOR:", !!VENDOR)
-            return !!VENDOR && !!GRP_P && !!SUPPLIER
+            return !!VENDOR && !!GRP_P && !!SUPPLIER && !!TYPE_G && !!SOLUTION && !!STATUS && !!UNIT && !!UNIT_TYPE && !!ACC_TYPE && !!CONDITION_SALE
         }
 
         function onchangeValueSelect2() {

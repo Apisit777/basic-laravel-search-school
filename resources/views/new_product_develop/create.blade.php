@@ -178,8 +178,8 @@
                                                                 </div>
                                                                 <div class="md:col-span-3" >
                                                                     <label for="PDM">Marketing Mamager<span class="text-danger"> *</span></label>
-                                                                    <!-- <select required class="js-example-basic-single w-full rounded-sm text-xs select2" id="PDM" name="PDM" onchange="onchangeValueSelect2()"> -->
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs select2" id="PDM" name="PDM">
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" id="PDM" name="PDM" onchange="onchangeValueSelect2()">
+                                                                    <!-- <select class="js-example-basic-single w-full rounded-sm text-xs select2" id="PDM" name="PDM"> -->
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($marketing_managers as $key => $marketing_manager)
                                                                             <option value={{ $marketing_manager->ID }}>{{ $marketing_manager->DESCRIPTION }}</option>
@@ -193,8 +193,8 @@
                                                                 </div>
                                                                 <div class="md:col-span-3" >
                                                                     <label for="CATEGORY">ประเภทผลิตภัณฑ์<span class="text-danger"> *</span></label>
-                                                                    <!-- <select required class="js-example-basic-single w-full rounded-sm text-xs select2" id="CATEGORY" name="CATEGORY" onchange="onchangeValueSelect2()"> -->
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs select2" id="CATEGORY" name="CATEGORY">
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" id="CATEGORY" name="CATEGORY" onchange="onchangeValueSelect2()">
+                                                                    <!-- <select class="js-example-basic-single w-full rounded-sm text-xs select2" id="CATEGORY" name="CATEGORY"> -->
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($type_categorys as $key => $type_category)
                                                                             <option value={{ $type_category->ID }}>{{ $type_category->DESCRIPTION }}</option>
@@ -285,8 +285,8 @@
                                                                 </div>
                                                                 <div class="md:col-span-2" >
                                                                     <label for="TEXTURE">texture<span class="text-danger"> *</span></label>
-                                                                    <!-- <select required class="js-example-basic-single w-full rounded-sm text-xs select2" id="TEXTURE" name="TEXTURE" onchange="onchangeValueSelect2()"> -->
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs select2" id="TEXTURE" name="TEXTURE">
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" id="TEXTURE" name="TEXTURE" onchange="onchangeValueSelect2()">
+                                                                    <!-- <select class="js-example-basic-single w-full rounded-sm text-xs select2" id="TEXTURE" name="TEXTURE"> -->
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($textures as $key => $texture)
                                                                             <option value={{ $texture->ID }}>{{ $texture->DESCRIPTION }}</option>
@@ -368,17 +368,21 @@
                                                                     <div class="md:col-span-4 mt-3">
                                                                         <input type="radio" id="OEM_TYPE1" name="OEM" value="Y" />
                                                                         <label for="" class="mr-5">yes</label>
-                                                                        <input type="radio" id="OEM_TYPE2" name="OEM" value="N" checked/>
+                                                                        <input type="radio" id="OEM_TYPE2" name="OEM" value="" checked/>
                                                                         <label for="">no</label>
                                                                     </div>
                                                                     <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
                                                                 </div>
-                                                                <div class="md:col-span-6 mt-2">
-                                                                    <label for="name">Reason of use</label>
+                                                                <div class="md:col-span-3">
                                                                     <div class="md:col-span-4 mt-5">
                                                                         <input class="-mt-1" type="checkbox" id="REASON1" name="REASON1">
-                                                                        <label for="REASON1" class="mr-5">Claim in advertising media</label>
+                                                                        <label for="REASON1" class="mr-5">Reason of use</label>
+                                                                        <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
                                                                     </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="REASON1_DES"></label>
+                                                                    <input type="text" name="REASON1_DES" id="REASON1_DES" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
                                                                     <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
                                                                 </div>
                                                                 <div class="md:col-span-3">
@@ -405,9 +409,9 @@
                                                                 </div>
                                                                 <div class="md:col-span-3 mt-2">
                                                                     <div class="md:col-span-4 mt-3">
-                                                                        <input type="radio" id="PACKAGE_BOX_TYPE1" name="PACKAGE_BOX" value="1" />
+                                                                        <input type="radio" id="PACKAGE_BOX_TYPE1" name="PACKAGE_BOX" value="Y" />
                                                                         <label for="" class="mr-5">With an outer box</label>
-                                                                        <input type="radio" id="PACKAGE_BOX_TYPE2" name="PACKAGE_BOX" value="0" />
+                                                                        <input type="radio" id="PACKAGE_BOX_TYPE2" name="PACKAGE_BOX" value="" checked/>
                                                                         <label for="">Without an outer box</label>
                                                                     </div>
                                                                 </div>
@@ -608,8 +612,6 @@
                         jQuery("#barcodeTest").val(data.digits_barcode);
                         code = data.digits_barcode.substring(7, 12)
                         jQuery("#code").val(data.digits_barcode.substring(7, 12));
-                        // jQuery("#submitButton").attr("disabled", false);
-                        // jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
                     } else {
                         jQuery("#barcodeTest").val('');
                         jQuery("#code").val('');
@@ -639,15 +641,32 @@
 
         function checkValueSelect2(id) {
             const NPD = jQuery('#NPD').val();
-            console.log("🚀 ~ checkValueSelect2 ~ NPD:", NPD)
+            const PDM = jQuery('#PDM').val();
+            const CATEGORY = jQuery('#CATEGORY').val();
+            const TEXTURE = jQuery('#TEXTURE').val();
 
             if (NPD) {
                 jQuery('#NPD_textalert').addClass('hidden');
             } else {
                 jQuery('#NPD_textalert').removeClass('hidden');
             }
-            return !!NPD
-            // return !!VENDOR && !!GRP_P && !!SUPPLIER
+            if (PDM) {
+                jQuery('#PDM_textalert').addClass('hidden');
+            } else {
+                jQuery('#PDM_textalert').removeClass('hidden');
+            }
+            if (CATEGORY) {
+                jQuery('#CATEGORY_textalert').addClass('hidden');
+            } else {
+                jQuery('#CATEGORY_textalert').removeClass('hidden');
+            }
+            if (TEXTURE) {
+                jQuery('#TEXTURE_textalert').addClass('hidden');
+            } else {
+                jQuery('#TEXTURE_textalert').removeClass('hidden');
+            }
+
+            return !!NPD && !!PDM && !!CATEGORY && !!TEXTURE
         }
 
         function onchangeValueSelect2() {
@@ -661,44 +680,6 @@
                 jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
             }
         }
-
-        // function checkValueSelect2(id) {
-        //     console.log("🚀 ~ checkValueSelect2 ~ test:")
-        //     const NPD = jQuery('#NPD').val();
-        //     const PDM = jQuery('#PDM').val();
-        //     const CATEGORY = jQuery('#CATEGORY').val();
-        //     const TEXTURE = jQuery('#TEXTURE').val();
-        //     if (NPD) {
-        //         jQuery('#NPD_textalert').addClass('hidden');
-        //     } else {
-        //         jQuery('#NPD_textalert').removeClass('hidden');
-        //     }  if (PDM) {
-        //         jQuery('#PDM_textalert').addClass('hidden');
-        //     } else {
-        //         jQuery('#PDM_textalert').removeClass('hidden');
-        //     } if (CATEGORY) {
-        //         jQuery('#CATEGORY_textalert').addClass('hidden');
-        //     } else {
-        //         jQuery('#CATEGORY_textalert').removeClass('hidden');
-        //     } if (TEXTURE) {
-        //         jQuery('#TEXTURE_textalert').addClass('hidden');
-        //     } else {
-        //         jQuery('#TEXTURE_textalert').removeClass('hidden');
-        //     }
-
-        //     return !!NPD && !!PDM && !!CATEGORY && !!TEXTURE
-        // }
-
-        // function onchangeValueSelect2() {
-        //     let checkvalue = checkValueSelect2();
-        //     console.log("🚀 ~ onchangeValueSelect2 ~ checkvalue:", checkvalue)
-        //     if (checkvalue) {
-        //         jQuery("#submitButton").attr("disabled", false);
-        //         jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
-        //     }else {
-        //         jQuery("#submitButton").attr("disabled", true);
-        //     }
-        // }
 
         function onSelect(JOB_REFNO) {
             let curData = datass.find(f => f.JOB_REFNO === JOB_REFNO.value) || {}

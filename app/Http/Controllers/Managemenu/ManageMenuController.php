@@ -54,10 +54,10 @@ class ManageMenuController extends Controller
         //     })->toArray();
         // });
 
-        $ps = Post::select('id')
-            ->with('comments:post_id,user_id')
-            ->get()
-            ->toArray();
+        // $ps = Post::select('id')
+        //     ->with('comments:post_id,user_id')
+        //     ->get()
+        //     ->toArray();
         $menuData = [
             [
                 'main_menu' => ['id' => 1, 'name' => 'Menu 1', 'view' => '', 'create' => '', 'edit' => '', 'delete' => ''],
