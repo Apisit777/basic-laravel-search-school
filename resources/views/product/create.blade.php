@@ -328,13 +328,14 @@
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">เจ้าของสินค้า<span class="text-danger"> *</span></label>
-                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="VENDOR" id="VENDOR" onchange="onchangeValueSelect2()">
+                                                                    <!-- <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="VENDOR" id="VENDOR" onchange="onchangeValueSelect2()"> -->
+                                                                    <select  class="js-example-basic-single w-full rounded-sm text-xs " name="VENDOR" id="VENDOR">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($owners as $key => $owner)
                                                                             <option value={{ $owner->OWNER }}>{{ $owner->REMARK }}</option>
                                                                         @endforeach
                                                                     </select>
-                                                                    <span id="VENDOR_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
+                                                                    <!-- <span id="VENDOR_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span> -->
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="REG_DATE">วันที่สรา้งทะเบียน</label>
@@ -399,13 +400,14 @@
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Solution<span class="text-danger"> *</span></label>
-                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="SOLUTION" id="SOLUTION" onchange="onchangeValueSelect2()">
+                                                                    <!-- <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="SOLUTION" id="SOLUTION" onchange="onchangeValueSelect2()"> -->
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="SOLUTION" id="SOLUTION">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($solutions as $key => $solution)
-                                                                        <option value={{ $solution->ID }}>{{  $solution->BRAND. ' - '.$solution->ID. ' - (' .$solution->DESCRIPTION .')' }}</option>
+                                                                        <option value={{ $solution->ID }}>{{  $solution->BRAND.' - (' .$solution->DESCRIPTION .')' }}</option>
                                                                         @endforeach
                                                                     </select>
-                                                                    <span id="SOLUTION_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
+                                                                    <!-- <span id="SOLUTION_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span> -->
                                                                 </div>
                                                                 <!-- <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="name">&nbsp;</label>
@@ -416,7 +418,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="SERIES" id="SERIES">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($series as $key => $serie)
-                                                                        <option value={{ $serie->ID }}>{{ $serie->BRAND.' - '.$serie->ID.' - ('.$serie->DESCRIPTION.')' }}</option>
+                                                                        <option value={{ $serie->ID }}>{{ $serie->BRAND.' - ('.$serie->DESCRIPTION.')' }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -429,7 +431,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="CATEGORY" id="CATEGORY">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($categorys as $key => $category)
-                                                                            <option value={{ $category->ID }}>{{ $category->BRAND.' - '.$category->ID.' - ('.$category->DESCRIPTION.')' }}</option>
+                                                                            <option value={{ $category->ID }}>{{ $category->BRAND.' - ('.$category->DESCRIPTION.')' }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -442,7 +444,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="S_CAT" id="S_CAT">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($sub_categorys as $key => $sub_category)
-                                                                        <option value={{ $sub_category->ID }}>{{ $sub_category->BRAND.' - '.$sub_category->ID.' - ('.$sub_category->DESCRIPTION.')' }}</option>
+                                                                        <option value={{ $sub_category->ID }}>{{ $sub_category->BRAND.' - ('.$sub_category->DESCRIPTION.')' }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -455,7 +457,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="PDM_GROUP" id="PDM_GROUP">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($pdms as $key => $pdm)
-                                                                        <option value={{ $pdm->ID }}>{{ $pdm->ID.' - ('. $pdm->REMARK.')' }}</option>
+                                                                        <option value={{ $pdm->ID }}>{{ $pdm->REMARK }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -1055,23 +1057,27 @@
         }
 
         function checkValueSelect2(id) {
-            const VENDOR = jQuery('#VENDOR').val();
+            // const VENDOR = jQuery('#VENDOR').val();
             const GRP_P = jQuery('#GRP_P').val();
             // const BRAND_P = jQuery('#BRAND_P').val();
             const SUPPLIER = jQuery('#SUPPLIER').val();
             const TYPE_G = jQuery('#TYPE_G').val();
-            const SOLUTION = jQuery('#SOLUTION').val();
+            // const SOLUTION = jQuery('#SOLUTION').val();
             const STATUS = jQuery('#STATUS').val();
             const UNIT = jQuery('#UNIT').val();
             const UNIT_TYPE = jQuery('#UNIT_TYPE').val();
             const ACC_TYPE = jQuery('#ACC_TYPE').val();
             const CONDITION_SALE = jQuery('#CONDITION_SALE').val();
 
-            if (VENDOR) {
-                jQuery('#VENDOR_textalert').addClass('hidden');
-            } else {
-                jQuery('#VENDOR_textalert').removeClass('hidden');
-            }
+
+//             VENDOR_textalert
+// SOLUTION_textalert
+
+            // if (VENDOR) {
+            //     jQuery('#VENDOR_textalert').addClass('hidden');
+            // } else {
+            //     jQuery('#VENDOR_textalert').removeClass('hidden');
+            // }
 
             if (GRP_P) {
                 jQuery('#GRP_P_textalert').addClass('hidden');
@@ -1093,11 +1099,11 @@
             } else {
                 jQuery('#TYPE_G_textalert').removeClass('hidden');
             }
-            if (SOLUTION) {
-                jQuery('#SOLUTION_textalert').addClass('hidden');
-            } else {
-                jQuery('#SOLUTION_textalert').removeClass('hidden');
-            }
+            // if (SOLUTION) {
+            //     jQuery('#SOLUTION_textalert').addClass('hidden');
+            // } else {
+            //     jQuery('#SOLUTION_textalert').removeClass('hidden');
+            // }
             if (STATUS) {
                 jQuery('#STATUS_textalert').addClass('hidden');
             } else {
@@ -1124,7 +1130,7 @@
                 jQuery('#CONDITION_SALE_textalert').removeClass('hidden');
             }
 
-            return !!VENDOR && !!GRP_P && !!SUPPLIER && !!TYPE_G && !!SOLUTION && !!STATUS && !!UNIT && !!UNIT_TYPE && !!ACC_TYPE && !!CONDITION_SALE
+            return !!GRP_P && !!SUPPLIER && !!TYPE_G && !!STATUS && !!UNIT && !!UNIT_TYPE && !!ACC_TYPE && !!CONDITION_SALE
         }
 
         function onchangeValueSelect2() {

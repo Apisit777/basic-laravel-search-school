@@ -823,6 +823,25 @@ class ProductFormController extends Controller
         // dd($request);
         DB::beginTransaction();
         try {
+
+            $data_npd_old = Pro_develops::select(
+                'pro_develops.*',
+            )
+            ->firstWhere('pro_develops.BARCODE', '=', $id_barcode);
+
+            $data_npd_old_arr = $data_npd_old->toArray();
+
+            if ($request) {
+                $log = [
+                    'UPDATE_DT' => date("Y/m/d H:i:s"),
+                    'USER_UPDATE' => Auth::user()->username
+                ];
+
+                $data_npd_old_arr = array_merge($data_npd_old_arr, $log);
+                // dd($data_npd_old_arr);
+                $logNpd = ProDevelopLog::create($data_npd_old_arr);
+            }
+
             $data_product = [
                 'BRAND' => $request->input('BRAND'),
                 'DOC_NO' => $request->input('DOC_NO'),
@@ -872,17 +891,6 @@ class ProductFormController extends Controller
             ];
 
             $npdRequest = Pro_develops::where('BARCODE', $id_barcode)->update($data_product);
-
-            if ($request) {
-                $log = [
-                    'UPDATE_DT' => date("Y/m/d h:i:s"),
-                    'USER_UPDATE' => Auth::user()->username
-                ];
-
-                $data_product = array_merge($data_product, $log);
-                // dd($data_product);
-                $logProduct = ProDevelopLog::create($data_product);
-            }
 
             DB::commit();
             $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
