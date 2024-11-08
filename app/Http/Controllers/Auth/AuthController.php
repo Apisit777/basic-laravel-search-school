@@ -284,9 +284,11 @@ class AuthController extends Controller
                         ]);
 
                     } else {
-                        dd(1.2);
+                        // dd(1.2);
                         $namePositionStr_2 = substr($response['data']['roles'][0], -2);
-                        $createPosition = position::create([
+
+                        $createPosition = position::updateOrCreate(['id' => $namePosition->id],
+                [
                             'name_position' => $response['data']['roles'][0],
                             'brand' => $namePositionStr_2
                         ]);
@@ -316,10 +318,10 @@ class AuthController extends Controller
                 $positionId = position::select('id', 'name_position')
                     ->where('name_position', '=', $response['data']['roles'][0])
                     ->first();
-                $createUserPermission = user_permission::create([
-                    'user_id' => $createUser->id,
-                    'position_id' => $positionId->id
-                ]);
+                // $createUserPermission = user_permission::create([
+                //     'user_id' => $createUser->id,
+                //     'position_id' => $positionId->id
+                // ]);
                 // dd($createPosition);
                 $user = User::select('id')
                 ->where('username', $request->username)

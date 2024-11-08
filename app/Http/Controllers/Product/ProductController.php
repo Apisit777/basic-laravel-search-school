@@ -354,6 +354,7 @@ class ProductController extends Controller
         $defaultBrands = MasterBrand::all();
         $brands = MasterBrand::all();
 
+        // dd($series);
         if (in_array($userpermission, [$isSuperAdmin])) {
             $brands = MasterBrand::select(
                 'BRAND')
@@ -589,7 +590,7 @@ class ProductController extends Controller
         // $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
         // $productCode = 'P'.sprintf('%05d', $productCodeNumber);
         // $list_position = position::select('id', 'name_position')->get();
-        // dd($allBrands);
+        // dd($series);
 
         return view('product.create', compact(  'brands', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
     }
@@ -1182,16 +1183,16 @@ class ProductController extends Controller
                 'EDIT_DT' => date("Y/m/d h:i:s")
             ];
 
-            if ($request) {
-                $log = [
-                    'UPDATE_DT' => date("Y/m/d h:i:s"),
-                    'USER_UPDATE' => Auth::user()->username
-                ];
+            // if ($request) {
+            //     $log = [
+            //         'UPDATE_DT' => date("Y/m/d h:i:s"),
+            //         'USER_UPDATE' => Auth::user()->username
+            //     ];
 
-                $data_product_upddate = array_merge($data_product, $log);
-                // dd($data_product_upddate);
-                $logProductMaster = Product1Log::create($data_product);
-            }
+            //     $data_product_upddate = array_merge($data_product, $log);
+            //     // dd($data_product_upddate);
+            //     $logProductMaster = Product1Log::create($data_product);
+            // }
 
             $productMaster = Product1::create($data_product);
 
@@ -1315,16 +1316,16 @@ class ProductController extends Controller
                 'EDIT_DT' => date("Y/m/d h:i:s")
             ];
 
-            if ($request) {
-                $log = [
-                    'UPDATE_DT' => date("Y/m/d h:i:s"),
-                    'USER_UPDATE' => Auth::user()->username
-                ];
+            // if ($request) {
+            //     $log = [
+            //         'UPDATE_DT' => date("Y/m/d h:i:s"),
+            //         'USER_UPDATE' => Auth::user()->username
+            //     ];
 
-                $data_product_upddate = array_merge($data_product, $log);
-                // dd($data_product_upddate);
-                $logProductMaster = Product1Log::create($data_product);
-            }
+            //     $data_product_upddate = array_merge($data_product, $log);
+            //     // dd($data_product_upddate);
+            //     $logProductMaster = Product1Log::create($data_product);
+            // }
 
             $productMaster = Product1::create($data_product);
 
@@ -1727,6 +1728,25 @@ class ProductController extends Controller
         DB::beginTransaction();
         try {
             if (strlen($PRODUCT) > 5) {
+
+                $data_consumables_old = Product1::select(
+                    'product1s.*',
+                )
+                ->firstWhere('product1s.PRODUCT', '=', $PRODUCT);
+
+                $data_consumables_old_arr = $data_consumables_old->toArray();
+
+                if ($request) {
+                    $log = [
+                        'UPDATE_DT' => date("Y/m/d H:i:s"),
+                        'USER_UPDATE' => Auth::user()->username
+                    ];
+
+                    $data_consumables_old_arr = array_merge($data_consumables_old_arr, $log);
+                    // dd($data_consumables_old_arr);
+                    $logProductUpddate = Product1Log::create($data_consumables_old_arr);
+                }
+
                 $data_product_upddate = [
                     'BRAND' => $request->input('BRAND'),
                     'PRODUCT' => $request->input('Code'),
@@ -1787,24 +1807,34 @@ class ProductController extends Controller
                     'CONTROL_STK' => is_null($request->input('CONTROL_STK')) ? 'N' : 'Y',
                     'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
                     'USER_EDIT' => Auth::user()->username,
-                    'EDIT_DT' => date("Y/m/d h:i:s")
+                    'EDIT_DT' => date("Y/m/d H:i:s")
                 ];
 
                 $productUpddateConsumables = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
-
-                if ($request) {
-                    $data_product_upddate= [
-                        'UPDATE_DT' => date("Y/m/d h:i:s"),
-                        'USER_UPDATE' => Auth::user()->username
-                    ];
-                    // dd($data_product_upddate);
-                    $logProductUpddate = Product1Log::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
-                }
 
                 DB::commit();
                 $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
                 return response()->json(['success' => true]);
             } else {
+
+                $data_old = Product1::select(
+                    'product1s.*',
+                )
+                ->firstWhere('product1s.PRODUCT', '=', $PRODUCT);
+
+                $data_old_arr = $data_old->toArray();
+
+                if ($request) {
+                    $log = [
+                        'UPDATE_DT' => date("Y/m/d H:i:s"),
+                        'USER_UPDATE' => Auth::user()->username
+                    ];
+
+                    $data_old_arr = array_merge($data_old_arr, $log);
+                    // dd($data_old_arr);
+                    $logProductUpddate = Product1Log::create($data_old_arr);
+                }
+                
                 $data_product_upddate = [
                     'BRAND' => $request->input('BRAND'),
                     'PRODUCT' => $request->input('Code'),
@@ -1865,7 +1895,7 @@ class ProductController extends Controller
                     'CONTROL_STK' => is_null($request->input('CONTROL_STK')) ? 'N' : 'Y',
                     'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
                     'USER_EDIT' => Auth::user()->username,
-                    'EDIT_DT' => date("Y/m/d h:i:s")
+                    'EDIT_DT' => date("Y/m/d H:i:s")
                 ];
 
                 if (!is_null($request->sele_channel[0])) {
@@ -1892,17 +1922,6 @@ class ProductController extends Controller
                 //     ]);
             
                 $productUpddate = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
-
-                if ($request) {
-                    $log = [
-                        'UPDATE_DT' => date("Y/m/d h:i:s"),
-                        'USER_UPDATE' => Auth::user()->id
-                    ];
-
-                    $data_product_upddate = array_merge($data_product_upddate, $log);
-                    // dd($data_product_upddate);
-                    $logProductUpddate = Product1Log::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
-                }
 
                 // dd($productUpddate);
                 DB::commit();
