@@ -920,7 +920,7 @@
                         const newop = new Option("--- กรุณาเลือก ---", "");
                         jQuery(newop).appendTo(select)
                         data.productCodes.map((item, index) => {
-                            console.log('item', item)
+                            // console.log('item', item)
                             const newoption = new Option(item.Code, item.BARCODE);
                             jQuery(newoption).appendTo(select)
                         });
@@ -978,6 +978,18 @@
             //     $('#GP').val('');
             //     $('#BARCODE').val('');
             // }
+
+            let obj = <?php echo json_encode($grp_ps); ?>;
+            console.log("🚀 ~ onSelect ~ obj:", obj)
+
+            if (BARCODE.value >= 20000 && BARCODE.value <= 28999) {
+                jQuery("#GRP_P").val('OP').change();
+            } else if (BARCODE.value >= 29000 && BARCODE.value <= 29699) {
+                jQuery("#GRP_P").val('RE').change();
+            } else if (BARCODE.value >= 29700 && BARCODE.value <= 29999) {
+                jQuery("#GRP_P").val('CM').change();
+            }
+
             let PRODUCT = BARCODE.value;
             if (params === 'BARCODE') {
                 url = '{{ route('product.get_barcode') }}?BARCODE=' + BARCODE.value;
