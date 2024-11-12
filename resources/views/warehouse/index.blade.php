@@ -387,14 +387,24 @@
 
                 pageData.forEach(item => {
                     const card = `
-                        <div class="bg-[#eaeaea] p-4 cursor-pointer rounded shadow-sm hover:shadow-lg hover:shadow-gray-400 dark:hover:shadow-lg dark:hover:shadow-gray-400 transition-shadow duration-300 ease-in-out">
-                            <img class="w-20 h-20 rounded-md mx-auto" src="${item.imageurl}" alt="${item.title || 'Unknown'}">
-                            <div class="text-center mt-4">
-                                <h2 class="text-xl font-bold mb-2">${item.name || 'Unknown School'}</h2>
-                                <p>${item.role || 'N/A'}</p>
+                        <div class="max-w-sm p-1 bg-[#eaeaea] dark:bg-[#292929] cursor-pointer rounded shadow-sm hover:shadow-lg hover:shadow-gray-400 dark:hover:shadow-lg dark:hover:shadow-gray-400 transition-shadow duration-300 ease-in-out">
+                            <img src="${item.imageurl}/300x150" alt="${item.title || 'Unknown'}" class="w-full h-32 object-cover">
+                            <div class="p-4">
+                                <h2 class="text-lg font-semibold mb-1 text-gray-900 dark:text-gray-100">${item.name || 'Unknown School'}</h2>
+                                <p class="text-sm text-gray-400 dark:text-gray-400 uppercase">${item.role || 'N/A'}</p>
                             </div>
-
-                        </div>`;
+                            <div class="px-4 pb-4 flex items-center space-x-4 text-gray-500 dark:text-gray-300 base:text-xl sm:text-sm">
+                                <div class="flex items-center space-x-1">
+                                    <span>🔒</span>
+                                    <span>CORS</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <span>🔒</span>
+                                    <span>HTTPS</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
                     $('#cards-container').append(card);
                 });
 

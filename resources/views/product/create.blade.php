@@ -328,14 +328,14 @@
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">เจ้าของสินค้า<span class="text-danger"> *</span></label>
-                                                                    <!-- <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="VENDOR" id="VENDOR" onchange="onchangeValueSelect2()"> -->
-                                                                    <select  class="js-example-basic-single w-full rounded-sm text-xs " name="VENDOR" id="VENDOR">
+                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="VENDOR" id="VENDOR" onchange="onchangeValueSelect2()">
+                                                                    <!-- <select  class="js-example-basic-single w-full rounded-sm text-xs" name="VENDOR" id="VENDOR"> -->
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($owners as $key => $owner)
                                                                             <option value={{ $owner->OWNER }}>{{ $owner->REMARK }}</option>
                                                                         @endforeach
                                                                     </select>
-                                                                    <!-- <span id="VENDOR_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span> -->
+                                                                    <span id="VENDOR_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="REG_DATE">วันที่สรา้งทะเบียน</label>
@@ -399,7 +399,7 @@
                                                                     <input type="text" name="OPT_TXT1" id="OPT_TXT1" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name">Solution<span class="text-danger"> *</span></label>
+                                                                    <label for="name">Solution</label>
                                                                     <!-- <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="SOLUTION" id="SOLUTION" onchange="onchangeValueSelect2()"> -->
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="SOLUTION" id="SOLUTION">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
@@ -1057,7 +1057,7 @@
         }
 
         function checkValueSelect2(id) {
-            // const VENDOR = jQuery('#VENDOR').val();
+            const VENDOR = jQuery('#VENDOR').val();
             const GRP_P = jQuery('#GRP_P').val();
             // const BRAND_P = jQuery('#BRAND_P').val();
             const SUPPLIER = jQuery('#SUPPLIER').val();
@@ -1069,15 +1069,11 @@
             const ACC_TYPE = jQuery('#ACC_TYPE').val();
             const CONDITION_SALE = jQuery('#CONDITION_SALE').val();
 
-
-//             VENDOR_textalert
-// SOLUTION_textalert
-
-            // if (VENDOR) {
-            //     jQuery('#VENDOR_textalert').addClass('hidden');
-            // } else {
-            //     jQuery('#VENDOR_textalert').removeClass('hidden');
-            // }
+            if (VENDOR) {
+                jQuery('#VENDOR_textalert').addClass('hidden');
+            } else {
+                jQuery('#VENDOR_textalert').removeClass('hidden');
+            }
 
             if (GRP_P) {
                 jQuery('#GRP_P_textalert').addClass('hidden');
@@ -1130,7 +1126,7 @@
                 jQuery('#CONDITION_SALE_textalert').removeClass('hidden');
             }
 
-            return !!GRP_P && !!SUPPLIER && !!TYPE_G && !!STATUS && !!UNIT && !!UNIT_TYPE && !!ACC_TYPE && !!CONDITION_SALE
+            return !!VENDOR && !!GRP_P && !!SUPPLIER && !!TYPE_G && !!STATUS && !!UNIT && !!UNIT_TYPE && !!ACC_TYPE && !!CONDITION_SALE
         }
 
         function onchangeValueSelect2() {

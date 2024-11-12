@@ -51,7 +51,7 @@
 
             #print_page{
                 position: relative !important;
-                top: -50px !important;
+                top: -40px !important;
                 width: auto !important;
                 height: auto !important;
                 overflow: visible !important;
@@ -64,7 +64,7 @@
         display: grid;
         grid-template-columns: repeat(5, 1fr);
         gap: 0px;
-        grid-auto-rows: minmax(40px, auto);
+        grid-auto-rows: minmax(39.3px, auto);
     }
 
     .wrapper > div {
@@ -124,12 +124,27 @@
 
         border-bottom: 1px solid #000;
         border-left: 1px solid #000;
+        border-bottom: 2px solid #000;
     }
     .wrapper .eight_4 {
         grid-column: 1/2;
         border-left: none;
         border-right: none;
         border-bottom: 1px solid #000;
+    }
+    .wrapper .CS_eight_4 {
+        grid-column: 1/2;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid #000;
+        /* border-top: 1px solid #000; */
+    }
+    .wrapper .TARGET_eight_4 {
+        grid-column: 1/2;
+        border-top: 2px solid #000;
+        border-left: none;
+        border-right: none;
+        border-bottom: 2px solid #000;
     }
     .wrapper .eight_5 {
         grid-column: 2/3;
@@ -155,6 +170,12 @@
         /* border-right: none; */
         border-bottom: 1px solid #000;
     }
+    .wrapper .eight_88 {
+        grid-column: 5/6;
+        border-top: none;
+        border-left: 1px solid #000;
+        border-bottom: none;
+    }
     .wrapper .nine_1 {
         border-bottom: 1px solid #000;
         border-left: 1px solid #000;
@@ -164,7 +185,21 @@
         border-top: none;
         border-left: none;
         border-right: none;
-        border-bottom: 1px solid #000;
+        border-bottom: 2px solid #000;
+    }
+    .wrapper .nine_22 {
+        grid-column: 2/3;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 2px solid #000;
+    }
+    .wrapper .nine_23 {
+        grid-column: 3/4;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 2px solid #000;
     }
     .wrapper .ten {
         grid-column: 1/6;
@@ -363,34 +398,34 @@
                 <div class="wrapper" style="position: relative;">
                     <div class="one" style="border-left: none; border-right: none;">
                         <div class="text-xs" style="position: absolute">BRAND</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->BRAND }}</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->BRAND }}</div>
                     </div>
                     <div class="" style="border-right: none; border-bottom: 1px solid #000; border-left: 1px solid #000;">
                         <div class="text-xs" style="position:absolute">PRODUCT TYPE</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">Make Up</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">Make Up</div>
                     </div>
                     <div class="" style="border-right: none; border-bottom: 1px solid #000; border-left: 1px solid #000;">
                         <div class="text-xs" style="position:absolute">PRODUCT CODE</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->Code }}</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->Code }}</div>
                     </div>
                     <div class="" style="border-right: none; border-bottom: 1px solid #000; border-left: 1px solid #000;">
                         <div class="text-xs" style="position:absolute">PROJECT REF. NO.</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
                     </div>
                 </div>
 
                 <div class="wrapper" style="position: relative;">
                     <div class="five" style="border-right: none;">
                         <div class="text-xs" style="position:absolute">PROJECT NAME</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">Beneficial Lipstick - KISS FROM A ROSE SHEENY TINT&GLOSS</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">Beneficial Lipstick - KISS FROM A ROSE SHEENY TINT&GLOSS</div>
                     </div>
                     <div class="" style="border-right: none; border-top: none; border-left: 1px solid #000;">
                         <div class="text-xs" style="position:absolute">TARGET GROUP</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">18-35</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">18-35</div>
                     </div>
                     <div class="" style="border-right: none; border-top: none; border-left: 1px solid #000;">
                         <div class="text-xs" style="position:absolute">COMPARE WITH OEM [YES / NO]</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">No</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">No</div>
                     </div>
                 </div>
 
@@ -431,39 +466,39 @@
                 <div class="wrapper mt-10" style="position: relative;">
                     <div class="eight" style="border-right: none;">
                         <div class="text-xs" style="position:absolute">ACTIVE INGREDIENT</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
                     </div>
                     <div class="nine" style="border-right: none; grid-column: 4/6;">
                         <div class="text-xs" style="position:absolute">TEXTURE</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">Other</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">Other</div>
                     </div>
                     <div class="ten" style="border-right: none;">
                         <div class="text-xs" style="position:absolute">REF. PRODUCT / BENCHMARK (PLEASE IDENTIFY)</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">Kiss From a Rose Sheeny Tint & Gloss</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">Kiss From a Rose Sheeny Tint & Gloss</div>
                     </div>
                     <div class="elevent" style="border-right: none;">
                         <div class="text-xs" style="position:absolute">TOTAL COLOR</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">3</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">3</div>
                     </div>
                     <div class="twel" style="grid-column: 2/4;">
                         <div class="text-xs" style="position:absolute">DETAIL OF COLOR</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">แดง,ส้มอมน้ําตาล,ชมพูเข็ม</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">แดง,ส้มอมน้ําตาล,ชมพูเข็ม</div>
                     </div>
                     <div class="thirteen" style="grid-column: 4/6;">
                         <div class="text-xs" style="position:absolute">REF. OF COLOR</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
                     </div>
                     <div class="elevent" style="border-right: none;">
                         <div class="text-xs" style="position:absolute">TOTAL FRAGRANCE</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">0</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">0</div>
                     </div>
                     <div class="twel" style="grid-column: 2/4;">
                         <div class="text-xs" style="position:absolute">FRAGRANCE TYPE OR CONCEPT</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">แดง,ส้มอมน้ําตาล,ชมพูเข็ม</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">แดง,ส้มอมน้ําตาล,ชมพูเข็ม</div>
                     </div>
                     <div class="thirteen" style="grid-column: 4/6;">
                         <div class="text-xs" style="position:absolute">REF. OF FRAGRANCE</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
                     </div>
                 </div>
 
@@ -481,7 +516,7 @@
                     </div>
                     <div class="nine_1" style="border-right: none; grid-column: 4/6;">
                         <div class="text-xs" style="position: absolute">COMPARING WITH OEM OR BENCHMARK / OTHERS</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">Other</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">Other</div>
                     </div>
                     <div class="eight_2" style="border-right: none; border-bottom: none;">
                         <div class="text-xs" style="position: absolute">REASON OF USE</div>
@@ -498,7 +533,7 @@
                             </div>
                         </div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 135%;">---------------------------------------------</div>
-                        <div class="" style="position: absolute; top: -13px; right: 8px; display:flex; justify-content:center; align-items: center; height: 100%;">----------</div>
+                        <div class="" style="position: absolute; top: -12px; right: 8px; display:flex; justify-content:center; align-items: center; height: 100%;">----------</div>
                     </div>
                     <div class="eight_2" style="border-right: none; border-bottom: none;">
                         <div class="text-xs" style="position: absolute"></div>
@@ -513,7 +548,7 @@
                     </div>
                     <div class="eight" style="border-right: none;">
                         <div class="text-xs" style="position:absolute">PRIMARY PACKAGING</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">ร่วมกับ 22657</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">ร่วมกับ 22657</div>
                     </div>
                     <div class="nine" style="border-right: none; grid-column: 4/5; border-left: none;">
                         <div class="text-xs rcorners3" style="position: absolute; top: 131px;">
@@ -536,19 +571,19 @@
                 <div class="wrapper mt-10" style="position: relative;">
                     <div class="eight_4" style="border-right: none;">
                         <div class="text-xs" style="position: absolute">TARGET BULK COST [BATH/KG]</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">3.65</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">3.65</div>
                     </div>
                     <div class="eight_5" style="border-right: none;">
                         <div class="text-xs" style="position: absolute">NET QUANTITY [g or ml]</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">4.5g x 2</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">4.5g x 2</div>
                     </div>
                     <div class="eight_6" style="border-right: none;">
                         <div class="text-xs" style="position: absolute">TARGET BULK COST [BATH/KG]</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">5,000</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">5,000</div>
                     </div>
                     <div class="eight_5" style="border-right: none; grid-column: 4/6;">
                         <div class="text-xs" style="position: absolute">TARGET LAUNCH DATE</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">30/11/2009</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">30/11/2009</div>
                     </div>
                 </div>
 
@@ -601,15 +636,52 @@
                 </div>
 
                 <div class="wrapper" style="position: relative;">
-                        <div class="text-md font-semibold" style="border-left: none; border-right: none; border-top: none; border-bottom: none; grid-column: 1/2;">
+                        <div class="text-md font-semibold" style="border-left: none; border-right: none; border-top: none; grid-column: 1/2;">
                             Customer Service/KM
                         </div>
-                        <div class="text-md font-semibold" style="border-left: 1px solid #000; border-right: none; border-top: none; border-bottom: none; top: -40px; height: 40px; left: 206px; grid-column: 2/5;">
+                        <div class="text-md font-semibold" style="border-left: 1px solid #000; border-right: none; border-top: none; top: -40px; height: 40px; left: 206px; grid-column: 2/6;">
                             IBHS Project Review & Authorization
                         </div>
                 </div>
+
                 <div class="wrapper" style="position: relative;">
-                    <div class="eight_4" style="border-right: none;">
+                        <div class="TARGET_eight_4 text-xs" style="border-left: none; border-right: none; border-top: none; grid-column: 1/2;">
+                            TARGET GROUP ON STOCK DATE
+                        </div>
+                        <div class="nine_2" style="border-right: none;">
+                            <div class="text-xs rcorners1" style="position: absolute; top: 10px;"></div>
+                            <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">Product Specification & Regulation</div>
+                        </div>
+                        <div class="eight_3" style="border-right: none; border-left: none; grid-column: 4/6;">
+                            <div class="text-xs rcorners1" style="position: absolute; top: 10px;"></div>
+                            <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">Resources [Researcher,Equipment,Infrastructure]</div>
+                        </div>
+                </div>
+                
+                <div class="wrapper" style="position: relative;">
+                        <div class="text-xs" style="border-left: none; border-right: none; border-top: none; border-bottom: none; grid-column: 1/2;">
+                            CS COORDINATOR
+                        </div>
+                        <div class="nine_22" style="border-right: none; border-bottom: none;">
+                            <div class="text-xs rcorners1" style="position: absolute; top: 10px;"></div>
+                            <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">Skin Care</div>
+                        </div>
+                        <div class="nine_23" style="border-right: none; border-bottom: none;">
+                            <div class="text-xs rcorners1" style="position: absolute; top: 10px;"></div>
+                            <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">Hair Care/Toiletries</div>
+                        </div>
+                        <div class="eight_3" style="border-right: none; border-left: none; grid-column: 4/5; border-bottom: none;">
+                            <div class="text-xs rcorners1" style="position: absolute; top: 10px;"></div>
+                            <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">Make-up</div>
+                        </div>
+                        <div class="eight_88" style="border-right: none;">
+                            <div class="text-xs" style="position: absolute">DIRECTOR OF IBHS</div>
+                            <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                        </div>
+                </div>
+                
+                <div class="wrapper" style="position: relative;">
+                    <div class="CS_eight_4" style="border-right: none;">
                         <div class="text-xs" style="position: absolute">CS MANAGER/KM</div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
                     </div>
@@ -631,33 +703,30 @@
                     </div>
                     <div class="eight_4" style="border-right: none; border-top: none;">
                         <div class="text-xs" style="position: absolute">DATE</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">xxxxx</div>
                     </div>
                     <div class="eight_5" style="border-right: none; border-top: none;">
                         <div class="text-xs" style="position: absolute">DATE</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">xxxxx</div>
                     </div>
                     <div class="eight_6" style="border-right: none; border-top: none;">
                         <div class="text-xs" style="position: absolute">DATE</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">xxxxx</div>
                     </div>
                     <div class="eight_7" style="border-right: none; border-top: none;">
                         <div class="text-xs" style="position: absolute">DATE</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">xxxxx</div>
                     </div>
                     <div class="eight_8" style="border-right: none; border-top: none;">
                         <div class="text-xs" style="position: absolute">DATE</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">xxxxx</div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
     <script>
 
         function myFunction() {
@@ -670,25 +739,5 @@
             let dataJson = JSON.parse(dataLogin)
             console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
         }
-
-        toastr.options = {
-            "closeButton": true,
-            "debug": false,
-            "newestOnTop": false,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "preventDuplicates": false,
-            "onclick": null,
-            "showDuration": "300",
-            "hideDuration": "1000",
-            "timeOut": "5000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        }
-
-        const dlayMessage = 1000;
     </script>
 @endsection

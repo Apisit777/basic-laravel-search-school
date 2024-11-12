@@ -81,36 +81,36 @@
                                                                         <input type="text" name="COST" id="COST" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->cost, 2) }}" />
                                                                     </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="Account2">ภาษีน้ำหอม</label>
-                                                                    <input type="text" name="Account2" id="Account2" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="perfume_tax">ภาษีน้ำหอม</label>
+                                                                    <input type="text" name="perfume_tax" id="perfume_tax" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->perfume_tax, 2) }}" />
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="Account3">ต้นทุน + ภาษีน้ำหอม</label>
-                                                                    <input type="text" name="Account3" id="Account3" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="cost_perfume_tax">ต้นทุน + ภาษีน้ำหอม</label>
+                                                                    <input type="text" name="cost_perfume_tax" id="cost_perfume_tax" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->cost_perfume_tax, 2) }}" />
                                                                 </div>
                                                                 <div class="md:col-span-2" >
-                                                                    <label for="Account4">ต้นทุน+5%</label>
-                                                                    <input type="text" name="Account4" id="Account4" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="cost5percent">ต้นทุน+5%</label>
+                                                                    <input type="text" name="cost5percent" id="cost5percent" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->cost5percent, 2) }}" />
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="Account5">ต้นทุน+10%</label>
-                                                                    <input type="text" name="Account5" id="Account5" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="cost10percent">ต้นทุน+10%</label>
+                                                                    <input type="text" name="cost10percent" id="cost10percent" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->cost10percent, 2) }}" />
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="CUST_OEM">ต้นทุน+อื่นๆ</label>
-                                                                    <input type="text" name="DOC_NO" id="DOC_NO" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="cost_other">ต้นทุน+อื่นๆ</label>
+                                                                    <input type="text" name="cost_other" id="cost_other" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->cost_other, 2) }}" />
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="Account7">ราคาขาย KM</label>
-                                                                    <input type="text" name="Account7" id="Account7" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="sale_km">ราคาขาย KM</label>
+                                                                    <input type="text" name="sale_km" id="sale_km" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->sale_km, 2) }}" />
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="Account8">ราคาขาย KM + 20%</label>
-                                                                    <input type="text" name="Account8" id="Account8" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="sale_km20percent">ราคาขาย KM + 20%</label>
+                                                                    <input type="text" name="sale_km20percent" id="sale_km20percent" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->sale_km20percent, 2) }}" />
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="">ราคาขาย KM+อื่นๆ</label>
-                                                                    <input type="text" name="" id="" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="sale_km_other">ราคาขาย KM+อื่นๆ</label>
+                                                                    <input type="text" name="sale_km_other" id="sale_km_other" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->sale_km_other, 2) }}" />
                                                                 </div>
                                                             </div>
                                                         </div>

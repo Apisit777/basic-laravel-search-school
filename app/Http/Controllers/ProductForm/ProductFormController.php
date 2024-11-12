@@ -16,6 +16,7 @@ use App\Models\Barcode;
 use App\Models\Document;
 use App\Models\menu;
 use App\Models\Account;
+use App\Models\AccountLog;
 use App\Models\Product1;
 use App\Models\MasterBrand;
 use App\Models\TestNewBarcode;
@@ -296,7 +297,7 @@ class ProductFormController extends Controller
     public function editAccount(Request $request)
     {
         $data = Account::select(
-            'id',
+            // 'id',
             'accounts.product AS product',
             'accounts.cost AS cost',
             'perfume_tax',
@@ -318,8 +319,37 @@ class ProductFormController extends Controller
 
     public function updateAccount(Request $request)
     {
+        // dd($request);
         DB::beginTransaction();
         try {
+
+            $data_account_old = Account::select(
+            'product',
+            'cost',
+            'perfume_tax',
+            'cost_perfume_tax',
+            'cost5percent',
+            'cost10percent',
+            'cost_other',
+            'sale_km',
+            'sale_km20percent',
+            'sale_km_other',
+            )
+            ->firstWhere('product', '=', $request->product);
+
+            $data_account_old_arr = $data_account_old->toArray();
+
+            if ($request) {
+                $log = [
+                    'UPDATE_DT' => date("Y/m/d H:i:s"),
+                    'USER_UPDATE' => Auth::user()->username
+                ];
+
+                $data_account_old_arr = array_merge($data_account_old_arr, $log);
+                // dd($data_consumables_old_arr);
+                $logAccountUpddate = AccountLog::create($data_account_old_arr);
+            }
+
             // dd($request);
             $data_product_account_upddate = [
                 'COST' => $request->COST,
@@ -337,9 +367,10 @@ class ProductFormController extends Controller
                 'sale_km' => $request->sale_km,
                 'sale_km20percent' => $request->sale_km20percent,
                 'sale_km_other' => $request->sale_km_other,
-                'updated_at' => date("Y/m/d h:i:s")
+                'updated_at' => date("Y/m/d H:i:s")
             ]);
 
+            // dd($updateProductAccount);
             DB::commit();
             $request->session()->flash('status', 'อัปเดตข้อมูลสำเร็จ');
             return response()->json(['success' => true]);
@@ -429,6 +460,9 @@ class ProductFormController extends Controller
             }
             if ($request->BRAND == 'KTY') {
                 $lastElement = Barcode::where('COMPANY', '=', $request->BRAND)->where('STATUS', '=', 'KTY')->max('NUMBER');
+            }
+            if ($request->BRAND == 'CM') {
+                $lastElement = Barcode::where('COMPANY', '=', 'OP')->where('STATUS', '=', 'CM')->max('NUMBER');
             }
             $barcodeMax = $lastElement;
             // $barcodeMax = substr_replace($lastElement, '', -1);
@@ -539,7 +573,8 @@ class ProductFormController extends Controller
             $brands = Barcode::select(
                 'BRAND',
                 'STATUS')
-            ->whereIn('STATUS', ['OP', 'RI'])
+            ->whereIn('STATUS', ['OP', 'RI', 'CM'])
+            // ->whereIn('STATUS', ['OP'])
             ->pluck('BRAND')
             ->toArray();
         } else if (in_array($userpermission, ['Marketing - CPS'])) {
@@ -631,7 +666,7 @@ class ProductFormController extends Controller
                 'REF_FRAGRANCE' => $request->input('REF_FRAGRANCE'),
                 'OEM_STD' => $request->input('OEM_STD'),
                 'USER_EDIT' => Auth::user()->username,
-                'EDIT_DT' => date("Y/m/d h:i:s")
+                'EDIT_DT' => date("Y/m/d H:i:s")
             ];
 
         //     $arr_barcode = [];
@@ -683,7 +718,7 @@ class ProductFormController extends Controller
 
             if ($request) {
                 $log = [
-                    'UPDATE_DT' => date("Y/m/d h:i:s"),
+                    'UPDATE_DT' => date("Y/m/d H:i:s"),
                     'USER_UPDATE' => Auth::user()->username
                 ];
 
@@ -782,6 +817,7 @@ class ProductFormController extends Controller
      */
     public function edit($id_barcode)
     {
+        // dd($id_barcode);
         $data = Pro_develops::select(
             'pro_develops.*',
             DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
@@ -790,10 +826,14 @@ class ProductFormController extends Controller
             'npd_categorys.ID AS ID_CATEGORY',
             'npd_textures.ID AS ID_TEXTURE',
         )
-            ->join('npd_cos', 'pro_develops.NPD', '=', 'npd_cos.ID')
-            ->join('npd_pdms', 'pro_develops.PDM', '=', 'npd_pdms.ID')
-            ->join('npd_categorys', 'pro_develops.CATEGORY', '=', 'npd_categorys.ID')
-            ->join('npd_textures', 'pro_develops.TEXTURE', '=', 'npd_textures.ID')
+            ->leftJoin('npd_cos', 'pro_develops.NPD', '=', 'npd_cos.ID')
+            ->leftJoin('npd_pdms', 'pro_develops.PDM', '=', 'npd_pdms.ID')
+            ->leftJoin('npd_categorys', 'pro_develops.CATEGORY', '=', 'npd_categorys.ID')
+            ->leftJoin('npd_textures', 'pro_develops.TEXTURE', '=', 'npd_textures.ID')
+            // ->join('npd_cos', 'pro_develops.NPD', '=', 'npd_cos.ID')
+            // ->join('npd_pdms', 'pro_develops.PDM', '=', 'npd_pdms.ID')
+            // ->join('npd_categorys', 'pro_develops.CATEGORY', '=', 'npd_categorys.ID')
+            // ->join('npd_textures', 'pro_develops.TEXTURE', '=', 'npd_textures.ID')
             ->where('BARCODE', $id_barcode)
             ->first();
 
@@ -887,7 +927,7 @@ class ProductFormController extends Controller
                 'REF_FRAGRANCE' => $request->input('REF_FRAGRANCE'),
                 'OEM_STD' => $request->input('OEM_STD'),
                 'USER_EDIT' => Auth::user()->username,
-                'EDIT_DT' => date("Y/m/d h:i:s")
+                'EDIT_DT' => date("Y/m/d H:i:s")
             ];
 
             $npdRequest = Pro_develops::where('BARCODE', $id_barcode)->update($data_product);
