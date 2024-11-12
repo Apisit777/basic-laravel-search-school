@@ -274,19 +274,30 @@ class ProductController extends Controller
 
     public function productMasterGetBrandListAjax(Request $request)
     {
+        // $data_PRODUCT = Product1::select('PRODUCT')->pluck('PRODUCT')->toArray();
+
+        // $productCodes = Pro_develops::select(
+        //         // 'product1s.*',
+        //         // DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code')
+        //         'PRODUCT'
+        //     )
+        //     ->where('BRAND', $request->input('BRAND'))
+        //     ->whereNotIn('PRODUCT', $data_PRODUCT)
+        //     ->orderby('PRODUCT')
+        //     ->get();
+
         $data_PRODUCT = Product1::select('PRODUCT')->pluck('PRODUCT')->toArray();
 
         $productCodes = Pro_develops::select(
-                // 'product1s.*',
-                DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code')
+                'PRODUCT AS Code'
             )
             ->where('BRAND', $request->input('BRAND'))
             ->whereNotIn('PRODUCT', $data_PRODUCT)
-            ->orderby('Code')
+            ->orderby('PRODUCT')
             ->get();
 
         // $digits_barcode = $this->ean13_check_digit($request);
-        // dd($productCodes);
+        // dd($productCodes->toArray());
         return response()->json(['productCodes' => $productCodes]);
         // return response()->json(['productCodes' => $productCodes, 'digits_barcode' => $digits_barcode]);
     }
@@ -360,7 +371,7 @@ class ProductController extends Controller
                 'BRAND')
             ->get();
             $owners = Owner::select(
-                'GRP_P',
+                'OWNER',
                 'REMARK',
                 'BRAND')
             ->get();
@@ -412,50 +423,50 @@ class ProductController extends Controller
             ->where('BRAND', 'OP')
             ->get();
             $owners = Owner::select(
-                'OWNER AS VENDOR',
+                'OWNER',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
             $grp_ps = Grp_p::select(
-                'GRP_P AS GRP_P',
+                'GRP_P',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
             $brand_ps = Brand_p::select(
-                'ID AS BRAND_P',
+                'ID',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
             $solutions = Solution::select(
-                'ID AS SOLUTION',
+                'ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
             $series = Series::select(
-                'ID AS SERIES',
+                'ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
             $categorys = Category::select(
-                'ID AS CATEGORY',
+                'ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
             $sub_categorys = Sub_category::select(
-                'ID AS S_CAT',
+                'ID',
                 'CATEGORY_ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
             $pdms = Pdm::select(
-                'ID AS PDM_GROUP',
+                'ID',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'OP')
@@ -481,50 +492,50 @@ class ProductController extends Controller
             ->where('BRAND', 'CPS')
             ->get();
             $owners = Owner::select(
-                'OWNER AS VENDOR',
+                'OWNER',
                 'REMARK',
                 'BRAND')
             ->whereIn('BRAND', ['CPS', 'KM'])
             ->get();
             $grp_ps = Grp_p::select(
-                'GRP_P AS GRP_P',
+                'GRP_P',
                 'REMARK',
                 'BRAND')
                 ->whereIn('BRAND', ['CPS', 'KM'])
             ->get();
             $brand_ps = Brand_p::select(
-                'ID AS BRAND_P',
+                'ID',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
             $solutions = Solution::select(
-                'ID AS SOLUTION',
+                'ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
             $series = Series::select(
-                'ID AS SERIES',
+                'ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
             $categorys = Category::select(
-                'ID AS CATEGORY',
+                'ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
             $sub_categorys = Sub_category::select(
-                'ID AS S_CAT',
+                'ID',
                 'CATEGORY_ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
             $pdms = Pdm::select(
-                'ID AS PDM_GROUP',
+                'ID',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'CPS')
@@ -550,25 +561,25 @@ class ProductController extends Controller
             ->where('BRAND', 'KTY')
             ->get();
             $owners = Owner::select(
-                'OWNER AS VENDOR',
+                'OWNER',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'KTY')
             ->get();
             $grp_ps = Grp_p::select(
-                'GRP_P AS GRP_P',
+                'GRP_P',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'KTY')
             ->get();
             $brand_ps = Brand_p::select(
-                'ID AS BRAND_P',
+                'ID',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'KTY')
             ->get();
             $solutions = Solution::select(
-                'ID AS SOLUTION',
+                'ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'KTY')
@@ -949,7 +960,6 @@ class ProductController extends Controller
                 'OPT_NUM2' => $data->OPT_NUM2,
                 'ACC_TYPE' => $data->ACC_TYPE,
                 'ACC_DT' => $data->ACC_DT,
-                // 'PACKAGE_BOX' => is_null($data->PACKAGE_BOX) ? 'N' : 'Y',
                 'RETURN' => is_null($data->RETURN) ? 'N' : 'Y',
                 'NON_VAT' => is_null($data->NON_VAT) ? 'N' : 'Y',
                 'STORAGE_TEMP' => is_null($data->STORAGE_TEMP) ? 'N' : 'Y',
@@ -1071,7 +1081,6 @@ class ProductController extends Controller
                 'OPT_NUM2' => $data->OPT_NUM2,
                 'ACC_TYPE' => $data->ACC_TYPE,
                 'ACC_DT' => $data->ACC_DT,
-                // 'PACKAGE_BOX' => is_null($data->PACKAGE_BOX) ? 'N' : 'Y',
                 'RETURN' => is_null($data->RETURN) ? 'N' : 'Y',
                 'NON_VAT' => is_null($data->NON_VAT) ? 'N' : 'Y',
                 'STORAGE_TEMP' => is_null($data->STORAGE_TEMP) ? 'N' : 'Y',
@@ -1116,9 +1125,35 @@ class ProductController extends Controller
         $company = substr($request->BRAND, 0, 2);
         $description = substr($request->BRAND, 2, 2);
         $status = $company.' - '.$description;
-        // dd($request->PACK_SIZE1);
         DB::beginTransaction();
         try {
+
+            // dd($request->GRP_P);
+            // if($request->GRP_P) {
+            //     $productCodeMax = Barcode::max('NUMBER');
+            //     if ($request->BRAND == 'RI') {
+            //         $productCodeMax = Barcode::where('COMPANY', '=', 'OP')->where('STATUS', '=', 'RI')->max('NUMBER');
+            //     }
+            //     $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
+            //     $productCode = $productCodeNumber;
+
+            //     $data_BRAND = Barcode::updateOrCreate(['BRAND' => $request->BRAND], [
+            //         'NUMBER' => $productCode
+            //     ]);
+            // }
+            // if($request->GRP_P) {
+            //     $productCodeMax = Document::max('NUMBER');
+            //     if ($request->BRAND == 'RI') {
+            //         $productCodeMax = Document::where('COMPANY', '=', 'OP')->where('STATUS', '=', 'RI')->max('NUMBER');
+            //     }
+            //     $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
+            //     $productCode = $productCodeNumber;
+
+            //     $data_BRAND = Document::updateOrCreate(['BRAND' => $request->BRAND], [
+            //         'NUMBER' => $productCode
+            //     ]);
+            // }
+
             $data_product = [
                 // 'BRAND' => $request->input('BRAND'),
                 'BRAND' => $request->input('BRAND'),
@@ -1173,32 +1208,20 @@ class ProductController extends Controller
                 'OPT_NUM2' => $request->input('OPT_NUM2'),
                 'ACC_TYPE' => $request->input('ACC_TYPE'),
                 'ACC_DT' => $request->input('ACC_DT'),
-                // 'PACKAGE_BOX' => is_null($request->input('PACKAGE_BOX')) ? 'N' : 'Y',
                 'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
                 'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',
                 'STORAGE_TEMP' => is_null($request->input('STORAGE_TEMP')) ? 'N' : 'Y',
                 'CONTROL_STK' => is_null($request->input('CONTROL_STK')) ? 'N' : 'Y',
                 'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
                 'USER_EDIT' => Auth::user()->username,
-                'EDIT_DT' => date("Y/m/d h:i:s")
+                'EDIT_DT' => date("Y/m/d H:i:s")
             ];
-
-            // if ($request) {
-            //     $log = [
-            //         'UPDATE_DT' => date("Y/m/d h:i:s"),
-            //         'USER_UPDATE' => Auth::user()->username
-            //     ];
-
-            //     $data_product_upddate = array_merge($data_product, $log);
-            //     // dd($data_product_upddate);
-            //     $logProductMaster = Product1Log::create($data_product);
-            // }
 
             $productMaster = Product1::create($data_product);
 
             $craeteProductAccount = Account::updateOrCreate(['product' => $productMaster->PRODUCT], [
                 'COST' => $productMaster->COST,
-                'created_at' => date("Y/m/d h:i:s"),
+                'created_at' => date("Y/m/d H:i:s"),
             ]);
 
             // dd($request);
@@ -1306,32 +1329,20 @@ class ProductController extends Controller
                 'OPT_NUM2' => $request->input('OPT_NUM2'),
                 'ACC_TYPE' => $request->input('ACC_TYPE'),
                 'ACC_DT' => $request->input('ACC_DT'),
-                // 'PACKAGE_BOX' => is_null($request->input('PACKAGE_BOX')) ? 'N' : 'Y',
                 'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
                 'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',
                 'STORAGE_TEMP' => is_null($request->input('STORAGE_TEMP')) ? 'N' : 'Y',
                 'CONTROL_STK' => is_null($request->input('CONTROL_STK')) ? 'N' : 'Y',
                 'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
                 'USER_EDIT' => Auth::user()->username,
-                'EDIT_DT' => date("Y/m/d h:i:s")
+                'EDIT_DT' => date("Y/m/d H:i:s")
             ];
-
-            // if ($request) {
-            //     $log = [
-            //         'UPDATE_DT' => date("Y/m/d h:i:s"),
-            //         'USER_UPDATE' => Auth::user()->username
-            //     ];
-
-            //     $data_product_upddate = array_merge($data_product, $log);
-            //     // dd($data_product_upddate);
-            //     $logProductMaster = Product1Log::create($data_product);
-            // }
 
             $productMaster = Product1::create($data_product);
 
             $craeteProductAccount = Account::updateOrCreate(['product' => $productMaster->PRODUCT], [
                 'COST' => $productMaster->COST,
-                'created_at' => date("Y/m/d h:i:s"),
+                'created_at' => date("Y/m/d H:i:s"),
             ]);
             // dd($productMaster);
             DB::commit();
@@ -1800,7 +1811,6 @@ class ProductController extends Controller
                     'OPT_NUM2' => $request->input('OPT_NUM2'),
                     'ACC_TYPE' => $request->input('ACC_TYPE'),
                     'ACC_DT' => $request->input('ACC_DT'),
-                    // 'PACKAGE_BOX' => is_null($request->input('PACKAGE_BOX')) ? 'N' : 'Y',
                     'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
                     'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',
                     'STORAGE_TEMP' => is_null($request->input('STORAGE_TEMP')) ? 'N' : 'Y',
@@ -1888,7 +1898,6 @@ class ProductController extends Controller
                     'OPT_NUM2' => $request->input('OPT_NUM2'),
                     'ACC_TYPE' => $request->input('ACC_TYPE'),
                     'ACC_DT' => $request->input('ACC_DT'),
-                    // 'PACKAGE_BOX' => is_null($request->input('PACKAGE_BOX')) ? 'N' : 'Y',
                     'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
                     'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',
                     'STORAGE_TEMP' => is_null($request->input('STORAGE_TEMP')) ? 'N' : 'Y',
