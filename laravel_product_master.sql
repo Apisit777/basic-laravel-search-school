@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 01, 2024 at 11:04 AM
+-- Generation Time: Nov 12, 2024 at 11:42 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -48,8 +48,41 @@ CREATE TABLE `accounts` (
 --
 
 INSERT INTO `accounts` (`id`, `product`, `cost`, `perfume_tax`, `cost_perfume_tax`, `cost5percent`, `cost10percent`, `cost_other`, `sale_km`, `sale_km20percent`, `sale_km_other`, `created_at`, `updated_at`) VALUES
-(4, '20005', 10.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-29 03:29:05', '2024-10-29 03:48:37'),
-(5, '20006', 100.00, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-29 03:29:44', '2024-10-31 20:44:11');
+(1, '28341', 100.00, 200.00, 300.00, 400.00, 500.00, 600.00, 700.00, 800.00, 900.00, '2024-11-12 07:51:21', '2024-11-12 08:55:35'),
+(2, '28342', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-11-12 10:08:29', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `account_logs`
+--
+
+CREATE TABLE `account_logs` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `product` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `cost` double(8,2) DEFAULT NULL COMMENT 'ต้นทุน',
+  `perfume_tax` double(8,2) DEFAULT NULL COMMENT 'ภาษีน้ำหอม',
+  `cost_perfume_tax` double(8,2) DEFAULT NULL COMMENT 'ต้นทุน + ภาษีน้ำหอม',
+  `cost5percent` double(8,2) DEFAULT NULL COMMENT 'ต้นทุน+5%',
+  `cost10percent` double(8,2) DEFAULT NULL COMMENT 'ต้นทุน+10%',
+  `cost_other` double(8,2) DEFAULT NULL COMMENT ' ต้นทุน+อื่นๆ',
+  `sale_km` double(8,2) DEFAULT NULL COMMENT 'ราคาขาย KM',
+  `sale_km20percent` double(8,2) DEFAULT NULL COMMENT 'ราคาขาย KM + 20%',
+  `sale_km_other` double(8,2) DEFAULT NULL COMMENT 'ราคาขาย KM+อื่นๆ',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `UPDATE_DT` timestamp NULL DEFAULT NULL,
+  `USER_UPDATE` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `account_logs`
+--
+
+INSERT INTO `account_logs` (`id`, `product`, `cost`, `perfume_tax`, `cost_perfume_tax`, `cost5percent`, `cost10percent`, `cost_other`, `sale_km`, `sale_km20percent`, `sale_km_other`, `created_at`, `updated_at`, `UPDATE_DT`, `USER_UPDATE`) VALUES
+(1, '28341', 100.00, 200.00, 300.00, 400.00, 500.00, 600.00, 700.00, 800.00, 900.00, '2024-11-12 07:51:21', '2024-11-12 08:43:35', '2024-11-12 08:52:43', '00d751'),
+(2, '28341', 100.00, 200.00, 300.00, 400.00, 500.00, 600.00, 700.00, 800.00, 900.00, NULL, NULL, '2024-11-12 08:54:19', '00d751'),
+(3, '28341', 100.00, 200.00, 300.00, 400.00, 500.00, 600.00, 700.00, 800.00, 900.00, NULL, NULL, '2024-11-12 08:55:35', '00d751');
 
 -- --------------------------------------------------------
 
@@ -91,10 +124,11 @@ CREATE TABLE `barcodes` (
 --
 
 INSERT INTO `barcodes` (`ID`, `COMPANY`, `BRAND`, `B_CODE`, `NUMBER`, `REMARK`, `STATUS`) VALUES
-(1, 'OP', 'OP', '88500802', 8, '', 'OP'),
-(3, 'OP', 'RI', '88500802', 9008, 'Brand Ri En', 'RI'),
-(5, 'CPS', 'CPS', '88500807', 3, '0', 'CPS'),
-(11, 'KTY', 'KTY', '885008011', 2, '', 'KTY');
+(1, 'OP', 'OP', '88500802', 8443, '', 'OP'),
+(3, 'OP', 'RI', '88500802', 9034, 'Brand Ri En', 'RI'),
+(5, 'CPS', 'CPS', '88500807', 0, '0', 'CPS'),
+(11, 'KTY', 'KTY', '885008011', 0, '', 'KTY'),
+(12, 'OP', 'CM', '88500802', 9700, '', 'CM');
 
 -- --------------------------------------------------------
 
@@ -638,10 +672,10 @@ CREATE TABLE `documents` (
 --
 
 INSERT INTO `documents` (`COMPANY`, `BRAND`, `DOC_TP`, `DOC_NO`, `NUMBER`, `FIELD`, `DOC_ST`, `REMARK`, `REMARK_EDIT`, `STATUS`) VALUES
-('CPS', 'CPS', 'NPD', 'NCP', 3, '', 1, '', '', 'CPS'),
-('KTY', 'KTY', 'NPD', 'NKTY', 9009, '', 0, '', '', 'KTY'),
-('OP', 'OP', 'NPD', 'NOP', 24, '', 0, 'new product op (20)', '', 'OP'),
-('OP', 'RI', 'NPD', 'NRI', 9008, '', 0, 'new product ri (29)', '', 'RI');
+('CPS', 'CPS', 'NPD', 'NCP', 0, '', 1, '', '', 'CPS'),
+('KTY', 'KTY', 'NPD', 'NKTY', 0, '', 0, '', '', 'KTY'),
+('OP', 'OP', 'NPD', 'NOP', 2, '', 0, 'new product op (20)', '', 'OP'),
+('OP', 'RI', 'NPD', 'NRI', 9001, '', 0, 'new product ri (29)', '', 'RI');
 
 -- --------------------------------------------------------
 
@@ -674,13 +708,6 @@ CREATE TABLE `food` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
---
--- Dumping data for table `food`
---
-
-INSERT INTO `food` (`id`, `path`, `name`, `price`, `created_at`, `updated_at`) VALUES
-(1, 'uploads/warehouse/2024/11/img_6724862bee8a8.png', NULL, NULL, NULL, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -690,7 +717,7 @@ INSERT INTO `food` (`id`, `path`, `name`, `price`, `created_at`, `updated_at`) V
 CREATE TABLE `grp_ps` (
   `GRP_P` varchar(10) NOT NULL DEFAULT '',
   `REMARK` varchar(50) NOT NULL DEFAULT '',
-  `BRAND` varchar(10) DEFAULT NULL
+  `BRAND` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -759,7 +786,8 @@ INSERT INTO `master_brands` (`ID`, `BRAND`, `BRAND_NAME`, `REMARK`, `UPDATED_BY`
 (4, 'BB', '', '', NULL),
 (5, 'LL', '', '', NULL),
 (6, 'KTY', '', '', NULL),
-(7, 'GNC', '', '', NULL);
+(7, 'GNC', '', '', NULL),
+(8, 'CM', '', '', NULL);
 
 -- --------------------------------------------------------
 
@@ -840,16 +868,15 @@ INSERT INTO `menu_relations` (`id`, `position_id`, `menu_id`, `submenu_id`, `vie
 (222, 1, 9, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (223, 1, 9, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (224, 1, 9, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(225, 6, 5, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(226, 6, 5, 9, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (229, 3, 6, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (230, 1, 6, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (232, 26, 6, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 (233, 6, 6, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(234, 6, 9, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(235, 6, 9, 1, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(236, 6, 9, 2, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-(237, 6, 9, 3, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+(238, 21, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(239, 7, 4, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(240, 7, 6, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(242, 6, 5, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+(243, 6, 5, 9, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1008,16 +1035,21 @@ INSERT INTO `npd_textures` (`ID`, `DESCRIPTION`) VALUES
 
 CREATE TABLE `owners` (
   `OWNER` varchar(10) NOT NULL DEFAULT '',
-  `REMARK` varchar(50) NOT NULL DEFAULT ''
+  `REMARK` varchar(50) NOT NULL DEFAULT '',
+  `BRAND` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `owners`
 --
 
-INSERT INTO `owners` (`OWNER`, `REMARK`) VALUES
-('KM', 'KM INTERLAB'),
-('OP', 'ORIENTAL PRINCESS');
+INSERT INTO `owners` (`OWNER`, `REMARK`, `BRAND`) VALUES
+('BB', 'BISOUS BISOUS', 'BB'),
+('CPS', 'CUTE PRESS', 'CPS'),
+('KM', 'KM INTERLAB', 'KM'),
+('KSHOP', 'Social Foundation', 'KTY'),
+('LL', 'LALIL', 'LL'),
+('OP', 'ORIENTAL PRINCESS', 'OP');
 
 -- --------------------------------------------------------
 
@@ -1039,19 +1071,35 @@ CREATE TABLE `password_reset_tokens` (
 
 CREATE TABLE `pdms` (
   `ID` varchar(10) NOT NULL DEFAULT '',
-  `REMARK` varchar(50) NOT NULL DEFAULT ''
+  `REMARK` varchar(50) NOT NULL DEFAULT '',
+  `BRAND` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `pdms`
 --
 
-INSERT INTO `pdms` (`ID`, `REMARK`) VALUES
-('99999', 'No Define'),
-('G0001', 'Make up PDM'),
-('G0002', 'Skincare PDM'),
-('G0003', 'B&B, Hair care and Fragrance PDM'),
-('G0004', 'Household PDM');
+INSERT INTO `pdms` (`ID`, `REMARK`, `BRAND`) VALUES
+('99999', 'No Define', ''),
+('G0001', 'Make up PDM', 'BB'),
+('G0001', 'Make up PDM', 'CPS'),
+('G0001', 'Make up PDM', 'LL'),
+('G0001', 'Make up PDM', 'OP'),
+('G0002', 'Skincare PDM', 'BB'),
+('G0002', 'Skincare PDM', 'CPS'),
+('G0002', 'Skincare PDM', 'LL'),
+('G0002', 'Skincare PDM', 'OP'),
+('G0003', 'B&B, Hair care and Fragrance PDM', 'BB'),
+('G0003', 'B&B, Hair care and Fragrance PDM', 'CPS'),
+('G0003', 'B&B, Hair care and Fragrance PDM', 'LL'),
+('G0003', 'B&B, Hair care and Fragrance PDM', 'OP'),
+('G0004', 'Household PDM', 'BB'),
+('G0004', 'Household PDM', 'CPS'),
+('G0004', 'Household PDM', 'LL'),
+('G0004', 'Household PDM', 'OP'),
+('G0005', 'Dietary Supplement ', 'BB'),
+('G0005', 'Dietary Supplement ', 'CPS'),
+('G0005', 'Dietary Supplement ', 'LL');
 
 -- --------------------------------------------------------
 
@@ -1167,7 +1215,8 @@ INSERT INTO `personal_access_tokens` (`id`, `tokenable_type`, `tokenable_id`, `n
 (88, 'App\\Models\\User', 36, 'main', '00020004b5fdee81209e0dc2d7624508abe3ab75a78e91f056fbb386b1f8a638', '[\"*\"]', NULL, NULL, '2024-09-20 06:57:15', '2024-09-20 06:57:15'),
 (89, 'App\\Models\\User', 36, 'main', '2f74f7449f542a2d1cfdbd8702faa0b106117bf4e7498f91c5dd51a191c161d7', '[\"*\"]', NULL, NULL, '2024-09-20 07:00:16', '2024-09-20 07:00:16'),
 (90, 'App\\Models\\User', 36, 'main', '294e18408ca4d564db9fde0e8476d43b5218884a83b6a9043ea01d17ce2aaac8', '[\"*\"]', NULL, NULL, '2024-09-20 07:00:46', '2024-09-20 07:00:46'),
-(91, 'App\\Models\\User', 36, 'main', 'c81a6ee2c202a26fe006468e3f5f12f53973ebaef16a8ffe5abcda696b66f155', '[\"*\"]', NULL, NULL, '2024-09-20 07:01:41', '2024-09-20 07:01:41');
+(91, 'App\\Models\\User', 36, 'main', 'c81a6ee2c202a26fe006468e3f5f12f53973ebaef16a8ffe5abcda696b66f155', '[\"*\"]', NULL, NULL, '2024-09-20 07:01:41', '2024-09-20 07:01:41'),
+(92, 'App\\Models\\User', 21, 'productMastertoken', '8918f7cc81f145bfb845c808ba19e03b372769cae44f382699b73730c707b6a6', '[\"*\"]', NULL, NULL, '2024-11-07 03:02:30', '2024-11-07 03:02:30');
 
 -- --------------------------------------------------------
 
@@ -1196,10 +1245,9 @@ INSERT INTO `positions` (`id`, `name_position`, `brand`, `created_by`, `updated_
 (4, 'Category - OP', 'OP', NULL, NULL, NULL, NULL),
 (5, 'Product - OP', 'OP', NULL, NULL, NULL, NULL),
 (6, 'E-Commerce - OP', 'OP', NULL, NULL, NULL, NULL),
-(7, 'Marketing - CPS', 'CP', NULL, NULL, NULL, NULL),
+(7, 'Marketing - CPS', 'CPS', NULL, NULL, NULL, NULL),
 (8, 'Admin', NULL, NULL, NULL, NULL, NULL),
-(21, 'Procurement - KTY', 'KTY', NULL, NULL, NULL, NULL),
-(23, 'E-Commerce - OP', 'OP', NULL, NULL, NULL, NULL);
+(21, 'Procurement - KTY', 'KTY', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -1294,20 +1342,88 @@ CREATE TABLE `product1s` (
 --
 
 INSERT INTO `product1s` (`BRAND`, `PRODUCT`, `BARCODE`, `COLOR`, `GRP_P`, `SUPPLIER`, `NAME_THAI`, `NAME_ENG`, `SHORT_THAI`, `SHORT_ENG`, `VENDOR`, `PRICE`, `COST`, `UNIT`, `UNIT_Q`, `SOLUTION`, `SERIES`, `CATEGORY`, `NON_VAT`, `STATUS`, `S_CAT`, `PDM_GROUP`, `BRAND_P`, `REGISTER`, `CONDITION_SALE`, `WHOLE_SALE`, `GP`, `RETURN`, `O_PRODUCT`, `BAR_PACK1`, `BAR_PACK2`, `BAR_PACK3`, `BAR_PACK4`, `PACK_SIZE1`, `PACK_SIZE2`, `PACK_SIZE3`, `PACK_SIZE4`, `REG_DATE`, `AGE`, `STORAGE_TEMP`, `WIDTH`, `HEIGHT`, `WIDE`, `NAME_EXP`, `NET_WEIGHT`, `UNIT_TYPE`, `TYPE_G`, `CONTROL_STK`, `TESTER`, `OPT_DATE1`, `OPT_DATE2`, `OPT_TXT1`, `OPT_TXT2`, `OPT_NUM1`, `OPT_NUM2`, `ACC_TYPE`, `ACC_DT`, `USER_EDIT`, `EDIT_DT`) VALUES
-('KTY', '11001', '8850080110012', NULL, 'BD', '5050', 'ครีมกันแดด', 'ครีมกันแดด', NULL, NULL, 'OP', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-22 10:24:46', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '62', NULL),
-('KTY', '11002', '8850080110029', NULL, 'BD', '5050', 'สบู่มะขาม', 'สบู่มะขาม', NULL, NULL, 'KM', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-24 01:54:16', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '62', NULL),
-('OP', '20001', '8850080200010', NULL, 'OP', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', NULL, 500.00, NULL, NULL, '99999', NULL, '99999', 'Y', NULL, NULL, NULL, NULL, 'XX-X-XXXXXXXXXX', NULL, 100.00, NULL, 'Y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-25 02:46:51', '1', 'Y', NULL, NULL, NULL, NULL, NULL, NULL, '01', 'Y', 'Y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '71', NULL),
-('OP', '20002', '8850080200027', 'Yellow', 'OP', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-10 08:30:13', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
-('OP', '20003', '8850080200034', 'Yellow', 'OP', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-10 08:32:23', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
-('OP', '20004', '8850080200041', 'Yellow', 'OP', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-10 08:36:57', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
-('OP', '20005', '8850080200058', NULL, 'OP', '5050', 'ENERGISING TONIC', 'ENERGISING TONIC', 'ENERGISING TONIC', 'ENERGISING TONIC', 'OP', NULL, 10.00, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-29 10:37:21', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL),
-('OP', '20006', '8850080200065', NULL, 'OP', '5050', 'REVITALISING SHAMPOO', 'REVITALISING SHAMPOO', 'REVITALISING SHAMPOO', 'REVITALISING SHAMPOO', 'OP', NULL, 100.00, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-29 10:37:37', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL),
-('OP', '20007', '8850080200072', NULL, 'OP', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', NULL, 500.00, NULL, NULL, '99999', NULL, '99999', 'Y', NULL, NULL, NULL, NULL, 'XX-X-XXXXXXXXXX', NULL, 100.00, NULL, 'Y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-30 02:20:20', '1', 'Y', NULL, NULL, NULL, NULL, NULL, NULL, '01', 'Y', 'Y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL),
-('OP', '29001', '8850080290011', 'Yellow', 'RE', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-13 08:15:27', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
-('OP', '29002', '8850080290028', 'Yellow', 'RE', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-13 08:17:27', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
-('CPS', '70001', '8850080700015', 'Yellow', 'CM', '7162', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์ต.ค.44(กาดสวนแก้ว)', 'ค่าโทรศัพท์', 'Value', 'KM', 2326.92, 100.00, '1', 100.00, '99999', '99999', '99999', 'Y', '', '', '', '', 'XX-X-XXXXXXXXXX', '', 100.00, 0.00, 'Y', '', '', '', '', '', 0, 0, 0, 0, '2024-09-13 08:35:03', '1', 'Y', 1.00, 1.00, 1.00, '', 1.00, '', '01', 'Y', 'Y', '1900-01-01 00:00:00', '1900-01-01 00:00:00', '', '', 0.00, 0.00, '', '1900-01-01 00:00:00', '32', '2005-12-24 00:00:00'),
-('KM', 'NPD0000002', 'NPD0000001', NULL, 'OP', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'E', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-07 03:05:56', NULL, 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL),
-('KM', 'NPD0000003', 'NPD0000003', NULL, 'OP', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Y', 'E', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2024-10-30 02:32:20', NULL, 'Y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Y', 'Y', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '32', NULL);
+('OP', '28341', '8850080283419', NULL, 'OP', '5050', NULL, NULL, NULL, NULL, 'OP', NULL, 100.00, 'กระป๋อง', NULL, '80001', '80001', '80001', 'N', 'A', 'Bag', 'G0001', NULL, NULL, 'C', NULL, NULL, 'N', NULL, NULL, NULL, NULL, NULL, 3, 6, 9, 12, '2024-11-12 02:51:21', NULL, 'N', NULL, NULL, NULL, NULL, NULL, '1', '01', 'N', 'N', NULL, NULL, NULL, NULL, NULL, NULL, '80004', NULL, '00d751', '2024-11-12 02:51:21'),
+('OP', '28342', '8850080283426', NULL, 'CM', '5050', 'ชื่อภาษาไทย3', 'ชื่อภาษาอังกฤษ3', 'ชื่อย่อภาษาไทย3', 'ชื่อย่อภาษาอังกฤษ3', 'OP', 4.00, 0.00, 'กระป๋อง', 5.00, '80001', '80001', '80001', 'N', 'A', 'Bag', 'G0001', NULL, '3', 'C', 2.00, 6.00, 'N', NULL, NULL, NULL, NULL, NULL, 3, 6, 9, 12, '2024-11-12 05:13:14', '1', 'N', 1.00, 3.00, 2.00, NULL, NULL, '1', '01', 'N', 'N', NULL, NULL, '4', NULL, NULL, NULL, '80004', NULL, '00d751', '2024-11-12 17:13:14');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product1_logs`
+--
+
+CREATE TABLE `product1_logs` (
+  `ID` int(11) NOT NULL,
+  `BRAND` varchar(10) DEFAULT NULL,
+  `PRODUCT` varchar(15) NOT NULL,
+  `BARCODE` varchar(15) NOT NULL,
+  `COLOR` varchar(50) DEFAULT NULL,
+  `GRP_P` varchar(10) DEFAULT NULL,
+  `SUPPLIER` varchar(15) DEFAULT NULL,
+  `NAME_THAI` varchar(70) DEFAULT NULL,
+  `NAME_ENG` varchar(70) DEFAULT NULL,
+  `SHORT_THAI` varchar(70) DEFAULT NULL,
+  `SHORT_ENG` varchar(70) DEFAULT '',
+  `VENDOR` varchar(10) DEFAULT NULL,
+  `PRICE` decimal(8,2) DEFAULT NULL,
+  `COST` decimal(8,2) DEFAULT NULL,
+  `UNIT` varchar(20) DEFAULT NULL,
+  `UNIT_Q` decimal(8,2) DEFAULT NULL,
+  `SOLUTION` varchar(10) DEFAULT NULL,
+  `SERIES` varchar(10) DEFAULT NULL,
+  `CATEGORY` varchar(10) DEFAULT NULL,
+  `NON_VAT` varchar(1) DEFAULT NULL,
+  `STATUS` varchar(10) DEFAULT NULL,
+  `S_CAT` varchar(10) DEFAULT NULL,
+  `PDM_GROUP` varchar(10) DEFAULT NULL,
+  `BRAND_P` varchar(10) DEFAULT NULL,
+  `REGISTER` varchar(20) DEFAULT NULL,
+  `CONDITION_SALE` varchar(2) DEFAULT NULL,
+  `WHOLE_SALE` decimal(8,2) DEFAULT NULL,
+  `GP` decimal(8,2) DEFAULT NULL,
+  `RETURN` varchar(1) DEFAULT NULL,
+  `O_PRODUCT` varchar(15) DEFAULT NULL,
+  `BAR_PACK1` varchar(15) DEFAULT NULL,
+  `BAR_PACK2` varchar(15) DEFAULT NULL,
+  `BAR_PACK3` varchar(15) DEFAULT NULL,
+  `BAR_PACK4` varchar(15) DEFAULT NULL,
+  `PACK_SIZE1` decimal(5,0) DEFAULT NULL,
+  `PACK_SIZE2` decimal(5,0) DEFAULT NULL,
+  `PACK_SIZE3` decimal(5,0) DEFAULT NULL,
+  `PACK_SIZE4` decimal(5,0) DEFAULT NULL,
+  `REG_DATE` datetime DEFAULT NULL,
+  `AGE` varchar(20) DEFAULT NULL,
+  `STORAGE_TEMP` varchar(1) DEFAULT NULL,
+  `WIDTH` decimal(5,2) DEFAULT NULL,
+  `HEIGHT` decimal(5,2) DEFAULT NULL,
+  `WIDE` decimal(5,2) DEFAULT NULL,
+  `NAME_EXP` varchar(100) DEFAULT NULL,
+  `NET_WEIGHT` decimal(12,2) DEFAULT NULL,
+  `UNIT_TYPE` varchar(20) DEFAULT NULL,
+  `TYPE_G` varchar(2) DEFAULT NULL,
+  `CONTROL_STK` varchar(1) DEFAULT NULL,
+  `TESTER` varchar(1) DEFAULT NULL,
+  `OPT_DATE1` datetime DEFAULT NULL,
+  `OPT_DATE2` datetime DEFAULT NULL,
+  `OPT_TXT1` varchar(50) DEFAULT NULL,
+  `OPT_TXT2` varchar(50) DEFAULT NULL,
+  `OPT_NUM1` decimal(15,2) DEFAULT NULL,
+  `OPT_NUM2` decimal(15,2) DEFAULT NULL,
+  `ACC_TYPE` varchar(10) DEFAULT NULL,
+  `ACC_DT` datetime DEFAULT NULL,
+  `USER_EDIT` varchar(15) DEFAULT NULL,
+  `EDIT_DT` datetime DEFAULT NULL,
+  `UPDATE_DT` datetime DEFAULT NULL,
+  `USER_UPDATE` varchar(15) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product1_logs`
+--
+
+INSERT INTO `product1_logs` (`ID`, `BRAND`, `PRODUCT`, `BARCODE`, `COLOR`, `GRP_P`, `SUPPLIER`, `NAME_THAI`, `NAME_ENG`, `SHORT_THAI`, `SHORT_ENG`, `VENDOR`, `PRICE`, `COST`, `UNIT`, `UNIT_Q`, `SOLUTION`, `SERIES`, `CATEGORY`, `NON_VAT`, `STATUS`, `S_CAT`, `PDM_GROUP`, `BRAND_P`, `REGISTER`, `CONDITION_SALE`, `WHOLE_SALE`, `GP`, `RETURN`, `O_PRODUCT`, `BAR_PACK1`, `BAR_PACK2`, `BAR_PACK3`, `BAR_PACK4`, `PACK_SIZE1`, `PACK_SIZE2`, `PACK_SIZE3`, `PACK_SIZE4`, `REG_DATE`, `AGE`, `STORAGE_TEMP`, `WIDTH`, `HEIGHT`, `WIDE`, `NAME_EXP`, `NET_WEIGHT`, `UNIT_TYPE`, `TYPE_G`, `CONTROL_STK`, `TESTER`, `OPT_DATE1`, `OPT_DATE2`, `OPT_TXT1`, `OPT_TXT2`, `OPT_NUM1`, `OPT_NUM2`, `ACC_TYPE`, `ACC_DT`, `USER_EDIT`, `EDIT_DT`, `UPDATE_DT`, `USER_UPDATE`) VALUES
+(1, 'OP', '28342', '8850080283426', NULL, 'CM', '5050', 'ชื่อภาษาไทย', 'ชื่อภาษาอังกฤษ', 'ชื่อย่อภาษาไทย', 'ชื่อย่อภาษาอังกฤษ', 'OP', 4.00, NULL, 'กระป๋อง', 5.00, '80001', '80001', '80001', 'N', 'A', 'Bag', 'G0001', NULL, '3', 'C', 2.00, 6.00, 'N', NULL, NULL, NULL, NULL, NULL, 3, 6, 9, 12, '2024-11-12 05:08:29', '1', 'N', 1.00, 3.00, 2.00, NULL, NULL, '1', '01', 'N', 'N', NULL, NULL, '4', NULL, NULL, NULL, '80004', NULL, '00d751', '2024-11-12 05:08:29', '2024-11-12 17:10:08', '00d751'),
+(2, 'OP', '28342', '8850080283426', NULL, 'CM', '5050', 'ชื่อภาษาไทย', 'ชื่อภาษาอังกฤษ', 'ชื่อย่อภาษาไทย', 'ชื่อย่อภาษาอังกฤษ', 'OP', 4.00, 0.00, 'กระป๋อง', 5.00, '80001', '80001', '80001', 'N', 'A', 'Bag', 'G0001', NULL, '3', 'C', 2.00, 6.00, 'N', NULL, NULL, NULL, NULL, NULL, 3, 6, 9, 12, '2024-11-12 05:10:08', '1', 'N', 1.00, 3.00, 2.00, NULL, NULL, '1', '01', 'N', 'N', NULL, NULL, '4', NULL, NULL, NULL, '80004', NULL, '00d751', '2024-11-12 17:10:08', '2024-11-12 17:11:32', '00d751'),
+(3, 'OP', '28342', '8850080283426', NULL, 'CM', '5050', 'ชื่อภาษาไทย2', 'ชื่อภาษาอังกฤษ2', 'ชื่อย่อภาษาไทย2', 'ชื่อย่อภาษาอังกฤษ2', 'OP', 4.00, 0.00, 'กระป๋อง', 5.00, '80001', '80001', '80001', 'N', 'A', 'Bag', 'G0001', NULL, '3', 'C', 2.00, 6.00, 'N', NULL, NULL, NULL, NULL, NULL, 3, 6, 9, 12, '2024-11-12 05:11:32', '1', 'N', 1.00, 3.00, 2.00, NULL, NULL, '1', '01', 'N', 'N', NULL, NULL, '4', NULL, NULL, NULL, '80004', NULL, 'x', '2024-11-12 17:11:32', '2024-11-12 17:13:14', '00d751');
 
 -- --------------------------------------------------------
 
@@ -1362,24 +1478,8 @@ CREATE TABLE `product_channels` (
 --
 
 INSERT INTO `product_channels` (`ID`, `PRODUCT`, `BRAND`, `UPDATED_BY`, `UPDATED_AT`) VALUES
-(1, '11001', 'BB', '004742', '2024-10-17 17:30:30'),
-(2, '11001', 'CPS', '004742', '2024-10-17 17:30:30'),
-(3, '11001', 'GNC', '004742', '2024-10-17 17:30:30'),
-(4, '11001', 'KM', '004742', '2024-10-17 17:30:30'),
-(5, '11001', 'KTY', '004742', '2024-10-17 17:30:30'),
-(6, '11001', 'LL', '004742', '2024-10-17 17:30:30'),
-(17, '11001', 'OP', '004742', '2024-10-17 17:30:30'),
-(18, '11002', 'BB', '004742', '2024-10-24 13:54:16'),
-(19, '11002', 'CPS', '004742', '2024-10-24 13:54:16'),
-(20, '11002', 'GNC', '004742', '2024-10-24 13:54:16'),
-(21, '11002', 'KM', '004742', '2024-10-24 13:54:16'),
-(22, '11002', 'KTY', '004742', '2024-10-24 13:54:16'),
-(23, '11002', 'LL', '004742', '2024-10-24 13:54:16'),
-(24, '11002', 'OP', '004742', '2024-10-24 13:54:16'),
-(25, '20001', 'OP', '00d751', '2024-10-24 13:54:16'),
-(26, '20006', 'OP', '00d751', '2024-10-28 11:02:40'),
-(27, '20008', 'OP', '00d751', '2024-10-28 17:12:05'),
-(28, '20005', 'OP', '00d751', '2024-10-29 10:29:05');
+(1, '28341', 'OP', '00d751', '2024-11-12 14:51:21'),
+(2, '28342', 'OP', '00d751', '2024-11-12 17:08:29');
 
 -- --------------------------------------------------------
 
@@ -1463,27 +1563,249 @@ CREATE TABLE `pro_develops` (
 --
 
 INSERT INTO `pro_develops` (`BRAND`, `DOC_NO`, `REF_DOC`, `REVISE_NO`, `EDIT_DT`, `USER_EDIT`, `STATUS`, `REMARK_ST`, `CUST_OEM`, `JOB_REFNO`, `DOC_DT`, `NPD`, `PDM`, `NAME_ENG`, `PRODUCT`, `BARCODE`, `CATEGORY`, `CAPACITY`, `Q_SMELL`, `Q_COLOR`, `TARGET_GRP`, `TARGET_STK`, `PRICE_FG`, `PRICE_COST`, `PRICE_BULK`, `P_CONCEPT`, `P_BENEFIT`, `TEXTURE`, `TEXTURE_OT`, `COLOR1`, `COLOR2`, `COLOR3`, `FRANGRANCE`, `INGREDIENT`, `STD`, `PK`, `OTHER`, `DOCUMENT`, `FIRST_ORD`, `OEM`, `REASON1`, `REASON1_DES`, `REASON2`, `REASON2_DES`, `REASON3`, `REASON3_DES`, `REF_COLOR`, `REF_FRAGRANCE`, `OEM_STD`, `PACKAGE_BOX`) VALUES
-('KTY', NULL, 'IBH-F155', 0, '2024-10-17 00:00:00', '62', '', '', NULL, NULL, '2024-10-17', '002', '001', NULL, '11001', '8850080110012', '001', NULL, NULL, NULL, NULL, '2024-10-17', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'Y', '', 'Y', NULL, 'Y', NULL, NULL, NULL, NULL, '1'),
-('KTY', NULL, 'IBH-F155', 0, '2024-10-18 00:00:00', '62', '', '', NULL, NULL, '2024-10-18', '002', '001', NULL, '11002', '8850080110029', '001', NULL, NULL, NULL, NULL, '2024-10-18', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', '', 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL),
-('OP', '', 'IBH-F155', 0, '2024-09-03 03:35:49', '26', 'OP', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '20001', '8850080200010', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('OP', '', 'IBH-F155', 0, '2024-09-10 08:29:02', '32', 'OP', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '20002', '8850080200027', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('OP', '', 'IBH-F155', 0, '2024-09-10 08:29:14', '32', 'OP', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '20003', '8850080200034', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('OP', '', 'IBH-F155', 0, '2024-09-10 08:29:21', '32', 'OP', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '20004', '8850080200041', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('OP', '', 'IBH-F155', 0, '2024-09-10 08:30:32', '32', 'OP', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '20005', '8850080200058', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('OP', NULL, 'IBH-F155', 0, '2024-10-21 00:00:00', '32', '', '', NULL, NULL, '2024-10-21', '002', '001', NULL, '20006', '8850080200065', '001', NULL, NULL, NULL, NULL, '2024-10-21', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', '', 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL),
-('OP', NULL, 'IBH-F155', 0, '2024-10-29 00:00:00', '32', '', '', NULL, NULL, '2024-10-29', '002', '001', NULL, '20007', '8850080200072', '001', NULL, NULL, NULL, NULL, '2024-10-29', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', '', 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL),
-('OP', NULL, 'IBH-F155', 0, '2024-10-29 00:00:00', '32', '', '', NULL, NULL, '2024-10-29', '002', '001', NULL, '20008', '8850080200089', '001', NULL, NULL, NULL, NULL, '2024-10-29', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', '', 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL),
-('Ri', '', 'IBH-F155', 0, '2024-09-06 10:19:28', '32', 'Ri', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '29001', '8850080290011', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('Ri', '', 'IBH-F155', 0, '2024-09-10 08:30:55', '32', 'Ri', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '29002', '8850080290028', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('Ri', '', 'IBH-F155', 0, '2024-09-10 08:30:59', '32', 'Ri', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '29003', '8850080290035', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('Ri', '', 'IBH-F155', 0, '2024-09-10 08:31:05', '32', 'Ri', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '29004', '8850080290042', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('Ri', '', 'IBH-F155', 0, '2024-09-10 08:31:25', '32', 'Ri', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '29005', '8850080290059', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('Ri', '', 'IBH-F155', 0, '2024-09-17 10:53:00', '32', 'Ri', '', '2', '2', '2024-08-21', '002', '001', 'OP Cuticle Hair Treatment 1', '29006', '8850080290066', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('RI', NULL, 'IBH-F155', 0, '2024-09-17 00:00:00', '32', 'RI', '', NULL, NULL, '2024-09-17', '002', '001', NULL, '29007', '8850080290073', '001', NULL, NULL, NULL, NULL, '2024-09-17', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', '', 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL),
-('RI', NULL, 'IBH-F155', 0, '2024-10-25 00:00:00', '32', '', '', NULL, NULL, '2024-10-25', NULL, NULL, NULL, '29008', '8850080290080', NULL, NULL, NULL, NULL, NULL, '2024-10-25', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', '', 'N', NULL, 'N', NULL, NULL, NULL, NULL, NULL),
-('CPS', '', 'IBH-F155', 0, '2024-09-12 02:32:35', '32', 'CP', '', '2', '2', '2024-08-21', '002', '001', 'CP Cuticle Hair Treatment 1', '70001', '8850080700015', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('CPS', '', 'IBH-F155', 0, '2024-09-17 10:53:38', '25', 'CP', '', '2', '2', '2024-08-21', '002', '001', 'CP Cuticle Hair Treatment 1', '70002', '8850080700022', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL),
-('CPS', '', 'IBH-F155', 0, '2024-09-17 10:53:49', '25', 'CP', '', '2', '2', '2024-08-21', '002', '001', 'CP Cuticle Hair Treatment 1', '70003', '8850080700039', '001', '2', 2.00, 2.00, '2', '2024-08-21', '2', '2', '2', '2 คุณค่าใน 1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '1 เดียว ด้วยสีทาปากสูตรน้ําเพิ่มสีสันสดใส พร้อมลิปกลอสเนื้อเนียนนุ่มเพิ่มความชุ่มช่ําอิมเอิบแก่ ริมฝีปาก', '001', '2', '2', '', '', '2', '2', '2', '2', '2', '2', 2, 'Y', 'Y', '', 'Y', '2', 'Y', '2', '2', '2', '2', NULL);
+('OP', 'OP00005086', '001', 11, '2024-03-26 00:00:00', 'intira', '', '', '', '-', '2024-03-22', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Beauty Botanical Body Lotion', '28341', '8850080283419', 'Body', '400', 1.00, 1.00, '', '2024-03-22', '', '', '', 'สินค้าปiระกอบ New Year Set 2025', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005087', '001', 11, '2024-03-22 00:00:00', 'intira', '', '', '', '-', '2024-03-22', 'Intira Klaewban', 'Apaiporn Srisook', 'Smoothing & Nourishing Hand Cream SPF15', '28342', '8850080283426', 'Personal Care', '75', 1.00, 1.00, '', '2024-03-22', '', '', '', 'สินค้าประกอบ New Year Set 2025', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005088', '001', 11, '2024-03-22 00:00:00', 'intira', '', '', '', '-', '2024-03-22', 'Intira Klaewban', 'Apaiporn Srisook', 'Oreintal Princess New Year Bag 2025', '28343', '8850080283433', 'Other', '0', 0.00, 0.00, '', '2024-03-22', '', '', '', 'กระเป๋าปีใหม่ 2025', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005089', '001', 11, '2024-04-09 00:00:00', 'intira', '', '', '', '-', '2024-04-09', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Juicy Glow Lip Oil No.01', '28344', '8850080283440', 'Make Up', '6.5', 1.00, 1.00, '', '2005-11-29', '', '', '', 'FG จาก Cosmax', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005090', '001', 11, '2024-04-09 00:00:00', 'intira', '', '', '', '-', '2024-04-09', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Juicy Glow Lip Oil No.02', '28345', '8850080283457', 'Make Up', '6.5', 1.00, 1.00, '', '2024-04-09', '', '', '', 'FG จาก Cosmax', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005091', '001', 11, '2024-04-09 00:00:00', 'intira', '', '', '', '-', '2024-04-09', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Juicy Glow Lip Oil No.03', '28346', '8850080283464', 'Make Up', '6.5', 1.00, 1.00, '', '2024-04-09', '', '', '', 'FG จาก Cosmax', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005092', '001', 11, '2024-04-09 00:00:00', 'intira', '', '', '', '-', '2024-04-09', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Juicy Glow Lip Oil No.04', '28347', '8850080283471', 'Make Up', '6.5', 1.00, 1.00, '', '2024-04-09', '', '', '', 'FG จาก Cosmax', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005093', '001', 11, '2024-04-09 00:00:00', 'intira', '', '', '', '-', '2024-04-09', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Juicy Glow Lip Oil No.05', '28348', '8850080283488', 'Make Up', '6.5', 1.00, 1.00, '', '2024-04-09', '', '', '', 'FG จาก Cosmax', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005094', 'F155', 11, '2024-04-11 00:00:00', '00c648', '', '', '', 'F155', '2024-11-04', 'Pinyamon Seekaw', '', 'OP.Natural Acne Care Treatment Serum Sachet 5 ml.', '28349', '8850080283495', '', '5 ml.', 0.00, 0.00, '', '2024-01-09', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005095', '001', 11, '2024-04-23 00:00:00', 'intira', '', '', 'Oriental Princess Beneficial Make Off Soothing Cleansing Milk', '-', '2024-04-23', 'Intira Klaewban', 'Apaiporn Srisook', '', '28350', '8850080283501', 'Make Up', '150 ml', 1.00, 1.00, '18', '2005-11-29', '', '', '', 'สินค้าปรับสูตร Clean Beauty', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005095', '001', 11, '2024-05-13 00:00:00', '00d668', '', '', '', '-', '2024-05-13', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP Princess Garden Oriental White Flower Shower & Bath Cream - SET A', '28351', '8850080283518', 'Toiletries', '100', 1.00, 1.00, '', '2024-12-01', '', '', '', 'Holiday Set A', '', '', '', '', '', '', '', '', '', '', '', '', 3000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005096', '001', 11, '2024-05-13 00:00:00', '00d668', '', '', '', '-', '2024-05-13', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP Princess Garden Oriental White Flower Body Moisturiser SPF10 -SET A', '28352', '8850080283525', 'Body', '100', 1.00, 1.00, '', '2024-12-01', '', '', '', 'Holliday Set A', '', '', '', '', '', '', '', '', '', '', '', '', 3000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005097', '001', 11, '2024-05-13 00:00:00', '00d668', '', '', 'OP', '-', '2024-05-13', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP Oriental White Flower Anti-Perspirant/Deodorant - SET A', '28353', '8850080283532', 'Body', '70 ml', 1.00, 1.00, '', '2024-12-01', '', '', '', 'Holliday Set A', '', '', '', '', '', '', '', '', '', '', '', '', 3000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005098', '001', 11, '2024-05-13 00:00:00', '00d668', '', '', '', '-', '2024-05-13', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP Story of Happiness Forever Bright Hair Cologne Spray - SET B', '28354', '8850080283549', 'Hair', '100 ml', 1.00, 1.00, '', '2024-12-01', '', '', '', 'Holiday Set B', '', '', '', '', '', '', '', '', '', '', '', '', 3000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005099', '001', 11, '2024-05-13 00:00:00', '00d668', '', '', '', '-', '2024-05-13', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP Story of Happiness Forever Bright Body Cologne Spray - Set B', '28355', '8850080283556', 'Body', '100 ml', 1.00, 1.00, '', '2024-12-01', '', '', '', 'Holiday Set B', '', '', '', '', '', '', '', '', '', '', '', '', 3000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005100', '001', 11, '2024-05-13 00:00:00', '00d668', '', '', '', '-', '2024-05-13', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP Rhythms of Nature Sweet Blossom Linen Mist - SET B', '28356', '8850080283563', 'Other', '50 ml', 1.00, 1.00, '', '2024-12-01', '', '', '', 'Holiday Set B', '', '', '', '', '', '', '', '', '', '', '', '', 3000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005101', '001', 11, '2024-05-13 00:00:00', '00d668', '', '', '', '-', '2024-05-13', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP Bikini Care Perfect Lightening Cream - SET C', '28357', '8850080283570', 'Body', '50 G', 1.00, 1.00, '', '2024-12-01', '', '', '', 'Holiday Set C', '', '', '', '', '', '', '', '', '', '', '', '', 3000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005102', '001', 11, '2024-05-13 00:00:00', '00d668', '', '', '', '-', '2024-05-13', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP Underarm Care Pure White Secret Cream Enriched Formula - SET C', '28358', '8850080283587', 'Body', '50 G', 1.00, 1.00, '', '2024-12-01', '', '', '', 'Holiday Set C', '', '', '', '', '', '', '', '', '', '', '', '', 3000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005103', '001', 11, '2024-05-13 00:00:00', '00d668', '', '', '', '-', '2024-05-13', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP Foot Care & Knee Care Knee Care Whitening Knee Cream - SET C', '28359', '8850080283594', 'Body', '50 G', 1.00, 1.00, '', '2024-12-01', '', '', '', 'Holiday Set C', '', '', '', '', '', '', '', '', '', '', '', '', 3000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005104', '001', 11, '2024-05-13 00:00:00', '00d668', '', '', '', '-', '2024-05-13', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP Tropical Nutrients Peach Shampoo - SET D', '28360', '8850080283600', 'Hair', '100 ml', 1.00, 1.00, '', '2024-12-01', '', '', '', 'Holiday Set D', '', '', '', '', '', '', '', '', '', '', '', '', 3000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005105', '001', 11, '2024-05-13 00:00:00', '00d668', '', '', '', '-', '2024-05-13', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP Tropical Nutrients Peach Hair Treatment - SET D', '28361', '8850080283617', 'Hair', '100 ml', 1.00, 1.00, '', '2024-12-01', '', '', '', 'Holiday Set D', '', '', '', '', '', '', '', '', '', '', '', '', 3000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005106', '001', 11, '2024-05-13 00:00:00', '00d668', '', '', '', '-', '2024-05-13', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP Tropical Nutrients Peach Leave on Serum - SET D', '28362', '8850080283624', 'Hair', '95 ml', 1.00, 1.00, '', '2024-12-01', '', '', '', 'Holiday Set D', '', '', '', '', '', '', '', '', '', '', '', '', 3000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005107', '001', 11, '2024-05-13 00:00:00', '00d668', '', '', '', 'OP/IBHS/NP027/67', '2024-05-13', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP Holiday Set A BOX', '28363', '8850080283631', 'Other', '0', 0.00, 0.00, '', '2024-12-01', '', '', '', 'Holiday Set A BOX', '', '', '', '', '', '', '', '', '', '', '', '', 3000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005108', '001', 11, '2024-05-13 00:00:00', '00d668', '', '', '', 'OP/IBHS/NP028/67', '2024-05-13', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP Holiday Set B BOX', '28364', '8850080283648', 'Other', '0', 0.00, 0.00, '', '2024-12-01', '', '', '', 'Holiday Set B BOX', '', '', '', '', '', '', '', '', '', '', '', '', 3000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005109', '001', 11, '2024-05-13 00:00:00', '00d668', '', '', '', 'OP/IBHS/NP029/67', '2024-05-13', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP Holiday Set C BOX', '28365', '8850080283655', 'Other', '0', 0.00, 0.00, '', '2024-12-01', '', '', '', 'Holiday Set C BOX', '', '', '', '', '', '', '', '', '', '', '', '', 3000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005110', '001', 11, '2024-05-13 00:00:00', '00d668', '', '', '', 'OP/IBHS/NP030/67', '2024-05-13', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP Holiday Set D BOX', '28366', '8850080283662', 'Other', '0', 0.00, 0.00, '', '2024-12-01', '', '', '', 'Holiday Set D BOX', '', '', '', '', '', '', '', '', '', '', '', '', 3000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005111', '001', 11, '2024-05-21 00:00:00', 'intira', '', '', '', '-', '2024-05-21', 'Intira Klaewban', 'Apaiporn Srisook', 'Orietnal Princess Beneficial Soft Matte Lipstick No.01', '28367', '8850080283679', 'Make Up', '4 g.', 1.00, 1.00, '', '2024-10-01', '', '', '', 'FG from Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005112', '001', 11, '2024-05-21 00:00:00', 'intira', '', '', '', '-', '2024-05-21', 'Intira Klaewban', 'Apaiporn Srisook', 'Orietnal Princess Beneficial Soft Matte Lipstick No.02', '28368', '8850080283686', 'Make Up', '4 g.', 1.00, 1.00, '', '2024-05-21', '', '', '', 'FG from Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005113', '001', 11, '2024-05-21 00:00:00', 'intira', '', '', '', '-', '2024-05-21', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Soft Matte Lipstick No.03', '28369', '8850080283693', 'Make Up', '4 g.', 1.00, 1.00, '', '2005-11-29', '', '', '', 'FG from Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005114', '001', 11, '2024-05-21 00:00:00', 'intira', '', '', '', '-', '2024-05-21', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Soft Matte Lipstick No.04', '28370', '8850080283709', 'Make Up', '4 g.', 1.00, 1.00, '', '2024-05-21', '', '', '', 'FG from Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005115', '001', 11, '2024-05-21 00:00:00', 'intira', '', '', '', '-', '2024-05-21', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Soft Matte Lipstick No.05', '28371', '8850080283716', 'Make Up', '4 g.', 1.00, 1.00, '', '2024-05-21', '', '', '', 'FG from Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005116', '001', 11, '2024-05-21 00:00:00', 'intira', '', '', '', '-', '2024-05-21', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Soft Matte Lipstick No.06', '28372', '8850080283723', 'Make Up', '4 g.', 1.00, 1.00, '', '2024-05-21', '', '', '', 'FG from Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005117', '001', 11, '2024-05-21 00:00:00', 'intira', '', '', '', '-', '2024-05-21', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Soft Matte Lipstick No.07', '28373', '8850080283730', 'Make Up', '4 g.', 1.00, 1.00, '', '2024-05-21', '', '', '', 'FG from Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005118', '001', 11, '2024-05-21 00:00:00', 'intira', '', '', '', '-', '2024-05-21', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Soft Matte Lipstick No.08', '28374', '8850080283747', 'Make Up', '4 g.', 1.00, 1.00, '', '2024-05-21', '', '', '', 'FG from Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005119', '001', 11, '2024-05-21 00:00:00', 'intira', '', '', '', '-', '2024-05-21', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Soft Matte Lipstick No.09', '28375', '8850080283754', 'Make Up', '4 g.', 1.00, 1.00, '', '2024-05-21', '', '', '', 'FG from Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005120', '001', 11, '2024-05-21 00:00:00', 'intira', '', '', '', '-', '2024-05-21', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Soft Matte Lipstick No.10', '28376', '8850080283761', 'Make Up', '4 g.', 1.00, 1.00, '', '2024-05-21', '', '', '', 'FG from Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005122', '1', 11, '2024-06-17 00:00:00', '00c648', '', '', '', '1', '2024-06-17', 'Pinyamon Seekaw', 'Apaiporn Srisook', '๊Ultimate Renewal Serum Sachet Set 3pcs.', '28377', '8850080283778', '', '', 0.00, 0.00, '', '2005-11-29', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005123', '2', 11, '2024-06-17 00:00:00', '00c648', '', '', '', '2', '2024-06-17', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'OP.Natural Sunscreen Ultimate UV For Face Sachet Set 3 pcs.', '28378', '8850080283785', '', '', 0.00, 0.00, '', '2024-06-17', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005124', '001', 11, '2024-06-28 00:00:00', 'intira', '', '', '', '-', '2024-06-28', 'Intira Klaewban', 'Apaiporn Srisook', 'Beneficial Twinkle Eyeshadow Stick No.01', '28379', '8850080283792', 'Make Up', '0', 1.00, 2.00, '18', '2005-11-29', '', '', '', 'Semi จาก Seupplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005125', '001', 11, '2024-06-28 00:00:00', 'intira', '', '', '', '-', '2024-06-28', 'Intira Klaewban', 'Apaiporn Srisook', 'Beneficial Twinkle Eyeshadow Stick No.02', '28380', '8850080283808', 'Make Up', '0', 1.00, 2.00, '18', '2024-06-28', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005126', '001', 11, '2024-06-28 00:00:00', 'intira', '', '', '', '-', '2024-06-28', 'Intira Klaewban', 'Apaiporn Srisook', 'Beneficial Twinkle Eyeshadow Stick No.03', '28381', '8850080283815', 'Make Up', '0', 1.00, 2.00, '18', '2024-06-28', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005127', '001', 11, '2024-06-28 00:00:00', 'intira', '', '', '', '-', '2024-06-28', 'Intira Klaewban', 'Apaiporn Srisook', 'Beneficial Cleansing Blam', '28382', '8850080283822', 'Make Up', '150', 1.00, 1.00, '', '2024-06-28', '', '', '', 'FG from Cosmax', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005128', '001', 11, '2024-06-28 00:00:00', 'intira', '', '', '', '-', '2024-06-28', 'Intira Klaewban', 'Apaiporn Srisook', 'Beneficial Cleansing Gel', '28383', '8850080283839', 'Make Up', '150', 1.00, 1.00, '18', '2024-06-28', '', '', '', 'FG from Cosmax', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005129', '001', 11, '2024-06-28 00:00:00', 'intira', '', '', '', '-', '2024-06-28', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Radiance-boosting face base', '28384', '8850080283846', 'Make Up', '30', 1.00, 1.00, '18', '2024-06-28', '', '', '', 'Semi from Eyesome', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005130', '001', 11, '2024-07-05 00:00:00', 'intira', '', '', '', '-', '2024-07-05', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Liquid Matte Lipstick No.01', '28385', '8850080283853', 'Make Up', '0', 1.00, 1.00, '18', '2005-11-29', '', '', '', 'FG from Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005131', '001', 11, '2024-07-05 00:00:00', 'intira', '', '', '', '-', '2024-07-05', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Liquid Matte Lipstick No.02', '28386', '8850080283860', 'Make Up', '0', 0.00, 0.00, '18', '2024-07-05', '', '', '', 'FG from Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005132', '001', 11, '2024-07-05 00:00:00', 'intira', '', '', '', '-', '2024-07-05', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Liquid Matte Lipstick No.03', '28387', '8850080283877', 'Make Up', '0', 1.00, 1.00, '18', '2024-07-05', '', '', '', 'Fg from supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005133', '001', 11, '2024-07-05 00:00:00', 'intira', '', '', '', '-', '2024-07-05', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Liquid Matte Lipstick No.04', '28388', '8850080283884', 'Make Up', '0', 1.00, 1.00, '18', '2024-07-05', '', '', '', 'FG from Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005134', '001', 11, '2024-07-05 00:00:00', 'intira', '', '', '', '-', '2024-07-05', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Liquid Matte Lipstick No.05', '28389', '8850080283891', 'Make Up', '0', 1.00, 1.00, '18', '2024-07-05', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005135', '001', 11, '2024-07-05 00:00:00', 'intira', '', '', '', '-', '2024-07-05', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Liquid Matte Lipstick No.06', '28390', '8850080283907', 'Make Up', '0', 1.00, 1.00, '18', '2024-07-05', '', '', '', 'FG From Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005136', '001', 11, '2024-07-09 00:00:00', 'intira', '', '', '', '-', '2024-07-09', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Touchless Matte Cushion No.01', '28391', '8850080283914', 'Make Up', '15', 1.00, 1.00, '18', '2005-11-29', '', '', '', 'FG from cosmax', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005137', '00', 11, '2024-07-09 00:00:00', 'intira', '', '', '', '-', '2024-07-09', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess Beneficial Touchless Matte Cushion No.02', '28392', '8850080283921', 'Make Up', '15', 1.00, 1.00, '18', '2024-07-09', '', '', '', 'FG from Cosmzx', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005138', 'F-155', 11, '2024-07-24 00:00:00', '00d668', '', '', '', 'OP/IBHS/NP032/67', '2024-07-18', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'Natural Acne Care Acne Spot Cream', '28393', '8850080283938', 'Face', '', 0.00, 0.00, '18', '2024-07-19', '', '', '', 'อ้างอิงเนื้อสินค้า 24248 - Skin Solution Complex Anti Acne Spot Cream\r\n+ INNO ACNE CLEAR : (Inno SI1 Clove + Bicelles PS)**Just for Claim\r\n', '24248 - Skin Solution Complex Anti Acne Spot Cream\r\n+INNO ACNE CLEAR : (Inno SI1 Clove + Bicelles PS)\r\nอ้างอิง  คุณสมบัติสินค้า 24248 - Skin Solution Complex Anti Acne Spot Cream\r\n+ INNO ACNE CLEAR : (Inno SI1 Clove + Bicelles PS)**Just for Claim', 'Cream', '', '', '', '', '', 'ส่วนผสม สินค้า 24248 - Skin Solution Complex Anti Acne Spot Cream\r\n+ INNO ACNE CLEAR : (Inno SI1 Clove + Bicelles PS)**Just for Claim', '24248 - Skin Solution Complex Anti Acne Spot Cream', 'อ้างอิง PK สินค้า 24248 - Skin Solution Complex Anti Acne Spot Cream', '', '', 20000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005139', '-', 11, '2024-07-18 00:00:00', '00d668', '', '', 'Cosmax', '-', '2024-07-18', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'Intense Series : 21% NIACINOL (B3) Serum', '28394', '8850080283945', 'Face', '30', 0.00, 0.00, '18-45', '2024-12-16', '995', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 20000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005140', '-', 11, '2024-07-18 00:00:00', '00d668', '', '', 'Cosmax', '-', '2024-07-18', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'Intense Series : Blemish BYE&BI (PHA) Serum', '28395', '8850080283952', 'Face', '30', 0.00, 0.00, '18-45', '2024-12-16', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 20000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005141', 'F-155', 11, '2024-07-24 00:00:00', '00d668', '', '', '', 'OP/IBHS/NP033/67', '2024-07-24', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'Kissy Fruity Lip Care Pamegranate', '28396', '8850080283969', 'Face', '6.5 g.', 1.00, 1.00, '', '2025-02-01', '', '', '', 'อ้างอิง\r\nPRODUCT CODE		:  3-3OP380734 (25546)\r\nJOB REFFERENCE NO     	:  CSOP-65047\r\nPRODUCT NAME          	:  OP. JUICE FRUITY LIP CARE - POMEGRANATE (CLEAN 3-3OP380232)\r\nAPPEARANCE             	:  DARK PURPLE LIP CARE\r\nCATEGORY                  	:   LIP CARE\r\n', '', 'Other', '', '', '', '', '', '', '', '', '', '', 20000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005142', 'F-155', 11, '2024-07-24 00:00:00', '00d668', '', '', '', 'OP/IBHS/NP034/67', '2024-07-24', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'Kissy  Fruity Lip Care Strawberry', '28397', '8850080283976', 'Face', '6.5 g.', 1.00, 1.00, '', '2025-02-01', '', '', '', 'อ้างอิง\r\nPRODUCT CODE             :    3-3OP380735 (25548)\r\nJOB REFFERENCE NO       :    CSOP-65048\r\nPRODUCT NAME             :    OP. JUICE FRUITY LIP CARE STRAWBERRY (CLEAN 3-3OP380189)\r\nAPPEARANCE                  :    ORANGE RED\r\nCATEGORY                     :    LIP CARE	\r\n', '', '', '', '', '', '', '', '', '', '', '', '', 20000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005143', 'F-155', 11, '2024-07-24 00:00:00', '00d668', '', '', '', 'OP/IBHS/NP035/67', '2024-07-24', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'Kissy  Fruity Lip Care Cherry', '28398', '8850080283983', 'Face', '6.5 g.', 1.00, 1.00, '', '2025-02-01', '', '', '', 'อ้างอิง\r\nPRODUCT CODE            :    3-3OP380733 (25549)\r\nJOB REFFERENCE NO      :    CSOP-65046\r\nPRODUCT NAME            :    OP. JUICE FRUITY LIP CARE - CHERRY  (CLEAN 3-3OP380438)\r\nAPPEARANCE                 :    PURPLE LIP CARE\r\nCATEGORY                    :     LIP CARE\r\n', '', 'Other', '', '', '', '', '', '', '', '', '', '', 20000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005144', 'F-155', 11, '2024-07-24 00:00:00', '00d668', '', '', '', 'OP/IBHS/NP036/67', '2024-07-24', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'Kissy  Fruity Lip Care Mulberry', '28399', '8850080283990', 'Face', '6.5 g.', 1.00, 1.00, '', '2025-02-01', '', '', '', 'อ้างอิง\r\nPRODUCT CODE            :    3-3OP380738 (25738)\r\nJOB REFFERENCE NO      :    CSOP-65051\r\nPRODUCT NAME            :    OP. JUICE FRUITY LIP CARE MUL BERRY  (CLEAN 3-3OP380604)\r\nAPPEARANCE                 :    PURPLE LIP CARE\r\nCATEGORY                    :    LIP CARE	\r\n', '', 'Other', '', '', '', '', '', '', '', '', '', '', 20000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005145', 'F-155', 11, '2024-07-24 00:00:00', '00d668', '', '', '', 'OP/IBHS/NP037/67', '2024-07-24', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'Kissy  Fruity Lip Care Goji Berry', '28400', '8850080284003', 'Other', '6.5 g.', 1.00, 1.00, '', '2025-02-01', '', '', '', 'อ้างอิง\r\nPRODUCT CODE            :    3-3OP380737 (25739)\r\nJOB REFFERENCE NO      :    CSOP-65050\r\nPRODUCT NAME            :    OP. JUICE FRUITY LIP CARE GOJI BERRY (CLEAN 3-3OP380609)\r\nAPPEARANCE                 :    PEACH LIP CARE\r\nCATEGORY                    :    LIP CARE	\r\n', '', 'Other', '', '', '', '', '', '', '', '', '', '', 20000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005146', '001', 11, '2024-08-06 00:00:00', '00c648', '', '', '', '-', '2024-06-08', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'For MEN Secret Code EDT Reformula Clean', '28401', '8850080284010', 'Toiletries', '50 ml', 1.00, 1.00, '', '2025-08-01', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 30000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005147', '001', 11, '2024-08-14 00:00:00', '00c648', '', '', '', '-', '2024-08-14', '', '', 'OP.Naturally Ageless Cream Sachet with cap 5 g.', '28402', '8850080284027', '', '', 0.00, 0.00, '', '2005-11-29', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005148', '002', 11, '2024-08-15 00:00:00', '00c648', '', '', '', '-', '2024-08-14', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'OP. RED Night Moisturiser Sachet with Cap 5 g.', '28403', '8850080284034', '', '5 g', 0.00, 0.00, '', '2024-08-14', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005149', '003', 11, '2024-08-15 00:00:00', '00c648', '', '', '', '-', '2024-08-14', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'OP. Lumino Perfecting White Day Cream SPF 20 Sachet with cap 5 g.', '28404', '8850080284041', '', '5g.', 0.00, 0.00, '', '2024-08-14', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005150', '001', 11, '2024-08-19 00:00:00', '00d668', '', '', 'Blencos Korea', '-', '2024-08-19', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP. Golden Eye Patch', '28405', '8850080284058', 'Face', '', 1.00, 1.00, '', '2005-11-29', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 20000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005151', 'OP/IBHS/NP038/67', 11, '2024-08-20 00:00:00', '00c648', '', '', '', 'OP/IBHS/NP038/67', '2024-08-20', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'Story Of Happiness Blooming Violet  Body Cologne Spray', '28406', '8850080284065', 'Other', '100 ml.', 1.00, 1.00, '18 ปีขึ้นไป', '2025-07-01', '', '', '120.-/kg', 'โคโลญจน์หอมกรุ่นสำหรับผิวกาย เพิ่มความมั่นใจด้วยไอหอมสดชื่นยาวนานตลอดวัน ด้วยกลิ่นขายดีอย่าง Blooming Violet \r\nมาสู่ผลิตภัณฑ์ประเภทโคโลญจน์ เติมเต็มความสุขให้ทุกวันด้วยพลังจากธรรมชาติและดอกไม้นานาพันธุ์ โดยสารสกัดที่ใช้ มี Story และสื่อถึง Oriental \r\nโดยพัฒนาภายใต้ Concept OP Clean Beauty', 'พร่างพรมผิวกายให้หอมกรุ่น เพิ่มความมั่นใจด้วยกลิ่นหอมจากดอกไม้นานาพันธุ์', 'Other', 'ของเหลว', 'ใสไม่มีสี', '', '', 'ใช้กลิ่นเดียวกับ Oriental Beauty Blooming Violet', 'สารสกัดร่วมชุด Story of Happiness Body Cologne Spray', 'Story of Happiness Body Cologne Spray', 'ขวดพลาสติกร่วมชุดกับ Story of Happiness', '', '', 96000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005152', 'OP/IBHS/NP039/67', 11, '2024-08-20 00:00:00', '00c648', '', '', '', 'OP/IBHS/NP039/67', '2024-08-20', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'Story Of Happiness Blooming Violet  Hair Cologne Spray', '28407', '8850080284072', 'Personal Care', '100 ml', 1.00, 1.00, '18 ปีขึ้นไป', '2025-07-01', '', '', '120.-/kg', 'โคโลญจน์หอมกรุ่นสำหรับเส้นผม เพิ่มความมั่นใจด้วยไอหอมสดชื่นยาวนานตลอดวัน ด้วยกลิ่นขายดีอย่าง Blooming Violet \r\nมาสู่ผลิตภัณฑ์ประเภทโคโลญจน์ เติมเต็มความสุขให้ทุกวันด้วยพลังจากธรรมชาติและดอกไม้นานาพันธุ์ โดยสารสกัดที่ใช้ มี Story และสื่อถึง Oriental \r\nโดยพัฒนาภายใต้ Concept OP Clean Beauty', '• ปกป้องเส้นผมจากมลภาวะ\r\n• ลดปัญหากลิ่นที่ไม่พึงประสงค์\r\n• มอบกลิ่นหอมสดชื่นให้แก่เส้นผม', 'Other', 'ของเหลว', 'ใสไม่มีสี', '', '', 'ใช้กลิ่นร่วมกับ Oriental Beauty Blooming Violet', 'สารสกัดร่วมชุดกับ Story of Happiness Hair Cologne Spray', 'Story of Happiness Hair Cologne Spray', 'ขวดพลาสติกใช่ร่วมชุด Story of Happiness Hair Cologne Spray', '', '', 120000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005155', '001', 11, '2024-08-26 00:00:00', '00d668', '', '', 'Stellar Beauty Taiwan', '-', '2024-08-26', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP. Firming and Lifting Face Mask (Limited)', '28408', '8850080284089', 'Face', '25 ml', 1.00, 1.00, '18', '2024-12-01', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 806000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005160', 'OP/IBHS/NP040/67', 11, '2024-08-27 00:00:00', '00c648', '', '', '', 'OP/IBHS/NP040/67', '2024-08-27', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'Princess Garden Sweet Peony  Body Shimmering Moisturiser with SPF10', '28409', '8850080284096', 'Body', '250', 1.00, 1.00, '18 ปีขึ้นไป', '2025-08-01', '', '', '100 THB/KG', 'Perfumed Lotion บำรุงเข้มข้นสำหรับผิวกาย เนื้อบางเบาสบายผิว ซึมซาบได้ไว ไม่เหนียวเหนอะหนะ กลิ่นหอมฟุ้งตั้งแต่ครั้งแรกที่ได้ใช้ เทคโนโลยี Encapsulation Perfume ที่กักเก็บน้ำหอมเข้มข้นระดับพรีเมียม ที่ช่วยปลดปล่อยกลิ่นหอมออกมาอย่างช้า อย่างต่อเนื่อง ให้กลิ่นหอมตืดทนผิว ได้ยาวนานสูงสุดถึง 8 ชั่วโมง พร้อมให้ความชุ่มชื่นทันทีกับผิวด้วย HYA และ Ceramide ที่พบได้ในผิวตามธรรมชาติ ช่วยรักษาความชุ่มชื่นของผิวได้ยาวนานถึง 12 ชั่วโมง พร้อมด้วยสารสกัดจากธรรมชาติ Oriental Natural จากดินแดนตะวันออก ที่่ช่วยผสานคุณค่าการบำรุงผิวได้อย่างมีประสิทธิภาพ และช่วยปกป้องผิวจากมลภาวะภายนอก ให้ผิวแลดูเปล่งปลั่งสุขภาพดี', '1. โลชั่นน้ำหอมเข้มข้นสูตรพรีเมี่ยม ด้วยเทคโนโลยี Encapsulation Perfume กักเก็บความหอมยาวนาน กรุ่นกลิ่นไอความหอมจากดอกไม้ดินแดนตะวันออก\r\n2. บำรุงผิวกาย สัมผัสเบา นุ่มละเอียดดุจแพรไหม ซึมซาบหมดจดรวดเร็ว เพื่อผิวเนียนนุ่มละมุน\r\n3. สูตร Reef Safe & Clean Beauty\r\n4. ช่วยเติมความชุ่มชื่น ให้แก่ผิวด้วย HYA และ Ceramide ที่พบได้ในผิวตามธรรมชาติ ช่วยรักษาความชุ่มชื่น ของผิวได้ยาวนานสูงสุดถึง 12ชั่วโมง', 'Lotion', '', 'ชิมเมอร์ชมพู', '', '', 'กลิ่นร่วมชุด OP.PG.Sweet peony', 'สารสกัดร่วมชุด OP.PG.Sweet peony', 'Victoria Secret Shimmer Fragrance Lotion', 'PET 250 ml มีสี', 'long lasting (smell 8 hrs+moisture 12 hrs), 90% preference test', '', 20000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005161', 'OP/IBHS/NP041/67', 11, '2024-08-27 00:00:00', '00c648', '', '', '', 'OP/IBHS/NP041/67', '2024-08-27', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'Princess Garden Gardenia Body Shimmering Moisturiser with SPF10', '28410', '8850080284102', 'Body', '250 ml', 1.00, 1.00, '18 ปีขึ้นไป', '2025-08-01', '', '', '100.-/kg', 'Perfumed Lotion บำรุงเข้มข้นสำหรับผิวกาย เนื้อบางเบาสบายผิว ซึมซาบได้ไว ไม่เหนียวเหนอะหนะ กลิ่นหอมฟุ้งตั้งแต่ครั้งแรกที่ได้ใช้ เทคโนโลยี Encapsulation Perfume ที่กักเก็บน้ำหอมเข้มข้นระดับพรีเมียม ที่ช่วยปลดปล่อยกลิ่นหอมออกมาอย่างช้า อย่างต่อเนื่อง ให้กลิ่นหอมตืดทนผิว ได้ยาวนานสูงสุดถึง 8 ชั่วโมง พร้อมให้ความชุ่มชื่นทันทีกับผิวด้วย HYA และ Ceramide ที่พบได้ในผิวตามธรรมชาติ ช่วยรักษาความชุ่มชื่นของผิวได้ยาวนานถึง 12 ชั่วโมง พร้อมด้วยสารสกัดจากธรรมชาติ Oriental Natural จากดินแดนตะวันออก ที่่ช่วยผสานคุณค่าการบำรุงผิวได้อย่างมีประสิทธิภาพ และช่วยปกป้องผิวจากมลภาวะภายนอก ให้ผิวแลดูเปล่งปลั่งสุขภาพดี', '1. โลชั่นน้ำหอมเข้มข้นสูตรพรีเมี่ยม ด้วยเทคโนโลยี Encapsulation Perfume กักเก็บความหอมยาวนาน กรุ่นกลิ่นไอความหอมจากดอกไม้ดินแดนตะวันออก\r\n2. บำรุงผิวกาย สัมผัสเบา นุ่มละเอียดดุจแพรไหม ซึมซาบหมดจดรวดเร็ว เพื่อผิวเนียนนุ่มละมุน\r\n3. สูตร Reef Safe & Clean Beauty\r\n4. ช่วยเติมความชุ่มชื่น ให้แก่ผิวด้วย HYA และ Ceramide ที่พบได้ในผิวตามธรรมชาติ ช่วยรักษาความชุ่มชื่น ของผิวได้ยาวนานสูงสุดถึง 12ชั่วโมง', 'Lotion', '', 'ชิมเมอร์สีทอง', '', '', 'น้ำหอมร่วม PG.Gardenia', 'สารสกัดร่วม PG.Gardenia', 'Victoria Secret Shimmer Fragrance Lotion', 'ขวด PET 250ml มีสี', 'long lasting (smell 8 hrs+moisture 12 hrs), 90% preference test', '', 20000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005158', 'OP/IBHS/NP042/67', 11, '2024-08-27 00:00:00', '00c648', '', '', '', 'OP/IBHS/NP042/67', '2024-08-27', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'Princess Garden Sweet Peony  Shimmering shower & Bath cream', '28411', '8850080284119', 'Body', '250 ml', 1.00, 1.00, '18 ปีขึ้นไป', '2025-08-01', '', '', '55.-/kg', 'ครีมอาบน้ำกลิ่นหอมฟุ้งตั้งแต่แรกที่สัมผัส ช่วยเติมความชุ่มชื่นกระปรี้กระเปร่า ดุจดอกไม้ผลิบานในยามเช้า ไม่ทำให้ผิวแห้งกร้าน ไม่ทำลายน้ำหล่อเลี้ยงผิว ช่วยให้ผิวนุ่มเนียนตั้งแต่ครั้งแรกที่ใช้ ด้วยสารสกัดจากธรรมชาติที่มาจากดินแดนตะวันออก ฟองนุ่มฟูดุจวิปครีม ล้างออกง่าย  พร้อมมอบกลิ่นหอมติดผิวยาวนานยิ่งขึ้น ด้วยนวัตกรรม Encapsulation Fragrance ช่วยกักเก็บและกระจายกลิ่นหอมได้ยาวนานสูงสุด 8 ชม.', '1.เจลอาบน้ำกลิ่นหอมสดใส เติมความกระปรี้กระเปร่าดุจดอกไม้ผลิบานทุกครั้งที่อาบน้ำ\r\n2.ทำความสะอาดอย่างอ่อนโยน ด้วยคุณสมบัติ  Gentle to skin พร้อมคุณค่าบำรุงสารสกัดจากธรรมชาติ\r\n3.กักเก็บความชุ่มชื่นของผิวไม่แห้งกร้านยาวนาน 12 ชม.\r\n4.ปราศจาก SLS/SLES ไม่ก่อให้เกิดการแพ้หรือการระคายเคืองต่อผิว\r\n5.กลิ่นหอมติดทนบนผิวยาวนานสูงสุด 8 ชม. ด้วยเทคโนโลยี Encapsulation ที่กักเก็บความหอม และช่วยกระจายกลิ่นหอมออกมาอย่างต่อเนื่อง \r\n6. พัฒนาภายใต้ Concept Clean Beauty', 'Gel', '', 'Shimmer สีชมพู', '', '', 'กลิ่นร่วมชุด Princess Garden Sweet Peony', 'สารสกัดร่วมชุด Princess Garden Sweet Peony', 'ฺBath and Body works A Thousand Wishes Bubble Bath', 'ขวด PET มีสี', 'long lasting (smell 8 hrs+moisture 12 hrs), 90% Preference Test', '', 20000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005159', 'OP/IBHS/NP043/67', 11, '2024-08-27 00:00:00', '00c648', '', '', '', 'OP/IBHS/NP043/67', '2024-08-27', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'Princess Garden Gardenia Shimmering shower & Bath cream', '28412', '8850080284126', 'Body', '250 ml.', 1.00, 1.00, '18 ปีขึ้นไป', '2025-08-01', '', '', '55 .-/KG', 'ครีมอาบน้ำกลิ่นหอมฟุ้งตั้งแต่แรกที่สัมผัส ช่วยเติมความชุ่มชื่นกระปรี้กระเปร่า ดุจดอกไม้ผลิบานในยามเช้า ไม่ทำให้ผิวแห้งกร้าน ไม่ทำลายน้ำหล่อเลี้ยงผิว ช่วยให้ผิวนุ่มเนียนตั้งแต่ครั้งแรกที่ใช้ ด้วยสารสกัดจากธรรมชาติที่มาจากดินแดนตะวันออก ฟองนุ่มฟูดุจวิปครีม ล้างออกง่าย  พร้อมมอบกลิ่นหอมติดผิวยาวนานยิ่งขึ้น ด้วยนวัตกรรม Encapsulation Fragrance ช่วยกักเก็บและกระจายกลิ่นหอมได้ยาวนานสูงสุด 8 ชม.', '1.เจลอาบน้ำกลิ่นหอมสดใส เติมความกระปรี้กระเปร่าดุจดอกไม้ผลิบานทุกครั้งที่อาบน้ำ\r\n2.ทำความสะอาดอย่างอ่อนโยน ด้วยคุณสมบัติ  Gentle to skin พร้อมคุณค่าบำรุงสารสกัดจากธรรมชาติ\r\n3.กักเก็บความชุ่มชื่นของผิวไม่แห้งกร้านยาวนาน 12 ชม.\r\n4.ปราศจาก SLS/SLES ไม่ก่อให้เกิดการแพ้หรือการระคายเคืองต่อผิว\r\n5.กลิ่นหอมติดทนบนผิวยาวนานสูงสุด 8 ชม. ด้วยเทคโนโลยี Encapsulation ที่กักเก็บความหอม และช่วยกระจายกลิ่นหอมออกมาอย่างต่อเนื่อง \r\n6. พัฒนาภายใต้ Concept Clean Beauty', 'Gel', '', 'Shimmer สีทอง', '', '', 'ร่วมชุด Princess Gargen Gardenia', 'สารสกัดร่วมชุด Princess Gargen Gardenia', 'Bath and Body Works A Thousand Wishes Bubble Bath', 'ขวด PET มีสี', 'long lasting (smell 8 hrs+moisture 12 hrs), 90% Preference Test', '', 20000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005162', '001', 11, '2024-09-03 00:00:00', '00d668', '', '', 'JoyLife Korea', '-', '2024-09-03', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP. Cica Toner pad', '28413', '8850080284133', 'Face', '', 1.00, 1.00, '18', '2024-12-01', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005163', '001', 11, '2024-09-03 00:00:00', '00d668', '', '', 'Joylife Korea', '-', '2024-09-03', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP Brightening Toner Pad', '28414', '8850080284140', 'Face', '', 1.00, 1.00, '18', '2024-12-01', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005164', '001', 11, '2024-09-03 00:00:00', '00d668', '', '', 'KM', '-', '2024-09-03', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP. Keep Beautiful Iconic Set 2025', '28415', '8850080284157', 'Other', '6', 1.00, 1.00, '', '2025-02-15', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005165', '001', 11, '2024-09-10 00:00:00', 'intira', '', '', '', '-', '2024-09-10', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental  Princess x Yoon Eye & Cheek Palteet No.01', '28416', '8850080284164', 'Make Up', '0', 1.00, 5.00, '18', '2005-11-29', '', '', '', 'Linmited FG จาก Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005166', '001', 11, '2024-09-10 00:00:00', 'intira', '', '', '', '-', '2024-09-10', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess x Yoon .Lip Palette No.01', '28417', '8850080284171', 'Make Up', '0', 1.00, 5.00, '18', '2024-09-10', '', '', '', 'Limited FG  จาก Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005167', '001', 11, '2024-09-10 00:00:00', 'intira', '', '', '', '-', '2024-09-10', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess X Yoon. Body Perfumed 1', '28418', '8850080284188', 'Make Up', '0', 1.00, 5.00, '18', '2024-09-10', '', '', '', 'Limited FG จาก Supllier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005168', '001', 11, '2024-09-10 00:00:00', 'intira', '', '', '', '-', '2024-09-10', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess X Yoon .Bag 1', '28419', '8850080284195', 'Make Up', '1', 1.00, 1.00, '18', '2024-09-10', '', '', '', 'Limited FG จาก Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005169', '001', 11, '2024-09-10 00:00:00', 'intira', '', '', '', '-', '2024-09-10', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental  Princess x Yoon  Eye & Cheek Palette 02', '28420', '8850080284201', 'Make Up', '4', 1.00, 4.00, '18', '2024-09-10', '', '', '', 'Limited FG จาก Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005170', '001', 11, '2024-09-10 00:00:00', 'intira', '', '', '', '-', '2024-09-10', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess  X Yoon Lip Palette No.02', '28421', '8850080284218', 'Make Up', '4', 1.00, 4.00, '18', '2024-09-10', '', '', '', 'Limited FG จาก Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005171', '001', 11, '2024-09-10 00:00:00', 'intira', '', '', '', '-', '2024-09-10', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess  X Yoon Body Perfumed 2', '28422', '8850080284225', 'Body', '200', 1.00, 1.00, '18', '2024-09-10', '', '', '', 'Limited FG จาก Supllier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005173', '001', 11, '2024-09-10 00:00:00', 'intira', '', '', '', '-', '2024-09-10', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess x Yoon .Bag 2', '28423', '8850080284232', 'Other', '1', 1.00, 1.00, '', '2026-08-01', '', '', '', 'FG', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005174', '001', 11, '2024-09-10 00:00:00', 'intira', '', '', '', '-', '2024-09-10', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess X Yoon  Eye & Cheek Palette No.03', '28424', '8850080284249', 'Body', '0', 1.00, 5.00, '18', '2024-09-10', '', '', '', 'Limited FG จาก Supplier', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005175', '001', 11, '2024-09-10 00:00:00', 'intira', '', '', '', '-', '2024-09-10', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess  X Yoon .Lip Palette No.03', '28425', '8850080284256', 'Other', '4', 1.00, 4.00, '18', '2024-09-10', '', '', '', 'Limiited', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005176', '001', 11, '2024-09-10 00:00:00', 'intira', '', '', '', '-', '2024-09-10', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental Princess X Yoon Body Perfumed 3', '28426', '8850080284263', 'Other', '200 g', 1.00, 1.00, '', '2024-09-10', '', '', '', 'Limited', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005177', '001', 11, '2024-09-10 00:00:00', 'intira', '', '', '', '-', '2024-09-10', 'Intira Klaewban', 'Apaiporn Srisook', 'Oriental  Princess x Yoon  Bag 03', '28427', '8850080284270', 'Other', '1', 1.00, 1.00, '18', '2024-09-10', '', '', '', 'Limited', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005178', '001', 11, '2024-09-12 00:00:00', '00d668', '', '', '', '-', '2024-09-12', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP. Super Rejuvenating Mask (Box : 7 Pcs)', '28428', '8850080284287', 'Face', '7', 1.00, 1.00, '', '2025-12-01', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 38000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005179', '001', 11, '2024-09-12 00:00:00', '00d668', '', '', 'TOYO Filling', '-', '2024-09-12', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'OP Sensitive Skin anti Aller & pollution Facial Spray', '28429', '8850080284294', 'Face', '200', 1.00, 1.00, '18', '2025-10-01', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 20000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005180', '001', 11, '2024-09-23 00:00:00', '00d668', '', '', '', '-', '2024-09-23', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'Natural Sunscreen Perfect Matte Milk For Face SPF 50+ PA++++', '28430', '8850080284300', '', '20 ml', 1.00, 1.00, '1', '2025-06-01', '1', '1', '1', '', '', '', '', '', '', '', '', '', '', '', '', '', 1, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005181', '001', 11, '2024-09-24 00:00:00', '00d668', '', '', 'Schwan Cosmetics', '-', '2024-09-24', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'Natural Acne Care Acne Cover & Concealer Stick', '28431', '8850080284317', 'Face', '2.2 g', 1.00, 1.00, '18', '2025-02-01', '1', '75', '1', '', '', '', '', '', '', '', '', '', '', '', '', '', 20000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005181', '001', 11, '2024-10-10 00:00:00', '00d620', '', '', '', '-', '2024-10-10', 'Praepan Upalagool', 'Apaiporn Srisook', 'Juicy Glow Colour Changing Lip Balm - Apple', '28432', '8850080284324', '', '', 1.00, 1.00, '', '2025-03-01', '', '', '', 'สินค้า FG จาก COSMAX', '', '', '', '', '', '', '', '', '', '', '', '', 11000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005182', '001', 11, '2024-10-10 00:00:00', '00d620', '', '', '', '-', '2024-10-10', 'Praepan Upalagool', '', 'Juicy Glow Colour Changing Lip Balm - Peach', '28433', '8850080284331', '', '', 0.00, 0.00, '', '2024-10-10', '', '', '', 'สินค้า FG จาก COSMAX', '', '', '', '', '', '', '', '', '', '', '', '', 11000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005183', '001', 11, '2024-10-10 00:00:00', '00d620', '', '', '', '-', '2024-10-10', 'Praepan Upalagool', 'Apaiporn Srisook', 'Juicy Glow Colour Changing Lip Balm - Yuzu', '28434', '8850080284348', '', '', 0.00, 0.00, '', '2024-10-10', '', '', '', 'สินค้า FG จาก COSMAX', '', '', '', '', '', '', '', '', '', '', '', '', 11000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005184', '001', 11, '2024-10-10 00:00:00', '00d620', '', '', '', '-', '2024-10-10', 'Praepan Upalagool', 'Apaiporn Srisook', 'Juicy Glow Tinted Lip Balm - Kiwi', '28435', '8850080284355', '', '', 0.00, 0.00, '', '2024-10-10', '', '', '', 'สินค้า FG จาก COSMAX', '', '', '', '', '', '', '', '', '', '', '', '', 11000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005185', '001', 11, '2024-10-15 00:00:00', '00d620', '', '', '', '-', '2024-10-15', 'Praepan Upalagool', 'Apaiporn Srisook', 'Oriental Princess Valentine Tumbler 2025', '28436', '8850080284362', 'Other', '', 0.00, 0.00, '', '2024-10-15', '', '', '', 'สินค้า Premium 2025', '', '', '', '', '', '', '', '', '', '', '', '', 10000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005186', '001', 11, '2024-10-15 00:00:00', '00d620', '', '', '', '-', '2024-10-15', 'Praepan Upalagool', 'Apaiporn Srisook', 'Orintal Princess Chinese New Year Tumbler 2025', '28437', '8850080284379', 'Other', '', 0.00, 0.00, '', '2024-10-15', '', '', '', 'สินค้า Premium 2025', '', '', '', '', '', '', '', '', '', '', '', '', 10000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005187', '-', 11, '2024-10-25 00:00:00', '00d668', '', '', '', '001', '2024-10-25', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'Spunbond Bag 2025 Size S', '28438', '8850080284386', 'Other', '', 0.00, 1.00, '', '2025-04-01', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005188', '-', 11, '2024-10-25 00:00:00', '00d668', '', '', '', '001', '2024-10-25', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'Spunbond Bag 2025 Size M', '28439', '8850080284393', 'Other', '', 0.00, 1.00, '', '2024-10-25', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005189', '-', 11, '2024-10-25 00:00:00', '00d668', '', '', '', '001', '2024-10-25', 'Thanayut Mangkhlat', 'Apaiporn Srisook', 'Spunbond Bag 2025 Size L', '28440', '8850080284409', 'Other', '', 0.00, 0.00, '', '2024-10-25', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005190', '001', 11, '2024-11-07 00:00:00', '00d620', '', '', '', '-', '2024-11-07', 'Praepan Upalagool', 'Apaiporn Srisook', 'Umbrella - premium 25', '28441', '8850080284416', '', '', 0.00, 0.00, '', '2005-11-29', '', '', '', 'สินค้าพรีเมี่ยม ปี 25', '', '', '', '', '', '', '', '', '', '', '', '', 10000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'หมายเลขเอกสาร', 'IBH-F155', 0, '2024-11-12 04:16:07', '00d751', '', '', 'Customer (OEM)', 'Job Ref. No.', '2024-11-12', '002', '001', 'ชื่อผลิตภัณฑ์', '28442', '8850080284423', '001', 'ปริมาณสุทธิ', 1.00, 2.00, '3', '2024-11-12', '4', '5', '6', 'Product Concept', 'Product Benefit', '001', '1', '2', '', '', 'Fragrance Type', 'Active Ingrement', 'สินค้าต้นแบบที่ใช้วิจัย (STD)', 'P/K ที่ใช้', 'Other', 'เอกสารเพิ่มเติม', 7, 'Y', 'Y', 'Reason of use', 'Y', 'Compare with benchmark/OEM', 'Y', 'Others', 'Ref. of Color', 'Ref. of Fragrance', 'Comparing with OEM', 'Y'),
+('OP', '', 'IBH-F155', 0, '2024-11-12 04:58:37', '00d751', 'OP', '', 'Customer (OEM)', 'Job Ref. No.', '2024-11-12', '002', '001', 'ชื่อผลิตภัณฑ์', '28443', '8850080284430', '001', NULL, NULL, NULL, NULL, '2024-11-12', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'Y', NULL, 'Y', NULL, 'Y', NULL, NULL, NULL, NULL, 'Y'),
+('OP', 'OP00004545', 'OP/IBHS/NP006/64', 11, '2021-02-12 00:00:00', '00c648', '', '', '-', '-', '2021-02-12', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'Ri en Underarm Care White Secret Scrub', '29000', '8850080290004', 'Body', '100 g.', 1.00, 0.00, '', '2021-07-01', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00004550', 'OP/IBHS/NP007/64', 11, '2021-02-12 00:00:00', '00c648', '', '', '-', '-', '2021-02-12', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'Ri en Underarm Care White Secret Essence', '29001', '8850080290011', 'Body', '100 ml.', 1.00, 0.00, '', '2021-07-01', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00004551', 'OP/IBHS/NP008/64', 11, '2021-02-12 00:00:00', '00c648', '', '', '-', '-', '2021-02-12', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'Ri en Underarm Care White Secret Cream', '29002', '8850080290028', 'Body', '50 g.', 1.00, 1.00, '', '2021-07-01', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00004552', 'OP/IBHS/NP009/64', 11, '2021-02-12 00:00:00', '00c648', '', '', '-', '-', '2021-02-12', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'Ri en Underarm Care White Secret Collection Set', '29003', '8850080290035', 'Body', '1 Set', 1.00, 1.00, '', '2021-07-01', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', '');
+INSERT INTO `pro_develops` (`BRAND`, `DOC_NO`, `REF_DOC`, `REVISE_NO`, `EDIT_DT`, `USER_EDIT`, `STATUS`, `REMARK_ST`, `CUST_OEM`, `JOB_REFNO`, `DOC_DT`, `NPD`, `PDM`, `NAME_ENG`, `PRODUCT`, `BARCODE`, `CATEGORY`, `CAPACITY`, `Q_SMELL`, `Q_COLOR`, `TARGET_GRP`, `TARGET_STK`, `PRICE_FG`, `PRICE_COST`, `PRICE_BULK`, `P_CONCEPT`, `P_BENEFIT`, `TEXTURE`, `TEXTURE_OT`, `COLOR1`, `COLOR2`, `COLOR3`, `FRANGRANCE`, `INGREDIENT`, `STD`, `PK`, `OTHER`, `DOCUMENT`, `FIRST_ORD`, `OEM`, `REASON1`, `REASON1_DES`, `REASON2`, `REASON2_DES`, `REASON3`, `REASON3_DES`, `REF_COLOR`, `REF_FRAGRANCE`, `OEM_STD`, `PACKAGE_BOX`) VALUES
+('OP', 'OP00004551', 'OP/IBHS/NP010/64', 11, '2021-02-12 00:00:00', '00c648', '', '', '-', '-', '2021-02-12', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'Ri en Underarm Care White Secret  Scrub (ประกอบเซต)', '29004', '8850080290042', 'Body', '50 g.', 1.00, 1.00, '', '2021-07-01', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00004558', 'OP/IBHS/NP011/64', 11, '2021-02-12 00:00:00', '00c648', '', '', '-', '-', '2021-02-12', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'Ri en Underarm Care White Secret Essence (ประกอบเซต)', '29005', '8850080290059', 'Body', '50 ml.', 1.00, 1.00, '', '2021-07-01', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00004561', 'OP/IBHS/NP012/64', 11, '2021-02-12 00:00:00', '00c648', '', '', '-', '-', '2021-02-12', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'Ri en Underarm Care White Secret Cream (ประกอบเซต)', '29006', '8850080290066', 'Body', '25 g.', 1.00, 1.00, '', '2021-07-01', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00004298', 'F155', 11, '2021-02-15 00:00:00', '00c648', '', '', '-', 'OP/IBHS/NP024/63', '2021-02-15', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'Sunista Body UV Perfume Velvet White SPF50+PA++++', '29007', '8850080290073', 'Body', '150 ml.', 0.00, 1.00, '18-24', '2005-11-29', '', '', '182', '', '', '', '', '', '', '', '', '', '', '', '', '', 50000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00004571', 'F155', 11, '2021-02-15 00:00:00', '00c648', '', '', '-', 'OP/IBHS/NP025/63', '2021-02-15', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'Sunista Body UV Perfume Sparkling Juicy Fresh SPF50+PA++++', '29008', '8850080290080', 'Body', '150 ml.', 1.00, 1.00, '18-24', '2005-11-29', '', '', '182', '', '', '', '', '', '', '', '', '', '', '', '', '', 50000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00004572', 'F155', 11, '2021-02-15 00:00:00', '00c648', '', '', '-', 'OP/IBHS/NP027/63', '2021-02-15', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'Sunista UV Tinted Mousse Perfect Matte Double Longwear SPF50+ PA++++', '29009', '8850080290097', 'Face', '30 ml.', 1.00, 1.00, '18-24', '2005-11-29', '', '', '740', '', '', '', '', '', '', '', '', '', '', '', '', '', 28800, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00004573', 'F155', 11, '2021-02-15 00:00:00', '00c648', '', '', '-', 'OP/IBHS/NP028/63', '2021-02-15', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'Sunista UV Milky Perfect Matte Double Longwear SPF50 PA++++', '29010', '8850080290103', 'Face', '360 ml.', 1.00, 1.00, '18-24', '2005-11-29', '', '', '650', '', '', '', '', '', '', '', '', '', '', '', '', '', 28800, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00004574', 'F155', 11, '2021-02-15 00:00:00', '00c648', '', '', '-', 'OP/IBHS/NP029/63', '2021-02-15', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'Sunita UV Milk Perfect Matte Double Longwear SPF50+PA++++Beige', '29011', '8850080290110', 'Face', '30 ml.', 1.00, 1.00, '', '2005-11-29', '', '', '650', '', '', '', '', '', '', '', '', '', '', '', '', '', 28800, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00004575', 'F155', 11, '2021-02-15 00:00:00', '00c648', '', '', '', '-', '2021-02-15', 'Pinyamon Seekaw', 'Apaiporn Srisook', 'Sunista Body UV Perfume-Whitening Sampling', '29012', '8850080290127', 'Body', '15 ml.', 1.00, 1.00, '', '2005-11-29', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00004552', 'OP/IBHS/NP049/65', 11, '2023-01-24 00:00:00', '00b932', '', '', '-', 'OP/IBHS/NP049/65', '2022-05-09', 'Budsara Soontaratta', 'Apaiporn Srisook', 'Ri en Perfumed White Sweet Blossom Deo', '29013', '8850080290134', 'Body', '50 ml.', 1.00, 0.00, 'ผู้หญิงอายุ 18- 35ปี', '2023-04-15', '125', '', '170 บาท/Kg', 'ผลิตภัณฑ์ระงับกลิ่นกายสูตรน้ำนมอ่อนโยน เพื่อการดูแลใต้วงแขนโดยเฉพาะ ผสานพลังจากสารสกัดธรรมชาติอย่างสารสกัดจากลูกพลับญี่ปุ่น ปกป้องกลิ่นเหงื่อ กลิ่นกายไม่พึงประสงค์ต่อเนื่องยาวนานถึง 24 ชั่วโมง  โรลออนลดเหงื่อและระงับกลิ่นกาย ด้วยสูตร 0% แอลกฮอล์*  มาพร้อมกลิ่นหอมสดชื่น ปกป้องยาวนานตลอดวัน', '* โรลออนระงับกลิ่นกาย  อ่อนโยนต่อทุกสภาพผิว \r\n* ผ่านการทดสอบการระคายเคือง\r\n* ช่วยระงับกลิ่นเหงื่อและกลิ่นใต้วงแขนอย่างมีประสิทธิภาพ ได้ยาวนานถึง 24 ชั่วโมง\r\n* ช่วยบำรุงผิวใต้วงแขนให้เนียนนุ่ม \r\n* ช่วยลดการขับเหงื่อใต้วงแขนด้วยประสิทธิภาพที่ช่วยให้ผิวแห้งสะอาด แต่ไม่ทิ้งสารตกค้างใดๆ\r\n* ปราศจากพาราเบน และแอลกอฮอลล์', 'Emultion', '', 'White', '', '', '', 'PHYTO OAT-MILK, VITA X3, ALPHA ARBUTIN, PERSIMMON FRUIT EXTRACT, LICORICE EXTRACT,\r\n', '27109 OP Milky Whitening Radiance Intensive Booster Whitening Deodoran', '11300 Mossa Deodorant เปลี่ยนสีฝาเป็นสีขาว', 'Irritation tested , 24-48 hours Odor control', 'Irritation tested , 24-48 hours Odor control', 0, '', 'Y', '', 'Y', 'Nivea/Vaseline', '', '', '', '', '', 'N'),
+('OP', 'OP00004683', 'OP/IBHS/NP050/65', 11, '2023-01-24 00:00:00', '00b932', '', '', '-', 'OP/IBHS/NP050/65', '2022-05-09', 'Budsara Soontaratta', 'Apaiporn Srisook', 'Ri en Perfumed White Fresh Fruity Deo', '29014', '8850080290141', 'Body', '50 ml.', 1.00, 0.00, 'ผู้หญิงอายุ 18- 35ปี', '2023-04-15', '125', '', '170 บาท/Kg', 'ผลิตภัณฑ์ระงับกลิ่นกายสูตรน้ำนมอ่อนโยน เพื่อการดูแลใต้วงแขนโดยเฉพาะ ผสานพลังจากสารสกัดธรรมชาติอย่างสารสกัดจากลูกพลับญี่ปุ่น ปกป้องกลิ่นเหงื่อ กลิ่นกายไม่พึงประสงค์ต่อเนื่องยาวนานถึง 24 ชั่วโมง  โรลออนลดเหงื่อและระงับกลิ่นกาย ด้วยสูตร 0% แอลกฮอล์* มาพร้อมกลิ่นหอมสดชื่น ปกป้องยาวนานตลอดวัน', '* โรลออนระงับกลิ่นกาย  อ่อนโยนต่อทุกสภาพผิว \r\n* ผ่านการทดสอบการระคายเคือง\r\n* ช่วยระงับกลิ่นเหงื่อและกลิ่นใต้วงแขนอย่างมีประสิทธิภาพ ได้ยาวนานถึง 24 ชั่วโมง\r\n* ช่วยบำรุงผิวใต้วงแขนให้เนียนนุ่ม \r\n* ช่วยลดการขับเหงื่อใต้วงแขนด้วยประสิทธิภาพที่ช่วยให้ผิวแห้งสะอาด แต่ไม่ทิ้งสารตกค้างใดๆ\r\n* ปราศจากพาราเบน และแอลกอฮอลล์ \r\n', 'Emultion', '', 'white', '', '', '', 'PHYTO OAT-MILK, VITA X3, ALPHA ARBUTIN, PERSIMMON FRUIT EXTRACT, LICORICE EXTRACT,', '27109 OP Milky Whitening Radiance Intensive Booster Whitening Deodoran', '11300 Mossa Deodorant เปลี่ยนสีฝาเป็นสีขาว', 'Irritation tested , 24-48 hours Odor control', 'Irritation tested , 24-48 hours Odor control', 0, '', 'Y', '', 'Y', 'Nivea/Vaseline', '', '', '', '', '', 'N'),
+('OP', 'OP00004684', 'OP/IBHS/NP051/65', 11, '2023-01-24 00:00:00', '00b932', '', '', '-', 'OP/IBHS/NP051/65', '2022-09-05', 'Budsara Soontaratta', 'Apaiporn Srisook', 'Ri en Perfumed White Warm Freesia Deo', '29015', '8850080290158', 'Face', '50 ml.', 1.00, 0.00, 'ผู้หญิงอายุ 18- 35ปี', '2023-04-15', '125', '', '170 บาท/Kg', 'ผลิตภัณฑ์ระงับกลิ่นกายสูตรน้ำนมอ่อนโยน เพื่อการดูแลใต้วงแขนโดยเฉพาะ ผสานพลังจากสารสกัดธรรมชาติอย่างสารสกัดจากลูกพลับญี่ปุ่น ปกป้องกลิ่นเหงื่อ กลิ่นกายไม่พึงประสงค์ต่อเนื่องยาวนานถึง 24 ชั่วโมง  โรลออนลดเหงื่อและระงับกลิ่นกาย ด้วยสูตร 0% แอลกฮอล์ มาพร้อมกลิ่นหอมสดชื่น ปกป้องยาวนานตลอดวัน', '* โรลออนระงับกลิ่นกาย  อ่อนโยนต่อทุกสภาพผิว \r\n* ผ่านการทดสอบการระคายเคือง\r\n* ช่วยระงับกลิ่นเหงื่อและกลิ่นใต้วงแขนอย่างมีประสิทธิภาพ ได้ยาวนานถึง 24 ชั่วโมง\r\n* ช่วยบำรุงผิวใต้วงแขนให้เนียนนุ่ม \r\n* ช่วยลดการขับเหงื่อใต้วงแขนด้วยประสิทธิภาพที่ช่วยให้ผิวแห้งสะอาด แต่ไม่ทิ้งสารตกค้างใดๆ\r\n* ปราศจากพาราเบน และแอลกอฮอลล์ \r\n', 'Emultion', '', 'White', '', '', '', 'Rose Water-TBC', '27109 OP Milky Whitening Radiance Intensive Booster Whitening Deodoran', '11300 Mossa Deodorant เปลี่ยนสีฝาเป็นสีขาว', 'Irritation tested , 24-48 hours Odor control', 'Irritation tested , 24-48 hours Odor control', 0, '', 'Y', '', 'Y', 'Nivea/Vaseline', '', '', '', '', '', 'N'),
+('OP', 'OP00004685', 'OP/IBHS/NP009/64', 11, '2023-04-07 00:00:00', '00b932', '', '', '-', '-', '2021-02-08', 'Budsara Soontaratta', 'Apaiporn Srisook', 'Ri en Underarm Care Duo Set Blossom', '29016', '8850080290165', 'Body', '1 set', 0.00, 0.00, '', '2022-08-02', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00004686', 'OP/IBHS/NP010/64', 11, '2023-04-07 00:00:00', '00b932', '', '', '-', '-', '2021-08-02', 'Budsara Soontaratta', 'Apaiporn Srisook', 'Ri en Underarm Care Duo Set Fruity', '29017', '8850080290172', 'Body', '', 0.00, 0.00, '', '2022-08-02', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00004687', 'OP/IBHS/NP011/64', 11, '2023-04-07 00:00:00', '00b932', '', '', '-', '-', '2021-08-02', 'Budsara Soontaratta', 'Apaiporn Srisook', 'Ri en Underarm Care Duo Set Freesia', '29018', '8850080290189', 'Body', '', 0.00, 0.00, '', '2021-02-08', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00004687', 'OP/IBHS/NP012/64', 11, '2021-08-03 00:00:00', '00b932', '', '', '-', '-', '2021-03-08', 'Budsara Soontaratta', 'Apaiporn Srisook', 'RI EN UNDERARM CARE WHITE SECRET CREAM SACHET', '29019', '8850080290196', 'Body', '10g', 0.00, 0.00, '', '2022-08-02', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00004978', 'OP/IBHS/NP039/66', 11, '2023-10-10 00:00:00', '00b932', '', '', '-', '-', '2023-10-10', 'Budsara Soontaratta', 'Apaiporn Srisook', 'Ri en Underarm Care White Secret Cream สูตรใหม่', '29020', '8850080290202', 'Body', '50 g', 1.00, 1.00, '18-35', '2005-11-29', '175', '', '200', 'Concept ผลิตภัณฑ์บำรุงผิวบริเวณใต้วงแขน ช่วยระงับกลิ่นเหงื่อและกลิ่นใต้วงแขนอย่างมีประสิทธิภาพ  เผยผิวมั่นใจใต้วงแขนเนียนนุ่ม และดูกระจ่างใสอย่างเป็นธรรมชาติ  เพื่อการ\r\nดูแลใต้วงแขนโดยเฉพาะ ผสานพลังจากสารสกัดธรรมชาติอย่างสารสกัดจากลูกพลับญี่ปุ่น ปกป้องกลิ่นเหงื่อ กลิ่นกายไม่พึงประสงค์ต่อเนื่องยาวนานถึง 48 ชั่วโมง  ลดเหงื่อและระงับ\r\nกลิ่นกาย ด้วยสูตร Clean Beauty ที่ทำให้ผิวระคายเคือง มาพร้อมกลิ่นหอมสดชื่น ปกป้องยาวนานตลอดวัน\r\n', 'ครีมบำรุงผิวบริเวณใต้วงแขนและระงับกลิ่นกาย  อ่อนโยนต่อทุกสภาพผิว ผ่านการทดสอบการระคายเคือง\r\nช่วยระงับกลิ่นเหงื่อและกลิ่นใต้วงแขนอย่างมีประสิทธิภาพ ได้ยาวนานถึง 48 ชั่วโมง  \r\nเนื้อบางเบา ไม่เหนอะหนะ ไม่ทิ้งคราบบนเสื้อผ้า\r\nช่วยบำรุงผิวใต้วงแขนให้เนียนนุ่ม  กระจ่างใสภายใน 7 วัน\r\nช่วยผลัดผิวที่เสื่อมสภาพ หมองคล้ำออกอย่างอ่อนโยน\r\nช่วยลดการขับเหงื่อใต้วงแขนด้วยประสิทธิภาพที่ช่วยให้ผิวแห้งสะอาด แต่ไม่ทิ้งสารตกค้างใดๆ ให้ผลลลัพธ์ผิวและขนใต้วงแขนของคุณเนียนนุ่มขึ้นจนรู้สึกได้ \r\nอีกทั้งยังช่วยให้การโกนง่ายและนุ่มลื่นยิ่งขึ้น\r\n\"	ปราศจากพาราเบน และแอลกอฮอลล์ และสารก่อการระคายเคืองต่างๆ (Non talc*)', 'Lotion', '', 'white', '', '', 'กลิ่นเดิม เหมือน 29002', 'สูตร clean Beauty สารสกัดเหมือน 29002 \r\n(เปลี่ยนให้เป็น Clean Beauty และอ่อนโยน ไม่ระคายเคือง \r\nแต่ต้องไม่กระทบกับประสิทธิภาพที่ต้องการ)', 'Kiehl s superbly efficient antiperspirant & deodorant cream', 'หลอด', 'Irritation tested   ,  คุมกลิ่นและเหงื่อ 48 hrs.,Whitening 7 วัน', '', 0, 'Y', 'Y', '', 'Y', '', '', '', '', '', '', ''),
+('OP', 'OP00004979', 'OP/IBHS/NP040/66', 11, '2024-01-30 00:00:00', '00b932', '', '', '-', '-', '2023-10-10', 'Budsara Soontaratta', 'Apaiporn Srisook', 'Ri en Perfumed White Sweet Blossom Deo 30 ml', '29021', '8850080290219', 'Body', '30 ml', 0.00, 0.00, '', '2005-11-29', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00004552', 'OP/IBHS/NP041/66', 11, '2024-01-29 00:00:00', '00b932', '', '', '-', 'OP/IBHS/NP041/66', '2023-10-11', 'Budsara Soontaratta', 'Apaiporn Srisook', 'Ri en Perfumed White Active Fresh Deo (sport)', '29022', '8850080290226', 'Body', '60 ml', 1.00, 1.00, 'unisex 18-35 ปี', '2024-06-01', '125', '', '170 บาท/kg', 'ผลิตภัณฑ์ระงับเหงื่อและกลิ่นกายสำหรับใต้วงแขน มอบความหอมสดชื่นยาวนาน  พร้อมกลิ่นหอมเย็นสดชื่น ปกป้องกลิ่นเหงื่อ กลิ่นกายไม่พึงประสงค์\r\nช่วยดูดซับเหงื่อ แห้งเร็วไม่เหนียวเหนอะหนะ  ผ่านการทดสอบการระคายเคือง ประสิทธิภาพการดับกลิ่น 48 ชม. น้ำหอมติดทานยาวนาน 48 ชม.  ให้ความกระจ่างใสไม่หมองคล้ำ มี\r\nผลทดสอบประสิทธิภาพเรื่องความกระจ่างใส  ผิวเรียบเนียนใสขึ้นอย่างเห็นได้ชัด  ปราศจากพาราเบน, Alcohol และสารที่ก่อให้เกิดการระคายเคืองต่างๆ\r\n', 'โรลออนระงับกลิ่นกาย  อ่อนโยนต่อทุกสภาพผิว มอบความหอมสดชื่นยาวนาน 48 ชม. \r\nผ่านการทดสอบการระคายเคือง\r\n? ช่วยระงับกลิ่นเหงื่อและกลิ่นใต้วงแขนอย่างมีประสิทธิภาพ ได้ยาวนานถึง 48 ชั่วโมง  น้ำหอมติดทานยาวนาน 48 ชม.  \r\n? ช่วยบำรุงผิวใต้วงแขนให้เนียนนุ่ม \r\n? ช่วยลดการขับเหงื่อใต้วงแขนด้วยประสิทธิภาพที่ช่วยให้ผิวแห้งสะอาด แต่ไม่ทิ้งสารตกค้างใดๆ\r\n? ปราศจากพาราเบน และแอลกอฮอลล์ \r\n', 'Lotion', '', 'white', '', '', 'cool Fresh', 'PHYTO OAT-MILK, VITA X3, ALPHA ARBUTIN, สารสกัดลูกพลับญี่ปุ่น, LICORICE EXTRACT,\r\nและสารอื่นที่เคลมเรื่องความหอมสดชื่น', '29013 Ri en Perfect White Sweet Blossom Deo', 'เหมือนเดิม', 'Irritation tested , 48 hours Odor control', 'Irritation tested , 48 hours Odor control', 0, '', '', '', '', '', '', '', '', '', '', 'N'),
+('OP', 'OP00004552', 'OP/IBHS/NP007/67', 11, '2024-02-29 00:00:00', '00b932', '', '', '-', 'OP/IBHS/NP007/67', '2024-01-24', 'Budsara Soontaratta', '', 'Rien Feminine Wash #Blossom', '29023', '8850080290233', 'Body', '150 ml', 1.00, 1.00, 'Female 15-45 ปี', '2024-01-08', '', '', '50 บาท/ Kg', 'ผลิตภัณฑ์เพื่อการทำความสะอาดส่วนที่บอบบางที่สุดของผู้หญิงสูตรใส ทั้งทำความสะอาดและช่วยบำรุงในหนึ่งเดียว ให้ผิวสุขภาพดี ช่วยลดการสะสมของแบคทีเรียเป็น 2 เท่า ที่ช่วยคงสมดุลความเป็นกรดอ่อนตามธรรมชาติและช่วยทำความสะอาดจุดซ่อนเร้นอย่างอ่อนโยน ลดกลิ่นอับสดชื้น มั่นใจตลอดวัน ช่วยเก็บกักความชุ่มชื้นให้แก่ผิวตามธรรมชาติ  ผ่านการทดสอบการระคายเคือง มั่นใจใช้ได้ทุกวัน', 'ผลิตภัณฑ์เพื่อการทำความสะอาดส่วนที่บอบบางที่สุดของ\r\nผู้หญิงสูตรใส อุดมด้วยสารสกัดธรรมชาติ ปกป้องจุด\r\nซ่อนเร้นจากเชื้อแบคทีเรียสาเหตุของอาการคันและกลิ่นไม่\r\nพึงปรารถนา กลิ่นหอมอ่อนโยน\r\n? ช่วยดูแลจุดซ่อนเร้นให้สะอาดอย่างอ่อนโยน\r\n? ช่วยลดอาการแพ้ พร้อมต้านเชื้อไวรัสและแบคทีเรีย\r\n? ช่วยเก็บกักความชุ่มชื้นให้แก่ผิวตามธรรมชาติ \r\n? ผ่านการทดสอบจากสูตินรีแพทย์ว่า อ่อนโยน ไม่ทำให้เกิดการระคายเคือง\r\n', 'Emultion', '', 'white/clear white', '', '', 'No fragrance/fragrance -no allergen', 'Nano Vitamin, น้ำแร่จากสวิตเซอร์แลนด์, สารสกัดธรรมชาติ', 'Araya Extra Sensitive Feminine Cleanser/ OP สูตรล่าสุด', '', 'ปกป้องยาวนาน 24 ชม./ผ่านการทดสอบโดยสูตินารีเวช', 'ผ่านการทดสอบโดยสูตินารีเวช/ความพึงพอใจในผลิตภัณฑ์', 0, '', 'Y', '', '', '', '', '', '', '', '', 'N'),
+('OP', 'OP00004552', 'OP/IBHS/NP011/67', 11, '2024-03-01 00:00:00', '00b932', '', '', '-', 'OP/IBHS/NP011/67', '2024-02-29', 'Budsara Soontaratta', 'Apaiporn Srisook', 'Rien Feminine Wash #Extra Care Balance', '29024', '8850080290240', 'Body', '150 ml', 1.00, 1.00, 'Female 15-45 ปี', '2024-08-01', '', '', '50 บาท/Kg.', 'ผลิตภัณฑ์เพื่อการทำความสะอาดส่วนที่บอบบางที่สุดของผู้หญิงสูตรใส  Clean Beauty  สารทำความสะอาดจากธรรมชาติ 100%\r\nทั้งทำความสะอาดและช่วยบำรุงให้ผิวสุขภาพดี ที่ช่วยคงสมดุลความเป็นกรดอ่อนตามธรรมชาติและช่วยทำความสะอาดจุดซ่อนเร้นอย่างอ่อนโยน ช่วยเก็บกักความชุ่มชื้นให้แก่ผิวตามธรรมชาติ  ผ่านการทดสอบการระคายเคืองจากสูตินรีแพทย์ ช่วยปรับค่า pH ผิวในบริเวณที่ซ่อนเร้นให้สมดุลขึ้น รู้สึกสะอาดลดกลิ่นอับ* สดชื่น มั่นใจตลอดวัน', 'สูตร 2  Extra Care Balance เหมาะสำหรับช่วงที่มีอาการติดเชื้อได้ง่าย เช่น ระหว่างมีประจำเดือน  ผู้ที่ออกกำลังกายเป็นประจำ มีกิจกรรมมาก  แก้ไขปัญหาคัน ตกขาว  อับชื้น \r\n• หอมสดชื่น ช่วยลดกลิ่นอับชื้นยาวนาน ด้วยเทคโนโลยี Neofresh • พรีไบโอติก คงสมดุลเชื้อที่ดีบริเวณจุดซ่อนเร้น เสริมเกาะป้องกันให้จุดซ่อนเร้น\r\n• pH balanced เหมาะสำหรับบริเวณจุดซ่อนเร้น• ไร้สารตกค้าง ล้างออกง่าย ผิวชุ่มชื้นไม่แห้งตึง ลดอาการระคายเคือง และการเสียดสี\r\n• อ่อนโยน ปลอดภัย ปราศจากสารอันตราย 9 ชนิด และผ่านการทดสอบโดยสูตินรีแพทย์\r\nX3 Vitamin (E,F,C)', 'Gel', '', 'ฟ้าอ่อน', '', '', 'น้ำหอมเกรด Allergen-Free กลิ่นสดชื่น  มี Energy', '-เทคโนโลยี Neofresh ,X3 Vitamin (E,B,C), ใบไทม์ใบเสจและทีทรีออย , พรีไบโอติก \r\nปราศจากสารที่ก่อให้เกิดการระคายเคือง 9-Free   \r\n', 'Seugella สีเขียว', 'PET ขวดใส ปั๊มสีขาว  Design  แบบใหม่', 'Dermatology test จากสูตินารีแพทย์,', 'Dermatology test จากสูตินารีแพทย์, Irritation test', 10000, '', 'Y', '', '', '', '', '', 'Benice Deo fresh สีฟ้าอ่อนกว่า 10 เท่า', '', '', 'N'),
+('OP', 'OP00005021', 'OP/IBHS/NP012/67', 11, '2024-03-01 00:00:00', '00b932', '', '', '-', 'OP/IBHS/NP012/67', '2024-02-29', 'Budsara Soontaratta', 'Apaiporn Srisook', 'Rien underarm care tone up Deo cream', '29025', '8850080290257', 'Body', '50 g', 1.00, 0.00, '18-35', '2024-08-01', '175', '', '200', 'ผลิตภัณฑ์บำรุงผิวบริเวณใต้วงแขน เนื้อสีชมพู ปรับสีผิวให้ดูกระจ่างใสเรียบเนียนทันทีที่ใช้  พร้อมช่วยระงับกลิ่นเหงื่อและกลิ่นใต้วงแขนอย่างมีประสิทธิภาพ  เผยผิวมั่นใจใต้วงแขนเนียนนุ่ม และดูกระจ่างใสอย่างเป็นธรรมชาติ  เพื่อการ\r\nดูแลใต้วงแขนโดยเฉพาะ ผสานพลังจากสารสกัดธรรมชาติอย่างสารสกัดจากลูกพลับญี่ปุ่น ปกป้องกลิ่นเหงื่อ กลิ่นกายไม่พึงประสงค์ต่อเนื่องยาวนานถึง 48 ชั่วโมง  ลดเหงื่อและระงับ\r\nกลิ่นกาย ด้วยสูตร Clean Beauty ที่ทำให้ผิวระคายเคือง มาพร้อมกลิ่นหอมสดชื่น ปกป้องยาวนานตลอดวัน\r\n', '-ครีมบำรุงผิวบริเวณใต้วงแขนและระงับกลิ่นกาย เนื้อสีชมพูขาว  เน้นความเรียบเนียน กระจ่างใสใต้วงแขนทันทีที่ทา\r\n-อ่อนโยนต่อทุกสภาพผิว ผ่านการทดสอบการระคายเคือง\r\n-ช่วยระงับกลิ่นเหงื่อและกลิ่นใต้วงแขนอย่างมีประสิทธิภาพ ได้ยาวนานถึง 48 ชั่วโมง  \r\n-เนื้อบางเบา ไม่เหนอะหนะ \r\n-ช่วยบำรุงผิวใต้วงแขนให้เนียนนุ่ม  กระจ่างใสภายใน 7 วัน\r\n-ช่วยผลัดผิวที่เสื่อมสภาพ หมองคล้ำออกอย่างอ่อนโยน\r\n-ช่วยลดการขับเหงื่อใต้วงแขนด้วยประสิทธิภาพที่ช่วยให้ผิวแห้งสะอาด แต่ไม่ทิ้งสารตกค้างใดๆ ให้ผลลลัพธ์ผิวและขนใต้วงแขนของคุณเนียนนุ่มขึ้นจนรู้สึกได้ \r\nอีกทั้งยังช่วยให้การโกนง่ายและนุ่มลื่นยิ่งขึ้น\r\n-ปราศจากพาราเบน และแอลกอฮอลล์ และสารก่อการระคายเคืองต่างๆ', 'Emultion', '', 'สีชมพู', '', '', 'กลิ่นหอมหวาน floral', 'Glutathione,  Blurring  Technology, X3 Vitamin (B3/A/E) ,  Persimmon Extract,  Lactic acid, ALUMINUM CHLOROHYDRATE', '29002', '29002 แบบเดิม design ใหม่', 'Irritation tested   , ปกป้องกลิ่นเหงื่อ 48 ชม. กระจ่างใสใน 7 วัน', 'Irritation tested , ปกป้องกลิ่นเหงื่อ 48 ชม. กระจ่างใสใน 7 วัน', 10000, '', 'Y', '', '', '', '', '', 'CP Tone up Sunscreen', 'กลิ่นอ้างอิง Dior idole', '', 'N'),
+('OP', 'OP00005022', 'OP/IBHS/NP013/67', 11, '2024-03-01 00:00:00', '00b932', '', '', '-', 'OP/IBHS/NP013/67', '2024-02-29', 'Budsara Soontaratta', 'Apaiporn Srisook', 'Rien White Secret Feminine Care Serum', '29026', '8850080290264', 'Body', '30 g.', 1.00, 0.00, '18-45', '2024-08-01', '', '', '200', 'ผลิตภัณฑ์ของการฟื้นบำรุงจุดซ่อนเร้นสูตร Sensitive เซรั่มสำหรับทาบำรุงจุดซ่อนเร้น เนื้อบางเบา ซึมง่าย ไม่ทำให้อับชื้น กลิ่นหอมละมุน สดชื่น \r\nด้วยเทคโนโลยี Neofresh ช่วยเพิ่มความหอม และลดกลิ่นไม่พึงประสงค์  คงความมั่นใจในทุกจุดตลอดวัน ปรับสภาพผิวที่หมองคล้ำ ให้แลดูกระจ่างใสอย่างอ่อนโยน สูตร Clean Beauty \r\nให้ผิวแลดูกระจ่างใสและชุ่มชื่นให้ผิวด้วย X3 Vitamin (E,B,C)   ผ่านการทดสอบการระคายเคืองจากสูตินรีแพทย์\r\n', 'o หอมสดชื่น ช่วยลดกลิ่นอับชื้นยาวนาน ด้วยเทคโนโลยี Neofresh ช่วยเพิ่มความหอมและลดกลิ่นไม่พึงประสงค์\r\no Sodium Hyaluronate ช่วยเพิ่มความชุ่มชื้นให้แก่ผิว รักษาสมดุลของน้ำในผิว และช่วยลดปัญหาการตกขาว \r\no Propolis Extract และ Lactic Acid ปรับสภาพผิวที่หมองคล้ำ ให้แลดูกระจ่างใสอย่างอ่อนโยน แม้กับจุดที่บอบบาง  เนียนนุ่มแลดูอ่อนเยาว์ สุขภาพผิวดีอยู่เสมอ\r\no สารสกัดกวาวเครือขาว Pueraria Mirifica Extract ช่วยให้ผิวกระชับ บำรุงผิวพรรณ ให้ความชุ่มชื่น ช่วยลดเลือนริ้วรอย และกลิ่นอันไม่พึงประสงค์  \r\no สารสกัดหญ้ารีแพร์ มีคุณสมบัติเป็นสาร Antioxidant และ Skin Conditioning\r\no อ่อนโยน ปลอดภัย ปราศจากสารอันตราย 9 ชนิด ลดโอกาสการเกิดการระคายเคืองและผ่านการทดสอบโดยสูตินรีแพทย์ \r\n', 'Cream', '', '', '', '', 'เกรด Allergen-Free  กลิ่น floral', 'X3 Vitamin (E, B,C)  ,Propolis Extract , Lactic Acid  ,Sodium Hyaluronate, หญ้ารีแพร์\r\n', 'Advanced Recovery Serum', 'PK หลอด Desigื ใหม่', 'Dermatology tested ผ่านการทดสอบโดยสูตินรีแพทย์', 'Dermatology tested ผ่านการทดสอบโดยสูตินรีแพทย์', 10000, '', 'Y', '', '', '', '', '', 'white', 'araya', '', 'N'),
+('OP', 'OP00005023', 'OP/IBHS/NP014/67', 11, '2024-03-01 00:00:00', '00b932', '', '', '-', 'OP/IBHS/NP014/67', '2024-02-29', 'Budsara Soontaratta', 'Apaiporn Srisook', 'Rien White Secret Feminine Care สูตร Extra Whitening', '29027', '8850080290271', 'Body', '30 g', 1.00, 0.00, '18-45', '2024-08-01', '', '', '200', 'ผลิตภัณฑ์ของการฟื้นบำรุงจุดซ่อนเร้นสูตร Sensitive เซรั่มสำหรับทาบำรุงจุดซ่อนเร้น เนื้อบางเบา ซึมง่าย ไม่ทำให้อับชื้น กลิ่นหอมละมุน สดชื่น คงความมั่นใจในทุกจุดตลอดวัน\r\nด้วยสูตร Clean Beauty ที่ทำให้ผิวระคายเคือง ผ่านการทดสอบโดยสูตินรีแพทย์ มาพร้อมกลิ่นหอมสดชื่น ปกป้องยาวนานตลอดวัน\r\n', 'o หอมสดชื่น ช่วยลดกลิ่นอับชื้นยาวนาน ด้วยเทคโนโลยี Neofresh ช่วยเพิ่มความหอม และลดกลิ่นไม่พึงประสงค์\r\no Propolis Extract และ Lactic Acid ปรับสภาพผิวที่หมองคล้ำ ให้แลดูกระจ่างใสอย่างอ่อนโยน แม้กับจุดที่บอบบาง  เปล่งปลั่ง เนียนนุ่มแลดูอ่อนเยาว์ สุขภาพผิวดีอยู่เสมอ\r\no Sodium Hyaluronate ช่วยเพิ่มความชุ่มชื้นให้แก่ผิว รักษาสมดุลของน้ำในผิว และช่วยลดปัญหาการตกขาว  \r\n    และกลิ่นอันไม่พึงประสงค์\r\no สารสกัดหญ้ารีแพร์ มีคุณสมบัติเป็นสาร Antioxidant และ Skin Conditioning\r\no อ่อนโยน ปลอดภัย ปราศจากสารอันตราย 9 ชนิด ลดโอกาสการเกิดการระคายเคืองและผ่านการทดสอบ โดยสูตินรีแพทย์\r\nX3 Vitamin (E,B3,C) ให้ผิวแลดูกระจ่างใสและชุ่มชื่น\r\nสารสกัด: จากใบไทม์และดอกคาร์โมมายล์ และไฮยารูรอนช่วยคืนความชุ่มชื้น รู้สึกอาการแห้งคันระคายเคืองลดลงอย่างมีประสิทธิภาพ\r\n\r\n', 'Cream', '', 'white', '', '', 'เกรด Allergen-Free กลิ่น floral', 'X3 Vitamin (E,B3,C), ใบไทม์และดอกคาร์โมมายล์,Propolis Extract , Lactic Acid ,เทคโนโลยี Neofresh', '', 'หลอด Design ใหม่', '', '', 10000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005024', 'OP/IBHS/NP050/65', 11, '2024-06-04 00:00:00', '00b932', '', '', '-', 'OP/IBHS/NP050/65', '2024-01-30', 'Budsara Soontaratta', 'Apaiporn Srisook', 'Ri en Perfumed White Fresh Fruity Deo 30 ml', '29028', '8850080290288', 'Body', '30 ml.', 1.00, 0.00, '', '2024-01-30', '59', '', '170/Kg', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005025', 'OP/IBHS/NP012/64', 11, '2024-01-30 00:00:00', '00b932', '', '', '-', '-', '2024-01-30', 'Budsara Soontaratta', 'Apaiporn Srisook', 'Ri en Underarm Care White Secret Cream Sachet Bundle', '29029', '8850080290295', 'Body', '10 g * 10 g', 0.00, 0.00, '', '2024-01-30', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00004545', 'op/IBHS/NP006/64', 11, '2024-04-04 00:00:00', '00b932', '', '', '-', '-', '2024-03-20', 'Budsara Soontaratta', 'Apaiporn Srisook', 'Ri en Underarm Care Made My Day Collection Set', '29030', '8850080290301', 'Body', '', 1.00, 0.00, '', '2024-08-01', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005121', 'x', 11, '2024-06-11 00:00:00', '00b932', '', '', 'x', 'x', '2024-11-06', 'Budsara Soontaratta', '', 'Ri en Perfumed White Active Fresh Deo 30 ml', '29031', '8850080290318', 'Body', '30', 1.00, 0.00, '', '2005-11-29', '', '', '29022', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005121', 'x', 11, '2024-06-11 00:00:00', '00b932', '', '', 'x', 'x', '2024-06-11', 'Budsara Soontaratta', '', 'Rien Feminine Wash sachet #Blossom', '29032', '8850080290325', 'Body', '30 ml', 1.00, 1.00, '', '2005-11-29', '', '', '29023', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00005121', 'x', 11, '2024-06-11 00:00:00', '00b932', '', '', 'x', 'x', '2024-11-06', 'Budsara Soontaratta', '', 'Rien Feminine Wash Sachet #Extra Care Balance', '29033', '8850080290332', 'Body', '30 ml', 1.00, 1.00, '', '2005-11-29', '', '', '29024', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'หมายเลขเอกสาร5', 'IBH-F155', 0, '2024-11-12 17:32:53', '00d751', '', '', 'Customer (OEM)', 'Job Ref. No.', '2024-11-12', '002', '001', 'ชื่อผลิตภัณฑ์5', '29034', '8850080290349', '001', NULL, NULL, NULL, NULL, '2024-11-12', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, 'N', NULL, 'N', NULL, NULL, NULL, NULL, 'N'),
+('OP', 'OP00005154', 'CM/NP001/67', 11, '2024-08-23 00:00:00', 'mully', '', '', '', 'CM/NP001/67', '2024-08-23', 'Mullika Kidarn', 'Apaiporn Srisook', 'Cos marche  Joyful Tote Bag', '29700', '8850080297003', 'Other', '1', 1.00, 1.00, '', '2005-11-29', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 3000, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000023', '-', 3, '2006-05-19 00:00:00', 'jariya', '', '', '-', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'เครื่องปิ้งขนมปัง 2 ชิ้น', '6010001', '6010001', '', '', 0.00, 0.00, 'สมาชิกOP', '2005-11-29', '420', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000028', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'โถสำหรับปั่นน้ำ 2 โถ', '6020002', '6020002', 'Other', '', 0.00, 0.00, 'สมาชิก OP', '2005-11-29', '3,450', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000029', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'เครื่องเตรียมอาหารมืออาชีพ', '6020003', '6020003', 'Other', '', 0.00, 0.00, 'สมาชิก OP', '2005-11-29', '2,250', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000030', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'เครื่องหุงข้าว นึ่งอาหาร', '6040004', '6040004', 'Other', '', 0.00, 0.00, '', '2006-05-19', '2,700', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000031', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', '', '', 'หม้อปรุงอาหารความดันสแตนเลส', '6050005', '6050005', 'Other', '', 0.00, 0.00, 'สมาชิก OP', '2006-05-19', '1,650', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000032', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', '', '', 'เครื่องกำจัดคราบสกปรก', '6060006', '6060006', 'Other', '', 0.00, 0.00, '', '2006-05-19', '1,990', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000033', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'เครื่องปิ้ง ย่าง บาร์บีคิว', '6070007', '6070007', 'Other', '', 0.00, 0.00, 'สมาชิก OP', '2006-05-19', '725', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000034', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'เครื่องกำจัดยุง', '6080008', '6080008', 'Other', '', 0.00, 0.00, 'สมาชิก OP', '2006-05-19', '890', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000035', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'เครื่องถอนขนมอเตอร์', '6090009', '6090009', 'Other', '', 0.00, 0.00, 'สมาชิกOP', '2006-05-19', '2,093', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000036', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'เครื่องหนีบผมเซรามิคแบบแผ่นโค้ง', '6100010', '6100010', 'Other', '', 0.00, 0.00, 'สมาชิก OP', '2006-05-19', '1,393', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000037', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'เครื่องนวดหน้าระบบอัลตร้าโซนิค รุ่นเล็ก', '6110011', '6110011', 'Other', '', 0.00, 0.00, 'สมาชิกOP', '2006-05-19', '2,093', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000038', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'ชุดอินฟาเรดเพื่อสุขภาพ', '6120012', '6120012', 'Other', '', 0.00, 0.00, 'สมาชิกOP', '2006-05-19', '2,093', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000039', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'แกนม้วนผมไฟฟ้า', '6130013', '6130013', 'Other', '', 0.00, 0.00, 'สมาชิกOP', '2006-05-19', '160', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000040', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'เครื่องหนีบผม', '6140014', '6140014', 'Other', '', 0.00, 0.00, 'สมาชิกOP', '2006-05-19', '210', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000041', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'หมวกอบไอน้ำ', '6150015', '6150015', 'Other', '', 0.00, 0.00, 'สมาชิกOP', '2006-05-19', '792', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000042', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'ลูกบอลเพื่อการบริหาร', '6160016', '6160016', 'Other', '', 0.00, 0.00, 'สมาชิกOP', '2006-05-19', '225', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000043', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'อุปกรณ์ยืดกล้ามเนื้อ', '6160017', '6160017', 'Other', '', 0.00, 0.00, 'สมาชิกOP', '2006-05-19', '150', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000044', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'ลูกบอลเพื่อการบริหาร แบบมีสาย', '6170017', '6170017', 'Other', '', 0.00, 0.00, 'สมาชิกOP', '2006-05-19', '332', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000045', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'ฐานรองลูกบอล', '6170018', '6170018', 'Other', '', 0.00, 0.00, 'สมาชิกOP', '2006-05-19', '288', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000046', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'ชุดทาเล็บหลากสีบนแท่น', '6180018', '6180018', 'Other', '', 0.00, 0.00, 'สมาชิกOP', '2006-05-19', '325', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000047', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'เกมส์ปาเป้า', '6190019', '6190019', 'Other', '', 0.00, 0.00, 'สมาชิกOP', '2006-05-19', '495', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000048', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'ชุดนาฬิกาอัจฉริยะ', '6200020', '6200020', 'Other', '', 0.00, 0.00, 'สมาชิกOP', '2006-05-19', '780', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000049', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'ไดร์เป่าผม วินนี่เดอะพู', '6210021', '6210021', 'Other', '', 0.00, 0.00, 'สมาชิกOP', '2006-05-19', '550', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000050', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'กระติกน้ำร้อน', '6220001', '6220001', 'Other', '', 0.00, 0.00, 'สมาชิกOP', '2006-05-19', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000051', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'เครื่องทำแซนวิช', '6220002', '6220002', 'Other', '', 0.00, 0.00, 'สมาชิกOP', '2006-05-19', '-', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', ''),
+('OP', 'OP00000052', '-', 1, '2006-05-19 00:00:00', 'jariya', '', '', '', '-', '2006-05-19', 'คุณจริยา หมอยา', 'คุณอรณิชา ด่านศิริไมตรี', 'เครื่องอุ่นกาแฟ', '6220003', '6220003', 'Other', '', 0.00, 0.00, 'สมาชิกOP', '2006-05-19', '-', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 0, '', '', '', '', '', '', '', '', '', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pro_develop_logs`
+--
+
+CREATE TABLE `pro_develop_logs` (
+  `ID` int(11) NOT NULL,
+  `BRAND` varchar(10) NOT NULL DEFAULT '',
+  `DOC_NO` varchar(20) DEFAULT '',
+  `REF_DOC` varchar(20) DEFAULT '',
+  `REVISE_NO` decimal(6,0) DEFAULT 0,
+  `EDIT_DT` datetime DEFAULT '1900-01-01 00:00:00',
+  `USER_EDIT` varchar(15) DEFAULT '',
+  `UPDATE_DT` datetime DEFAULT NULL,
+  `USER_UPDATE` varchar(15) DEFAULT NULL,
+  `STATUS` varchar(5) DEFAULT '',
+  `REMARK_ST` varchar(100) DEFAULT '',
+  `CUST_OEM` varchar(100) DEFAULT '',
+  `JOB_REFNO` varchar(20) DEFAULT '',
+  `DOC_DT` date DEFAULT '1900-01-01',
+  `NPD` varchar(50) DEFAULT '',
+  `PDM` varchar(50) DEFAULT '',
+  `NAME_ENG` varchar(70) DEFAULT '',
+  `PRODUCT` varchar(15) NOT NULL DEFAULT '',
+  `BARCODE` varchar(15) NOT NULL DEFAULT '',
+  `CATEGORY` varchar(20) DEFAULT '',
+  `CAPACITY` varchar(20) DEFAULT '',
+  `Q_SMELL` decimal(6,2) DEFAULT 0.00,
+  `Q_COLOR` decimal(6,2) DEFAULT 0.00,
+  `TARGET_GRP` varchar(20) DEFAULT '',
+  `TARGET_STK` date DEFAULT '1900-01-01',
+  `PRICE_FG` varchar(30) DEFAULT '',
+  `PRICE_COST` varchar(30) DEFAULT '',
+  `PRICE_BULK` varchar(30) DEFAULT '',
+  `P_CONCEPT` varchar(1000) DEFAULT '',
+  `P_BENEFIT` varchar(1000) DEFAULT '',
+  `TEXTURE` varchar(20) DEFAULT '',
+  `TEXTURE_OT` varchar(30) DEFAULT '',
+  `COLOR1` varchar(70) DEFAULT '',
+  `COLOR2` varchar(70) DEFAULT '',
+  `COLOR3` varchar(70) DEFAULT '',
+  `FRANGRANCE` varchar(70) DEFAULT '',
+  `INGREDIENT` varchar(1000) DEFAULT '',
+  `STD` varchar(70) DEFAULT '',
+  `PK` varchar(70) DEFAULT '',
+  `OTHER` varchar(70) DEFAULT '',
+  `DOCUMENT` varchar(70) DEFAULT '',
+  `FIRST_ORD` decimal(12,0) DEFAULT 0,
+  `OEM` varchar(1) DEFAULT '0',
+  `REASON1` varchar(1) DEFAULT '',
+  `REASON1_DES` varchar(100) DEFAULT '',
+  `REASON2` varchar(1) DEFAULT '',
+  `REASON2_DES` varchar(100) DEFAULT '',
+  `REASON3` varchar(1) DEFAULT '',
+  `REASON3_DES` varchar(100) DEFAULT '',
+  `REF_COLOR` varchar(100) DEFAULT '',
+  `REF_FRAGRANCE` varchar(100) DEFAULT '',
+  `OEM_STD` varchar(100) DEFAULT '',
+  `PACKAGE_BOX` varchar(1) DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `pro_develop_logs`
+--
+
+INSERT INTO `pro_develop_logs` (`ID`, `BRAND`, `DOC_NO`, `REF_DOC`, `REVISE_NO`, `EDIT_DT`, `USER_EDIT`, `UPDATE_DT`, `USER_UPDATE`, `STATUS`, `REMARK_ST`, `CUST_OEM`, `JOB_REFNO`, `DOC_DT`, `NPD`, `PDM`, `NAME_ENG`, `PRODUCT`, `BARCODE`, `CATEGORY`, `CAPACITY`, `Q_SMELL`, `Q_COLOR`, `TARGET_GRP`, `TARGET_STK`, `PRICE_FG`, `PRICE_COST`, `PRICE_BULK`, `P_CONCEPT`, `P_BENEFIT`, `TEXTURE`, `TEXTURE_OT`, `COLOR1`, `COLOR2`, `COLOR3`, `FRANGRANCE`, `INGREDIENT`, `STD`, `PK`, `OTHER`, `DOCUMENT`, `FIRST_ORD`, `OEM`, `REASON1`, `REASON1_DES`, `REASON2`, `REASON2_DES`, `REASON3`, `REASON3_DES`, `REF_COLOR`, `REF_FRAGRANCE`, `OEM_STD`, `PACKAGE_BOX`) VALUES
+(1, 'OP', 'หมายเลขเอกสาร', 'IBH-F155', 0, '2024-11-12 04:40:29', '00d751', '2024-11-12 17:15:45', '00d751', '', '', 'Customer (OEM)', 'Job Ref. No.', '2024-11-12', '002', '001', 'ชื่อผลิตภัณฑ์', '29034', '8850080290349', '001', NULL, NULL, NULL, NULL, '2024-11-12', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, 'N', NULL, 'N', NULL, NULL, NULL, NULL, 'N'),
+(2, 'OP', 'หมายเลขเอกสาร', 'IBH-F155', 0, '2024-11-12 05:15:45', '00d751', '2024-11-12 17:16:18', '00d751', '', '', 'Customer (OEM)', 'Job Ref. No.', '2024-11-12', '002', '001', 'ชื่อผลิตภัณฑ์', '29034', '8850080290349', '001', NULL, NULL, NULL, NULL, '2024-11-12', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, 'N', NULL, 'N', NULL, NULL, NULL, NULL, 'N'),
+(3, 'OP', 'หมายเลขเอกสาร', 'IBH-F155', 0, '2024-11-12 05:16:18', 'x', '2024-11-12 17:17:36', '00d751', '', '', 'Customer (OEM)', 'Job Ref. No.', '2024-11-12', '002', '001', 'ชื่อผลิตภัณฑ์2', '29034', '8850080290349', '001', NULL, NULL, NULL, NULL, '2024-11-12', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, 'N', NULL, 'N', NULL, NULL, NULL, NULL, 'N'),
+(4, 'OP', 'หมายเลขเอกสาร', 'IBH-F155', 0, '2024-11-12 05:17:36', '00d751', '2024-11-12 17:21:15', '00d751', '', '', 'Customer (OEM)', 'Job Ref. No.', '2024-11-12', '002', '001', 'ชื่อผลิตภัณฑ์3', '29034', '8850080290349', '001', NULL, NULL, NULL, NULL, '2024-11-12', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, 'N', NULL, 'N', NULL, NULL, NULL, NULL, 'N'),
+(5, 'OP', 'หมายเลขเอกสาร', 'IBH-F155', 0, '2024-11-12 05:21:15', '00d751', '2024-11-12 17:21:28', '00d751', '', '', 'Customer (OEM)', 'Job Ref. No.', '2024-11-12', '002', '001', 'ชื่อผลิตภัณฑ์4', '29034', '8850080290349', '001', NULL, NULL, NULL, NULL, '2024-11-12', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, 'N', NULL, 'N', NULL, NULL, NULL, NULL, 'N'),
+(6, 'OP', 'หมายเลขเอกสาร', 'IBH-F155', 0, '2024-11-12 05:21:28', '00d751', '2024-11-12 17:27:21', '00d751', '', '', 'Customer (OEM)', 'Job Ref. No.', '2024-11-12', '002', '001', 'ชื่อผลิตภัณฑ์5', '29034', '8850080290349', '001', NULL, NULL, NULL, NULL, '2024-11-12', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, 'N', NULL, 'N', NULL, NULL, NULL, NULL, 'N'),
+(7, 'OP', 'หมายเลขเอกสาร5', 'IBH-F155', 0, '2024-11-12 05:27:22', '00d751', '2024-11-12 17:28:20', '00d751', '', '', 'Customer (OEM)', 'Job Ref. No.', '2024-11-12', '002', '001', 'ชื่อผลิตภัณฑ์5', '29034', '8850080290349', '001', NULL, NULL, NULL, NULL, '2024-11-12', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, 'N', NULL, 'N', NULL, NULL, NULL, NULL, 'N'),
+(8, 'OP', 'หมายเลขเอกสาร5', 'IBH-F155', 0, '2024-11-12 05:28:20', '00d751', '2024-11-12 17:32:33', '00d751', '', '', 'Customer (OEM)', 'Job Ref. No.', '2024-11-12', '002', '001', 'ชื่อผลิตภัณฑ์5', '29034', '8850080290349', '001', NULL, NULL, NULL, NULL, '2024-11-12', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, 'N', NULL, 'N', NULL, NULL, NULL, NULL, 'N'),
+(9, 'OP', 'หมายเลขเอกสาร5', 'IBH-F155', 0, '2024-11-12 17:32:33', '00d751', '2024-11-12 17:32:53', '00d751', '', '', 'Customer (OEM)', 'Job Ref. No.', '2024-11-12', '002', '001', 'ชื่อผลิตภัณฑ์5', '29034', '8850080290349', '001', NULL, NULL, NULL, NULL, '2024-11-12', NULL, NULL, NULL, NULL, NULL, '001', NULL, NULL, '', '', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'N', 'N', NULL, 'N', NULL, 'N', NULL, NULL, NULL, NULL, 'N');
 
 -- --------------------------------------------------------
 
@@ -1492,7 +1814,7 @@ INSERT INTO `pro_develops` (`BRAND`, `DOC_NO`, `REF_DOC`, `REVISE_NO`, `EDIT_DT`
 --
 
 CREATE TABLE `p_statuses` (
-  `ID` varchar(1) NOT NULL DEFAULT '',
+  `ID` varchar(10) NOT NULL,
   `DESCRIPTION` varchar(50) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -1502,10 +1824,12 @@ CREATE TABLE `p_statuses` (
 
 INSERT INTO `p_statuses` (`ID`, `DESCRIPTION`) VALUES
 ('', 'Existing (No Define)'),
+('A', 'New Arrival'),
 ('D', 'Discontinue'),
 ('E', 'Existing'),
 ('L', 'Limited'),
 ('N', 'New Product'),
+('N-KTY', 'New Arrival'),
 ('O', 'Delete'),
 ('S', 'Sampling'),
 ('T', 'Tester'),
@@ -2658,13 +2982,106 @@ CREATE TABLE `solutions` (
 --
 
 INSERT INTO `solutions` (`ID`, `DESCRIPTION`, `BRAND`) VALUES
+('80001', 'EQUIPMENT KM', 'BB'),
+('80001     ', 'EQUIPMENT KM                                     ', 'CPS'),
 ('80001', 'Equipment Km', 'OP'),
+('80002', 'ACCESSORY KM', 'BB'),
+('80002     ', 'ACCESSORY KM                                     ', 'CPS'),
 ('80002', 'Accessory Km', 'OP'),
+('99999', 'No Define', 'BB'),
+('99999     ', 'No Define                                         ', 'CPS'),
 ('99999', 'Not Define', 'OP'),
+('A0001', 'Accessory', 'BB'),
+('A0001     ', 'Accessory                                         ', 'CPS'),
+('B0001', 'Body', 'BB'),
+('B0001     ', 'Body                                              ', 'CPS'),
+('B0002', 'Base Makeup', 'BB'),
+('B0003', 'Blusher', 'BB'),
+('B0004', 'Bronzer', 'BB'),
+('C0001', 'Contour', 'BB'),
+('C0034', 'CLASSY BOW', 'BB'),
+('E0001', 'Equipment', 'BB'),
+('E0001     ', 'Equipment                                         ', 'CPS'),
+('E0002', 'Eye Brow', 'BB'),
+('E0002     ', 'EYE BROW                                          ', 'CPS'),
+('E0003', 'Eyes', 'BB'),
+('E0003     ', 'EYES                                              ', 'CPS'),
+('E0004', 'Eye&Cheek', 'CPS'),
+('F0001', 'Face', 'BB'),
+('F0001     ', 'Face                                              ', 'CPS'),
+('F0002', 'Face & Neck', 'BB'),
+('F0002     ', 'FACE & NECK                                       ', 'CPS'),
+('F0003', 'Foundation', 'BB'),
+('F0003', 'Fabric', 'CPS'),
+('F004', 'Foot', 'CPS'),
+('G0001', 'Gift Set', 'BB'),
+('G0001     ', 'Gift Set                                          ', 'CPS'),
+('H0001', 'Hair', 'BB'),
+('H0001     ', 'Hair                                              ', 'CPS'),
+('H0002', 'Health', 'BB'),
+('H0002     ', 'Health                                            ', 'CPS'),
+('H0003', 'Home Care', 'BB'),
+('H0003     ', 'Home Care                                         ', 'CPS'),
+('H0004', 'Hand', 'BB'),
+('H0004     ', 'Hand                                              ', 'CPS'),
+('H0005', 'Hand Cream', 'BB'),
+('H0005', 'HAND CREAM', 'CPS'),
+('H0006', 'Highlight', 'BB'),
+('I0001', 'Incentive', 'BB'),
+('I0001     ', 'Incentive                                         ', 'CPS'),
+('J0001', 'Jewelry', 'BB'),
+('J0001     ', 'Jewelry                                           ', 'CPS'),
+('KA', 'Accessories', 'CPS'),
+('KA', 'Accessories', 'KTY'),
+('KB', 'Body', 'KTY'),
+('KC', 'Colors', 'KTY'),
+('KF', 'Face', 'KTY'),
+('KH', 'Hair', 'KTY'),
+('KO', 'Oral Care', 'KTY'),
+('KR', 'Others', 'KTY'),
+('KS', 'Set', 'KTY'),
 ('KTY', 'Katanyu', 'OP'),
+('KX', 'ของฟรี ของแจก ของแถม', 'KTY'),
+('L0001', 'Lifestyle', 'BB'),
+('L0001     ', 'Lifestyle                                         ', 'CPS'),
+('L0001', 'Accessories', 'KTY'),
+('L0001', 'Accessories', 'LL'),
+('L0002', 'Lip', 'BB'),
+('L0002     ', 'Lip                                               ', 'CPS'),
+('L0002', 'Aromatherapy', 'KTY'),
+('L0002', 'Aromatherapy', 'LL'),
+('L0003', 'Lip gloss', 'BB'),
+('L0003', 'Lip gloss', 'CPS'),
+('L0003', 'Body Care', 'KTY'),
+('L0003', 'Body Care', 'LL'),
+('L0004', 'Lip&Cheek', 'CPS'),
+('L0004', 'Face Care', 'KTY'),
+('L0004', 'Face Care', 'LL'),
+('L0005', 'fabric', 'CPS'),
+('L0005', 'Giftsets', 'KTY'),
+('L0005', 'Giftsets', 'LL'),
+('L0006', 'Hair Care', 'KTY'),
+('L0006', 'Hair Care', 'LL'),
+('L0007', 'Make-up', 'KTY'),
+('L0007', 'Make-up', 'LL'),
+('L0008', 'Consignment', 'KTY'),
+('L0008', 'Consignment', 'LL'),
+('L0009', 'Treatment', 'KTY'),
+('L0009', 'Treatment', 'LL'),
+('L9999', 'Undefined', 'KTY'),
+('L9999', 'Undefined', 'LL'),
+('M0001', 'Make Up', 'BB'),
+('M0001     ', 'Make Up                                           ', 'CPS'),
+('M0002', 'MaskSheet', 'BB'),
+('M0002', 'MaskSheet', 'CPS'),
+('M0003', 'Miracle White', 'BB'),
+('M0004', 'Makeup Remover', 'BB'),
+('N0001', 'Nail Color', 'BB'),
 ('OA', 'Accessories', 'OP'),
+('OB', 'Body', 'KTY'),
 ('OB', 'Body', 'OP'),
 ('OC', 'Colours', 'OP'),
+('OF', 'Face', 'KTY'),
 ('OF', 'Facial', 'OP'),
 ('OG', 'Gift Set/ Limited Edition', 'OP'),
 ('OH', 'Hair', 'OP'),
@@ -2675,7 +3092,17 @@ INSERT INTO `solutions` (`ID`, `DESCRIPTION`, `BRAND`) VALUES
 ('OS', 'Sunscreen', 'OP'),
 ('OT', 'Treatment', 'OP'),
 ('OX', 'ของฟรี ของแจก ของแถม', 'OP'),
+('P0001', 'Premium', 'BB'),
+('P0001     ', 'Premium                                           ', 'CPS'),
+('P0002', 'Palette', 'BB'),
+('P0003', 'Printing', 'BB'),
+('P0003     ', 'Printing                                          ', 'CPS'),
+('P0004', 'Powder', 'BB'),
+('R0001', 'Rewards', 'BB'),
+('R0001', 'REWARDS', 'CPS'),
+('R0002', 'Personal Care', 'CPS'),
 ('RB', 'Body', 'OP'),
+('S0001', 'Shower', 'BB'),
 ('Toothbrush', 'Toothbrush', 'OP');
 
 -- --------------------------------------------------------
@@ -16314,39 +16741,151 @@ INSERT INTO `type_gs` (`ID`, `DESCRIPTION`) VALUES
 --
 
 CREATE TABLE `unit_ps` (
-  `ID` varchar(2) NOT NULL DEFAULT '',
-  `DESCRIPTION` varchar(20) NOT NULL DEFAULT ''
+  `DESCRIPTION` varchar(20) NOT NULL DEFAULT '',
+  `BRAND` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `unit_ps`
 --
 
-INSERT INTO `unit_ps` (`ID`, `DESCRIPTION`) VALUES
-('01', 'กระป๋อง'),
-('02', 'กล่อง'),
-('03', 'ก้อน'),
-('04', 'ขวด'),
-('05', 'คัน'),
-('06', 'คู่'),
-('07', 'ชิ้น'),
-('08', 'ชุด'),
-('09', 'ซิงค์'),
-('10', 'ถาดหลุม'),
-('11', 'บาน'),
-('12', 'ม้วน'),
-('13', 'หลอด'),
-('14', 'หีบ'),
-('15', 'ห่อ'),
-('16', 'อัน'),
-('17', 'เซ็ท'),
-('18', 'เล่ม'),
-('19', 'เส้น'),
-('20', 'แท่ง'),
-('21', 'แผ่น'),
-('22', 'แพค'),
-('23', 'โหล'),
-('24', 'ใบ');
+INSERT INTO `unit_ps` (`DESCRIPTION`, `BRAND`) VALUES
+('', ''),
+('PACK', 'BB'),
+('PACK', 'CPS'),
+('PACK', 'LL'),
+('กระปุก', 'KTY'),
+('กระป๋อง', 'BB'),
+('กระป๋อง', 'CPS'),
+('กระป๋อง', 'KTY'),
+('กระป๋อง', 'LL'),
+('กระป๋อง', 'OP'),
+('กลัก', 'KTY'),
+('กล่อง', 'BB'),
+('กล่อง', 'CPS'),
+('กล่อง', 'KTY'),
+('กล่อง', 'LL'),
+('กล่อง', 'OP'),
+('กล่องเซ็ท', 'BB'),
+('กล่องเซ็ท', 'CPS'),
+('กล่องเซ็ท', 'KTY'),
+('กล่องเซ็ท', 'LL'),
+('กล่องโหล', 'BB'),
+('กล่องโหล', 'CPS'),
+('กล่องโหล', 'KTY'),
+('กล่องโหล', 'LL'),
+('ก้อน', 'BB'),
+('ก้อน', 'CPS'),
+('ก้อน', 'KTY'),
+('ก้อน', 'LL'),
+('ก้อน', 'OP'),
+('ขวด', 'BB'),
+('ขวด', 'CPS'),
+('ขวด', 'KTY'),
+('ขวด', 'LL'),
+('ขวด', 'OP'),
+('คัน', 'BB'),
+('คัน', 'CPS'),
+('คัน', 'KTY'),
+('คัน', 'LL'),
+('คัน', 'OP'),
+('คู่', 'BB'),
+('คู่', 'CPS'),
+('คู่', 'KTY'),
+('คู่', 'LL'),
+('คู่', 'OP'),
+('ชิ้น', 'BB'),
+('ชิ้น', 'CPS'),
+('ชิ้น', 'KTY'),
+('ชิ้น', 'LL'),
+('ชิ้น', 'OP'),
+('ชุด', 'BB'),
+('ชุด', 'CPS'),
+('ชุด', 'KTY'),
+('ชุด', 'LL'),
+('ชุด', 'OP'),
+('ซอง', 'KTY'),
+('ซิงค์', 'BB'),
+('ซิงค์', 'CPS'),
+('ซิงค์', 'KTY'),
+('ซิงค์', 'LL'),
+('ซิงค์', 'OP'),
+('ตัว', 'KTY'),
+('ตู้', 'KTY'),
+('ถาดหลุม', 'BB'),
+('ถาดหลุม', 'CPS'),
+('ถาดหลุม', 'KTY'),
+('ถาดหลุม', 'LL'),
+('ถาดหลุม', 'OP'),
+('ถุง', 'KTY'),
+('บาน', 'BB'),
+('บาน', 'CPS'),
+('บาน', 'KTY'),
+('บาน', 'LL'),
+('บาน', 'OP'),
+('ม้วน', 'KTY'),
+('ม้วน', 'LL'),
+('ม้วน', 'OP'),
+('รีม', 'KTY'),
+('ลูก', 'KTY'),
+('หลอด', 'BB'),
+('หลอด', 'CPS'),
+('หลอด', 'KTY'),
+('หลอด', 'LL'),
+('หลอด', 'OP'),
+('หีบ', 'BB'),
+('หีบ', 'CPS'),
+('หีบ', 'KTY'),
+('หีบ', 'LL'),
+('หีบ', 'OP'),
+('ห่อ', 'BB'),
+('ห่อ', 'CPS'),
+('ห่อ', 'KTY'),
+('ห่อ', 'LL'),
+('ห่อ', 'OP'),
+('อัน', 'BB'),
+('อัน', 'CPS'),
+('อัน', 'KTY'),
+('อัน', 'LL'),
+('อัน', 'OP'),
+('เซ็ท', 'OP'),
+('เล่ม', 'BB'),
+('เล่ม', 'CPS'),
+('เล่ม', 'KTY'),
+('เล่ม', 'LL'),
+('เล่ม', 'OP'),
+('เส้น', 'BB'),
+('เส้น', 'CPS'),
+('เส้น', 'KTY'),
+('เส้น', 'LL'),
+('เส้น', 'OP'),
+('แท่ง', 'BB'),
+('แท่ง', 'CPS'),
+('แท่ง', 'KTY'),
+('แท่ง', 'LL'),
+('แท่ง', 'OP'),
+('แผง', 'KTY'),
+('แผ่น', 'BB'),
+('แผ่น', 'CPS'),
+('แผ่น', 'KTY'),
+('แผ่น', 'LL'),
+('แผ่น', 'OP'),
+('แพค', 'BB'),
+('แพค', 'CPS'),
+('แพค', 'KTY'),
+('แพค', 'LL'),
+('แพค', 'OP'),
+('แพ็ค', 'KTY'),
+('โหล', 'BB'),
+('โหล', 'CPS'),
+('โหล', 'KTY'),
+('โหล', 'LL'),
+('โหล', 'OP'),
+('ใบ', 'BB'),
+('ใบ', 'CPS'),
+('ใบ', 'KTY'),
+('ใบ', 'LL'),
+('ใบ', 'OP');
 
 -- --------------------------------------------------------
 
@@ -16355,18 +16894,49 @@ INSERT INTO `unit_ps` (`ID`, `DESCRIPTION`) VALUES
 --
 
 CREATE TABLE `unit_types` (
-  `ID` varchar(2) NOT NULL DEFAULT '',
-  `DESCRIPTION` varchar(20) NOT NULL DEFAULT ''
+  `DESCRIPTION` varchar(20) NOT NULL DEFAULT '',
+  `BRAND` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `unit_types`
 --
 
-INSERT INTO `unit_types` (`ID`, `DESCRIPTION`) VALUES
-('01', '1'),
-('02', 'g.'),
-('03', 'ml');
+INSERT INTO `unit_types` (`DESCRIPTION`, `BRAND`) VALUES
+('', ''),
+('1', 'OP'),
+('G', 'BB'),
+('G', 'CPS'),
+('G', 'KTY'),
+('G', 'LL'),
+('g.', 'OP'),
+('ml', 'OP'),
+('ml.', 'BB'),
+('ml.', 'CPS'),
+('ml.', 'KTY'),
+('ml.', 'LL'),
+('pcs.', 'BB'),
+('pcs.', 'CPS'),
+('pcs.', 'KTY'),
+('pcs.', 'LL'),
+('กรัม', 'BB'),
+('กรัม', 'CPS'),
+('กรัม', 'KTY'),
+('กรัม', 'LL'),
+('ชิ้น', 'BB'),
+('ชิ้น', 'CPS'),
+('ชิ้น', 'KTY'),
+('ชิ้น', 'LL'),
+('ชิ้น/แพ็ค', 'BB'),
+('ชิ้น/แพ็ค', 'CPS'),
+('ชิ้น/แพ็ค', 'KTY'),
+('ชิ้น/แพ็ค', 'LL'),
+('ชุด', 'KTY'),
+('มล.', 'BB'),
+('มล.', 'CPS'),
+('มล.', 'KTY'),
+('มล.', 'LL'),
+('แพค', 'KTY');
 
 -- --------------------------------------------------------
 
@@ -16402,20 +16972,21 @@ INSERT INTO `users` (`id`, `username`, `name`, `email`, `email_verified_at`, `pa
 (11, 'bo', 'ช่างโบ้', 'test@gmail.com', NULL, '$2y$10$qNXabFcf0l5rqJOoS/iaMOg0X0ljVJ4m8TxMvxE5WFJPXRO5DBZem', 'TyE0I46e23zpM6lWHXHXww79aNFKikpGWJo94KEWkoclxikPwWhW9Nqu3tZA', 1, '2022-02-28 15:21:57', '2022-10-02 22:22:30'),
 (12, 'file', 'ช่างฟิล์ม', 'test2@gmail.com', NULL, '$2y$10$oDK5H2V30XtEany.YHQDs.P56/0L2Bx/W/dgVkKT8Fi6w2gajl5re', NULL, 1, '2022-02-28 15:23:35', '2022-02-28 15:23:35'),
 (21, NULL, 'test1', 'test1@gmail.com', NULL, '$2y$10$XY8os2I.PICMI9eznO96CuUVO2EkiNSpVh9FJ.lJyF.idv.3b7iLm', NULL, 1, '2024-06-07 03:19:36', '2024-06-07 03:19:36'),
-(25, '00d750', NULL, NULL, NULL, NULL, 'GCeKM7Ljyj69JXwLk20QTvHcl2ec6mo5YmfFBBVwwM8IEyWWA2H4gZusMggL', 1, '2024-08-05 03:22:25', '2024-10-30 07:54:27'),
-(26, '00d752', NULL, NULL, NULL, NULL, 'fEM554OSxyjilPjmslpGOXy9V4ixG7ls4EP7dU0h8cNUdpiuiYeTv5RaLVyX', 1, '2024-08-05 18:50:00', '2024-11-01 08:05:19'),
+(25, '00d750', NULL, NULL, NULL, NULL, 'IoTDv4ieXdzCsY3hPlZNB6attOKWPQKfkG35meNdI4TnZXyVW9cv2VihpXl9', 1, '2024-08-05 03:22:25', '2024-11-06 06:28:34'),
+(26, '00d752', NULL, NULL, NULL, NULL, 'H4HchDKdAcmVak4Au1f5msorDVxw5c2NEjrjiMBBLQ89yQ6pw8trL8roXc1p', 1, '2024-08-05 18:50:00', '2024-11-11 09:03:27'),
 (27, '006631', NULL, NULL, NULL, NULL, 'IRnZ0kDtYPOaO68d1QtsreqPQIpjxYc8i8yxmCx0T4ExbXX9i1dH61NhQBAm', 1, '2024-08-07 01:15:19', '2024-08-07 01:15:19'),
 (28, '006935', NULL, NULL, NULL, NULL, NULL, 1, '2024-08-07 01:17:59', '2024-08-07 01:17:59'),
 (30, '00C648', NULL, NULL, NULL, NULL, 'JYg0S1VU15z1n33xE6Aq4rFE6132Nrw6GAbZ7sszVxHvainm423rJ2wG4XfO', 1, '2024-08-07 23:50:00', '2024-08-07 23:50:00'),
-(32, '00d751', NULL, NULL, NULL, NULL, 'nNVEObqXOyquVLfA2YgaccoQGraeSFA3VRS6I3iHXFppgxdofqy3BBcYt2YY', 1, '2024-08-08 23:37:47', '2024-11-01 08:12:33'),
+(32, '00d751', NULL, NULL, NULL, NULL, 'By95iGMaLxCmmtsJEXklenJ9QmJYSdqYRJKnzH9qJ6L7LmjfQ5hs8cdCLXHa', 1, '2024-08-08 23:37:47', '2024-11-12 01:36:00'),
 (34, '009166', NULL, NULL, NULL, NULL, 'hwGa4anVy7Jy65FLbMR89dFkQimlGtE1jm4bfyJMuGnCSxIfSvNSyJ2nqezk', 1, '2024-08-23 01:12:24', '2024-10-28 08:35:00'),
-(35, '005879', NULL, NULL, NULL, NULL, '90s5YUryuNgsYOOySZv7vnXyidKG9r6TjYzysLtPqcW7fMDFSY69Ol03i69u', 1, '2024-09-18 07:09:47', '2024-09-18 07:09:47'),
 (36, 'admin', 'admin', 'admin111@gmail.com', NULL, '$2y$10$zdySVo5DfkOvX/VGdUCGXePLQ3TQELvw.ao4iWRl4a5wR1zCIn.7m', NULL, 1, '2024-09-20 04:25:54', '2024-09-20 04:25:54'),
 (39, '000069', NULL, NULL, NULL, NULL, 'VYx4XS8dyW5zsVElUXzjnJs6m5Lws71ynZ0k4QG1ZvVHVBg2swYxfh0Dtqmw', 1, '2024-09-26 01:20:42', '2024-09-26 01:20:42'),
 (47, '003559', NULL, NULL, NULL, NULL, 'znlbAKvQMfGouAIA8nMvK2LsUU21F7rQG3BXCc7AEDCzGSZo5D0RVUbRxkK3', 1, '2024-10-10 06:53:31', '2024-10-10 06:57:34'),
-(62, '004742', NULL, NULL, NULL, NULL, 'i8XSLj1yAgdVMMiaQhKfYwLKpagFRi1WD82ULSLldBfDUFuiYYPzJNftqWRO', 1, '2024-10-17 07:24:48', '2024-10-25 03:18:29'),
+(62, '004742', NULL, NULL, NULL, NULL, 'soPGTKWpryNe42jOG2IcHgT7mYgcAAdaEL5Wva8Cl6bxCn6CXprdSwl9rcda', 1, '2024-10-17 07:24:48', '2024-11-04 07:36:06'),
 (68, '00D705', NULL, NULL, NULL, NULL, '1bxReumqnQMgLhN1BZnJp11mv0QPTD9849PgtWEkSAAxCGPymA9Ns3dAHBhr', 1, '2024-10-18 08:02:21', '2024-10-18 08:02:21'),
-(71, '00b955', NULL, NULL, NULL, NULL, 'DDNUk6boePW8V8hzMt9cjeNk0MclAvvWPXNxAZ4dnnPZiLlsnpvXDc0IP0n3', 1, '2024-10-25 06:56:47', '2024-10-25 08:35:35');
+(71, '00b955', NULL, NULL, NULL, NULL, 'DDNUk6boePW8V8hzMt9cjeNk0MclAvvWPXNxAZ4dnnPZiLlsnpvXDc0IP0n3', 1, '2024-10-25 06:56:47', '2024-10-25 08:35:35'),
+(80, '005879', NULL, NULL, NULL, NULL, 'TnUx4u9EnrujXkBPBhFLOwpnRsK2KLZVroeOQzt1OD2uMymqDcS0dAn4f07v', 1, '2024-11-05 06:32:35', '2024-11-05 06:37:05'),
+(84, '002072', NULL, NULL, NULL, NULL, 'R4WKFMLfVPk8fQYp4OqdcBN9nYmqEZNnZcYB1GloUcpgcFGBIcPvSgJe0ypc', 1, '2024-11-08 01:35:55', '2024-11-08 01:35:55');
 
 -- --------------------------------------------------------
 
@@ -16445,12 +17016,13 @@ INSERT INTO `user_permission` (`id`, `user_id`, `tent_id`, `position_id`, `creat
 (46, 46, 235, 8, '2022-09-07 11:25:30', '2022-09-07 11:25:30'),
 (51, 32, NULL, 6, '2024-08-09 06:37:48', '2024-08-09 06:37:48'),
 (53, 34, NULL, 3, '2024-08-23 08:12:24', '2024-08-23 08:12:24'),
-(54, 35, NULL, 8, '2024-09-18 14:09:47', '2024-09-18 14:09:47'),
-(55, 39, NULL, 8, '2024-09-26 08:20:42', '2024-09-26 08:20:42'),
+(55, 39, NULL, 6, '2024-09-26 08:20:42', '2024-09-26 08:20:42'),
 (59, 47, NULL, 15, '2024-10-10 13:53:31', '2024-10-10 13:53:31'),
 (63, 62, NULL, 21, '2024-10-17 14:24:48', '2024-10-17 14:24:48'),
 (65, 68, NULL, 6, '2024-10-18 15:02:21', '2024-10-18 15:02:21'),
-(68, 71, NULL, 3, '2024-10-25 13:56:47', '2024-10-25 13:56:47');
+(68, 71, NULL, 3, '2024-10-25 13:56:47', '2024-10-25 13:56:47'),
+(70, 80, NULL, 7, '2024-11-05 13:32:35', '2024-11-05 13:32:35'),
+(76, 84, NULL, 6, '2024-11-08 08:35:55', '2024-11-08 08:35:55');
 
 -- --------------------------------------------------------
 
@@ -16499,6 +17071,12 @@ INSERT INTO `vendors` (`VEN_ID`, `ACC_CODE`, `CONTACT_NAME`, `VEN_NTHAI`, `VEN_N
 ALTER TABLE `accounts`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `product` (`product`);
+
+--
+-- Indexes for table `account_logs`
+--
+ALTER TABLE `account_logs`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `acctypes`
@@ -16579,7 +17157,7 @@ ALTER TABLE `food`
 -- Indexes for table `grp_ps`
 --
 ALTER TABLE `grp_ps`
-  ADD PRIMARY KEY (`GRP_P`);
+  ADD PRIMARY KEY (`GRP_P`,`BRAND`) USING BTREE;
 
 --
 -- Indexes for table `homes`
@@ -16646,7 +17224,7 @@ ALTER TABLE `npd_textures`
 -- Indexes for table `owners`
 --
 ALTER TABLE `owners`
-  ADD PRIMARY KEY (`OWNER`);
+  ADD PRIMARY KEY (`OWNER`,`BRAND`) USING BTREE;
 
 --
 -- Indexes for table `password_reset_tokens`
@@ -16658,7 +17236,7 @@ ALTER TABLE `password_reset_tokens`
 -- Indexes for table `pdms`
 --
 ALTER TABLE `pdms`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`ID`,`BRAND`) USING BTREE;
 
 --
 -- Indexes for table `personal_access_tokens`
@@ -16688,6 +17266,12 @@ ALTER TABLE `product1s`
   ADD UNIQUE KEY `BARCODE` (`BARCODE`);
 
 --
+-- Indexes for table `product1_logs`
+--
+ALTER TABLE `product1_logs`
+  ADD PRIMARY KEY (`ID`);
+
+--
 -- Indexes for table `products`
 --
 ALTER TABLE `products`
@@ -16712,6 +17296,12 @@ ALTER TABLE `product_images`
 ALTER TABLE `pro_develops`
   ADD PRIMARY KEY (`PRODUCT`),
   ADD UNIQUE KEY `BARCODE` (`BARCODE`);
+
+--
+-- Indexes for table `pro_develop_logs`
+--
+ALTER TABLE `pro_develop_logs`
+  ADD PRIMARY KEY (`ID`);
 
 --
 -- Indexes for table `p_statuses`
@@ -16777,13 +17367,13 @@ ALTER TABLE `type_gs`
 -- Indexes for table `unit_ps`
 --
 ALTER TABLE `unit_ps`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`DESCRIPTION`,`BRAND`) USING BTREE;
 
 --
 -- Indexes for table `unit_types`
 --
 ALTER TABLE `unit_types`
-  ADD PRIMARY KEY (`ID`);
+  ADD PRIMARY KEY (`DESCRIPTION`,`BRAND`) USING BTREE;
 
 --
 -- Indexes for table `users`
@@ -16812,13 +17402,19 @@ ALTER TABLE `vendors`
 -- AUTO_INCREMENT for table `accounts`
 --
 ALTER TABLE `accounts`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `account_logs`
+--
+ALTER TABLE `account_logs`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `barcodes`
 --
 ALTER TABLE `barcodes`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `brands`
@@ -16848,7 +17444,7 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT for table `food`
 --
 ALTER TABLE `food`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `homes`
@@ -16866,7 +17462,7 @@ ALTER TABLE `manage_menus`
 -- AUTO_INCREMENT for table `master_brands`
 --
 ALTER TABLE `master_brands`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `menus`
@@ -16878,7 +17474,7 @@ ALTER TABLE `menus`
 -- AUTO_INCREMENT for table `menu_relations`
 --
 ALTER TABLE `menu_relations`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=238;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=244;
 
 --
 -- AUTO_INCREMENT for table `migrations`
@@ -16890,19 +17486,25 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
 
 --
 -- AUTO_INCREMENT for table `positions`
 --
 ALTER TABLE `positions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `posts`
 --
 ALTER TABLE `posts`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `product1_logs`
+--
+ALTER TABLE `product1_logs`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -16914,13 +17516,19 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `product_channels`
 --
 ALTER TABLE `product_channels`
-  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `ID` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `product_images`
 --
 ALTER TABLE `product_images`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `pro_develop_logs`
+--
+ALTER TABLE `pro_develop_logs`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `submenus`
@@ -16956,13 +17564,13 @@ ALTER TABLE `trn_dona_totambons`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT for table `user_permission`
 --
 ALTER TABLE `user_permission`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=69;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
