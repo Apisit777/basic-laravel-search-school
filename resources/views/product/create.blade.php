@@ -329,7 +329,6 @@
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">เจ้าของสินค้า<span class="text-danger"> *</span></label>
                                                                     <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="VENDOR" id="VENDOR" onchange="onchangeValueSelect2()">
-                                                                    <!-- <select  class="js-example-basic-single w-full rounded-sm text-xs" name="VENDOR" id="VENDOR"> -->
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($owners as $key => $owner)
                                                                             <option value={{ $owner->OWNER }}>{{ $owner->REMARK }}</option>

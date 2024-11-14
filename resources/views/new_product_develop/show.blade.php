@@ -349,7 +349,7 @@
                                 </div>
                                 <div class="col" style="">
                                     <span style="font-size: 14px;">
-                                        IBH-F155
+                                        {{ $dataIBSH->DOC_NO }}
                                     </span>
                                 </div>
                             </div>
@@ -372,7 +372,7 @@
                                 </div>
                                 <div class="col" style="width: 80px;">
                                     <span style="font-size: 14px;">
-                                        26/01/15
+                                        {{ $dataIBSH->DOC_DT }}
                                     </span>
                                 </div>
                             </div>
@@ -402,7 +402,7 @@
                     </div>
                     <div class="" style="border-right: none; border-bottom: 1px solid #000; border-left: 1px solid #000;">
                         <div class="text-xs" style="position:absolute">PRODUCT TYPE</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">Make Up</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->C_DESCRIPTION }}</div>
                     </div>
                     <div class="" style="border-right: none; border-bottom: 1px solid #000; border-left: 1px solid #000;">
                         <div class="text-xs" style="position:absolute">PRODUCT CODE</div>
@@ -410,22 +410,22 @@
                     </div>
                     <div class="" style="border-right: none; border-bottom: 1px solid #000; border-left: 1px solid #000;">
                         <div class="text-xs" style="position:absolute">PROJECT REF. NO.</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->JOB_REFNO }}</div>
                     </div>
                 </div>
 
                 <div class="wrapper" style="position: relative;">
                     <div class="five" style="border-right: none;">
                         <div class="text-xs" style="position:absolute">PROJECT NAME</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">Beneficial Lipstick - KISS FROM A ROSE SHEENY TINT&GLOSS</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->NAME_ENG }}</div>
                     </div>
                     <div class="" style="border-right: none; border-top: none; border-left: 1px solid #000;">
                         <div class="text-xs" style="position:absolute">TARGET GROUP</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">18-35</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->TARGET_GRP }}</div>
                     </div>
                     <div class="" style="border-right: none; border-top: none; border-left: 1px solid #000;">
                         <div class="text-xs" style="position:absolute">COMPARE WITH OEM [YES / NO]</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">No</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;"> {{ $dataIBSH->OEM == 'Y' ? 'Yes' : 'No' }}</div>
                     </div>
                 </div>
 
@@ -466,11 +466,11 @@
                 <div class="wrapper mt-10" style="position: relative;">
                     <div class="eight" style="border-right: none;">
                         <div class="text-xs" style="position:absolute">ACTIVE INGREDIENT</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->INGREDIENT }}</div>
                     </div>
                     <div class="nine" style="border-right: none; grid-column: 4/6;">
                         <div class="text-xs" style="position:absolute">TEXTURE</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">Other</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->T_DESCRIPTION }}</div>
                     </div>
                     <div class="ten" style="border-right: none;">
                         <div class="text-xs" style="position:absolute">REF. PRODUCT / BENCHMARK (PLEASE IDENTIFY)</div>
@@ -478,27 +478,27 @@
                     </div>
                     <div class="elevent" style="border-right: none;">
                         <div class="text-xs" style="position:absolute">TOTAL COLOR</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">3</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->Q_COLOR }}</div>
                     </div>
                     <div class="twel" style="grid-column: 2/4;">
                         <div class="text-xs" style="position:absolute">DETAIL OF COLOR</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">แดง,ส้มอมน้ําตาล,ชมพูเข็ม</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->COLOR1 }}</div>
                     </div>
                     <div class="thirteen" style="grid-column: 4/6;">
                         <div class="text-xs" style="position:absolute">REF. OF COLOR</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->REF_COLOR }}</div>
                     </div>
                     <div class="elevent" style="border-right: none;">
                         <div class="text-xs" style="position:absolute">TOTAL FRAGRANCE</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">0</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->Q_SMELL }}</div>
                     </div>
                     <div class="twel" style="grid-column: 2/4;">
                         <div class="text-xs" style="position:absolute">FRAGRANCE TYPE OR CONCEPT</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">แดง,ส้มอมน้ําตาล,ชมพูเข็ม</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->FRANGRANCE }}</div>
                     </div>
                     <div class="thirteen" style="grid-column: 4/6;">
                         <div class="text-xs" style="position:absolute">REF. OF FRAGRANCE</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->REF_FRAGRANCE }}</div>
                     </div>
                 </div>
 
@@ -527,10 +527,14 @@
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">To claim in advertising media</div>
                     </div>
                     <div class="eight_3" style="border-right: none; border-left: none; grid-column: 4/6; border-bottom: none;">
-                        <div class="text-xs rcorners1" style="position: absolute; top: 50px;">
+                        <div class="text-sm rcorners1" style="position: absolute; top: 50px;">
                             <div style="margin-left: 30px;">
                                 Others
                             </div>
+                        </div>
+                        <div style="position: absolute; top: 40px; line-height: 34.5px; text-indent: 120px">
+                            {{ $dataIBSH->REASON3_DES }}
+                            <!-- REF. PRODUCT / BENCHMARK (PLEASE IDENTIFY) X-XXX-XXXXXX -->
                         </div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 135%;">---------------------------------------------</div>
                         <div class="" style="position: absolute; top: -12px; right: 8px; display:flex; justify-content:center; align-items: center; height: 100%;">----------</div>

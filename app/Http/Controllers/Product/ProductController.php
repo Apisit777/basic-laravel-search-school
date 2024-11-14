@@ -137,7 +137,7 @@ class ProductController extends Controller
             $brands = Barcode::select(
             'BRAND',
                 'STATUS')
-            ->whereIn('STATUS', ['OP', 'RI'])
+            ->whereIn('STATUS', ['OP', 'RI', 'CM'])
             ->pluck('BRAND')
             ->toArray();
 
@@ -692,50 +692,50 @@ class ProductController extends Controller
             ->where('BRAND', 'OP')
             ->get();
             $owners = Owner::select(
-                'OWNER AS VENDOR',
+                'OWNER',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
             $grp_ps = Grp_p::select(
-                'GRP_P AS GRP_P',
+                'GRP_P',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
             $brand_ps = Brand_p::select(
-                'ID AS BRAND_P',
+                'ID',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
             $solutions = Solution::select(
-                'ID AS SOLUTION',
+                'ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
             $series = Series::select(
-                'ID AS SERIES',
+                'ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
             $categorys = Category::select(
-                'ID AS CATEGORY',
+                'ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
             $sub_categorys = Sub_category::select(
-                'ID AS S_CAT',
+                'ID',
                 'CATEGORY_ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
             $pdms = Pdm::select(
-                'ID AS PDM_GROUP',
+                'ID',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'OP')
@@ -761,50 +761,50 @@ class ProductController extends Controller
             ->where('BRAND', 'CPS')
             ->get();
             $owners = Owner::select(
-                'OWNER AS VENDOR',
+                'OWNER',
                 'REMARK',
                 'BRAND')
             ->whereIn('BRAND', ['CPS', 'KM'])
             ->get();
             $grp_ps = Grp_p::select(
-                'GRP_P AS GRP_P',
+                'GRP_P',
                 'REMARK',
                 'BRAND')
                 ->whereIn('BRAND', ['CPS', 'KM'])
             ->get();
             $brand_ps = Brand_p::select(
-                'ID AS BRAND_P',
+                'ID',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
             $solutions = Solution::select(
-                'ID AS SOLUTION',
+                'ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
             $series = Series::select(
-                'ID AS SERIES',
+                'ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
             $categorys = Category::select(
-                'ID AS CATEGORY',
+                'ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
             $sub_categorys = Sub_category::select(
-                'ID AS S_CAT',
+                'ID',
                 'CATEGORY_ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
             $pdms = Pdm::select(
-                'ID AS PDM_GROUP',
+                'ID',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'CPS')
@@ -830,25 +830,25 @@ class ProductController extends Controller
             ->where('BRAND', 'KTY')
             ->get();
             $owners = Owner::select(
-                'OWNER AS VENDOR',
+                'OWNER',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'KTY')
             ->get();
             $grp_ps = Grp_p::select(
-                'GRP_P AS GRP_P',
+                'GRP_P',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'KTY')
             ->get();
             $brand_ps = Brand_p::select(
-                'ID AS BRAND_P',
+                'ID',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'KTY')
             ->get();
             $solutions = Solution::select(
-                'ID AS SOLUTION',
+                'ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'KTY')
@@ -998,6 +998,18 @@ class ProductController extends Controller
 
         // dd($dataProductBarcode);
 
+        $changeBrand = '';
+        if ($dataProductBarcode->BRAND == 'OP' && (int) $request->NUMBER >= 20000 && (int) $request->NUMBER <= 28999) {
+            $changeBrand = 'OP';
+        } else if ($dataProductBarcode->BRAND == 'OP' && (int) $request->NUMBER >= 29000 && (int) $request->NUMBER <= 29699) {
+            $changeBrand = 'RE';
+        } else if ($dataProductBarcode->BRAND == 'OP' && (int) $request->NUMBER >= 29700 && (int) $request->NUMBER <= 29999) {
+            $changeBrand = 'CM';
+        }
+
+        // dd($changeBrand);
+        // dd($dataProductBarcode->BRAND);
+
         // $venders = Vendor::all();
         // $type_gs = Type_g::all();
         // $solutions = Solution::all();
@@ -1033,7 +1045,7 @@ class ProductController extends Controller
                 'PRODUCT' => $dataProductBarcode->PRODUCT,
                 'BARCODE' => $dataProductBarcode->BARCODE,
                 'COLOR' => $data->COLOR,
-                'GRP_P' => $dataProductBarcode->BRAND,
+                'GRP_P' => $changeBrand,
                 'SUPPLIER' => $data->SUPPLIER,
                 'NAME_THAI' => $data->NAME_THAI,
                 'NAME_ENG' => $data->NAME_ENG,
@@ -1276,8 +1288,8 @@ class ProductController extends Controller
         DB::beginTransaction();
         try {
             $data_product = [
-                // 'BRAND' => $request->input('BRAND'),
-                'BRAND' => $description,
+                'BRAND' => $request->input('BRAND'),
+                // 'BRAND' => $description,
                 'PRODUCT' => $request->input('PRODUCT'),
                 'BARCODE' => $request->input('PRODUCT'),
                 'COLOR' => $request->input('COLOR'),
@@ -1295,7 +1307,7 @@ class ProductController extends Controller
                 'SOLUTION' => $request->input('SOLUTION'),
                 'SERIES' => $request->input('SERIES'),
                 'CATEGORY' => $request->input('CATEGORY'),
-                'STATUS' => $description,
+                'STATUS' => $request->input('STATUS'),
                 'S_CAT' => $request->input('S_CAT'),
                 'PDM_GROUP' => $request->input('PDM_GROUP'),
                 'BRAND_P' => $request->input('BRAND_P'),
@@ -1978,7 +1990,7 @@ class ProductController extends Controller
             'page' => ceil(($request->input('start') + 1) / $limit),
         ]);
 
-        $BRAND = $request->input('brand_id');
+        $GRP_P = $request->input('brand_id');
         $PRODUCT = $request->input('PRODUCT');
         // $BARCODE = $request->input('BARCODE');
         $DOC_NO = $request->search;
@@ -2053,8 +2065,8 @@ class ProductController extends Controller
             ->orderBy('BARCODE', 'DESC');
         }
 
-        if ($BRAND != null) {
-            $data->where('product1s.BRAND', $BRAND);
+        if ($GRP_P != null) {
+            $data->where('product1s.GRP_P', $GRP_P);
         }
 
         if (null != $DOC_NO) {
