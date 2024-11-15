@@ -659,7 +659,7 @@ class ProductFormController extends Controller
             $digits_code = substr($digits_barcode, 7, 5);
 
             $data_product = [
-                'BRAND' => $request->input('BRAND') == 'OP' || $request->input('BRAND') == 'RE' || $request->input('BRAND') == 'CM' ? 'OP' : $request->input('BRAND'),
+                'BRAND' => $request->input('BRAND') == 'OP' || $request->input('BRAND') == 'RI' || $request->input('BRAND') == 'CM' ? 'OP' : $request->input('BRAND'),
                 'DOC_NO' => $request->input('DOC_NO'),
                 'REF_DOC' => 'IBH-F155',
                 'STATUS' => $request->input('STATUS'),
