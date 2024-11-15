@@ -474,6 +474,12 @@
                                                                     </select>
                                                                     <span id="STATUS_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
+
+                                                                <div class="md:col-span-6">
+                                                                    <label for="insert-data" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Show Detail</label>
+                                                                    <textarea id="insert-data" name="insert-data" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                                                                </div>
+
                                                                 <!-- <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="name">&nbsp;</label>
                                                                     <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
@@ -809,6 +815,32 @@
                 })
             });
         }
+
+        $('#SOLUTION, #SERIES, #CATEGORY, #S_CAT').change(function() {
+            let solutions = $('#SOLUTION option:selected').map(function() {
+                return $(this).val();
+            }).get().join(', ');
+            let series = $('#SERIES option:selected').map(function() {
+                return $(this).val();
+            }).get().join(', ');
+            let categories = $('#CATEGORY option:selected').map(function() {
+                return $(this).val();
+            }).get().join(', ');
+            let sCats = $('#S_CAT option:selected').map(function() {
+                return $(this).val();
+            }).get().join(', ');
+            // Update the textarea with all values
+            $('#insert-data').val(
+                (solutions ? 'Solutions: ' + solutions : '') +
+                (solutions && series ? ', ' : '') +
+                (series ? 'Series: ' + series : '') +
+                ((solutions || series) && categories ? ', ' : '') +
+                (categories ? 'Category: ' + categories : '') +
+                ((solutions || series || categories) && sCats ? ', ' : '') +
+                (sCats ? 'Sub Category: ' + sCats : '')
+            );
+        });
+
         $(document).ready(function() {
             let obj = <?php echo json_encode($defaultBrands); ?>;
             // console.log("🚀 ~ $ ~ obj:", obj)
