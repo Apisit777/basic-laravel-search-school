@@ -13,7 +13,10 @@ module.exports = {
     extend: {
       zIndex: {
         '100000': '100000',
-      }
+      },
+      screens: {
+        xs: '320px', // Replace '320px' with your desired breakpoint value
+      },
     },
   },
   plugins: [

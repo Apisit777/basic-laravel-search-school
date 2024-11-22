@@ -38,6 +38,7 @@ use App\Models\Condition;
 use App\Models\MasterBrand;
 use App\Models\SeleChannel;
 use App\Models\ProductChannel;
+use App\Models\ProductGroup;
 use App\Models\Account;
 
 class ProductController extends Controller
@@ -137,7 +138,7 @@ class ProductController extends Controller
             $brands = Barcode::select(
             'BRAND',
                 'STATUS')
-            ->whereIn('STATUS', ['OP', 'RI', 'CM'])
+            ->whereIn('STATUS', ['OP', 'RE', 'CM'])
             ->pluck('BRAND')
             ->toArray();
 
@@ -150,7 +151,7 @@ class ProductController extends Controller
             $data_PRODUCT = Product1::select('PRODUCT')->pluck('PRODUCT')->toArray();
             $dataProductMaster = Pro_develops::select(
             'PRODUCT')
-            ->whereIn('BRAND', ['OP', 'RI'])
+            ->whereIn('BRAND', ['OP', 'RE'])
             ->whereNotIn('PRODUCT', $data_PRODUCT)
             ->get();
 
@@ -310,8 +311,8 @@ class ProductController extends Controller
     //             // $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->where('STATUS', '=', 'OP')->max('BARCODE');
     //             $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->max('BARCODE');
     //         }
-    //         if ($request->BRAND == 'RI') {
-    //             $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->where('STATUS', '=', 'RI')->max('BARCODE');
+    //         if ($request->BRAND == 'RE') {
+    //             $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->where('STATUS', '=', 'RE')->max('BARCODE');
     //         }
     //         if ($request->BRAND == 'CPS') {
     //             // $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->where('STATUS', '=', 'CPS')->max('BARCODE');
@@ -360,6 +361,7 @@ class ProductController extends Controller
         $unit_types = Unit_type::all();         // ไม่มี ID
         $acctypes = Acctype::all();
         $conditions = Condition::all();
+        $product_groups = ProductGroup::all();
 
         $allBrands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
         $defaultBrands = MasterBrand::all();
@@ -426,7 +428,8 @@ class ProductController extends Controller
                 'OWNER',
                 'REMARK',
                 'BRAND')
-            ->where('BRAND', 'OP')
+            // ->where('BRAND', 'OP')
+            ->whereIn('BRAND', ['OP', 'KM'])
             ->get();
             $grp_ps = Grp_p::select(
                 'GRP_P',
@@ -481,6 +484,12 @@ class ProductController extends Controller
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
+            $product_groups = ProductGroup::select(
+                'ID',
+                'DESCRIPTION AS product_group_name',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get();
         } else if (in_array($userpermission, ['Marketing - CPS'])) {
             $defaultBrands = MasterBrand::select(
                 'BRAND')
@@ -501,7 +510,7 @@ class ProductController extends Controller
                 'GRP_P',
                 'REMARK',
                 'BRAND')
-                ->whereIn('BRAND', ['CPS', 'KM'])
+                ->where('BRAND', 'CPS')
             ->get();
             $brand_ps = Brand_p::select(
                 'ID',
@@ -601,9 +610,9 @@ class ProductController extends Controller
         // $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
         // $productCode = 'P'.sprintf('%05d', $productCodeNumber);
         // $list_position = position::select('id', 'name_position')->get();
-        // dd($series);
+        // dd($product_groups);
 
-        return view('product.create', compact(  'brands', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
+        return view('product.create', compact(  'brands', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions', 'product_groups'));
     }
 
     public function createConsumables(Request $request)
@@ -1143,8 +1152,8 @@ class ProductController extends Controller
             // dd($request->GRP_P);
             // if($request->GRP_P) {
             //     $productCodeMax = Barcode::max('NUMBER');
-            //     if ($request->BRAND == 'RI') {
-            //         $productCodeMax = Barcode::where('COMPANY', '=', 'OP')->where('STATUS', '=', 'RI')->max('NUMBER');
+            //     if ($request->BRAND == 'RE') {
+            //         $productCodeMax = Barcode::where('COMPANY', '=', 'OP')->where('STATUS', '=', 'RE')->max('NUMBER');
             //     }
             //     $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
             //     $productCode = $productCodeNumber;
@@ -1155,8 +1164,8 @@ class ProductController extends Controller
             // }
             // if($request->GRP_P) {
             //     $productCodeMax = Document::max('NUMBER');
-            //     if ($request->BRAND == 'RI') {
-            //         $productCodeMax = Document::where('COMPANY', '=', 'OP')->where('STATUS', '=', 'RI')->max('NUMBER');
+            //     if ($request->BRAND == 'RE') {
+            //         $productCodeMax = Document::where('COMPANY', '=', 'OP')->where('STATUS', '=', 'RE')->max('NUMBER');
             //     }
             //     $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
             //     $productCode = $productCodeNumber;
@@ -1192,7 +1201,7 @@ class ProductController extends Controller
                 'BRAND_P' => $request->input('BRAND_P'),
                 'REGISTER' => $request->input('REGISTER'),
                 'OPT_TXT1' => $request->input('OPT_TXT1'),
-                'CONDITION_SALE' => $request->input('CONDITION_SALE'),
+                // 'CONDITION_SALE' => $request->input('CONDITION_SALE'),
                 'WHOLE_SALE' => $request->input('WHOLE_SALE'),
                 'GP' => $request->input('GP'),
                 'O_PRODUCT' => $request->input('O_PRODUCT'),
@@ -1218,7 +1227,7 @@ class ProductController extends Controller
                 'OPT_TXT2' => $request->input('OPT_TXT2'),
                 'OPT_NUM1' => $request->input('OPT_NUM1'),
                 'OPT_NUM2' => $request->input('OPT_NUM2'),
-                'ACC_TYPE' => $request->input('ACC_TYPE'),
+                // 'ACC_TYPE' => $request->input('ACC_TYPE'),
                 'ACC_DT' => $request->input('ACC_DT'),
                 'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
                 'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',
@@ -1416,6 +1425,10 @@ class ProductController extends Controller
         ->leftJoin('conditions', 'product1s.CONDITION_SALE', '=', 'conditions.ID')
         // ->leftJoin('product_channels', 'product1s.PRODUCT', '=', 'product_channels.PRODUCT')
         ->firstWhere('product1s.PRODUCT', '=', $PRODUCT);
+        
+        $data->REG_DATE = date('Y-m-d', strtotime($data->REG_DATE));
+        // dd($data);
+
 
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
@@ -1746,7 +1759,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $PRODUCT)
     {
-        // dd($request);
+        dd($request);
         // dd(strlen($PRODUCT));
         DB::beginTransaction();
         try {
@@ -1807,7 +1820,7 @@ class ProductController extends Controller
                     'PACK_SIZE2' => $request->input('PACK_SIZE2'),
                     'PACK_SIZE3' => $request->input('PACK_SIZE3'),
                     'PACK_SIZE4' => $request->input('PACK_SIZE4'),
-                    'REG_DATE' => date("Y/m/d h:i:s"),
+                    'REG_DATE' => $request->input('REG_DATE'),
                     'AGE' => $request->input('AGE'),
                     'WIDTH' => $request->input('WIDTH'),
                     'HEIGHT' => $request->input('HEIGHT'),

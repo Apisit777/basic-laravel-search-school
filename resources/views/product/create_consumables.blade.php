@@ -287,7 +287,7 @@
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="BARCODE">รหัส Barcode<span class="text-danger"> *</span></label>
                                                                     <!-- <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled> -->
-                                                                    <input type="text" name="BARCODE" id="BARCODE" class="text-compleace-auto2 h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled>
+                                                                    <input type="text" name="BARCODE" id="BARCODE" class="text-compleace-auto2 h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="" readonly>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Product Channel</label>
@@ -367,7 +367,7 @@
                                                                     <label for="REGISTER">เลขที่ อย.</label>
                                                                     <input type="text" name="REGISTER" id="REGISTER" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
-                                                                <div class="md:col-span-3">
+                                                                <!-- <div class="md:col-span-3">
                                                                     <label for="name">ประเภทสินค้า<span class="text-danger"> *</span></label>
                                                                     <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="TYPE_G" id="TYPE_G" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
@@ -376,7 +376,7 @@
                                                                         @endforeach
                                                                     </select>
                                                                     <span id="TYPE_G_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
-                                                                </div>
+                                                                </div> -->
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="OPT_TXT1">รหัสสินค้าอ้างอิง</label>
                                                                     <input type="text" name="OPT_TXT1" id="OPT_TXT1" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
@@ -625,7 +625,7 @@
                                                                     </select>
                                                                     <span id="UNIT_TYPE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
-                                                                <div class="md:col-span-3">
+                                                                <!-- <div class="md:col-span-3">
                                                                     <label for="name">ประเภทสินค้า [บัญชี]<span class="text-danger"> *</span></label>
                                                                     <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="ACC_TYPE" id="ACC_TYPE" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
@@ -634,7 +634,7 @@
                                                                         @endforeach
                                                                     </select>
                                                                     <span id="ACC_TYPE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
-                                                                </div>
+                                                                </div> -->
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">เงื่อนไขชำระเงิน<span class="text-danger"> *</span></label>
                                                                     <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="CONDITION_SALE" id="CONDITION_SALE" onchange="onchangeValueSelect2()">
@@ -716,7 +716,7 @@
                         </div>
                         <div class="md:col-span-6 text-right mt-4">
                             <div class="inline-flex items-end">
-                                <a href="{{ route('product.index') }}" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-4 mr-2 rounded group">
+                                <a href="{{ route('product_master.index') }}" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-4 mr-2 rounded group">
                                     <svg fill="#fff" class="-mt-1 size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                         viewBox="0 0 26.676 26.676" xml:space="preserve">
                                         <g>
@@ -910,7 +910,7 @@
             const GRP_P = jQuery('#GRP_P').val();
             // const BRAND_P = jQuery('#BRAND_P').val();
             const SUPPLIER = jQuery('#SUPPLIER').val();
-            const TYPE_G = jQuery('#TYPE_G').val();
+            // const TYPE_G = jQuery('#TYPE_G').val();
             // const SOLUTION = jQuery('#SOLUTION').val();
             // const SERIES = jQuery('#SERIES').val();
             // const CATEGORY = jQuery('#CATEGORY').val();
@@ -919,7 +919,7 @@
             const STATUS = jQuery('#STATUS').val();
             const UNIT = jQuery('#UNIT').val();
             const UNIT_TYPE = jQuery('#UNIT_TYPE').val();
-            const ACC_TYPE = jQuery('#ACC_TYPE').val();
+            // const ACC_TYPE = jQuery('#ACC_TYPE').val();
             const CONDITION_SALE = jQuery('#CONDITION_SALE').val();
 
             if (VENDOR) {
@@ -942,11 +942,11 @@
             } else {
                 jQuery('#SUPPLIER_textalert').removeClass('hidden');
             }
-            if (TYPE_G) {
-                jQuery('#TYPE_G_textalert').addClass('hidden');
-            } else {
-                jQuery('#TYPE_G_textalert').removeClass('hidden');
-            }
+            // if (TYPE_G) {
+            //     jQuery('#TYPE_G_textalert').addClass('hidden');
+            // } else {
+            //     jQuery('#TYPE_G_textalert').removeClass('hidden');
+            // }
             // if (SOLUTION) {
             //     jQuery('#SOLUTION_textalert').addClass('hidden');
             // } else {
@@ -987,28 +987,28 @@
             } else {
                 jQuery('#UNIT_TYPE_textalert').removeClass('hidden');
             }
-            if (ACC_TYPE) {
-                jQuery('#ACC_TYPE_textalert').addClass('hidden');
-            } else {
-                jQuery('#ACC_TYPE_textalert').removeClass('hidden');
-            }
+            // if (ACC_TYPE) {
+            //     jQuery('#ACC_TYPE_textalert').addClass('hidden');
+            // } else {
+            //     jQuery('#ACC_TYPE_textalert').removeClass('hidden');
+            // }
             if (CONDITION_SALE) {
                 jQuery('#CONDITION_SALE_textalert').addClass('hidden');
             } else {
                 jQuery('#CONDITION_SALE_textalert').removeClass('hidden');
             }
 
-            return !!VENDOR && !!GRP_P && !!SUPPLIER && !!TYPE_G && !!STATUS && !!UNIT && !!UNIT_TYPE && !!ACC_TYPE && !!CONDITION_SALE
+            return !!VENDOR && !!GRP_P && !!SUPPLIER && !!STATUS && !!UNIT && !!UNIT_TYPE && !!CONDITION_SALE
             // return !!VENDOR && !!GRP_P && !!SUPPLIER && !!TYPE_G && !!SOLUTION && !!SERIES && !!CATEGORY && !!S_CAT && !!PDM_GROUP && !!STATUS && !!UNIT && !!UNIT_TYPE && !!ACC_TYPE && !!CONDITION_SALE
         }
 
         function onchangeValueSelect2() {
             let checkvalue = checkValueSelect2();
             const PRODUCT = jQuery('#ID_PRODUCT').val();
-                if (checkvalue && codeConsumables) {
-                    jQuery("#submitButton_consumables").attr("disabled", false);
-                    jQuery("#submitButton_consumables").removeClass('cursor-not-allowed opacity-50');
-                } else {
+            if (checkvalue && codeConsumables) {
+                jQuery("#submitButton_consumables").attr("disabled", false);
+                jQuery("#submitButton_consumables").removeClass('cursor-not-allowed opacity-50');
+            } else {
                 jQuery("#submitButton_consumables").attr("disabled", true);
                 jQuery("#submitButton_consumables").addClass('cursor-not-allowed opacity-50');
             }
@@ -1059,7 +1059,7 @@
             // $('#BARCODE').val('');
 
             if (params === 'BRAND') {
-                url = '{{ route('product.product_master_get_brand_list_ajax') }}?BRAND=' + e.value;
+                url = '{{ route('product_master.product_master_get_brand_list_ajax') }}?BRAND=' + e.value;
                 select = jQuery('#NUMBER');
                 jQuery('#NUMBER').find("option").remove();
                 select.find("option").remove();
@@ -1105,45 +1105,45 @@
             });
         }
 
-        function onSelect(BARCODE) {
-            console.log("🚀 ~ onSelect ~ datas:", BARCODE)
-            let curData = datass.find(f => f.BARCODE === BARCODE.value) || {}
-            console.log("🚀 ~ onSelect ~ curData:", curData)
-            if (curData.BARCODE) {
-                console.log('1')
-                $('#NAME_THAI').val(curData.NAME_THAI);
-                $('#SHORT_THAI').val(curData.SHORT_THAI);
-                $('#NAME_ENG').val(curData.NAME_ENG);
-                $('#SHORT_ENG').val(curData.SHORT_ENG);
-                $('#AGE').val(curData.AGE);
-                $('#WHOLE_SALE').val(curData.WHOLE_SALE);
-                $('#REGISTER').val(curData.REGISTER);
-                $('#WIDTH').val(curData.WIDTH);
-                $('#WIDE').val(curData.WIDE);
-                $('#HEIGHT').val(curData.HEIGHT);
-                $('#PRICE').val(curData.PRICE);
-                $('#COST').val(curData.COST);
-                $('#UNIT_Q').val(curData.UNIT_Q);
-                $('#GP').val(curData.GP);
-                $('#BARCODE').val(curData.BARCODE);
-            } else {
-                $('#NAME_THAI').val('');
-                $('#SHORT_THAI').val('');
-                $('#NAME_ENG').val('');
-                $('#SHORT_ENG').val('');
-                $('#AGE').val('');
-                $('#WHOLE_SALE').val('');
-                $('#REGISTER').val('');
-                $('#WIDTH').val('');
-                $('#WIDE').val('');
-                $('#HEIGHT').val('');
-                $('#PRICE').val('');
-                $('#COST').val('');
-                $('#UNIT_Q').val('');
-                $('#GP').val('');
-                $('#BARCODE').val('');
-            }
-        }
+        // function onSelect(BARCODE) {
+        //     console.log("🚀 ~ onSelect ~ datas:", BARCODE)
+        //     let curData = datass.find(f => f.BARCODE === BARCODE.value) || {}
+        //     console.log("🚀 ~ onSelect ~ curData:", curData)
+        //     if (curData.BARCODE) {
+        //         console.log('1')
+        //         $('#NAME_THAI').val(curData.NAME_THAI);
+        //         $('#SHORT_THAI').val(curData.SHORT_THAI);
+        //         $('#NAME_ENG').val(curData.NAME_ENG);
+        //         $('#SHORT_ENG').val(curData.SHORT_ENG);
+        //         $('#AGE').val(curData.AGE);
+        //         $('#WHOLE_SALE').val(curData.WHOLE_SALE);
+        //         $('#REGISTER').val(curData.REGISTER);
+        //         $('#WIDTH').val(curData.WIDTH);
+        //         $('#WIDE').val(curData.WIDE);
+        //         $('#HEIGHT').val(curData.HEIGHT);
+        //         $('#PRICE').val(curData.PRICE);
+        //         $('#COST').val(curData.COST);
+        //         $('#UNIT_Q').val(curData.UNIT_Q);
+        //         $('#GP').val(curData.GP);
+        //         $('#BARCODE').val(curData.BARCODE);
+        //     } else {
+        //         $('#NAME_THAI').val('');
+        //         $('#SHORT_THAI').val('');
+        //         $('#NAME_ENG').val('');
+        //         $('#SHORT_ENG').val('');
+        //         $('#AGE').val('');
+        //         $('#WHOLE_SALE').val('');
+        //         $('#REGISTER').val('');
+        //         $('#WIDTH').val('');
+        //         $('#WIDE').val('');
+        //         $('#HEIGHT').val('');
+        //         $('#PRICE').val('');
+        //         $('#COST').val('');
+        //         $('#UNIT_Q').val('');
+        //         $('#GP').val('');
+        //         $('#BARCODE').val('');
+        //     }
+        // }
 
         const dlayMessage = 1000;
         function createProductMaster() {
@@ -1179,7 +1179,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         method: "POST",
-                        url: "{{ route('product.store_consumables') }}",
+                        url: "{{ route('product_master.store_consumables') }}",
                         data: $("#create_product_master_consumables").serialize(),
                         beforeSend: function () {
                             $('#loader').removeClass('hidden')

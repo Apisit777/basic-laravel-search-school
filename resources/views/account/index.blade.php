@@ -55,6 +55,9 @@
         span.dt-column-order {
             display: none;
         }
+        .dt-length  {
+            color: #818181!important;
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -69,7 +72,7 @@
             <div class="lg:col-span-4 xl:grid-cols-4">
                 <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                     <div class="md:col-span-3">
-                        <label for="BRAND" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Brand</label>
+                        <label for="BRAND" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Brand Product</label>
                         <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND">
                             <option value=""> --- กรุณาเลือก ---</option>
                             @foreach ($brands as $key => $brand)
@@ -108,15 +111,18 @@
                     <thead>
                         <tr>
                             <!-- <th>ID</th> -->
-                            <th>Brand</th>
+                            <th>Brand Product</th>
                             <th>รหัสสินค้า</th>
                             <!-- <th>ภาษีน้ำหอม</th>
                             <th>ต้นทุน + ภาษีน้ำหอม</th>
                             <th>ต้นทุน+5%</th>
                             <th>ต้นทุน+10%</th>
                             <th>ต้นทุน+อื่นๆ</th> -->
-                            <th>ชื่อสินค้าภาษาไทย</th></th>
-                            <th>ชื่อสินค้าภาษาอังกฤษ</th></th>
+                            <!-- <th>ชื่อสินค้าภาษาไทย</th></th> -->
+                            <th>ชื่อย่อภาษาอังกฤษ</th></th>
+                            <th>ราคาขายบัญชี TP</th></th>
+                            <th>ประเภทสินค้า</th></th>
+                            <th>ประเภทสินค้า[บัญชี]</th></th>
                             <!-- <th>ราคาขาย KM + 20%</th>
                             <th>ราคาขาย KM+อื่นๆ</th> -->
                             <th>Action</th>
@@ -193,8 +199,9 @@
             ],
             "lengthMenu": [10, 20, 30, 50],
             "layout": {
-                "topStart": {
+                "topEnd": {
                     "buttons": ['excel', 'colvis']
+                    // buttons: ['copy', 'excel', 'pdf', 'colvis']
                 }
             },
             "ajax": {
@@ -227,32 +234,56 @@
                         return row.product;
                     }
                 },
+                // {
+                //     targets: 2,
+                //     orderable: true,
+                //     render: function(data, type, row) {
+                //         return row.NAME_THAI;
+                //     }
+                // },
                 {
                     targets: 2,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.NAME_THAI;
-                    }
-                },
-                {
-                    targets: 3,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.NAME_ENG;
+                        return row.SHORT_ENG;
                     }
                 },
                 // {
                 //     targets: 3,
                 //     orderable: true,
                 //     render: function(data, type, row) {
-                //         return new Intl.NumberFormat('en-US', {
-                //             minimumFractionDigits: 2,
-                //             maximumFractionDigits: 2
-                //         }).format(row.cost);
-                //     }
-                // },
+                    //         return new Intl.NumberFormat('en-US', {
+                        //             minimumFractionDigits: 2,
+                        //             maximumFractionDigits: 2
+                        //         }).format(row.cost);
+                        //     }
+                        // },
+                {
+                    targets: 3,
+                    orderable: true,
+                    render: function(data, type, row) {
+                    return new Intl.NumberFormat('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }).format(row.sale_tp);
+                    }
+                },
                 {
                     targets: 4,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.DESCRIPTION;
+                    }
+                },
+                {
+                    targets: 5,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.ACC_DESCRIPTION;
+                    }
+                },
+                {
+                    targets: 6,
                     orderable: true,
                     className: 'text-center',
                     render: function(data, type, row) {

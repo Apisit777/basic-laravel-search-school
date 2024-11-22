@@ -19,6 +19,10 @@ use App\Models\Account;
 use App\Models\AccountLog;
 use App\Models\Product1;
 use App\Models\MasterBrand;
+use App\Models\Type_g;
+use App\Models\Acctype;
+use App\Models\Owner;
+use App\Models\Grp_p;
 use App\Models\TestNewBarcode;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -79,7 +83,7 @@ class ProductFormController extends Controller
             $brands = Barcode::select(
                 'BRAND',
                 'STATUS')
-                ->whereIn('STATUS', ['OP', 'RI'])
+                ->whereIn('STATUS', ['OP', 'RE'])
             ->pluck('BRAND')
             ->toArray();
         } else if (in_array($userpermission, ['Marketing - CPS'])) {
@@ -121,7 +125,7 @@ class ProductFormController extends Controller
                     $lastElementBarcode = Barcode::where('STATUS', '=', 'OP')->max('NUMBER');
                 }
                 if ($data->Code >= 29000 && $data->Code <= 29699) {
-                    $lastElementBarcode = Barcode::where('STATUS', '=', 'RI')->max('NUMBER');
+                    $lastElementBarcode = Barcode::where('STATUS', '=', 'RE')->max('NUMBER');
                 }
                 if ($data->Code >= 29700 && $data->Code <= 29999) {
                     $lastElementBarcode = Barcode::where('STATUS', '=', 'CM')->max('NUMBER');
@@ -142,7 +146,7 @@ class ProductFormController extends Controller
                     );
                 } elseif ($data->Code >= 29000 && $data->Code <= 29699) {
                     $data_BRAND_Document = Barcode::updateOrCreate(
-                        ['COMPANY' => $data->BRAND, 'STATUS' => 'RI'],
+                        ['COMPANY' => $data->BRAND, 'STATUS' => 'RE'],
                         ['NUMBER' => $productCodeDocument]
                     );
                 } elseif ($data->Code >= 29700 && $data->Code <= 29999) {
@@ -159,7 +163,7 @@ class ProductFormController extends Controller
                     $productCodeMax = Document::where('STATUS', '=', 'OP')->max('NUMBER');
                 }
                 if ($data->Code >= 29000 && $data->Code <= 29699) {
-                    $productCodeMax = Document::where('STATUS', '=', 'RI')->max('NUMBER');
+                    $productCodeMax = Document::where('STATUS', '=', 'RE')->max('NUMBER');
                 }
                 if ($data->Code >= 29700 && $data->Code <= 29999) {
                     $productCodeMax = Document::where('STATUS', '=', 'CM')->max('NUMBER');
@@ -181,7 +185,7 @@ class ProductFormController extends Controller
                     );
                 } elseif ($data->Code >= 29000 && $data->Code <= 29699) {
                     $data_BRAND_Document = Document::updateOrCreate(
-                        ['COMPANY' => $data->BRAND, 'STATUS' => 'RI'],
+                        ['COMPANY' => $data->BRAND, 'STATUS' => 'RE'],
                         ['NUMBER' => $productCodeDocument]
                     );
                 } elseif ($data->Code >= 29700 && $data->Code <= 29999) {
@@ -199,7 +203,7 @@ class ProductFormController extends Controller
                 $lastElement = Barcode::where('BRAND', '=', 'OP')->where('STATUS', '=', 'OP')->max('NUMBER');
             }
             if ($data_BRAND_Document->NUMBER >= 9000 && $data_BRAND_Document->NUMBER <= 9699) {
-                $lastElement = Barcode::where('STATUS', '=', 'RI')->max('NUMBER');
+                $lastElement = Barcode::where('STATUS', '=', 'RE')->max('NUMBER');
             }
             if ($data_BRAND_Document->NUMBER >= 9700 && $data_BRAND_Document->NUMBER <= 9999) {
                 $lastElement = Barcode::where('STATUS', '=', 'CM')->max('NUMBER');
@@ -339,6 +343,8 @@ class ProductFormController extends Controller
             // 'id',
             'accounts.product AS product',
             'accounts.cost AS cost',
+            'sale_tp',
+            'cost_km',
             'perfume_tax',
             'cost_perfume_tax',
             'cost5percent',
@@ -347,13 +353,38 @@ class ProductFormController extends Controller
             'sale_km',
             'sale_km20percent',
             'sale_km_other',
-            'product1s.BRAND AS BRAND'
+            'price_start_date',
+            'note',
+            'product1s.BRAND AS BRAND',
+            'product1s.NAME_THAI AS NAME_THAI',
+            'product1s.NAME_ENG AS NAME_ENG',
+            'product1s.SHORT_THAI AS SHORT_THAI',
+            'product1s.SHORT_ENG AS SHORT_ENG',
+            'type_gs.ID AS TYPE_G',
+            'acctypes.ID AS ACC_TYPE',
+            'owners.OWNER AS VENDOR',
+            'grp_ps.GRP_P AS GRP_P',
+            'product1s.PRICE AS PRICE',
+            'product1s.REG_DATE AS REG_DATE',
         )
         ->leftJoin('product1s', 'accounts.product', '=', 'product1s.PRODUCT')
+        ->leftJoin('owners', 'product1s.VENDOR', '=', 'owners.OWNER')
+        ->leftJoin('grp_ps', 'product1s.GRP_P', '=', 'grp_ps.GRP_P')
+        ->leftJoin('type_gs', 'product1s.TYPE_G', '=', 'type_gs.ID')
+        ->leftJoin('acctypes', 'product1s.ACC_TYPE', '=', 'acctypes.ID')
         ->where('accounts.product', $request->product)
         ->first();
 
-        return view('account.edit', compact('data'));
+        $data->REG_DATE = date('Y-m-d', strtotime($data->REG_DATE));
+        // dd($data);
+
+        $owners = Owner::select('OWNER AS VENDOR', 'REMARK')->get();
+        $grp_ps = Grp_p::select('GRP_P AS GRP_P', 'REMARK')->get();        
+        $type_gs = Type_g::select('ID AS TYPE_G', 'DESCRIPTION')->get();
+        $acctypes = Acctype::select('ID AS ACC_TYPE', 'DESCRIPTION')->get();
+
+        // dd($data);
+        return view('account.edit', compact('data', 'owners', 'grp_ps', 'type_gs', 'acctypes'));
     }
 
     public function updateAccount(Request $request)
@@ -365,6 +396,8 @@ class ProductFormController extends Controller
             $data_account_old = Account::select(
             'product',
             'cost',
+            'sale_tp',
+            'cost_km',
             'perfume_tax',
             'cost_perfume_tax',
             'cost5percent',
@@ -373,6 +406,8 @@ class ProductFormController extends Controller
             'sale_km',
             'sale_km20percent',
             'sale_km_other',
+            'price_start_date',
+            'note',
             )
             ->firstWhere('product', '=', $request->product);
 
@@ -392,12 +427,20 @@ class ProductFormController extends Controller
             // dd($request);
             $data_product_account_upddate = [
                 'COST' => $request->COST,
+                'NAME_THAI' => $request->NAME_THAI,
+                'SHORT_THAI' => $request->SHORT_THAI,
+                'NAME_ENG' => $request->NAME_ENG,
+                'SHORT_ENG' => $request->SHORT_ENG,
+                'TYPE_G' => $request->TYPE_G,
+                'ACC_TYPE' => $request->ACC_TYPE,
             ];
 
             $productCostUpddate = Product1::where('PRODUCT', $request->product)->update($data_product_account_upddate);
 
             $updateProductAccount = Account::updateOrCreate(['product' => $request->product], [
                 'COST' => $request->COST,
+                'sale_tp' => $request->sale_tp,
+                'cost_km' => $request->cost_km,
                 'perfume_tax' => $request->perfume_tax,
                 'cost_perfume_tax' => $request->cost_perfume_tax,
                 'cost5percent' => $request->cost5percent,
@@ -406,6 +449,8 @@ class ProductFormController extends Controller
                 'sale_km' => $request->sale_km,
                 'sale_km20percent' => $request->sale_km20percent,
                 'sale_km_other' => $request->sale_km_other,
+                'price_start_date' => $request->price_start_date,
+                'note' => $request->note,
                 'updated_at' => date("Y/m/d H:i:s")
             ]);
 
@@ -436,22 +481,30 @@ class ProductFormController extends Controller
         ];
 
         $data = Account::select(
-                'id',
-                'accounts.product AS product',
-                'accounts.cost AS cost',
-                'perfume_tax',
-                'cost_perfume_tax',
-                'cost5percent',
-                'cost10percent',
-                'cost_other',
-                'sale_km',
-                'sale_km20percent',
-                'sale_km_other',
-                'product1s.BRAND AS BRAND',
-                'product1s.NAME_THAI AS NAME_THAI',
-                'product1s.NAME_ENG AS NAME_ENG',
+            'accounts.id as id',
+            'accounts.product AS product',
+            'accounts.cost AS cost',
+            'sale_tp',
+            'perfume_tax',
+            'cost_perfume_tax',
+            'cost5percent',
+            'cost10percent',
+            'cost_other',
+            'sale_km',
+            'sale_km20percent',
+            'sale_km_other',
+            'product1s.BRAND AS BRAND',
+            // 'product1s.NAME_THAI AS NAME_THAI',
+            // 'product1s.NAME_ENG AS NAME_ENG',
+            // 'product1s.NAME_ENG AS NAME_ENG',
+            'product1s.SHORT_ENG AS SHORT_ENG',
+            'acctypes.DESCRIPTION AS ACC_DESCRIPTION',
+            'type_gs.DESCRIPTION AS DESCRIPTION',
+
         )
         ->leftJoin('product1s', 'accounts.product', '=', 'product1s.PRODUCT')
+        ->leftJoin('type_gs', 'product1s.TYPE_G', '=', 'type_gs.ID')
+        ->leftJoin('acctypes', 'product1s.ACC_TYPE', '=', 'acctypes.ID')
         ->orderBy('accounts.updated_at', 'DESC');
 
         if ($BRAND != null) {
@@ -488,8 +541,8 @@ class ProductFormController extends Controller
             if ($request->BRAND == 'OP') {
                 $lastElement = Barcode::where('COMPANY', '=', $request->BRAND)->where('STATUS', '=', 'OP')->max('NUMBER');
             }
-            if ($request->BRAND == 'RI') {
-                $lastElement = Barcode::where('COMPANY', '=', 'OP')->where('STATUS', '=', 'RI')->max('NUMBER');
+            if ($request->BRAND == 'RE') {
+                $lastElement = Barcode::where('COMPANY', '=', 'OP')->where('STATUS', '=', 'RE')->max('NUMBER');
             }
             if ($request->BRAND == 'CPS') {
                 $lastElement = Barcode::where('COMPANY', '=', $request->BRAND)->where('STATUS', '=', 'CPS')->max('NUMBER');
@@ -611,7 +664,7 @@ class ProductFormController extends Controller
             $brands = Barcode::select(
                 'BRAND',
                 'STATUS')
-            ->whereIn('STATUS', ['OP', 'RI', 'CM'])
+            ->whereIn('STATUS', ['OP', 'RE', 'CM'])
             // ->whereIn('STATUS', ['OP'])
             ->pluck('BRAND')
             ->toArray();
@@ -659,7 +712,7 @@ class ProductFormController extends Controller
             $digits_code = substr($digits_barcode, 7, 5);
 
             $data_product = [
-                'BRAND' => $request->input('BRAND') == 'OP' || $request->input('BRAND') == 'RI' || $request->input('BRAND') == 'CM' ? 'OP' : $request->input('BRAND'),
+                'BRAND' => $request->input('BRAND') == 'OP' || $request->input('BRAND') == 'RE' || $request->input('BRAND') == 'CM' ? 'OP' : $request->input('BRAND'),
                 'DOC_NO' => $request->input('DOC_NO'),
                 'REF_DOC' => 'IBH-F155',
                 'STATUS' => $request->input('STATUS'),
@@ -716,7 +769,7 @@ class ProductFormController extends Controller
             //         if ($request->BRAND == 'OP') {
             //             $barcode = '88500802'.str_pad((string)$i, 4, '0', STR_PAD_LEFT);
             //         }
-            //         if ($request->BRAND == 'RI') {
+            //         if ($request->BRAND == 'RE') {
             //             $barcode = '885008029'.str_pad((string)$i, 3, '0', STR_PAD_LEFT);
             //         }
 
@@ -771,7 +824,7 @@ class ProductFormController extends Controller
                     $lastElementBarcode = Barcode::where('STATUS', '=', 'OP')->max('NUMBER');
                 }
                 if ((int) $request->code >= 29000 && (int) $request->code <= 29699) {
-                    $lastElementBarcode = Barcode::where('STATUS', '=', 'RI')->max('NUMBER');
+                    $lastElementBarcode = Barcode::where('STATUS', '=', 'RE')->max('NUMBER');
                 }
                 if ((int) $request->code >= 29700 && (int) $request->code <= 29999) {
                     $lastElementBarcode = Barcode::where('STATUS', '=', 'CM')->max('NUMBER');
@@ -792,7 +845,7 @@ class ProductFormController extends Controller
                     );
                 } elseif ((int) $request->code >= 29000 && (int) $request->code <= 29699) {
                     $data_BRAND_Barcode = Barcode::updateOrCreate(
-                        ['COMPANY' => 'OP', 'BRAND' => 'RI', 'STATUS' => 'RI'],
+                        ['COMPANY' => 'OP', 'BRAND' => 'RE', 'STATUS' => 'RE'],
                         ['NUMBER' => $productCodeDocument]
                     );
                 } elseif ((int) $request->code >= 29700 && (int) $request->code <= 29999) {
@@ -809,7 +862,7 @@ class ProductFormController extends Controller
                     $lastElementDocument = Document::where('STATUS', '=', 'OP')->max('NUMBER');
                 }
                 if ((int) $request->code >= 29000 && (int) $request->code <= 29699) {
-                    $lastElementDocument = Document::where('STATUS', '=', 'RI')->max('NUMBER');
+                    $lastElementDocument = Document::where('STATUS', '=', 'RE')->max('NUMBER');
                 }
                 if ((int) $request->code >= 29700 && (int) $request->code <= 29999) {
                     $lastElementDocument = Document::where('STATUS', '=', 'CM')->max('NUMBER');
@@ -830,7 +883,7 @@ class ProductFormController extends Controller
                     );
                 } elseif ((int) $request->code >= 29000 && (int) $request->code <= 29699) {
                     $data_BRAND_Document = Document::updateOrCreate(
-                        ['COMPANY' => 'OP', 'BRAND' => 'RI', 'STATUS' => 'RI'],
+                        ['COMPANY' => 'OP', 'BRAND' => 'RE', 'STATUS' => 'RE'],
                         ['NUMBER' => $productCodeDocument]
                     );
                 } elseif ((int) $request->code >= 29700 && (int) $request->code <= 29999) {
@@ -1078,7 +1131,7 @@ class ProductFormController extends Controller
                     'pro_develops.NAME_ENG AS NAME_ENG'
                 )
                 ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
-                ->whereIn('barcodes.BRAND', ['OP', 'RI'])
+                ->whereIn('barcodes.BRAND', ['OP', 'RE'])
                 ->orderBy('BARCODE', 'DESC');
         } else if (in_array($userpermission, ['Marketing - CPS'])) {
             $data = Pro_develops::select(
