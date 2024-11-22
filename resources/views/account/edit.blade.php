@@ -18,6 +18,11 @@
         .select2 {
             width: 100%!important; /* force fluid responsive */
         }
+        .select2-container--default.select2-container--disabled .select2-selection--single {
+            cursor: default;
+            --tw-bg-opacity: 1;
+            background-color: #a1a1a1!important;
+        }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -34,7 +39,7 @@
                     <div class="lg:col-span-4 xl:grid-cols-4">
                         <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                             <div class="md:col-span-3" style="position: relative;">
-                                <label for="BRAND">Brand</label>
+                                <label for="BRAND">Brand Product</label>
                                 <input type="text" name="BRAND" id="BRAND" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->BRAND }}" readonly>
                             </div>
                             <div class="md:col-span-3" style="position: relative;">
@@ -49,9 +54,110 @@
                     <div class="p-4">
                         <ul class="relative m-0 w-full list-none overflow-hidden p-0 transition-[height] duration-200 ease-in-out" data-twe-stepper-init="" data-twe-stepper-type="vertical">
                             <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
-                                <div data-twe-stepper-head-ref="" class="setpcollep  flex cursor-pointer items-center p-1 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
+                                <div data-twe-stepper-head-ref="" class="setpcollep flex cursor-pointer items-center p-1 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
                                     <span data-twe-stepper-head-icon-ref="" class="bg_step_color me-3 flex h-[1.938rem] w-[1.938rem] items-center justify-center rounded-full text-sm  !bg-primary-100 !text-primary-700 dark:!bg-slate-900 dark:!text-primary-500">
                                         1
+                                    </span>
+                                    <span data-twe-stepper-head-text-ref="" class="after:absolute after:flex after:text-[0.8rem] text-black/50 dark:text-white/50 font-medium !text-black/50 dark:!text-white/50">
+                                        รายละเอียดสินค้า
+                                    </span>
+                                </div>
+                                <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[1.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
+                                    <div class="grid grid-cols-5 gap-10">
+                                        <div class="form col-span-5">
+                                            <div class="relative w-full overflow-hidden peer-checked:hidden">
+                                                <input type="checkbox" class="setcheckbox peer absolute top-0 inset-x-0 w-full h-12 opacity-0 cursor-pointer">
+                                                <div class="bg-[#d7d8db] dark:bg-[#303030] text-white h-12 w-full pl-5 flex items-center">
+                                                    <h1 class="text-gray-900 dark:text-white text-lg">
+                                                        รายละเอียดสินค้า
+                                                    </h1>
+                                                </div>
+                                                <div class="absolute top-3 right-3 text-white transition-tranform duration-500 rotate-180 peer-checked:rotate-0">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900 dark:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
+                                                    </svg>
+                                                </div>
+                                                <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
+                                                    <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
+                                                        <div class="lg:col-span-4">
+                                                            <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="NAME_THAI">ชื่อภาษาไทย</label>
+                                                                    <input type="text" name="NAME_THAI" id="NAME_THAI" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->NAME_THAI }}" />
+                                                                </div>
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="SHORT_THAI">ชื่อย่อภาษาไทย</label>
+                                                                    <input type="text" name="SHORT_THAI" id="SHORT_THAI" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->SHORT_THAI }}" />
+                                                                </div>
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="NAME_ENG">ชื่อภาษาอังกฤษ</label>
+                                                                    <input type="text" name="NAME_ENG" id="NAME_ENG" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->NAME_ENG }}" />
+                                                                </div>
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="SHORT_ENG">ชื่อย่อภาษาอังกฤษ</label>
+                                                                    <input type="text" name="SHORT_ENG" id="SHORT_ENG" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->SHORT_ENG }}" />
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">เจ้าของสินค้า</label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="VENDOR" id="VENDOR">
+                                                                        <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($owners as $key => $owner)
+                                                                            <option value={{ $owner->VENDOR }} {{ $owner->VENDOR == $data->VENDOR ? 'selected' : '' }}>{{ $owner->VENDOR.' - ('.$owner->REMARK.')'}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">สินค้าของบริษัท</label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="GRP_P" id="GRP_P">
+                                                                        <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($grp_ps as $key => $grp_p)
+                                                                            <option value={{ $grp_p->GRP_P }} {{ $grp_p->GRP_P == $data->GRP_P ? 'selected' : '' }}>{{ $grp_p->GRP_P.' - ('.$grp_p->REMARK.')'}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">ประเภทสินค้า</label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="TYPE_G" id="TYPE_G">
+                                                                        <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($type_gs as $key => $type_g)
+                                                                            <option value={{ $type_g->TYPE_G }} {{ $type_g->TYPE_G == $data->TYPE_G ? 'selected' : '' }}>{{ $type_g->TYPE_G.' - ('.$type_g->DESCRIPTION.')'}}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">ประเภทสินค้า [บัญชี]</label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="ACC_TYPE" id="ACC_TYPE">
+                                                                        <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($acctypes as $key => $acctype)
+                                                                            <option value={{ $acctype->ACC_TYPE }} {{ $acctype->ACC_TYPE == $data->ACC_TYPE ? 'selected' : '' }}>{{ $acctype->ACC_TYPE.' - ('.$acctype->DESCRIPTION.')' }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="REG_DATE">วันที่สรา้งทะเบียน</label>
+                                                                    <input type="date" name="REG_DATE" id="REG_DATE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" data-date-format="dd/mm/yyyy" placeholder="" autocomplete="off" value="{{ $data->REG_DATE }}" readonly />
+                                                                </div>
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="price_start_date">วันที่เริ่มใช้ราคา</label>
+                                                                    <input type="date" name="price_start_date" id="price_start_date" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" data-date-format="dd/mm/yyyy" placeholder="" autocomplete="off" value="{{ $data->price_start_date }}" />
+                                                                </div>
+                                                                <div class="md:col-span-6">
+                                                                    <label for="note" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">หมายเหตุ</label>
+                                                                    <textarea id="note" name="note" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">{{ $data->note ?? '' }}</textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
+                                <div data-twe-stepper-head-ref="" class="setpcollep  flex cursor-pointer items-center p-1 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
+                                    <span data-twe-stepper-head-icon-ref="" class="bg_step_color me-3 flex h-[1.938rem] w-[1.938rem] items-center justify-center rounded-full text-sm  !bg-primary-100 !text-primary-700 dark:!bg-slate-900 dark:!text-primary-500">
+                                        2
                                     </span>
                                     <span data-twe-stepper-head-text-ref="" class="after:absolute after:flex after:text-[0.8rem] text-black/50 dark:text-white/50 font-medium !text-black/50 dark:!text-white/50">
                                         รายละเอียดยอดเงิน
@@ -77,27 +183,27 @@
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                                                                 <div class="md:col-span-2" style="position: relative;">
-                                                                        <label for="COST">ราคาต้นทุน</label>
-                                                                        <input type="text" name="COST" id="COST" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->cost, 2) }}" />
-                                                                    </div>
-                                                                <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="perfume_tax">ภาษีน้ำหอม</label>
-                                                                    <input type="text" name="perfume_tax" id="perfume_tax" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->perfume_tax, 2) }}" />
+                                                                    <label for="COST">ต้นทุน Brand</label>
+                                                                    <input type="text" name="COST" id="COST" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ number_format($data->cost, 2) }}" />
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="cost_perfume_tax">ต้นทุน + ภาษีน้ำหอม</label>
-                                                                    <input type="text" name="cost_perfume_tax" id="cost_perfume_tax" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->cost_perfume_tax, 2) }}" />
+                                                                    <label for="sale_tp">ราคาขายบัญชี(TP)</label>
+                                                                    <input type="text" name="sale_tp" id="sale_tp" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->sale_tp, 2) }}" />
+                                                                </div>
+                                                                <div class="md:col-span-2" style="position: relative;">
+                                                                    <label for="cost_km">ต้นทุนผลิต KM</label>
+                                                                    <input type="text" name="cost_km" id="cost_km" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->cost_km, 2) }}" />
                                                                 </div>
                                                                 <div class="md:col-span-2" >
-                                                                    <label for="cost5percent">ต้นทุน+5%</label>
+                                                                    <label for="cost5percent">ต้นทุนผลิต KM+5%</label>
                                                                     <input type="text" name="cost5percent" id="cost5percent" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->cost5percent, 2) }}" />
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="cost10percent">ต้นทุน+10%</label>
+                                                                    <label for="cost10percent">ต้นทุนผลิต KM+10%</label>
                                                                     <input type="text" name="cost10percent" id="cost10percent" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->cost10percent, 2) }}" />
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="cost_other">ต้นทุน+อื่นๆ</label>
+                                                                    <label for="cost_other">ต้นทุนผลิต KM+อื่นๆ</label>
                                                                     <input type="text" name="cost_other" id="cost_other" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->cost_other, 2) }}" />
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
@@ -105,12 +211,24 @@
                                                                     <input type="text" name="sale_km" id="sale_km" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->sale_km, 2) }}" />
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="sale_km20percent">ราคาขาย KM + 20%</label>
+                                                                    <label for="sale_km20percent">ราคาขาย KM+20%</label>
                                                                     <input type="text" name="sale_km20percent" id="sale_km20percent" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->sale_km20percent, 2) }}" />
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
                                                                     <label for="sale_km_other">ราคาขาย KM+อื่นๆ</label>
                                                                     <input type="text" name="sale_km_other" id="sale_km_other" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->sale_km_other, 2) }}" />
+                                                                </div>
+                                                                <div class="md:col-span-2" style="position: relative;">
+                                                                    <label for="PRICE">ราคาขายปลีก</label>
+                                                                    <input type="text" name="PRICE" id="PRICE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ number_format($data->PRICE, 2) }}" />
+                                                                </div>
+                                                                <div class="md:col-span-2" style="position: relative;">
+                                                                    <label for="perfume_tax">ภาษีน้ำหอม</label>
+                                                                    <input type="text" name="perfume_tax" id="perfume_tax" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->perfume_tax, 2) }}" />
+                                                                </div>
+                                                                <div class="md:col-span-2" style="position: relative;">
+                                                                    <label for="cost_perfume_tax">ต้นทุนผลิต KM+ภาษีน้ำหอม</label>
+                                                                    <input type="text" name="cost_perfume_tax" id="cost_perfume_tax" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->cost_perfume_tax, 2) }}" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -122,7 +240,7 @@
                                 </div>
                             </li>
                         </ul>
-                        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
+                        <ul class="pt-2.5 mt-24 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
                         <div id="loader" class="loading absolute hidden bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 animate-spin dark:text-white">
                                 <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
@@ -187,10 +305,26 @@
                     }
                 })
             });
+            document.querySelectorAll('.setcheckbox').forEach((element, index) => {
+                element.addEventListener('click', function (params) {
+                    let el = document.querySelectorAll('.setcheckbox')[index]
+                    let el_colr = document.querySelectorAll('.bg_step_color')[index]
+                    console.log("🚀 ~ el.checked:", el.checked)
+                    if( el.checked){
+                        el_colr.classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+                        el_colr.classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+                    } else {
+                        el_colr.classList.remove('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+                        el_colr.classList.add('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+                    }
+                })
+            });
         }
 
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
+            $("#GRP_P").select2({disabled:'readonly'});
+            $("#VENDOR").select2({disabled:'readonly'});
             onOpenhandler();
             document.querySelectorAll('.setcheckbox')[0].checked = true
             document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')

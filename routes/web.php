@@ -68,8 +68,21 @@ Route::middleware('auth')->group(function() {
     });
     
     // product
-    Route::group(['prefix' => 'product', 'as' => 'product.'], function () {
-        Route::get('', [ProductController::class, 'index'])->name('index');
+    Route::group(['prefix' => 'product_master', 'as' => 'product_master.'], function () {
+        Route::get('/pd_master', [ProductController::class, 'index'])->name('index');
+        // Solution
+        Route::get('/solution', [ToolController::class, 'solution'])->name('solution');
+        Route::get('/series', [ToolController::class, 'series'])->name('series');
+        Route::get('/category', [ToolController::class, 'category'])->name('category');
+        Route::get('/sub_category', [ToolController::class, 'subCategory'])->name('sub_category');
+        // Product Group
+        Route::get('/product_group', [ToolController::class, 'productGroup'])->name('product_group');
+        Route::post('/productgroup_checkname', [ToolController::class, 'productGroupCheckName'])->name('productgroup_checkname');
+        Route::post('/product_group_create_or_update', [ToolController::class, 'productGroupCreateOrUpdate'])->name('product_group_create_or_update');
+        Route::post('/list_product_group', [ToolController::class, 'listProductGroup'])->name('list_product_group');
+        //
+        Route::get('/supplier', [ToolController::class, 'supplier'])->name('supplier');
+
         Route::get('/get_barcode', [ProductController::class, 'getBarcode'])->name('get_barcode');
         Route::get('/checkproduct', [ProductController::class, 'check_product'])->name('checkproduct');
         Route::get('/checkproduct_consumables', [ProductController::class, 'check_product_consumables'])->name('checkproduct_consumables');
@@ -79,9 +92,9 @@ Route::middleware('auth')->group(function() {
         Route::post('/store_consumables', [ProductController::class, 'storeConsumables'])->name('store_consumables');
         Route::post('/create_copy', [ProductController::class, 'createCopy'])->name('create_copy');
         Route::post('/create_copy_consumables', [ProductController::class, 'createCopyConsumables'])->name('create_copy_consumables');
-        Route::get('/create', [ProductController::class, 'create'])->name('create');
-        Route::get('/create_consumables', [ProductController::class, 'createConsumables'])->name('create_consumables');
-        Route::get('/edit/{PRODUCT}', [ProductController::class, 'edit'])->name('edit');
+        Route::get('/pd_master/create', [ProductController::class, 'create'])->name('create');
+        Route::get('/pd_master/create_consumables', [ProductController::class, 'createConsumables'])->name('create_consumables');
+        Route::get('/pd_master/edit/{PRODUCT}', [ProductController::class, 'edit'])->name('edit');
         Route::post('/update/{PRODUCT}', [ProductController::class, 'update'])->name('update');
         Route::delete('/update_product_status/{id}', [ProductController::class, 'upate_product_status'])->name('update_product_status');
     });

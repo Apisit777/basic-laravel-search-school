@@ -45,7 +45,44 @@
                 <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">ทะเบียนสินค้า</p>
             </div>
             <form class="" action="" method="POST" id="update_product_master">
-                <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
+
+                @if ($userPermission == 'E-Commerce - OP')
+                    <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100">
+                        <div class="lg:col-span-4 xl:grid-cols-4">
+                            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6">
+                                <div class="md:col-span-2" style="position: relative;">
+                                    <label for="BRAND">Brand</label>
+                                    <input type="text" name="BRAND" id="BRAND" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->BRAND }}" readonly>
+                                </div>
+                                <div class="md:col-span-2" style="position: relative;">
+                                    <label for="Code">รหัส</label>
+                                    <input type="text" name="Code" id="Code" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->PRODUCT }}" readonly>
+                                </div>
+                                <div class="md:col-span-2" style="position: relative;">
+                                    <label for="O_PRODUCT">รหัสสินค้าเก่า</label>
+                                    <input type="text" name="O_PRODUCT" id="insert-data" class="text-compleace-auto2 h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->O_PRODUCT }}" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100">
+                        <div class="lg:col-span-4 xl:grid-cols-4">
+                            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-6">
+                                <div class="md:col-span-3" style="position: relative;">
+                                    <label for="BRAND">Brand</label>
+                                    <input type="text" name="BRAND" id="BRAND" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->BRAND }}" readonly>
+                                </div>
+                                <div class="md:col-span-3" style="position: relative;">
+                                    <label for="Code">รหัส</label>
+                                    <input type="text" name="Code" id="Code" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->PRODUCT }}" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                <!-- <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
                     <div class="lg:col-span-4 xl:grid-cols-4">
                         <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                             <div class="md:col-span-3" style="position: relative;">
@@ -58,7 +95,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- <div class="fixed flex bottom-5 right-5 z-10 invisible" id="add_other">
                     <a
@@ -234,8 +271,9 @@
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">วันที่สรา้งทะเบียน</label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" data-date-format="dd/mm/yyyy" placeholder="" autocomplete="off" value="{{ $data->REG_DATE }}" />
+                                                                    <label for="name">วันที่สร้างทะเบียน</label>
+                                                                    <input type="date" name="REG_DATE" id="REG_DATE" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" data-date-format="dd/mm/yyyy" placeholder="" autocomplete="off" value="{{ $data->REG_DATE }}" />
+                                                                    <!-- <input type="date" name="REG_DATE" id="REG_DATE" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" data-date-format="dd/mm/yyyy" placeholder="" autocomplete="off" value="{{ \Carbon\Carbon::createFromFormat('Y-m-d', $data->REG_DATE)->addYears(543)->format('Y-m-d') }}" /> -->
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">สินค้าของบริษัท</label>
@@ -621,7 +659,7 @@
                         </div>
                         <div class="md:col-span-6 text-right mt-4">
                             <div class="inline-flex items-end">
-                                <a href="{{ route('product.index') }}" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-4 mr-2 rounded group">
+                                <a href="{{ route('product_master.index') }}" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-4 mr-2 rounded group">
                                     <svg fill="#fff" class="-mt-1 size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                         viewBox="0 0 26.676 26.676" xml:space="preserve">
                                         <g>
@@ -813,7 +851,7 @@
             });
             $.ajax({
                 method: "POST",
-                url: "{{ route('product.update', $data->PRODUCT) }}",
+                url: "{{ route('product_master.update', $data->PRODUCT) }}",
                 data: $("#update_product_master").serialize(),
                 beforeSend: function () {
                     $('#loader').removeClass('hidden')

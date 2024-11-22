@@ -389,7 +389,7 @@
             // $('#BARCODE').val('');
 
             if (params === 'BRAND') {
-                url = '{{ route('product.product_master_get_brand_list_ajax') }}?BRAND=' + e.value;
+                url = '{{ route('product_master.product_master_get_brand_list_ajax') }}?BRAND=' + e.value;
                 select = jQuery('#NUMBER');
                 jQuery('#NUMBER').find("option").remove();
                 select.find("option").remove();

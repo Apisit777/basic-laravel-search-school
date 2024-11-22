@@ -220,7 +220,7 @@ class AuthController extends Controller
             $user->setRememberToken(Str::random(60));
             $user->save();
             Auth::login($user, true);
-            return response()->json(['status' => 'success', 'response' => $response, 'route' => 'product']);
+            return response()->json(['status' => 'success', 'response' => $response, 'route' => '/product_master/pd_master']);
         } 
         else if ($data->failed()) {
             $error = $data->json();
@@ -331,7 +331,7 @@ class AuthController extends Controller
             $user->setRememberToken(Str::random(60));
             $user->save();
             Auth::login($user, true);
-            return response()->json(['status' => 'success', 'response' => $response, 'route' => 'product']);
+            return response()->json(['status' => 'success', 'response' => $response, 'route' => '/product_master/pd_master']);
         } elseif ($data->failed()) {
             $error = $data->json();
             return response()->json(['error' => $error], 401);

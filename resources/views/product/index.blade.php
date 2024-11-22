@@ -282,7 +282,7 @@
                     aria-labelledby="dropdownMenuButton1s"
                     data-twe-dropdown-menu-ref>
                     <li>
-                        <a href="{{ route('product.create') }}" class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group">
+                        <a href="{{ route('product_master.create') }}" class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group">
                             <svg class="h-5 w-5 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 fill="currentColor" viewBox="0 0 512 512"  xml:space="preserve">
                                 <g>
@@ -327,7 +327,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{{ route('product.create_consumables') }}" class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group">
+                        <a href="{{ route('product_master.create_consumables') }}" class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group">
                             <svg class="h-5 w-5 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 fill="currentColor" viewBox="0 0 512 512"  xml:space="preserve">
                                 <g>
@@ -636,7 +636,7 @@
             </button>
             <div id="dropdown" class="p-2 z-10 hidden text-center bg-white divide-y divide-gray-600 rounded-sm shadow w-48 border-none dark:bg-[#303030] dark:divide-gray-600">
                 <div class="flex items-center justify-start text-black dark:text-white text-sm hover:bg-gray-100 dark:hover:bg-[#404040] cursor-pointer">
-                    <a href="{{ route('product.create') }}" class="text-black dark:text-white py-2 px-2 rounded-sm group">
+                    <a href="{{ route('product_master.create') }}" class="text-black dark:text-white py-2 px-2 rounded-sm group">
                         <svg class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 viewBox="0 0 451.39 451.39" xml:space="preserve">
                             <g>
@@ -702,7 +702,7 @@
                     </a>
                 </div>
                 <div class="flex items-center justify-start text-black dark:text-white text-sm hover:bg-gray-100 dark:hover:bg-[#404040] cursor-pointer">
-                    <a href="{{ route('product.create_consumables') }}" class="text-black dark:text-white py-2 px-2 rounded-sm group">
+                    <a href="{{ route('product_master.create_consumables') }}" class="text-black dark:text-white py-2 px-2 rounded-sm group">
                         <svg class="h-6 w-6 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 viewBox="0 0 451.39 451.39" xml:space="preserve">
                             <g>
@@ -771,7 +771,7 @@
         </div> -->
 
         <!-- <div class="flex right-12 z-10 absolute">
-            <a href="{{ route('product.create') }}" type="button" class="mt-1 mr-1 px-3 py-2 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group" name="add" id="add">
+            <a href="{{ route('product_master.create') }}" type="button" class="mt-1 mr-1 px-3 py-2 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group" name="add" id="add">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                     <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
                 </svg>
@@ -1047,7 +1047,7 @@
         //     if ( dataJson.data.roles == "Superadmin") {
         //         $('#create_product').append(
         //             `<div class="fixed flex bottom-5 right-5 z-10">
-        //                 <a href="{{ route('product.create') }}" class="text-gray-100 bg-[#303030] hover:bg-[#404040] text-white font-bold py-2 px-2 mr-2 mt-20 rounded-full group">
+        //                 <a href="{{ route('product_master.create') }}" class="text-gray-100 bg-[#303030] hover:bg-[#404040] text-white font-bold py-2 px-2 mr-2 mt-20 rounded-full group">
         //                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
         //                         <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
         //                     </svg>
@@ -1131,7 +1131,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
 
-                "url": "{{ route('product.list_products') }}",
+                "url": "{{ route('product_master.list_products') }}",
                 "type": "POST",
                 'data': function(data) {
                     // Read values
@@ -1183,10 +1183,10 @@
                     orderable: true,
                     className: 'text-center',
                     render: function(data, type, row) {
-                        let disabledRoute = "{{route('product.update', 0)}}".replace('/0', "/" + row.PRODUCT)
+                        let disabledRoute = "{{route('product_master.update', 0)}}".replace('/0', "/" + row.PRODUCT)
                         let text = "#"
                             return `<div class="inline-flex flex items-center rounded-md shadow-sm">
-                                        <a href="{{route('product.edit', 0)}}"
+                                        <a href="{{route('product_master.edit', 0)}}"
                                             type="button" class="px-2 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group">
                                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="-mt-1.5 hidden h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                                 <path d="M0 0h24v24H0V0z" fill="none"></path>
@@ -1224,7 +1224,7 @@
             // console.log("🚀 ~ barcodeChange ~ product:", PRODUCT)
 
             if (params === 'BARCODE') {
-                url = '{{ route('product.get_barcode') }}?BARCODE=' + e.value;
+                url = '{{ route('product_master.get_barcode') }}?BARCODE=' + e.value;
             }
             jQuery.ajax({
                 method: "GET",
@@ -1243,7 +1243,7 @@
             });
             jQuery.ajax({
                 method: "GET",
-                url: '{{ route('product.checkproduct') }}',
+                url: '{{ route('product_master.checkproduct') }}',
                 data: { PRODUCT },
                 dataType: 'json',
                 beforeSend: function () {
@@ -1289,7 +1289,7 @@
             });
                 jQuery.ajax({
                     method: "POST",
-                    url: "{{ route('product.create_copy') }}",
+                    url: "{{ route('product_master.create_copy') }}",
                     data: $("#form_copy").serialize(),
                     beforeSend: function () {
                         $('#loader_create_menu').removeClass('hidden')
@@ -1367,7 +1367,7 @@
             if (PRODUCT_Consumables.length > 6) {
                 jQuery.ajax({
                     method: "GET",
-                    url: '{{ route('product.checkproduct_consumables') }}',
+                    url: '{{ route('product_master.checkproduct_consumables') }}',
                     data: { PRODUCT_Consumables },
                     dataType: 'json',
                     beforeSend: function () {
@@ -1419,7 +1419,7 @@
             });
                 jQuery.ajax({
                     method: "POST",
-                    url: "{{ route('product.create_copy_consumables') }}",
+                    url: "{{ route('product_master.create_copy_consumables') }}",
                     data: $("#form_copy_consumables").serialize(),
                     beforeSend: function () {
                         $('#loader_create_menu_consumables').removeClass('hidden')

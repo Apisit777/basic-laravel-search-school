@@ -40,6 +40,9 @@
         span.dt-column-order {
             display: none;
         }
+        .dt-length  {
+            color: #818181!important;
+        }
     </style>
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/select2@4.1.0.min.css') }}" />
@@ -100,8 +103,10 @@
             </div>
         </form>
         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700 relative"></ul>
-        <div class="flex right-12 z-10 absolute mt-3">
-            <a href="{{ route('new_product_develop.create') }}" type="button" class="mt-1 px-3 py-1 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group" name="add" id="add">
+        <div class="flex xs:right-12 sm:right-12 md:right-72 lg:right-72 xl:right-72 z-10 absolute mt-3">
+            <a 
+                href="{{ route('new_product_develop.create') }}" type="button" 
+                class="xs:mt-9 sm:mt-9 md:mt-2 lg:mt-2 xl:mt-2 -mr-4 px-1.5 py-1.5 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded cursor-pointer group" name="add" id="add">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                     <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
                 </svg>
@@ -250,7 +255,7 @@
             ],
             "lengthMenu": [10, 20, 30, 50],
             "layout": {
-                "topStart": {
+                "topEnd": {
                     "buttons": ['excel', 'colvis']
                     // buttons: ['copy', 'excel', 'pdf', 'colvis']
                 }
