@@ -86,6 +86,27 @@
             font-size: 1rem;
             line-height: 1.5rem;
         } */
+
+        div:where(.swal2-container) .swal2-html-container {
+            padding: .5em 1.8em .3em!important;
+            font-size: 1.3em!important;
+        }
+        div:where(.swal2-container) div:where(.swal2-actions) {
+            margin: 0em auto 0!important;
+        }
+        .custom-confirm-button {
+            padding: 6px 7px;
+            font-size: 16px;
+            border-radius: 2px;
+        }
+        .custom-cancel-button {
+            padding: 6px 7px;
+            font-size: 16px;
+            border-radius: 2px;
+        }
+        .custom-icon {
+            margin-bottom: 5px; /* Adds space below the icon */
+        }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -178,7 +199,7 @@
                                 </div>
                             </div>
                             <div class="p-2 ">
-                                <ul class="space-y-2 font-large border-t border-gray-200 dark:border-gray-500"></ul>
+                                <ul class="space-y-2 font-large border-t-2 border-gray-200 dark:border-gray-500"></ul>
                             </div>
                             <div class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md p-2">
                                 <a class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 rounded cursor-pointer group" onclick="createMenu()">
@@ -608,7 +629,7 @@
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="PACK_SIZE1">รหัส Packsize1</label>
-                                                                    <input type="text" name="PACK_SIZE1" id="PACK_SIZE1" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="number" name="PACK_SIZE1" id="PACK_SIZE1" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" min="0" max="144" />
                                                                 </div>
                                                                 {{-- <div class="md:col-span-3">
                                                                     <label for="name">รหัส Packsize1</label>
@@ -629,7 +650,7 @@
                                                                 </div> -->
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="PACK_SIZE2">รหัส Packsize2</label>
-                                                                    <input type="text" name="PACK_SIZE2" id="PACK_SIZE2" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="number" name="PACK_SIZE2" id="PACK_SIZE2" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" min="0" max="144" />
                                                                 </div>
                                                                 {{-- <div class="md:col-span-3">
                                                                     <label for="name">รหัส Packsize2</label>
@@ -650,7 +671,7 @@
                                                                 </div> -->
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="PACK_SIZE3">รหัส Packsize3</label>
-                                                                    <input type="text" name="PACK_SIZE3" id="PACK_SIZE3" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="number" name="PACK_SIZE3" id="PACK_SIZE3" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" min="0" max="144" />
                                                                 </div>
                                                                 {{-- <div class="md:col-span-3">
                                                                     <label for="name">รหัส Packsize3</label>
@@ -671,7 +692,7 @@
                                                                 </div> -->
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="PACK_SIZE4">รหัส Packsize4</label>
-                                                                    <input type="text" name="PACK_SIZE4" id="PACK_SIZE4" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <input type="number" name="PACK_SIZE4" id="PACK_SIZE4" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" min="0" max="144" />
                                                                 </div>
                                                                 {{-- <div class="md:col-span-3">
                                                                     <label for="name">รหัส Packsize4</label>
@@ -789,7 +810,7 @@
                                                                     </div>
                                                                 </div> -->
                                                                 <div class="md:col-span-6">
-                                                                    <ul class="width-full pt-2.5 mt-3 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
+                                                                    <ul class="width-full pt-2.5 mt-3 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-600"></ul>
                                                                     <div class="md:col-span-1 mt-2">
                                                                         <input type="checkbox" id="RETURN" name="RETURN">
                                                                         <label for="RETURN">คืนซาก</label>
@@ -810,7 +831,7 @@
                                                                         <input type="checkbox" id="TESTER" name="TESTER">
                                                                         <label for="TESTER">มี Tester</label>
                                                                     </div>
-                                                                    <ul class="width-full pt-2.5 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
+                                                                    <ul class="width-full pt-2.5 mt-4 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-600"></ul>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -822,7 +843,7 @@
                                 </div>
                             </li>
                         </ul>
-                        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
+                        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-600"></ul>
                         <div id="loader" class="loading absolute hidden bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 animate-spin dark:text-white">
                                 <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
@@ -913,7 +934,7 @@
         $(document).ready(function() {
             document.querySelectorAll('.checkinputvalidate').forEach(e => {
                e.addEventListener('input', (e) => {
-                console.log("🚀 ~ e.addEventListener ~ e:", e)
+                // console.log("🚀 ~ e.addEventListener ~ e:", e)
                 onchangeValueSelect2()
                })
             })
@@ -1230,7 +1251,7 @@
         function checkInput() {
             let checkValue = []
             document.querySelectorAll('.checkinputvalidate').forEach(e => {
-                console.log("🚀 ~ document.querySelectorAll ~ e:", e.value)
+                // console.log("🚀 ~ document.querySelectorAll ~ e:", e.value)
                 checkValue.push(!!e.value)
             })
             return checkValue.every((g) => g === true)
@@ -1334,10 +1355,10 @@
 
         function checkPacksize() {
             const mapPack = {
-                PACK_SIZE1: 'รหัส Packsize1 :',
-                PACK_SIZE2: 'รหัส Packsize2 :',
-                PACK_SIZE3: 'รหัส Packsize3 :',
-                PACK_SIZE4: 'รหัส Packsize4 :',
+                PACK_SIZE1: '     Packsize1 :   ',
+                PACK_SIZE2: '     Packsize2 :   ',
+                PACK_SIZE3: '     Packsize3 :   ',
+                PACK_SIZE4: 'Packsize4 : ',
             }
 
             let packs = [
@@ -1368,10 +1389,22 @@
             if (checkPacks.length) {
                 const text = checkPacks.join('\n')
                 Swal.fire({
-                    title: 'Are you sure?',
-                    width: 350,
-                    text: text,
-                    icon: 'warning',
+                    width: 280,
+                    html: `
+                        <div class="flex justify-center items-center custom-icon">
+                            <svg class="h-16 w-16" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                viewBox="0 0 512 512" xml:space="preserve">
+                            <polygon style="fill:#FFFFFF;" points="13.728,473.992 256,46.24 498.272,473.992 "/>
+                            <path style="fill:#DB2B42;" d="M256,62.472l228.552,403.52H27.448L256,62.472 M256,30.008L0,481.992h512L256,30.008L256,30.008z"/>
+                            <path style="fill:#2D2D2D;" d="M226.112,396.344c0-17.216,12.024-29.56,29.232-29.56c17.216,0,28.584,12.344,28.912,29.56
+                                c0,16.888-11.368,29.552-28.912,29.552C237.808,425.896,226.112,413.232,226.112,396.344z M236.84,350.536l-7.48-147.144h51.648
+                                l-7.152,147.152L236.84,350.536L236.84,350.536z"/>
+                            </svg>
+                        </div>
+                        <p class="text-3xl mb-3"> Are you sure? </p>
+                        <p>${text}</p>
+                        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-600 relative"></ul>
+                    `,
                     showCancelButton: true,
                     confirmButtonColor: '#303030',
                     cancelButtonColor: '#e13636',
@@ -1388,7 +1421,10 @@
                     cancelButtonText: `Cancel`,
                     color: "#ffffff",
                     background: "#202020",
-
+                    customClass: {
+                        confirmButton: 'custom-confirm-button',
+                        cancelButton: 'custom-cancel-button'
+                    }
                 }).then(result => {
                     if (result.isConfirmed) {
                         createProductMaster()
@@ -1410,7 +1446,7 @@
             });
             Swal.fire({
                 title: 'Are you sure?',
-                width: 350,
+                width: 400,
                 text: 'ข้อมูลรหัสบาร์โค้ด ' + barcode + '      ' + 'ข้อมูลรหัส ' + code,
                 icon: 'warning',
                 showCancelButton: true,
@@ -1429,7 +1465,10 @@
                 cancelButtonText: `Cancel`,
                 color: "#ffffff",
                 background: "#202020",
-
+                customClass: {
+                    confirmButton: 'custom-confirm-button',
+                    cancelButton: 'custom-cancel-button'
+                }
             }).then(result => {
                 if (result.isConfirmed) {
                     $.ajax({

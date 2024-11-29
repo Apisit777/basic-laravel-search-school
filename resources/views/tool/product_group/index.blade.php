@@ -236,7 +236,7 @@
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 
     <script>
-        // jQuery('#username_loading_id').hide();
+        jQuery('#username_loading_id').hide();
         jQuery("#username_aler_id").hide();
         jQuery("#correct_username_id").hide();
 
@@ -332,6 +332,7 @@
             console.log("🚀 ~ modelProductGroup ~ id:", id, DESCRIPTION)
             if (id) {
                 jQuery("#Edit_ProductGroup_ID").val(id)
+                jQuery("#ID").val(id)
                 jQuery("#DESCRIPTION").val(DESCRIPTION)
                 jQuery("#staticBackdropLabel").text('แก้ไข Product Group')
                 jQuery("#submitButton").attr("disabled", false);
@@ -341,6 +342,7 @@
                 jQuery("#correct_username").hide();
             } else {
                 jQuery("#Edit_ProductGroup_ID").val('')
+                jQuery("#ID").val('')
                 jQuery("#DESCRIPTION").val('')
                 jQuery("#staticBackdropLabel").text('เพิ่ม Product Group')
                 jQuery("#submitButton").attr("disabled", true);

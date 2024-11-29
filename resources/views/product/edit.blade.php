@@ -314,7 +314,7 @@
                                                                     <label for="REGISTER">เลขที่ อย.</label>
                                                                     <input type="text" name="REGISTER" id="REGISTER" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->REGISTER }}" />
                                                                 </div>
-                                                                <div class="md:col-span-3">
+                                                                <!-- <div class="md:col-span-3">
                                                                     <label for="name">ประเภทสินค้า</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="TYPE_G" id="TYPE_G">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
@@ -322,7 +322,7 @@
                                                                             <option value={{ $type_g->TYPE_G }} {{ $type_g->TYPE_G == $data->TYPE_G ? 'selected' : '' }}>{{ $type_g->TYPE_G.' - ('.$type_g->DESCRIPTION.')'}}</option>
                                                                         @endforeach
                                                                     </select>
-                                                                </div>
+                                                                </div> -->
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="OPT_TXT1">รหัสสินค้าอ้างอิง</label>
                                                                     <input type="text" name="OPT_TXT1" id="OPT_TXT1" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->OPT_TXT1 }}" />
@@ -443,8 +443,9 @@
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
                                                             <div class="md:col-span-3">
-                                                                    <label for="name">รหัส Packsize1</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE1" id="PACK_SIZE1">
+                                                                    <label for="PACK_SIZE1">รหัส Packsize1</label>
+                                                                    <input type="number" name="PACK_SIZE1" id="PACK_SIZE1" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PACK_SIZE1 }}" min="0" max="144" />
+                                                                    <!-- <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE1" id="PACK_SIZE1">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         <option value="3" {{($data->PACK_SIZE1 == '3') ? 'selected' : ''}}>3</option>
                                                                         <option value="6" {{($data->PACK_SIZE1 == '6') ? 'selected' : ''}}>6</option>
@@ -453,15 +454,16 @@
                                                                         <option value="24" {{($data->PACK_SIZE1 == '24') ? 'selected' : ''}}>24</option>
                                                                         <option value="30" {{($data->PACK_SIZE1 == '30') ? 'selected' : ''}}>30</option>
                                                                         <option value="48" {{($data->PACK_SIZE1 == '48') ? 'selected' : ''}}>48</option>
-                                                                    </select>
+                                                                    </select> -->
                                                                 </div>
                                                                 <!-- <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="name">&nbsp;</label>
                                                                     <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div> -->
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name">รหัส Packsize2</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE2" id="PACK_SIZE2">
+                                                                    <label for="PACK_SIZE2">รหัส Packsize2</label>
+                                                                    <input type="number" name="PACK_SIZE2" id="PACK_SIZE2" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PACK_SIZE1 }}" min="0" max="144" />
+                                                                    <!-- <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE2" id="PACK_SIZE2">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         <option value="3" {{($data->PACK_SIZE2 == '3') ? 'selected' : ''}}>3</option>
                                                                         <option value="6" {{($data->PACK_SIZE2 == '6') ? 'selected' : ''}}>6</option>
@@ -470,15 +472,16 @@
                                                                         <option value="24" {{($data->PACK_SIZE2 == '24') ? 'selected' : ''}}>24</option>
                                                                         <option value="30" {{($data->PACK_SIZE2 == '30') ? 'selected' : ''}}>30</option>
                                                                         <option value="48" {{($data->PACK_SIZE2 == '48') ? 'selected' : ''}}>48</option>
-                                                                    </select>
+                                                                    </select> -->
                                                                 </div>
                                                                 <!-- <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="name">&nbsp;</label>
                                                                     <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div> -->
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name">รหัส Packsize3</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE3" id="PACK_SIZE3">
+                                                                    <label for="PACK_SIZE3">รหัส Packsize3</label>
+                                                                    <input type="number" name="PACK_SIZE3" id="PACK_SIZE3" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PACK_SIZE1 }}" min="0" max="144" />
+                                                                    <!-- <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE3" id="PACK_SIZE3">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         <option value="3" {{($data->PACK_SIZE3 == '3') ? 'selected' : ''}}>3</option>
                                                                         <option value="6" {{($data->PACK_SIZE3 == '6') ? 'selected' : ''}}>6</option>
@@ -487,15 +490,16 @@
                                                                         <option value="24" {{($data->PACK_SIZE3 == '24') ? 'selected' : ''}}>24</option>
                                                                         <option value="30" {{($data->PACK_SIZE3 == '30') ? 'selected' : ''}}>30</option>
                                                                         <option value="48" {{($data->PACK_SIZE3 == '48') ? 'selected' : ''}}>48</option>
-                                                                    </select>
+                                                                    </select> -->
                                                                 </div>
                                                                 <!-- <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="name">&nbsp;</label>
                                                                     <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div> -->
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name">รหัส Packsize4</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE4" id="PACK_SIZE4">
+                                                                    <label for="PACK_SIZE4">รหัส Packsize4</label>
+                                                                    <input type="number" name="PACK_SIZE3" id="PACK_SIZE3" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PACK_SIZE1 }}" min="0" max="144" />
+                                                                    <!-- <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE4" id="PACK_SIZE4">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         <option value="3" {{($data->PACK_SIZE4 == '3') ? 'selected' : ''}}>3</option>
                                                                         <option value="6" {{($data->PACK_SIZE4 == '6') ? 'selected' : ''}}>6</option>
@@ -504,7 +508,7 @@
                                                                         <option value="24" {{($data->PACK_SIZE4 == '24') ? 'selected' : ''}}>24</option>
                                                                         <option value="30" {{($data->PACK_SIZE4 == '30') ? 'selected' : ''}}>30</option>
                                                                         <option value="48" {{($data->PACK_SIZE4 == '48') ? 'selected' : ''}}>48</option>
-                                                                    </select>
+                                                                    </select> -->
                                                                 </div>
                                                                 <!-- <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="name">&nbsp;</label>
@@ -537,7 +541,8 @@
                                                                 @else -->
                                                                     <div class="md:col-span-3" style="position: relative;">
                                                                         <label for="COST">ราคาต้นทุน</label>
-                                                                        <input type="text" name="COST" id="COST" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ number_format($data->COST, 2) }}" readonly />
+                                                                        <!-- <input type="text" name="COST" id="COST" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ number_format($data->COST, 2) }}" readonly /> -->
+                                                                        <input type="text" name="COST" id="COST" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->COST, 2) }}" />
                                                                     </div>
                                                                 <!-- @endif -->
 
@@ -567,7 +572,7 @@
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
-                                                                <div class="md:col-span-3">
+                                                                <!-- <div class="md:col-span-3">
                                                                     <label for="name">ประเภทสินค้า [บัญชี]</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="ACC_TYPE" id="ACC_TYPE">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
@@ -575,7 +580,7 @@
                                                                             <option value={{ $acctype->ACC_TYPE }} {{ $acctype->ACC_TYPE == $data->ACC_TYPE ? 'selected' : '' }}>{{ $acctype->ACC_TYPE.' - ('.$acctype->DESCRIPTION.')' }}</option>
                                                                         @endforeach
                                                                     </select>
-                                                                </div>
+                                                                </div> -->
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">เงื่อนไขชำระเงิน</label>
                                                                     <!-- <label for="name">เงื่อนไขชำระเงิน<span class="text-danger"> *</span></label> -->
@@ -858,7 +863,7 @@
                 },
                 success: function(res){
                     if(res.success == true) {
-                        window.location = "/product";
+                        window.location = "/product_master/pd_master";
                     } else {
                         toastr.error("Can't Create Product!");
                     }

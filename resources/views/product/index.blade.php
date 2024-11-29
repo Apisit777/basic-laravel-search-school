@@ -254,7 +254,7 @@
             </svg>
         </div> -->
 
-        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700 relative"></ul>
+        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-700 relative"></ul>
         <div class="flex right-12 z-10 absolute mt-3">
             <div class="relative" data-twe-dropdown-position="dropstart">
                 <button
@@ -486,7 +486,7 @@
                         </div>
 
                         <div class="p-2 ">
-                            <ul class="space-y-2 font-large border-t border-gray-200 dark:border-gray-500"></ul>
+                            <ul class="space-y-2 font-large border-t-2 border-[#E5E5E5] dark:border-[#373737]"></ul>
                         </div>
 
                         <div class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md p-2">
@@ -602,7 +602,7 @@
                         </div> -->
 
                         <div class="p-2 ">
-                            <ul class="space-y-2 font-large border-t border-gray-200 dark:border-gray-500"></ul>
+                            <ul class="space-y-2 font-large border-t-2 border-[#E5E5E5] dark:border-[#373737]"></ul>
                         </div>
 
                         <div class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md p-2">

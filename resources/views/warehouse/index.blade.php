@@ -209,7 +209,7 @@
                 </div>
             </div>
         </div>
-        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700 relative"></ul>
+        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-700 relative"></ul>
         <!-- <div class="flex right-12 z-10 absolute mt-3">
             <div class="relative" data-twe-dropdown-position="dropstart">
                 <button

@@ -102,7 +102,7 @@ class ProductFormController extends Controller
 
     public function duplicateNpdRequest(Request $request, $id_barcode)
     {
-        // dd($id_barcode);
+        // dd($request);
         DB::beginTransaction();
         try {
             $data = Pro_develops::select(
@@ -119,6 +119,7 @@ class ProductFormController extends Controller
             ->leftJoin('npd_textures', 'pro_develops.TEXTURE', '=', 'npd_textures.ID')
             ->firstWhere('BARCODE', '=', $id_barcode);
 
+            // dd($data->Code);
             if($data->Code) {
                 $lastElementBarcode = Barcode::max('NUMBER');
                 if ($data->Code >= 20000 && $data->Code <= 28999) {
@@ -137,22 +138,27 @@ class ProductFormController extends Controller
                     $lastElementBarcode = Barcode::where('COMPANY', '=', $data->BRAND)->where('STATUS', '=', 'KTY')->max('NUMBER');
                 }
                 $productCodeNumber =  (int) preg_replace('/[^0-9]/', '', $lastElementBarcode) + 1;
-                $productCodeDocument = $productCodeNumber;
+                $productCodeBarcode = $productCodeNumber;
 
                 if ($data->Code >= 20000 && $data->Code <= 28999) {
-                    $data_BRAND_Document = Barcode::updateOrCreate(
+                    $data_BRAND_Barcode = Barcode::updateOrCreate(
                         ['COMPANY' => $data->BRAND, 'STATUS' => 'OP'],
-                        ['NUMBER' => $productCodeDocument]
+                        ['NUMBER' => $productCodeBarcode]
                     );
                 } elseif ($data->Code >= 29000 && $data->Code <= 29699) {
-                    $data_BRAND_Document = Barcode::updateOrCreate(
+                    $data_BRAND_Barcode = Barcode::updateOrCreate(
                         ['COMPANY' => $data->BRAND, 'STATUS' => 'RE'],
-                        ['NUMBER' => $productCodeDocument]
+                        ['NUMBER' => $productCodeBarcode]
                     );
                 } elseif ($data->Code >= 29700 && $data->Code <= 29999) {
-                    $data_BRAND_Document = Barcode::updateOrCreate(
+                    $data_BRAND_Barcode = Barcode::updateOrCreate(
                         ['COMPANY' => $data->BRAND, 'STATUS' => 'CM'],
-                        ['NUMBER' => $productCodeDocument]
+                        ['NUMBER' => $productCodeBarcode]
+                    );
+                } elseif ($data->Code == 'CPS') {
+                    $data_BRAND_Barcode = Barcode::updateOrCreate(
+                        ['COMPANY' => $data->BRAND, 'BRAND' => 'CPS', 'STATUS' => 'CPS'],
+                        ['NUMBER' => $productCodeBarcode]
                     );
                 }
             }
@@ -178,6 +184,7 @@ class ProductFormController extends Controller
                 $productCodeNumberDocument =  (int) preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
                 $productCodeDocument = $productCodeNumberDocument;
 
+                // dd($productCodeDocument);
                 if ($data->Code >= 20000 && $data->Code <= 28999) {
                     $data_BRAND_Document = Document::updateOrCreate(
                         ['COMPANY' => $data->BRAND, 'STATUS' => 'OP'],
@@ -193,19 +200,24 @@ class ProductFormController extends Controller
                         ['COMPANY' => $data->BRAND, 'STATUS' => 'CM'],
                         ['NUMBER' => $productCodeDocument]
                     );
+                } elseif ($data->Code == 'CPS') {
+                    dd(4);
+                    $data_BRAND_Document = Document::updateOrCreate(
+                        ['COMPANY' => $request->BRAND, 'BRAND' => 'CPS', 'STATUS' => 'CPS'],
+                        ['NUMBER' => $productCodeDocument]
+                    );
                 }
-
             }
 
             // dd($data_BRAND_Document->NUMBER);
             $lastElement = Barcode::max('NUMBER');
-            if ($data_BRAND_Document->NUMBER >= 1 && $data_BRAND_Document->NUMBER <= 8999) {
+            if ($data->Code >= 1 && $data->Code <= 8999) {
                 $lastElement = Barcode::where('BRAND', '=', 'OP')->where('STATUS', '=', 'OP')->max('NUMBER');
             }
-            if ($data_BRAND_Document->NUMBER >= 9000 && $data_BRAND_Document->NUMBER <= 9699) {
+            if ($data->Code >= 9000 && $data->Code <= 9699) {
                 $lastElement = Barcode::where('STATUS', '=', 'RE')->max('NUMBER');
             }
-            if ($data_BRAND_Document->NUMBER >= 9700 && $data_BRAND_Document->NUMBER <= 9999) {
+            if ($data->Code >= 9700 && $data->Code <= 9999) {
                 $lastElement = Barcode::where('STATUS', '=', 'CM')->max('NUMBER');
             }
             if ($data->BRAND == 'CPS') {
@@ -214,10 +226,10 @@ class ProductFormController extends Controller
             if ($data->BRAND == 'KTY') {
                 $lastElement = Barcode::where('COMPANY', '=', $data->BRAND)->where('STATUS', '=', 'KTY')->max('NUMBER');
             }
-            // dd(4);
+            // dd(5);
             $barcodeMax = $lastElement;
             // $barcodeNumber =  (int) preg_replace('/[^0-9]/', '', $barcodeMax) + 1;
-            $barcodeNumber =  (int) preg_replace('/[^0-9]/', '', $barcodeMax);
+            $barcodeNumber =  (int) preg_replace('/[^0-9]/', '', $barcodeMax) + 1;
             $prefixBarcode = Barcode::select('B_CODE')->where('BRAND', $data->BRAND)->pluck('B_CODE')->toArray();
 
             if ($request->BRAND == 'KTY') {
@@ -853,6 +865,11 @@ class ProductFormController extends Controller
                         ['COMPANY' => 'OP', 'BRAND' => 'CM', 'STATUS' => 'CM'],
                         ['NUMBER' => $productCodeDocument]
                     );
+                } elseif ($request->BRAND == 'CPS') {
+                    $data_BRAND_Barcode = Barcode::updateOrCreate(
+                        ['COMPANY' => $request->BRAND, 'BRAND' => 'CPS', 'STATUS' => 'CPS'],
+                        ['NUMBER' => $productCodeDocument]
+                    );
                 }
             }
 
@@ -889,6 +906,11 @@ class ProductFormController extends Controller
                 } elseif ((int) $request->code >= 29700 && (int) $request->code <= 29999) {
                     $data_BRAND_Document = Document::updateOrCreate(
                         ['COMPANY' => 'OP', 'BRAND' => 'CM', 'STATUS' => 'CM'],
+                        ['NUMBER' => $productCodeDocument]
+                    );
+                } elseif ($request->BRAND == 'CPS') {
+                    $data_BRAND_Document = Document::updateOrCreate(
+                        ['COMPANY' => $request->BRAND, 'BRAND' => 'CPS', 'STATUS' => 'CPS'],
                         ['NUMBER' => $productCodeDocument]
                     );
                 }

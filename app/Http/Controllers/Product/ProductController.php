@@ -1014,6 +1014,8 @@ class ProductController extends Controller
             $changeBrand = 'RE';
         } else if ($dataProductBarcode->BRAND == 'OP' && (int) $request->NUMBER >= 29700 && (int) $request->NUMBER <= 29999) {
             $changeBrand = 'CM';
+        } else if ($dataProductBarcode->BRAND == 'CPS') {
+            $changeBrand = 'CP';
         }
 
         // dd($changeBrand);
@@ -1201,7 +1203,7 @@ class ProductController extends Controller
                 'BRAND_P' => $request->input('BRAND_P'),
                 'REGISTER' => $request->input('REGISTER'),
                 'OPT_TXT1' => $request->input('OPT_TXT1'),
-                // 'CONDITION_SALE' => $request->input('CONDITION_SALE'),
+                'CONDITION_SALE' => $request->input('CONDITION_SALE'),
                 'WHOLE_SALE' => $request->input('WHOLE_SALE'),
                 'GP' => $request->input('GP'),
                 'O_PRODUCT' => $request->input('O_PRODUCT'),
@@ -1221,7 +1223,7 @@ class ProductController extends Controller
                 'NAME_EXP' => $request->input('NAME_EXP'),
                 'NET_WEIGHT' => $request->input('NET_WEIGHT'),
                 'UNIT_TYPE' => $request->input('UNIT_TYPE'),
-                'TYPE_G' => $request->input('TYPE_G'),
+                // 'TYPE_G' => $request->input('TYPE_G'),
                 'OPT_DATE1' => $request->input('OPT_DATE1'),
                 'OPT_DATE2' => $request->input('OPT_DATE2'),
                 'OPT_TXT2' => $request->input('OPT_TXT2'),
@@ -1759,7 +1761,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $PRODUCT)
     {
-        dd($request);
+        // dd($request);
         // dd(strlen($PRODUCT));
         DB::beginTransaction();
         try {
@@ -1828,13 +1830,13 @@ class ProductController extends Controller
                     'NAME_EXP' => $request->input('NAME_EXP'),
                     'NET_WEIGHT' => $request->input('NET_WEIGHT'),
                     'UNIT_TYPE' => $request->input('UNIT_TYPE'),
-                    'TYPE_G' => $request->input('TYPE_G'),
+                    // 'TYPE_G' => $request->input('TYPE_G'),
                     'OPT_DATE1' => $request->input('OPT_DATE1'),
                     'OPT_DATE2' => $request->input('OPT_DATE2'),
                     'OPT_TXT2' => $request->input('OPT_TXT2'),
                     'OPT_NUM1' => $request->input('OPT_NUM1'),
                     'OPT_NUM2' => $request->input('OPT_NUM2'),
-                    'ACC_TYPE' => $request->input('ACC_TYPE'),
+                    // 'ACC_TYPE' => $request->input('ACC_TYPE'),
                     'ACC_DT' => $request->input('ACC_DT'),
                     'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
                     'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',

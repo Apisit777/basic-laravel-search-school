@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Barcode;
 use App\Models\Accessery;
 use App\Models\MasterBrand;
+use App\Models\Brand_p;
 
 
 class ComProductController extends Controller
@@ -148,5 +149,11 @@ class ComProductController extends Controller
     public function destroy(Com_product $com_product)
     {
         //
+    }
+
+    public function indexDocument()
+    {
+        $brand_ps = Brand_p::all();
+        return view('warehouse.document.index', compact('brand_ps'));
     }
 }

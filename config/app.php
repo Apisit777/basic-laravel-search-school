@@ -213,4 +213,15 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 
+    'extra_url' => env('EXTRA_URL'),
+    'extra_app_key' => env('EXTRA_APP_KEY'),
+    'extra_code' => env('EXTRA_CODE'),
+
+    'dealer_db' => env('DEALER_DB', 'dealer_db_prod'),
+    'product_db' => env('PRODUCT_DB', 'product_db_prod'),
+    'odbc_dot1_db' => env('DOT1_DB', 'odbc_dot1'),
+
+    'dot_30' => env('DOT_30', "http://192.168.3.30"),
+
+    'charset' => 'UTF-8',
 ];
