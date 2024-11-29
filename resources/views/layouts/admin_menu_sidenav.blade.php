@@ -54,7 +54,8 @@ $menuPpermissions = ManageMenuController::menus_data();
                             </svg>
                         </div>
                         @foreach($menu['getPermissionSubmenus'] as $submenu)
-                            <ul class="bg-[#f9f9f9] dark:bg-[#232323] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40 h-fit after:absolute after:left-[1.20rem] after:top-[2.5rem] after:mt-px after:h-[calc(100%-2.45rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-gray-700">
+                            <!-- <ul class="bg-[#f9f9f9] dark:bg-[#232323] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40 h-fit after:absolute after:left-[1.20rem] after:top-[2.5rem] after:mt-px after:h-[calc(100%-2.45rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-gray-700"> -->
+                            <ul class="bg-[#f9f9f9] dark:bg-[#232323] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-40 h-fit after:absolute after:left-[1.20rem] after:top-[2.5rem] after:mt-px after:h-[calc(100%-2.45rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-gray-600">
                                 <li>
                                     <a class="flex items-center w-full p-1.5 text-gray-900 transition rounded-sm pl-12 group hover:bg-neutral-800/50 dark:text-white dark:hover:bg-[#303030] {{ Request::is($menu['url'].'/'.$submenu['url'].'*') ? 'rounded-sm text-white dark:text-white !bg-[#014a77] !dark:bg-[#014a77] duration-500': '' }}" href="{{ '/'.$menu['url'].'/'.$submenu['url'] }}">
                                         {{ $submenu->name }}

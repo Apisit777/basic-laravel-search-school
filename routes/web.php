@@ -108,6 +108,7 @@ Route::middleware('auth')->group(function() {
     // Km
     Route::group(['prefix' => 'warehouse', 'as' => 'warehouse.'], function () {
         Route::get('/dimension', [ComProductController::class, 'index'])->name('index');
+        Route::get('/document', [ComProductController::class, 'indexDocument'])->name('document');
         Route::post('/list_warehouse', [ComProductController::class, 'listWarehouse'])->name('list_warehouse');
         Route::get('/dimension/create', [ComProductController::class, 'create'])->name('create');
         Route::post('/', [ComProductController::class, 'store'])->name('store');
