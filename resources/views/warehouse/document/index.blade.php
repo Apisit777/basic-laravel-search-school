@@ -181,7 +181,7 @@
             <div class="mt-5 flex justify-items-start">
                 <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">โปรโมชั่น</p>
             </div>
-            <form class="" action="" method="POST" id="create_product_master">                                     
+            <form class="" action="" method="POST" id="create_product_master">
                 <div class='w-12/12 mt-4 relative'>
                     <div class="">
                         <div class="bg-gray-100 dark:bg-[#404040] mb-3">
@@ -243,7 +243,7 @@
                                                         <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
                                                             <div class="md:col-span-4 mt-3">
                                                                 <label for="" class="mr-5">จำนวนซื้อ</label>
-                                                                <input type="radio" name="PACKAGE_BOX" value="ชิ้น" /> 
+                                                                <input type="radio" name="PACKAGE_BOX" value="ชิ้น" />
                                                                 <label for="" class="mr-5">ชิ้น</label>
                                                                 <input type="radio" name="PACKAGE_BOX" value="บาท" checked />
                                                                 <label for="" class="mr-5">บาท</label>
@@ -444,7 +444,7 @@
                                                                                             </td>
                                                                                         </tr>
                                                                                     </table> -->
-                                                                                    <div class="bg-white rounded shadow-lg dark:bg-[#404040] duration-500 pt-2.5 pb-2.5">    
+                                                                                    <div class="bg-white rounded shadow-lg dark:bg-[#404040] duration-500 pt-2.5 pb-2.5">
                                                                                         <div class="text-gray-900 dark:text-gray-100">
                                                                                             <div class="table-wrapper">
                                                                                                 <div id="containerexample" class="text-gray-900 dark:text-gray-100">
@@ -503,7 +503,7 @@
                                                                                             </div>
                                                                                             <div class="row mt-3 md:p-4">
                                                                                                 <div class="col">
-                                                                                                    <textarea rows="10" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="output">
+                                                                                                    <textarea rows="5" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="output">
                                                                                                     </textarea>
                                                                                                 </div>
                                                                                             </div>
@@ -514,7 +514,7 @@
                                                                                     <ul class="space-y-2 font-large border-t-2 border-[#E5E5E5] dark:border-[#373737]"></ul>
                                                                                 </div>
                                                                                 <div class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md p-2">
-                                                                                    <a data-twe-modal-dismiss class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-1 px-2 rounded cursor-pointer group" onclick="createMenu()">
+                                                                                    <a data-twe-modal-dismiss class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-1 px-2 rounded cursor-pointer group" onclick="selectProductGroup()">
                                                                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF" class="-mt-1 size-5 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                                                                             <path d="M0 0h24v24H0V0z" fill="none"></path>
                                                                                             <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
@@ -600,7 +600,7 @@
                                                                                     <div class="p-2 mb-2">
                                                                                         <ul class="space-y-2 font-large border-t-2 border-[#E5E5E5] dark:border-[#373737]"></ul>
                                                                                     </div>
-                                                                                    <div class="bg-white rounded shadow-lg dark:bg-[#404040] duration-500 pt-2.5 pb-2.5">    
+                                                                                    <div class="bg-white rounded shadow-lg dark:bg-[#404040] duration-500 pt-2.5 pb-2.5">
                                                                                         <div class="text-gray-900 dark:text-gray-100">
                                                                                             <div class="table-wrapper">
                                                                                                 <div id="containerexample" class="text-gray-900 dark:text-gray-100">
@@ -747,7 +747,7 @@
                                                                                     <div class="p-2 mb-2">
                                                                                         <ul class="space-y-2 font-large border-t-2 border-[#E5E5E5] dark:border-[#373737]"></ul>
                                                                                     </div>
-                                                                                    <div class="bg-white rounded shadow-lg dark:bg-[#404040] duration-500 pt-2.5">    
+                                                                                    <div class="bg-white rounded shadow-lg dark:bg-[#404040] duration-500 pt-2.5">
                                                                                         <div class="text-gray-900 dark:text-gray-100">
                                                                                             <div class="table-wrapper">
                                                                                                 <div id="containerexample" class="text-gray-900 dark:text-gray-100">
@@ -855,16 +855,16 @@
                                 </div>
                                 <!-- /.card -->
                             </div>
-                            
+
                         </div>
 
-                        <div class="mb-3 bg-gray-100 dark:bg-[#404040] p-3">    
+                        <div class="mb-3 bg-gray-100 dark:bg-[#404040] p-3">
                             <div class="m-3 text-gray-900 dark:text-gray-100">
                                 <div>
                                     <p>สินค้าหลัก</p>
                                 </div>
                                     <select id="demo" multiple>
-                                        <option value="1">One</option>
+                                        {{-- <option value="1">One</option>
                                         <option value="2">Two</option>
                                         <option value="3">Three</option>
                                         <option value="4">Four</option>
@@ -873,12 +873,12 @@
                                         <option value="7">Seven</option>
                                         <option value="8">Eight</option>
                                         <option value="9">Nine</option>
-                                        <option value="10">Ten</option>
+                                        <option value="10">Ten</option> --}}
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="mb-5 bg-gray-100 dark:bg-[#404040] p-3">    
+                        <!-- <div class="mb-5 bg-gray-100 dark:bg-[#404040] p-3">
                             <div class="m-3 text-gray-900 dark:text-gray-100">
                                 <div class="container pt-5">
                                     <div class="row">
@@ -1057,91 +1057,164 @@
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <script>
 
-        let productGrouptableArray = [];
-        $(document).ready(function() {
-            // Initialise Tabl
-            const table = $("#product_group_table").DataTable({
-                // Length Change
-                searching: false,
-                lengthChange: false,
-                pageLength: 25,
-                // Table Buttons
-                buttons: ["selectAll", "selectNone"],
-                // Multi Select
-                select: {
+    // let productGrouptableArray = [];
+    let selectedRow = []
+    $(document).ready(function () {
+        // Initialise DataTable
+        const table = $("#product_group_table").DataTable({
+            searching: false,
+            lengthChange: false,
+            pageLength: 25,
+            buttons: ["selectAll", "selectNone"],
+            select: {
                 style: "multi",
-                selector: "td:first-child"
-                },
-                // Select Column
-                columnDefs: [
+                selector: "td:first-child",
+            },
+            columnDefs: [
                 {
                     orderable: false,
                     className: "select-checkbox",
-                    targets: 0
-                }
-                ],
-                // Default Ordering
-                order: [[1, "asc"]],
-                // Button Text
-                language: {
+                    targets: 0,
+                },
+            ],
+            order: [[1, "asc"]],
+            language: {
                 buttons: {
                     selectAll: "Select All",
-                    selectNone: "Select None"
-                }
-                }
-            });
-            // // Button Append to Div
-            // table
-            //     .buttons()
-            //     .container()
-            //     .appendTo("#example_wrapper .col-md-6:eq(0)");
-            // // Select to Array
-            // // var productGrouptableArray = [];
-            // table.on("select.dt", function() {
-            //     productGrouptableArray = table
-            //     .rows(".selected")
-            //     .data()
-            //     .toArray();
-            //     $("#output").html(productGrouptableArray);
-            // });
-            // // Deselect from Array
-            // table.on("deselect.dt", function() {
-            //     productGrouptableArray = table
-            //     .rows(".selected")
-            //     .data()
-            //     .toArray();
-            //     $("#output").html(productGrouptableArray);
-            // });
-
-            // Button Append to Div
-            table
-                .buttons()
-                .container()
-                .appendTo("#product_group_table_wrapper .col-md-6:eq(0)");
-            // Event: On Select or Deselect
-            const updateProductGroupTableArray = () => {
-                productGrouptableArray = table
-                    .rows(".selected") // Selected rows
-                    .data()
-                    .toArray(); // Convert to array
-                // Map values, excluding the first column (select-checkbox)
-                const values = productGrouptableArray.map(row => row.slice(1));
-                // Display the collected values (optional)
-                $("#output").html(JSON.stringify(values, null, 2));
-                console.log("Collected values without leading empty column:", values);
-            };
-            // Bind select and deselect events
-            table.on("select.dt", updateProductGroupTableArray);
-            table.on("deselect.dt", updateProductGroupTableArray);
+                    selectNone: "Select None",
+                },
+            },
         });
+
+        table
+            .buttons()
+            .container()
+            .appendTo("#product_group_table_wrapper .col-md-6:eq(0)");
+
+        // Dynamically fetch headers
+        const headers = table
+            .columns()
+            .header()
+            .toArray()
+            .map(header => $(header).text().trim()); // Extract and trim header text
+
+        console.log("Headers from DataTable:", headers);
+
+        // Event: On Select or Deselect
+        const updateProductGroupTableArray = () => {
+            productGrouptableArray = table
+                .rows(".selected") // Selected rows
+                .data()
+                .toArray(); // Convert to array
+
+            // Transform rows into an array of objects using headers
+            const objectsArray = productGrouptableArray.map(row => {
+                const rowData = row.slice(1); // Exclude the first column (checkbox)
+                return headers.reduce((obj, header, index) => {
+                    obj[header] = rowData[index]; // Map headers to row values
+                    return obj;
+                }, {});
+            });
+
+            // Display the output (optional)
+            $("#output").html(JSON.stringify(objectsArray, null, 2));
+            console.log("Array of objects:", objectsArray);
+            selectedRow = objectsArray
+        };
+
+        // Bind select and deselect events
+        table.on("select.dt", updateProductGroupTableArray);
+        table.on("deselect.dt", updateProductGroupTableArray);
+    });
+
+
+
+        // let productGrouptableArray = [];
+        // $(document).ready(function() {
+        //     // Initialise Tabl
+        //     const table = $("#product_group_table").DataTable({
+        //         // Length Change
+        //         searching: false,
+        //         lengthChange: false,
+        //         pageLength: 25,
+        //         // Table Buttons
+        //         buttons: ["selectAll", "selectNone"],
+        //         // Multi Select
+        //         select: {
+        //         style: "multi",
+        //         selector: "td:first-child"
+        //         },
+        //         // Select Column
+        //         columnDefs: [
+        //         {
+        //             orderable: false,
+        //             className: "select-checkbox",
+        //             targets: 0
+        //         }
+        //         ],
+        //         // Default Ordering
+        //         order: [[1, "asc"]],
+        //         // Button Text
+        //         language: {
+        //         buttons: {
+        //             selectAll: "Select All",
+        //             selectNone: "Select None"
+        //         }
+        //         }
+        //     });
+        //     // // Button Append to Div
+        //     // table
+        //     //     .buttons()
+        //     //     .container()
+        //     //     .appendTo("#example_wrapper .col-md-6:eq(0)");
+        //     // // Select to Array
+        //     // // var productGrouptableArray = [];
+        //     // table.on("select.dt", function() {
+        //     //     productGrouptableArray = table
+        //     //     .rows(".selected")
+        //     //     .data()
+        //     //     .toArray();
+        //     //     $("#output").html(productGrouptableArray);
+        //     // });
+        //     // // Deselect from Array
+        //     // table.on("deselect.dt", function() {
+        //     //     productGrouptableArray = table
+        //     //     .rows(".selected")
+        //     //     .data()
+        //     //     .toArray();
+        //     //     $("#output").html(productGrouptableArray);
+        //     // });
+
+        //     // Button Append to Div
+        //     table
+        //         .buttons()
+        //         .container()
+        //         .appendTo("#product_group_table_wrapper .col-md-6:eq(0)");
+        //     // Event: On Select or Deselect
+        //     const updateProductGroupTableArray = () => {
+        //         productGrouptableArray = table
+        //             .rows(".selected") // Selected rows
+        //             .data()
+        //             .toArray(); // Convert to array
+        //         // Map values, excluding the first column (select-checkbox)
+        //         const values = productGrouptableArray.map(row => row.slice(1));
+        //         // Display the collected values (optional)
+        //         $("#output").html(JSON.stringify(values, null, 2));
+        //         console.log("Collected values without leading empty column:", values);
+        //     };
+        //     // Bind select and deselect events
+        //     table.on("select.dt", updateProductGroupTableArray);
+        //     table.on("deselect.dt", updateProductGroupTableArray);
+        // });
 
 
         let tableArray2 = [];
+        let tableProductGroupCode = null;
         $(document).ready(function() {
             // Initialise Tabl
             // product_group_code
             // product_group_optinal
-            const table = $("#product_group_code").DataTable({
+            tableProductGroupCode = $("#product_group_code").DataTable({
                 // Length Change
                 searching: false,
                 lengthChange: false,
@@ -1195,13 +1268,13 @@
             // });
 
             // Button Append to Div
-            table
+            tableProductGroupCode
                 .buttons()
                 .container()
                 .appendTo("#product_group_code_wrapper .col-md-6:eq(0)");
             // Event: On Select or Deselect
             const updateTableArray = () => {
-                tableArray = table
+                tableArray = tableProductGroupCode
                     .rows(".selected") // Selected rows
                     .data()
                     .toArray(); // Convert to array
@@ -1212,8 +1285,8 @@
                 console.log("Collected values without leading empty column:", values);
             };
             // Bind select and deselect events
-            table.on("select.dt", updateTableArray);
-            table.on("deselect.dt", updateTableArray);
+            tableProductGroupCode.on("select.dt", updateTableArray);
+            tableProductGroupCode.on("deselect.dt", updateTableArray);
         });
 
         let dualListbox = new DualListbox('#demo', {
@@ -1221,7 +1294,24 @@
             removeButtonText: '<',
             addAllButtonText: '>>',
             removeAllButtonText: '<<',
+            availableTitle: '',
+            selectedTitle: ''
         });
+
+        function selectProductGroup() {
+            let table = $('#product_group_table').DataTable();
+            table.$('tr').removeClass('selected');
+            console.log("🚀 ~ selectProductGroup ~ tableProductGroupCode:", tableProductGroupCode)
+            console.log("🚀 ~ selectProductGroup ~ selectedRow:", selectedRow)
+            const newOption = selectedRow.map((select)=> {
+                return {
+                    text:select.Street,
+                    value:select.Street,
+                }
+            })
+            dualListbox.addOptions(newOption)
+            dualListbox.redraw()
+        }
 
         $(function() {
             $('input[name="daterange"]').daterangepicker({
@@ -1274,17 +1364,17 @@
             $('#table').append(
                 `<tr class="table_submenu">
                     <td class="">
-                        <input type="text" name="inputs_submenu[${i}][inputs_submenu1]" id="inputs_submenu1" 
+                        <input type="text" name="inputs_submenu[${i}][inputs_submenu1]" id="inputs_submenu1"
                             class="w-10/12 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 bg-gray-50 dark:bg-[#303030] text-center" value="" />
                         <span class="dynamic-text">${selectedValue}</span>
                     </td>
                     <td class="">
-                        <input type="text" name="inputs_submenu[${i}][inputs_submenu2]" id="inputs_submenu2" 
+                        <input type="text" name="inputs_submenu[${i}][inputs_submenu2]" id="inputs_submenu2"
                             class="w-10/12 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 bg-gray-50 dark:bg-[#303030] text-center" value="" />
                         <span class="dynamic-text">${selectedValue}</span>
                     </td>
                     <td class="">
-                        <input type="text" name="inputs_submenu[${i}][inputs_submenu3]" id="inputs_submenu3" 
+                        <input type="text" name="inputs_submenu[${i}][inputs_submenu3]" id="inputs_submenu3"
                             class="w-10/12 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 bg-gray-50 dark:bg-[#303030] text-center" value="" />
                         <span class="dynamic-text">${selectedValue}</span>
                     </td>
