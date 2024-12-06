@@ -303,9 +303,14 @@ class AuthController extends Controller
                     $namePositionStr_3 = substr($response['data']['roles'][0], -3);
                     if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC') {
                             $createPosition = position::create([
-                            'name_position' => $response['data']['roles'][0],
-                            'brand' => $namePositionStr_3
-                        ]);
+                                'name_position' => $response['data']['roles'][0],
+                                'brand' => $namePositionStr_3
+                            ]);
+
+                            $createUserPermission = user_permission::create([
+                                'user_id' => $createUser->id,
+                                'position_id' => $createPosition->id
+                            ]);
                     } else {
                         $namePositionStr_2 = substr($response['data']['roles'][0], -2);
                         $createPosition = position::create([

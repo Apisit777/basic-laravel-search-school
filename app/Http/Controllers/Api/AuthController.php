@@ -5,6 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Series;
+use App\Models\Solution;
+use App\Models\Category;
+use App\Models\Sub_category;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +32,30 @@ class AuthController extends Controller
             ->get();
 
         return response()->json($users);
+    }
+    public function list_series()
+    {
+        $series = Series::all();
+
+        return response()->json($series);
+    }
+    public function list_solutions()
+    {
+        $solutions = Solution::all();
+
+        return response()->json($solutions);
+    }
+    public function list_categorys()
+    {
+        $categorys = Category::all();
+
+        return response()->json($categorys);
+    }
+    public function list_sub_categorys()
+    {
+        $sub_categorys = Sub_category::all();
+
+        return response()->json($sub_categorys);
     }
 
     public function apiLogin(Request $request)
