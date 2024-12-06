@@ -1294,8 +1294,8 @@
             removeButtonText: '<',
             addAllButtonText: '>>',
             removeAllButtonText: '<<',
-            availableTitle: '',
-            selectedTitle: ''
+            availableTitle: 'เพิ่ม',
+            selectedTitle: 'ลบ'
         });
 
         function selectProductGroup() {
@@ -1305,7 +1305,7 @@
             console.log("🚀 ~ selectProductGroup ~ selectedRow:", selectedRow)
             const newOption = selectedRow.map((select)=> {
                 return {
-                    text:select.Street,
+                    text:select.Select,
                     value:select.Street,
                 }
             })

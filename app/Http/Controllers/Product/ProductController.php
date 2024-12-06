@@ -144,7 +144,8 @@ class ProductController extends Controller
 
             $dataProductMasterArr = Product1::select(
             'PRODUCT')
-            ->whereNotIn('BRAND', ['CPS', 'KM', 'KTY'])
+            ->whereNotIn('BRAND', ['CPS', 'KM', 'KTY', 'GNC', 'dealer', 'SSUP', 'cp', '', 'kmcr'])
+            // ->get();
             ->pluck('PRODUCT')
             ->toArray();
 
@@ -231,9 +232,55 @@ class ProductController extends Controller
             ->pluck('PRODUCT')
             ->toArray();
 
+        } else if (in_array($userpermission, ['Retail Operation - GNC'])) {
+
+            // $brands = Product1::select(
+            //     'BRAND',
+            // )
+            // ->where(function ($query) {
+            //     $query->whereIn('BRAND', ['OP', 'KM'])
+            //         ->orWhereHas('productChannel', function ($q) {
+            //             $q->whereIn('BRAND', ['OP']);
+            //         });
+            // })
+            // ->groupBy('BRAND')
+            // ->pluck('BRAND')
+            // ->toArray();
+
+            $brands = Barcode::select(
+            'BRAND',
+                'STATUS')
+            ->whereIn('STATUS', ['GNC'])
+            ->pluck('BRAND')
+            ->toArray();
+
+            $dataProductMasterArr = Product1::select(
+            'PRODUCT')
+            ->whereNotIn('BRAND', ['OP', 'CPS', 'KM', 'KTY'])
+            ->pluck('PRODUCT')
+            ->toArray();
+
+            // $data_PRODUCT = Product1::select('PRODUCT')->pluck('PRODUCT')->toArray();
+            // $dataProductMaster = Pro_develops::select(
+            // 'PRODUCT')
+            // ->whereIn('BRAND', ['OP', 'RE'])
+            // ->whereNotIn('PRODUCT', $data_PRODUCT)
+            // ->get();
+            $dataProductMaster = Product1::select('PRODUCT')
+                // ->whereNotIn('BRAND', ['OP', 'CPS'])
+                ->whereNotIn('BRAND', ['OP'])
+                ->get();
+
+            $dataProductMasterConsumablesArr = Product1::select(
+            'PRODUCT')
+            ->where('BRAND', 'KM')
+            ->where('GRP_P', 'GNC')
+            ->pluck('PRODUCT')
+            ->toArray();
+
         }
 
-        // dd($dataProductMaster);
+        // dd($dataProductMasterArr);
         $productCodeArr = $dataProductMaster->select('PRODUCT')->pluck('PRODUCT')->toArray();
         $data_barcode = Pro_develops::select(
         'BARCODE')
@@ -244,10 +291,18 @@ class ProductController extends Controller
 
     public function getBarcode(Request $request)
     {
-        $productCodes = Pro_develops::select(
-            'BARCODE')
-        ->where('PRODUCT', $request->input('BARCODE'))
-        ->first();
+        $product = $request->input('PRODUCT');
+        $lengthNumber = strlen((string) $product);
+
+        if ($lengthNumber > 5) {
+            $productCodes = Product1::select('BARCODE')
+                ->where('PRODUCT', $request->input('BARCODE'))
+                ->first();
+        } else {
+            $productCodes = Pro_develops::select('BARCODE')
+                ->where('PRODUCT', $request->input('BARCODE'))
+                ->first();
+        }
 
         // dd($productCodes);
         return response()->json(['productCodes' => $productCodes]);
@@ -600,9 +655,84 @@ class ProductController extends Controller
             ->get();
 
             // KTY ไม่มี Series, Category, Sub_category, Pdm
+        } else if (in_array($userpermission, ['Retail Operation - GNC'])) {
+            $defaultBrands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->pluck('BRAND')
+            ->toArray();
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $owners = Owner::select(
+                'OWNER',
+                'REMARK',
+                'BRAND')
+            // ->where('BRAND', 'GNC')
+            ->whereIn('BRAND', ['GNC', 'KM'])
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $solutions = Solution::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $series = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $categorys = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $sub_categorys = Sub_category::select(
+                'ID',
+                'CATEGORY_ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $pdms = Pdm::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $unit_ps = Unit_p::select(
+                'DESCRIPTION AS UNIT',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $product_groups = ProductGroup::select(
+                'ID',
+                'DESCRIPTION AS product_group_name',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
         } else if (in_array($userpermission, ['BB'])) {
         } else if (in_array($userpermission, ['LL'])) {
-        } else if (in_array($userpermission, ['GNC'])) {
         } else if (in_array($userpermission, ['KM'])) {
         }
 
@@ -2078,8 +2208,20 @@ class ProductController extends Controller
             )
             ->whereIn('BRAND', ['KTY'])
             ->orderBy('BARCODE', 'DESC');
-        }
+        } 
+            else if (in_array($userpermission, ['Retail Operation - GNC'])) {
+                $data = Product1::select(
+                    'BRAND',
+                    'GRP_P',
+                    'PRODUCT',
+                    'BARCODE',
+                    'NAME_THAI'
+                )
+                ->whereIn('BRAND', ['GNC', 'KM'])
+                ->orderBy('BARCODE', 'DESC');
+            }
 
+        // dd($data);
         if ($GRP_P != null) {
             $data->where('product1s.GRP_P', $GRP_P);
         }

@@ -1175,7 +1175,18 @@ class ProductFormController extends Controller
             ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
             ->whereIn('barcodes.BRAND', ['KTY'])
             ->orderBy('BARCODE', 'DESC');
-        }
+        } 
+        // else if (in_array($userpermission, ['Retail Operation - GNC'])) {
+        //     $data = Pro_develops::select(
+        //         'pro_develops.BRAND AS BRAND',
+        //         DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
+        //         'pro_develops.BARCODE AS BARCODE',
+        //         'pro_develops.NAME_ENG AS NAME_ENG'
+        //     )
+        //     ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
+        //     ->whereIn('barcodes.BRAND', ['KTY'])
+        //     ->orderBy('BARCODE', 'DESC');
+        // }
 
         if ($BRAND != null) {
             $data->where('pro_develops.BRAND', $BRAND);

@@ -277,8 +277,57 @@
                             </div>
                         </div>
                     </div>
-                @else
+                @elseif ($userPermission == 'Retail Operation - GNC')
                     <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100">
+                        <div class="lg:col-span-4 xl:grid-cols-4">
+                            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
+                                <div class="md:col-span-3">
+                                    <label for="BRAND">Brand</label>
+                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="BRAND" name="BRAND">
+                                        <option value=""> --- กรุณาเลือก ---</option>
+                                        @foreach ($brands as $key => $brand)
+                                            <option value={{ $brand->BRAND }}>{{ $brand->BRAND }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="md:col-span-3" style="position: relative;">
+                                    <label for="PRODUCT">รหัสสินค้า<span class="text-danger"> *</span></label>
+                                    <input type="text" name="PRODUCT" id="ID_PRODUCT" class="text-compleace-auto1 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
+                                    <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">Please enter a valid password</span>
+                                    <div class="col-auto" style="position: absolute; right: -0.5%; top: 53%;">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="username_loading_gnc" style="margin-right: -2.5px;" class="w-6 h-6 animate-spin -mt-1">
+                                            <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
+                                            <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
+                                        </svg>
+                                        <svg id="correct_username_gnc" style="margin-right: 2.5px;" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                            viewBox="0 0 507.2 507.2" xml:space="preserve">
+                                            <circle style="fill:#32BA7C;" cx="253.6" cy="253.6" r="253.6"/>
+                                            <path style="fill:#0AA06E;" d="M188.8,368l130.4,130.4c108-28.8,188-127.2,188-244.8c0-2.4,0-4.8,0-7.2L404.8,152L188.8,368z"/>
+                                            <g>
+                                                <path style="fill:#FFFFFF;" d="M260,310.4c11.2,11.2,11.2,30.4,0,41.6l-23.2,23.2c-11.2,11.2-30.4,11.2-41.6,0L93.6,272.8
+                                                    c-11.2-11.2-11.2-30.4,0-41.6l23.2-23.2c11.2-11.2,30.4-11.2,41.6,0L260,310.4z"/>
+                                                <path style="fill:#FFFFFF;" d="M348.8,133.6c11.2-11.2,30.4-11.2,41.6,0l23.2,23.2c11.2,11.2,11.2,30.4,0,41.6l-176,175.2
+                                                    c-11.2,11.2-30.4,11.2-41.6,0l-23.2-23.2c-11.2-11.2-11.2-30.4,0-41.6L348.8,133.6z"/>
+                                            </g>
+                                        </svg>
+                                        <svg id="username_alert_gnc" style="margin-right: 2.5px;" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                viewBox="0 0 507.2 507.2" xml:space="preserve">
+                                            <circle style="fill:#F15249;" cx="253.6" cy="253.6" r="253.6"/>
+                                            <path style="fill:#AD0E0E;" d="M147.2,368L284,504.8c115.2-13.6,206.4-104,220.8-219.2L367.2,148L147.2,368z"/>
+                                            <path style="fill:#FFFFFF;" d="M373.6,309.6c11.2,11.2,11.2,30.4,0,41.6l-22.4,22.4c-11.2,11.2-30.4,11.2-41.6,0l-176-176
+                                                c-11.2-11.2-11.2-30.4,0-41.6l23.2-23.2c11.2-11.2,30.4-11.2,41.6,0L373.6,309.6z"/>
+                                            <path style="fill:#D6D6D6;" d="M280.8,216L216,280.8l93.6,92.8c11.2,11.2,30.4,11.2,41.6,0l23.2-23.2c11.2-11.2,11.2-30.4,0-41.6
+                                                L280.8,216z"/>
+                                            <path style="fill:#FFFFFF;" d="M309.6,133.6c11.2-11.2,30.4-11.2,41.6,0l23.2,23.2c11.2,11.2,11.2,30.4,0,41.6L197.6,373.6
+                                                c-11.2,11.2-30.4,11.2-41.6,0l-22.4-22.4c-11.2-11.2-11.2-30.4,0-41.6L309.6,133.6z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @else
+                <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100">
                         <div class="lg:col-span-4 xl:grid-cols-4">
                             <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                                 <div class="md:col-span-3">
@@ -394,6 +443,12 @@
                                                     <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
+
+                                                                <div class="md:col-span-3">
+                                                                    <label for="BARCODE1">รหัส Barcode1<span class="text-danger"> *</span></label>
+                                                                    <input type="text" name="BARCODE1" id="BARCODE1" class="h-10 rounded-sm px-4 w-full " value="">
+                                                                </div>
+
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="BARCODE">รหัส Barcode<span class="text-danger"> *</span></label>
                                                                     <!-- <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled> -->
@@ -627,6 +682,12 @@
                                                     <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
+
+                                                                <div class="md:col-span-3">
+                                                                    <label for="BARCODE2">รหัส Barcode2<span class="text-danger"> *</span></label>
+                                                                    <input type="text" name="BARCODE2" id="BARCODE2" class="h-10 rounded-sm px-4 w-full " value="">
+                                                                </div>
+
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="PACK_SIZE1">รหัส Packsize1</label>
                                                                     <input type="number" name="PACK_SIZE1" id="PACK_SIZE1" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" min="0" max="144" />
@@ -931,6 +992,62 @@
             });
         }
 
+        // function handleBarcodeForms() {
+        //     // Get all required elements
+        //     const barcode1Input = document.getElementById('BARCODE1');
+        //     const barcode2Input = document.getElementById('BARCODE2');
+        //     const checkboxElements = document.querySelectorAll('.setcheckbox');
+        //     const bgStepColors = document.querySelectorAll('.bg_step_color');
+        //     // Function to toggle form based on input value
+        //     function toggleForm(index, shouldOpen) {
+        //         const checkbox = checkboxElements[index];
+        //         const bgColorElement = bgStepColors[index];
+
+        //         checkbox.checked = shouldOpen;
+
+        //         if (shouldOpen) {
+        //             bgColorElement.classList.remove(
+        //                 '!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500'
+        //             );
+        //             bgColorElement.classList.add(
+        //                 'bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80'
+        //             );
+        //         } else {
+        //             bgColorElement.classList.remove(
+        //                 'bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80'
+        //             );
+        //             bgColorElement.classList.add(
+        //                 '!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500'
+        //             );
+        //         }
+        //     }
+        //     // Function to update forms based on barcode values
+        //     function updateForms() {
+        //         const barcode1Value = barcode1Input.value.trim();
+        //         const barcode2Value = barcode2Input.value.trim();
+
+        //         if (barcode1Value && barcode2Value) {
+        //             toggleForm(0, false); // Close BARCODE1
+        //             toggleForm(1, false); // Close BARCODE2
+        //         } else if (barcode1Value) {
+        //             toggleForm(0, false); // Close BARCODE1
+        //             toggleForm(1, true);  // Open BARCODE2
+        //         } else if (barcode2Value) {
+        //             toggleForm(0, true);  // Open BARCODE1
+        //             toggleForm(1, false); // Close BARCODE2
+        //         } else {
+        //             toggleForm(0, true);  // Open BARCODE1
+        //             toggleForm(1, true);  // Open BARCODE2
+        //         }
+        //     }
+        //     // Attach event listeners to barcode inputs
+        //     barcode1Input.addEventListener('input', updateForms);
+        //     barcode2Input.addEventListener('input', updateForms);
+        // }
+        // // Ensure the script runs after the DOM is fully loaded
+        // document.addEventListener('DOMContentLoaded', handleBarcodeForms);
+
+
         $(document).ready(function() {
             document.querySelectorAll('.checkinputvalidate').forEach(e => {
                e.addEventListener('input', (e) => {
@@ -972,6 +1089,7 @@
             }, 600);
 
             onOpenhandler()
+            // handleBarcodeForms()
             document.querySelectorAll('.setcheckbox')[0].checked = true
             document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
             document.querySelectorAll('.bg_step_color')[0].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
@@ -1112,6 +1230,10 @@
                 }
             });
         }
+
+        jQuery('#username_loading_gnc').hide();
+        jQuery("#username_alert_gnc").hide();
+        jQuery("#correct_username_gnc").hide();
 
         jQuery('#username_loading').hide();
         jQuery("#username_alert").hide();
