@@ -444,10 +444,10 @@
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
 
-                                                                <div class="md:col-span-3">
+                                                                {{-- <div class="md:col-span-3">
                                                                     <label for="BARCODE1">รหัส Barcode1<span class="text-danger"> *</span></label>
                                                                     <input type="text" name="BARCODE1" id="BARCODE1" class="h-10 rounded-sm px-4 w-full " value="">
-                                                                </div>
+                                                                </div> --}}
 
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="BARCODE">รหัส Barcode<span class="text-danger"> *</span></label>
@@ -683,10 +683,10 @@
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
 
-                                                                <div class="md:col-span-3">
+                                                                {{-- <div class="md:col-span-3">
                                                                     <label for="BARCODE2">รหัส Barcode2<span class="text-danger"> *</span></label>
                                                                     <input type="text" name="BARCODE2" id="BARCODE2" class="h-10 rounded-sm px-4 w-full " value="">
-                                                                </div>
+                                                                </div> --}}
 
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="PACK_SIZE1">รหัส Packsize1</label>
@@ -992,62 +992,6 @@
             });
         }
 
-        // function handleBarcodeForms() {
-        //     // Get all required elements
-        //     const barcode1Input = document.getElementById('BARCODE1');
-        //     const barcode2Input = document.getElementById('BARCODE2');
-        //     const checkboxElements = document.querySelectorAll('.setcheckbox');
-        //     const bgStepColors = document.querySelectorAll('.bg_step_color');
-        //     // Function to toggle form based on input value
-        //     function toggleForm(index, shouldOpen) {
-        //         const checkbox = checkboxElements[index];
-        //         const bgColorElement = bgStepColors[index];
-
-        //         checkbox.checked = shouldOpen;
-
-        //         if (shouldOpen) {
-        //             bgColorElement.classList.remove(
-        //                 '!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500'
-        //             );
-        //             bgColorElement.classList.add(
-        //                 'bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80'
-        //             );
-        //         } else {
-        //             bgColorElement.classList.remove(
-        //                 'bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80'
-        //             );
-        //             bgColorElement.classList.add(
-        //                 '!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500'
-        //             );
-        //         }
-        //     }
-        //     // Function to update forms based on barcode values
-        //     function updateForms() {
-        //         const barcode1Value = barcode1Input.value.trim();
-        //         const barcode2Value = barcode2Input.value.trim();
-
-        //         if (barcode1Value && barcode2Value) {
-        //             toggleForm(0, false); // Close BARCODE1
-        //             toggleForm(1, false); // Close BARCODE2
-        //         } else if (barcode1Value) {
-        //             toggleForm(0, false); // Close BARCODE1
-        //             toggleForm(1, true);  // Open BARCODE2
-        //         } else if (barcode2Value) {
-        //             toggleForm(0, true);  // Open BARCODE1
-        //             toggleForm(1, false); // Close BARCODE2
-        //         } else {
-        //             toggleForm(0, true);  // Open BARCODE1
-        //             toggleForm(1, true);  // Open BARCODE2
-        //         }
-        //     }
-        //     // Attach event listeners to barcode inputs
-        //     barcode1Input.addEventListener('input', updateForms);
-        //     barcode2Input.addEventListener('input', updateForms);
-        // }
-        // // Ensure the script runs after the DOM is fully loaded
-        // document.addEventListener('DOMContentLoaded', handleBarcodeForms);
-
-
         $(document).ready(function() {
             document.querySelectorAll('.checkinputvalidate').forEach(e => {
                e.addEventListener('input', (e) => {
@@ -1089,7 +1033,6 @@
             }, 600);
 
             onOpenhandler()
-            // handleBarcodeForms()
             document.querySelectorAll('.setcheckbox')[0].checked = true
             document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
             document.querySelectorAll('.bg_step_color')[0].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
@@ -1380,8 +1323,8 @@
         }
 
         function checkValueSelect2(id) {
-            const input = jQuery('#SHORT_ENG');
-            const alert = jQuery('#SHORT_ENG_textalert');
+            // const input = jQuery('#SHORT_ENG');
+            // const alert = jQuery('#SHORT_ENG_textalert');
             // Check if the input exists and has a value
             // if (input.val('')) {
             //     input.addClass("border-red-500"); // Add red border
@@ -1406,32 +1349,11 @@
             } else {
                 jQuery('#VENDOR_textalert').removeClass('hidden');
             }
-
-            // if (GRP_P) {
-            //     jQuery('#GRP_P_textalert').addClass('hidden');
-            // } else {
-            //     jQuery('#GRP_P_textalert').removeClass('hidden');
-            // }
-            // if (BRAND_P) {
-            //     jQuery('#BRAND_P_textalert').addClass('hidden');
-            // } else {
-            //     jQuery('#BRAND_P_textalert').removeClass('hidden');
-            // }
             if (SUPPLIER) {
                 jQuery('#SUPPLIER_textalert').addClass('hidden');
             } else {
                 jQuery('#SUPPLIER_textalert').removeClass('hidden');
             }
-            // if (TYPE_G) {
-            //     jQuery('#TYPE_G_textalert').addClass('hidden');
-            // } else {
-            //     jQuery('#TYPE_G_textalert').removeClass('hidden');
-            // }
-            // if (SOLUTION) {
-            //     jQuery('#SOLUTION_textalert').addClass('hidden');
-            // } else {
-            //     jQuery('#SOLUTION_textalert').removeClass('hidden');
-            // }
             if (STATUS) {
                 jQuery('#STATUS_textalert').addClass('hidden');
             } else {
@@ -1447,11 +1369,6 @@
             } else {
                 jQuery('#UNIT_TYPE_textalert').removeClass('hidden');
             }
-            // if (ACC_TYPE) {
-            //     jQuery('#ACC_TYPE_textalert').addClass('hidden');
-            // } else {
-            //     jQuery('#ACC_TYPE_textalert').removeClass('hidden');
-            // }
             if (CONDITION_SALE) {
                 jQuery('#CONDITION_SALE_textalert').addClass('hidden');
             } else {
@@ -1463,8 +1380,36 @@
             return !!VENDOR && !!SUPPLIER && !!STATUS && !!UNIT && !!UNIT_TYPE && !!CONDITION_SALE && checkInputAll
         }
 
+        function checkFormClickAuto1() {
+            const NAME_THAI = jQuery('#NAME_THAI').val();
+            const SHORT_THAI = jQuery('#SHORT_THAI').val();
+            const NAME_ENG = jQuery('#NAME_ENG').val();
+            const SHORT_ENG = jQuery('#SHORT_ENG').val();
+            const VENDOR = jQuery('#VENDOR').val();
+            const SUPPLIER = jQuery('#SUPPLIER').val();
+            const STATUS = jQuery('#STATUS').val();
+
+            return !!NAME_THAI && !!SHORT_THAI && !!NAME_ENG && !!SHORT_ENG && !!VENDOR && !!SUPPLIER && !!STATUS
+        }
+        function checkFormClickAuto2() {
+            const UNIT = jQuery('#UNIT').val();
+            const UNIT_TYPE = jQuery('#UNIT_TYPE').val();
+            const CONDITION_SALE = jQuery('#CONDITION_SALE').val();
+
+            return !!UNIT && !!UNIT_TYPE && !!CONDITION_SALE
+        }
+
         function onchangeValueSelect2() {
             let checkvalue = checkValueSelect2();
+            let checkFormClickAutoIndex1 = checkFormClickAuto1();
+            let checkFormClickAutoIndex2 = checkFormClickAuto2();
+            console.log("🚀 ~ onchangeValueSelect2 ~ checkFormClickAutoIndex2:", checkFormClickAutoIndex2)
+            if (checkFormClickAutoIndex1) {
+                document.querySelectorAll('.setpcollep')[1].click()
+            }
+            if (checkFormClickAutoIndex2) {
+                document.querySelectorAll('.setcheckbox')[1].click()
+            }
             const code = jQuery('#NUMBER').val();
             if (checkvalue && codeConsumables) {
                 jQuery("#submitButton").attr("disabled", false);
@@ -1514,7 +1459,7 @@
                     width: 280,
                     html: `
                         <div class="flex justify-center items-center custom-icon">
-                            <svg class="h-16 w-16" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                            <svg class="h-16 w-16" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                 viewBox="0 0 512 512" xml:space="preserve">
                             <polygon style="fill:#FFFFFF;" points="13.728,473.992 256,46.24 498.272,473.992 "/>
                             <path style="fill:#DB2B42;" d="M256,62.472l228.552,403.52H27.448L256,62.472 M256,30.008L0,481.992h512L256,30.008L256,30.008z"/>
@@ -1638,6 +1583,5 @@
             $('#loader').addClass('hidden');
             $('#name').val('')
         }
-    </script>
     </script>
 @endsection
