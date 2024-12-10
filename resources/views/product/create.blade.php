@@ -107,6 +107,9 @@
         .custom-icon {
             margin-bottom: 5px; /* Adds space below the icon */
         }
+        .select2-container {
+            margin-bottom: 0rem!important;
+        }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -290,16 +293,17 @@
                                         @endforeach
                                     </select>
                                 </div>
+
                                 <div class="md:col-span-3" style="position: relative;">
                                     <label for="PRODUCT">รหัสสินค้า<span class="text-danger"> *</span></label>
-                                    <input type="text" name="PRODUCT" id="ID_PRODUCT" class="text-compleace-auto1 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
+                                    <input type="number" name="PRODUCT" id="ID_PRODUCT" onkeyup="checkCode()" class="text-compleace-auto-code1 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
                                     <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">Please enter a valid password</span>
-                                    <div class="col-auto" style="position: absolute; right: -0.5%; top: 53%;">
+                                    <div class="col-auto" style="position: absolute; right: -11.5px; top: 57.5%;">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="username_loading_gnc" style="margin-right: -2.5px;" class="w-6 h-6 animate-spin -mt-1">
                                             <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
                                             <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
                                         </svg>
-                                        <svg id="correct_username_gnc" style="margin-right: 2.5px;" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        <svg id="correct_username_gnc" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                             viewBox="0 0 507.2 507.2" xml:space="preserve">
                                             <circle style="fill:#32BA7C;" cx="253.6" cy="253.6" r="253.6"/>
                                             <path style="fill:#0AA06E;" d="M188.8,368l130.4,130.4c108-28.8,188-127.2,188-244.8c0-2.4,0-4.8,0-7.2L404.8,152L188.8,368z"/>
@@ -310,7 +314,7 @@
                                                     c-11.2,11.2-30.4,11.2-41.6,0l-23.2-23.2c-11.2-11.2-11.2-30.4,0-41.6L348.8,133.6z"/>
                                             </g>
                                         </svg>
-                                        <svg id="username_alert_gnc" style="margin-right: 2.5px;" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                        <svg id="username_alert_gnc" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                                 viewBox="0 0 507.2 507.2" xml:space="preserve">
                                             <circle style="fill:#F15249;" cx="253.6" cy="253.6" r="253.6"/>
                                             <path style="fill:#AD0E0E;" d="M147.2,368L284,504.8c115.2-13.6,206.4-104,220.8-219.2L367.2,148L147.2,368z"/>
@@ -327,7 +331,7 @@
                         </div>
                     </div>
                 @else
-                <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100">
+                    <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100">
                         <div class="lg:col-span-4 xl:grid-cols-4">
                             <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                                 <div class="md:col-span-3">
@@ -443,18 +447,47 @@
                                                     <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
-
-                                                                {{-- <div class="md:col-span-3">
-                                                                    <label for="BARCODE1">รหัส Barcode1<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="BARCODE1" id="BARCODE1" class="h-10 rounded-sm px-4 w-full " value="">
-                                                                </div> --}}
-
-                                                                <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="BARCODE">รหัส Barcode<span class="text-danger"> *</span></label>
-                                                                    <!-- <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled> -->
-                                                                    <input type="text" name="PRODUCT" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="" readonly>
-                                                                </div>
-
+                                                                @if ($userPermission == 'Retail Operation - GNC')
+                                                                    <div class="md:col-span-3" style="position: relative;">
+                                                                        <label for="BARCODE">รหัส Barcode<span class="text-danger"> *</span></label>
+                                                                        <input type="number" name="BARCODE" id="ID_BARCODE" onkeyup="checkBarCode()" class="text-compleace-auto-barcode2 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
+                                                                        <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">Please enter a valid password</span>
+                                                                        <div class="col-auto xs:inset-y-10 sm:inset-y-10 md:inset-y-10 lg:inset-y-10" style="position: absolute; right: -12px;">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="username_loading_gnc_barcode" style="margin-right: -2.5px;" class="w-6 h-6 animate-spin -mt-1">
+                                                                                <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
+                                                                                <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
+                                                                            </svg>
+                                                                            <svg id="correct_username_gnc_barcode" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                viewBox="0 0 507.2 507.2" xml:space="preserve">
+                                                                                <circle style="fill:#32BA7C;" cx="253.6" cy="253.6" r="253.6"/>
+                                                                                <path style="fill:#0AA06E;" d="M188.8,368l130.4,130.4c108-28.8,188-127.2,188-244.8c0-2.4,0-4.8,0-7.2L404.8,152L188.8,368z"/>
+                                                                                <g>
+                                                                                    <path style="fill:#FFFFFF;" d="M260,310.4c11.2,11.2,11.2,30.4,0,41.6l-23.2,23.2c-11.2,11.2-30.4,11.2-41.6,0L93.6,272.8
+                                                                                        c-11.2-11.2-11.2-30.4,0-41.6l23.2-23.2c11.2-11.2,30.4-11.2,41.6,0L260,310.4z"/>
+                                                                                    <path style="fill:#FFFFFF;" d="M348.8,133.6c11.2-11.2,30.4-11.2,41.6,0l23.2,23.2c11.2,11.2,11.2,30.4,0,41.6l-176,175.2
+                                                                                        c-11.2,11.2-30.4,11.2-41.6,0l-23.2-23.2c-11.2-11.2-11.2-30.4,0-41.6L348.8,133.6z"/>
+                                                                                </g>
+                                                                            </svg>
+                                                                            <svg id="username_alert_gnc_barcode" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                                    viewBox="0 0 507.2 507.2" xml:space="preserve">
+                                                                                <circle style="fill:#F15249;" cx="253.6" cy="253.6" r="253.6"/>
+                                                                                <path style="fill:#AD0E0E;" d="M147.2,368L284,504.8c115.2-13.6,206.4-104,220.8-219.2L367.2,148L147.2,368z"/>
+                                                                                <path style="fill:#FFFFFF;" d="M373.6,309.6c11.2,11.2,11.2,30.4,0,41.6l-22.4,22.4c-11.2,11.2-30.4,11.2-41.6,0l-176-176
+                                                                                    c-11.2-11.2-11.2-30.4,0-41.6l23.2-23.2c11.2-11.2,30.4-11.2,41.6,0L373.6,309.6z"/>
+                                                                                <path style="fill:#D6D6D6;" d="M280.8,216L216,280.8l93.6,92.8c11.2,11.2,30.4,11.2,41.6,0l23.2-23.2c11.2-11.2,11.2-30.4,0-41.6
+                                                                                    L280.8,216z"/>
+                                                                                <path style="fill:#FFFFFF;" d="M309.6,133.6c11.2-11.2,30.4-11.2,41.6,0l23.2,23.2c11.2,11.2,11.2,30.4,0,41.6L197.6,373.6
+                                                                                    c-11.2,11.2-30.4,11.2-41.6,0l-22.4-22.4c-11.2-11.2-11.2-30.4,0-41.6L309.6,133.6z"/>
+                                                                            </svg>
+                                                                        </div>
+                                                                    </div>
+                                                                @else
+                                                                    <div class="md:col-span-3" style="position: relative;">
+                                                                        <label for="BARCODE">รหัส Barcode<span class="text-danger"> *</span></label>
+                                                                        <!-- <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled> -->
+                                                                        <input type="text" name="PRODUCT" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="" readonly>
+                                                                    </div>
+                                                                @endif
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Product Channel</label>
                                                                     <select class="js-example-basic-multiple w-full rounded-sm text-xs select2" id="multiSelect" name="sele_channel[]" multiple="multiple">
@@ -804,23 +837,25 @@
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">หน่วยสินค้า</label>
-                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="UNIT" id="UNIT" onchange="onchangeValueSelect2()">
+                                                                    <!-- <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="UNIT" id="UNIT" onchange="onchangeValueSelect2()"> -->
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs select2" name="UNIT" id="UNIT">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($unit_ps as $key => $unit_p)
                                                                             <option value={{ $unit_p->UNIT }} >{{ $unit_p->BRAND.' - ('.$unit_p->UNIT.')' }}</option>
                                                                         @endforeach
                                                                     </select>
-                                                                    <span id="UNIT_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
+                                                                    <!-- <span id="UNIT_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span> -->
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">หน่วยปริมาณ</label>
-                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="UNIT_TYPE" id="UNIT_TYPE" onchange="onchangeValueSelect2()">
+                                                                    <!-- <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="UNIT_TYPE" id="UNIT_TYPE" onchange="onchangeValueSelect2()"> -->
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs select2" name="UNIT_TYPE" id="UNIT_TYPE">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($unit_types as $key => $unit_type)
                                                                             <option value={{ $unit_type->UNIT_TYPE }}>{{ $unit_type->BRAND.' - ('.$unit_type->UNIT_TYPE.')' }}</option>
                                                                         @endforeach
                                                                     </select>
-                                                                    <span id="UNIT_TYPE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
+                                                                    <!-- <span id="UNIT_TYPE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span> -->
                                                                 </div>
                                                                 <!-- <div class="md:col-span-3">
                                                                     <label for="name">ประเภทสินค้า [บัญชี]</label>
@@ -992,6 +1027,8 @@
             });
         }
 
+        let newBarcodeValue = '';
+        console.log("🚀 ~ newBarcodeValue:", newBarcodeValue)
         $(document).ready(function() {
             document.querySelectorAll('.checkinputvalidate').forEach(e => {
                e.addEventListener('input', (e) => {
@@ -1093,6 +1130,13 @@
 
             };
 
+            $(document).ready(function () {
+                $('.text-compleace-auto-code1').on('change', function () {
+                    newBarcodeValue = $(this).val();
+                    $('.text-compleace-auto-barcode2').val(newBarcodeValue);
+                    console.log('Updated Value:', typeof newBarcodeValue); // Log the updated value
+                });
+            });
         });
 
         let datass = {}
@@ -1173,11 +1217,7 @@
                 }
             });
         }
-
-        jQuery('#username_loading_gnc').hide();
-        jQuery("#username_alert_gnc").hide();
-        jQuery("#correct_username_gnc").hide();
-
+        
         jQuery('#username_loading').hide();
         jQuery("#username_alert").hide();
         jQuery("#correct_username").hide();
@@ -1313,6 +1353,128 @@
             }
         }
 
+        jQuery('#username_loading_gnc').hide();
+        jQuery("#username_alert_gnc").hide();
+        jQuery("#correct_username_gnc").hide();
+
+        function checkCode() {
+            PRODUCT = jQuery('#ID_PRODUCT').val();
+            console.log("🚀 ~ checkNameBrand ~ PRODUCT:", PRODUCT)
+            if (PRODUCT.length >= 6) {
+                jQuery.ajax({
+                    method: "POST",
+                    url: '{{ route('product_master.check_code_gnc') }}',
+                    data: { PRODUCT },
+                    dataType: 'json',
+                    beforeSend: function () {
+                        jQuery("#submitButton").attr("disabled", true);
+                        jQuery('#username_loading_gnc').show();
+                        jQuery("#correct_username_gnc").hide();
+                        jQuery("#username_alert_gnc").hide();
+                    },
+                    success: function (checknamebrand) {
+                        codeConsumables = checknamebrand
+                        jQuery('#username_loading_gnc').hide();
+                        jQuery("#correct_username_gnc").hide();
+                        let checkvalue = checkValueSelect2();
+                        if (PRODUCT == '') {
+                            jQuery("#submitButton").attr("disabled", true);
+                            jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                            jQuery("#correct_username_gnc").hide();
+                            jQuery("#username_alert_gnc").hide();
+                        } else if (!checknamebrand) {
+                            jQuery("#submitButton").attr("disabled", true);
+                            jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                            jQuery("#correct_username_gnc").hide();
+                            jQuery("#username_alert_gnc").show();
+                        } else {
+                            jQuery("#submitButton").attr("disabled", false);
+                            jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
+                            jQuery("#username_alert_gnc").hide();
+                            jQuery("#correct_username_gnc").show();
+                        }
+                        if (!checkvalue) {
+                            jQuery("#submitButton").attr("disabled", true);
+                            jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                        } else {
+                            jQuery("#submitButton").attr("disabled", false);
+                            jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
+                        }
+                    },
+                    error: function (params) {
+                    }
+                });
+            } else {
+                jQuery("#submitButton").attr("disabled", true);
+                jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                jQuery("#correct_username_gnc").hide();
+                jQuery("#username_alert_gnc").hide();
+            }
+        }
+
+        jQuery('#username_loading_gnc_barcode').hide();
+        jQuery("#correct_username_gnc_barcode").hide();
+        jQuery("#username_alert_gnc_barcode").hide();
+    
+        function checkBarCode() {
+            // newBarcode = newBarcodeValue
+            // BARCODE = newBarcodeValue
+            // console.log("🚀 ~ newBarcode ~ newBarcode:", BARCODE)
+            BARCODE = jQuery('#ID_BARCODE').val();
+            console.log("🚀 ~ checkNameBrand ~ BARCODE:", BARCODE)
+            if (BARCODE.length >= 10) {
+                jQuery.ajax({
+                    method: "POST",
+                    url: '{{ route('product_master.check_barcode') }}',
+                    data: { BARCODE },
+                    dataType: 'json',
+                    beforeSend: function () {
+                        jQuery("#submitButton").attr("disabled", true);
+                        jQuery('#username_loading_gnc_barcode').show();
+                        jQuery("#correct_username_gnc_barcode").hide();
+                        jQuery("#username_alert_gnc_barcode").hide();
+                    },
+                    success: function (checknamebrand) {
+                        console.log("🚀 ~ checkBarCode ~ checknamebrand:", checknamebrand)
+                        codeConsumables = checknamebrand
+                        jQuery('#username_loading_gnc_barcode').hide();
+                        jQuery("#correct_username_gnc_barcode").hide();
+                        let checkvalue = checkValueSelect2();
+                        if (BARCODE == '') {
+                            jQuery("#submitButton").attr("disabled", true);
+                            jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                            jQuery("#correct_username_gnc_barcode").hide();
+                            jQuery("#username_alert_gnc_barcode").hide();
+                        } else if (!checknamebrand) {
+                            jQuery("#submitButton").attr("disabled", true);
+                            jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                            jQuery("#correct_username_gnc_barcode").hide();
+                            jQuery("#username_alert_gnc_barcode").show();
+                        } else {
+                            jQuery("#submitButton").attr("disabled", false);
+                            jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
+                            jQuery("#username_alert_gnc_barcode").hide();
+                            jQuery("#correct_username_gnc_barcode").show();
+                        }
+                        if (!checkvalue) {
+                            jQuery("#submitButton").attr("disabled", true);
+                            jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                        } else {
+                            jQuery("#submitButton").attr("disabled", false);
+                            jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
+                        }
+                    },
+                    error: function (params) {
+                    }
+                });
+            } else {
+                jQuery("#submitButton").attr("disabled", true);
+                jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                jQuery("#correct_username_gnc_barcode").hide();
+                jQuery("#username_alert_gnc_barcode").hide();
+            }
+        }
+
         function checkInput() {
             let checkValue = []
             document.querySelectorAll('.checkinputvalidate').forEach(e => {
@@ -1339,8 +1501,8 @@
             // const TYPE_G = jQuery('#TYPE_G').val();
             // const SOLUTION = jQuery('#SOLUTION').val();
             const STATUS = jQuery('#STATUS').val();
-            const UNIT = jQuery('#UNIT').val();
-            const UNIT_TYPE = jQuery('#UNIT_TYPE').val();
+            // const UNIT = jQuery('#UNIT').val();
+            // const UNIT_TYPE = jQuery('#UNIT_TYPE').val();
             // const ACC_TYPE = jQuery('#ACC_TYPE').val();
             const CONDITION_SALE = jQuery('#CONDITION_SALE').val();
 
@@ -1359,16 +1521,16 @@
             } else {
                 jQuery('#STATUS_textalert').removeClass('hidden');
             }
-            if (UNIT) {
-                jQuery('#UNIT_textalert').addClass('hidden');
-            } else {
-                jQuery('#UNIT_textalert').removeClass('hidden');
-            }
-            if (UNIT_TYPE) {
-                jQuery('#UNIT_TYPE_textalert').addClass('hidden');
-            } else {
-                jQuery('#UNIT_TYPE_textalert').removeClass('hidden');
-            }
+            // if (UNIT) {
+            //     jQuery('#UNIT_textalert').addClass('hidden');
+            // } else {
+            //     jQuery('#UNIT_textalert').removeClass('hidden');
+            // }
+            // if (UNIT_TYPE) {
+            //     jQuery('#UNIT_TYPE_textalert').addClass('hidden');
+            // } else {
+            //     jQuery('#UNIT_TYPE_textalert').removeClass('hidden');
+            // }
             if (CONDITION_SALE) {
                 jQuery('#CONDITION_SALE_textalert').addClass('hidden');
             } else {
@@ -1377,7 +1539,7 @@
 
             let checkInputAll = checkInput()
 
-            return !!VENDOR && !!SUPPLIER && !!STATUS && !!UNIT && !!UNIT_TYPE && !!CONDITION_SALE && checkInputAll
+            return !!VENDOR && !!SUPPLIER && !!STATUS && !!CONDITION_SALE && checkInputAll
         }
 
         function checkFormClickAuto1() {
@@ -1392,11 +1554,11 @@
             return !!NAME_THAI && !!SHORT_THAI && !!NAME_ENG && !!SHORT_ENG && !!VENDOR && !!SUPPLIER && !!STATUS
         }
         function checkFormClickAuto2() {
-            const UNIT = jQuery('#UNIT').val();
-            const UNIT_TYPE = jQuery('#UNIT_TYPE').val();
+            // const UNIT = jQuery('#UNIT').val();
+            // const UNIT_TYPE = jQuery('#UNIT_TYPE').val();
             const CONDITION_SALE = jQuery('#CONDITION_SALE').val();
 
-            return !!UNIT && !!UNIT_TYPE && !!CONDITION_SALE
+            return !!CONDITION_SALE
         }
 
         function onchangeValueSelect2() {
@@ -1505,6 +1667,7 @@
         const dlayMessage = 1000;
         function createProductMaster() {
             code = jQuery("#NUMBER").val()
+            ID_BARCODE = jQuery("#ID_BARCODE").val()
             console.log('code', code)
             jQuery.ajaxSetup({
                 headers: {
@@ -1514,7 +1677,11 @@
             Swal.fire({
                 title: 'Are you sure?',
                 width: 400,
-                text: 'ข้อมูลรหัสบาร์โค้ด ' + barcode + '      ' + 'ข้อมูลรหัส ' + code,
+                text: @if ($userPermission == 'Retail Operation - GNC')
+                        'ข้อมูลรหัสบาร์โค้ด ' + ID_BARCODE + ' ข้อมูลรหัส ' + newBarcodeValue
+                      @else
+                        'ข้อมูลรหัสบาร์โค้ด ' + barcode + ' ข้อมูลรหัส ' + code
+                      @endif,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#303030',
