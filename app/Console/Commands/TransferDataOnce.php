@@ -258,9 +258,9 @@ class TransferDataOnce extends Command
                             $result_data = $response_insert['result'];
                             if ($table_name == 'PRODUCT1') {
                                 foreach ($result_data as $rs) {
-                                    // DB::table('product1s_all')->insert([
-                                    DB::table('product1s')->insert([
-                                        // 'BRAND_ORIGINAL' => $brand,
+                                    DB::table('product1s_all')->insert([
+                                    // DB::table('product1s')->insert([
+                                        'BRAND_ORIGINAL' => $brand,
                                         'BRAND' => $rs['BRAND'],
                                         'PRODUCT' => $rs['PRODUCT'],
                                         'BARCODE' => $rs['BARCODE'],
@@ -326,9 +326,9 @@ class TransferDataOnce extends Command
                             }
                             if ($table_name == 'PRO_DEVELOP') {
                                 foreach ($result_data as $rs) {
-                                    // DB::table('pro_develops_all')->insert([
-                                    DB::table('pro_develops')->insert([
-                                        // 'BRAND_ORIGINAL' => $brand,
+                                    DB::table('pro_develops_all')->insert([
+                                    // DB::table('pro_develops')->insert([
+                                        'BRAND_ORIGINAL' => $brand,
                                         'BRAND' => $rs['BRAND'],
                                         'DOC_NO' => $rs['DOC_NO'],
                                         'REF_DOC' => $rs['REF_DOC'],
@@ -387,7 +387,7 @@ class TransferDataOnce extends Command
                 $this->output->progressFinish();
             }
         }  
-
+        
         // set_time_limit(0);
         // $url_dot_30 = config('app.dot_30'); // ดึงค่า URL จาก config/app.php
         // $endpoint = $url_dot_30 . "/ims/dealer_transfer_service/dl_mid_query_dot1.php";

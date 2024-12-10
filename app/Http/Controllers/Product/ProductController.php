@@ -318,6 +318,26 @@ class ProductController extends Controller
         return response()->json($data > 0 ? false : true);
     }
 
+    public function checkCode(Request $request)
+    {
+        // dd($request);
+        $data = Product1::select('PRODUCT')
+            ->where('PRODUCT', $request->PRODUCT)
+            ->count();
+
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function checkBarcode(Request $request)
+    {
+        // dd($request);
+        $data = Product1::select('BARCODE')
+            ->where('BARCODE', $request->BARCODE)
+            ->count();
+
+        return response()->json($data > 0 ? false : true);
+    }
+
     public function check_product_consumables(Request $request)
     {
         // dd($request);

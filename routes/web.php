@@ -85,6 +85,8 @@ Route::middleware('auth')->group(function() {
 
         Route::get('/get_barcode', [ProductController::class, 'getBarcode'])->name('get_barcode');
         Route::get('/checkproduct', [ProductController::class, 'check_product'])->name('checkproduct');
+        Route::post('/check_code_gnc', [ProductController::class, 'checkCode'])->name('check_code_gnc');
+        Route::post('/check_barcode', [ProductController::class, 'checkBarcode'])->name('check_barcode');
         Route::get('/checkproduct_consumables', [ProductController::class, 'check_product_consumables'])->name('checkproduct_consumables');
         Route::post('/list_products', [ProductController::class, 'list_products'])->name('list_products');
         Route::get('/product_master_get_brand_list_ajax', [ProductController::class, 'productMasterGetBrandListAjax'])->name('product_master_get_brand_list_ajax');
