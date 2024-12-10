@@ -40,6 +40,9 @@
         .select2:required {
             border-color: #FF0000;
         }
+        .select2_barcode:required {
+            border-color: #FF0000;
+        }
 
         .select2:required:valid {
             border-color: black;
@@ -450,7 +453,7 @@
                                                                 @if ($userPermission == 'Retail Operation - GNC')
                                                                     <div class="md:col-span-3" style="position: relative;">
                                                                         <label for="BARCODE">รหัส Barcode<span class="text-danger"> *</span></label>
-                                                                        <input type="number" name="BARCODE" id="ID_BARCODE" onkeyup="checkBarCode()" class="text-compleace-auto-barcode2 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" />
+                                                                        <input required type="number" name="BARCODE" id="ID_BARCODE" onkeyup="checkBarCode()" class="text-compleace-auto-barcode2 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2_barcode" />
                                                                         <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">Please enter a valid password</span>
                                                                         <div class="col-auto xs:inset-y-10 sm:inset-y-10 md:inset-y-10 lg:inset-y-10" style="position: absolute; right: -12px;">
                                                                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="username_loading_gnc_barcode" style="margin-right: -2.5px;" class="w-6 h-6 animate-spin -mt-1">
@@ -1134,7 +1137,18 @@
                 $('.text-compleace-auto-code1').on('change', function () {
                     newBarcodeValue = $(this).val();
                     $('.text-compleace-auto-barcode2').val(newBarcodeValue);
+                    console.log('Updated Value:', newBarcodeValue); // Log the updated value
                     console.log('Updated Value:', typeof newBarcodeValue); // Log the updated value
+                    // onchangeValueSelect2()
+                    // let checkvalue = checkValueSelect2();
+                    // console.log("🚀 ~ checkvalue:", checkvalue)
+                    // if (!checkvalue) {
+                    //     jQuery("#submitButton").attr("disabled", true);
+                    //     jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                    // } else {
+                    //     jQuery("#submitButton").attr("disabled", false);
+                    //     jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
+                    // }
                 });
             });
         });
@@ -1217,7 +1231,7 @@
                 }
             });
         }
-        
+
         jQuery('#username_loading').hide();
         jQuery("#username_alert").hide();
         jQuery("#correct_username").hide();
@@ -1415,7 +1429,7 @@
         jQuery('#username_loading_gnc_barcode').hide();
         jQuery("#correct_username_gnc_barcode").hide();
         jQuery("#username_alert_gnc_barcode").hide();
-    
+
         function checkBarCode() {
             // newBarcode = newBarcodeValue
             // BARCODE = newBarcodeValue
@@ -1455,6 +1469,7 @@
                             jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
                             jQuery("#username_alert_gnc_barcode").hide();
                             jQuery("#correct_username_gnc_barcode").show();
+                            jQuery("#ID_BARCODE").removeClass('select2_barcode');
                         }
                         if (!checkvalue) {
                             jQuery("#submitButton").attr("disabled", true);
@@ -1550,9 +1565,12 @@
             const VENDOR = jQuery('#VENDOR').val();
             const SUPPLIER = jQuery('#SUPPLIER').val();
             const STATUS = jQuery('#STATUS').val();
-
-            return !!NAME_THAI && !!SHORT_THAI && !!NAME_ENG && !!SHORT_ENG && !!VENDOR && !!SUPPLIER && !!STATUS
+            const BarcodeValue = jQuery("#ID_BARCODE").val();
+            // const checkBarcodeValue = newBarcodeValue
+            let checkBarcodeValue = BarcodeValue.length >= 10
+            return !!NAME_THAI && !!SHORT_THAI && !!NAME_ENG && !!SHORT_ENG && !!VENDOR && !!SUPPLIER && !!STATUS && checkBarcodeValue
         }
+        let checkBarcodeValue = newBarcodeValue
         function checkFormClickAuto2() {
             // const UNIT = jQuery('#UNIT').val();
             // const UNIT_TYPE = jQuery('#UNIT_TYPE').val();
@@ -1565,7 +1583,6 @@
             let checkvalue = checkValueSelect2();
             let checkFormClickAutoIndex1 = checkFormClickAuto1();
             let checkFormClickAutoIndex2 = checkFormClickAuto2();
-            console.log("🚀 ~ onchangeValueSelect2 ~ checkFormClickAutoIndex2:", checkFormClickAutoIndex2)
             if (checkFormClickAutoIndex1) {
                 document.querySelectorAll('.setpcollep')[1].click()
             }
