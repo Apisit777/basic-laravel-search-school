@@ -48,16 +48,16 @@ class ProductController extends Controller
      */
     public function index()
     {
-    //     $data = Product1::select(
-    // 'product1s.BRAND AS BRAND',
-    //         'GRP_P',
-    //         'product1s.PRODUCT AS PRODUCT',
-    //         'BARCODE',
-    //         'NAME_THAI'
-    //     )
-    //     ->leftJoin('product_channels', 'product1s.PRODUCT', '=', 'product_channels.PRODUCT')
-    //     ->where('product_channels.BRAND', '=', 'KTY')
-    //     ->get();
+        //     $data = Product1::select(
+        // 'product1s.BRAND AS BRAND',
+        //         'GRP_P',
+        //         'product1s.PRODUCT AS PRODUCT',
+        //         'BARCODE',
+        //         'NAME_THAI'
+        //     )
+        //     ->leftJoin('product_channels', 'product1s.PRODUCT', '=', 'product_channels.PRODUCT')
+        //     ->where('product_channels.BRAND', '=', 'KTY')
+        //     ->get();
 
         // $datas = Product1::select('BRAND', 'GRP_P','PRODUCT', 'BARCODE', 'NAME_THAI',)->get();
         // foreach ($datas as $data) {
@@ -144,7 +144,7 @@ class ProductController extends Controller
 
             $dataProductMasterArr = Product1::select(
             'PRODUCT')
-            ->whereNotIn('BRAND', ['CPS', 'KM', 'KTY', 'GNC', 'dealer', 'SSUP', 'cp', '', 'kmcr'])
+            ->whereNotIn('BRAND', ['CPS', 'KM', 'KTY', 'KSHOP', 'KSHOPCR', 'bb', 'll', 'dealer', 'SSUP', 'cp', '', 'kmcr'])
             // ->get();
             ->pluck('PRODUCT')
             ->toArray();
@@ -286,6 +286,21 @@ class ProductController extends Controller
         'BARCODE')
         ->pluck('BARCODE')->toArray();
 
+        // $result = DB::table('product1s_all as p')
+        //     ->selectRaw("
+        //         CONCAT(BRAND, ' = ', LEFT(product, 1)) AS `Number 0-9`, 
+        //         COUNT(*) AS `Count`, 
+        //         (SELECT COUNT(*) 
+        //         FROM product1s_all 
+        //         WHERE LEFT(product, 1) = LEFT(p.product, 1) 
+        //         AND BRAND = 'gnc') AS `Total`
+        //     ")
+        //     ->whereRaw("product REGEXP '^[0-9]'")
+        //     ->where('BRAND', '=', 'gnc')
+        //     ->groupBy(DB::raw('BRAND, LEFT(product, 1)'))
+        //     ->get();
+
+        // dd($result);
         return view('product.index', compact('user',  'brands', 'productCodeArr', 'dataProductMasterArr', 'dataProductMasterConsumablesArr', 'data_barcode'));
     }
 
