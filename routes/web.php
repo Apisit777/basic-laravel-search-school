@@ -134,6 +134,31 @@ Route::get('/home', [HomeController::class, 'home']);
 Route::get('/search_school', [HomeController::class, 'index'])->name('search_school');
 Route::post('/search_school', [HomeController::class, 'search_school']);
 
+// Brand OP
+Route::post('/list_brand_op', [HomeController::class, 'listBrandOp'])->name('list_brand_op');
+// Brand CPS
+Route::post('/list_brand_cps', [HomeController::class, 'listBrandCps'])->name('list_brand_cps');
+// Brand SSUP
+Route::post('/list_brand_ssup', [HomeController::class, 'listBrandSsup'])->name('list_brand_ssup');
+// Brand GNC
+Route::post('/list_brand_gnc', [HomeController::class, 'listBrandGnc'])->name('list_brand_gnc');
+// Brand KM
+Route::post('/list_brand_km', [HomeController::class, 'listBrandKm'])->name('list_brand_km');
+// Brand KSHOP
+Route::post('/list_brand_kshop', [HomeController::class, 'listBrandKshop'])->name('list_brand_kshop');
+// Brand KSHOPCR
+Route::post('/list_brand_kshopcr', [HomeController::class, 'listBrandKshopcr'])->name('list_brand_kshopcr');
+// Brand KMCR
+Route::post('/list_brand_kmcr', [HomeController::class, 'listBrandKmcr'])->name('list_brand_kmcr');
+// Brand DEALER
+Route::post('/list_brand_dealer', [HomeController::class, 'listBrandDealer'])->name('list_brand_dealer');
+// Brand BB
+Route::post('/list_brand_bb', [HomeController::class, 'listBrandBb'])->name('list_brand_bb');
+// Brand LL
+Route::post('/list_brand_ll', [HomeController::class, 'listBrandLl'])->name('list_brand_ll');
+// Brand EMPTY
+Route::post('/list_brand_empty', [HomeController::class, 'listBrandEmpty'])->name('list_brand_empty');
+
 Route::get('/get_users', [ProductController::class, 'get_users'])->name('get_users');
 
 Route::get('/product_detail_create', [ProductController::class, 'productDetailCreate'])->name('product_detail_create');

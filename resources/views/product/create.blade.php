@@ -1139,6 +1139,7 @@
                     $('.text-compleace-auto-barcode2').val(newBarcodeValue);
                     console.log('Updated Value:', newBarcodeValue); // Log the updated value
                     console.log('Updated Value:', typeof newBarcodeValue); // Log the updated value
+                    jQuery("#username_alert_gnc_barcode").hide();
                     // onchangeValueSelect2()
                     // let checkvalue = checkValueSelect2();
                     // console.log("🚀 ~ checkvalue:", checkvalue)
@@ -1436,7 +1437,7 @@
             // console.log("🚀 ~ newBarcode ~ newBarcode:", BARCODE)
             BARCODE = jQuery('#ID_BARCODE').val();
             console.log("🚀 ~ checkNameBrand ~ BARCODE:", BARCODE)
-            if (BARCODE.length >= 10) {
+            if (BARCODE.length >= 12) {
                 jQuery.ajax({
                     method: "POST",
                     url: '{{ route('product_master.check_barcode') }}',
@@ -1455,15 +1456,18 @@
                         jQuery("#correct_username_gnc_barcode").hide();
                         let checkvalue = checkValueSelect2();
                         if (BARCODE == '') {
+                            console.log("🚀 ~ 1:", 1)
                             jQuery("#submitButton").attr("disabled", true);
                             jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
                             jQuery("#correct_username_gnc_barcode").hide();
                             jQuery("#username_alert_gnc_barcode").hide();
                         } else if (!checknamebrand) {
+                            console.log("🚀 ~ 2:", 2)
                             jQuery("#submitButton").attr("disabled", true);
                             jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
                             jQuery("#correct_username_gnc_barcode").hide();
                             jQuery("#username_alert_gnc_barcode").show();
+                            jQuery("#ID_BARCODE").addClass('select2_barcode');
                         } else {
                             jQuery("#submitButton").attr("disabled", false);
                             jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
@@ -1487,6 +1491,7 @@
                 jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
                 jQuery("#correct_username_gnc_barcode").hide();
                 jQuery("#username_alert_gnc_barcode").hide();
+                jQuery("#ID_BARCODE").addClass('select2_barcode');
             }
         }
 
@@ -1567,8 +1572,10 @@
             const STATUS = jQuery('#STATUS').val();
             const BarcodeValue = jQuery("#ID_BARCODE").val();
             // const checkBarcodeValue = newBarcodeValue
-            let checkBarcodeValue = BarcodeValue.length >= 10
-            return !!NAME_THAI && !!SHORT_THAI && !!NAME_ENG && !!SHORT_ENG && !!VENDOR && !!SUPPLIER && !!STATUS && checkBarcodeValue
+            codeConsumables
+            console.log("🚀 ~ checkBarCode ~ codeConsumables:", codeConsumables)
+            let checkBarcodeValue = BarcodeValue.length >= 12
+            return !!NAME_THAI && !!SHORT_THAI && !!NAME_ENG && !!SHORT_ENG && !!VENDOR && !!SUPPLIER && !!STATUS && checkBarcodeValue && !!codeConsumables
         }
         let checkBarcodeValue = newBarcodeValue
         function checkFormClickAuto2() {
