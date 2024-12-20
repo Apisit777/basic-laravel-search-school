@@ -8,11 +8,16 @@ use Artisan;
 
 class CommonController extends Controller
 {
-    public function transfer()
+    public function transfer($task)
     {
-        $output = Artisan::call('app:transfer-data-once');
-        $output = Artisan::output();
-        echo '<pre>';
-        print($output);
+        // dd($task);  
+        if (!empty($task)) {          
+            $output = Artisan::call('app:transfer-data-once ' . $task);
+            $output = Artisan::output();
+            echo '<pre>';
+            print($output);
+        } else {
+            echo 'no task';
+        }
     }
 }

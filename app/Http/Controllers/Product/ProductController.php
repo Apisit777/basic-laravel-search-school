@@ -2189,6 +2189,29 @@ class ProductController extends Controller
         )
         ->orderBy('PRODUCT', 'DESC');
 
+        // if ($request->order[0]) {
+        //     switch  ($request->order[0]['column']) {
+        //         case 0:
+        //             $data->orderBy('BRAND', $request->order[0]['dir']);
+        //             break;
+        //         case 1: 
+        //             $data->orderBy('GRP_P', $request->order[0]['dir']);
+        //             break;
+        //         case 2: 
+        //             $data->orderBy('PRODUCT', $request->order[0]['dir']);
+        //             break;
+        //         case 3: 
+        //             $data->orderBy('BARCODE', $request->order[0]['dir']);
+        //             break;
+        //         case 4: 
+        //             $data->orderBy('NAME_THAI', $request->order[0]['dir']);
+        //             break;
+        //         default:
+        //             // code...
+        //             break;
+        //     }
+        // }
+
         $userpermission = Auth::user()->getUserPermission->name_position;
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         if (in_array($userpermission, [$isSuperAdmin, 'Admin'])) {

@@ -168,6 +168,25 @@
         span.dt-column-order {
             display: none;
         }
+
+
+        /* ************************************************************** */
+        .card-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .card {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .card img {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -265,18 +284,31 @@
 
         <div id="responseData" class="mt-5 text-gray-900 dark:text-white"></div> --}}
 
-        <div class="container mx-auto py-8">
-            <div id="cards-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
-        </div>
-        <div id="pagination-controls" class="mt-8 flex flex-wrap justify-center space-x-2">
-            <svg id="prev-btn" fill="currentColor" class="size-9 mt-0.5 ml-0.5 text-[#303030] dark:text-[#EAEAEA] cursor-pointer" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="m4.431 12.822 13 9A1 1 0 0 0 19 21V3a1 1 0 0 0-1.569-.823l-13 9a1.003 1.003 0 0 0 0 1.645z"/>
-            </svg>
-            <div id="pagination-numbers" class="flex flex-wrap justify-center space-x-2"></div>
-            <svg id="next-btn" fill="currentColor" class="size-10 mb-1 ml-0.5 text-[#303030] dark:text-[#EAEAEA] cursor-pointer" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5.536 21.886a1.004 1.004 0 0 0 1.033-.064l13-9a1 1 0 0 0 0-1.644l-13-9A1 1 0 0 0 5 3v18a1 1 0 0 0 .536.886z"/>
-            </svg>
-        </div>
+        <div class="justify-center items-center">
+    <form class="max-w-sm mx-auto">
+        <label for="countries" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Select Position</label>
+        <select class="js-example-basic-single w-full rounded-sm text-xs" id="filter-select" name="">
+            <option value="" class="text-sm"> --- กรุณาเลือก ---</option>
+            @foreach ($roles as $key => $role)
+                <option value="{{ $role }}">{{ $role }}</option>
+            @endforeach
+        </select>
+    </form>
+</div>
+
+<div class="container mx-auto py-8">
+    <div id="cards-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+</div>
+
+<div id="pagination-controls" class="mt-8 flex flex-wrap justify-center space-x-2">
+    <svg id="prev-btn" fill="currentColor" class="size-9 mt-0.5 ml-0.5 text-[#303030] dark:text-[#EAEAEA] cursor-pointer" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="m4.431 12.822 13 9A1 1 0 0 0 19 21V3a1 1 0 0 0-1.569-.823l-13 9a1.003 1.003 0 0 0 0 1.645z"/>
+    </svg>
+    <div id="pagination-numbers" class="flex flex-wrap justify-center space-x-2"></div>
+    <svg id="next-btn" fill="currentColor" class="size-10 mb-1 ml-0.5 text-[#303030] dark:text-[#EAEAEA] cursor-pointer" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5.536 21.886a1.004 1.004 0 0 0 1.033-.064l13-9a1 1 0 0 0 0-1.644l-13-9A1 1 0 0 0 5 3v18a1 1 0 0 0 .536.886z"/>
+    </svg>
+</div>
 
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
             <div id="containerexample" class="text-gray-900 dark:text-gray-100">
@@ -355,43 +387,194 @@
         //     });
         // });
 
+        // $(document).ready(function () {
+        //     let currentPage = 1;
+        //     const cardsPerPage = 8;
+        //     let allData = [];
+
+        //     function fetchData() {
+        //         fetch('https://ins.schicher.com/api/users', {
+        //             method: "GET",
+        //             headers: {
+        //                 'X-RapidAPI-Key': '7115427d56mshfff5805283a13cep190338jsn4bc3f4689eb8',
+        //                 'X-RapidAPI-Host': 'ott-details.p.rapidapi.com'
+        //             },
+        //         })
+        //         .then(response => response.json())
+        //         .then(data => {
+        //             allData = data;
+        //             renderCards(currentPage);
+        //             renderPagination();
+                    
+        //         })
+        //         .catch(error => console.error('Error:', error));
+        //     }
+
+        //     function renderCards(page) {
+        //         console.log("🚀 ~ fetchData ~ allData:", allData)
+        //         $('#cards-container').empty();
+        //         const start = (page - 1) * cardsPerPage;
+        //         const end = start + cardsPerPage;
+        //         const pageData = allData.slice(start, end);
+
+        //         pageData.forEach(item => {
+        //             const card = `
+        //                 <div class="max-w-sm p-1 bg-[#eaeaea] dark:bg-[#292929] cursor-pointer rounded shadow-sm hover:shadow-lg hover:shadow-gray-400 dark:hover:shadow-lg dark:hover:shadow-gray-400 transition-shadow duration-300 ease-in-out">
+        //                     <img src="${item.imageurl}/300x150" alt="${item.title || 'Unknown'}" class="w-full h-32 object-cover">
+        //                     <div class="p-4">
+        //                         <h2 class="text-lg font-semibold mb-1 text-gray-900 dark:text-gray-100">${item.name || 'Unknown School'}</h2>
+        //                         <p class="text-sm text-gray-400 dark:text-gray-400 uppercase">${item.role || 'N/A'}</p>
+        //                     </div>
+        //                     <div class="px-4 pb-4 flex items-center space-x-4 text-gray-500 dark:text-gray-300 base:text-xl sm:text-sm">
+        //                         <div class="flex items-center space-x-1">
+        //                             <span>🔒</span>
+        //                             <span>CORS</span>
+        //                         </div>
+        //                         <div class="flex items-center space-x-1">
+        //                             <span>🔒</span>
+        //                             <span>HTTPS</span>
+        //                         </div>
+        //                     </div>
+        //                 </div>
+        //             `;
+        //             $('#cards-container').append(card);
+        //         });
+
+        //         updatePaginationControls();
+        //     }
+
+        //     function renderPagination() {
+        //         $('#pagination-numbers').empty();
+        //         const totalPages = Math.ceil(allData.length / cardsPerPage);
+        //         const maxVisiblePages = 5; // You can adjust this value
+
+        //         function addPageButton(page, isActive = false) {
+        //             const pageButton = `<button class="px-4 py-1 mb-2 sm:mb-0 ${isActive ? 'bg-[#303030] text-white' : 'bg-white text-gray-800 border border-gray-300'} rounded hover:bg-[#505050]" data-page="${page}">${page}</button>`;
+        //             $('#pagination-numbers').append(pageButton);
+        //         }
+
+        //         if (totalPages <= maxVisiblePages) {
+        //             // If total pages are less than max visible pages, show all
+        //             for (let i = 1; i <= totalPages; i++) {
+        //                 addPageButton(i, i === currentPage);
+        //             }
+        //         } else {
+        //             // Show first page
+        //             addPageButton(1, currentPage === 1);
+
+        //             // Show an ellipsis if currentPage is far from the first page
+        //             if (currentPage > 3) {
+        //                 $('#pagination-numbers').append('<span class="px-2 text-black dark:text-white">...</span>');
+        //             }
+
+        //             // Show pages around the current page
+        //             let startPage = Math.max(2, currentPage - 1);
+        //             let endPage = Math.min(currentPage + 1, totalPages - 1);
+
+        //             for (let i = startPage; i <= endPage; i++) {
+        //                 addPageButton(i, i === currentPage);
+        //             }
+
+        //             // Show an ellipsis if currentPage is far from the last page
+        //             if (currentPage < totalPages - 2) {
+        //                 $('#pagination-numbers').append('<span class="px-2 text-black dark:text-white">...</span>');
+        //             }
+
+        //             // Show last page
+        //             addPageButton(totalPages, currentPage === totalPages);
+        //         }
+
+        //         // Add event listeners to page buttons
+        //         $('#pagination-numbers button').click(function () {
+        //             const page = $(this).data('page');
+        //             currentPage = page;
+        //             renderCards(currentPage);
+        //             renderPagination();
+        //         });
+        //     }
+
+        //     function updatePaginationControls() {
+        //         const totalPages = Math.ceil(allData.length / cardsPerPage);
+        //         $('#prev-btn').prop('disabled', currentPage === 1);
+        //         $('#next-btn').prop('disabled', currentPage === totalPages);
+        //     }
+
+        //     $('#prev-btn').click(function () {
+        //         if (currentPage > 1) {
+        //             currentPage--;
+        //             renderCards(currentPage);
+        //             renderPagination();
+        //         }
+        //     });
+
+        //     $('#next-btn').click(function () {
+        //         const totalPages = Math.ceil(allData.length / cardsPerPage);
+        //         if (currentPage < totalPages) {
+        //             currentPage++;
+        //             renderCards(currentPage);
+        //             renderPagination();
+        //         }
+        //     });
+
+        //     fetchData();
+        // });
+
         $(document).ready(function () {
             let currentPage = 1;
             const cardsPerPage = 8;
             let allData = [];
+            const cardContainer = $('#cards-container');
 
-            function fetchData() {
-                fetch('https://ins.schicher.com/api/users', {
-                    method: "GET",
-                    headers: {
-                        'X-RapidAPI-Key': '7115427d56mshfff5805283a13cep190338jsn4bc3f4689eb8',
-                        'X-RapidAPI-Host': 'ott-details.p.rapidapi.com'
-                    },
-                })
-                .then(response => response.json())
-                .then(data => {
-                    allData = data;
-                    renderCards(currentPage);
-                    renderPagination();
-                    
-                })
-                .catch(error => console.error('Error:', error));
+            // Fetch data and initialize cards
+            function fetchData(type = '') {
+                const apiUrl = type
+                    ? '{{ route('warehouse.filter.cards') }}' // Backend API with filter
+                    : 'https://ins.schicher.com/api/users'; // Default API
+
+                const requestOptions = type
+                    ? {
+                        method: 'GET',
+                        data: { type },
+                    }
+                    : {
+                        method: 'GET',
+                        headers: {
+                            'X-RapidAPI-Key': '7115427d56mshfff5805283a13cep190338jsn4bc3f4689eb8',
+                            'X-RapidAPI-Host': 'ott-details.p.rapidapi.com',
+                        },
+                    };
+
+                $.ajax(apiUrl, requestOptions)
+                    .done((data) => {
+                        // console.log("🚀 ~ fetchData ~ requestOptions:", requestOptions)
+                        allData = data;
+                        renderCards(currentPage);
+                        renderPagination();
+                    })
+                    .fail(() => alert('Error fetching data'));
             }
 
+            // Render cards for the current page
             function renderCards(page) {
-                console.log("🚀 ~ fetchData ~ allData:", allData)
+                // console.log("🚀 Rendering cards with data:", allData);
+                // cardContainer.empty();
                 $('#cards-container').empty();
                 const start = (page - 1) * cardsPerPage;
                 const end = start + cardsPerPage;
                 const pageData = allData.slice(start, end);
 
-                pageData.forEach(item => {
+                pageData.forEach((item) => {
+                    // console.log("Item:", item); // Debugging to see item structure
+                    const name = item.name || 'Unknown Name';
+                    const role = item.role || 'Unknown Role';
+                    const imageUrl = item.imageurl || item.image || 'default-image-url.jpg'; // Replace with a fallback image if needed
+
                     const card = `
                         <div class="max-w-sm p-1 bg-[#eaeaea] dark:bg-[#292929] cursor-pointer rounded shadow-sm hover:shadow-lg hover:shadow-gray-400 dark:hover:shadow-lg dark:hover:shadow-gray-400 transition-shadow duration-300 ease-in-out">
-                            <img src="${item.imageurl}/300x150" alt="${item.title || 'Unknown'}" class="w-full h-32 object-cover">
+                            <img src="${imageUrl}" alt="${name}" class="w-full h-32 object-cover">
                             <div class="p-4">
-                                <h2 class="text-lg font-semibold mb-1 text-gray-900 dark:text-gray-100">${item.name || 'Unknown School'}</h2>
-                                <p class="text-sm text-gray-400 dark:text-gray-400 uppercase">${item.role || 'N/A'}</p>
+                                <h2 class="text-lg font-semibold mb-1 text-gray-900 dark:text-gray-100">${name}</h2>
+                                <p class="text-sm text-gray-400 dark:text-gray-400 uppercase">${role}</p>
                             </div>
                             <div class="px-4 pb-4 flex items-center space-x-4 text-gray-500 dark:text-gray-300 base:text-xl sm:text-sm">
                                 <div class="flex items-center space-x-1">
@@ -405,12 +588,13 @@
                             </div>
                         </div>
                     `;
-                    $('#cards-container').append(card);
+                    cardContainer.append(card);
                 });
 
                 updatePaginationControls();
             }
 
+            // Render pagination
             function renderPagination() {
                 $('#pagination-numbers').empty();
                 const totalPages = Math.ceil(allData.length / cardsPerPage);
@@ -461,12 +645,14 @@
                 });
             }
 
+            // Update pagination controls
             function updatePaginationControls() {
                 const totalPages = Math.ceil(allData.length / cardsPerPage);
                 $('#prev-btn').prop('disabled', currentPage === 1);
                 $('#next-btn').prop('disabled', currentPage === totalPages);
             }
 
+            // Pagination navigation buttons
             $('#prev-btn').click(function () {
                 if (currentPage > 1) {
                     currentPage--;
@@ -484,6 +670,13 @@
                 }
             });
 
+            // Filter cards by type
+            $('#filter-select').on('change', function () {
+                const type = $(this).val();
+                fetchData(type);
+            });
+
+            // Initial fetch
             fetchData();
         });
 

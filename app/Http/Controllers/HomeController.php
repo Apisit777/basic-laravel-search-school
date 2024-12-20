@@ -123,25 +123,26 @@ class HomeController extends Controller
 
     public function home()
     {
+        // Tranfer to product1_clean
         // SELECT * 
         // FROM `product1s_all`
         // WHERE 
         //     (`BRAND_ORIGINAL` = 'OP' AND 
-        //         ((`PRODUCT` REGEXP '^2')
-        //             OR (`PRODUCT` REGEXP '^1' AND LENGTH(`PRODUCT`) != 5)
+        //         ((`PRODUCT` REGEXP '^2' AND LENGTH(`PRODUCT`) = 5)
+        //             OR (`PRODUCT` REGEXP '^1' AND LENGTH(`PRODUCT`) = 7)
         //         )
         //     ) 
         //     OR 
         //     (`BRAND_ORIGINAL` = 'CPS' AND 
-        //         ((`PRODUCT` REGEXP '^1') 
-        //             OR (`PRODUCT` REGEXP '^3' AND LENGTH(`PRODUCT`) = 5) 
+        //         ((`PRODUCT` REGEXP '^3' AND LENGTH(`PRODUCT`) = 5) 
         //             OR (`PRODUCT` REGEXP '^7' AND LENGTH(`PRODUCT`) = 5)
+        //             OR (`PRODUCT` REGEXP '^1' AND LENGTH(`PRODUCT`) = 7)
         //         )
         //     )
         //     OR 
         //     (`BRAND_ORIGINAL` = 'GNC' AND 
         //         ((LENGTH(`PRODUCT`) = 6) 
-        //             OR (LENGTH(`PRODUCT`) = 10)        
+        //             OR (LENGTH(`PRODUCT`) = 10 AND barcode != 'CANCEL')        
         //         )
         //     )
         //     OR
@@ -158,55 +159,252 @@ class HomeController extends Controller
         //     )
         // ORDER BY `PRODUCT` ASC;
 
-        $products_clean = DB::table('product1s_all')
-        ->where(function ($query) {
-            $query->where('BRAND_ORIGINAL', 'OP')
-                ->where(function ($subQuery) {
-                    $subQuery->where('PRODUCT', 'REGEXP', '^2')
-                            ->orWhere(function ($innerQuery) {
-                                $innerQuery->where('PRODUCT', 'REGEXP', '^1')
-                                            ->whereRaw('LENGTH(PRODUCT) != 5');
-                            });
-                })
-                ->orWhere(function ($subQuery) {
+        // Tranfer to product_channels
+        // SELECT *
+        // FROM `product1s_all`
+        // WHERE
+        //     (
+        //         `BRAND_ORIGINAL` = 'OP' AND(
+        //             (
+        //                 `PRODUCT` REGEXP '^[2]' AND LENGTH(PRODUCT) = 5
+        //             ) OR(
+        //                 `PRODUCT` REGEXP '^[1]' AND LENGTH(PRODUCT) = 7
+        //             ) OR(
+        //                 `PRODUCT` REGEXP '^[1]' AND LENGTH(PRODUCT) = 5
+        //             )
+        //         ) OR(
+        //             `BRAND_ORIGINAL` = 'CPS' AND(
+        //                 (
+        //                     `PRODUCT` REGEXP '^[3]' AND LENGTH(PRODUCT) = 5
+        //                 ) OR(
+        //                     `PRODUCT` REGEXP '^[7]' AND LENGTH(PRODUCT) = 5
+        //                 ) OR(
+        //                     `PRODUCT` REGEXP '^[1]' AND LENGTH(PRODUCT) = 7
+        //                 ) OR(
+        //                     `PRODUCT` REGEXP '^[1]' AND LENGTH(PRODUCT) = 5
+        //                 )
+        //             )
+        //         ) OR(
+        //             `BRAND_ORIGINAL` = 'GNC' AND(
+        //                 LENGTH(PRODUCT) = 6 OR(
+        //                     LENGTH(PRODUCT) = 10 AND `barcode` != 'CANCEL'
+        //                 )
+        //             )
+        //         ) OR(
+        //             `BRAND_ORIGINAL` = 'BB' AND(
+        //                 (
+        //                     `PRODUCT` REGEXP '^[6]' AND LENGTH(PRODUCT) = 5
+        //                 ) OR(
+        //                     `PRODUCT` REGEXP '^[1]' AND LENGTH(PRODUCT) = 5
+        //                 )
+        //             )
+        //         ) OR(
+        //             `BRAND_ORIGINAL` = 'LL' AND(
+        //                 (
+        //                     `PRODUCT` REGEXP '^[3]' AND LENGTH(PRODUCT) = 5
+        //                 ) OR(
+        //                     `PRODUCT` REGEXP '^[1]' AND LENGTH(PRODUCT) = 5
+        //                 )
+        //             )
+        //         ) OR(
+        //             `BRAND_ORIGINAL` = 'KTY' AND `PRODUCT` REGEXP '^[1]' AND LENGTH(PRODUCT) = 5
+        //         )
+        //     )
+        // ORDER BY `PRODUCT` ASC;
+
+        // SELECT BRAND_ORIGINAL, COUNT(*) AS BrandCount
+        // FROM product1s_all
+        // WHERE 
+        //     (BRAND_ORIGINAL = 'CPS' AND 
+        //         ((PRODUCT REGEXP '^3' AND LENGTH(PRODUCT) = 5) 
+        //         OR (PRODUCT REGEXP '^7' AND LENGTH(PRODUCT) = 5)
+        //         )
+        //     )
+        // GROUP BY BRAND_ORIGINAL
+        // ORDER BY PRODUCT ASC;
+
+        // SELECT BRAND, COUNT(*) AS BrandCount
+        // FROM product1s_clean
+        // WHERE 
+        //     (BRAND = 'OP' AND 
+        //         (PRODUCT REGEXP '^2' AND LENGTH(PRODUCT) = 5)
+        //     OR (PRODUCT REGEXP '^[1]' AND LENGTH(PRODUCT) = 5)
+        //     ) 
+        //     OR 
+        //     (BRAND = 'CPS' AND 
+        //         ((PRODUCT REGEXP '^3' AND LENGTH(PRODUCT) = 5) 
+        //         OR (PRODUCT REGEXP '^7' AND LENGTH(PRODUCT) = 5)
+        //         OR (PRODUCT REGEXP '^[1]' AND LENGTH(PRODUCT) = 5)
+        //         )
+        //     )
+        //     OR 
+        //             (BRAND = 'GNC' AND 
+        //                 ((LENGTH(PRODUCT) = 6) 
+        //                     OR (LENGTH(PRODUCT) = 10 AND barcode != 'CANCEL')  
+        //                 OR (PRODUCT REGEXP '^[1]' AND LENGTH(PRODUCT) = 5)
+        //                 )
+        //             )
+        //             OR
+        //             (BRAND = 'BB' AND 
+        //                 (PRODUCT REGEXP '^[6]' AND LENGTH(PRODUCT) = 5)
+        //             OR (PRODUCT REGEXP '^[1]' AND LENGTH(PRODUCT) = 5)
+        //             )
+        //             OR 
+        //             (BRAND = 'LL' AND 
+        //                 (PRODUCT REGEXP '^[3]' AND LENGTH(PRODUCT) = 5)
+        //                 OR (PRODUCT REGEXP '^[1]' AND LENGTH(PRODUCT) = 5)
+        //             )
+        //             OR 
+        //             (BRAND = 'KTY' AND 
+        //                 (PRODUCT REGEXP '^[1]' AND LENGTH(PRODUCT) = 5)
+        //             )
+        // GROUP BY BRAND
+        // ORDER BY PRODUCT ASC;
+
+        // $productsAll = DB::table('product1s_all')
+        //     ->where(function ($query) {
+        //         $query->where('BRAND_ORIGINAL', 'OP')
+        //             ->where(function ($subQuery) {
+        //                 $subQuery->where(function ($innerQuery) {
+        //                     $innerQuery->where('PRODUCT', 'REGEXP', '^2')
+        //                             ->whereRaw('LENGTH(PRODUCT) = 5');
+        //                 })->orWhere(function ($innerQuery) {
+        //                     $innerQuery->where('PRODUCT', 'REGEXP', '^1')
+        //                             ->whereRaw('LENGTH(PRODUCT) = 7');
+        //                 });
+        //             });
+        //         $query->orWhere(function ($subQuery) {
+        //             $subQuery->where('BRAND_ORIGINAL', 'CPS')
+        //                 ->where(function ($innerQuery) {
+        //                     $innerQuery->where(function ($deepQuery) {
+        //                         $deepQuery->where('PRODUCT', 'REGEXP', '^3')
+        //                                 ->whereRaw('LENGTH(PRODUCT) = 5');
+        //                     })->orWhere(function ($deepQuery) {
+        //                         $deepQuery->where('PRODUCT', 'REGEXP', '^7')
+        //                                 ->whereRaw('LENGTH(PRODUCT) = 5');
+        //                     })->orWhere(function ($deepQuery) {
+        //                         $deepQuery->where('PRODUCT', 'REGEXP', '^1')
+        //                                 ->whereRaw('LENGTH(PRODUCT) = 7');
+        //                     });
+        //                 });
+        //         });
+        //         $query->orWhere(function ($subQuery) {
+        //             $subQuery->where('BRAND_ORIGINAL', 'GNC')
+        //                 ->where(function ($innerQuery) {
+        //                     $innerQuery->whereRaw('LENGTH(PRODUCT) = 6')
+        //                             ->orWhere(function ($deepQuery) {
+        //                                 $deepQuery->whereRaw('LENGTH(PRODUCT) = 10')
+        //                                             ->where('barcode', '!=', 'CANCEL');
+        //                             });
+        //                 });
+        //         });
+        //         $query->orWhere(function ($subQuery) {
+        //             $subQuery->where('BRAND_ORIGINAL', 'BB')
+        //                 ->where('PRODUCT', 'REGEXP', '^[6]')
+        //                 ->whereRaw('LENGTH(PRODUCT) = 5');
+        //         });
+        //         $query->orWhere(function ($subQuery) {
+        //             $subQuery->where('BRAND_ORIGINAL', 'LL')
+        //                 ->where('PRODUCT', 'REGEXP', '^[3]')
+        //                 ->whereRaw('LENGTH(PRODUCT) = 5');
+        //         });
+        //         $query->orWhere(function ($subQuery) {
+        //             $subQuery->where('BRAND_ORIGINAL', 'KTY')
+        //                 ->where('PRODUCT', 'REGEXP', '^[1]')
+        //                 ->whereRaw('LENGTH(PRODUCT) = 5');
+        //         });
+        //     })
+        //     ->orderBy('PRODUCT', 'ASC')
+        //     ->get();
+        // ->toArray();
+
+        // SELECT *
+        // FROM product1s_all
+        // WHERE 
+        //     (BRAND_ORIGINAL = 'LL' AND 
+        //         ((PRODUCT REGEXP '^[3]' AND LENGTH(PRODUCT) = 5)
+        //             OR (BRAND_ORIGINAL = 'KTY' AND PRODUCT REGEXP '^[1]' AND LENGTH(PRODUCT) = 5)
+        //             )
+        //     )  
+        // ORDER BY PRODUCT ASC;
+
+        $productsAll = DB::table('product1s_all')
+            ->where(function ($query) {
+                $query->where('BRAND_ORIGINAL', 'OP')
+                    ->where(function ($subQuery) {
+                        $subQuery->where(function ($innerQuery) {
+                            $innerQuery->where('PRODUCT', 'REGEXP', '^[2]')
+                                    ->whereRaw('LENGTH(PRODUCT) = 5');
+                        })->orWhere(function ($innerQuery) {
+                            $innerQuery->where('PRODUCT', 'REGEXP', '^[1]')
+                                    ->whereRaw('LENGTH(PRODUCT) = 7');
+                        })->orWhere(function ($deepQuery) {
+                            $deepQuery->where('PRODUCT', 'REGEXP', '^[1]')
+                                    ->whereRaw('LENGTH(PRODUCT) = 5');
+                        });
+                    });
+                $query->orWhere(function ($subQuery) {
                     $subQuery->where('BRAND_ORIGINAL', 'CPS')
-                             ->where(function ($innerQuery) {
-                                 $innerQuery->where('PRODUCT', 'REGEXP', '^3')
-                                            ->whereRaw('LENGTH(PRODUCT) = 5')
-                                            ->orWhere(function ($subSubQuery) {
-                                                $subSubQuery->where('PRODUCT', 'REGEXP', '^7')
-                                                            ->whereRaw('LENGTH(PRODUCT) = 5');
-                                            });
-                             });
-                })
-                // ->orWhere(function ($subQuery) {
-                //     $subQuery->where('BRAND_ORIGINAL', 'GNC')
-                //             ->where(function ($innerQuery) {
-                //                 $innerQuery->whereRaw('LENGTH(PRODUCT) = 6')
-                //                             ->orWhereRaw('LENGTH(PRODUCT) = 10');
-                //             });
-                // })
-                ->orWhere(function ($subQuery) {
+                        ->where(function ($innerQuery) {
+                            $innerQuery->where(function ($deepQuery) {
+                                $deepQuery->where('PRODUCT', 'REGEXP', '^[3]')
+                                        ->whereRaw('LENGTH(PRODUCT) = 5');
+                            })->orWhere(function ($deepQuery) {
+                                $deepQuery->where('PRODUCT', 'REGEXP', '^[7]')
+                                        ->whereRaw('LENGTH(PRODUCT) = 5');
+                            })->orWhere(function ($deepQuery) {
+                                $deepQuery->where('PRODUCT', 'REGEXP', '^[1]')
+                                        ->whereRaw('LENGTH(PRODUCT) = 7');
+                            })->orWhere(function ($deepQuery) {
+                                $deepQuery->where('PRODUCT', 'REGEXP', '^[1]')
+                                        ->whereRaw('LENGTH(PRODUCT) = 5');
+                            });
+                        });
+                });
+                $query->orWhere(function ($subQuery) {
+                    $subQuery->where('BRAND_ORIGINAL', 'GNC')
+                        ->where(function ($innerQuery) {
+                            $innerQuery->whereRaw('LENGTH(PRODUCT) = 6')
+                                    ->orWhere(function ($deepQuery) {
+                                        $deepQuery->whereRaw('LENGTH(PRODUCT) = 10')
+                                                    ->where('barcode', '!=', 'CANCEL');
+                                    });
+                        });
+                });
+                $query->orWhere(function ($subQuery) {
                     $subQuery->where('BRAND_ORIGINAL', 'BB')
-                            ->where('PRODUCT', 'REGEXP', '^6')
-                            ->whereRaw('LENGTH(PRODUCT) = 5');
-                })
-                ->orWhere(function ($subQuery) {
+                        ->where(function ($innerQuery) {
+                            $innerQuery->where(function ($deepQuery) {
+                                $deepQuery->where('PRODUCT', 'REGEXP', '^[6]')
+                                    ->whereRaw('LENGTH(PRODUCT) = 5');
+                            })->orWhere(function ($deepQuery) {
+                                $deepQuery->where('PRODUCT', 'REGEXP', '^[1]')
+                                        ->whereRaw('LENGTH(PRODUCT) = 5');
+                            });
+                        });
+                });
+                $query->orWhere(function ($subQuery) {
                     $subQuery->where('BRAND_ORIGINAL', 'LL')
-                            ->where('PRODUCT', 'REGEXP', '^3')
-                            ->whereRaw('LENGTH(PRODUCT) = 5');
+                        ->where(function ($innerQuery) {
+                            $innerQuery->where(function ($deepQuery) {
+                                $deepQuery->where('PRODUCT', 'REGEXP', '^[3]')
+                                    ->whereRaw('LENGTH(PRODUCT) = 5');
+                            })->orWhere(function ($deepQuery) {
+                                $deepQuery->where('PRODUCT', 'REGEXP', '^[1]')
+                                        ->whereRaw('LENGTH(PRODUCT) = 5');
+                            });
+                        });
                 })
-                ->orWhere(function ($subQuery) {
-                    $subQuery->where('BRAND_ORIGINAL', 'KTY')
-                            ->where('PRODUCT', 'REGEXP', '^1')
+                ->orWhere(function ($query) {
+                    $query->where('BRAND_ORIGINAL', 'KTY')
+                            ->where('PRODUCT', 'REGEXP', '^[1]')
                             ->whereRaw('LENGTH(PRODUCT) = 5');
                 });
-        })
-        ->orderBy('PRODUCT', 'asc')
-        ->get()
-        ->toArray();
+            })
+        ->orderBy('PRODUCT', 'ASC')
+        ->toSql();
 
-        dd($products_clean);
+        dd($productsAll);
         return view('home');
     }
 
