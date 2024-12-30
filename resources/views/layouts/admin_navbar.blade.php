@@ -113,9 +113,23 @@
                                 <div id="profile_img" class="mb-1"></div>
                                 <div id="auth_fullname_login" class=""></div>
                                 <div id="auth_department" class=""></div>
-                                <div id="auth_email_login" class=""></div>
+                                <div id="auth_email_login" class="text-gray-900 dark:text-white">
+                                <!-- @if (Auth::user()->userRole->pluck('position.name_position')->count() > 1)
+                                    <span class="text-gray-900 dark:text-white">Test</span>
+                                @endif
+                                {{ Auth::user()->userRole->pluck('position.name_position')->implode(', ') }} -->
+                                </div>
                             </div>
                         </li>
+                        @if (Auth::user()->userRole->pluck('position.name_position')->count() > 1)
+                            <li>
+                                <a href="{{ route('switch_role') }}">
+                                    <div class="text-center cursor-pointer bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-[#303030] dark:text-white dark:hover:bg-[#404040] dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25">  
+                                        <span class="text-gray-900 dark:text-white">Switch Role</span>
+                                    </div>
+                                </a>
+                            </li>
+                        @endif
                         <li>
                             <a href="{{ route('logout') }}" class="flex items-center justify-center w-full bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-[#303030] dark:text-white dark:hover:bg-[#404040] dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group">
                                 <svg fill="currentColor" class="mr-1 mt-1 hidden h-5 w-5 transition-transform group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 

@@ -60,6 +60,7 @@ class AuthController extends Controller
         // dd($list_position);
         return view('auth.register', compact('list_position'));
     }
+
     public function registerPost(Request $request)
     {
         // $user = new User();
@@ -253,96 +254,190 @@ class AuthController extends Controller
 
         $data = Http::withHeaders($headers)->post($loginUrl, $setAuth);
         
+        // dd($data);
+
         if ($data->successful()) {
             $response = $data->json();
             $user = User::select('id')
                 ->where('username', $request->username)
-                ->first(); 
-            if($user == NULL) {
+                ->first();
+
+            // dd([
+            //     'User' => $user,
+            //     // 'userRole' => $userRole,
+            //     'Response' => $response['data']['roles']
+            // ]);
+            if ($user == NULL) {
+                dd(1);
                 $createUser = User::create([
                     'username' => $request->username
                 ]);
-                $namePosition = position::select('id', 'name_position')->where('name_position', '=', $response['data']['roles'][0])->first();
-                // dd($namePosition);
-                if ($namePosition) {
-                    // dd(1);
-                    $namePositionStr_3 = substr($response['data']['roles'][0], -3);
-                    if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC') {
-                        // dd(1.1);
-
-                        // $productUpddate = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
-
-                        $createPosition = position::updateOrCreate(['id' => $namePosition->id],
-                [
-                            'name_position' => $response['data']['roles'][0],
-                            'brand' => $namePositionStr_3
-                        ]);
-
-                        $createUserPermission = user_permission::create([
-                            'user_id' => $createUser->id,
-                            'position_id' => $createPosition->id
-                        ]);
-
+                foreach ($response['data']['roles'] as $role) {
+                    $namePosition = position::select('id', 'name_position')
+                        ->where('name_position', '=', $role)
+                        ->first();
+                    if ($namePosition) {
+                        $namePositionStr_3 = substr($role, -3);
+                        if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC') {
+                            $createPosition = position::updateOrCreate(['id' => $namePosition->id],
+                                [
+                                    'name_position' => $role,
+                                    'brand' => $namePositionStr_3
+                                ]);
+                        } else {
+                            $namePositionStr_2 = substr($role, -2);
+                            $createPosition = position::updateOrCreate(['id' => $namePosition->id],
+                                [
+                                    'name_position' => $role,
+                                    'brand' => $namePositionStr_2
+                                ]);
+                        }
                     } else {
-                        // dd(1.2);
-                        $namePositionStr_2 = substr($response['data']['roles'][0], -2);
-
-                        $createPosition = position::updateOrCreate(['id' => $namePosition->id],
-                [
-                            'name_position' => $response['data']['roles'][0],
-                            'brand' => $namePositionStr_2
-                        ]);
-
-                        $createUserPermission = user_permission::create([
-                            'user_id' => $createUser->id,
-                            'position_id' => $createPosition->id
-                        ]);
-                    }
-                } else {
-                    // dd(2);
-                    $namePositionStr_3 = substr($response['data']['roles'][0], -3);
-                    if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC') {
+                        $namePositionStr_3 = substr($role, -3);
+                        if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC') {
                             $createPosition = position::create([
-                                'name_position' => $response['data']['roles'][0],
+                                'name_position' => $role,
                                 'brand' => $namePositionStr_3
                             ]);
-
-                            $createUserPermission = user_permission::create([
-                                'user_id' => $createUser->id,
-                                'position_id' => $createPosition->id
+                        } else {
+                            $namePositionStr_2 = substr($role, -2);
+                            $createPosition = position::create([
+                                'name_position' => $role,
+                                'brand' => $namePositionStr_2
                             ]);
-                    } else {
-                        $namePositionStr_2 = substr($response['data']['roles'][0], -2);
-                        $createPosition = position::create([
-                            'name_position' => $response['data']['roles'][0],
-                            'brand' => $namePositionStr_2
-                        ]);
+                        }
                     }
+                    $createUserPermission = user_permission::create([
+                        'user_id' => $createUser->id,
+                        'position_id' => $createPosition->id
+                    ]);
                 }
-                // dd(3);
-                $positionId = position::select('id', 'name_position')
-                    ->where('name_position', '=', $response['data']['roles'][0])
-                    ->first();
-                // $createUserPermission = user_permission::create([
-                //     'user_id' => $createUser->id,
-                //     'position_id' => $positionId->id
-                // ]);
-                // dd($createPosition);
-                $user = User::select('id')
-                ->where('username', $request->username)
-                ->first();
             }
-            // dd(1);
-            $user->setRememberToken(Str::random(60));
-            $user->save();
-            Auth::login($user, true);
-            return response()->json(['status' => 'success', 'response' => $response, 'route' => '/product_master/pd_master']);
+
+            $userRole = user_permission::select(
+                'positions.name_position as role'
+            )
+            ->leftJoin('positions', 'positions.id', '=', 'user_permission.position_id')
+            ->where('user_permission.user_id', '=', $user->id)
+            ->pluck('role')
+            ->toArray();
+            // dd($userRole);
+        
+            if (!empty($userRole)) {
+                if (count($userRole) > 1) {
+                    $defaultRole = $userRole[0];
+                } else {
+                    $defaultRole = $userRole[0];
+                }
+                // dd($userRole);
+                $user->setRememberToken(Str::random(60));
+                // dd(1);
+                $user->save();
+                Auth::login($user, true);
+                return response()->json(['status' => 'success', 'response' => $response, 'default_role' => $defaultRole, 'route' => '/product_master/pd_master']);
+            } else {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'No roles assigned to the user'
+                ], 400);
+            }
         } elseif ($data->failed()) {
             $error = $data->json();
             return response()->json(['error' => $error], 401);
         } else {
             return response()->json(['error' => 'Unexpected response status', 'response' => $data->status()]);
         }
+
+        // if ($data->successful()) {
+        //     $response = $data->json();
+        //     $user = User::select('id')
+        //         ->where('username', $request->username)
+        //         ->first(); 
+        //     if($user == NULL) {
+        //         $createUser = User::create([
+        //             'username' => $request->username
+        //         ]);
+        //         $namePosition = position::select('id', 'name_position')->where('name_position', '=', $response['data']['roles'][0])->first();
+        //         // dd($namePosition);
+        //         if ($namePosition) {
+        //             // dd(1);
+        //             $namePositionStr_3 = substr($response['data']['roles'][0], -3);
+        //             if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC') {
+        //                 // dd(1.1);
+
+        //                 // $productUpddate = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
+
+        //                 $createPosition = position::updateOrCreate(['id' => $namePosition->id],
+        //         [
+        //                     'name_position' => $response['data']['roles'][0],
+        //                     'brand' => $namePositionStr_3
+        //                 ]);
+
+        //                 $createUserPermission = user_permission::create([
+        //                     'user_id' => $createUser->id,
+        //                     'position_id' => $createPosition->id
+        //                 ]);
+
+        //             } else {
+        //                 // dd(1.2);
+        //                 $namePositionStr_2 = substr($response['data']['roles'][0], -2);
+
+        //                 $createPosition = position::updateOrCreate(['id' => $namePosition->id],
+        //         [
+        //                     'name_position' => $response['data']['roles'][0],
+        //                     'brand' => $namePositionStr_2
+        //                 ]);
+
+        //                 $createUserPermission = user_permission::create([
+        //                     'user_id' => $createUser->id,
+        //                     'position_id' => $createPosition->id
+        //                 ]);
+        //             }
+        //         } else {
+        //             // dd(2);
+        //             $namePositionStr_3 = substr($response['data']['roles'][0], -3);
+        //             if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC') {
+        //                     $createPosition = position::create([
+        //                         'name_position' => $response['data']['roles'][0],
+        //                         'brand' => $namePositionStr_3
+        //                     ]);
+
+        //                     $createUserPermission = user_permission::create([
+        //                         'user_id' => $createUser->id,
+        //                         'position_id' => $createPosition->id
+        //                     ]);
+        //             } else {
+        //                 $namePositionStr_2 = substr($response['data']['roles'][0], -2);
+        //                 $createPosition = position::create([
+        //                     'name_position' => $response['data']['roles'][0],
+        //                     'brand' => $namePositionStr_2
+        //                 ]);
+        //             }
+        //         }
+        //         // dd(3);
+        //         $positionId = position::select('id', 'name_position')
+        //             ->where('name_position', '=', $response['data']['roles'][0])
+        //             ->first();
+        //         // $createUserPermission = user_permission::create([
+        //         //     'user_id' => $createUser->id,
+        //         //     'position_id' => $positionId->id
+        //         // ]);
+        //         // dd($createPosition);
+        //         $user = User::select('id')
+        //         ->where('username', $request->username)
+        //         ->first();
+        //     }
+        //     // dd(1);
+        //     $user->setRememberToken(Str::random(60));
+        //     $user->save();
+        //     Auth::login($user, true);
+        //     return response()->json(['status' => 'success', 'response' => $response, 'route' => '/product_master/pd_master']);
+        // } elseif ($data->failed()) {
+        //     $error = $data->json();
+        //     return response()->json(['error' => $error], 401);
+        // } else {
+        //     return response()->json(['error' => 'Unexpected response status', 'response' => $data->status()]);
+        // }
     }
 
     public function apiByPassLogout(Request $request)

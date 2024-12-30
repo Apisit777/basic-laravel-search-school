@@ -17,4 +17,9 @@ class user_permission extends Model
     ];
 
     public $timestamps = true;
+
+    public function position()
+    {
+        return $this->belongsTo(Position::class, 'position_id', 'id');
+    }
 }
