@@ -167,6 +167,9 @@
         span.dt-column-order {
             display: none;
         }
+        .dt-length  {
+            color: #818181!important;
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -279,13 +282,19 @@
             "order": [
                 [0, "desc"]
             ],
-            "lengthMenu": [10, 20, 30, 50],
+            "lengthMenu": [10, 25, 50, 100],
             "layout": {
-                "topStart": {
-                    "buttons": ['excel', 'colvis']
+                "topEnd": {
+                    // "buttons": ['excel', 'colvis']
                     // buttons: ['copy', 'excel', 'pdf', 'colvis']
                 }
             },
+            // "layout": {
+            //     "topStart": {
+            //         "buttons": ['excel', 'colvis']
+            //         // buttons: ['copy', 'excel', 'pdf', 'colvis']
+            //     }
+            // },
             "ajax": {
                 "headers": {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

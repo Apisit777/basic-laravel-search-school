@@ -25,6 +25,11 @@ class HomeController extends Controller
         return view('searchSchool', compact('search_school'));
     }
 
+    public function role()
+    {
+        return view('auth.role');
+    }
+    
     public function search_school(Request $request)
     {
         $limit = $request->input('length'); // limit per page
@@ -327,6 +332,89 @@ class HomeController extends Controller
         //             )
         //     )  
         // ORDER BY PRODUCT ASC;
+
+        // วัสดุสิ้นเปลือง && สินค้าขาย
+//         SELECT *
+// FROM `product1s_all`
+// WHERE 
+//     (
+//         -- OP Brand
+//         (BRAND_ORIGINAL = 'OP' AND (
+//             (PRODUCT REGEXP '^[2]' AND LENGTH(PRODUCT) = 5)
+//             OR (PRODUCT REGEXP '^[1]' AND LENGTH(PRODUCT) = 7)
+//              OR PRODUCT IN (
+//                 SELECT PRODUCT
+//                 FROM `product1s_all`
+//                 WHERE PRODUCT REGEXP '^[8-9]'
+//                 GROUP BY PRODUCT
+//                 HAVING COUNT(*) = 1
+//             )
+//         ))
+//         OR
+//         -- CPS Brand
+//         (BRAND_ORIGINAL = 'CPS' AND (
+//             (PRODUCT REGEXP '^[3]' AND LENGTH(PRODUCT) = 5)
+//             OR (PRODUCT REGEXP '^[7]' AND LENGTH(PRODUCT) = 5)
+//             OR (PRODUCT REGEXP '^[1]' AND LENGTH(PRODUCT) = 7)
+//              OR PRODUCT IN (
+//                 SELECT PRODUCT
+//                 FROM `product1s_all`
+//                 WHERE PRODUCT REGEXP '^[8-9]'
+//                 GROUP BY PRODUCT
+//                 HAVING COUNT(*) = 1
+//             )
+//         ))
+//         OR
+//         -- GNC Brand
+//         (BRAND_ORIGINAL = 'GNC' AND (
+//             LENGTH(PRODUCT) = 6
+//             OR (LENGTH(PRODUCT) = 10 AND barcode != 'CANCEL')
+//              OR PRODUCT IN (
+//                 SELECT PRODUCT
+//                 FROM `product1s_all`
+//                 WHERE PRODUCT REGEXP '^[8-9]'
+//                 GROUP BY PRODUCT
+//                 HAVING COUNT(*) = 1
+//             )
+//         ))
+//         OR
+//         -- BB Brand
+//         (BRAND_ORIGINAL = 'BB' AND (
+//             (PRODUCT REGEXP '^[6]' AND LENGTH(PRODUCT) = 5)
+//              OR PRODUCT IN (
+//                 SELECT PRODUCT
+//                 FROM `product1s_all`
+//                 WHERE PRODUCT REGEXP '^[8-9]'
+//                 GROUP BY PRODUCT
+//                 HAVING COUNT(*) = 1
+//             )
+//         ))
+//         OR
+//         -- LL Brand
+//         (BRAND_ORIGINAL = 'LL' AND (
+//             (PRODUCT REGEXP '^[3]' AND LENGTH(PRODUCT) = 5)
+//              OR PRODUCT IN (
+//                 SELECT PRODUCT
+//                 FROM `product1s_all`
+//                 WHERE PRODUCT REGEXP '^[8-9]'
+//                 GROUP BY PRODUCT
+//                 HAVING COUNT(*) = 1
+//             )
+//         ))
+//         OR
+//         -- KTY Brand
+//         (BRAND_ORIGINAL = 'KTY' AND (
+//             (PRODUCT REGEXP '^[1]' AND LENGTH(PRODUCT) = 5)
+//              OR PRODUCT IN (
+//                 SELECT PRODUCT
+//                 FROM `product1s_all`
+//                 WHERE PRODUCT REGEXP '^[8-9]'
+//                 GROUP BY PRODUCT
+//                 HAVING COUNT(*) = 1
+//             )
+//         ))
+//     )
+// ORDER BY PRODUCT ASC;
 
         $productsAll = DB::table('product1s_all')
             ->where(function ($query) {

@@ -41,6 +41,9 @@ Route::post('/api_bypass_login_user', [AuthController::class, 'apiByPassLoginUse
 // By pass login for developer
 Route::get('/api_bypass_login', [AuthController::class, 'apiByPassLogin'])->name('api_bypass_login');
 
+// Switch role
+Route::get('/switch_role', [HomeController::class, 'role'])->name('switch_role');
+
 Route::middleware('auth')->group(function() {
 
     Route::get('/check_token', [AuthController::class, 'tokenExpired'])->name('auth.tokenExpired');

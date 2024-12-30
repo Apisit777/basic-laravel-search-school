@@ -300,7 +300,16 @@ class ProductController extends Controller
         //     ->groupBy(DB::raw('BRAND, LEFT(product, 1)'))
         //     ->get();
 
-        // dd($result);
+        // attributes: array:3[ 'id' => 1, 
+        //                         'position_id' => 1, 
+        //                         'positions:[ 'name_position' => 1, 
+        //                                 'name_position' => 1, 
+        //                         ]
+        //                     ];
+
+        $user = Auth::user()->load('userRole.position');
+        // dd($user);
+        // dd(Auth::user()->getUserPermission->name_position);
         return view('product.index', compact('user',  'brands', 'productCodeArr', 'dataProductMasterArr', 'dataProductMasterConsumablesArr', 'data_barcode'));
     }
 
