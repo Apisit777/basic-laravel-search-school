@@ -43,6 +43,7 @@ Route::get('/api_bypass_login', [AuthController::class, 'apiByPassLogin'])->name
 
 // Switch role
 Route::get('/switch_role', [HomeController::class, 'role'])->name('switch_role');
+Route::post('/role_bypass', [HomeController::class, 'roleByPass'])->name('role_bypass');
 
 Route::middleware('auth')->group(function() {
 

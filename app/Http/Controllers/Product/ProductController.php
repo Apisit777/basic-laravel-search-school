@@ -307,7 +307,7 @@ class ProductController extends Controller
         //                         ]
         //                     ];
 
-        $user = Auth::user()->load('userRole.position');
+        // $user = Auth::user()->load('userRole.position');
         // dd($user);
         // dd(Auth::user()->getUserPermission->name_position);
         return view('product.index', compact('user',  'brands', 'productCodeArr', 'dataProductMasterArr', 'dataProductMasterConsumablesArr', 'data_barcode'));

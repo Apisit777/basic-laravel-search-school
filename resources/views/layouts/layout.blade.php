@@ -86,6 +86,7 @@
         })
 
         let dataLogin = sessionStorage.getItem("credetail");
+        let role = sessionStorage.getItem("role");
         let dataJson = JSON.parse(dataLogin)
         $('#profile_img').append(
             `<img class="w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-white dark:border-gray-600 mx-auto" src="${dataJson.data.photo}">`
@@ -103,10 +104,10 @@
             `<span class="text-gray-900 dark:text-white">${dataJson.data.emp_tiger.personcode}</span>`
         );
         $('#auth_departmant_login').append(
-            `<span class="text-gray-900 dark:text-white">(${dataJson.data.emp_tiger.cmb1namet})</span>`
+            `<span class="text-gray-900 dark:text-white">(${role})</span>`
         );
         $('#auth_department').append(
-            `<span class="text-gray-900 dark:text-white p-2">${dataJson.data.emp_tiger.cmb1namet}</span></button>`
+            `<span class="text-gray-900 dark:text-white p-2">${role}</span></button>`
         );
     </script>
 
