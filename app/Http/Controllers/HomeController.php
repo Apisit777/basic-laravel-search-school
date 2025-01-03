@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Home;
 use App\Models\Food;
 use App\Models\TrnDonaTotambon;
+use App\Models\User;
+use App\Models\user_permission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -25,9 +28,48 @@ class HomeController extends Controller
         return view('searchSchool', compact('search_school'));
     }
 
-    public function role()
+    public function role(Request $request)
     {
         return view('auth.role');
+    }
+    public function roleByPass(Request $request)
+    {
+
+        return response()->json(['status' => 'success', 'route' => '/product_master/pd_master']);
+
+        // dd($request);
+        // $dataForm = $request['dataRole'];
+        // $decodedDataForm = json_decode($dataForm, true);
+
+        // dd([
+        //     'request1' => $request['username'],
+        //     'request2' => $request['name_position'],
+        //     'decodedDataForm' => $decodedDataForm
+        // ]);
+        // // dd($decodedDataForm);
+        // if (is_array($decodedDataForm) && isset($decodedDataForm['data']['roles'])) {
+        //     $roles = $decodedDataForm['data']['roles'];
+        //     dd($roles);
+        // } else {
+        //     dd('Error: Could not decode JSON or roles key is missing');
+        // }
+    
+        // if (in_array($roles, $request['name_position'])) {
+
+        // }
+
+        // if (!empty($userRole)) {
+        //     $defaultRole = $userRole;
+
+        //     // dd($userRole);
+        //     Auth::login($user, true);
+        //     return response()->json(['status' => 'success', 'default_role' => $defaultRole, 'route' => '/product_master/pd_master']);
+        // } else {
+        //     return response()->json([
+        //         'status' => 'error',
+        //         'message' => 'No roles assigned to the user'
+        //     ], 400);
+        // }
     }
     
     public function search_school(Request $request)
@@ -128,6 +170,27 @@ class HomeController extends Controller
 
     public function home()
     {
+
+//         SELECT *
+// FROM pro_develops_all
+// WHERE ((BRAND_ORIGINAL != 'CPS' 
+//         AND PRODUCT != ''
+//         AND BARCODE != '')
+//        OR (BRAND_ORIGINAL = 'CPS'
+//            AND PRODUCT NOT IN (
+//                SELECT PRODUCT
+//                FROM pro_develops_all
+//                WHERE BRAND_ORIGINAL = 'LL'
+//            )
+//            AND PRODUCT != ''
+//            AND BARCODE != ''))
+//   AND BRAND_ORIGINAL = 'OP'
+//   AND PRODUCT NOT REGEXP '^2' ORDER BY `BRAND_ORIGINAL` DESC
+
+
+
+
+
         // Tranfer to product1_clean
         // SELECT * 
         // FROM `product1s_all`

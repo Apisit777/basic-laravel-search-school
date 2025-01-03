@@ -1160,12 +1160,13 @@
             }
         }
 
-        getParmeterLogin()
-        function getParmeterLogin() {
-            let dataLogin = sessionStorage.getItem("credetail");
-            let dataJson = JSON.parse(dataLogin)
-            // console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
-        }
+        // getParmeterLogin()
+        // function getParmeterLogin() {
+        //     let dataLogin = sessionStorage.getItem("credetail");
+        //     let dataJson = JSON.parse(dataLogin)
+        //     let role = sessionStorage.getItem("role");
+        //     // console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
+        // }
 
         const pusher  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
         const channel = pusher.subscribe('public');

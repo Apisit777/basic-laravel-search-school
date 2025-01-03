@@ -98,37 +98,37 @@ class AuthController extends Controller
     }
     public function checkLogin(Request $request)
     {
-        $credetail = [
-            'username' => $request->username,
-            'password' => $request->password
-        ];
+        // $credetail = [
+        //     'username' => $request->username,
+        //     'password' => $request->password
+        // ];
 
-        if (Auth::attempt($credetail)) {
-            // return redirect('product');
+        // if (Auth::attempt($credetail)) {
+        //     // return redirect('product');
 
-            // $request->session()->regenerate();
+        //     // $request->session()->regenerate();
 
-            // return response()->json(['success' => 'Log in Success.', 'route' => 'product']);
-            // return response()->json([['success']]);
-            // dd($credetail);
+        //     // return response()->json(['success' => 'Log in Success.', 'route' => 'product']);
+        //     // return response()->json([['success']]);
+        //     // dd($credetail);
 
-            $data = Auth::user();
-            $token = Auth::user()->createToken('productMastertoken')->plainTextToken;
-            $data->token = $token;
-            $role = User::select(
-                'positions.name_position as role'
-            )
-            ->leftjoin('user_permission', 'user_permission.user_id', '=', 'users.id')
-            ->leftjoin('positions', 'positions.id', '=', 'user_permission.position_id')
-            ->where('users.id', '=', Auth::user()->id)
-            ->first();
+        //     $data = Auth::user();
+        //     $token = Auth::user()->createToken('productMastertoken')->plainTextToken;
+        //     $data->token = $token;
+        //     $role = User::select(
+        //         'positions.name_position as role'
+        //     )
+        //     ->leftjoin('user_permission', 'user_permission.user_id', '=', 'users.id')
+        //     ->leftjoin('positions', 'positions.id', '=', 'user_permission.position_id')
+        //     ->where('users.id', '=', Auth::user()->id)
+        //     ->first();
 
-            $data->role = $role;
+        //     $data->role = $role;
 
-            return response()->json(['status' => 'success', 'data' => $data]);
-        } else {
-            return response(['error' => 'Check Username Or Password!'], 401);
-        }
+        //     return response()->json(['status' => 'success', 'data' => $data]);
+        // } else {
+        //     return response(['error' => 'Check Username Or Password!'], 401);
+        // }
     }
 
     public function apiByPassLoginUser(Request $request)

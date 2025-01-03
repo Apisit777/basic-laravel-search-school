@@ -501,6 +501,10 @@
             </div>
         </div>
 
+        <!-- @php
+                    session('role', 'default');
+                 @endphp -->
+
     </div>
 </body>
 
@@ -560,8 +564,10 @@
                 $('#loader').removeClass('hidden')
             },
             success: (res) => {
+                console.log("🚀 ~ checkLogin ~ res.response:", res)
                 sessionStorage.setItem("first_login", "Y")
                 sessionStorage.setItem("credetail", JSON.stringify(res.response))
+                sessionStorage.setItem("role", res.response.data.roles[0])
                 if(res.status == 'success') {
                     // window.location.replace('/product')
                     window.location = res.route

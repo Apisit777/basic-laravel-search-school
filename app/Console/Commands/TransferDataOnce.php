@@ -33,6 +33,9 @@ class TransferDataOnce extends Command
                 case 'tranfer_data':
                     $this->tranfer_data();
                     break;
+                case 'pro_develops_all':
+                    $this->tranfer_pro_develops_all();
+                    break;
                 case 'products_all':
                     $this->tranfer_products_all();
                     break;
@@ -42,9 +45,9 @@ class TransferDataOnce extends Command
                 case 'product1s_clean_to_products_channels':
                     $this->tranfer_product1s_clean_to_products_channels();
                     break;
-                case 'consumsbles_not_duplicate_to_product1s':
-                    $this->tranfer_consumsbles_to_product1s_not_duplicate();
-                    break;
+                // case 'consumsbles_not_duplicate_to_product1s':
+                //     $this->tranfer_consumsbles_to_product1s_not_duplicate();
+                //     break;
                 case 'consumsbles_duplicate_to_product1s':
                     $this->tranfer_consumsbles_to_product1s_duplicate();
                     break;
@@ -59,14 +62,15 @@ class TransferDataOnce extends Command
                     break;
                 case 'full_tranfer':
                     $this->tranfer_data();
+                    $this->tranfer_pro_develops_all();
                     $this->tranfer_products_all();
                     $this->tranfer_products_clean();
                     $this->tranfer_product1s_clean_to_products_channels();
-                    $this->tranfer_consumsbles_to_product1s_not_duplicate();
+                    // $this->tranfer_consumsbles_to_product1s_not_duplicate();
                     $this->tranfer_consumsbles_to_product1s_duplicate();
                     $this->tranfer_consumsbles_to_product_channels();
-                    $this->tranfer_product_category();
-                    $this->tranfer_data_back();
+                    // $this->tranfer_product_category();
+                    // $this->tranfer_data_back();
                     break;
                 default:
                     $this->error('Unknown task. Available tasks: full_tranfer, tranfer_data, products_all, products_clean, products_all_to_products_channels');
@@ -442,6 +446,80 @@ class TransferDataOnce extends Command
         }
     }
 
+    private function tranfer_pro_develops_all()
+    {
+        try {
+            $prodDecelopsAll =  DB::table(DB::raw('(SELECT * FROM pro_develops_all WHERE ((BRAND_ORIGINAL != "CPS" AND PRODUCT != "" AND BARCODE != "") OR (BRAND_ORIGINAL = "CPS" AND PRODUCT NOT IN (SELECT PRODUCT FROM pro_develops_all WHERE BRAND_ORIGINAL = "LL") AND PRODUCT != "" AND BARCODE != ""))) AS pro_develops'))
+            ->whereNotIn('pro_develops.PRODUCT', function ($query) {
+                $query->select('PRODUCT')
+                      ->from('pro_develops_all')
+                      ->where('BRAND_ORIGINAL', '=', 'OP')
+                      ->where('PRODUCT', 'NOT REGEXP', '^2')
+                      ->where('PRODUCT', 'NOT REGEXP', '^1')
+                      ->where('PRODUCT', 'NOT REGEXP', '^6');
+            })
+            ->get();
+
+            $diff_count = count($prodDecelopsAll);
+            $this->info("Transferring data from 'product1s_all' to 'product1s_clean'");
+            $this->output->progressStart($diff_count);
+
+            foreach ($prodDecelopsAll as $rs) {
+                DB::table('pro_develops')->insert([
+                    'BRAND' => $rs->BRAND_ORIGINAL,
+                    'DOC_NO' => $rs->DOC_NO,
+                    'REF_DOC' => $rs->REF_DOC,
+                    'STATUS' => $rs->STATUS,
+                    'PRODUCT' => $rs->PRODUCT,
+                    'BARCODE' => $rs->BARCODE,
+                    'JOB_REFNO' => $rs->JOB_REFNO,
+                    'DOC_DT' => $rs->DOC_DT,
+                    'CUST_OEM' => $rs->CUST_OEM,
+                    'NPD' => $rs->NPD,
+                    'PDM' => $rs->PDM,
+                    'NAME_ENG' => $rs->NAME_ENG,
+                    'CATEGORY' => $rs->CATEGORY,
+                    'CAPACITY' => $rs->CAPACITY,
+                    'Q_SMELL' => $rs->Q_SMELL,
+                    'Q_COLOR' => $rs->Q_COLOR,
+                    'TARGET_GRP' => $rs->TARGET_GRP,
+                    'TARGET_STK' => $rs->TARGET_STK,
+                    'PRICE_FG' => $rs->PRICE_FG,
+                    'PRICE_COST' => $rs->PRICE_COST,
+                    'PRICE_BULK' => $rs->PRICE_BULK,
+                    'FIRST_ORD' => $rs->FIRST_ORD,
+                    'P_CONCEPT' => $rs->P_CONCEPT,
+                    'P_BENEFIT' => $rs->P_BENEFIT,
+                    'TEXTURE' => $rs->TEXTURE,
+                    'TEXTURE_OT' => $rs->TEXTURE_OT,
+                    'COLOR1' => $rs->COLOR1,
+                    'FRANGRANCE' => $rs->FRANGRANCE,
+                    'INGREDIENT' => $rs->INGREDIENT,
+                    'STD' => $rs->STD,
+                    'PK' => $rs->PK,
+                    'OTHER' => $rs->OTHER,
+                    'DOCUMENT' => $rs->DOCUMENT,
+                    'OEM' => $rs->OEM,
+                    'REASON1' => $rs->REASON1,
+                    'REASON1_DES' => $rs->REASON1_DES,
+                    'REASON2' => $rs->REASON2,
+                    'REASON2_DES' => $rs->REASON2_DES,
+                    'REASON3' => $rs->REASON3,
+                    'REASON3_DES' => $rs->REASON3_DES,
+                    'PACKAGE_BOX' => $rs->PACKAGE_BOX,
+                    'REF_COLOR' => $rs->REF_COLOR,
+                    'REF_FRAGRANCE' => $rs->REF_FRAGRANCE,
+                    'OEM_STD' => $rs->OEM_STD,
+                    'USER_EDIT' => $rs->USER_EDIT,
+                    'EDIT_DT' => $rs->EDIT_DT
+                ]);
+                $this->output->progressAdvance();
+            }
+        } catch (\Exception $e) {
+            Log::error('Error: ' . $e->getMessage());
+        }
+        $this->output->progressFinish();
+    }
     private function tranfer_products_all()
     {
         try {
@@ -537,61 +615,55 @@ class TransferDataOnce extends Command
             //     ->get();
 
             $productsAll = DB::select("SELECT * FROM (SELECT *
-FROM `product1s_all`
-WHERE 
-    (
-        
-        (BRAND_ORIGINAL = 'OP' AND (
-            (PRODUCT REGEXP '^[2]' AND LENGTH(PRODUCT) = 5)
-            OR (PRODUCT REGEXP '^[1]' AND LENGTH(PRODUCT) = 7)
-            
-        ))
-        OR
-        
-        (BRAND_ORIGINAL = 'CPS' AND (
-            (PRODUCT REGEXP '^[3]' AND LENGTH(PRODUCT) = 5)
-            OR (PRODUCT REGEXP '^[7]' AND LENGTH(PRODUCT) = 5)
-            OR (PRODUCT REGEXP '^[1]' AND LENGTH(PRODUCT) = 7)
-            
-        ))
-        OR
-        
-        (BRAND_ORIGINAL = 'GNC' AND ((LENGTH(PRODUCT) = 6 AND  PRODUCT not REGEXP '^[A-Z]') OR 
-			LENGTH(PRODUCT) = 10 AND
-			barcode != 'CANCEL'))
-        OR
-        
-        (BRAND_ORIGINAL = 'BB' AND (
-            (PRODUCT REGEXP '^[6]' AND LENGTH(PRODUCT) = 5)
-            
-        ))
-        OR
-        
-        (BRAND_ORIGINAL = 'LL' AND (
-            (PRODUCT REGEXP '^[3]' AND LENGTH(PRODUCT) = 5)
-            
-        ))
-        OR
-        
-        (BRAND_ORIGINAL = 'KTY' AND (
-            (PRODUCT REGEXP '^[1]' AND LENGTH(PRODUCT) = 5)
-            
-        ))
-    )  AND BARCODE not REGEXP '^[A-Z]'
-    
-    
-    UNION ALL
- SELECT *
-                FROM `product1s_all`
-                WHERE BRAND_ORIGINAL IN  ('CPS','OP','BB','LL','GNC','KTY') AND  (PRODUCT REGEXP '^[8-9]') AND BARCODE not REGEXP '^[A-Z]'
-                GROUP BY PRODUCT
-                HAVING COUNT(*) = 1) AS data GROUP BY data.product
-                
-");
-
-
-
-
+                                                FROM `product1s_all`
+                                                WHERE 
+                                                    (
+                                                        
+                                                        (BRAND_ORIGINAL = 'OP' AND (
+                                                            (PRODUCT REGEXP '^[2]' AND LENGTH(PRODUCT) = 5)
+                                                            OR (PRODUCT REGEXP '^[1]' AND LENGTH(PRODUCT) = 7)
+                                                            
+                                                        ))
+                                                        OR
+                                                        
+                                                        (BRAND_ORIGINAL = 'CPS' AND (
+                                                            (PRODUCT REGEXP '^[3]' AND LENGTH(PRODUCT) = 5)
+                                                            OR (PRODUCT REGEXP '^[7]' AND LENGTH(PRODUCT) = 5)
+                                                            OR (PRODUCT REGEXP '^[1]' AND LENGTH(PRODUCT) = 7)
+                                                            
+                                                        ))
+                                                        OR
+                                                        
+                                                        (BRAND_ORIGINAL = 'GNC' AND ((LENGTH(PRODUCT) = 6 AND PRODUCT not REGEXP '^[A-Z]' AND PRODUCT not REGEXP '^[8-9]') AND (PRODUCT not REGEXP '^[8-9]') OR 
+                                                            LENGTH(PRODUCT) = 10 AND
+                                                            barcode != 'CANCEL') )
+                                                        OR
+                                                        
+                                                        (BRAND_ORIGINAL = 'BB' AND (
+                                                            (PRODUCT REGEXP '^[6]' AND LENGTH(PRODUCT) = 5)
+                                                            
+                                                        ))
+                                                        OR
+                                                        
+                                                        (BRAND_ORIGINAL = 'LL' AND (
+                                                            (PRODUCT REGEXP '^[3]' AND LENGTH(PRODUCT) = 5)
+                                                            
+                                                        ))
+                                                        OR
+                                                        
+                                                        (BRAND_ORIGINAL = 'KTY' AND (
+                                                            (PRODUCT REGEXP '^[1]' AND LENGTH(PRODUCT) = 5)
+                                                            
+                                                        ))
+                                                    )  AND BARCODE not REGEXP '^[A-Z]'
+                                                UNION ALL
+                                                SELECT *
+                                                    FROM `product1s_all`
+                                                    WHERE BRAND_ORIGINAL IN  ('CPS','OP','BB','LL','GNC','KTY') AND  (PRODUCT REGEXP '^[8-9]') AND BARCODE not REGEXP '^[A-Z]'
+                                                    GROUP BY PRODUCT
+                                                    HAVING COUNT(*) = 1) AS data GROUP BY data.product
+                                                                
+                                                ");
 
             $diff_count = count($productsAll);
             $this->info("Transferring data from 'product1s_all' to 'product1s_clean'");
@@ -775,94 +847,91 @@ WHERE
         $this->output->progressFinish();
     }
 
-    private function tranfer_consumsbles_to_product1s_not_duplicate()
-    {
-        try {
-            $productConsumsblesAll = DB::table('product1s_all')
-                ->select('*', DB::raw('COUNT(*) as count'))
-                ->whereRaw("PRODUCT REGEXP '^[8-9]'")
-                ->groupBy('PRODUCT')
-                ->having('count', '=', 1)
-                ->orderBy('PRODUCT', 'ASC')
-                ->get();
+    // private function tranfer_consumsbles_to_product1s_not_duplicate()
+    // {
+    //     try {
+    //         $productConsumsblesAll = DB::table('product1s_all')
+    //             ->select('*', DB::raw('COUNT(*) as count'))
+    //             ->whereRaw("PRODUCT REGEXP '^[8-9]'")
+    //             ->groupBy('PRODUCT')
+    //             ->having('count', '=', 1)
+    //             ->orderBy('PRODUCT', 'ASC')
+    //             ->get();
 
-            // print_r($productConsumsblesAll);
-            // exit;
-            // dd($productConsumsblesAll);
+    //         $diff_count = count($productConsumsblesAll);
+    //         $this->info("Transferring consumsbles data from 'product1s_all' to 'product1s not duplicate'");
+    //         $this->output->progressStart($diff_count);
 
-            $diff_count = count($productConsumsblesAll);
-            $this->info("Transferring consumsbles data from 'product1s_all' to 'product1s not duplicate'");
-            $this->output->progressStart($diff_count);
+    //         foreach ($productConsumsblesAll as $rs) {
+    //             DB::table('product1s')->insert([
+    //                 'BRAND' => $rs->BRAND_ORIGINAL,
+    //                 'PRODUCT' => $rs->PRODUCT,
+    //                 'BARCODE' => $rs->BARCODE,
+    //                 'COLOR' => $rs->COLOR,
+    //                 'GRP_P' => $rs->GRP_P,
+    //                 'SUPPLIER' => $rs->SUPPLIER,
+    //                 'NAME_THAI' => $rs->NAME_THAI,
+    //                 'NAME_ENG' => $rs->NAME_ENG,
+    //                 'SHORT_THAI' => $rs->SHORT_THAI,
+    //                 'SHORT_ENG' => $rs->SHORT_ENG,
+    //                 'VENDOR' => $rs->VENDOR,
+    //                 'PRICE' => $rs->PRICE,
+    //                 'COST' => $rs->COST,
+    //                 'UNIT' => $rs->UNIT,
+    //                 'UNIT_Q' => $rs->UNIT_Q,
+    //                 'SOLUTION' => $rs->SOLUTION,
+    //                 'SERIES' => $rs->SERIES,
+    //                 'CATEGORY' => $rs->CATEGORY,
+    //                 'STATUS' => $rs->STATUS,
+    //                 'S_CAT' => $rs->S_CAT,
+    //                 'PDM_GROUP' => $rs->PDM_GROUP,
+    //                 'BRAND_P' => $rs->BRAND_P,
+    //                 'REGISTER' => $rs->REGISTER,
+    //                 'OPT_TXT1' => $rs->OPT_TXT1,
+    //                 'CONDITION_SALE' => $rs->CONDITION_SALE,
+    //                 'WHOLE_SALE' => $rs->WHOLE_SALE,
+    //                 'GP' => $rs->GP,
+    //                 'O_PRODUCT' => $rs->O_PRODUCT,
+    //                 'BAR_PACK1' => $rs->BAR_PACK1,
+    //                 'BAR_PACK2' => $rs->BAR_PACK2,
+    //                 'BAR_PACK3' => $rs->BAR_PACK3,
+    //                 'BAR_PACK4' => $rs->BAR_PACK4,
+    //                 'PACK_SIZE1' => $rs->PACK_SIZE1,
+    //                 'PACK_SIZE2' => $rs->PACK_SIZE2,
+    //                 'PACK_SIZE3' => $rs->PACK_SIZE3,
+    //                 'PACK_SIZE4' => $rs->PACK_SIZE4,
+    //                 'REG_DATE' => $rs->REG_DATE,
+    //                 'AGE' => $rs->AGE,
+    //                 'WIDTH' => $rs->WIDTH,
+    //                 'HEIGHT' => $rs->HEIGHT,
+    //                 'WIDE' => $rs->WIDE,
+    //                 'NAME_EXP' => $rs->NAME_EXP,
+    //                 'NET_WEIGHT' => $rs->NET_WEIGHT,
+    //                 'UNIT_TYPE' => $rs->UNIT_TYPE,
+    //                 'TYPE_G' => $rs->TYPE_G,
+    //                 'OPT_DATE1' => $rs->OPT_DATE1,
+    //                 'OPT_DATE2' => $rs->OPT_DATE2,
+    //                 'OPT_TXT2' => $rs->OPT_TXT2,
+    //                 'OPT_NUM1' => $rs->OPT_NUM1,
+    //                 'OPT_NUM2' => $rs->OPT_NUM2,
+    //                 'ACC_TYPE' => $rs->ACC_TYPE,
+    //                 'ACC_DT' => $rs->ACC_DT,
+    //                 'RETURN' => $rs->RETURN,
+    //                 'NON_VAT' => $rs->NON_VAT,
+    //                 'STORAGE_TEMP' => $rs->STORAGE_TEMP,
+    //                 'CONTROL_STK' => $rs->CONTROL_STK,
+    //                 'TESTER' => $rs->TESTER,
+    //                 'USER_EDIT' => $rs->USER_EDIT,
+    //                 'EDIT_DT' => $rs->EDIT_DT,
+    //             ]);
+    //             $this->output->progressAdvance();
+    //         }
+    //     } catch (\Exception $e) {
+    //         Log::error('Error: ' . $e->getMessage());
+    //     }
+    //     $this->output->progressFinish();
+    // }
 
-            foreach ($productConsumsblesAll as $rs) {
-                DB::table('product1s')->insert([
-                    'BRAND' => $rs->BRAND_ORIGINAL,
-                    'PRODUCT' => $rs->PRODUCT,
-                    'BARCODE' => $rs->BARCODE,
-                    'COLOR' => $rs->COLOR,
-                    'GRP_P' => $rs->GRP_P,
-                    'SUPPLIER' => $rs->SUPPLIER,
-                    'NAME_THAI' => $rs->NAME_THAI,
-                    'NAME_ENG' => $rs->NAME_ENG,
-                    'SHORT_THAI' => $rs->SHORT_THAI,
-                    'SHORT_ENG' => $rs->SHORT_ENG,
-                    'VENDOR' => $rs->VENDOR,
-                    'PRICE' => $rs->PRICE,
-                    'COST' => $rs->COST,
-                    'UNIT' => $rs->UNIT,
-                    'UNIT_Q' => $rs->UNIT_Q,
-                    'SOLUTION' => $rs->SOLUTION,
-                    'SERIES' => $rs->SERIES,
-                    'CATEGORY' => $rs->CATEGORY,
-                    'STATUS' => $rs->STATUS,
-                    'S_CAT' => $rs->S_CAT,
-                    'PDM_GROUP' => $rs->PDM_GROUP,
-                    'BRAND_P' => $rs->BRAND_P,
-                    'REGISTER' => $rs->REGISTER,
-                    'OPT_TXT1' => $rs->OPT_TXT1,
-                    'CONDITION_SALE' => $rs->CONDITION_SALE,
-                    'WHOLE_SALE' => $rs->WHOLE_SALE,
-                    'GP' => $rs->GP,
-                    'O_PRODUCT' => $rs->O_PRODUCT,
-                    'BAR_PACK1' => $rs->BAR_PACK1,
-                    'BAR_PACK2' => $rs->BAR_PACK2,
-                    'BAR_PACK3' => $rs->BAR_PACK3,
-                    'BAR_PACK4' => $rs->BAR_PACK4,
-                    'PACK_SIZE1' => $rs->PACK_SIZE1,
-                    'PACK_SIZE2' => $rs->PACK_SIZE2,
-                    'PACK_SIZE3' => $rs->PACK_SIZE3,
-                    'PACK_SIZE4' => $rs->PACK_SIZE4,
-                    'REG_DATE' => $rs->REG_DATE,
-                    'AGE' => $rs->AGE,
-                    'WIDTH' => $rs->WIDTH,
-                    'HEIGHT' => $rs->HEIGHT,
-                    'WIDE' => $rs->WIDE,
-                    'NAME_EXP' => $rs->NAME_EXP,
-                    'NET_WEIGHT' => $rs->NET_WEIGHT,
-                    'UNIT_TYPE' => $rs->UNIT_TYPE,
-                    'TYPE_G' => $rs->TYPE_G,
-                    'OPT_DATE1' => $rs->OPT_DATE1,
-                    'OPT_DATE2' => $rs->OPT_DATE2,
-                    'OPT_TXT2' => $rs->OPT_TXT2,
-                    'OPT_NUM1' => $rs->OPT_NUM1,
-                    'OPT_NUM2' => $rs->OPT_NUM2,
-                    'ACC_TYPE' => $rs->ACC_TYPE,
-                    'ACC_DT' => $rs->ACC_DT,
-                    'RETURN' => $rs->RETURN,
-                    'NON_VAT' => $rs->NON_VAT,
-                    'STORAGE_TEMP' => $rs->STORAGE_TEMP,
-                    'CONTROL_STK' => $rs->CONTROL_STK,
-                    'TESTER' => $rs->TESTER,
-                    'USER_EDIT' => $rs->USER_EDIT,
-                    'EDIT_DT' => $rs->EDIT_DT,
-                ]);
-                $this->output->progressAdvance();
-            }
-        } catch (\Exception $e) {
-            Log::error('Error: ' . $e->getMessage());
-        }
-        $this->output->progressFinish();
-    }
     private function tranfer_consumsbles_to_product1s_duplicate()
     {
         try {
@@ -1215,7 +1284,7 @@ WHERE
                                 '" . $rs->VENDOR . "',
                                 '" . $rs->PRICE . "',
                                 '" . $rs->COST . "',
-                                '" . $rs->UNIT . "',
+                                N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
                                 '" . $rs->UNIT_Q . "',
                                 '" . $rs->SOLUTION . "',
                                 '" . $rs->SERIES . "',
@@ -1299,7 +1368,7 @@ WHERE
                                     '" . $rs->VENDOR . "',
                                     '" . $rs->PRICE . "',
                                     '" . $rs->COST . "',
-                                    '" . $rs->UNIT . "',
+                                    N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
                                     '" . $rs->UNIT_Q . "',
                                     '" . $rs->SOLUTION . "',
                                     '" . $rs->SERIES . "',
@@ -1375,7 +1444,7 @@ WHERE
                                 '" . $rs->VENDOR . "',
                                 '" . $rs->PRICE . "',
                                 '" . $rs->COST . "',
-                                '" . $rs->UNIT . "',
+                                N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
                                 '" . $rs->UNIT_Q . "',
                                 '" . $rs->SOLUTION . "',
                                 '" . $rs->SERIES . "',
@@ -1450,7 +1519,7 @@ WHERE
                                     '" . $rs->VENDOR . "',
                                     '" . $rs->PRICE . "',
                                     '" . $rs->COST . "',
-                                    '" . $rs->UNIT . "',
+                                    N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
                                     '" . $rs->UNIT_Q . "',
                                     '" . $rs->SOLUTION . "',
                                     '" . $rs->SERIES . "',
@@ -1528,7 +1597,7 @@ WHERE
                                 '" . $rs->VENDOR . "',
                                 '" . $rs->PRICE . "',
                                 '" . $rs->COST . "',
-                                '" . $rs->UNIT . "',
+                                N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
                                 '" . $rs->UNIT_Q . "',
                                 '" . $rs->SOLUTION . "',
                                 '" . $rs->SERIES . "',
@@ -1603,7 +1672,7 @@ WHERE
                                     '" . $rs->VENDOR . "',
                                     '" . $rs->PRICE . "',
                                     '" . $rs->COST . "',
-                                    '" . $rs->UNIT . "',
+                                    N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
                                     '" . $rs->UNIT_Q . "',
                                     '" . $rs->SOLUTION . "',
                                     '" . $rs->SERIES . "',
@@ -1679,7 +1748,7 @@ WHERE
                                 '" . $rs->VENDOR . "',
                                 '" . $rs->PRICE . "',
                                 '" . $rs->COST . "',
-                                '" . $rs->UNIT . "',
+                                N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
                                 '" . $rs->UNIT_Q . "',
                                 '" . $rs->SOLUTION . "',
                                 '" . $rs->SERIES . "',
@@ -1754,7 +1823,7 @@ WHERE
                                     '" . $rs->VENDOR . "',
                                     '" . $rs->PRICE . "',
                                     '" . $rs->COST . "',
-                                    '" . $rs->UNIT . "',
+                                    N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
                                     '" . $rs->UNIT_Q . "',
                                     '" . $rs->SOLUTION . "',
                                     '" . $rs->SERIES . "',
@@ -1827,7 +1896,7 @@ WHERE
                                 '" . $rs->VENDOR . "',
                                 '" . $rs->PRICE . "',
                                 '" . $rs->COST . "',
-                                '" . $rs->UNIT . "',
+                                N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
                                 '" . $rs->UNIT_Q . "',
                                 '" . $rs->SOLUTION . "',
                                 '" . $rs->SERIES . "',
@@ -1902,7 +1971,7 @@ WHERE
                                     '" . $rs->VENDOR . "',
                                     '" . $rs->PRICE . "',
                                     '" . $rs->COST . "',
-                                    '" . $rs->UNIT . "',
+                                    N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
                                     '" . $rs->UNIT_Q . "',
                                     '" . $rs->SOLUTION . "',
                                     '" . $rs->SERIES . "',
@@ -1975,7 +2044,7 @@ WHERE
                                 '" . $rs->VENDOR . "',
                                 '" . $rs->PRICE . "',
                                 '" . $rs->COST . "',
-                                '" . $rs->UNIT . "',
+                                N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
                                 '" . $rs->UNIT_Q . "',
                                 '" . $rs->SOLUTION . "',
                                 '" . $rs->SERIES . "',
@@ -2051,7 +2120,7 @@ WHERE
                                     '" . $rs->VENDOR . "',
                                     '" . $rs->PRICE . "',
                                     '" . $rs->COST . "',
-                                    '" . $rs->UNIT . "',
+                                    N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
                                     '" . $rs->UNIT_Q . "',
                                     '" . $rs->SOLUTION . "',
                                     '" . $rs->SERIES . "',
