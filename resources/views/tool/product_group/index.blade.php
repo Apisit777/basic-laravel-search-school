@@ -44,10 +44,10 @@
             <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการกลุ่มสินค้า</p>
         </div>
 
-        <div class="flex xs:right-12 sm:right-12 md:right-72 lg:right-72 xl:right-72 z-10 absolute mt-3">
+        <div class="flex xs:right-12 sm:right-12 md:right-14 lg:right-14 xl:right-14 z-10 absolute mt-3">
             <a
                 type="button"
-                class="xs:mt-7 sm:mt-8 md:mt-2 lg:mt-2 xl:mt-2 -mr-4 px-1.5 py-1.5 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded cursor-pointer group"
+                class="xs:mt-0 sm:mt-0 md:mt-2 lg:mt-2 xl:mt-2 -mr-4 px-1.5 py-1.5 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded cursor-pointer group"
                 data-twe-toggle="modal"
                 data-twe-target="#staticBackdrop"
                 data-twe-ripple-init
@@ -205,6 +205,7 @@
                             <th>ID</th>
                             <th>Drescription</th>
                             <th>แบรนด์</th>
+                            <th>วันที่อัปเดดข้อมูล</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -213,7 +214,7 @@
                 </table>
             </div>
         </div>
-        
+
     </div>
 
     {{-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -235,6 +236,31 @@
     <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
     <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 
+    @if (session('status'))
+        <script>
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            jQuery().ready(function () {
+                toastr.success('{{ session('status') }}');
+            });
+        </script>
+    @endif
+
     <script>
         jQuery('#username_loading_id').hide();
         jQuery("#username_aler_id").hide();
@@ -242,14 +268,14 @@
 
         function checkProductGroupId() {
             const Edit_ProductGroup_ID = jQuery('#Edit_ProductGroup_ID').val();
-            const DESCRIPTION = jQuery('#DESCRIPTION').val();
+            const ID = jQuery('#ID').val();
 
             jQuery.ajax({
                 method: "POST",
-                url: "{{ route('product_master.productgroup_checkname') }}",
+                url: "{{ route('product_master.productgroup_check_id') }}",
                 data: {
                         _token: "{{ csrf_token() }}",
-                        Edit_ProductGroup_ID, DESCRIPTION
+                        Edit_ProductGroup_ID, ID
                     },
                 dataType: 'json',
                 beforeSend: function () {
@@ -263,7 +289,7 @@
                     jQuery('#username_loading_id').hide();
                     jQuery("#correct_username_id").hide();
 
-                    if (DESCRIPTION == '') {
+                    if (ID == '') {
                         jQuery("#submitButton").attr("disabled", false);
                         jQuery("#correct_username_id").hide();
                         jQuery("#username_aler_id").hide();
@@ -340,6 +366,9 @@
                 jQuery('#username_loading').hide();
                 jQuery("#username_alert").hide();
                 jQuery("#correct_username").hide();
+                jQuery('#username_loading_id').hide();
+                jQuery("#username_aler_id").hide();
+                jQuery("#correct_username_id").hide();
             } else {
                 jQuery("#Edit_ProductGroup_ID").val('')
                 jQuery("#ID").val('')
@@ -350,43 +379,10 @@
                 jQuery('#username_loading').hide();
                 jQuery("#username_alert").hide();
                 jQuery("#correct_username").hide();
+                jQuery('#username_loading_id').hide();
+                jQuery("#username_aler_id").hide();
+                jQuery("#correct_username_id").hide();
             }
-        }
-
-        function createProductGroup() {
-            jQuery.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            jQuery.ajax({
-                method: "POST",
-                url: "{{ route('product_master.product_group_create_or_update') }}",
-                data: $("#form_product_group").serialize(),
-                beforeSend: function () {
-                    $('#loader_create_menu_consumables').removeClass('hidden')
-                },
-                success: function(res){
-                    if(res.success == true) {
-                        setTimeout(function() {
-                            successMessage("Success!");
-                        },dlayMessage)
-                        setTimeout(function() {
-                            toastr.success("Create menu successfully!");
-                        },dlayMessage)
-                    }
-                    else if (res.status == 'fail') {
-                        setTimeout(function() {
-                            errorMessage("Error!");
-                        },dlayMessage)
-                        setTimeout(function() {
-                            toastr.error("Can't create menu!");
-                        },dlayMessage)
-                    }
-                },
-                    error: function(error) {
-                }
-            });
         }
 
         const mytableDatatable = $('#product_group').DataTable({
@@ -400,12 +396,12 @@
                 [0, "desc"]
             ],
             "lengthMenu": [10, 20, 30, 50],
-            "layout": {
-                "topEnd": {
-                    "buttons": ['excel', 'colvis']
-                    // buttons: ['copy', 'excel', 'pdf', 'colvis']
-                }
-            },
+            // "layout": {
+            //     "topEnd": {
+            //         "buttons": ['excel', 'colvis']
+            //         // buttons: ['copy', 'excel', 'pdf', 'colvis']
+            //     }
+            // },
             "ajax": {
                 "headers": {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -447,17 +443,24 @@
                 {
                     targets: 3,
                     orderable: true,
+                    render: function(data, type, row) {
+                        return row.updated_at;
+                    }
+                },
+                {
+                    targets: 4,
+                    orderable: true,
                     className: 'text-center',
                     render: function(data, type, row) {
                         let text = "#"
                         return `<div class="inline-flex flex items-center rounded-md shadow-sm">
-                                    <button 
+                                    <button
                                         data-twe-toggle="modal"
                                         data-twe-target="#staticBackdrop"
                                         data-twe-ripple-init
                                         data-twe-ripple-color="light"
                                         onclick="modelProductGroup('{{ $data[0]['ID'] }}', '{{ $data[0]['DESCRIPTION']}}' )"
-                                        type="button" 
+                                        type="button"
                                         class="px-2 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="-mt-1.5 hidden h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
@@ -474,6 +477,44 @@
                 }
             ]
         });
+
+        const dlayMessage = 100;
+        function createProductGroup() {
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            jQuery.ajax({
+                method: "POST",
+                url: "{{ route('product_master.product_group_create_or_update') }}",
+                data: $("#form_product_group").serialize(),
+                beforeSend: function () {
+                    $('#loader_create_menu_consumables').removeClass('hidden')
+                },
+                success: function(res){
+                    if(res.success == true) {
+                        setTimeout(function() {
+                            successMessage("Success!");
+                        },dlayMessage)
+                        setTimeout(function() {
+                            toastr.success("Create menu successfully!");
+                        },dlayMessage)
+                        mytableDatatable.draw();
+                    }
+                    else if (res.status == 'fail') {
+                        setTimeout(function() {
+                            errorMessage("Error!");
+                        },dlayMessage)
+                        setTimeout(function() {
+                            toastr.error("Can't create menu!");
+                        },dlayMessage)
+                    }
+                },
+                error: function(error) {
+                }
+            });
+        }
 
     </script>
 @endsection

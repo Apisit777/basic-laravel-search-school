@@ -278,6 +278,32 @@ class ProductController extends Controller
             ->pluck('PRODUCT')
             ->toArray();
 
+        } else if (in_array($userpermission, ['KM'])) {
+
+            $brands = Barcode::select(
+            'BRAND',
+                'STATUS')
+            ->whereIn('STATUS', ['GNC'])
+            ->pluck('BRAND')
+            ->toArray();
+
+            $dataProductMasterArr = Product1::select(
+            'PRODUCT')
+            ->whereNotIn('BRAND', ['OP', 'CPS', 'KM', 'KTY'])
+            ->pluck('PRODUCT')
+            ->toArray();
+
+            $dataProductMaster = Product1::select('PRODUCT')
+                // ->whereNotIn('BRAND', ['OP', 'CPS'])
+                ->whereNotIn('BRAND', ['OP'])
+                ->get();
+
+            $dataProductMasterConsumablesArr = Product1::select(
+            'PRODUCT')
+            ->where('BRAND', 'KM')
+            ->where('GRP_P', 'GNC')
+            ->pluck('PRODUCT')
+            ->toArray();
         }
 
         // dd($dataProductMasterArr);
@@ -288,11 +314,11 @@ class ProductController extends Controller
 
         // $result = DB::table('product1s_all as p')
         //     ->selectRaw("
-        //         CONCAT(BRAND, ' = ', LEFT(product, 1)) AS `Number 0-9`, 
-        //         COUNT(*) AS `Count`, 
-        //         (SELECT COUNT(*) 
-        //         FROM product1s_all 
-        //         WHERE LEFT(product, 1) = LEFT(p.product, 1) 
+        //         CONCAT(BRAND, ' = ', LEFT(product, 1)) AS `Number 0-9`,
+        //         COUNT(*) AS `Count`,
+        //         (SELECT COUNT(*)
+        //         FROM product1s_all
+        //         WHERE LEFT(product, 1) = LEFT(p.product, 1)
         //         AND BRAND = 'gnc') AS `Total`
         //     ")
         //     ->whereRaw("product REGEXP '^[0-9]'")
@@ -300,10 +326,10 @@ class ProductController extends Controller
         //     ->groupBy(DB::raw('BRAND, LEFT(product, 1)'))
         //     ->get();
 
-        // attributes: array:3[ 'id' => 1, 
-        //                         'position_id' => 1, 
-        //                         'positions:[ 'name_position' => 1, 
-        //                                 'name_position' => 1, 
+        // attributes: array:3[ 'id' => 1,
+        //                         'position_id' => 1,
+        //                         'positions:[ 'name_position' => 1,
+        //                                 'name_position' => 1,
         //                         ]
         //                     ];
 
@@ -778,6 +804,81 @@ class ProductController extends Controller
         } else if (in_array($userpermission, ['BB'])) {
         } else if (in_array($userpermission, ['LL'])) {
         } else if (in_array($userpermission, ['KM'])) {
+            $defaultBrands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->pluck('BRAND')
+            ->toArray();
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $owners = Owner::select(
+                'OWNER',
+                'REMARK',
+                'BRAND')
+            // ->where('BRAND', 'OP')
+            ->whereIn('BRAND', ['KM'])
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $solutions = Solution::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $series = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $categorys = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $sub_categorys = Sub_category::select(
+                'ID',
+                'CATEGORY_ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $pdms = Pdm::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $unit_ps = Unit_p::select(
+                'DESCRIPTION AS UNIT',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $product_groups = ProductGroup::select(
+                'ID',
+                'DESCRIPTION AS product_group_name',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
         }
 
         // $productCodeMax = Product::max('seq');
@@ -1047,6 +1148,81 @@ class ProductController extends Controller
         } else if (in_array($userpermission, ['LL'])) {
         } else if (in_array($userpermission, ['GNC'])) {
         } else if (in_array($userpermission, ['KM'])) {
+            $defaultBrands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->pluck('BRAND')
+            ->toArray();
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $owners = Owner::select(
+                'OWNER',
+                'REMARK',
+                'BRAND')
+            // ->where('BRAND', 'OP')
+            ->whereIn('BRAND', ['KM'])
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $solutions = Solution::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $series = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $categorys = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $sub_categorys = Sub_category::select(
+                'ID',
+                'CATEGORY_ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $pdms = Pdm::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $unit_ps = Unit_p::select(
+                'DESCRIPTION AS UNIT',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $product_groups = ProductGroup::select(
+                'ID',
+                'DESCRIPTION AS product_group_name',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
         }
 
         // dd($brands);
@@ -1469,7 +1645,7 @@ class ProductController extends Controller
         $description = substr($request->BRAND, 2, 2);
         // $status = $company.' - '.$description;
 
-        // dd($description);
+        dd($request);
         DB::beginTransaction();
         try {
             $data_product = [
@@ -1601,7 +1777,7 @@ class ProductController extends Controller
         ->leftJoin('conditions', 'product1s.CONDITION_SALE', '=', 'conditions.ID')
         // ->leftJoin('product_channels', 'product1s.PRODUCT', '=', 'product_channels.PRODUCT')
         ->firstWhere('product1s.PRODUCT', '=', $PRODUCT);
-        
+
         $data->REG_DATE = date('Y-m-d', strtotime($data->REG_DATE));
         // dd($data);
 
@@ -2045,7 +2221,7 @@ class ProductController extends Controller
                     // dd($data_old_arr);
                     $logProductUpddate = Product1Log::create($data_old_arr);
                 }
-                
+
                 $data_product_upddate = [
                     'BRAND' => $request->input('BRAND'),
                     'PRODUCT' => $request->input('Code'),
@@ -2130,7 +2306,7 @@ class ProductController extends Controller
                 //         'data_product_upddate' => $data_product_upddate,
                 //         'multiChannels' => $multiChannels
                 //     ]);
-            
+
                 $productUpddate = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
 
                 // dd($productUpddate);
@@ -2203,16 +2379,16 @@ class ProductController extends Controller
         //         case 0:
         //             $data->orderBy('BRAND', $request->order[0]['dir']);
         //             break;
-        //         case 1: 
+        //         case 1:
         //             $data->orderBy('GRP_P', $request->order[0]['dir']);
         //             break;
-        //         case 2: 
+        //         case 2:
         //             $data->orderBy('PRODUCT', $request->order[0]['dir']);
         //             break;
-        //         case 3: 
+        //         case 3:
         //             $data->orderBy('BARCODE', $request->order[0]['dir']);
         //             break;
-        //         case 4: 
+        //         case 4:
         //             $data->orderBy('NAME_THAI', $request->order[0]['dir']);
         //             break;
         //         default:
@@ -2275,7 +2451,7 @@ class ProductController extends Controller
             )
             ->whereIn('BRAND', ['KTY'])
             ->orderBy('BARCODE', 'DESC');
-        } 
+        }
             else if (in_array($userpermission, ['Retail Operation - GNC'])) {
                 $data = Product1::select(
                     'BRAND',

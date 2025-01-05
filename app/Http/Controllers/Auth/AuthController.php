@@ -35,7 +35,7 @@ class AuthController extends Controller
     {
         $this->middleware('guest')->except('apiByPassLogout');
     }
-    
+
     public function index()
     {
         $response = Http::withHeaders([
@@ -195,7 +195,7 @@ class AuthController extends Controller
             }
             $user = User::select('id')
                 ->where('username', $request->username)
-                ->first(); 
+                ->first();
             if($user == NULL) {
                 $createUser = User::create([
                     'username' => $request->username
@@ -222,7 +222,7 @@ class AuthController extends Controller
             $user->save();
             Auth::login($user, true);
             return response()->json(['status' => 'success', 'response' => $response, 'route' => '/product_master/pd_master']);
-        } 
+        }
         else if ($data->failed()) {
             $error = $data->json();
             return response()->json(['error' => $error], 401);
@@ -253,7 +253,7 @@ class AuthController extends Controller
         ];
 
         $data = Http::withHeaders($headers)->post($loginUrl, $setAuth);
-        
+
         // dd($data);
 
         if ($data->successful()) {
@@ -268,7 +268,7 @@ class AuthController extends Controller
             //     'Response' => $response['data']['roles']
             // ]);
             if ($user == NULL) {
-                dd(1);
+                // dd(1);
                 $createUser = User::create([
                     'username' => $request->username
                 ]);
@@ -322,7 +322,7 @@ class AuthController extends Controller
             ->pluck('role')
             ->toArray();
             // dd($userRole);
-        
+
             if (!empty($userRole)) {
                 if (count($userRole) > 1) {
                     $defaultRole = $userRole[0];
@@ -352,7 +352,7 @@ class AuthController extends Controller
         //     $response = $data->json();
         //     $user = User::select('id')
         //         ->where('username', $request->username)
-        //         ->first(); 
+        //         ->first();
         //     if($user == NULL) {
         //         $createUser = User::create([
         //             'username' => $request->username
@@ -443,9 +443,9 @@ class AuthController extends Controller
     public function apiByPassLogout(Request $request)
     {
         Auth::guard('web')->logout();
- 
+
         $request->session()->invalidate();
-    
+
         $request->session()->regenerateToken();
 
         return redirect('/login');
