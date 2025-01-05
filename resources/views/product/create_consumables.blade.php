@@ -51,7 +51,7 @@
             border-color: black;
         }
 
-        .select2-container--default .select2-selection--multiple { 
+        .select2-container--default .select2-selection--multiple {
             height: 55%!important;
             min-height: 50%!important;
         }
@@ -327,13 +327,13 @@
 
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">สินค้าของบริษัท<span class="text-danger"> *</span></label>
-                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="GRP_P" id="GRP_P" onchange="onchangeValueSelect2()">
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="GRP_P" id="GRP_P">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($grp_ps as $key => $grp_p)
                                                                             <option value={{ $grp_p->GRP_P }}>{{ $grp_p->BRAND.' - (' .$grp_p->REMARK.')' }}</option>
                                                                         @endforeach
                                                                     </select>
-                                                                    <span id="GRP_P_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
+                                                                    {{-- <span id="GRP_P_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span> --}}
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="AGE">อายุการใช้งาน</label>
@@ -607,23 +607,23 @@
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">หน่วยสินค้า<span class="text-danger"> *</span></label>
-                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="UNIT" id="UNIT" onchange="onchangeValueSelect2()">
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="UNIT" id="UNIT">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($unit_ps as $key => $unit_p)
                                                                             <option value={{ $unit_p->UNIT }} >{{ $unit_p->BRAND.' - ('.$unit_p->UNIT.')' }}</option>
                                                                         @endforeach
                                                                     </select>
-                                                                    <span id="UNIT_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
+                                                                    {{-- <span id="UNIT_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span> --}}
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">หน่วยปริมาณ<span class="text-danger"> *</span></label>
-                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="UNIT_TYPE" id="UNIT_TYPE" onchange="onchangeValueSelect2()">
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="UNIT_TYPE" id="UNIT_TYPE">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($unit_types as $key => $unit_type)
                                                                             <option value={{ $unit_type->UNIT_TYPE }}>{{ $unit_type->BRAND.' - ('.$unit_type->UNIT_TYPE.')' }}</option>
                                                                         @endforeach
                                                                     </select>
-                                                                    <span id="UNIT_TYPE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
+                                                                    {{-- <span id="UNIT_TYPE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span> --}}
                                                                 </div>
                                                                 <!-- <div class="md:col-span-3">
                                                                     <label for="name">ประเภทสินค้า [บัญชี]<span class="text-danger"> *</span></label>
@@ -795,38 +795,50 @@
         }
 
         $(document).ready(function() {
-            let obj = <?php echo json_encode($defaultBrands); ?>;
-            // console.log("🚀 ~ $ ~ obj:", obj)
-            let allObj = <?php echo json_encode($allBrands); ?>;
-            $('select').on('select2:unselect', function(e) {
-                let data = e.params.data;
-                // console.log("🚀 ~ $ ~ obj[0]:", obj[0])
-                // console.log("🚀 ~ $ ~ data:", data.id)
-                if (data.id == obj[0]) {
-                    let asd = [...$('#multiSelect').val(), ...obj]
-                    $('#multiSelect').val(asd).trigger("change");
-                }
-                // console.log("🚀 ~ $ ~  $('#multiSelect').val(obj):",  $('#multiSelect').val())
-                // console.log(data.id);
-                // console.log(data.text);
-            });
 
+            // Convert PHP arrays to JavaScript objects
+            let defaultBrands = <?php echo json_encode($defaultBrands); ?>;
+            let allBrands = <?php echo json_encode($allBrands); ?>;
+
+            // Initialize Select2
             $('.js-example-basic-single').select2();
-            let placeholder = "--- กรุณาเลือก ---";
             $('#multiSelect').select2({
+                placeholder: "--- กรุณาเลือก ---",
                 closeOnSelect: false,
             });
-            
-            allObj.forEach(function(e){
-                if(!$('#multiSelect').find('option:contains(' + e + ')').length) {
-                    var newOption = new Option(e, e, false, false);
-                    $('#multiSelect').append(newOption).trigger('change');
+
+            // Handle unselect event
+            $('#multiSelect').on('select2:unselect', function(e) {
+                let data = e.params.data;
+                if (data.id === defaultBrands[0]) {
+                    // Prevent unselecting the default brand
+                    let selectedValues = [...$('#multiSelect').val(), ...defaultBrands];
+                    $('#multiSelect').val(selectedValues).trigger("change");
                 }
             });
 
-            setTimeout(function() {
-                $('#multiSelect').val(obj).trigger("change");
-            }, 600);
+            // Populate the dropdown with allBrands
+            if (defaultBrands[0] === 'KM') {
+                // If the default brand is "KM", set allBrands as the selected values
+                $('#multiSelect').empty(); // Clear existing options
+                allBrands.forEach(function(brand) {
+                    let newOption = new Option(brand, brand, false, true);
+                    $('#multiSelect').append(newOption);
+                });
+                $('#multiSelect').trigger("change"); // Update Select2
+            } else {
+                // Add any missing brands from allBrands to the dropdown
+                allBrands.forEach(function(brand) {
+                    if (!$('#multiSelect').find(`option[value="${brand}"]`).length) {
+                        let newOption = new Option(brand, brand, false, false);
+                        $('#multiSelect').append(newOption);
+                    }
+                });
+                $('#multiSelect').trigger("change"); // Update Select2
+                    setTimeout(function() {
+                    $('#multiSelect').val(defaultBrands).trigger("change");
+                }, 600);
+            }
 
             onOpenhandler()
             document.querySelectorAll('.setcheckbox')[0].checked = true
@@ -907,7 +919,7 @@
         function checkValueSelect2(id) {
             console.log("🚀 ~ checkValueSelect2 ~ test:")
             const VENDOR = jQuery('#VENDOR').val();
-            const GRP_P = jQuery('#GRP_P').val();
+            // const GRP_P = jQuery('#GRP_P').val();
             // const BRAND_P = jQuery('#BRAND_P').val();
             const SUPPLIER = jQuery('#SUPPLIER').val();
             // const TYPE_G = jQuery('#TYPE_G').val();
@@ -917,8 +929,8 @@
             // const S_CAT = jQuery('#S_CAT').val();
             // const PDM_GROUP = jQuery('#PDM_GROUP').val();
             const STATUS = jQuery('#STATUS').val();
-            const UNIT = jQuery('#UNIT').val();
-            const UNIT_TYPE = jQuery('#UNIT_TYPE').val();
+            // const UNIT = jQuery('#UNIT').val();
+            // const UNIT_TYPE = jQuery('#UNIT_TYPE').val();
             // const ACC_TYPE = jQuery('#ACC_TYPE').val();
             const CONDITION_SALE = jQuery('#CONDITION_SALE').val();
 
@@ -927,11 +939,11 @@
             } else {
                 jQuery('#VENDOR_textalert').removeClass('hidden');
             }
-            if (GRP_P) {
-                jQuery('#GRP_P_textalert').addClass('hidden');
-            } else {
-                jQuery('#GRP_P_textalert').removeClass('hidden');
-            }
+            // if (GRP_P) {
+            //     jQuery('#GRP_P_textalert').addClass('hidden');
+            // } else {
+            //     jQuery('#GRP_P_textalert').removeClass('hidden');
+            // }
             // if (BRAND_P) {
             //     jQuery('#BRAND_P_textalert').addClass('hidden');
             // } else {
@@ -977,16 +989,16 @@
             } else {
                 jQuery('#STATUS_textalert').removeClass('hidden');
             }
-            if (UNIT) {
-                jQuery('#UNIT_textalert').addClass('hidden');
-            } else {
-                jQuery('#UNIT_textalert').removeClass('hidden');
-            }
-            if (UNIT_TYPE) {
-                jQuery('#UNIT_TYPE_textalert').addClass('hidden');
-            } else {
-                jQuery('#UNIT_TYPE_textalert').removeClass('hidden');
-            }
+            // if (UNIT) {
+            //     jQuery('#UNIT_textalert').addClass('hidden');
+            // } else {
+            //     jQuery('#UNIT_textalert').removeClass('hidden');
+            // }
+            // if (UNIT_TYPE) {
+            //     jQuery('#UNIT_TYPE_textalert').addClass('hidden');
+            // } else {
+            //     jQuery('#UNIT_TYPE_textalert').removeClass('hidden');
+            // }
             // if (ACC_TYPE) {
             //     jQuery('#ACC_TYPE_textalert').addClass('hidden');
             // } else {
@@ -998,7 +1010,7 @@
                 jQuery('#CONDITION_SALE_textalert').removeClass('hidden');
             }
 
-            return !!VENDOR && !!GRP_P && !!SUPPLIER && !!STATUS && !!UNIT && !!UNIT_TYPE && !!CONDITION_SALE
+            return !!VENDOR && !!SUPPLIER && !!STATUS && !!CONDITION_SALE
             // return !!VENDOR && !!GRP_P && !!SUPPLIER && !!TYPE_G && !!SOLUTION && !!SERIES && !!CATEGORY && !!S_CAT && !!PDM_GROUP && !!STATUS && !!UNIT && !!UNIT_TYPE && !!ACC_TYPE && !!CONDITION_SALE
         }
 
@@ -1203,10 +1215,10 @@
                         },
                         error: function (params) {
                             setTimeout(function() {
-                                errorMessage("Can't Create Username!");
+                                errorMessage("เพิ่มขู้อมูลไม่สำเร็จ!");
                             },dlayMessage)
                             setTimeout(function() {
-                                toastr.error("Can't Create Username!");
+                                toastr.error("เพิ่มขู้อมูลไม่สำเร็จ!");
                             },dlayMessage)
                         }
                     });

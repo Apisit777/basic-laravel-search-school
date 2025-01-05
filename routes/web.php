@@ -61,29 +61,38 @@ Route::middleware('auth')->group(function() {
         Route::get('/edit/{id_barcode}', [ProductFormController::class, 'edit'])->name('edit');
         Route::post('/update/{id_barcode}', [ProductFormController::class, 'update'])->name('update');
     });
-    
+
     // Account
     Route::group(['prefix' => 'account', 'as' => 'account.'], function () {
         Route::get('', [ProductFormController::class, 'indexAccount'])->name('index');
         Route::post('/list_ajax_account', [ProductFormController::class, 'listAjaxAccount'])->name('list_ajax_account');
         Route::get('/create', [ProductFormController::class, 'createAccount'])->name('create');
-        Route::get('/edit/{product}', [ProductFormController::class, 'editAccount'])->name('edit');
+        Route::get('/edit/{product}', [ProductFormController::class, 'editAccount'])->name('edit'); 
         Route::post('/update_account/{product}', [ProductFormController::class, 'updateAccount'])->name('update_account');
     });
-    
+
     // product
     Route::group(['prefix' => 'product_master', 'as' => 'product_master.'], function () {
         Route::get('/pd_master', [ProductController::class, 'index'])->name('index');
         // Solution
         Route::get('/solution', [ToolController::class, 'solution'])->name('solution');
+        Route::post('/solution_check_id', [ToolController::class, 'solutionCheckId'])->name('solution_check_id');
+        Route::post('/solution_check_name', [ToolController::class, 'solutionCheckName'])->name('solution_check_name');
+        Route::post('/list_solution', [ToolController::class, 'listSolution'])->name('list_solution');
+
         Route::get('/series', [ToolController::class, 'series'])->name('series');
+
         Route::get('/category', [ToolController::class, 'category'])->name('category');
+
         Route::get('/sub_category', [ToolController::class, 'subCategory'])->name('sub_category');
+
         // Product Group
         Route::get('/product_group', [ToolController::class, 'productGroup'])->name('product_group');
+        Route::post('/productgroup_check_id', [ToolController::class, 'productGroupCheckId'])->name('productgroup_check_id');
         Route::post('/productgroup_checkname', [ToolController::class, 'productGroupCheckName'])->name('productgroup_checkname');
         Route::post('/product_group_create_or_update', [ToolController::class, 'productGroupCreateOrUpdate'])->name('product_group_create_or_update');
         Route::post('/list_product_group', [ToolController::class, 'listProductGroup'])->name('list_product_group');
+
         //
         Route::get('/supplier', [ToolController::class, 'supplier'])->name('supplier');
 
