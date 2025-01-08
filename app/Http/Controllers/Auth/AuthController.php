@@ -329,11 +329,14 @@ class AuthController extends Controller
                 } else {
                     $defaultRole = $userRole[0];
                 }
+
+                session(['role' => $defaultRole]);
+                
                 // dd($userRole);
                 $user->setRememberToken(Str::random(60));
                 // dd(1);
                 $user->save();
-                Auth::login($user, true);
+                Auth::login($user, false);
                 return response()->json(['status' => 'success', 'response' => $response, 'default_role' => $defaultRole, 'route' => '/product_master/pd_master']);
             } else {
                 return response()->json([
@@ -453,8 +456,8 @@ class AuthController extends Controller
 
     public function tokenExpired()
     {
-        dd(true);
-        return response()->json(['true' => true, 'route' => 'login']);
-        // return true;
+        // dd(1);
+        // return response()->json(['true' => true, 'route' => 'login']);
+        return true;
     }
 }

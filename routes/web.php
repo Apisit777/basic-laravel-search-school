@@ -45,9 +45,10 @@ Route::get('/api_bypass_login', [AuthController::class, 'apiByPassLogin'])->name
 Route::get('/switch_role', [HomeController::class, 'role'])->name('switch_role');
 Route::post('/role_bypass', [HomeController::class, 'roleByPass'])->name('role_bypass');
 
-Route::middleware('auth')->group(function() {
+// Route::middleware('auth')->group(function() {
+Route::group(['middleware' => ['auth', 'check.permission']], function () {
 
-    Route::get('/check_token', [AuthController::class, 'tokenExpired'])->name('auth.tokenExpired');
+    // Route::get('/check_token', [AuthController::class, 'tokenExpired'])->name('tokenExpired');
 
     // npd
     Route::group(['prefix' => 'new_product_develop', 'as' => 'new_product_develop.'], function () {
@@ -78,19 +79,35 @@ Route::middleware('auth')->group(function() {
         Route::get('/solution', [ToolController::class, 'solution'])->name('solution');
         Route::post('/solution_check_id', [ToolController::class, 'solutionCheckId'])->name('solution_check_id');
         Route::post('/solution_check_name', [ToolController::class, 'solutionCheckName'])->name('solution_check_name');
+        Route::post('/solution_create', [ToolController::class, 'solutionCreate'])->name('solution_create');
+        Route::post('/solution_update/{id}', [ToolController::class, 'solutionUpdate'])->name('solution_update');
         Route::post('/list_solution', [ToolController::class, 'listSolution'])->name('list_solution');
-
+        
+        // Series
         Route::get('/series', [ToolController::class, 'series'])->name('series');
+        Route::post('/series_check_id', [ToolController::class, 'seriesCheckId'])->name('series_check_id');
+        Route::post('/series_check_name', [ToolController::class, 'seriesCheckName'])->name('series_check_name');
+        Route::post('/series_create', [ToolController::class, 'seriesCreate'])->name('series_create');
+        Route::post('/series_update/{id}', [ToolController::class, 'seriesUpdate'])->name('series_update');
+        Route::post('/list_series', [ToolController::class, 'listSeries'])->name('list_series');
 
+        // Category
         Route::get('/category', [ToolController::class, 'category'])->name('category');
+        Route::post('/category_check_id', [ToolController::class, 'categoryCheckId'])->name('category_check_id');
+        Route::post('/category_check_name', [ToolController::class, 'categoryCheckName'])->name('category_check_name');
+        Route::post('/category_create', [ToolController::class, 'categoryCreate'])->name('category_create');
+        Route::post('/category_update/{id}', [ToolController::class, 'categoryUpdate'])->name('category_update');
+        Route::post('/list_category', [ToolController::class, 'listCategory'])->name('list_category');
 
+        // Sub Category
         Route::get('/sub_category', [ToolController::class, 'subCategory'])->name('sub_category');
 
         // Product Group
         Route::get('/product_group', [ToolController::class, 'productGroup'])->name('product_group');
         Route::post('/productgroup_check_id', [ToolController::class, 'productGroupCheckId'])->name('productgroup_check_id');
         Route::post('/productgroup_checkname', [ToolController::class, 'productGroupCheckName'])->name('productgroup_checkname');
-        Route::post('/product_group_create_or_update', [ToolController::class, 'productGroupCreateOrUpdate'])->name('product_group_create_or_update');
+        Route::post('/product_group_create', [ToolController::class, 'productGroupCreate'])->name('product_group_create');
+        Route::post('/product_group_update/{id}', [ToolController::class, 'productGroupUpdate'])->name('product_group_update');
         Route::post('/list_product_group', [ToolController::class, 'listProductGroup'])->name('list_product_group');
 
         //

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Tool;
 use App\Models\Tool;
 use App\Models\ProductGroup;
 use App\Models\Solution;
+use App\Models\Series;
+use App\Models\Category;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -22,13 +24,14 @@ class ToolController extends Controller
 
     public function solution()
     {
-        $data = Solution::all();
+        $data = Solution::select('ID', 'DESCRIPTION', 'BRAND', 'updated_at')->get();
         return view('tool.solution.index', compact('data'));
     }
 
     public function series()
     {
-        return view('tool.series.index');
+        $data = Series::select('ID', 'DESCRIPTION', 'BRAND', 'updated_at')->get();
+        return view('tool.series.index', compact('data'));
     }
 
     public function category()
@@ -43,7 +46,7 @@ class ToolController extends Controller
 
     public function productGroup()
     {
-        $data = ProductGroup::all();
+        $data = ProductGroup::select('ID', 'DESCRIPTION', 'BRAND', 'updated_at')->get();
         // dd($data);
         return view('tool.product_group.index', compact('data'));
     }
@@ -81,6 +84,74 @@ class ToolController extends Controller
         // dd($data);
         return response()->json($data > 0 ? false : true);
     }
+    
+    public function seriesCheckId(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_ProductGroup_ID) {
+            $data = Series::select('ID')
+                ->where('ID', '!=', $request->Edit_ProductGroup_ID)
+                ->where('ID', $request->ID)
+                ->count();
+        } else {
+            $data = Series::select('ID')
+                ->where('ID', $request->ID)
+                ->count();
+        }
+        // dd($data);
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function seriesCheckName(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_ProductGroup_ID) {
+            $data = Series::select('ID')
+                ->where('ID', '!=', $request->Edit_ProductGroup_ID)
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        } else {
+            $data = Series::select('ID')
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        }
+        // dd($data);
+        return response()->json($data > 0 ? false : true);
+    }
+    public function categoryCheckId(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_ProductGroup_ID) {
+            $data = Category::select('ID')
+                ->where('ID', '!=', $request->Edit_ProductGroup_ID)
+                ->where('ID', $request->ID)
+                ->count();
+        } else {
+            $data = Category::select('ID')
+                ->where('ID', $request->ID)
+                ->count();
+        }
+        // dd($data);
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function categoryCheckName(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_ProductGroup_ID) {
+            $data = Category::select('ID')
+                ->where('ID', '!=', $request->Edit_ProductGroup_ID)
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        } else {
+            $data = Category::select('ID')
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        }
+        // dd($data);
+        return response()->json($data > 0 ? false : true);
+    }
+
     public function productGroupCheckId(Request $request)
     {
         // dd($request);
@@ -115,7 +186,7 @@ class ToolController extends Controller
         return response()->json($data > 0 ? false : true);
     }
 
-    public function solutionCreateOrUpdate(Request $request)
+    public function solutionCreate(Request $request)
     {
         // dd($request->all());
         DB::beginTransaction();
@@ -127,7 +198,8 @@ class ToolController extends Controller
                 $userpermission = 'CPS';
             }
 
-            $dataSolution = Solution::updateOrCreate(['ID' => $request->ID], [
+            $dataSolution = Solution::create([
+                'ID' => $request->ID,
                 'DESCRIPTION' => $request->DESCRIPTION,
                 'BRAND' => $userpermission,
                 'updated_at' => date("Y/m/d H:i:s")
@@ -142,7 +214,7 @@ class ToolController extends Controller
             return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
         }
     }
-    public function productGroupCreateOrUpdate(Request $request)
+    public function solutionUpdate(Request $request, $id)
     {
         // dd($request->all());
         DB::beginTransaction();
@@ -154,15 +226,188 @@ class ToolController extends Controller
                 $userpermission = 'CPS';
             }
 
-            // dd([
-            //     'User Permission' => $userpermission,
-            //     'Request' => $request->all(),
-            // ]);
-            $dataProductGroup = ProductGroup::updateOrCreate(['ID' => $request->ID], [
+            $data_solution = [
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'updated_at' => date("Y/m/d H:i:s")
+            ];
+
+            $data_solution_upddate = Solution::where('ID', $id)->update($data_solution);
+
+            // dd($dataProductGroup);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function seriesCreate(Request $request)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+                $userpermission = 'OP';
+            } else if (in_array($userpermission, ['Marketing - CPS'])) {
+                $userpermission = 'CPS';
+            }
+
+            $dataSeries = Series::create([
+                'ID' => $request->ID,
                 'DESCRIPTION' => $request->DESCRIPTION,
                 'BRAND' => $userpermission,
                 'updated_at' => date("Y/m/d H:i:s")
             ]);
+
+            // dd($dataProductGroup);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+    
+    public function seriesUpdate(Request $request, $id)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+                $userpermission = 'OP';
+            } else if (in_array($userpermission, ['Marketing - CPS'])) {
+                $userpermission = 'CPS';
+            }
+
+            $data_series = [
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'updated_at' => date("Y/m/d H:i:s")
+            ];
+
+            $data_series_upddate = Series::where('ID', $id)->update($data_series);
+
+            // dd($dataProductGroup);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+    public function categoryCreate(Request $request)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+                $userpermission = 'OP';
+            } else if (in_array($userpermission, ['Marketing - CPS'])) {
+                $userpermission = 'CPS';
+            }
+
+            $dataCategory = Category::create([
+                'ID' => $request->ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'updated_at' => date("Y/m/d H:i:s")
+            ]);
+
+            // dd($dataProductGroup);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function categoryUpdate(Request $request, $id)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+                $userpermission = 'OP';
+            } else if (in_array($userpermission, ['Marketing - CPS'])) {
+                $userpermission = 'CPS';
+            }
+
+            $data_category = [
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'updated_at' => date("Y/m/d H:i:s")
+            ];
+
+            $data_category_upddate = Category::where('ID', $id)->update($data_category);
+
+            // dd($data_category_upddate);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function productGroupCreate(Request $request)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+                $userpermission = 'OP';
+            } else if (in_array($userpermission, ['Marketing - CPS'])) {
+                $userpermission = 'CPS';
+            }
+            
+            $dataProductGroup = ProductGroup::create([
+                'ID' => $request->ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'updated_at' => date("Y/m/d H:i:s")
+            ]);
+
+            // dd($dataProductGroup);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+    public function productGroupUpdate(Request $request, $id)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+                $userpermission = 'OP';
+            } else if (in_array($userpermission, ['Marketing - CPS'])) {
+                $userpermission = 'CPS';
+            }
+
+            $data_product_group = [
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'updated_at' => date("Y/m/d H:i:s")
+            ];
+
+            $data_product_group_upddate = ProductGroup::where('ID', $id)->update($data_product_group);
 
             // dd($dataProductGroup);
             DB::commit();
@@ -226,6 +471,180 @@ class ToolController extends Controller
             ->orderBy('DESCRIPTION', 'ASC');
         } else if (in_array($userpermission, ['Procurement - KTY'])) {
             $data = Solution::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND',
+                'updated_at'
+            )
+            ->where('BRAND', 'KTY')
+            ->orderBy('DESCRIPTION', 'ASC');
+        }
+
+        if ($GRP_P != null) {
+            $data->where('product1s.GRP_P', $GRP_P);
+        }
+
+        if (null != $DOC_NO) {
+            $data = $data->where(function ($data) use ($DOC_NO, $field_detail) {
+                for ($i = 0; $i < count($field_detail); $i++) {
+                    $data->orWhere($field_detail[$i], 'like', '%'.$DOC_NO.'%');
+                }
+            });
+        }
+
+        // dd($data->toSql());
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
+    }
+
+    public function listSeries(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $GRP_P = $request->input('brand_id');
+        $DOC_NO = $request->search;
+        $field_detail = [
+            'product1s.PRODUCT',
+        ];
+
+        $data = Series::select(
+            'ID',
+            'DESCRIPTION',
+            'BRAND',
+            'updated_at'
+        )
+        ->orderBy('DESCRIPTION', 'ASC');
+
+        $userpermission = Auth::user()->getUserPermission->name_position;
+        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        if (in_array($userpermission, [$isSuperAdmin, 'Admin'])) {
+                $data = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND',
+                'updated_at'
+            )
+            ->orderBy('DESCRIPTION', 'ASC');
+        } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+            $data = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND',
+                'updated_at'
+            )
+            ->where('BRAND', 'OP')
+            ->orderBy('DESCRIPTION', 'ASC');
+
+        } else if (in_array($userpermission, ['Marketing - CPS'])) {
+            $data = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND',
+                'updated_at'
+            )
+            ->where('BRAND', 'CPS')
+            ->orderBy('DESCRIPTION', 'ASC');
+        } else if (in_array($userpermission, ['Procurement - KTY'])) {
+            $data = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND',
+                'updated_at'
+            )
+            ->where('BRAND', 'KTY')
+            ->orderBy('DESCRIPTION', 'ASC');
+        }
+
+        if ($GRP_P != null) {
+            $data->where('product1s.GRP_P', $GRP_P);
+        }
+
+        if (null != $DOC_NO) {
+            $data = $data->where(function ($data) use ($DOC_NO, $field_detail) {
+                for ($i = 0; $i < count($field_detail); $i++) {
+                    $data->orWhere($field_detail[$i], 'like', '%'.$DOC_NO.'%');
+                }
+            });
+        }
+
+        // dd($data->toSql());
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
+    }
+
+    public function listCategory(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $GRP_P = $request->input('brand_id');
+        $DOC_NO = $request->search;
+        $field_detail = [
+            'product1s.PRODUCT',
+        ];
+
+        $data = Category::select(
+            'ID',
+            'DESCRIPTION',
+            'BRAND',
+            'updated_at'
+        )
+        ->orderBy('DESCRIPTION', 'ASC');
+
+        $userpermission = Auth::user()->getUserPermission->name_position;
+        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        if (in_array($userpermission, [$isSuperAdmin, 'Admin'])) {
+                $data = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND',
+                'updated_at'
+            )
+            ->orderBy('DESCRIPTION', 'ASC');
+        } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
+            $data = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND',
+                'updated_at'
+            )
+            ->where('BRAND', 'OP')
+            ->orderBy('DESCRIPTION', 'ASC');
+
+        } else if (in_array($userpermission, ['Marketing - CPS'])) {
+            $data = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND',
+                'updated_at'
+            )
+            ->where('BRAND', 'CPS')
+            ->orderBy('DESCRIPTION', 'ASC');
+        } else if (in_array($userpermission, ['Procurement - KTY'])) {
+            $data = Category::select(
                 'ID',
                 'DESCRIPTION',
                 'BRAND',

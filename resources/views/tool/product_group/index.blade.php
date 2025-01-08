@@ -358,7 +358,7 @@
             console.log("🚀 ~ modelProductGroup ~ id:", id, DESCRIPTION)
             if (id) {
                 jQuery("#Edit_ProductGroup_ID").val(id)
-                jQuery("#ID").val(id)
+                jQuery("#ID").val(id).attr("readonly", true).addClass('h-10 rounded-sm px-4 w-full text-center bg-[#E7E7E7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#000000] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500')
                 jQuery("#DESCRIPTION").val(DESCRIPTION)
                 jQuery("#staticBackdropLabel").text('แก้ไข Product Group')
                 jQuery("#submitButton").attr("disabled", false);
@@ -371,7 +371,7 @@
                 jQuery("#correct_username_id").hide();
             } else {
                 jQuery("#Edit_ProductGroup_ID").val('')
-                jQuery("#ID").val('')
+                jQuery("#ID").val('').removeClass('bg-[#E7E7E7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-[#000000] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500')
                 jQuery("#DESCRIPTION").val('')
                 jQuery("#staticBackdropLabel").text('เพิ่ม Product Group')
                 jQuery("#submitButton").attr("disabled", true);
@@ -459,7 +459,7 @@
                                         data-twe-target="#staticBackdrop"
                                         data-twe-ripple-init
                                         data-twe-ripple-color="light"
-                                        onclick="modelProductGroup('{{ $data[0]['ID'] }}', '{{ $data[0]['DESCRIPTION']}}' )"
+                                        onclick="modelProductGroup('${row.ID}','${row.DESCRIPTION}')"
                                         type="button"
                                         class="px-2 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group"
                                     >
@@ -485,9 +485,19 @@
                     'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+            let url = ''
+            const Edit_ProductGroup_ID = jQuery('#Edit_ProductGroup_ID').val();
+
+            if(Edit_ProductGroup_ID) {
+                url = "{{ route('product_master.product_group_update', 0) }}".replaceAll('/0', '/' + Edit_ProductGroup_ID);
+            } else {
+                url = "{{ route('product_master.product_group_create') }}"
+            }
+
             jQuery.ajax({
                 method: "POST",
-                url: "{{ route('product_master.product_group_create_or_update') }}",
+                url,
                 data: $("#form_product_group").serialize(),
                 beforeSend: function () {
                     $('#loader_create_menu_consumables').removeClass('hidden')
@@ -510,8 +520,10 @@
                             toastr.error("Can't create menu!");
                         },dlayMessage)
                     }
+                    $('#loader_create_menu_consumables').addClass('hidden');
                 },
                 error: function(error) {
+                    $('#loader_create_menu_consumables').addClass('hidden');                   
                 }
             });
         }

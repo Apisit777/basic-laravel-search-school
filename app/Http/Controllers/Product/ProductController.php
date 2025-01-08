@@ -48,6 +48,7 @@ class ProductController extends Controller
      */
     public function index()
     {
+    
         //     $data = Product1::select(
         // 'product1s.BRAND AS BRAND',
         //         'GRP_P',
