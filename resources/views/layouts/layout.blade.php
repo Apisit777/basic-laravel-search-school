@@ -47,25 +47,31 @@
 
     <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
     <script>
-    // $( document ).ready(function() {
-    //     setInterval(()=>{
-    //         $.get("{{ route('auth.tokenExpired') }}", function(data) {
-    //         }).fail(function() {
-    //             Swal.fire({
-    //                 title: 'Session Expired',
-    //                 text: "กรุณารีโหลดหน้าใหม่",
-    //                 icon: 'warning',
-    //                 showConfirmButton: true,
-    //                 confirmButtonColor: '#00385B',
-    //             }).then((result)=>{
-    //                 console.log("🚀 result:", result)
-    //                 window.location.reload()
-    //             })
-
-    //         });
-
-    //     },10000 )
-    // });
+        $(document).ready(function () {
+            // Post request to check session status
+            // $.post('/role_bypass', {
+            //     _token: $('meta[name="csrf-token"]').attr('content') // Add CSRF token for security
+            // }, function (response) {
+            //     if (!response.isAuthenticated) {
+            //         Swal.fire({
+            //             title: 'Session Expired',
+            //             text: "Please log in again.",
+            //             icon: 'warning',
+            //             showConfirmButton: true,
+            //             confirmButtonColor: '#00385B',
+            //         }).then(() => {
+            //             window.location.href = '/login';
+            //         });
+            //     }
+            // }).fail(function () {
+            //     Swal.fire({
+            //         title: 'Error',
+            //         text: 'Could not check session status. Please try reloading the page.',
+            //         icon: 'error',
+            //         confirmButtonColor: '#00385B',
+            //     });
+            // });
+        });
 
         $.ajaxSetup({
             headers: {

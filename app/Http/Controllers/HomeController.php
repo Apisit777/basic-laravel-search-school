@@ -35,6 +35,7 @@ class HomeController extends Controller
     public function roleByPass(Request $request)
     {
 
+        session(['role' => $request->name_position]);
         return response()->json(['status' => 'success', 'route' => '/product_master/pd_master']);
 
         // dd($request);

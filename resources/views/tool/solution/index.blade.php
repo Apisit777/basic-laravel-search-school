@@ -41,7 +41,7 @@
 @section('content')
     <div class="justify-center items-center">
         <div class="mt-6 mb-5 flex justify-center items-center">
-            <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการกลุ่มสินค้า</p>
+            <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการ Solutions</p>
         </div>
 
         <div class="flex xs:right-12 sm:right-12 md:right-14 lg:right-14 xl:right-14 z-10 absolute mt-3">
@@ -459,7 +459,7 @@
                                         data-twe-target="#staticBackdrop"
                                         data-twe-ripple-init
                                         data-twe-ripple-color="light"
-                                        onclick="modelProductGroup('{{ $data[0]['ID'] }}', '{{ $data[0]['DESCRIPTION']}}' )"
+                                        onclick="modelProductGroup('${row.ID}','${row.DESCRIPTION}')"
                                         type="button"
                                         class="px-2 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group"
                                     >
@@ -472,7 +472,6 @@
                                     </button>
                                 </div>
                         `.replaceAll('/0', "/" + row.ID);
-
                     }
                 }
             ]
@@ -485,9 +484,19 @@
                     'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+            let url = ''
+            const Edit_ProductGroup_ID = jQuery('#Edit_ProductGroup_ID').val();
+
+            if(Edit_ProductGroup_ID) {
+                url = "{{ route('product_master.solution_update', 0) }}".replaceAll('/0', '/' + Edit_ProductGroup_ID);
+            } else {
+                url = "{{ route('product_master.solution_create') }}"
+            }
+
             jQuery.ajax({
                 method: "POST",
-                url: "{{ route('product_master.product_group_create_or_update') }}",
+                url,
                 data: $("#form_product_group").serialize(),
                 beforeSend: function () {
                     $('#loader_create_menu_consumables').removeClass('hidden')
