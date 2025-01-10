@@ -42,46 +42,44 @@ class TransferDataOnce extends Command
                 case 'products_clean':
                     $this->tranfer_products_clean();
                     break;
-                case 'product1s_clean_to_products_channels':
-                    $this->tranfer_product1s_clean_to_products_channels();
-                    break;
-                // case 'consumsbles_not_duplicate_to_product1s':
-                //     $this->tranfer_consumsbles_to_product1s_not_duplicate();
-                //     break;
                 case 'consumsbles_duplicate_to_product1s':
                     $this->tranfer_consumsbles_to_product1s_duplicate();
                     break;
-                case 'consumsbles_to_product_channels':
-                    $this->tranfer_consumsbles_to_product_channels();
+                case 'tranfer_to_products_channels':
+                    $this->tranfer_to_products_channels();
                     break;
                 case 'product_category':
                     $this->tranfer_product_category();
                     break;
                 case 'tranfer_data_back':
                     $this->tranfer_data_back();
-                    break;
-                case 'tranfer_data_back_product1_des':
+                    $this->tranfer_data_back_product2();
                     $this->tranfer_data_back_product1_des();
                     break;
-                case 'tranfer_data_back_product2':
-                    $this->tranfer_data_back_product2();
+                // case 'tranfer_data_back_product2':
+                //     $this->tranfer_data_back_product2();
+                //     break;
+                // case 'tranfer_data_back_product1_des':
+                //     $this->tranfer_data_back_product1_des();
+                //     break;
+                case 'transfer_product_original':
+                    $this->transfer_product_original();
                     break;
                 case 'full_tranfer':
                     $this->tranfer_data();
                     $this->tranfer_pro_develops_all();
                     $this->tranfer_products_all();
                     $this->tranfer_products_clean();
-                    $this->tranfer_product1s_clean_to_products_channels();
-                    // $this->tranfer_consumsbles_to_product1s_not_duplicate();
                     $this->tranfer_consumsbles_to_product1s_duplicate();
-                    $this->tranfer_consumsbles_to_product_channels();
-                    // $this->tranfer_product_category();
+                    $this->tranfer_to_products_channels();
+                    $this->tranfer_product_category();
+                    // $this->tranfer_consumsbles_to_product1s_not_duplicate();
                     // $this->tranfer_data_back();
                     // $this->tranfer_data_back_product1_des();
                     // $this->tranfer_data_back_product2();
                     break;
                 default:
-                    $this->error('Unknown task. Available tasks: full_tranfer, tranfer_data, products_all, products_clean, products_all_to_products_channels');
+                    $this->error('Unknown task. Available tasks: 🚀 full_tranfer, tranfer_data, pro_develops_all, products_all, products_clean, consumsbles_duplicate_to_product1s, tranfer_to_products_channels, product_category');
                     break;
             }
         } catch (\Throwable $th) {
@@ -272,7 +270,8 @@ class TransferDataOnce extends Command
         //     }
         // }  
 
-        set_time_limit(0);
+        // set_time_limit(600);
+        ini_set('max_execution_time', 600);      
         $url_dot_30 = config('app.dot_30'); // ดึงค่า URL จาก config/app.php
         $endpoint = $url_dot_30 . "/ims/dealer_transfer_service/dl_mid_query_dot1.php";
         $test_database = [
@@ -470,7 +469,7 @@ class TransferDataOnce extends Command
             ->get();
 
             $diff_count = count($prodDecelopsAll);
-            $this->info("Transferring data from 'product1s_all' to 'product1s_clean'");
+            $this->info("Transferring data from 'pro_develops_all' to 'pro_develops'");
             $this->output->progressStart($diff_count);
 
             foreach ($prodDecelopsAll as $rs) {
@@ -670,7 +669,7 @@ class TransferDataOnce extends Command
                                                 UNION ALL
                                                 SELECT *
                                                     FROM `product1s_all`
-                                                    WHERE BRAND_ORIGINAL IN  ('CPS','OP','BB','LL','GNC','KTY') AND (PRODUCT REGEXP '^[8-9]') AND BARCODE not REGEXP '^[A-Z]'
+                                                    WHERE BRAND_ORIGINAL IN  ('CPS','OP','BB','LL','GNC','KTY') AND (PRODUCT REGEXP '^[8-9]') AND LENGTH(PRODUCT) = 7 AND BARCODE not REGEXP '^[A-Z]'
                                                     GROUP BY PRODUCT
                                                     HAVING COUNT(*) = 1) AS data GROUP BY data.product
                                                                 
@@ -835,7 +834,7 @@ class TransferDataOnce extends Command
         $this->output->progressFinish();
     }
 
-    private function tranfer_product1s_clean_to_products_channels()
+    private function tranfer_to_products_channels()
     {
         try {
             $productCleans = DB::table('product1s_all')->get();
@@ -1032,31 +1031,31 @@ class TransferDataOnce extends Command
         $this->output->progressFinish();
     }
 
-    private function tranfer_consumsbles_to_product_channels()
-    {
-        try {
-            $productConsumsblesAll = DB::table('product1s_all')
-                ->select('BRAND_ORIGINAL', 'PRODUCT')
-                ->where('PRODUCT', 'REGEXP', '^[8-9]')
-                ->get();
+    // private function tranfer_data_to_product_channels()
+    // {
+    //     try {
+    //         $productConsumsblesAll = DB::table('product1s_all')
+    //             ->select('BRAND_ORIGINAL', 'PRODUCT')
+    //             ->where('PRODUCT', 'REGEXP', '^[8-9]')
+    //             ->get();
 
-            $diff_count = count($productConsumsblesAll);
-            $this->info("Transferring data from 'product1s_all' to 'product1s_clean'");
-            $this->output->progressStart($diff_count);
+    //         $diff_count = count($productConsumsblesAll);
+    //         $this->info("Transferring data from 'product1s_all' to 'product1s_clean'");
+    //         $this->output->progressStart($diff_count);
 
-            foreach ($productConsumsblesAll as $rs) {
-                DB::table('product_channels')->insert([
-                    'PRODUCT' => $rs->PRODUCT,
-                    'BRAND' => $rs->BRAND_ORIGINAL,
-                    'UPDATED_AT' => date("Y/m/d h:i:s")
-                ]);
-                $this->output->progressAdvance();
-            }
-        } catch (\Exception $e) {
-            Log::error('Error: ' . $e->getMessage());
-        }
-        $this->output->progressFinish();
-    }
+    //         foreach ($productConsumsblesAll as $rs) {
+    //             DB::table('product_channels')->insert([
+    //                 'PRODUCT' => $rs->PRODUCT,
+    //                 'BRAND' => $rs->BRAND_ORIGINAL,
+    //                 'UPDATED_AT' => date("Y/m/d h:i:s")
+    //             ]);
+    //             $this->output->progressAdvance();
+    //         }
+    //     } catch (\Exception $e) {
+    //         Log::error('Error: ' . $e->getMessage());
+    //     }
+    //     $this->output->progressFinish();
+    // }
 
     public function tranfer_product_category()
     {
@@ -1101,7 +1100,9 @@ class TransferDataOnce extends Command
                                 DB::table('solutions')->insert([
                                     'ID' => $rs['ID'],
                                     'DESCRIPTION' => $rs['DESCRIPTION'],
-                                    'BRAND' => $brand
+                                    'BRAND' => $brand,
+                                    'EDIT_DT' => date('Y-m-d H:i:s'),
+                                    'STATUS_EDIT_DT' => date('Y-m-d H:i:s')
                                 ]);
                                 $this->output->progressAdvance();
                             }
@@ -1112,7 +1113,9 @@ class TransferDataOnce extends Command
                                 DB::table('categories')->insert([
                                     'ID' => $rs['ID'],
                                     'DESCRIPTION' => $rs['DESCRIPTION'],
-                                    'BRAND' => $brand
+                                    'BRAND' => $brand,
+                                    'EDIT_DT' => date('Y-m-d H:i:s'),
+                                    'STATUS_EDIT_DT' => date('Y-m-d H:i:s')
                                 ]);
                                 $this->output->progressAdvance();
                             }
@@ -1122,7 +1125,9 @@ class TransferDataOnce extends Command
                                 DB::table('series')->insert([
                                     'ID' => $rs['ID'],
                                     'DESCRIPTION' => $rs['DESCRIPTION'],
-                                    'BRAND' => $brand
+                                    'BRAND' => $brand,
+                                    'EDIT_DT' => date('Y-m-d H:i:s'),
+                                    'STATUS_EDIT_DT' => date('Y-m-d H:i:s')
                                 ]);
                                 $this->output->progressAdvance();
                             }
@@ -1133,7 +1138,9 @@ class TransferDataOnce extends Command
                                     'ID' => $rs['ID'],
                                     'DESCRIPTION' => $rs['DESCRIPTION'],
                                     'CATEGORY_ID' => $rs['CATEGORY_ID'],
-                                    'BRAND' => $brand
+                                    'BRAND' => $brand,
+                                    'EDIT_DT' => date('Y-m-d H:i:s'),
+                                    'STATUS_EDIT_DT' => date('Y-m-d H:i:s')
                                 ]);
                                 $this->output->progressAdvance();
                             }
@@ -1143,7 +1150,9 @@ class TransferDataOnce extends Command
                                 DB::table('pdms')->insert([
                                     'ID' => $rs['ID'],
                                     'REMARK' => $rs['REMARK'],
-                                    'BRAND' => $brand
+                                    'BRAND' => $brand,
+                                    'EDIT_DT' => date('Y-m-d H:i:s'),
+                                    'STATUS_EDIT_DT' => date('Y-m-d H:i:s')
                                 ]);
                                 $this->output->progressAdvance();
                             }
@@ -1233,6 +1242,8 @@ class TransferDataOnce extends Command
         $dataProducts1 = DB::table('product_channels')
             ->select('product1s.*', 'product_channels.BRAND', 'product_channels.PRODUCT')
             ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT')
+            // ->whereNotNull('product1s.STATUS_EDIT_DT')
+            ->whereRaw( 'product_channels.PRODUCT NOT REGEXP "^[A-Z]"')
             ->get();
 
             
@@ -1240,14 +1251,28 @@ class TransferDataOnce extends Command
         ->select('product1s.*', 'product_channels.BRAND', 'product_channels.PRODUCT')
         ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT');
 
-        $check_junk_8 = $check_junk_8->where('product_channels.PRODUCT', 'REGEXP', '^[8]')->count();
+        // $check_junk_8 = $check_junk_8->where('product_channels.PRODUCT', 'REGEXP', '^[8]')->count();
+        // $check_junk_8 = $check_junk_8->whereRaw("product_channels.PRODUCT REGEXP '^[8]' AND LENGTH(product_channels.PRODUCT) >= 8")->count();
+        $check_junk_8 = $check_junk_8->whereRaw("product_channels.PRODUCT REGEXP '^[8]' AND LENGTH(product_channels.PRODUCT) = 7")->count();
+        // $check_junk_8 = DB::table('product_channels')
+        //     ->select('product_channels.PRODUCT')
+        //     ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT')
+        //     ->whereRaw("product_channels.BRAND = 'OP' AND product_channels.PRODUCT REGEXP '^[8]' AND LENGTH(product_channels.PRODUCT) = 7")
+        //     ->groupBy('product_channels.PRODUCT')
+        //     ->havingRaw('COUNT(*) = 1')
+        //     ->pluck('product_channels.PRODUCT')->all();
+
         $check_junk_8 = ['title'=>8, 'count'=>$check_junk_8];
+
+        // dd($check_junk_8['count']);
 
         $check_junk_9 = DB::table('product_channels')
             ->select('product1s.*', 'product_channels.BRAND', 'product_channels.PRODUCT')
             ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT');
 
-        $check_junk_9 = $check_junk_9->where('product_channels.PRODUCT', 'REGEXP', '^[9]')->count();
+        // $check_junk_9 = $check_junk_9->where('product_channels.PRODUCT', 'REGEXP', '^[9]')->count();
+        // $check_junk_9 = $check_junk_9->whereRaw("product_channels.PRODUCT REGEXP '^[9]' AND LENGTH(product_channels.PRODUCT) >= 8")->count();
+        $check_junk_9 = $check_junk_9->whereRaw("product_channels.PRODUCT REGEXP '^[9]' AND LENGTH(product_channels.PRODUCT) = 7")->count();
         $check_junk_9 = ['title'=>9, 'count'=>$check_junk_9];
 
         $diff_count = count($dataProducts1);
@@ -1270,7 +1295,7 @@ class TransferDataOnce extends Command
                 // dd($key_parts_number_1);
                 if ($dbName == 'dbCPMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
                     $brand_value = 'KM';
-                    if ($rs->PRODUCT[0] == $key_parts_number_3) {
+                    if ($rs->PRODUCT[0] == $key_parts_number_3 || ($rs->PRODUCT[0] == 1 && strlen((string)$rs->PRODUCT) == 7) || ($rs->PRODUCT[0] == 2 && strlen((string)$rs->PRODUCT) == 7)) {
                         $brand_value = $brand;
                     } elseif ($rs->PRODUCT[0] == 1 && strlen($rs->PRODUCT) === 5) {
                         $brand_value = 'KM';
@@ -1281,7 +1306,7 @@ class TransferDataOnce extends Command
 
                     // $brand_value = ($rs->PRODUCT[0] == $key_parts_number_3) ? $brand : (($rs->PRODUCT[0] != 8 && $rs->PRODUCT[0] != 9) ? 'KM' : $brand);
                     $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                    $sql .= "[BRAND], [PRODUCT], [BARCODE], [COLOR], [GRP_P], [SUPPLIER], [NAME_THAI], [NAME_ENG], [SHORT_THAI], [SHORT_ENG], [VENDOR], [PRICE], [COST], [UNIT], [UNIT_Q], [SOLUTION], [SERIES], [CATEGORY], [STATUS], [S_CAT], [PDM_GROUP], [BRAND_P], [REGISTER], [OPT_TXT1], [CONDITION_SALE], [WHOLE_SALE], [GP], [O_PRODUCT], [BAR_PACK1], [BAR_PACK2], [BAR_PACK3], [BAR_PACK4], [PACK_SIZE1], [PACK_SIZE2], [PACK_SIZE3], [PACK_SIZE4], [REG_DATE], [AGE], [WIDTH], [HEIGHT], [WIDE], [NAME_EXP], [NET_WEIGHT], [UNIT_TYPE], [TYPE_G], [OPT_DATE1], [OPT_DATE2], [OPT_TXT2], [OPT_NUM1], [OPT_NUM2], [ACC_TYPE], [ACC_DT], [RETURN], [NON_VAT], [STORAGE_TEMP], [CONTROL_STK], [TESTER], [USER_EDIT], [EDIT_DT]) VALUES (";
+                    $sql .= "[BRAND], [PRODUCT], [BARCODE], [COLOR], [GRP_P], [SUPPLIER], [NAME_THAI], [NAME_ENG], [SHORT_THAI], [SHORT_ENG], [VENDOR], [PRICE], [COST], [UNIT], [UNIT_Q], [SOLUTION], [SERIES], [CATEGORY], [STATUS], [S_CAT], [PDM_GROUP], [BRAND_P], [REGISTER], [OPT_TXT1], [CONDITION_SALE], [WHOLE_SALE], [GP], [O_PRODUCT], [BAR_PACK1], [BAR_PACK2], [BAR_PACK3], [BAR_PACK4], [PACK_SIZE1], [PACK_SIZE2], [PACK_SIZE3], [PACK_SIZE4], [REG_DATE], [AGE], [WIDTH], [HEIGHT], [WIDE], [NAME_EXP], [NET_WEIGHT], [UNIT_TYPE], [TYPE_G], [OPT_DATE1], [OPT_DATE2], [OPT_TXT2], [OPT_NUM1], [OPT_NUM2], [ACC_TYPE], [ACC_DT], [RETURN], [NON_VAT], [STORAGE_TEMP], [CONTROL_STK], [TESTER], [USER_EDIT], [EDIT_DT], [STATUS_EDIT_DT]) VALUES (";
                     $sql .= "'" . $brand_value . "',
                                 '" . $rs->PRODUCT . "',
                                 '" . $rs->BARCODE . "',
@@ -1340,13 +1365,16 @@ class TransferDataOnce extends Command
                                 '" . $rs->CONTROL_STK . "',
                                 '" . $rs->TESTER . "',
                                 '" . $rs->USER_EDIT . "',
+                                '" . $rs->EDIT_DT . "',
                                 '" . $rs->EDIT_DT . "'
                     )";
                     Http::asForm()->withHeaders([])->post($endpoint, [
                         'statement' => $sql,
                     ]);
+
                     $this->output->progressAdvance();
-                } else
+                } 
+                else
                     if ($dbName == 'dbCPMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND) {
                         // if($check_junk > 1 || $check_junk == 8){
                         //     $brand_value = 'KM';
@@ -1354,18 +1382,18 @@ class TransferDataOnce extends Command
                         //    $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
                         // }
                         // if ($brand == $rs->BRAND) {
-                            if(($rs->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1))){
+                            if(($rs->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1) && strlen((string)$rs->PRODUCT) > 7)){
                                 $brand_value = 'KM';
-                            }else if($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
+                            }else if(($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1) && strlen((string)$rs->PRODUCT) > 7)){
                                 $brand_value = 'KM';
-                            }else{
+                            }else {
                                 $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
                             }
                         // }
 
 
                         $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                        $sql .= "[BRAND], [PRODUCT], [BARCODE], [COLOR], [GRP_P], [SUPPLIER], [NAME_THAI], [NAME_ENG], [SHORT_THAI], [SHORT_ENG], [VENDOR], [PRICE], [COST], [UNIT], [UNIT_Q], [SOLUTION], [SERIES], [CATEGORY], [STATUS], [S_CAT], [PDM_GROUP], [BRAND_P], [REGISTER], [OPT_TXT1], [CONDITION_SALE], [WHOLE_SALE], [GP], [O_PRODUCT], [BAR_PACK1], [BAR_PACK2], [BAR_PACK3], [BAR_PACK4], [PACK_SIZE1], [PACK_SIZE2], [PACK_SIZE3], [PACK_SIZE4], [REG_DATE], [AGE], [WIDTH], [HEIGHT], [WIDE], [NAME_EXP], [NET_WEIGHT], [UNIT_TYPE], [TYPE_G], [OPT_DATE1], [OPT_DATE2], [OPT_TXT2], [OPT_NUM1], [OPT_NUM2], [ACC_TYPE], [ACC_DT], [RETURN], [NON_VAT], [STORAGE_TEMP], [CONTROL_STK], [TESTER], [USER_EDIT], [EDIT_DT]) VALUES (";
+                        $sql .= "[BRAND], [PRODUCT], [BARCODE], [COLOR], [GRP_P], [SUPPLIER], [NAME_THAI], [NAME_ENG], [SHORT_THAI], [SHORT_ENG], [VENDOR], [PRICE], [COST], [UNIT], [UNIT_Q], [SOLUTION], [SERIES], [CATEGORY], [STATUS], [S_CAT], [PDM_GROUP], [BRAND_P], [REGISTER], [OPT_TXT1], [CONDITION_SALE], [WHOLE_SALE], [GP], [O_PRODUCT], [BAR_PACK1], [BAR_PACK2], [BAR_PACK3], [BAR_PACK4], [PACK_SIZE1], [PACK_SIZE2], [PACK_SIZE3], [PACK_SIZE4], [REG_DATE], [AGE], [WIDTH], [HEIGHT], [WIDE], [NAME_EXP], [NET_WEIGHT], [UNIT_TYPE], [TYPE_G], [OPT_DATE1], [OPT_DATE2], [OPT_TXT2], [OPT_NUM1], [OPT_NUM2], [ACC_TYPE], [ACC_DT], [RETURN], [NON_VAT], [STORAGE_TEMP], [CONTROL_STK], [TESTER], [USER_EDIT], [EDIT_DT], [STATUS_EDIT_DT]) VALUES (";
                         $sql .= "'" . $brand_value . "',
                                     '" . $rs->PRODUCT . "',
                                     '" . $rs->BARCODE . "',
@@ -1424,11 +1452,13 @@ class TransferDataOnce extends Command
                                     '" . $rs->CONTROL_STK . "',
                                     '" . $rs->TESTER . "',
                                     '" . $rs->USER_EDIT . "',
+                                    '" . $rs->EDIT_DT . "',
                                     '" . $rs->EDIT_DT . "'
                                 )";
                         Http::asForm()->withHeaders([])->post($endpoint, [
                             'statement' => $sql,
                         ]);
+
                         $this->output->progressAdvance();
                     }
                 if ($dbName == 'dbBBMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
@@ -1583,9 +1613,10 @@ class TransferDataOnce extends Command
                         $this->output->progressAdvance();
                     }
 
-                if ($dbName == 'dbGNCMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] < 8) {
+                if ($dbName == 'dbGNCMAS' && $brand == $rs->BRAND && (strlen($rs->PRODUCT) != 7)) {
                     $brand_value = 'KM';
-                    if (($rs->PRODUCT[0] == $key_parts_number_3) || ((strlen($rs->PRODUCT) === 6 && $rs->PRODUCT[0] < 8) || (strlen($rs->PRODUCT) === 10 && $rs->PRODUCT[0] < 8))) {
+                    if (($rs->PRODUCT[0] == $key_parts_number_3) || ((strlen($rs->PRODUCT) === 6 && $rs->PRODUCT[0] < 8) || (strlen($rs->PRODUCT) === 10 && $rs->PRODUCT[0] < 8) || (strlen($rs->PRODUCT) === 7 && $rs->PRODUCT[0] >= 8) || (strlen($rs->PRODUCT) === 6 && ($rs->PRODUCT[0] == 8 || $rs->PRODUCT[0] == 9))) ) {
+                    // if ( strlen($rs->PRODUCT) === 8 && strlen($rs->PRODUCT) === 9 ) {
                         $brand_value = $brand;
                     } else {
                         $brand_value = 'KM';
@@ -1660,7 +1691,7 @@ class TransferDataOnce extends Command
                     ]);
                     $this->output->progressAdvance();
                 } else
-                    if ($dbName == 'dbGNCMAS' && (strlen($rs->PRODUCT) != 5 && $rs->PRODUCT[0] >= 8) && $brand == $rs->BRAND) {
+                    if ($dbName == 'dbGNCMAS' && (strlen($rs->PRODUCT) === 7 && $rs->PRODUCT[0] >= 8) && $brand == $rs->BRAND) {
                         if($rs->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1)){
                             $brand_value = 'KM';
                         }else if($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
@@ -2037,7 +2068,7 @@ class TransferDataOnce extends Command
                 if ($dbName == 'dbOPMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
                     // $brand_value = ($rs->PRODUCT[0] == $key_parts_number_3) ? $brand : 'KM';
                     $brand_value = 'KM';
-                    if ($rs->PRODUCT[0] == $key_parts_number_3) {
+                    if ($rs->PRODUCT[0] == $key_parts_number_3 || ($rs->PRODUCT[0] == 1 && strlen((string)$rs->PRODUCT) == 7) || ($rs->PRODUCT[0] == 2 && strlen((string)$rs->PRODUCT) == 7)) {
                         $brand_value = $brand;
                     }
                     $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
@@ -2109,9 +2140,9 @@ class TransferDataOnce extends Command
                 } else
                     if ($dbName == 'dbOPMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND) {
                         // if ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) {
-                            if($rs->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1)){
+                            if(($rs->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1) && strlen((string)$rs->PRODUCT) > 7)){
                                 $brand_value = 'KM';
-                            }else if($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
+                            }else if(($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1) && strlen((string)$rs->PRODUCT) > 7)){
                                 $brand_value = 'KM';
                             }else{
                                 $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
@@ -2187,6 +2218,67 @@ class TransferDataOnce extends Command
         }
         $this->output->progressFinish();
     }
+
+    public function tranfer_data_back_product2()
+    {
+        set_time_limit(0); 
+        $url_dot_30 = config('app.dot_30'); // Get URL from config
+        $endpoint = $url_dot_30 . "/ims/dealer_transfer_service/dl_mid_query_dot1.php";
+
+        $test_database = [
+            'dbBBMAS|BB' => ['NEW_PRODUCT1'],
+            'dbCPMAS|CPS' => ['NEW_PRODUCT1'],
+            'dbGNCMAS|GNC' => ['NEW_PRODUCT1'],
+            'dbKSHOPMAS|KTY' => ['NEW_PRODUCT1'],
+            'dbLLMAS|LL' => ['NEW_PRODUCT1'],
+            'dbOPMAS|OP' => ['NEW_PRODUCT1']
+        ];
+
+        foreach ($test_database as $key => $value) {
+            $exploded_key = explode('|', $key);
+            $dbName = $exploded_key[0];
+            $brand = $exploded_key[1];
+
+            $this->info("Processing database back to product2: $dbName for brand: $brand");
+
+            foreach ($value as $table_name) {
+                $sql = "SELECT * FROM [$dbName].[dbo].[$table_name]";
+                $response = Http::asForm()->post($endpoint, [
+                    'statement' => $sql,
+                ]);
+
+                if ($response->failed() || !isset($response['result'])) {
+                    $this->error("Failed to fetch data from $dbName - $table_name.");
+                    continue;
+                }
+
+                $result = $response['result'];
+                $diff_count = count($result);
+                $this->info("🚀 Transferring $diff_count records from $table_name.");
+                $this->output->progressStart($diff_count);
+
+                foreach ($result as $rs) {
+                    $brand_value = $brand;
+                    $sql_product2 = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT2] (";
+                    $sql_product2 .= "[BRAND], [PRODUCT]) VALUES (";
+                    $sql_product2 .= "'" . $brand_value . "',
+                                '" . $rs['PRODUCT'] . "'
+                    )";
+
+                    Http::asForm()->post($endpoint, [
+                        'statement' => $sql_product2,
+                        'params' => json_encode([$brand_value, $rs['PRODUCT']]),
+                    ]);
+                    $this->output->progressAdvance();
+                }
+                $this->output->progressFinish();
+                $this->info("✅ Completed transfer for $table_name.");
+            }
+            $this->info("");
+        }
+        $this->info("All databases processed.");
+    }
+
     public function tranfer_data_back_product1_des()
     {
         set_time_limit(0);
@@ -2194,556 +2286,57 @@ class TransferDataOnce extends Command
         $endpoint = $url_dot_30 . "/ims/dealer_transfer_service/dl_mid_query_dot1.php";
 
         $test_database = [
-            'dbBBMAS|BB|8|9|6' => ['NEW_PRODUCT1_DES'],
-            'dbCPMAS|CPS|8|9|7' => ['NEW_PRODUCT1_DES'],
-            'dbGNCMAS|GNC|8|9' => ['NEW_PRODUCT1_DES'],
-            'dbKSHOPMAS|KTY|8|9|1' => ['NEW_PRODUCT1_DES'],
-            'dbLLMAS|LL|8|9|3' => ['NEW_PRODUCT1_DES'],
-            'dbOPMAS|OP|8|9|2' => ['NEW_PRODUCT1_DES']
+            'dbBBMAS|BB' => ['NEW_PRODUCT1'],
+            'dbCPMAS|CPS' => ['NEW_PRODUCT1'],
+            'dbGNCMAS|GNC' => ['NEW_PRODUCT1'],
+            'dbKSHOPMAS|KTY' => ['NEW_PRODUCT1'],
+            'dbLLMAS|LL' => ['NEW_PRODUCT1'],
+            'dbOPMAS|OP' => ['NEW_PRODUCT1']
         ];
-
-        $dataProducts1 = DB::table('product_channels')
-            ->select('product1s.*', 'product_channels.BRAND', 'product_channels.PRODUCT')
-            ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT')
-            ->get();
-
-            
-        $check_junk_8 = DB::table('product_channels')
-        ->select('product1s.*', 'product_channels.BRAND', 'product_channels.PRODUCT')
-        ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT');
-
-        $check_junk_8 = $check_junk_8->where('product_channels.PRODUCT', 'REGEXP', '^[8]')->count();
-        $check_junk_8 = ['title'=>8, 'count'=>$check_junk_8];
-
-        $check_junk_9 = DB::table('product_channels')
-            ->select('product1s.*', 'product_channels.BRAND', 'product_channels.PRODUCT')
-            ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT');
-
-        $check_junk_9 = $check_junk_9->where('product_channels.PRODUCT', 'REGEXP', '^[9]')->count();
-        $check_junk_9 = ['title'=>9, 'count'=>$check_junk_9];
-
-        $diff_count = count($dataProducts1);
-
-        // print_r($diff_count);
-        // exit;
-        $this->info("Transferring product_channels data back to dot1");
-        $this->output->progressStart($diff_count);
 
         foreach ($test_database as $key => $value) {
             $exploded_key = explode('|', $key);
             $dbName = $exploded_key[0];
             $brand = $exploded_key[1];
-            $key_parts_number_1 = $exploded_key[2] ?? null;
-            $key_parts_number_2 = isset($exploded_key[3]) ? $exploded_key[3] : null;
-            $key_parts_number_3 = isset($exploded_key[4]) ? $exploded_key[4] : null;
 
-            foreach ($dataProducts1 as $rs) {
-                if ($dbName == 'dbCPMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
-                    $brand_value = 'KM';
-                    if ($rs->PRODUCT[0] == $key_parts_number_3) {
-                        $brand_value = $brand;
-                    } elseif ($rs->PRODUCT[0] == 1 && strlen($rs->PRODUCT) === 5) {
-                        $brand_value = 'KM';
-                    }
-                    // print_r($brand_value);
-                    // exit;
-                    $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                    $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                    $sql .= "'" . $brand_value . "',
-                                '" . $rs->PRODUCT . "'
+            $this->info("Processing database back to product1_des: $dbName for brand: $brand");
+
+            foreach ($value as $table_name) {
+                $sql = "SELECT * FROM [$dbName].[dbo].[$table_name]";
+                $response = Http::asForm()->post($endpoint, [
+                    'statement' => $sql,
+                ]);
+
+                if ($response->failed() || !isset($response['result'])) {
+                    $this->error("Failed to fetch data from $dbName - $table_name.");
+                    continue;
+                }
+
+                $result = $response['result'];
+                $diff_count = count($result);
+                $this->info("🚀 Transferring $diff_count records from $table_name.");
+                $this->output->progressStart($diff_count);
+
+                foreach ($result as $rs) {
+                    $brand_value = $brand;
+                    $sql_product2 = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT1_DES] (";
+                    $sql_product2 .= "[BRAND], [PRODUCT]) VALUES (";
+                    $sql_product2 .= "'" . $brand_value . "',
+                                '" . $rs['PRODUCT'] . "'
                     )";
 
-                    Http::asForm()->withHeaders([])->post($endpoint, [
-                        'statement' => $sql,
+                    Http::asForm()->post($endpoint, [
+                        'statement' => $sql_product2,
+                        'params' => json_encode([$brand_value, $rs['PRODUCT']]),
                     ]);
                     $this->output->progressAdvance();
-                } else
-                    if ($dbName == 'dbCPMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND) {
-                            if(($rs->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1))){
-                                $brand_value = 'KM';
-                            }else if($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
-                                $brand_value = 'KM';
-                            }else{
-                                $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
-                            }
-
-                        $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                        $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                        $sql .= "'" . $brand_value . "',
-                                    '" . $rs->PRODUCT . "'
-                        )";
-                              
-                        Http::asForm()->withHeaders([])->post($endpoint, [
-                            'statement' => $sql,
-                        ]);
-                        $this->output->progressAdvance();
-                    }
-                if ($dbName == 'dbBBMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
-                    $brand_value = 'KM';
-                    if ($rs->PRODUCT[0] == $key_parts_number_3) {
-                        $brand_value = $brand;
-                    }
-
-                    $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                    $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                    $sql .= "'" . $brand_value . "',
-                                '" . $rs->PRODUCT . "'
-                            )";
-                    Http::asForm()->withHeaders([])->post($endpoint, [
-                        'statement' => $sql,
-                    ]);
-                    $this->output->progressAdvance();
-                } else
-                    if ($dbName == 'dbBBMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND) {
-                        if($rs->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else if($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else{
-                            $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
-                        }
-                        
-                        $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                        $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                        $sql .= "'" . $brand_value . "',
-                                    '" . $rs->PRODUCT . "'
-
-                                )";
-                        Http::asForm()->withHeaders([])->post($endpoint, [
-                            'statement' => $sql,
-                        ]);
-                        $this->output->progressAdvance();
-                    }
-
-                if ($dbName == 'dbGNCMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] < 8) {
-                    $brand_value = 'KM';
-                    if (($rs->PRODUCT[0] == $key_parts_number_3) || ((strlen($rs->PRODUCT) === 6 && $rs->PRODUCT[0] < 8) || (strlen($rs->PRODUCT) === 10 && $rs->PRODUCT[0] < 8))) {
-                        $brand_value = $brand;
-                    } else {
-                        $brand_value = 'KM';
-                    }
-
-                    $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                    $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                    $sql .= "'" . $brand_value . "',
-                                '" . $rs->PRODUCT . "'
-                            )";
-                    Http::asForm()->withHeaders([])->post($endpoint, [
-                        'statement' => $sql,
-                    ]);
-                    $this->output->progressAdvance();
-                } else
-                    if ($dbName == 'dbGNCMAS' && (strlen($rs->PRODUCT) != 5 && $rs->PRODUCT[0] >= 8) && $brand == $rs->BRAND) {
-                        if($rs->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else if($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else{
-                            $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
-                        }
-
-                        $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                        $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                        $sql .= "'" . $brand_value . "',
-                                    '" . $rs->PRODUCT . "'
-
-                                )";
-                        Http::asForm()->withHeaders([])->post($endpoint, [
-                            'statement' => $sql,
-                        ]);
-                        $this->output->progressAdvance();
-                    }
-                if ($dbName == 'dbKSHOPMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
-                    $brand_value = 'KM';
-                    if ($rs->PRODUCT[0] == $key_parts_number_3 && strlen($rs->PRODUCT) === 5) {
-                        $brand_value = 'KSHOP';
-                    } else if ($rs->PRODUCT[0] == 1 && strlen($rs->PRODUCT) === 6) {
-                        $brand_value = 'KM';
-                    }
-
-                    $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                    $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                    $sql .= "'" . $brand_value . "',
-                                '" . $rs->PRODUCT . "'
-                            )";
-                    Http::asForm()->withHeaders([])->post($endpoint, [
-                        'statement' => $sql,
-                    ]);
-                    $this->output->progressAdvance();
-                } else
-                    if ($dbName == 'dbKSHOPMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND) {
-                        if($rs->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else if($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else{
-                            $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
-                        }
-
-                        $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                        $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                        $sql .= "'" . $brand_value . "',
-                                    '" . $rs->PRODUCT . "'
-
-                                )";
-                        Http::asForm()->withHeaders([])->post($endpoint, [
-                            'statement' => $sql,
-                        ]);
-                        $this->output->progressAdvance();
-                    }
-                if ($dbName == 'dbLLMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
-                    $brand_value = 'KM';
-                    if ($rs->PRODUCT[0] == $key_parts_number_3) {
-                        $brand_value = $brand;
-                    }
-                    $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                    $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                    $sql .= "'" . $brand_value . "',
-                                '" . $rs->PRODUCT . "'
-                            )";
-                    Http::asForm()->withHeaders([])->post($endpoint, [
-                        'statement' => $sql,
-                    ]);
-                    $this->output->progressAdvance();
-                } else
-                    if ($dbName == 'dbLLMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND) {
-                        if($rs->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else if($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else{
-                            $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
-                        }
-
-                        $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                        $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                        $sql .= "'" . $brand_value . "',
-                                    '" . $rs->PRODUCT . "'
-
-                                )";
-                        Http::asForm()->withHeaders([])->post($endpoint, [
-                            'statement' => $sql,
-                        ]);
-                        $this->output->progressAdvance();
-                    }
-                if ($dbName == 'dbOPMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
-                    $brand_value = 'KM';
-                    if ($rs->PRODUCT[0] == $key_parts_number_3) {
-                        $brand_value = $brand;
-                    }
-
-                    $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                    $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                    $sql .= "'" . $brand_value . "',
-                                '" . $rs->PRODUCT . "'
-                            )";
-                    Http::asForm()->withHeaders([])->post($endpoint, [
-                        'statement' => $sql,
-                    ]);
-                    $this->output->progressAdvance();
-                } else
-                    if ($dbName == 'dbOPMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND) {
-                        if($rs->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else if($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else{
-                            $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
-                        }
-
-                        $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                        $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                        $sql .= "'" . $brand_value . "',
-                                    '" . $rs->PRODUCT . "'
-
-                                )";
-                        Http::asForm()->withHeaders([])->post($endpoint, [
-                            'statement' => $sql,
-                        ]);
-                        $this->output->progressAdvance();
-                    }
+                }
+                $this->output->progressFinish();
+                $this->info("✅ Completed transfer for $table_name.");
             }
+            $this->info("");
         }
-        $this->output->progressFinish();        
-    }
-    public function tranfer_data_back_product2()
-    {
-        set_time_limit(0);
-        $url_dot_30 = config('app.dot_30'); // ดึงค่า URL จาก config/app.php
-        $endpoint = $url_dot_30 . "/ims/dealer_transfer_service/dl_mid_query_dot1.php";
-
-        $test_database = [
-            'dbBBMAS|BB|8|9|6' => ['NEW_PRODUCT2'],
-            'dbCPMAS|CPS|8|9|7' => ['NEW_PRODUCT2'],
-            'dbGNCMAS|GNC|8|9' => ['NEW_PRODUCT2'],
-            'dbKSHOPMAS|KTY|8|9|1' => ['NEW_PRODUCT2'],
-            'dbLLMAS|LL|8|9|3' => ['NEW_PRODUCT2'],
-            'dbOPMAS|OP|8|9|2' => ['NEW_PRODUCT2']
-        ];
-
-        $dataProducts1 = DB::table('product_channels')
-            ->select('product1s.*', 'product_channels.BRAND', 'product_channels.PRODUCT')
-            ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT')
-            ->get();
-
-            
-        $check_junk_8 = DB::table('product_channels')
-        ->select('product1s.*', 'product_channels.BRAND', 'product_channels.PRODUCT')
-        ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT');
-
-        $check_junk_8 = $check_junk_8->where('product_channels.PRODUCT', 'REGEXP', '^[8]')->count();
-        $check_junk_8 = ['title'=>8, 'count'=>$check_junk_8];
-
-        $check_junk_9 = DB::table('product_channels')
-            ->select('product1s.*', 'product_channels.BRAND', 'product_channels.PRODUCT')
-            ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT');
-
-        $check_junk_9 = $check_junk_9->where('product_channels.PRODUCT', 'REGEXP', '^[9]')->count();
-        $check_junk_9 = ['title'=>9, 'count'=>$check_junk_9];
-
-        $diff_count = count($dataProducts1);
-
-        // print_r($diff_count);
-        // exit;
-        $this->info("Transferring product_channels data back to dot1");
-        $this->output->progressStart($diff_count);
-
-        foreach ($test_database as $key => $value) {
-            $exploded_key = explode('|', $key);
-            $dbName = $exploded_key[0];
-            $brand = $exploded_key[1];
-            $key_parts_number_1 = $exploded_key[2] ?? null;
-            $key_parts_number_2 = isset($exploded_key[3]) ? $exploded_key[3] : null;
-            $key_parts_number_3 = isset($exploded_key[4]) ? $exploded_key[4] : null;
-
-            foreach ($dataProducts1 as $rs) {
-                if ($dbName == 'dbCPMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
-                    $brand_value = 'KM';
-                    if ($rs->PRODUCT[0] == $key_parts_number_3) {
-                        $brand_value = $brand;
-                    } elseif ($rs->PRODUCT[0] == 1 && strlen($rs->PRODUCT) === 5) {
-                        $brand_value = 'KM';
-                    }
-                    // print_r($brand_value);
-                    // exit;
-                    $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                    $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                    $sql .= "'" . $brand_value . "',
-                                '" . $rs->PRODUCT . "'
-                    )";
-
-                    Http::asForm()->withHeaders([])->post($endpoint, [
-                        'statement' => $sql,
-                    ]);
-                    $this->output->progressAdvance();
-                } else
-                    if ($dbName == 'dbCPMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND) {
-                            if(($rs->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1))){
-                                $brand_value = 'KM';
-                            }else if($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
-                                $brand_value = 'KM';
-                            }else{
-                                $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
-                            }
-
-                        $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                        $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                        $sql .= "'" . $brand_value . "',
-                                    '" . $rs->PRODUCT . "'
-                        )";
-                              
-                        Http::asForm()->withHeaders([])->post($endpoint, [
-                            'statement' => $sql,
-                        ]);
-                        $this->output->progressAdvance();
-                    }
-                if ($dbName == 'dbBBMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
-                    $brand_value = 'KM';
-                    if ($rs->PRODUCT[0] == $key_parts_number_3) {
-                        $brand_value = $brand;
-                    }
-
-                    $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                    $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                    $sql .= "'" . $brand_value . "',
-                                '" . $rs->PRODUCT . "'
-                            )";
-                    Http::asForm()->withHeaders([])->post($endpoint, [
-                        'statement' => $sql,
-                    ]);
-                    $this->output->progressAdvance();
-                } else
-                    if ($dbName == 'dbBBMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND) {
-                        if($rs->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else if($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else{
-                            $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
-                        }
-                        
-                        $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                        $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                        $sql .= "'" . $brand_value . "',
-                                    '" . $rs->PRODUCT . "'
-
-                                )";
-                        Http::asForm()->withHeaders([])->post($endpoint, [
-                            'statement' => $sql,
-                        ]);
-                        $this->output->progressAdvance();
-                    }
-
-                if ($dbName == 'dbGNCMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] < 8) {
-                    $brand_value = 'KM';
-                    if (($rs->PRODUCT[0] == $key_parts_number_3) || ((strlen($rs->PRODUCT) === 6 && $rs->PRODUCT[0] < 8) || (strlen($rs->PRODUCT) === 10 && $rs->PRODUCT[0] < 8))) {
-                        $brand_value = $brand;
-                    } else {
-                        $brand_value = 'KM';
-                    }
-
-                    $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                    $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                    $sql .= "'" . $brand_value . "',
-                                '" . $rs->PRODUCT . "'
-                            )";
-                    Http::asForm()->withHeaders([])->post($endpoint, [
-                        'statement' => $sql,
-                    ]);
-                    $this->output->progressAdvance();
-                } else
-                    if ($dbName == 'dbGNCMAS' && (strlen($rs->PRODUCT) != 5 && $rs->PRODUCT[0] >= 8) && $brand == $rs->BRAND) {
-                        if($rs->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else if($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else{
-                            $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
-                        }
-
-                        $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                        $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                        $sql .= "'" . $brand_value . "',
-                                    '" . $rs->PRODUCT . "'
-
-                                )";
-                        Http::asForm()->withHeaders([])->post($endpoint, [
-                            'statement' => $sql,
-                        ]);
-                        $this->output->progressAdvance();
-                    }
-                if ($dbName == 'dbKSHOPMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
-                    $brand_value = 'KM';
-                    if ($rs->PRODUCT[0] == $key_parts_number_3 && strlen($rs->PRODUCT) === 5) {
-                        $brand_value = 'KSHOP';
-                    } else if ($rs->PRODUCT[0] == 1 && strlen($rs->PRODUCT) === 6) {
-                        $brand_value = 'KM';
-                    }
-
-                    $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                    $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                    $sql .= "'" . $brand_value . "',
-                                '" . $rs->PRODUCT . "'
-                            )";
-                    Http::asForm()->withHeaders([])->post($endpoint, [
-                        'statement' => $sql,
-                    ]);
-                    $this->output->progressAdvance();
-                } else
-                    if ($dbName == 'dbKSHOPMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND) {
-                        if($rs->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else if($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else{
-                            $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
-                        }
-
-                        $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                        $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                        $sql .= "'" . $brand_value . "',
-                                    '" . $rs->PRODUCT . "'
-
-                                )";
-                        Http::asForm()->withHeaders([])->post($endpoint, [
-                            'statement' => $sql,
-                        ]);
-                        $this->output->progressAdvance();
-                    }
-                if ($dbName == 'dbLLMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
-                    $brand_value = 'KM';
-                    if ($rs->PRODUCT[0] == $key_parts_number_3) {
-                        $brand_value = $brand;
-                    }
-                    $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                    $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                    $sql .= "'" . $brand_value . "',
-                                '" . $rs->PRODUCT . "'
-                            )";
-                    Http::asForm()->withHeaders([])->post($endpoint, [
-                        'statement' => $sql,
-                    ]);
-                    $this->output->progressAdvance();
-                } else
-                    if ($dbName == 'dbLLMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND) {
-                        if($rs->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else if($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else{
-                            $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
-                        }
-
-                        $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                        $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                        $sql .= "'" . $brand_value . "',
-                                    '" . $rs->PRODUCT . "'
-
-                                )";
-                        Http::asForm()->withHeaders([])->post($endpoint, [
-                            'statement' => $sql,
-                        ]);
-                        $this->output->progressAdvance();
-                    }
-                if ($dbName == 'dbOPMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
-                    $brand_value = 'KM';
-                    if ($rs->PRODUCT[0] == $key_parts_number_3) {
-                        $brand_value = $brand;
-                    }
-
-                    $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                    $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                    $sql .= "'" . $brand_value . "',
-                                '" . $rs->PRODUCT . "'
-                            )";
-                    Http::asForm()->withHeaders([])->post($endpoint, [
-                        'statement' => $sql,
-                    ]);
-                    $this->output->progressAdvance();
-                } else
-                    if ($dbName == 'dbOPMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND) {
-                        if($rs->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else if($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
-                            $brand_value = 'KM';
-                        }else{
-                            $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
-                        }
-
-                        $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                        $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                        $sql .= "'" . $brand_value . "',
-                                    '" . $rs->PRODUCT . "'
-
-                                )";
-                        Http::asForm()->withHeaders([])->post($endpoint, [
-                            'statement' => $sql,
-                        ]);
-                        $this->output->progressAdvance();
-                    }
-            }
-        }
-        $this->output->progressFinish();        
+        $this->info("All databases processed.");
     }
 
     function convertDateStrToDate($date_str)
@@ -2752,65 +2345,208 @@ class TransferDataOnce extends Command
         return $date;
     }
 
-    public function test() 
+    public function transfer_product_original() 
     {
         set_time_limit(0);
-        $url_dot_30 = config('app.dot_30'); // ดึงค่า URL จาก config/app.php
+        $url_dot_30 = config('app.dot_30');
         $endpoint = $url_dot_30 . "/ims/dealer_transfer_service/dl_mid_query_dot1.php";
 
         $test_database = [
-            'dbCPMAS|CPS|8|9|7' => ['NEW_PRODUCT1_DES'],
-            'dbOPMAS|OP|8|9|2' => ['NEW_PRODUCT1_DES']
+            'dbCPMAS|CPS|8|9|7' => ['NEW_PRODUCT1'],
+            'dbOPMAS|OP|8|9|2' => ['NEW_PRODUCT1']
         ];
 
         $dataProducts1 = DB::table('product_channels')
             ->select('product1s.*', 'product_channels.BRAND', 'product_channels.PRODUCT')
             ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT')
+            ->whereRaw( 'product_channels.PRODUCT NOT REGEXP "^[A-Z]"')
             ->get();
+
+        // dd($dataProducts1);
+        $check_junk_8 = [
+            'title' => 8,
+            'count' => DB::table('product_channels')
+                ->select('product1s.*', 'product_channels.BRAND', 'product_channels.PRODUCT')
+                ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT')
+                // ->where('product_channels.PRODUCT', 'REGEXP', '^[8]')
+                ->whereRaw("product_channels.PRODUCT REGEXP '^[8]' AND LENGTH(product_channels.PRODUCT) >= 8")
+                ->count()
+        ];
+
+        $check_junk_9 = [
+            'title' => 9,
+            'count' => DB::table('product_channels')
+                ->select('product1s.*', 'product_channels.BRAND', 'product_channels.PRODUCT')
+                ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT')
+                // ->where('product_channels.PRODUCT', 'REGEXP', '^[9]')
+                ->whereRaw("product_channels.PRODUCT REGEXP '^[9]' AND LENGTH(product_channels.PRODUCT) >= 8")
+                ->count()
+        ];
         
-        foreach ($test_database as $key => $value) {
+        foreach ($test_database as $key => $tables) {
             $exploded_key = explode('|', $key);
             $dbName = $exploded_key[0];
             $brand = $exploded_key[1];
-            $key_parts_number_1 = $exploded_key[2] ?? null;
-            $key_parts_number_2 = isset($exploded_key[3]) ? $exploded_key[3] : null;
-            $key_parts_number_3 = isset($exploded_key[4]) ? $exploded_key[4] : null;
+            $key_parts = [
+                'number_1' => $exploded_key[2] ?? null,
+                'number_2' => $exploded_key[3] ?? null,
+                'number_3' => $exploded_key[4] ?? null
+            ];
 
-            foreach ($value as $table_name) {
-                if ($table_name == 'NEW_PRODUCT1_DES') {
-                    $sql_group = "SELECT PRODUCT, COUNT(*) as KeyCount FROM $dbName.dbo.PRO_DEVELOP GROUP BY Brand";
-                }
+            $this->info("Processing database back to product1_des: $dbName for brand: $brand");
 
-                $group_data_origin = Http::asForm()->withHeaders([])->post($endpoint, [
-                    'statement' => $sql_group,
+            foreach ($tables as $table_name) {
+
+                $response = Http::asForm()->post($endpoint, [
+                    'statement' => "SELECT PRODUCT FROM $dbName.dbo.$table_name"
                 ]);
 
-                $result1 = $group_data_origin['result'];
-                $diff_count = array_sum(array_column($result1, 'KeyCount'));
-                $this->info("$dbName - $table_name");
+                if ($response->failed() || !isset($response['result'])) {
+                    $this->error("Failed to fetch data from $dbName - $table_name.");
+                    continue;
+                }
+
+                $result = $response['result'];
+                $diff_count = count($result);
+                $this->info("🚀 Transferring $diff_count records from $table_name.");
                 $this->output->progressStart($diff_count);
 
-                foreach ($dataProducts1 as $rs) {
-                    if ($dbName == 'dbCPMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
+                foreach ($dataProducts1 as $product) {
+                    if ($dbName == 'dbCPMAS' && $brand == $product->BRAND && $product->PRODUCT[0] != $key_parts['number_1'] && $product->PRODUCT[0] != $key_parts['number_2']) {
                         $brand_value = 'KM';
-                        if ($rs->PRODUCT[0] == $key_parts_number_3) {
+                        if ($product->PRODUCT[0] == $key_parts['number_3']) {
                             $brand_value = $brand;
-                        } elseif ($rs->PRODUCT[0] == 1 && strlen($rs->PRODUCT) === 5) {
+                        } elseif ($product->PRODUCT[0] == 1 && strlen($product->PRODUCT) === 5) {
                             $brand_value = 'KM';
-                        };
-                        $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
-                        $sql .= "[BRAND], [PRODUCT]) VALUES (";
-                        $sql .= "'" . $brand_value . "',
-                                    '" . $rs->PRODUCT . "'
-                        )";
+                        }
 
-                        Http::asForm()->withHeaders([])->post($endpoint, [
-                            'statement' => $sql,
-                        ]);
-                        $this->output->progressAdvance();
+                        if (in_array($product->PRODUCT, array_column($result, 'PRODUCT'))) {
+                            $sql_update = "UPDATE [$dbName].[dbo].[$table_name] ";
+                            $sql_update .= "SET [EDIT_DT] = '{$product->EDIT_DT}', ";
+                            $sql_update .= "[STATUS_EDIT_DT] = '{$product->EDIT_DT}' ";
+                            $sql_update .= "WHERE [PRODUCT] = '{$product->PRODUCT}';";
+
+                            Http::asForm()->post($endpoint, [
+                                'statement' => $sql_update,
+                                'params' => json_encode([$brand_value, $product['PRODUCT']]),
+                            ]);
+                            $this->output->progressAdvance();
+                        } 
+                        // else
+                        // if (!in_array($product->PRODUCT, array_column($result, 'PRODUCT'))) {
+                        //     $sql_insert = "INSERT INTO [$dbName].[dbo].[$table_name] (";
+                        //     $sql_insert .= "[BRAND], [PRODUCT], [BARCODE], [COLOR], [GRP_P], [SUPPLIER], [NAME_THAI], [NAME_ENG], [SHORT_THAI], [SHORT_ENG], [VENDOR], [PRICE], [COST], [UNIT], [UNIT_Q], [SOLUTION], [SERIES], [CATEGORY], [STATUS], [S_CAT], [PDM_GROUP], [BRAND_P], [REGISTER], [OPT_TXT1], [CONDITION_SALE], [WHOLE_SALE], [GP], [O_PRODUCT], [BAR_PACK1], [BAR_PACK2], [BAR_PACK3], [BAR_PACK4], [PACK_SIZE1], [PACK_SIZE2], [PACK_SIZE3], [PACK_SIZE4], [REG_DATE], [AGE], [WIDTH], [HEIGHT], [WIDE], [NAME_EXP], [NET_WEIGHT], [UNIT_TYPE], [TYPE_G], [OPT_DATE1], [OPT_DATE2], [OPT_TXT2], [OPT_NUM1], [OPT_NUM2], [ACC_TYPE], [ACC_DT], [RETURN], [NON_VAT], [STORAGE_TEMP], [CONTROL_STK], [TESTER], [USER_EDIT], [EDIT_DT], [STATUS_EDIT_DT]) VALUES (";
+                        //     $sql_insert .= "'" . $brand_value . "',
+                        //                 '" . $product->PRODUCT . "',
+                        //                 '" . $product->BARCODE . "',
+                        //                 '" . $product->COLOR . "',
+                        //                 '" . $product->GRP_P . "',
+                        //                 '" . $product->SUPPLIER . "',
+                        //                 '" . $product->NAME_THAI . "',
+                        //                 '" . $product->NAME_ENG . "',
+                        //                 '" . $product->SHORT_THAI . "',
+                        //                 '" . $product->SHORT_ENG . "',
+                        //                 '" . $product->VENDOR . "',
+                        //                 '" . $product->PRICE . "',
+                        //                 '" . $product->COST . "',
+                        //                 '" . $product->UNIT . "',
+                        //                 '" . $product->UNIT_Q . "',
+                        //                 '" . $product->SOLUTION . "',
+                        //                 '" . $product->SERIES . "',
+                        //                 '" . $product->CATEGORY . "',
+                        //                 '" . $product->STATUS . "',
+                        //                 '" . $product->S_CAT . "',
+                        //                 '" . $product->PDM_GROUP . "',
+                        //                 '" . $product->BRAND_P . "',
+                        //                 '" . $product->REGISTER . "',
+                        //                 '" . $product->OPT_TXT1 . "',
+                        //                 '" . $product->CONDITION_SALE . "',
+                        //                 '" . $product->WHOLE_SALE . "',
+                        //                 '" . $product->GP . "',
+                        //                 '" . $product->O_PRODUCT . "',
+                        //                 '" . $product->BAR_PACK1 . "',
+                        //                 '" . $product->BAR_PACK2 . "',
+                        //                 '" . $product->BAR_PACK3 . "',
+                        //                 '" . $product->BAR_PACK4 . "',
+                        //                 '" . $product->PACK_SIZE1 . "',
+                        //                 '" . $product->PACK_SIZE2 . "',
+                        //                 '" . $product->PACK_SIZE3 . "',
+                        //                 '" . $product->PACK_SIZE4 . "',
+                        //                 '" . $product->REG_DATE . "',
+                        //                 '" . $product->AGE . "',
+                        //                 '" . $product->WIDTH . "',
+                        //                 '" . $product->HEIGHT . "',
+                        //                 '" . $product->WIDE . "',
+                        //                 '" . $product->NAME_EXP . "',
+                        //                 '" . $product->NET_WEIGHT . "',
+                        //                 '" . $product->UNIT_TYPE . "',
+                        //                 '" . $product->TYPE_G . "',
+                        //                 '" . $product->OPT_DATE1 . "',
+                        //                 '" . $product->OPT_DATE2 . "',
+                        //                 '" . $product->OPT_TXT2 . "',
+                        //                 '" . $product->OPT_NUM1 . "',
+                        //                 '" . $product->OPT_NUM2 . "',
+                        //                 '" . $product->ACC_TYPE . "',
+                        //                 '" . $product->ACC_DT . "',
+                        //                 '" . $product->RETURN . "',
+                        //                 '" . $product->NON_VAT . "',
+                        //                 '" . $product->STORAGE_TEMP . "',
+                        //                 '" . $product->CONTROL_STK . "',
+                        //                 '" . $product->TESTER . "',
+                        //                 '" . $product->USER_EDIT . "',
+                        //                 '" . $product->EDIT_DT . "',
+                        //                 '" . $product->EDIT_DT . "'
+                        //             )";
+                        //     Http::asForm()->post($endpoint, [
+                        //         'statement' => $sql_update,
+                        //         'params' => json_encode([$brand_value, $product['PRODUCT']]),
+                        //     ]);
+                        //     $this->output->progressAdvance();
+                        // }
                     } 
+                    // else
+                    // if ($dbName == 'dbCPMAS' && $product->PRODUCT[0] >= 8 && $brand == $product->BRAND) {
+                    //     if(($product->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1))){
+                    //         $brand_value = 'KM';
+                    //     }else if($product->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
+                    //         $brand_value = 'KM';
+                    //     }else{
+                    //         $brand_value = ($product->PRODUCT[0] == $key_parts['number_1'] || $product->PRODUCT[0] == $key_parts['number_2']) ? $brand : null; 
+                    //     }
+
+                    //     if (in_array($product->PRODUCT, array_column($products_original['result'], 'PRODUCT')) && $product->STATUS_EDIT_DT != null) {
+                    //         $sql_update = "UPDATE [$dbName].[dbo].[$table_name] ";
+                    //         $sql_update .= "SET [EDIT_DT] = '{$product->EDIT_DT}', ";
+                    //         $sql_update .= "[STATUS_EDIT_DT] = '{$product->EDIT_DT}' ";
+                    //         $sql_update .= "WHERE [PRODUCT] = '{$product->PRODUCT}';";
+
+                    //         Http::asForm()->post($endpoint, [
+                    //             'statement' => $sql_update
+                    //         ]);
+                    //         $this->output->progressAdvance();
+                    //     } 
+                        // else
+                        // if (!in_array($product->PRODUCT, array_column($products_original['result'], 'PRODUCT'))) {
+                        //     $sql_insert = "INSERT INTO [$dbName].[dbo].[$table_name] (";
+                        //     $sql_insert .= "[BRAND], [PRODUCT], [EDIT_DT], [STATUS_EDIT_DT]) VALUES (";
+                        //     $sql_insert .= "'" . $brand_value . "',
+                        //                 '" . $product->PRODUCT . "',
+                        //                 '" . $product->EDIT_DT . "',
+                        //                 '" . $product->EDIT_DT . "'
+                        //             )";
+                        //     // dd($sql_insert);
+                        //     Http::asForm()->withHeaders([])->post($endpoint, [
+                        //         'statement' => $sql_insert,
+                        //     ]);
+                        //     // $this->output->progressAdvance();
+                        // }
+                    // }
                 }
+                $this->output->progressFinish();
+                $this->info("✅ Completed transfer for $table_name.");
             }
+            $this->info("");
         }
+        $this->info("All databases processed.");
     }
 }

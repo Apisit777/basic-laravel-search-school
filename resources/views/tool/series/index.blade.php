@@ -444,7 +444,7 @@
                     targets: 3,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.updated_at;
+                        return row.EDIT_DT;
                     }
                 },
                 {
