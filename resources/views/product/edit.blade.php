@@ -462,7 +462,7 @@
                                                                 </div> -->
                                                                 <div class="md:col-span-3">
                                                                     <label for="PACK_SIZE2">รหัส Packsize2</label>
-                                                                    <input type="number" name="PACK_SIZE2" id="PACK_SIZE2" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PACK_SIZE1 }}" min="0" max="144" />
+                                                                    <input type="number" name="PACK_SIZE2" id="PACK_SIZE2" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PACK_SIZE2 }}" min="0" max="144" />
                                                                     <!-- <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE2" id="PACK_SIZE2">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         <option value="3" {{($data->PACK_SIZE2 == '3') ? 'selected' : ''}}>3</option>
@@ -480,7 +480,7 @@
                                                                 </div> -->
                                                                 <div class="md:col-span-3">
                                                                     <label for="PACK_SIZE3">รหัส Packsize3</label>
-                                                                    <input type="number" name="PACK_SIZE3" id="PACK_SIZE3" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PACK_SIZE1 }}" min="0" max="144" />
+                                                                    <input type="number" name="PACK_SIZE3" id="PACK_SIZE3" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PACK_SIZE3 }}" min="0" max="144" />
                                                                     <!-- <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE3" id="PACK_SIZE3">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         <option value="3" {{($data->PACK_SIZE3 == '3') ? 'selected' : ''}}>3</option>
@@ -498,7 +498,7 @@
                                                                 </div> -->
                                                                 <div class="md:col-span-3">
                                                                     <label for="PACK_SIZE4">รหัส Packsize4</label>
-                                                                    <input type="number" name="PACK_SIZE3" id="PACK_SIZE3" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PACK_SIZE1 }}" min="0" max="144" />
+                                                                    <input type="number" name="PACK_SIZE3" id="PACK_SIZE3" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PACK_SIZE4 }}" min="0" max="144" />
                                                                     <!-- <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE4" id="PACK_SIZE4">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         <option value="3" {{($data->PACK_SIZE4 == '3') ? 'selected' : ''}}>3</option>

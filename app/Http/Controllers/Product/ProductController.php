@@ -1894,7 +1894,7 @@ class ProductController extends Controller
                 'OWNER AS VENDOR',
                 'REMARK',
                 'BRAND')
-            ->where('BRAND', 'OP')
+            ->whereIn('BRAND', ['OP', 'KM'])
             ->get();
             $grp_ps = Grp_p::select(
                 'GRP_P AS GRP_P',
@@ -2165,10 +2165,10 @@ class ProductController extends Controller
                     'WHOLE_SALE' => $request->input('WHOLE_SALE'),
                     'GP' => $request->input('GP'),
                     'O_PRODUCT' => $request->input('O_PRODUCT'),
-                    'BAR_PACK1' => $request->input('BAR_PACK1'),
-                    'BAR_PACK2' => $request->input('BAR_PACK2'),
-                    'BAR_PACK3' => $request->input('BAR_PACK3'),
-                    'BAR_PACK4' => $request->input('BAR_PACK4'),
+                    // 'BAR_PACK1' => $request->input('BAR_PACK1'),
+                    // 'BAR_PACK2' => $request->input('BAR_PACK2'),
+                    // 'BAR_PACK3' => $request->input('BAR_PACK3'),
+                    // 'BAR_PACK4' => $request->input('BAR_PACK4'),
                     'PACK_SIZE1' => $request->input('PACK_SIZE1'),
                     'PACK_SIZE2' => $request->input('PACK_SIZE2'),
                     'PACK_SIZE3' => $request->input('PACK_SIZE3'),
@@ -2195,7 +2195,8 @@ class ProductController extends Controller
                     'CONTROL_STK' => is_null($request->input('CONTROL_STK')) ? 'N' : 'Y',
                     'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
                     'USER_EDIT' => Auth::user()->username,
-                    'EDIT_DT' => date("Y/m/d H:i:s")
+                    'EDIT_DT' => date("Y/m/d H:i:s"),
+                    'STATUS_EDIT_DT' => NULL,
                 ];
 
                 $productUpddateConsumables = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
@@ -2252,10 +2253,10 @@ class ProductController extends Controller
                     'WHOLE_SALE' => $request->input('WHOLE_SALE'),
                     'GP' => $request->input('GP'),
                     'O_PRODUCT' => $request->input('O_PRODUCT'),
-                    'BAR_PACK1' => $request->input('BAR_PACK1'),
-                    'BAR_PACK2' => $request->input('BAR_PACK2'),
-                    'BAR_PACK3' => $request->input('BAR_PACK3'),
-                    'BAR_PACK4' => $request->input('BAR_PACK4'),
+                    // 'BAR_PACK1' => $request->input('BAR_PACK1'),
+                    // 'BAR_PACK2' => $request->input('BAR_PACK2'),
+                    // 'BAR_PACK3' => $request->input('BAR_PACK3'),
+                    // 'BAR_PACK4' => $request->input('BAR_PACK4'),
                     'PACK_SIZE1' => $request->input('PACK_SIZE1'),
                     'PACK_SIZE2' => $request->input('PACK_SIZE2'),
                     'PACK_SIZE3' => $request->input('PACK_SIZE3'),
@@ -2268,13 +2269,13 @@ class ProductController extends Controller
                     'NAME_EXP' => $request->input('NAME_EXP'),
                     'NET_WEIGHT' => $request->input('NET_WEIGHT'),
                     'UNIT_TYPE' => $request->input('UNIT_TYPE'),
-                    'TYPE_G' => $request->input('TYPE_G'),
+                    // 'TYPE_G' => $request->input('TYPE_G'),
                     'OPT_DATE1' => $request->input('OPT_DATE1'),
                     'OPT_DATE2' => $request->input('OPT_DATE2'),
                     'OPT_TXT2' => $request->input('OPT_TXT2'),
                     'OPT_NUM1' => $request->input('OPT_NUM1'),
                     'OPT_NUM2' => $request->input('OPT_NUM2'),
-                    'ACC_TYPE' => $request->input('ACC_TYPE'),
+                    // 'ACC_TYPE' => $request->input('ACC_TYPE'),
                     'ACC_DT' => $request->input('ACC_DT'),
                     'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
                     'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',

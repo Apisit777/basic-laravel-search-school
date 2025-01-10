@@ -24,19 +24,20 @@ class ToolController extends Controller
 
     public function solution()
     {
-        $data = Solution::select('ID', 'DESCRIPTION', 'BRAND', 'updated_at')->get();
+        $data = Solution::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
         return view('tool.solution.index', compact('data'));
     }
 
     public function series()
     {
-        $data = Series::select('ID', 'DESCRIPTION', 'BRAND', 'updated_at')->get();
+        $data = Series::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
         return view('tool.series.index', compact('data'));
     }
 
     public function category()
     {
-        return view('tool.category.index');
+        $data = Category::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+        return view('tool.category.index', compact('data'));
     }
 
     public function subCategory()
@@ -46,7 +47,7 @@ class ToolController extends Controller
 
     public function productGroup()
     {
-        $data = ProductGroup::select('ID', 'DESCRIPTION', 'BRAND', 'updated_at')->get();
+        $data = ProductGroup::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
         // dd($data);
         return view('tool.product_group.index', compact('data'));
     }
@@ -202,7 +203,7 @@ class ToolController extends Controller
                 'ID' => $request->ID,
                 'DESCRIPTION' => $request->DESCRIPTION,
                 'BRAND' => $userpermission,
-                'updated_at' => date("Y/m/d H:i:s")
+                'EDIT_DT' => date("Y/m/d H:i:s")
             ]);
 
             // dd($dataProductGroup);
@@ -229,7 +230,7 @@ class ToolController extends Controller
             $data_solution = [
                 'DESCRIPTION' => $request->DESCRIPTION,
                 'BRAND' => $userpermission,
-                'updated_at' => date("Y/m/d H:i:s")
+                'EDIT_DT' => date("Y/m/d H:i:s")
             ];
 
             $data_solution_upddate = Solution::where('ID', $id)->update($data_solution);
@@ -260,7 +261,7 @@ class ToolController extends Controller
                 'ID' => $request->ID,
                 'DESCRIPTION' => $request->DESCRIPTION,
                 'BRAND' => $userpermission,
-                'updated_at' => date("Y/m/d H:i:s")
+                'EDIT_DT' => date("Y/m/d H:i:s")
             ]);
 
             // dd($dataProductGroup);
@@ -288,7 +289,7 @@ class ToolController extends Controller
             $data_series = [
                 'DESCRIPTION' => $request->DESCRIPTION,
                 'BRAND' => $userpermission,
-                'updated_at' => date("Y/m/d H:i:s")
+                'EDIT_DT' => date("Y/m/d H:i:s")
             ];
 
             $data_series_upddate = Series::where('ID', $id)->update($data_series);
@@ -318,7 +319,7 @@ class ToolController extends Controller
                 'ID' => $request->ID,
                 'DESCRIPTION' => $request->DESCRIPTION,
                 'BRAND' => $userpermission,
-                'updated_at' => date("Y/m/d H:i:s")
+                'EDIT_DT' => date("Y/m/d H:i:s")
             ]);
 
             // dd($dataProductGroup);
@@ -346,7 +347,7 @@ class ToolController extends Controller
             $data_category = [
                 'DESCRIPTION' => $request->DESCRIPTION,
                 'BRAND' => $userpermission,
-                'updated_at' => date("Y/m/d H:i:s")
+                'EDIT_DT' => date("Y/m/d H:i:s")
             ];
 
             $data_category_upddate = Category::where('ID', $id)->update($data_category);
@@ -377,7 +378,7 @@ class ToolController extends Controller
                 'ID' => $request->ID,
                 'DESCRIPTION' => $request->DESCRIPTION,
                 'BRAND' => $userpermission,
-                'updated_at' => date("Y/m/d H:i:s")
+                'EDIT_DT' => date("Y/m/d H:i:s")
             ]);
 
             // dd($dataProductGroup);
@@ -404,7 +405,7 @@ class ToolController extends Controller
             $data_product_group = [
                 'DESCRIPTION' => $request->DESCRIPTION,
                 'BRAND' => $userpermission,
-                'updated_at' => date("Y/m/d H:i:s")
+                'EDIT_DT' => date("Y/m/d H:i:s")
             ];
 
             $data_product_group_upddate = ProductGroup::where('ID', $id)->update($data_product_group);
@@ -436,7 +437,7 @@ class ToolController extends Controller
             'ID',
             'DESCRIPTION',
             'BRAND',
-            'updated_at'
+            'EDIT_DT'
         )
         ->orderBy('DESCRIPTION', 'ASC');
 
@@ -447,7 +448,7 @@ class ToolController extends Controller
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
-                'updated_at'
+                'EDIT_DT'
             )
             ->orderBy('DESCRIPTION', 'ASC');
         } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
@@ -455,7 +456,7 @@ class ToolController extends Controller
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
-                'updated_at'
+                'EDIT_DT'
             )
             ->where('BRAND', 'OP')
             ->orderBy('DESCRIPTION', 'ASC');
@@ -465,7 +466,7 @@ class ToolController extends Controller
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
-                'updated_at'
+                'EDIT_DT'
             )
             ->where('BRAND', 'CPS')
             ->orderBy('DESCRIPTION', 'ASC');
@@ -474,7 +475,7 @@ class ToolController extends Controller
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
-                'updated_at'
+                'EDIT_DT'
             )
             ->where('BRAND', 'KTY')
             ->orderBy('DESCRIPTION', 'ASC');
@@ -523,7 +524,7 @@ class ToolController extends Controller
             'ID',
             'DESCRIPTION',
             'BRAND',
-            'updated_at'
+            'EDIT_DT'
         )
         ->orderBy('DESCRIPTION', 'ASC');
 
@@ -534,7 +535,7 @@ class ToolController extends Controller
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
-                'updated_at'
+                'EDIT_DT'
             )
             ->orderBy('DESCRIPTION', 'ASC');
         } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
@@ -542,7 +543,7 @@ class ToolController extends Controller
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
-                'updated_at'
+                'EDIT_DT'
             )
             ->where('BRAND', 'OP')
             ->orderBy('DESCRIPTION', 'ASC');
@@ -552,7 +553,7 @@ class ToolController extends Controller
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
-                'updated_at'
+                'EDIT_DT'
             )
             ->where('BRAND', 'CPS')
             ->orderBy('DESCRIPTION', 'ASC');
@@ -561,7 +562,7 @@ class ToolController extends Controller
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
-                'updated_at'
+                'EDIT_DT'
             )
             ->where('BRAND', 'KTY')
             ->orderBy('DESCRIPTION', 'ASC');
@@ -610,7 +611,7 @@ class ToolController extends Controller
             'ID',
             'DESCRIPTION',
             'BRAND',
-            'updated_at'
+            'EDIT_DT'
         )
         ->orderBy('DESCRIPTION', 'ASC');
 
@@ -621,7 +622,7 @@ class ToolController extends Controller
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
-                'updated_at'
+                'EDIT_DT'
             )
             ->orderBy('DESCRIPTION', 'ASC');
         } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
@@ -629,7 +630,7 @@ class ToolController extends Controller
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
-                'updated_at'
+                'EDIT_DT'
             )
             ->where('BRAND', 'OP')
             ->orderBy('DESCRIPTION', 'ASC');
@@ -639,7 +640,7 @@ class ToolController extends Controller
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
-                'updated_at'
+                'EDIT_DT'
             )
             ->where('BRAND', 'CPS')
             ->orderBy('DESCRIPTION', 'ASC');
@@ -648,7 +649,7 @@ class ToolController extends Controller
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
-                'updated_at'
+                'EDIT_DT'
             )
             ->where('BRAND', 'KTY')
             ->orderBy('DESCRIPTION', 'ASC');
@@ -696,7 +697,7 @@ class ToolController extends Controller
             'ID',
             'DESCRIPTION',
             'BRAND',
-            'updated_at'
+            'EDIT_DT'
         )
         ->orderBy('DESCRIPTION', 'ASC');
 
@@ -707,7 +708,7 @@ class ToolController extends Controller
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
-                'updated_at'
+                'EDIT_DT'
             )
             ->orderBy('DESCRIPTION', 'ASC');
         } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
@@ -715,7 +716,7 @@ class ToolController extends Controller
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
-                'updated_at'
+                'EDIT_DT'
             )
             ->where('BRAND', 'OP')
             ->orderBy('DESCRIPTION', 'ASC');
@@ -725,7 +726,7 @@ class ToolController extends Controller
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
-                'updated_at'
+                'EDIT_DT'
             )
             ->where('BRAND', 'CPS')
             ->orderBy('DESCRIPTION', 'ASC');
@@ -734,7 +735,7 @@ class ToolController extends Controller
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
-                'updated_at'
+                'EDIT_DT'
             )
             ->where('BRAND', 'KTY')
             ->orderBy('DESCRIPTION', 'ASC');
