@@ -542,7 +542,7 @@
                                                                     <div class="md:col-span-3" style="position: relative;">
                                                                         <label for="COST">ราคาต้นทุน</label>
                                                                         <!-- <input type="text" name="COST" id="COST" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ number_format($data->COST, 2) }}" readonly /> -->
-                                                                        <input type="text" name="COST" id="COST" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ number_format($data->COST, 2) }}" />
+                                                                        <input type="text" name="COST" id="COST" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->COST }}" />
                                                                     </div>
                                                                 <!-- @endif -->
 
