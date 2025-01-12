@@ -48,7 +48,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-    
+
         //     $data = Product1::select(
         // 'product1s.BRAND AS BRAND',
         //         'GRP_P',
@@ -699,7 +699,8 @@ class ProductController extends Controller
                 'OWNER',
                 'REMARK',
                 'BRAND')
-            ->where('BRAND', 'KTY')
+                ->whereIn('BRAND', ['KTY', 'KM'])
+            // ->where('BRAND', 'KTY')
             ->get();
             $grp_ps = Grp_p::select(
                 'GRP_P',
@@ -803,7 +804,157 @@ class ProductController extends Controller
             ->where('BRAND', 'GNC')
             ->get();
         } else if (in_array($userpermission, ['BB'])) {
+            $defaultBrands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->pluck('BRAND')
+            ->toArray();
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $owners = Owner::select(
+                'OWNER',
+                'REMARK',
+                'BRAND')
+            // ->where('BRAND', 'OP')
+            ->whereIn('BRAND', ['BB', 'KM'])
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $solutions = Solution::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $series = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $categorys = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $sub_categorys = Sub_category::select(
+                'ID',
+                'CATEGORY_ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $pdms = Pdm::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $unit_ps = Unit_p::select(
+                'DESCRIPTION AS UNIT',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $product_groups = ProductGroup::select(
+                'ID',
+                'DESCRIPTION AS product_group_name',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
         } else if (in_array($userpermission, ['LL'])) {
+            $defaultBrands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->pluck('BRAND')
+            ->toArray();
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $owners = Owner::select(
+                'OWNER',
+                'REMARK',
+                'BRAND')
+            // ->where('BRAND', 'OP')
+            ->whereIn('BRAND', ['LL', 'KM'])
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $solutions = Solution::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $series = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $categorys = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $sub_categorys = Sub_category::select(
+                'ID',
+                'CATEGORY_ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $pdms = Pdm::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $unit_ps = Unit_p::select(
+                'DESCRIPTION AS UNIT',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $product_groups = ProductGroup::select(
+                'ID',
+                'DESCRIPTION AS product_group_name',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
         } else if (in_array($userpermission, ['KM'])) {
             $defaultBrands = MasterBrand::select(
                 'BRAND')
@@ -2059,6 +2210,310 @@ class ProductController extends Controller
             ->get();
 
             // KTY ไม่มี Series, Category, Sub_category, Pdm
+        } else if (in_array($userpermission, ['Retail Operation - GNC'])) {
+            $defaultBrands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->pluck('BRAND')
+            ->toArray();
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $owners = Owner::select(
+                'OWNER',
+                'REMARK',
+                'BRAND')
+            // ->where('BRAND', 'GNC')
+            ->whereIn('BRAND', ['GNC', 'KM'])
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $solutions = Solution::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $series = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $categorys = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $sub_categorys = Sub_category::select(
+                'ID',
+                'CATEGORY_ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $pdms = Pdm::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $unit_ps = Unit_p::select(
+                'DESCRIPTION AS UNIT',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+            $product_groups = ProductGroup::select(
+                'ID',
+                'DESCRIPTION AS product_group_name',
+                'BRAND')
+            ->where('BRAND', 'GNC')
+            ->get();
+        } else if (in_array($userpermission, ['BB'])) {
+            $defaultBrands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->pluck('BRAND')
+            ->toArray();
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $owners = Owner::select(
+                'OWNER',
+                'REMARK',
+                'BRAND')
+            // ->where('BRAND', 'OP')
+            ->whereIn('BRAND', ['BB', 'KM'])
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $solutions = Solution::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $series = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $categorys = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $sub_categorys = Sub_category::select(
+                'ID',
+                'CATEGORY_ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $pdms = Pdm::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $unit_ps = Unit_p::select(
+                'DESCRIPTION AS UNIT',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+            $product_groups = ProductGroup::select(
+                'ID',
+                'DESCRIPTION AS product_group_name',
+                'BRAND')
+            ->where('BRAND', 'BB')
+            ->get();
+        } else if (in_array($userpermission, ['LL'])) {
+            $defaultBrands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->pluck('BRAND')
+            ->toArray();
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $owners = Owner::select(
+                'OWNER',
+                'REMARK',
+                'BRAND')
+            // ->where('BRAND', 'OP')
+            ->whereIn('BRAND', ['LL', 'KM'])
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $solutions = Solution::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $series = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $categorys = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $sub_categorys = Sub_category::select(
+                'ID',
+                'CATEGORY_ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $pdms = Pdm::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $unit_ps = Unit_p::select(
+                'DESCRIPTION AS UNIT',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+            $product_groups = ProductGroup::select(
+                'ID',
+                'DESCRIPTION AS product_group_name',
+                'BRAND')
+            ->where('BRAND', 'LL')
+            ->get();
+        } else if (in_array($userpermission, ['KM'])) {
+            $defaultBrands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->pluck('BRAND')
+            ->toArray();
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $owners = Owner::select(
+                'OWNER',
+                'REMARK',
+                'BRAND')
+            // ->where('BRAND', 'OP')
+            ->whereIn('BRAND', ['KM'])
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $solutions = Solution::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $series = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $categorys = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $sub_categorys = Sub_category::select(
+                'ID',
+                'CATEGORY_ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $pdms = Pdm::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $unit_ps = Unit_p::select(
+                'DESCRIPTION AS UNIT',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
+            $product_groups = ProductGroup::select(
+                'ID',
+                'DESCRIPTION AS product_group_name',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
         }
 
         // dd($unit_ps);
@@ -2453,18 +2908,47 @@ class ProductController extends Controller
             )
             ->whereIn('BRAND', ['KTY'])
             ->orderBy('BARCODE', 'DESC');
+        } else if (in_array($userpermission, ['Retail Operation - GNC'])) {
+            $data = Product1::select(
+                'BRAND',
+                'GRP_P',
+                'PRODUCT',
+                'BARCODE',
+                'NAME_THAI'
+            )
+            ->whereIn('BRAND', ['GNC', 'KM'])
+            ->orderBy('BARCODE', 'DESC');
+        } else if (in_array($userpermission, ['BB'])) {
+            $data = Product1::select(
+                'BRAND',
+                'GRP_P',
+                'PRODUCT',
+                'BARCODE',
+                'NAME_THAI'
+            )
+            ->whereIn('BRAND', ['BB', 'KM'])
+            ->orderBy('BARCODE', 'DESC');
+        } else if (in_array($userpermission, ['LL'])) {
+            $data = Product1::select(
+                'BRAND',
+                'GRP_P',
+                'PRODUCT',
+                'BARCODE',
+                'NAME_THAI'
+            )
+            ->whereIn('BRAND', ['LL', 'KM'])
+            ->orderBy('BARCODE', 'DESC');
+        } else if (in_array($userpermission, ['KM'])) {
+            $data = Product1::select(
+                'BRAND',
+                'GRP_P',
+                'PRODUCT',
+                'BARCODE',
+                'NAME_THAI'
+            )
+            ->whereIn('BRAND', ['OP', 'CPS', 'KTY', 'GNC', 'BB', 'LL', 'KM'])
+            ->orderBy('BARCODE', 'DESC');
         }
-            else if (in_array($userpermission, ['Retail Operation - GNC'])) {
-                $data = Product1::select(
-                    'BRAND',
-                    'GRP_P',
-                    'PRODUCT',
-                    'BARCODE',
-                    'NAME_THAI'
-                )
-                ->whereIn('BRAND', ['GNC', 'KM'])
-                ->orderBy('BARCODE', 'DESC');
-            }
 
         // dd($data);
         if ($GRP_P != null) {
