@@ -56,6 +56,9 @@ class TransferDataOnce extends Command
                     $this->tranfer_data_back_product2();
                     $this->tranfer_data_back_product1_des();
                     break;
+                case 'transfer_data_task':
+                    $this->transfer_data_task();
+                    break;
                 // case 'tranfer_data_back_product2':
                 //     $this->tranfer_data_back_product2();
                 //     break;
@@ -268,10 +271,10 @@ class TransferDataOnce extends Command
         //         //     'status' => 'insert success',
         //         // ]);
         //     }
-        // }  
+        // }
 
         // set_time_limit(600);
-        ini_set('max_execution_time', 600);      
+        ini_set('max_execution_time', 600);
         $url_dot_30 = config('app.dot_30'); // ดึงค่า URL จาก config/app.php
         $endpoint = $url_dot_30 . "/ims/dealer_transfer_service/dl_mid_query_dot1.php";
         $test_database = [
@@ -282,7 +285,7 @@ class TransferDataOnce extends Command
             'dbLLMAS|LL' => ['PRODUCT1', 'PRO_DEVELOP'],
             'dbOPMAS|OP' => ['PRODUCT1', 'PRO_DEVELOP'],
         ];
-        
+
         // dd($test_database);
 
         foreach ($test_database as $key => $value) {
@@ -309,10 +312,10 @@ class TransferDataOnce extends Command
                     if (!empty($result1)) {
                         foreach ($result1 as $gp) {
                             if ($table_name == 'PRO_DEVELOP') {
-                                $sql = "SELECT * 
+                                $sql = "SELECT *
                                         FROM $dbName.dbo.PRO_DEVELOP WHERE Brand = '" . $gp['Brand'] . "'";
                             } else {
-                                $sql = "SELECT * 
+                                $sql = "SELECT *
                                         FROM $dbName.dbo.PRODUCT1 WHERE Brand = '" . $gp['Brand'] . "'";
                             }
 
@@ -624,46 +627,46 @@ class TransferDataOnce extends Command
 
             $productsAll = DB::select("SELECT * FROM (SELECT *
                                                 FROM `product1s_all`
-                                                WHERE 
+                                                WHERE
                                                     (
-                                                        
+
                                                         (BRAND_ORIGINAL = 'OP' AND (
                                                             (PRODUCT REGEXP '^[2]' AND LENGTH(PRODUCT) = 5)
                                                             OR (PRODUCT REGEXP '^[1]' AND LENGTH(PRODUCT) = 7)
-                                                            
+
                                                         ))
                                                         OR
-                                                        
+
                                                         (BRAND_ORIGINAL = 'CPS' AND (
                                                             (PRODUCT REGEXP '^[3]' AND LENGTH(PRODUCT) = 5)
                                                             OR (PRODUCT REGEXP '^[7]' AND LENGTH(PRODUCT) = 5)
                                                             OR (PRODUCT REGEXP '^[1]' AND LENGTH(PRODUCT) = 7)
                                                             OR (PRODUCT REGEXP '^[0]' AND LENGTH(PRODUCT) = 5)
-                                                            
+
                                                         ))
                                                         OR
-                                                        
-                                                        -- (BRAND_ORIGINAL = 'GNC' AND ((LENGTH(PRODUCT) = 6 AND PRODUCT not REGEXP '^[A-Z]' AND PRODUCT not REGEXP '^[8-9]') AND (PRODUCT not REGEXP '^[8-9]') OR 
-                                                        (BRAND_ORIGINAL = 'GNC' AND ((LENGTH(PRODUCT) = 6 AND PRODUCT not REGEXP '^[A-Z]') OR 
+
+                                                        -- (BRAND_ORIGINAL = 'GNC' AND ((LENGTH(PRODUCT) = 6 AND PRODUCT not REGEXP '^[A-Z]' AND PRODUCT not REGEXP '^[8-9]') AND (PRODUCT not REGEXP '^[8-9]') OR
+                                                        (BRAND_ORIGINAL = 'GNC' AND ((LENGTH(PRODUCT) = 6 AND PRODUCT not REGEXP '^[A-Z]') OR
                                                             LENGTH(PRODUCT) = 10 AND
                                                             barcode != 'CANCEL') )
                                                         OR
-                                                        
+
                                                         (BRAND_ORIGINAL = 'BB' AND (
                                                             (PRODUCT REGEXP '^[6]' AND LENGTH(PRODUCT) = 5)
-                                                            
+
                                                         ))
                                                         OR
-                                                        
+
                                                         (BRAND_ORIGINAL = 'LL' AND (
                                                             (PRODUCT REGEXP '^[3]' AND LENGTH(PRODUCT) = 5)
-                                                            
+
                                                         ))
                                                         OR
-                                                        
+
                                                         (BRAND_ORIGINAL = 'KTY' AND (
                                                             (PRODUCT REGEXP '^[1]' AND LENGTH(PRODUCT) = 5)
-                                                            
+
                                                         ))
                                                     )  AND BARCODE not REGEXP '^[A-Z]'
                                                 UNION ALL
@@ -672,7 +675,7 @@ class TransferDataOnce extends Command
                                                     WHERE BRAND_ORIGINAL IN  ('CPS','OP','BB','LL','GNC','KTY') AND (PRODUCT REGEXP '^[8-9]') AND LENGTH(PRODUCT) = 7 AND BARCODE not REGEXP '^[A-Z]'
                                                     GROUP BY PRODUCT
                                                     HAVING COUNT(*) = 1) AS data GROUP BY data.product
-                                                                
+
                                                 ");
 
             $diff_count = count($productsAll);
@@ -1199,7 +1202,7 @@ class TransferDataOnce extends Command
 
     //             try {
     //                 if (!empty($result1)) {
-    //                     $sql = "SELECT * FROM $dbName.dbo.$table_name";                       
+    //                     $sql = "SELECT * FROM $dbName.dbo.$table_name";
     //                     $response_insert = Http::asForm()->withHeaders([])->post($endpoint, [
     //                         'statement' => $sql,
     //                     ]);
@@ -1221,7 +1224,7 @@ class TransferDataOnce extends Command
     //             }
     //             $this->output->progressFinish();
     //         }
-    //     }  
+    //     }
     // }
 
     public function tranfer_data_back()
@@ -1246,7 +1249,7 @@ class TransferDataOnce extends Command
             ->whereRaw( 'product_channels.PRODUCT NOT REGEXP "^[A-Z]"')
             ->get();
 
-            
+
         $check_junk_8 = DB::table('product_channels')
         ->select('product1s.*', 'product_channels.BRAND', 'product_channels.PRODUCT')
         ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT');
@@ -1373,13 +1376,13 @@ class TransferDataOnce extends Command
                     ]);
 
                     $this->output->progressAdvance();
-                } 
+                }
                 else
                     if ($dbName == 'dbCPMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND) {
                         // if($check_junk > 1 || $check_junk == 8){
                         //     $brand_value = 'KM';
                         // } else {
-                        //    $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
+                        //    $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null;
                         // }
                         // if ($brand == $rs->BRAND) {
                             if(($rs->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1) && strlen((string)$rs->PRODUCT) > 7)){
@@ -1387,7 +1390,7 @@ class TransferDataOnce extends Command
                             }else if(($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1) && strlen((string)$rs->PRODUCT) > 7)){
                                 $brand_value = 'KM';
                             }else {
-                                $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
+                                $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null;
                             }
                         // }
 
@@ -1543,7 +1546,7 @@ class TransferDataOnce extends Command
                         }else if($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
                             $brand_value = 'KM';
                         }else{
-                            $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
+                            $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null;
                         }
                         $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
                         $sql .= "[BRAND], [PRODUCT], [BARCODE], [COLOR], [GRP_P], [SUPPLIER], [NAME_THAI], [NAME_ENG], [SHORT_THAI], [SHORT_ENG], [VENDOR], [PRICE], [COST], [UNIT], [UNIT_Q], [SOLUTION], [SERIES], [CATEGORY], [STATUS], [S_CAT], [PDM_GROUP], [BRAND_P], [REGISTER], [OPT_TXT1], [CONDITION_SALE], [WHOLE_SALE], [GP], [O_PRODUCT], [BAR_PACK1], [BAR_PACK2], [BAR_PACK3], [BAR_PACK4], [PACK_SIZE1], [PACK_SIZE2], [PACK_SIZE3], [PACK_SIZE4], [REG_DATE], [AGE], [WIDTH], [HEIGHT], [WIDE], [NAME_EXP], [NET_WEIGHT], [UNIT_TYPE], [TYPE_G], [OPT_DATE1], [OPT_DATE2], [OPT_TXT2], [OPT_NUM1], [OPT_NUM2], [ACC_TYPE], [ACC_DT], [RETURN], [NON_VAT], [STORAGE_TEMP], [CONTROL_STK], [TESTER], [USER_EDIT], [EDIT_DT]) VALUES (";
@@ -1697,7 +1700,7 @@ class TransferDataOnce extends Command
                         }else if($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
                             $brand_value = 'KM';
                         }else{
-                            $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
+                            $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null;
                         }
                         $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
                         $sql .= "[BRAND], [PRODUCT], [BARCODE], [COLOR], [GRP_P], [SUPPLIER], [NAME_THAI], [NAME_ENG], [SHORT_THAI], [SHORT_ENG], [VENDOR], [PRICE], [COST], [UNIT], [UNIT_Q], [SOLUTION], [SERIES], [CATEGORY], [STATUS], [S_CAT], [PDM_GROUP], [BRAND_P], [REGISTER], [OPT_TXT1], [CONDITION_SALE], [WHOLE_SALE], [GP], [O_PRODUCT], [BAR_PACK1], [BAR_PACK2], [BAR_PACK3], [BAR_PACK4], [PACK_SIZE1], [PACK_SIZE2], [PACK_SIZE3], [PACK_SIZE4], [REG_DATE], [AGE], [WIDTH], [HEIGHT], [WIDE], [NAME_EXP], [NET_WEIGHT], [UNIT_TYPE], [TYPE_G], [OPT_DATE1], [OPT_DATE2], [OPT_TXT2], [OPT_NUM1], [OPT_NUM2], [ACC_TYPE], [ACC_DT], [RETURN], [NON_VAT], [STORAGE_TEMP], [CONTROL_STK], [TESTER], [USER_EDIT], [EDIT_DT]) VALUES (";
@@ -1848,7 +1851,7 @@ class TransferDataOnce extends Command
                         }else if($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
                             $brand_value = 'KM';
                         }else{
-                            $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
+                            $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null;
                         }
                         $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
                         $sql .= "[BRAND], [PRODUCT], [BARCODE], [COLOR], [GRP_P], [SUPPLIER], [NAME_THAI], [NAME_ENG], [SHORT_THAI], [SHORT_ENG], [VENDOR], [PRICE], [COST], [UNIT], [UNIT_Q], [SOLUTION], [SERIES], [CATEGORY], [STATUS], [S_CAT], [PDM_GROUP], [BRAND_P], [REGISTER], [OPT_TXT1], [CONDITION_SALE], [WHOLE_SALE], [GP], [O_PRODUCT], [BAR_PACK1], [BAR_PACK2], [BAR_PACK3], [BAR_PACK4], [PACK_SIZE1], [PACK_SIZE2], [PACK_SIZE3], [PACK_SIZE4], [REG_DATE], [AGE], [WIDTH], [HEIGHT], [WIDE], [NAME_EXP], [NET_WEIGHT], [UNIT_TYPE], [TYPE_G], [OPT_DATE1], [OPT_DATE2], [OPT_TXT2], [OPT_NUM1], [OPT_NUM2], [ACC_TYPE], [ACC_DT], [RETURN], [NON_VAT], [STORAGE_TEMP], [CONTROL_STK], [TESTER], [USER_EDIT], [EDIT_DT]) VALUES (";
@@ -1996,7 +1999,7 @@ class TransferDataOnce extends Command
                         }else if($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
                             $brand_value = 'KM';
                         }else{
-                            $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
+                            $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null;
                         }
                         $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
                         $sql .= "[BRAND], [PRODUCT], [BARCODE], [COLOR], [GRP_P], [SUPPLIER], [NAME_THAI], [NAME_ENG], [SHORT_THAI], [SHORT_ENG], [VENDOR], [PRICE], [COST], [UNIT], [UNIT_Q], [SOLUTION], [SERIES], [CATEGORY], [STATUS], [S_CAT], [PDM_GROUP], [BRAND_P], [REGISTER], [OPT_TXT1], [CONDITION_SALE], [WHOLE_SALE], [GP], [O_PRODUCT], [BAR_PACK1], [BAR_PACK2], [BAR_PACK3], [BAR_PACK4], [PACK_SIZE1], [PACK_SIZE2], [PACK_SIZE3], [PACK_SIZE4], [REG_DATE], [AGE], [WIDTH], [HEIGHT], [WIDE], [NAME_EXP], [NET_WEIGHT], [UNIT_TYPE], [TYPE_G], [OPT_DATE1], [OPT_DATE2], [OPT_TXT2], [OPT_NUM1], [OPT_NUM2], [ACC_TYPE], [ACC_DT], [RETURN], [NON_VAT], [STORAGE_TEMP], [CONTROL_STK], [TESTER], [USER_EDIT], [EDIT_DT]) VALUES (";
@@ -2145,7 +2148,7 @@ class TransferDataOnce extends Command
                             }else if(($rs->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1) && strlen((string)$rs->PRODUCT) > 7)){
                                 $brand_value = 'KM';
                             }else{
-                                $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null; 
+                                $brand_value = ($rs->PRODUCT[0] == $key_parts_number_1 || $rs->PRODUCT[0] == $key_parts_number_2) ? $brand : null;
                             }
                         $sql = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
                         $sql .= "[BRAND], [PRODUCT], [BARCODE], [COLOR], [GRP_P], [SUPPLIER], [NAME_THAI], [NAME_ENG], [SHORT_THAI], [SHORT_ENG], [VENDOR], [PRICE], [COST], [UNIT], [UNIT_Q], [SOLUTION], [SERIES], [CATEGORY], [STATUS], [S_CAT], [PDM_GROUP], [BRAND_P], [REGISTER], [OPT_TXT1], [CONDITION_SALE], [WHOLE_SALE], [GP], [O_PRODUCT], [BAR_PACK1], [BAR_PACK2], [BAR_PACK3], [BAR_PACK4], [PACK_SIZE1], [PACK_SIZE2], [PACK_SIZE3], [PACK_SIZE4], [REG_DATE], [AGE], [WIDTH], [HEIGHT], [WIDE], [NAME_EXP], [NET_WEIGHT], [UNIT_TYPE], [TYPE_G], [OPT_DATE1], [OPT_DATE2], [OPT_TXT2], [OPT_NUM1], [OPT_NUM2], [ACC_TYPE], [ACC_DT], [RETURN], [NON_VAT], [STORAGE_TEMP], [CONTROL_STK], [TESTER], [USER_EDIT], [EDIT_DT]) VALUES (";
@@ -2221,7 +2224,7 @@ class TransferDataOnce extends Command
 
     public function tranfer_data_back_product2()
     {
-        set_time_limit(0); 
+        set_time_limit(0);
         $url_dot_30 = config('app.dot_30'); // Get URL from config
         $endpoint = $url_dot_30 . "/ims/dealer_transfer_service/dl_mid_query_dot1.php";
 
@@ -2343,210 +2346,5 @@ class TransferDataOnce extends Command
     {
         $date = \Carbon\Carbon::createFromFormat('M d Y h:iA', $date_str)->format('Y-m-d');
         return $date;
-    }
-
-    public function transfer_product_original() 
-    {
-        set_time_limit(0);
-        $url_dot_30 = config('app.dot_30');
-        $endpoint = $url_dot_30 . "/ims/dealer_transfer_service/dl_mid_query_dot1.php";
-
-        $test_database = [
-            'dbCPMAS|CPS|8|9|7' => ['NEW_PRODUCT1'],
-            'dbOPMAS|OP|8|9|2' => ['NEW_PRODUCT1']
-        ];
-
-        $dataProducts1 = DB::table('product_channels')
-            ->select('product1s.*', 'product_channels.BRAND', 'product_channels.PRODUCT')
-            ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT')
-            ->whereRaw( 'product_channels.PRODUCT NOT REGEXP "^[A-Z]"')
-            ->get();
-
-        // dd($dataProducts1);
-        $check_junk_8 = [
-            'title' => 8,
-            'count' => DB::table('product_channels')
-                ->select('product1s.*', 'product_channels.BRAND', 'product_channels.PRODUCT')
-                ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT')
-                // ->where('product_channels.PRODUCT', 'REGEXP', '^[8]')
-                ->whereRaw("product_channels.PRODUCT REGEXP '^[8]' AND LENGTH(product_channels.PRODUCT) >= 8")
-                ->count()
-        ];
-
-        $check_junk_9 = [
-            'title' => 9,
-            'count' => DB::table('product_channels')
-                ->select('product1s.*', 'product_channels.BRAND', 'product_channels.PRODUCT')
-                ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT')
-                // ->where('product_channels.PRODUCT', 'REGEXP', '^[9]')
-                ->whereRaw("product_channels.PRODUCT REGEXP '^[9]' AND LENGTH(product_channels.PRODUCT) >= 8")
-                ->count()
-        ];
-        
-        foreach ($test_database as $key => $tables) {
-            $exploded_key = explode('|', $key);
-            $dbName = $exploded_key[0];
-            $brand = $exploded_key[1];
-            $key_parts = [
-                'number_1' => $exploded_key[2] ?? null,
-                'number_2' => $exploded_key[3] ?? null,
-                'number_3' => $exploded_key[4] ?? null
-            ];
-
-            $this->info("Processing database back to product1_des: $dbName for brand: $brand");
-
-            foreach ($tables as $table_name) {
-
-                $response = Http::asForm()->post($endpoint, [
-                    'statement' => "SELECT PRODUCT FROM $dbName.dbo.$table_name"
-                ]);
-
-                if ($response->failed() || !isset($response['result'])) {
-                    $this->error("Failed to fetch data from $dbName - $table_name.");
-                    continue;
-                }
-
-                $result = $response['result'];
-                $diff_count = count($result);
-                $this->info("🚀 Transferring $diff_count records from $table_name.");
-                $this->output->progressStart($diff_count);
-
-                foreach ($dataProducts1 as $product) {
-                    if ($dbName == 'dbCPMAS' && $brand == $product->BRAND && $product->PRODUCT[0] != $key_parts['number_1'] && $product->PRODUCT[0] != $key_parts['number_2']) {
-                        $brand_value = 'KM';
-                        if ($product->PRODUCT[0] == $key_parts['number_3']) {
-                            $brand_value = $brand;
-                        } elseif ($product->PRODUCT[0] == 1 && strlen($product->PRODUCT) === 5) {
-                            $brand_value = 'KM';
-                        }
-
-                        if (in_array($product->PRODUCT, array_column($result, 'PRODUCT'))) {
-                            $sql_update = "UPDATE [$dbName].[dbo].[$table_name] ";
-                            $sql_update .= "SET [EDIT_DT] = '{$product->EDIT_DT}', ";
-                            $sql_update .= "[STATUS_EDIT_DT] = '{$product->EDIT_DT}' ";
-                            $sql_update .= "WHERE [PRODUCT] = '{$product->PRODUCT}';";
-
-                            Http::asForm()->post($endpoint, [
-                                'statement' => $sql_update,
-                                'params' => json_encode([$brand_value, $product['PRODUCT']]),
-                            ]);
-                            $this->output->progressAdvance();
-                        } 
-                        // else
-                        // if (!in_array($product->PRODUCT, array_column($result, 'PRODUCT'))) {
-                        //     $sql_insert = "INSERT INTO [$dbName].[dbo].[$table_name] (";
-                        //     $sql_insert .= "[BRAND], [PRODUCT], [BARCODE], [COLOR], [GRP_P], [SUPPLIER], [NAME_THAI], [NAME_ENG], [SHORT_THAI], [SHORT_ENG], [VENDOR], [PRICE], [COST], [UNIT], [UNIT_Q], [SOLUTION], [SERIES], [CATEGORY], [STATUS], [S_CAT], [PDM_GROUP], [BRAND_P], [REGISTER], [OPT_TXT1], [CONDITION_SALE], [WHOLE_SALE], [GP], [O_PRODUCT], [BAR_PACK1], [BAR_PACK2], [BAR_PACK3], [BAR_PACK4], [PACK_SIZE1], [PACK_SIZE2], [PACK_SIZE3], [PACK_SIZE4], [REG_DATE], [AGE], [WIDTH], [HEIGHT], [WIDE], [NAME_EXP], [NET_WEIGHT], [UNIT_TYPE], [TYPE_G], [OPT_DATE1], [OPT_DATE2], [OPT_TXT2], [OPT_NUM1], [OPT_NUM2], [ACC_TYPE], [ACC_DT], [RETURN], [NON_VAT], [STORAGE_TEMP], [CONTROL_STK], [TESTER], [USER_EDIT], [EDIT_DT], [STATUS_EDIT_DT]) VALUES (";
-                        //     $sql_insert .= "'" . $brand_value . "',
-                        //                 '" . $product->PRODUCT . "',
-                        //                 '" . $product->BARCODE . "',
-                        //                 '" . $product->COLOR . "',
-                        //                 '" . $product->GRP_P . "',
-                        //                 '" . $product->SUPPLIER . "',
-                        //                 '" . $product->NAME_THAI . "',
-                        //                 '" . $product->NAME_ENG . "',
-                        //                 '" . $product->SHORT_THAI . "',
-                        //                 '" . $product->SHORT_ENG . "',
-                        //                 '" . $product->VENDOR . "',
-                        //                 '" . $product->PRICE . "',
-                        //                 '" . $product->COST . "',
-                        //                 '" . $product->UNIT . "',
-                        //                 '" . $product->UNIT_Q . "',
-                        //                 '" . $product->SOLUTION . "',
-                        //                 '" . $product->SERIES . "',
-                        //                 '" . $product->CATEGORY . "',
-                        //                 '" . $product->STATUS . "',
-                        //                 '" . $product->S_CAT . "',
-                        //                 '" . $product->PDM_GROUP . "',
-                        //                 '" . $product->BRAND_P . "',
-                        //                 '" . $product->REGISTER . "',
-                        //                 '" . $product->OPT_TXT1 . "',
-                        //                 '" . $product->CONDITION_SALE . "',
-                        //                 '" . $product->WHOLE_SALE . "',
-                        //                 '" . $product->GP . "',
-                        //                 '" . $product->O_PRODUCT . "',
-                        //                 '" . $product->BAR_PACK1 . "',
-                        //                 '" . $product->BAR_PACK2 . "',
-                        //                 '" . $product->BAR_PACK3 . "',
-                        //                 '" . $product->BAR_PACK4 . "',
-                        //                 '" . $product->PACK_SIZE1 . "',
-                        //                 '" . $product->PACK_SIZE2 . "',
-                        //                 '" . $product->PACK_SIZE3 . "',
-                        //                 '" . $product->PACK_SIZE4 . "',
-                        //                 '" . $product->REG_DATE . "',
-                        //                 '" . $product->AGE . "',
-                        //                 '" . $product->WIDTH . "',
-                        //                 '" . $product->HEIGHT . "',
-                        //                 '" . $product->WIDE . "',
-                        //                 '" . $product->NAME_EXP . "',
-                        //                 '" . $product->NET_WEIGHT . "',
-                        //                 '" . $product->UNIT_TYPE . "',
-                        //                 '" . $product->TYPE_G . "',
-                        //                 '" . $product->OPT_DATE1 . "',
-                        //                 '" . $product->OPT_DATE2 . "',
-                        //                 '" . $product->OPT_TXT2 . "',
-                        //                 '" . $product->OPT_NUM1 . "',
-                        //                 '" . $product->OPT_NUM2 . "',
-                        //                 '" . $product->ACC_TYPE . "',
-                        //                 '" . $product->ACC_DT . "',
-                        //                 '" . $product->RETURN . "',
-                        //                 '" . $product->NON_VAT . "',
-                        //                 '" . $product->STORAGE_TEMP . "',
-                        //                 '" . $product->CONTROL_STK . "',
-                        //                 '" . $product->TESTER . "',
-                        //                 '" . $product->USER_EDIT . "',
-                        //                 '" . $product->EDIT_DT . "',
-                        //                 '" . $product->EDIT_DT . "'
-                        //             )";
-                        //     Http::asForm()->post($endpoint, [
-                        //         'statement' => $sql_update,
-                        //         'params' => json_encode([$brand_value, $product['PRODUCT']]),
-                        //     ]);
-                        //     $this->output->progressAdvance();
-                        // }
-                    } 
-                    // else
-                    // if ($dbName == 'dbCPMAS' && $product->PRODUCT[0] >= 8 && $brand == $product->BRAND) {
-                    //     if(($product->PRODUCT[0] == $check_junk_8['title'] && ($check_junk_8['count'] > 1))){
-                    //         $brand_value = 'KM';
-                    //     }else if($product->PRODUCT[0] == $check_junk_9['title'] && ($check_junk_9['count'] > 1)){
-                    //         $brand_value = 'KM';
-                    //     }else{
-                    //         $brand_value = ($product->PRODUCT[0] == $key_parts['number_1'] || $product->PRODUCT[0] == $key_parts['number_2']) ? $brand : null; 
-                    //     }
-
-                    //     if (in_array($product->PRODUCT, array_column($products_original['result'], 'PRODUCT')) && $product->STATUS_EDIT_DT != null) {
-                    //         $sql_update = "UPDATE [$dbName].[dbo].[$table_name] ";
-                    //         $sql_update .= "SET [EDIT_DT] = '{$product->EDIT_DT}', ";
-                    //         $sql_update .= "[STATUS_EDIT_DT] = '{$product->EDIT_DT}' ";
-                    //         $sql_update .= "WHERE [PRODUCT] = '{$product->PRODUCT}';";
-
-                    //         Http::asForm()->post($endpoint, [
-                    //             'statement' => $sql_update
-                    //         ]);
-                    //         $this->output->progressAdvance();
-                    //     } 
-                        // else
-                        // if (!in_array($product->PRODUCT, array_column($products_original['result'], 'PRODUCT'))) {
-                        //     $sql_insert = "INSERT INTO [$dbName].[dbo].[$table_name] (";
-                        //     $sql_insert .= "[BRAND], [PRODUCT], [EDIT_DT], [STATUS_EDIT_DT]) VALUES (";
-                        //     $sql_insert .= "'" . $brand_value . "',
-                        //                 '" . $product->PRODUCT . "',
-                        //                 '" . $product->EDIT_DT . "',
-                        //                 '" . $product->EDIT_DT . "'
-                        //             )";
-                        //     // dd($sql_insert);
-                        //     Http::asForm()->withHeaders([])->post($endpoint, [
-                        //         'statement' => $sql_insert,
-                        //     ]);
-                        //     // $this->output->progressAdvance();
-                        // }
-                    // }
-                }
-                $this->output->progressFinish();
-                $this->info("✅ Completed transfer for $table_name.");
-            }
-            $this->info("");
-        }
-        $this->info("All databases processed.");
     }
 }
