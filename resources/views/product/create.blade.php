@@ -518,7 +518,7 @@
                                                                     <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="VENDOR" id="VENDOR" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($owners as $key => $owner)
-                                                                            <option value={{ $owner->OWNER }}>{{ $owner->REMARK }}</option>
+                                                                            <option value="{{ $owner->OWNER }}">{{ $owner->REMARK }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <span id="VENDOR_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
@@ -533,7 +533,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs select2 readonly-select" name="GRP_P" id="GRP_P" readonly>
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($grp_ps as $key => $grp_p)
-                                                                            <option value={{ $grp_p->GRP_P }}>{{ $grp_p->BRAND.' - (' .$grp_p->REMARK.')' }}</option>
+                                                                            <option value="{{ $grp_p->GRP_P }}">{{ $grp_p->REMARK }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <span id="GRP_P_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
@@ -547,7 +547,7 @@
                                                                     <select  class="js-example-basic-single w-full rounded-sm text-xs select2" name="BRAND_P" id="BRAND_P">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($brand_ps as $key => $brand_p)
-                                                                            <option value={{ $brand_p->ID }}>{{ $brand_p->BRAND.' - '.$brand_p->ID. ' - (' .$brand_p->REMARK .')' }}</option>
+                                                                            <option value="{{ $brand_p->ID }}">{{ $brand_p->REMARK }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <!-- <span id="BRAND_P_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span> -->
@@ -561,7 +561,7 @@
                                                                     <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="SUPPLIER" id="SUPPLIER" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($venders as $key => $vender)
-                                                                            <option value={{ $vender->VEN_ID }}>{{ $vender->VEN_NTHAI }}</option>
+                                                                            <option value="{{ $vender->VEN_ID }}">{{ $vender->VEN_NTHAI }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <span id="SUPPLIER_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
@@ -590,7 +590,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="SOLUTION" id="SOLUTION">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($solutions as $key => $solution)
-                                                                        <option value={{ $solution->ID }}>{{  $solution->BRAND.' - (' .$solution->DESCRIPTION .')' }}</option>
+                                                                        <option value="{{ $solution->ID }}">{{ $solution->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <!-- <span id="SOLUTION_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span> -->
@@ -604,7 +604,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="SERIES" id="SERIES">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($series as $key => $serie)
-                                                                        <option value={{ $serie->ID }}>{{ $serie->BRAND.' - ('.$serie->DESCRIPTION.')' }}</option>
+                                                                        <option value="{{ $serie->ID }}">{{ $serie->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -617,7 +617,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="CATEGORY" id="CATEGORY">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($categorys as $key => $category)
-                                                                            <option value={{ $category->ID }}>{{ $category->BRAND.' - ('.$category->DESCRIPTION.')' }}</option>
+                                                                            <option value="{{ $category->ID }}">{{ $category->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -630,7 +630,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="S_CAT" id="S_CAT">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($sub_categorys as $key => $sub_category)
-                                                                        <option value={{ $sub_category->ID }}>{{ $sub_category->BRAND.' - ('.$sub_category->DESCRIPTION.')' }}</option>
+                                                                        <option value="{{ $sub_category->ID }}">{{ $sub_category->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -643,7 +643,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="PDM_GROUP" id="PDM_GROUP">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($pdms as $key => $pdm)
-                                                                        <option value={{ $pdm->ID }}>{{ $pdm->REMARK }}</option>
+                                                                        <option value="{{ $pdm->ID }}">{{ $pdm->REMARK }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -656,7 +656,7 @@
                                                                     <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="STATUS" id="STATUS" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($p_statuss as $key => $p_status)
-                                                                            <option value={{ $p_status->ID  }}>{{ $p_status->ID.' - ('.$p_status->DESCRIPTION.')' }}</option>
+                                                                            <option value="{{ $p_status->ID  }}">{{ $p_status->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <span id="STATUS_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
@@ -667,7 +667,7 @@
                                                                         <select class="js-example-basic-single w-full rounded-sm text-xs" name="product_group_name" id="product_group_name">
                                                                             <option value=""> --- กรุณาเลือก ---</option>
                                                                             @foreach ($product_groups as $key => $product_group)
-                                                                                <option value={{ $product_group->ID  }}>{{ $product_group->BRAND.' - ('.$product_group->product_group_name.')' }}</option>
+                                                                                <option value="{{ $product_group->ID }}">{{ $product_group->product_group_name }}</option>
                                                                             @endforeach
                                                                         </select>
                                                                         <span id="STATUS_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
@@ -844,7 +844,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs select2" name="UNIT" id="UNIT">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($unit_ps as $key => $unit_p)
-                                                                            <option value={{ $unit_p->UNIT }} >{{ $unit_p->BRAND.' - ('.$unit_p->UNIT.')' }}</option>
+                                                                            <option value="{{ $unit_p->UNIT }}">{{ $unit_p->UNIT }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <!-- <span id="UNIT_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span> -->
@@ -855,7 +855,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs select2" name="UNIT_TYPE" id="UNIT_TYPE">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($unit_types as $key => $unit_type)
-                                                                            <option value={{ $unit_type->UNIT_TYPE }}>{{ $unit_type->BRAND.' - ('.$unit_type->UNIT_TYPE.')' }}</option>
+                                                                            <option value="{{ $unit_type->UNIT_TYPE }}">{{ $unit_type->UNIT_TYPE }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <!-- <span id="UNIT_TYPE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span> -->
@@ -875,7 +875,7 @@
                                                                     <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="CONDITION_SALE" id="CONDITION_SALE" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($conditions as $key => $condition)
-                                                                            <option value={{ $condition->ID }}>{{ $condition->ID .' ('. $condition->DESCRIPTION .')' }}</option>
+                                                                            <option value="{{ $condition->ID }}">{{ $condition->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <span id="CONDITION_SALE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
@@ -1779,10 +1779,10 @@
                         },
                         error: function (params) {
                             setTimeout(function() {
-                                errorMessage("Can't Create Username!");
+                                errorMessage("เพิ่มขู้อมูลไม่สำเร็จ");
                             },dlayMessage)
                             setTimeout(function() {
-                                toastr.error("Can't Create Username!");
+                                toastr.error("เพิ่มขู้อมูลไม่สำเร็จ");
                             },dlayMessage)
                         }
                     });

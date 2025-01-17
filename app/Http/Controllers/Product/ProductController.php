@@ -84,7 +84,7 @@ class ProductController extends Controller
         $userpermission = Auth::user()->getUserPermission->name_position;
         // dd($data);
 
-        if (in_array($userpermission, [$isSuperAdmin, 'Admin', 'Accounting'])) {
+        if (in_array($userpermission, [$isSuperAdmin])) {
 
             // $brands = Product1::select(
             //     'BRAND',
@@ -555,7 +555,7 @@ class ProductController extends Controller
                 'REMARK',
                 'BRAND')
             // ->where('BRAND', 'OP')
-            ->whereIn('BRAND', ['OP', 'KM'])
+            ->where('BRAND', 'OP')
             ->get();
             $grp_ps = Grp_p::select(
                 'GRP_P',
@@ -630,7 +630,7 @@ class ProductController extends Controller
                 'OWNER',
                 'REMARK',
                 'BRAND')
-            ->whereIn('BRAND', ['CPS', 'KM'])
+            ->where('BRAND', 'CPS')
             ->get();
             $grp_ps = Grp_p::select(
                 'GRP_P',
@@ -699,8 +699,7 @@ class ProductController extends Controller
                 'OWNER',
                 'REMARK',
                 'BRAND')
-                ->whereIn('BRAND', ['KTY', 'KM'])
-            // ->where('BRAND', 'KTY')
+            ->where('BRAND', 'KTY')
             ->get();
             $grp_ps = Grp_p::select(
                 'GRP_P',
@@ -741,8 +740,7 @@ class ProductController extends Controller
                 'OWNER',
                 'REMARK',
                 'BRAND')
-            // ->where('BRAND', 'GNC')
-            ->whereIn('BRAND', ['GNC', 'KM'])
+            ->where('BRAND', 'GNC')
             ->get();
             $grp_ps = Grp_p::select(
                 'GRP_P',
@@ -817,8 +815,7 @@ class ProductController extends Controller
                 'OWNER',
                 'REMARK',
                 'BRAND')
-            // ->where('BRAND', 'OP')
-            ->whereIn('BRAND', ['BB', 'KM'])
+            ->where('BRAND', 'BB')
             ->get();
             $grp_ps = Grp_p::select(
                 'GRP_P',
@@ -893,8 +890,7 @@ class ProductController extends Controller
                 'OWNER',
                 'REMARK',
                 'BRAND')
-            // ->where('BRAND', 'OP')
-            ->whereIn('BRAND', ['LL', 'KM'])
+            ->where('BRAND', 'LL')
             ->get();
             $grp_ps = Grp_p::select(
                 'GRP_P',
@@ -969,8 +965,7 @@ class ProductController extends Controller
                 'OWNER',
                 'REMARK',
                 'BRAND')
-            // ->where('BRAND', 'OP')
-            ->whereIn('BRAND', ['KM'])
+            ->where('BRAND', 'KM')
             ->get();
             $grp_ps = Grp_p::select(
                 'GRP_P',
@@ -1638,6 +1633,7 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         $dataProductBarcode = Pro_develops::select(
             'BRAND',
             'PRODUCT',
@@ -1893,29 +1889,69 @@ class ProductController extends Controller
      */
     public function edit(Product $product, $PRODUCT)
     {
+        // $data = Product1::select(
+        //     'product1s.*',
+        //     'owners.OWNER AS VENDOR', // ในเอกสารสลับกัน
+        //     'grp_ps.GRP_P AS GRP_P',
+        //     'brand_ps.ID AS BRAND_P',
+        //     'vendors.VEN_ID AS SUPPLIER', // ในเอกสารสลับกัน
+        //     'type_gs.ID AS TYPE_G',
+        //     'solutions.ID AS SOLUTION',
+        //     'series.ID AS SERIES',
+        //     'categories.ID AS CATEGORY',
+        //     'sub_categories.ID AS S_CAT',
+        //     'pdms.ID AS PDM_GROUP',
+        //     'p_statuses.ID AS STATUS',
+        //     'unit_ps.DESCRIPTION AS UNIT',
+        //     'unit_types.DESCRIPTION AS UNIT_TYPE',
+        //     'acctypes.ID AS ACC_TYPE',
+        //     'conditions.ID AS CONDITION_SALE',
+        //     // 'product_channels.BRAND AS BRAND',
+        // )
+        // ->leftJoin('owners', 'product1s.VENDOR', '=', 'owners.OWNER') // ในเอกสารสลับกัน
+        // ->leftJoin('grp_ps', 'product1s.GRP_P', '=', 'grp_ps.GRP_P')
+        // // ->leftJoin('grp_ps', function ($join) {
+        // //     $join->on('product1s.GRP_P', '=', 'grp_ps.GRP_P')
+        // //          ->orWhereNull('product1s.GRP_P');
+        // // })
+        // ->leftJoin('brand_ps', 'product1s.BRAND_P', '=', 'brand_ps.ID')
+        // ->leftJoin('vendors', 'product1s.SUPPLIER', '=', 'vendors.VEN_ID') // ในเอกสารสลับกัน
+        // ->leftJoin('type_gs', 'product1s.TYPE_G', '=', 'type_gs.ID')
+        // ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+        // ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+        // ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+        // ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+        // ->leftJoin('pdms', 'product1s.PDM_GROUP', '=', 'pdms.ID')
+        // ->leftJoin('p_statuses', 'product1s.STATUS', '=', 'p_statuses.ID')
+        // ->leftJoin('unit_ps', 'product1s.UNIT', '=', 'unit_ps.DESCRIPTION')
+        // ->leftJoin('unit_types', 'product1s.UNIT_TYPE', '=', 'unit_types.DESCRIPTION')
+        // ->leftJoin('acctypes', 'product1s.ACC_TYPE', '=', 'acctypes.ID')
+        // ->leftJoin('conditions', 'product1s.CONDITION_SALE', '=', 'conditions.ID')
+        // // ->leftJoin('product_channels', 'product1s.PRODUCT', '=', 'product_channels.PRODUCT')
+        // ->firstWhere('product1s.PRODUCT', '=', $PRODUCT);
+
         $data = Product1::select(
             'product1s.*',
-            'owners.OWNER AS VENDOR', // ในเอกสารสลับกัน
-            'grp_ps.GRP_P AS GRP_P',
-            'brand_ps.ID AS BRAND_P',
-            'vendors.VEN_ID AS SUPPLIER', // ในเอกสารสลับกัน
-            'type_gs.ID AS TYPE_G',
-            'solutions.ID AS SOLUTION',
-            'series.ID AS SERIES',
-            'categories.ID AS CATEGORY',
-            'sub_categories.ID AS S_CAT',
-            'pdms.ID AS PDM_GROUP',
-            'p_statuses.ID AS STATUS',
-            'unit_ps.DESCRIPTION AS UNIT',
-            'unit_types.DESCRIPTION AS UNIT_TYPE',
-            'acctypes.ID AS ACC_TYPE',
-            'conditions.ID AS CONDITION_SALE',
-            // 'product_channels.BRAND AS BRAND',
+            // 'owners.OWNER AS VENDOR',
+            // 'grp_ps.GRP_P AS GRP_P',
+            // 'brand_ps.ID AS BRAND_P',
+            // 'vendors.VEN_NTHAI'
+            // 'type_gs.ID AS TYPE_G',
+            // 'solutions.ID AS SOLUTION',
+            // 'series.ID AS SERIES',
+            // 'categories.ID AS CATEGORY',
+            // 'sub_categories.ID AS S_CAT',
+            // 'pdms.ID AS PDM_GROUP',
+            // 'p_statuses.ID AS STATUS',
+            // 'unit_ps.DESCRIPTION AS UNIT',
+            // 'unit_types.DESCRIPTION AS UNIT_TYPE',
+            // 'acctypes.ID AS ACC_TYPE',
+            // 'conditions.ID AS CONDITION_SALE'
         )
-        ->leftJoin('owners', 'product1s.VENDOR', '=', 'owners.OWNER') // ในเอกสารสลับกัน
+        ->leftJoin('owners', 'product1s.VENDOR', '=', 'owners.OWNER')
         ->leftJoin('grp_ps', 'product1s.GRP_P', '=', 'grp_ps.GRP_P')
         ->leftJoin('brand_ps', 'product1s.BRAND_P', '=', 'brand_ps.ID')
-        ->leftJoin('vendors', 'product1s.SUPPLIER', '=', 'vendors.VEN_ID') // ในเอกสารสลับกัน
+        // ->leftJoin('vendors', 'product1s.SUPPLIER', '=', 'vendors.VEN_ID')
         ->leftJoin('type_gs', 'product1s.TYPE_G', '=', 'type_gs.ID')
         ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
         ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
@@ -1927,35 +1963,66 @@ class ProductController extends Controller
         ->leftJoin('unit_types', 'product1s.UNIT_TYPE', '=', 'unit_types.DESCRIPTION')
         ->leftJoin('acctypes', 'product1s.ACC_TYPE', '=', 'acctypes.ID')
         ->leftJoin('conditions', 'product1s.CONDITION_SALE', '=', 'conditions.ID')
-        // ->leftJoin('product_channels', 'product1s.PRODUCT', '=', 'product_channels.PRODUCT')
         ->firstWhere('product1s.PRODUCT', '=', $PRODUCT);
 
         $data->REG_DATE = date('Y-m-d', strtotime($data->REG_DATE));
         // dd($data);
 
-
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
 
-        $owners = Owner::select('OWNER AS VENDOR', 'REMARK')->get();
-        $grp_ps = Grp_p::select('GRP_P AS GRP_P', 'REMARK')->get();
+        $owners = Owner::select('OWNER AS VENDOR', 'REMARK')->get()->toArray();
+        $grp_ps = Grp_p::select('GRP_P AS GRP_P', 'REMARK')->get()->toArray();
+        // echo '<pre>';
+        // print_r($grp_ps);
+        // exit;
+       
 
-        $brand_ps = Brand_p::select('ID AS BRAND_P', 'REMARK', 'BRAND')->get();
+        // dd($owners);
+        $brand_ps = Brand_p::select('ID AS BRAND_P', 'REMARK', 'BRAND')->get()->toArray();
 
-        $venders = Vendor::select('VEN_ID AS SUPPLIER', 'VEN_NTHAI')->get();
+        $venders = Vendor::select('VEN_ID AS SUPPLIER', 'VEN_NTHAI')->get()->toArray();
+
+        // dd($venders);
+        // dd(!in_array($data->SUPPLIER, array_column($venders, 'SUPPLIER')));
+        if (!in_array($data->SUPPLIER, array_column($venders, 'SUPPLIER')))
+        {
+            $venders[] =  [
+                'SUPPLIER' => $data->SUPPLIER,
+                'VEN_NTHAI' => $data->SUPPLIER,
+            ];
+        } 
+
+        // dd($data->SUPPLIER);
         $type_gs = Type_g::select('ID AS TYPE_G', 'DESCRIPTION')->get();
-        $solutions = Solution::select('ID AS SOLUTION', 'DESCRIPTION')->get();
-        $series = Series::select('ID AS SERIES', 'DESCRIPTION')->get();
-        $categorys = Category::select('ID AS CATEGORY', 'DESCRIPTION')->get();
-        $sub_categorys = Sub_category::select('ID AS S_CAT', 'DESCRIPTION')->get();
-        $pdms = Pdm::select('ID AS PDM_GROUP', 'REMARK')->get();
-        $p_statuss = P_status::select('ID AS STATUS', 'DESCRIPTION')->get();
+        $solutions = Solution::select('ID AS SOLUTION', 'DESCRIPTION')->get()->toArray();
+        $series = Series::select('ID AS SERIES', 'DESCRIPTION')->get()->toArray();
+        $categorys = Category::select('ID AS CATEGORY', 'DESCRIPTION')->get()->toArray();
+        $sub_categorys = Sub_category::select('ID AS S_CAT', 'DESCRIPTION')->get()->toArray();
+        $pdms = Pdm::select('ID AS PDM_GROUP', 'REMARK')->get()->toArray();
+        $p_statuss = P_status::select('ID AS STATUS', 'DESCRIPTION')->get()->toArray();
+
+        if (!in_array($data->STATUS, array_column($p_statuss, 'STATUS')))
+        {
+            $p_statuss[] =  [
+                'STATUS' => $data->STATUS,
+                'DESCRIPTION' => $data->STATUS,
+            ];
+        } 
 
         // $unit_ps = Unit_p::all();
-        $unit_ps = Unit_p::select('DESCRIPTION AS UNIT', 'BRAND')->get();
-        $unit_types = Unit_type::select('DESCRIPTION AS UNIT_TYPE', 'BRAND')->get();
+        $unit_ps = Unit_p::select('DESCRIPTION AS UNIT', 'BRAND')->get()->toArray();
+        $unit_types = Unit_type::select('DESCRIPTION AS UNIT_TYPE', 'BRAND')->get()->toArray();
         $acctypes = Acctype::select('ID AS ACC_TYPE', 'DESCRIPTION')->get();
-        $conditions = Condition::select('ID AS CONDITION_SALE', 'DESCRIPTION')->get();
+        $conditions = Condition::select('ID AS CONDITION_SALE', 'DESCRIPTION')->get()->toArray();
+
+        if (!in_array($data->CONDITION_SALE, array_column($conditions, 'CONDITION_SALE')))
+        {
+            $conditions[] =  [
+                'CONDITION_SALE' => $data->CONDITION_SALE,
+                'DESCRIPTION' => $data->CONDITION_SALE,
+            ];
+        } 
 
         $multiChannels = ProductChannel::select('BRAND')->where('PRODUCT', '=', $PRODUCT)->pluck('BRAND')->toArray();
         $allBrands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
@@ -2045,26 +2112,55 @@ class ProductController extends Controller
                 'OWNER AS VENDOR',
                 'REMARK',
                 'BRAND')
-            ->whereIn('BRAND', ['OP', 'KM'])
-            ->get();
+            ->where('BRAND', 'OP')
+            ->get()->toArray();
+            if (!in_array($data->VENDOR, array_column($owners, 'VENDOR')))
+            {
+                $owners[] =  [
+                    'VENDOR' => $data->VENDOR,
+                    'REMARK' => $data->VENDOR,
+                ];
+            } 
             $grp_ps = Grp_p::select(
                 'GRP_P AS GRP_P',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'OP')
-            ->get();
+            ->get()->toArray();
+            if (!in_array($data->GRP_P, array_column($grp_ps, 'GRP_P')))
+            {
+                $grp_ps[] =  [
+                    'GRP_P' => $data->GRP_P,
+                    'REMARK' => $data->GRP_P,
+                ];
+            }
             $brand_ps = Brand_p::select(
                 'ID AS BRAND_P',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'OP')
-            ->get();
+            ->get()->toArray();
+            if (!in_array($data->BRAND_P, array_column($brand_ps, 'BRAND_P')))
+            {
+                $brand_ps[] =  [
+                    'BRAND_P' => $data->BRAND_P,
+                    'REMARK' => $data->BRAND_P,
+                ];
+            }
+
             $solutions = Solution::select(
                 'ID AS SOLUTION',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'OP')
-            ->get();
+            ->get()->toArray();
+            if (!in_array($data->SOLUTION, array_column($solutions, 'SOLUTION')))
+            {
+                $solutions[] =  [
+                    'SOLUTION' => $data->SOLUTION,
+                    'DESCRIPTION' => $data->SOLUTION,
+                ];
+            }
             $series = Series::select(
                 'ID AS SERIES',
                 'DESCRIPTION',
@@ -2114,61 +2210,129 @@ class ProductController extends Controller
                 'OWNER AS VENDOR',
                 'REMARK',
                 'BRAND')
-            ->whereIn('BRAND', ['CPS', 'KM'])
-            ->get();
+            ->where('BRAND', 'CPS')
+            ->get()->toArray();
+            if (!in_array($data->VENDOR, array_column($owners, 'VENDOR')))
+            {
+                $owners[] =  [
+                    'VENDOR' => $data->VENDOR,
+                    'REMARK' => $data->VENDOR,
+                ];
+            } 
             $grp_ps = Grp_p::select(
                 'GRP_P AS GRP_P',
                 'REMARK',
                 'BRAND')
-                ->whereIn('BRAND', ['CPS', 'KM'])
-            ->get();
+            ->where('BRAND', 'CPS')
+            ->get()->toArray();
+            if (!in_array($data->GRP_P, array_column($grp_ps, 'GRP_P')))
+            {
+                $grp_ps[] =  [
+                    'GRP_P' => $data->GRP_P,
+                    'REMARK' => $data->GRP_P,
+                ];
+            } 
             $brand_ps = Brand_p::select(
                 'ID AS BRAND_P',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'CPS')
-            ->get();
+            ->get()->toArray();
+            if (!in_array($data->BRAND_P, array_column($brand_ps, 'BRAND_P')))
+            {
+                $brand_ps[] =  [
+                    'BRAND_P' => $data->BRAND_P,
+                    'REMARK' => $data->BRAND_P,
+                ];
+            }
             $solutions = Solution::select(
                 'ID AS SOLUTION',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'CPS')
-            ->get();
+            ->get()->toArray();
+            if (!in_array($data->SOLUTION, array_column($solutions, 'SOLUTION')))
+            {
+                $solutions[] =  [
+                    'SOLUTION' => $data->SOLUTION,
+                    'DESCRIPTION' => $data->SOLUTION,
+                ];
+            }
             $series = Series::select(
                 'ID AS SERIES',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'CPS')
-            ->get();
+            ->get()->toArray();
+            if (!in_array($data->SERIES, array_column($series, 'SERIES')))
+            {
+                $series[] =  [
+                    'SERIES' => $data->SERIES,
+                    'DESCRIPTION' => $data->SERIES,
+                ];
+            }
             $categorys = Category::select(
                 'ID AS CATEGORY',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'CPS')
-            ->get();
+            ->get()->toArray();
+            if (!in_array($data->CATEGORY, array_column($categorys, 'CATEGORY')))
+            {
+                $categorys[] =  [
+                    'CATEGORY' => $data->CATEGORY,
+                    'DESCRIPTION' => $data->CATEGORY,
+                ];
+            }
             $sub_categorys = Sub_category::select(
                 'ID AS S_CAT',
                 'CATEGORY_ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'CPS')
-            ->get();
+            ->get()->toArray();
+            if (!in_array($data->S_CAT, array_column($sub_categorys, 'S_CAT')))
+            {
+                $sub_categorys[] =  [
+                    'S_CAT' => $data->S_CAT,
+                    'DESCRIPTION' => $data->S_CAT,
+                ];
+            }
             $pdms = Pdm::select(
                 'ID AS PDM_GROUP',
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'CPS')
-            ->get();
+            ->get()->toArray();
+            if (!in_array($data->PDM_GROUP, array_column($pdms, 'PDM_GROUP')))
+            {
+                $pdms[] =  [
+                    'PDM_GROUP' => $data->PDM_GROUP,
+                    'REMARK' => $data->PDM_GROUP,
+                ];
+            }
             $unit_ps = Unit_p::select(
                 'DESCRIPTION AS UNIT',
                 'BRAND')
             ->where('BRAND', 'CPS')
-            ->get();
+            ->get()->toArray();
+            if (!in_array($data->UNIT, array_column($unit_ps, 'UNIT')))
+            {
+                $unit_ps[] =  [
+                    'UNIT' => $data->UNIT,
+                ];
+            }
             $unit_types = Unit_type::select(
                 'DESCRIPTION AS UNIT_TYPE',
                 'BRAND')
             ->where('BRAND', 'CPS')
-            ->get();
+            ->get()->toArray();
+            if (!in_array($data->UNIT_TYPE, array_column($unit_types, 'UNIT_TYPE')))
+            {
+                $unit_types[] =  [
+                    'UNIT_TYPE' => $data->UNIT_TYPE,
+                ];
+            }
         } else if (in_array($userpermission, ['Procurement - KTY'])) {
             $defaultBrands = MasterBrand::select(
                 'BRAND')
@@ -2190,7 +2354,15 @@ class ProductController extends Controller
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'KTY')
-            ->get();
+            ->get()->toArray();
+            if (!in_array($data->GRP_P, $grp_ps))
+            {
+                // $grp_ps = [];
+                $grp_ps[] =  [
+                    'GRP_P' => $data->GRP_P,
+                    'REMARK' => $data->GRP_P,
+                ];
+            } 
             $brand_ps = Brand_p::select(
                 'ID AS BRAND_P',
                 'REMARK',
@@ -2232,7 +2404,15 @@ class ProductController extends Controller
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'GNC')
-            ->get();
+            ->get()->toArray();
+            if (!in_array($data->GRP_P, $grp_ps))
+            {
+                // $grp_ps = [];
+                $grp_ps[] =  [
+                    'GRP_P' => $data->GRP_P,
+                    'REMARK' => $data->GRP_P,
+                ];
+            } 
             $brand_ps = Brand_p::select(
                 'ID',
                 'REMARK',
@@ -2308,7 +2488,15 @@ class ProductController extends Controller
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'BB')
-            ->get();
+            ->get()->toArray();
+            if (!in_array($data->GRP_P, $grp_ps))
+            {
+                // $grp_ps = [];
+                $grp_ps[] =  [
+                    'GRP_P' => $data->GRP_P,
+                    'REMARK' => $data->GRP_P,
+                ];
+            } 
             $brand_ps = Brand_p::select(
                 'ID',
                 'REMARK',
@@ -2384,7 +2572,15 @@ class ProductController extends Controller
                 'REMARK',
                 'BRAND')
             ->where('BRAND', 'LL')
-            ->get();
+            ->get()->toArray();
+            if (!in_array($data->GRP_P, $grp_ps))
+            {
+                // $grp_ps = [];
+                $grp_ps[] =  [
+                    'GRP_P' => $data->GRP_P,
+                    'REMARK' => $data->GRP_P,
+                ];
+            } 
             $brand_ps = Brand_p::select(
                 'ID',
                 'REMARK',
@@ -2558,7 +2754,8 @@ class ProductController extends Controller
         //     ->get();
         // }
 
-        // dd($brand_ps, $userpermission, $defaultBrands);
+        // dd($solutions);
+        // dd($venders);
         return view('product.edit', compact('data', 'multiChannels', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
     }
 
@@ -2651,11 +2848,13 @@ class ProductController extends Controller
                     'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
                     'USER_EDIT' => Auth::user()->username,
                     'EDIT_DT' => date("Y/m/d H:i:s"),
-                    'STATUS_EDIT_DT' => NULL,
+                    'STATUS_EDIT_DT' => '',
                 ];
 
+                dd($data_product_upddate);
                 $productUpddateConsumables = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
 
+                dd($productUpddateConsumables);
                 DB::commit();
                 $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
                 return response()->json(['success' => true]);
@@ -2716,7 +2915,7 @@ class ProductController extends Controller
                     'PACK_SIZE2' => $request->input('PACK_SIZE2'),
                     'PACK_SIZE3' => $request->input('PACK_SIZE3'),
                     'PACK_SIZE4' => $request->input('PACK_SIZE4'),
-                    'REG_DATE' => date("Y/m/d h:i:s"),
+                    'REG_DATE' => $request->input('REG_DATE'),
                     'AGE' => $request->input('AGE'),
                     'WIDTH' => $request->input('WIDTH'),
                     'HEIGHT' => $request->input('HEIGHT'),
@@ -2738,7 +2937,8 @@ class ProductController extends Controller
                     'CONTROL_STK' => is_null($request->input('CONTROL_STK')) ? 'N' : 'Y',
                     'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
                     'USER_EDIT' => Auth::user()->username,
-                    'EDIT_DT' => date("Y/m/d H:i:s")
+                    'EDIT_DT' => date("Y/m/d H:i:s"),
+                    'STATUS_EDIT_DT' => '',
                 ];
 
                 if (!is_null($request->sele_channel[0])) {
@@ -2812,7 +3012,7 @@ class ProductController extends Controller
             'page' => ceil(($request->input('start') + 1) / $limit),
         ]);
 
-        $GRP_P = $request->input('brand_id');
+        $BRAND = $request->input('brand_id');
         $PRODUCT = $request->input('PRODUCT');
         // $BARCODE = $request->input('BARCODE');
         $DOC_NO = $request->search;
@@ -2873,7 +3073,7 @@ class ProductController extends Controller
                 'BARCODE',
                 'NAME_THAI'
             )
-            ->whereIn('BRAND', ['OP', 'KM'])
+            ->where('BRAND', 'OP')
             // ->where(function ($query) {
             //     $query->whereIn('BRAND', ['OP', 'KM']) // First check for BRAND in ['OP', 'KM']
             //         ->orWhereHas('productChannel', function ($q) {
@@ -2890,7 +3090,7 @@ class ProductController extends Controller
                 'BARCODE',
                 'NAME_THAI'
             )
-            ->whereIn('BRAND', ['CPS', 'KM'])
+            ->where('BRAND', 'CPS')
             // ->where(function ($query) {
             //     $query->whereIn('BRAND', ['CPS', 'KM']) // First check for BRAND in ['CPS', 'KM']
             //           ->orWhereHas('productChannel', function ($q) {
@@ -2916,7 +3116,7 @@ class ProductController extends Controller
                 'BARCODE',
                 'NAME_THAI'
             )
-            ->whereIn('BRAND', ['GNC', 'KM'])
+            ->where('BRAND', 'GNC')
             ->orderBy('BARCODE', 'DESC');
         } else if (in_array($userpermission, ['BB'])) {
             $data = Product1::select(
@@ -2926,7 +3126,7 @@ class ProductController extends Controller
                 'BARCODE',
                 'NAME_THAI'
             )
-            ->whereIn('BRAND', ['BB', 'KM'])
+            ->where('BRAND', 'BB')
             ->orderBy('BARCODE', 'DESC');
         } else if (in_array($userpermission, ['LL'])) {
             $data = Product1::select(
@@ -2936,7 +3136,7 @@ class ProductController extends Controller
                 'BARCODE',
                 'NAME_THAI'
             )
-            ->whereIn('BRAND', ['LL', 'KM'])
+            ->where('BRAND', 'LL')
             ->orderBy('BARCODE', 'DESC');
         } else if (in_array($userpermission, ['KM'])) {
             $data = Product1::select(
@@ -2946,13 +3146,14 @@ class ProductController extends Controller
                 'BARCODE',
                 'NAME_THAI'
             )
-            ->whereIn('BRAND', ['OP', 'CPS', 'KTY', 'GNC', 'BB', 'LL', 'KM'])
+            // ->whereIn('BRAND', ['OP', 'CPS', 'KTY', 'GNC', 'BB', 'LL', 'KM'])
+            ->where('BRAND', 'KM')
             ->orderBy('BARCODE', 'DESC');
         }
 
         // dd($data);
-        if ($GRP_P != null) {
-            $data->where('product1s.GRP_P', $GRP_P);
+        if ($BRAND != null) {
+            $data->where('product1s.BRAND', $BRAND);
         }
 
         if (null != $DOC_NO) {

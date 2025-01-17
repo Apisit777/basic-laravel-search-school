@@ -284,31 +284,31 @@
 
         <div id="responseData" class="mt-5 text-gray-900 dark:text-white"></div> --}}
 
-        <div class="justify-center items-center">
-    <form class="max-w-sm mx-auto">
-        <label for="countries" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Select Position</label>
-        <select class="js-example-basic-single w-full rounded-sm text-xs" id="filter-select" name="">
-            <option value="" class="text-sm"> --- กรุณาเลือก ---</option>
-            @foreach ($roles as $key => $role)
-                <option value="{{ $role }}">{{ $role }}</option>
-            @endforeach
-        </select>
-    </form>
-</div>
+        <!-- <div class="justify-center items-center">
+            <form class="max-w-sm mx-auto">
+                <label for="countries" class="block mb-2 text-base font-medium text-gray-900 dark:text-white">Select Position</label>
+                <select class="js-example-basic-single w-full rounded-sm text-xs" id="filter-select" name="">
+                    <option value="" class="text-sm"> --- กรุณาเลือก ---</option>
+                    @foreach ($roles as $key => $role)
+                        <option value="{{ $role }}">{{ $role }}</option>
+                    @endforeach
+                </select>
+            </form>
+        </div>
 
-<div class="container mx-auto py-8">
-    <div id="cards-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
-</div>
+        <div class="container mx-auto py-8">
+            <div id="cards-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+        </div>
 
-<div id="pagination-controls" class="mt-8 flex flex-wrap justify-center space-x-2">
-    <svg id="prev-btn" fill="currentColor" class="size-9 mt-0.5 ml-0.5 text-[#303030] dark:text-[#EAEAEA] cursor-pointer" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="m4.431 12.822 13 9A1 1 0 0 0 19 21V3a1 1 0 0 0-1.569-.823l-13 9a1.003 1.003 0 0 0 0 1.645z"/>
-    </svg>
-    <div id="pagination-numbers" class="flex flex-wrap justify-center space-x-2"></div>
-    <svg id="next-btn" fill="currentColor" class="size-10 mb-1 ml-0.5 text-[#303030] dark:text-[#EAEAEA] cursor-pointer" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M5.536 21.886a1.004 1.004 0 0 0 1.033-.064l13-9a1 1 0 0 0 0-1.644l-13-9A1 1 0 0 0 5 3v18a1 1 0 0 0 .536.886z"/>
-    </svg>
-</div>
+        <div id="pagination-controls" class="mt-8 flex flex-wrap justify-center space-x-2">
+            <svg id="prev-btn" fill="currentColor" class="size-9 mt-0.5 ml-0.5 text-[#303030] dark:text-[#EAEAEA] cursor-pointer" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="m4.431 12.822 13 9A1 1 0 0 0 19 21V3a1 1 0 0 0-1.569-.823l-13 9a1.003 1.003 0 0 0 0 1.645z"/>
+            </svg>
+            <div id="pagination-numbers" class="flex flex-wrap justify-center space-x-2"></div>
+            <svg id="next-btn" fill="currentColor" class="size-10 mb-1 ml-0.5 text-[#303030] dark:text-[#EAEAEA] cursor-pointer" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M5.536 21.886a1.004 1.004 0 0 0 1.033-.064l13-9a1 1 0 0 0 0-1.644l-13-9A1 1 0 0 0 5 3v18a1 1 0 0 0 .536.886z"/>
+            </svg>
+        </div> -->
 
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
             <div id="containerexample" class="text-gray-900 dark:text-gray-100">

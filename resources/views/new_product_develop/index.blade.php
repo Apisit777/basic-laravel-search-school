@@ -289,7 +289,7 @@
                     targets: 1,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.Code;
+                        return row.PRODUCT;
                     }
                 },
                 {

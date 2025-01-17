@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Carbon\Carbon;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,7 +14,25 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
-        // $schedule->command('app:run-midnight-task')->dailyAt('11:11');
+        // $schedule->command('app:run-midnight-task')->dailyAt('10:48');
+        // $schedule->call(function () {
+        //     $incompleteTasks = \App\Models\Task::where('is_completed', false)
+        //         ->whereDate('scheduled_date', Carbon::today()) // Only today's tasks
+        //         ->get();
+        
+        //     if ($incompleteTasks->isNotEmpty()) {
+        //         foreach ($incompleteTasks as $task) {
+        //             \Log::info("Processing task: {$task->task_name}");
+        
+        //             $task->is_completed = true;
+        //             $task->save();
+        //         }
+        //     } else {
+        //         \Log::info('No incomplete tasks for today.');
+        //     }
+        // })->everyMinute()->between('18:00', '20:00')->when(function () {
+        //     return now()->isWeekday(); // Only run on weekdays ทำงานเฉพาะวันจันทร์ถึงศุกร์
+        // });
     }
 
     /**

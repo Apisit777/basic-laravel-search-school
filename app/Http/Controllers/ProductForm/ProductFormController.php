@@ -716,6 +716,7 @@ class ProductFormController extends Controller
      */
     public function store(Request $request)
     {
+        // dd($request);
         // dd((int) $request->code);
         DB::beginTransaction();
         try {
@@ -726,7 +727,7 @@ class ProductFormController extends Controller
             $data_product = [
                 'BRAND' => $request->input('BRAND') == 'OP' || $request->input('BRAND') == 'RE' || $request->input('BRAND') == 'CM' ? 'OP' : $request->input('BRAND'),
                 'DOC_NO' => $request->input('DOC_NO'),
-                'REF_DOC' => 'IBH-F155',
+                'REF_DOC' => $request->input('REF_DOC'),
                 'STATUS' => $request->input('STATUS'),
                 'PRODUCT' => $digits_code,
                 'BARCODE' => $digits_barcode,
@@ -960,7 +961,9 @@ class ProductFormController extends Controller
         ->leftJoin('npd_textures', 'pro_develops.TEXTURE', '=', 'npd_textures.ID')
         ->firstWhere('BARCODE', '=', $id_barcode);
 
-        // dd($dataIBSH->C_DESCRIPTION);
+        // $dataIBSH->TARGET_STK = date('Y-m-d', strtotime($data->TARGET_STK));
+
+        // dd($dataIBSH);
         return view('new_product_develop.show', compact('dataIBSH', 'productCodeArr'));
     }
 
@@ -971,17 +974,17 @@ class ProductFormController extends Controller
     {
         // dd($id_barcode);
         $data = Pro_develops::select(
-            'pro_develops.*',
-            DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
-            'npd_cos.ID AS ID_NPD',
-            'npd_pdms.ID AS ID_PDM',
-            'npd_categorys.ID AS ID_CATEGORY',
-            'npd_textures.ID AS ID_TEXTURE',
+            'pro_develops.*'
+            // DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
+            // 'npd_cos.ID AS ID_NPD',
+            // 'npd_pdms.ID AS ID_PDM',
+            // 'npd_categorys.ID AS ID_CATEGORY',
+            // 'npd_textures.ID AS ID_TEXTURE',
         )
-            ->leftJoin('npd_cos', 'pro_develops.NPD', '=', 'npd_cos.ID')
-            ->leftJoin('npd_pdms', 'pro_develops.PDM', '=', 'npd_pdms.ID')
-            ->leftJoin('npd_categorys', 'pro_develops.CATEGORY', '=', 'npd_categorys.ID')
-            ->leftJoin('npd_textures', 'pro_develops.TEXTURE', '=', 'npd_textures.ID')
+            // ->leftJoin('npd_cos', 'pro_develops.NPD', '=', 'npd_cos.ID')
+            // ->leftJoin('npd_pdms', 'pro_develops.PDM', '=', 'npd_pdms.ID')
+            // ->leftJoin('npd_categorys', 'pro_develops.CATEGORY', '=', 'npd_categorys.ID')
+            // ->leftJoin('npd_textures', 'pro_develops.TEXTURE', '=', 'npd_textures.ID')
             // ->join('npd_cos', 'pro_develops.NPD', '=', 'npd_cos.ID')
             // ->join('npd_pdms', 'pro_develops.PDM', '=', 'npd_pdms.ID')
             // ->join('npd_categorys', 'pro_develops.CATEGORY', '=', 'npd_categorys.ID')
@@ -989,6 +992,10 @@ class ProductFormController extends Controller
             ->where('BARCODE', $id_barcode)
             ->first();
 
+            // dd($data);
+
+            $data->DOC_DT = date('Y-m-d', strtotime($data->REG_DATE));
+            $data->TARGET_STK = date('Y-m-d', strtotime($data->REG_DATE));
         // $data1 = Pro_develops::find($id_barcode);
         // $data = Product1::select(
         //     'product1s.*',
@@ -999,11 +1006,47 @@ class ProductFormController extends Controller
         // $data = Pro_develops::all();
         // dd($data);
 
-        $product_co_ordimators = Npd_cos::select('ID AS ID_NPD', 'DESCRIPTION')->get();
-        $marketing_managers = Npd_pdms::select('ID AS ID_PDM', 'DESCRIPTION')->get();
-        $type_categorys = Npd_categorys::select('ID AS ID_CATEGORY', 'DESCRIPTION')->get();
-        $textures = Npd_textures::select('ID AS ID_TEXTURE', 'DESCRIPTION')->get();
+        $product_co_ordimators = Npd_cos::select('ID AS NPD', 'DESCRIPTION')->get()->toArray();
 
+        if (!in_array($data->NPD, array_column($product_co_ordimators, 'NPD')))
+            {
+                $product_co_ordimators[] =  [
+                    'NPD' => $data->NPD,
+                    'DESCRIPTION' => $data->NPD,
+                ];
+            } 
+
+        $marketing_managers = Npd_pdms::select('ID AS PDM', 'DESCRIPTION')->get()->toArray();
+
+        if (!in_array($data->PDM, array_column($marketing_managers, 'PDM')))
+        {
+            $marketing_managers[] =  [
+                'PDM' => $data->PDM,
+                'DESCRIPTION' => $data->PDM,
+            ];
+        }
+
+        $type_categorys = Npd_categorys::select('ID AS CATEGORY', 'DESCRIPTION')->get()->toArray();
+
+        if (!in_array($data->CATEGORY, array_column($type_categorys, 'CATEGORY')))
+        {
+            $type_categorys[] =  [
+                'CATEGORY' => $data->CATEGORY,
+                'DESCRIPTION' => $data->CATEGORY,
+            ];
+        }
+
+        $textures = Npd_textures::select('ID AS TEXTURE', 'DESCRIPTION')->get()->toArray();
+
+        if (!in_array($data->TEXTURE, array_column($textures, 'TEXTURE')))
+        {
+            $textures[] =  [
+                'TEXTURE' => $data->TEXTURE,
+                'DESCRIPTION' => $data->TEXTURE,
+            ];
+        }
+
+        // dd($data->TEXTURE);
         return view('new_product_develop.edit', compact('data', 'product_co_ordimators', 'marketing_managers', 'type_categorys', 'textures'));
     }
 
@@ -1037,8 +1080,8 @@ class ProductFormController extends Controller
             $data_product = [
                 'BRAND' => $request->input('BRAND'),
                 'DOC_NO' => $request->input('DOC_NO'),
-                'REF_DOC' => 'IBH-F155',
-                'PRODUCT' => $request->input('Code'),
+                'REF_DOC' => $request->input('REF_DOC'),
+                'PRODUCT' => $request->input('PRODUCT'),
                 'BARCODE' => $request->input('BARCODE'),
                 'JOB_REFNO' => $request->input('JOB_REFNO'),
                 'DOC_DT' => $request->input('DOC_DT'),
@@ -1148,7 +1191,8 @@ class ProductFormController extends Controller
         } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
             $data = Pro_develops::select(
                     'pro_develops.BRAND AS BRAND',
-                    DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
+                    // DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
+                    'pro_develops.PRODUCT AS PRODUCT',
                     'pro_develops.BARCODE AS BARCODE',
                     'pro_develops.NAME_ENG AS NAME_ENG'
                 )
@@ -1158,7 +1202,8 @@ class ProductFormController extends Controller
         } else if (in_array($userpermission, ['Marketing - CPS'])) {
             $data = Pro_develops::select(
                 'pro_develops.BRAND AS BRAND',
-                DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
+                // DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
+                'pro_develops.PRODUCT AS PRODUCT',
                 'pro_develops.BARCODE AS BARCODE',
                 'pro_develops.NAME_ENG AS NAME_ENG'
             )
@@ -1168,7 +1213,8 @@ class ProductFormController extends Controller
         } else if (in_array($userpermission, ['Procurement - KTY'])) {
             $data = Pro_develops::select(
                 'pro_develops.BRAND AS BRAND',
-                DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
+                // DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
+                'pro_develops.PRODUCT AS PRODUCT',
                 'pro_develops.BARCODE AS BARCODE',
                 'pro_develops.NAME_ENG AS NAME_ENG'
             )

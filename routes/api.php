@@ -26,6 +26,9 @@ Route::get('/sub_categorys', [AuthController::class, 'list_sub_categorys']);
 // Command transfer
 Route::get('/transfer/{task}', [CommonController::class, 'transfer']);
 
+// Command production transfer
+Route::get('/production_transfer/{task}', [CommonController::class, 'productionTransfer']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

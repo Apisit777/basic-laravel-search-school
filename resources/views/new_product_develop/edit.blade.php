@@ -39,7 +39,7 @@
                             </div>
                             <div class="md:col-span-3" style="position: relative;">
                                 <label for="Code">รหัส</label>
-                                <input type="text" name="Code" id="Code" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->Code }}" readonly>
+                                <input type="text" name="PRODUCT" id="Code" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->PRODUCT }}" readonly>
                             </div>
                         </div>
                     </div>
@@ -89,7 +89,8 @@
                                                                 </div>
                                                                 <div class="md:col-span-3" >
                                                                     <label for="DOC_DT">วันที่</label>
-                                                                    <input type="date" name="DOC_DT" id="DOC_DT" style="height: 38px;" class="form-control border-[#303030] bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="" id="" placeholder="" autocomplete="off" value="{{ $data->DOC_DT }}">
+                                                                    <input type="date" name="DOC_DT" id="DOC_DT" style="height: 38px;" class="form-control border-[#303030] bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer text-center" data-date-format="dd/mm/yyyy" name="" id="" placeholder="" autocomplete="off" value="{{ $data->DOC_DT }}">
+                                                                    <!-- class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" data-date-format="dd/mm/yyyy" placeholder="" autocomplete="off" -->
                                                                 </div>
                                                                 <div class="md:col-span-6" style="position: relative;">
                                                                     <label for="CUST_OEM">Customer (OEM)</label>
@@ -99,17 +100,22 @@
                                                                     <label for="NPD">Product Co-ordinator<span class="text-danger"> *</span></label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" id="NPD" name="NPD">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($product_co_ordimators as $key => $product_co_ordimator)
-                                                                            <option value={{ $product_co_ordimator->ID_NPD }} {{ $product_co_ordimator->ID_NPD == $data->ID_NPD ? 'selected' : '' }}>{{ $product_co_ordimator->DESCRIPTION }}</option>
+                                                                        @foreach ($product_co_ordimators as $product_co_ordimator)
+                                                                            <option value="{{ $product_co_ordimator['NPD'] }}" {{ $product_co_ordimator['NPD'] == $data->NPD ? 'selected' : '' }}>
+                                                                                {{ $product_co_ordimator['DESCRIPTION'] }}
+                                                                            </option>
                                                                         @endforeach
                                                                     </select>
+
                                                                 </div>
                                                                 <div class="md:col-span-3" >
                                                                     <label for="PDM">Marketing Mamager<span class="text-danger"> *</span></label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" id="PDM" name="PDM">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($marketing_managers as $key => $marketing_manager)
-                                                                            <option value={{ $marketing_manager->ID_PDM }} {{ $marketing_manager->ID_PDM == $data->ID_PDM ? 'selected' : '' }}>{{ $marketing_manager->DESCRIPTION }}</option>
+                                                                        @foreach ($marketing_managers as $marketing_manager)
+                                                                            <option value="{{ $marketing_manager['PDM'] }}" {{ $marketing_manager['PDM'] == $data->PDM ? 'selected' : '' }}>
+                                                                                {{ $marketing_manager['DESCRIPTION'] }}
+                                                                            </option>
                                                                         @endforeach 
                                                                     </select>
                                                                 </div>
@@ -121,8 +127,10 @@
                                                                     <label for="CATEGORY">ประเภทผลิตภัณฑ์<span class="text-danger"> *</span></label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" id="CATEGORY" name="CATEGORY">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($type_categorys as $key => $type_category)
-                                                                            <option value={{ $type_category->ID_CATEGORY }} {{ $type_category->ID_CATEGORY == $data->ID_CATEGORY ? 'selected' : '' }}>{{ $type_category->DESCRIPTION }}</option>
+                                                                        @foreach ($type_categorys as  $type_category)
+                                                                            <option value="{{ $type_category['CATEGORY'] }}" {{ $type_category['CATEGORY'] == $data->CATEGORY ? 'selected' : '' }}>
+                                                                                {{ $type_category['DESCRIPTION'] }}
+                                                                            </option>
                                                                         @endforeach 
                                                                     </select>
                                                                 </div>
@@ -144,7 +152,7 @@
                                                                 </div>
                                                                 <div class="md:col-span-3" >
                                                                     <label for="TARGET_STK">Target Launch Date</label>
-                                                                    <input type="date" name="TARGET_STK" id="TARGET_STK" style="height: 38px;" class="form-control border-[#303030] bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" name="" id="" placeholder="" autocomplete="off" value="{{ $data->TARGET_STK }}">
+                                                                    <input type="date" name="TARGET_STK" id="TARGET_STK" style="height: 38px;" class="form-control border-[#303030] bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer text-center" data-date-format="dd/mm/yyyy" name="" id="" placeholder="" autocomplete="off" value="{{ $data->TARGET_STK }}">
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="PRICE_FG">Target Price F/G</label>
@@ -211,8 +219,8 @@
                                                                     <label for="TEXTURE">texture<span class="text-danger"> *</span></label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" id="TEXTURE" name="TEXTURE">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($textures as $key => $texture)
-                                                                            <option value={{ $texture->ID_TEXTURE }} {{ $texture->ID_TEXTURE == $data->ID_TEXTURE ? 'selected' : '' }}>{{ $texture->DESCRIPTION }}</option>
+                                                                        @foreach ($textures as $texture)
+                                                                            <option value="{{ $texture['TEXTURE'] }}" {{ $texture['TEXTURE'] == $data->TEXTURE ? 'selected' : '' }}>{{ $texture['DESCRIPTION'] }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -351,6 +359,9 @@
                                                                         <label for="">Without an outer box</label>
                                                                     </div>
                                                                 </div>
+
+                                                               
+
                                                                 <div class="md:col-span-3">
                                                                     <label for="REF_COLOR">Ref. of Color</label>
                                                                     <input type="text" name="REF_COLOR" id="REF_COLOR" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->REF_COLOR }}" />
@@ -571,5 +582,6 @@
                 }
             });
         }
+            
     </script>
 @endsection

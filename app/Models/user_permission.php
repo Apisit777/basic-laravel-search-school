@@ -20,6 +20,6 @@ class user_permission extends Model
 
     public function position()
     {
-        return $this->belongsTo(Position::class, 'position_id', 'id');
+        return $this->belongsTo(position::class, 'position_id', 'id');
     }
 }
