@@ -266,7 +266,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="VENDOR" id="VENDOR">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($owners as $key => $owner)
-                                                                            <option value={{ $owner->VENDOR }} {{ $owner->VENDOR == $data->VENDOR ? 'selected' : '' }}>{{ $owner->VENDOR.' - ('.$owner->REMARK.')'}}</option>
+                                                                            <option value="{{ $owner['VENDOR'] }}" {{ $owner['VENDOR'] == $data->VENDOR ? 'selected' : '' }}>{{ $owner['REMARK'] }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -278,10 +278,13 @@
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">สินค้าของบริษัท</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="GRP_P" id="GRP_P">
+                                                                    <!-- <select class=" w-full rounded-sm text-xs" name="GRP_P" id="GRP_P"> -->
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @foreach ($grp_ps as $key => $grp_p)
-                                                                            <option value={{ $grp_p->GRP_P }} {{ $grp_p->GRP_P == $data->GRP_P ? 'selected' : '' }}>{{ $grp_p->BRAND.' - '.$grp_p->GRP_P.' - ('.$grp_p->REMARK.')'}}</option>
-                                                                        @endforeach
+                                                                        @foreach ($grp_ps as $grp_p)
+                                                                            <option value="{{ $grp_p['GRP_P'] }}" {{ $grp_p['GRP_P'] == $data->GRP_P ? 'selected' : '' }}>
+                                                                                {{ $grp_p['REMARK'] }}
+                                                                            </option>
+                                                                        @endforeach 
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
@@ -293,7 +296,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="BRAND_P" id="BRAND_P">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($brand_ps as $key => $brand_p)
-                                                                            <option value={{ $brand_p->BRAND_P }} {{ $brand_p->BRAND_P == $data->BRAND_P ? 'selected' : '' }}>{{ $brand_p->BRAND.' - '.$brand_p->BRAND_P.' - ('.$brand_p->REMARK.')'}}</option>
+                                                                            <option value="{{ $brand_p['BRAND_P'] }}" {{ $brand_p['BRAND_P'] == $data->BRAND_P ? 'selected' : '' }}>{{ $brand_p['REMARK'] }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -306,7 +309,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="SUPPLIER" id="SUPPLIER">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($venders as $key => $vender)
-                                                                            <option value={{ $vender->SUPPLIER }} {{ $vender->SUPPLIER == $data->SUPPLIER ? 'selected' : '' }}>{{ $vender->SUPPLIER.' - ('.$vender->VEN_NTHAI.')'}}</option>
+                                                                            <option value="{{ $vender['SUPPLIER'] }}" {{ $vender['SUPPLIER'] == $data->SUPPLIER ? 'selected' : '' }}>{{  $vender['VEN_NTHAI'] }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -332,7 +335,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="SOLUTION" id="SOLUTION">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($solutions as $key => $solution)
-                                                                            <option value={{ $solution->SOLUTION }} {{ $solution->SOLUTION == $data->SOLUTION ? 'selected' : '' }}>{{ $solution->BRAND.' - '.$solution->SOLUTION.' - ('.$solution->DESCRIPTION.')'}}</option>
+                                                                        <option value="{{ $solution['SOLUTION'] }}" {{ $solution['SOLUTION'] == $data->SOLUTION ? 'selected' : '' }}>{{ $solution['DESCRIPTION'] }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -345,7 +348,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="SERIES" id="SERIES">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($series as $key => $serie)
-                                                                            <option value={{ $serie->SERIES }} {{ $serie->SERIES == $data->SERIES ? 'selected' : '' }}>{{ $serie->BRAND.' - '.$serie->SERIES.' - ('.$serie->DESCRIPTION.')'}}</option>
+                                                                            <option value="{{ $serie['SERIES'] }}" {{ $serie['SERIES'] == $data->SERIES ? 'selected' : '' }}>{{ $serie['DESCRIPTION'] }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -358,7 +361,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="CATEGORY" id="CATEGORY">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($categorys as $key => $category)
-                                                                            <option value={{ $category->CATEGORY }} {{ $category->CATEGORY == $data->CATEGORY ? 'selected' : '' }}>{{ $category->BRAND.' - '.$category->CATEGORY.' - ('.$category->DESCRIPTION.')'}}</option>
+                                                                            <option value="{{ $category['CATEGORY'] }}" {{ $category['CATEGORY'] == $data->CATEGORY ? 'selected' : '' }}>{{ $category['DESCRIPTION'] }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -371,7 +374,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="S_CAT" id="S_CAT">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($sub_categorys as $key => $sub_category)
-                                                                            <option value={{ $sub_category->S_CAT }} {{ $sub_category->S_CAT == $data->S_CAT ? 'selected' : '' }}>{{ $sub_category->BRAND.' - '.$sub_category->S_CAT.' - ('.$sub_category->DESCRIPTION.')'}}</option>
+                                                                            <option value="{{ $sub_category['S_CAT'] }}" {{ $sub_category['S_CAT'] == $data->S_CAT ? 'selected' : '' }}>{{ $sub_category['DESCRIPTION'] }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -384,7 +387,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="PDM_GROUP" id="PDM_GROUP">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($pdms as $key => $pdm)
-                                                                            <option value={{ $pdm->PDM_GROUP }} {{ $pdm->PDM_GROUP == $data->PDM_GROUP ? 'selected' : '' }}>{{ $pdm->BRAND.' - '.$pdm->PDM_GROUP.' - ('.$pdm->REMARK.')'}}</option>
+                                                                            <option value="{{ $pdm['PDM_GROUP'] }}" {{ $pdm['PDM_GROUP'] == $data->PDM_GROUP ? 'selected' : '' }}>{{ $pdm['REMARK'] }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -397,7 +400,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="STATUS" id="STATUS">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($p_statuss as $key => $p_status)
-                                                                            <option value={{ $p_status->STATUS }} {{ $p_status->STATUS == $data->STATUS ? 'selected' : '' }}>{{ $p_status->STATUS.' - ('.$p_status->DESCRIPTION.')'}}</option>
+                                                                            <option value={{ $p_status['STATUS'] }} {{ $p_status['STATUS'] == $data->STATUS ? 'selected' : '' }}>{{ $p_status['DESCRIPTION'] }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -498,7 +501,7 @@
                                                                 </div> -->
                                                                 <div class="md:col-span-3">
                                                                     <label for="PACK_SIZE4">รหัส Packsize4</label>
-                                                                    <input type="number" name="PACK_SIZE3" id="PACK_SIZE3" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PACK_SIZE4 }}" min="0" max="144" />
+                                                                    <input type="number" name="PACK_SIZE4" id="PACK_SIZE4" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PACK_SIZE4 }}" min="0" max="144" />
                                                                     <!-- <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE4" id="PACK_SIZE4">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         <option value="3" {{($data->PACK_SIZE4 == '3') ? 'selected' : ''}}>3</option>
@@ -559,7 +562,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="UNIT" id="UNIT">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($unit_ps as $key => $unit_p)
-                                                                            <option value={{ $unit_p->UNIT }} {{ $unit_p->UNIT == $data->UNIT ? 'selected' : '' }}>{{ $unit_p->BRAND.' - ('.$unit_p->UNIT.')' }}</option>
+                                                                            <option value="{{ $unit_p['UNIT'] }}" {{ $unit_p['UNIT'] == $data->UNIT ? 'selected' : '' }}>{{ $unit_p['UNIT'] }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -568,7 +571,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="UNIT_TYPE" id="UNIT_TYPE">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($unit_types as $key => $unit_type)
-                                                                            <option value={{ $unit_type->UNIT_TYPE }} {{ $unit_type->UNIT_TYPE == $data->UNIT_TYPE ? 'selected' : '' }}>{{ $unit_type->BRAND.' - ('.$unit_type->UNIT_TYPE.')' }}</option>
+                                                                            <option value="{{ $unit_type['UNIT_TYPE'] }}" {{ $unit_type['UNIT_TYPE'] == $data->UNIT_TYPE ? 'selected' : '' }}>{{ $unit_type['UNIT_TYPE'] }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -588,7 +591,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="CONDITION_SALE" id="CONDITION_SALE">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($conditions as $key => $condition)
-                                                                            <option value={{ $condition->CONDITION_SALE }} {{ $condition->CONDITION_SALE == $data->CONDITION_SALE ? 'selected' : '' }}>{{ $condition->CONDITION_SALE .' ('. $condition->DESCRIPTION .')' }}</option>
+                                                                            <option value="{{ $condition['CONDITION_SALE'] }}" {{ $condition['CONDITION_SALE'] == $data->CONDITION_SALE ? 'selected' : '' }}>{{ $condition['DESCRIPTION'] }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <!-- <span id="CONDITION_SALE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span> -->

@@ -176,7 +176,7 @@
     <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> -->
 
 @section('content')
-    <div class="p-4 bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4 mt-10">
+    <!-- <div class="p-4 bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4 mt-10">
         <div class="justify-center items-center">
             <div class="mt-5 flex justify-items-start">
                 <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">โปรโมชั่น</p>
@@ -185,18 +185,6 @@
                 <div class='w-12/12 mt-4 relative'>
                     <div class="">
                         <div class="bg-gray-100 dark:bg-[#404040] mb-3">
-                            <!-- <div class="p-2 grid grid-cols-6 mb-2 gap-2">
-                                <label class="m-0 p-0 text-gray-900 dark:text-gray-100 rounded-sm text-sm text-center grid content-center justify-items-start">รหัสโปรโมชั่น</label>
-                                <input id="age" name="age" value="" class="col-span-1 m-0 p-0 text-gray-900 dark:text-gray-900 rounded-sm bg-[#E9ECEF] dark:bg-[#E9ECEF] text-center focus:border-blue-500" disabled />
-                                <label class="col-span-0.5 m-0 p-0 text-gray-900 dark:text-gray-100 rounded-sm text-sm text-center grid content-center justify-items-stretch">ช่วงเวลา</label>
-                                <input id="" name="" value="" class="col-span-1 m-0 p-0 text-gray-900 dark:text-gray-900 rounded-sm bg-[#E9ECEF] dark:bg-[#E9ECEF] text-center focus:border-blue-500" disabled />
-                                <label class="col-span-1 m-0 p-0 text-gray-900 dark:text-gray-100 rounded-sm text-sm text-center grid content-center justify-items-stretch">ชื่อโปรโมชั่น</label>
-                                <input id="" name="" value="" class="col-span-1 m-0 p-0 text-gray-900 dark:text-gray-900 rounded-sm bg-[#E9ECEF] dark:bg-[#E9ECEF] text-center focus:border-blue-500" disabled />
-                            </div>
-                            <div class="md:col-span-6">
-                                <label for="note" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">หมายเหตุ</label>
-                                <textarea id="note" name="note" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">{{ $data->note ?? '' }}</textarea>
-                            </div> -->
                             <div class="p-2 grid gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                 <div class="lg:col-span-4">
                                     <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
@@ -309,7 +297,6 @@
 
                         <div class="row mt-1">
                             <div class="col-md-12">
-                            <!-- Form Element sizes -->
                                 <div class="card bg-gray-100 dark:bg-[#404040] mb-3">
                                     <div class="card-body">
                                         <div class="col-md-12">
@@ -332,7 +319,6 @@
                                                             </div>
 
                                                             <section>
-                                                                <!-- Modal -->
                                                                 <div
                                                                     data-twe-modal-init
                                                                     class="data-twe-backdrop-show fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
@@ -432,18 +418,6 @@
                                                                                     <div class="p-2 mb-2">
                                                                                         <ul class="space-y-2 font-large border-t-2 border-[#E5E5E5] dark:border-[#373737]"></ul>
                                                                                     </div>
-                                                                                    <!-- <table class="table table-sm table-bordered text-gray-900 dark:text-gray-100 mt-5 relative" id="table">
-                                                                                        <tr>
-                                                                                            <th class="text-sm">รหัส</th>
-                                                                                            <th class="text-sm">ชื่อนค้า</th>
-                                                                                        </tr>
-                                                                                        <tr>
-                                                                                            <td>
-                                                                                            </td>
-                                                                                            <td>
-                                                                                            </td>
-                                                                                        </tr>
-                                                                                    </table> -->
                                                                                     <div class="bg-white rounded shadow-lg dark:bg-[#404040] duration-500 pt-2.5 pb-2.5">
                                                                                         <div class="text-gray-900 dark:text-gray-100">
                                                                                             <div class="table-wrapper">
@@ -552,7 +526,6 @@
                                                                 </button>
                                                             </div>
                                                             <section>
-                                                                <!-- Modal -->
                                                                 <div
                                                                     data-twe-modal-init
                                                                     class="data-twe-backdrop-show fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
@@ -648,12 +621,6 @@
                                                                                                     </table>
                                                                                                 </div>
                                                                                             </div>
-                                                                                            <!-- <div class="row mt-3 md:p-4">
-                                                                                                <div class="col">
-                                                                                                    <textarea rows="10" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="output">
-                                                                                                    </textarea>
-                                                                                                </div>
-                                                                                            </div> -->
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -699,7 +666,6 @@
                                                                 </button>
                                                             </div>
                                                             <section>
-                                                                <!-- Modal -->
                                                                 <div
                                                                     data-twe-modal-init
                                                                     class="data-twe-backdrop-show fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
@@ -851,11 +817,8 @@
                                             </form>
                                         </div>
                                     </div>
-                                    <!-- /.card-body -->
                                 </div>
-                                <!-- /.card -->
                             </div>
-
                         </div>
 
                         <div class="mb-3 bg-gray-100 dark:bg-[#404040] p-3">
@@ -864,112 +827,11 @@
                                     <p>สินค้าหลัก</p>
                                 </div>
                                     <select id="demo" multiple>
-                                        {{-- <option value="1">One</option>
-                                        <option value="2">Two</option>
-                                        <option value="3">Three</option>
-                                        <option value="4">Four</option>
-                                        <option value="5">Five</option>
-                                        <option value="6">Six</option>
-                                        <option value="7">Seven</option>
-                                        <option value="8">Eight</option>
-                                        <option value="9">Nine</option>
-                                        <option value="10">Ten</option> --}}
                                     </select>
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="mb-5 bg-gray-100 dark:bg-[#404040] p-3">
-                            <div class="m-3 text-gray-900 dark:text-gray-100">
-                                <div class="container pt-5">
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="table-wrapper">
-                                                <div id="containerexample" class="text-gray-900 dark:text-gray-100">
-                                                    <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
-                                                        <thead>
-                                                            <tr>
-                                                            <th>Select</th>
-                                                            <th>Street</th>
-                                                            <th>City</th>
-                                                            <th>Zip</th>
-                                                            <th>State</th>
-                                                            <th>Beds</th>
-                                                            <th>Baths</th>
-                                                            <th>Sq Ft</th>
-                                                            <th>Type</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                            <td></td>
-                                                            <td>3526 HIGH ST</td>
-                                                            <td>SACRAMENTO</td>
-                                                            <td>95838</td>
-                                                            <td>CA</td>
-                                                            <td>2</td>
-                                                            <td>1</td>
-                                                            <td>836</td>
-                                                            <td>Residential</td>
-                                                            </tr>
-                                                            <tr>
-                                                            <td></td>
-                                                            <td>51 OMAHA CT</td>
-                                                            <td>SACRAMENTO</td>
-                                                            <td>95823</td>
-                                                            <td>CA</td>
-                                                            <td>3</td>
-                                                            <td>1</td>
-                                                            <td>1167</td>
-                                                            <td>Residential</td>
-                                                            </tr>
-                                                            <tr>
-                                                            <td></td>
-                                                            <td>2796 BRANCH ST</td>
-                                                            <td>SACRAMENTO</td>
-                                                            <td>95815</td>
-                                                            <td>CA</td>
-                                                            <td>2</td>
-                                                            <td>1</td>
-                                                            <td>796</td>
-                                                            <td>Residential</td>
-                                                            </tr>
-                                                            <tr>
-                                                            <td></td>
-                                                            <td>2805 JANETTE WAY</td>
-                                                            <td>SACRAMENTO</td>
-                                                            <td>95815</td>
-                                                            <td>CA</td>
-                                                            <td>2</td>
-                                                            <td>1</td>
-                                                            <td>852</td>
-                                                            <td>Residential</td>
-                                                            </tr>
-                                                            <tr>
-                                                            <td></td>
-                                                            <td>6001 MCMAHON DR</td>
-                                                            <td>SACRAMENTO</td>
-                                                            <td>95824</td>
-                                                            <td>CA</td>
-                                                            <td>2</td>
-                                                            <td>1</td>
-                                                            <td>797</td>
-                                                            <td>Residential</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mt-3">
-                                        <div class="col">
-                                            <textarea rows="20" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" id="output">
-                                            </textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
+                        
                         <div id="loader" class="loading absolute hidden bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 animate-spin dark:text-white">
                                 <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
@@ -1005,42 +867,11 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="md:col-span-6 text-right mt-4">
-                            <div class="inline-flex items-end">
-                                <a href="{{ route('product_master.index') }}" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-4 mr-2 rounded group">
-                                    <svg fill="#fff" class="-mt-1 size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                        viewBox="0 0 26.676 26.676" xml:space="preserve">
-                                        <g>
-                                            <path d="M26.105,21.891c-0.229,0-0.439-0.131-0.529-0.346l0,0c-0.066-0.156-1.716-3.857-7.885-4.59
-                                                c-1.285-0.156-2.824-0.236-4.693-0.25v4.613c0,0.213-0.115,0.406-0.304,0.508c-0.188,0.098-0.413,0.084-0.588-0.033L0.254,13.815
-                                                C0.094,13.708,0,13.528,0,13.339c0-0.191,0.094-0.365,0.254-0.477l11.857-7.979c0.175-0.121,0.398-0.129,0.588-0.029
-                                                c0.19,0.102,0.303,0.295,0.303,0.502v4.293c2.578,0.336,13.674,2.33,13.674,11.674c0,0.271-0.191,0.508-0.459,0.562
-                                                C26.18,21.891,26.141,21.891,26.105,21.891z"/>
-                                            <g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g>
-                                        </g>
-                                    </svg>
-                                    Back
-                                </a>
-                                <button id="submitButton" type="button" class="bg-[#3b5998] text-white font-bold py-1.5 px-4 rounded cursor-not-allowed opacity-50" onclick="checkPacksize()" disabled>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF" class="-mt-1 w-5 h-5 hidden md:inline-block">
-                                        <path d="M0 0h24v24H0V0z" fill="none"></path>
-                                        <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
-                                        <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
-                                    </svg>
-                                    Save
-                                </button>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </form>
         </div>
-    </div>
-
-    {{-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script> --}}
-
+    </div> -->
 
     <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
     <script src="{{ asset('js/check.min.js') }}"></script>

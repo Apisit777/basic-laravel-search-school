@@ -83,10 +83,11 @@ class ProductChannelController extends Controller
 
         $data = ProductChannel::select(
             'product_channels.BRAND AS BRAND',
-            'product_channels.PRODUCT AS PRODUCT',
-            'product1s.NAME_THAI AS NAME_THAI',
+            'product1s.PRODUCT AS PRODUCT',
+            'product1s.NAME_THAI AS NAME_THAI'
         )
         ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT')
+        ->whereColumn('product_channels.PRODUCT', 'product1s.PRODUCT')
         ->orderBy('PRODUCT', 'DESC');
 
         if ($BRAND != null) {

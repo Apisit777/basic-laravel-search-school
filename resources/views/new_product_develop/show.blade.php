@@ -260,6 +260,11 @@
         width: 65px;
         /* mix-blend-mode: multiply; */
     }
+
+    .rcorners3 {
+    position: relative;
+    top: 131px;
+}
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -470,7 +475,7 @@
                     </div>
                     <div class="nine" style="border-right: none; grid-column: 4/6;">
                         <div class="text-xs" style="position:absolute">TEXTURE</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->T_DESCRIPTION }}</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->TEXTURE }}</div>
                     </div>
                     <div class="ten" style="border-right: none;">
                         <div class="text-xs" style="position:absolute">REF. PRODUCT / BENCHMARK (PLEASE IDENTIFY)</div>
@@ -515,7 +520,8 @@
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
                     </div>
                     <div class="nine_1" style="border-right: none; grid-column: 4/6;">
-                        <div class="text-xs" style="position: absolute">COMPARING WITH OEM OR BENCHMARK / OTHERS</div>
+                        <div class="text-xs" style="position: absolute">COMPARING WITH OEM OR BENCHMARK / OTHERS</div>  
+                        <!-- Compare with benchmark/OEM -->
                         <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">Other</div>
                     </div>
                     <div class="eight_2" style="border-right: none; border-bottom: none;">
@@ -527,19 +533,27 @@
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">To claim in advertising media</div>
                     </div>
                     <div class="eight_3" style="border-right: none; border-left: none; grid-column: 4/6; border-bottom: none;">
+                        <div style="margin-left: 15px; position: absolute;top: 45px; line-height: 29.5px; text-indent: 62px;">
+                            {{ $dataIBSH->REASON3_DES }}
+                        </div>
                         <div class="text-sm rcorners1" style="position: absolute; top: 50px;">
-                            <div style="margin-left: 30px;">
-                                Others
-                            </div>
                         </div>
                         <div style="position: absolute; top: 40px; line-height: 34.5px; text-indent: 120px">
-                            {{ $dataIBSH->REASON3_DES }}
+                            @if ($dataIBSH->REASON3 == 'Y')
+                                <div class=" font-bold text-2xl" style="margin-left: -114px; position: relative; top: 0px;">&#x2713;</div>
+                            @else
+                                <div class="ml-1 font-bold text-xl" style="position: relative; top: -10px;"></div>
+                            @endif
+
+                            <!-- <div class="ml-1 font-bold text-2xl" style="position: relative; top: -12px;">&#x2713;</div> -->
                             <!-- REF. PRODUCT / BENCHMARK (PLEASE IDENTIFY) X-XXX-XXXXXX -->
                         </div>
+                        <!-- 39% -->
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 135%;">---------------------------------------------</div>
-                        <div class="" style="position: absolute; top: -12px; right: 8px; display:flex; justify-content:center; align-items: center; height: 100%;">----------</div>
+                        <div class="" style="position: absolute; top: -12px; right: 8px; display:flex; justify-content:center; align-items: center; height: 100%;">-----------</div>
                     </div>
                     <div class="eight_2" style="border-right: none; border-bottom: none;">
+                        
                         <div class="text-xs" style="position: absolute"></div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
                     </div>
@@ -561,8 +575,15 @@
                     </div>
                     <div class="nine" style="border-right: none; grid-column: 5/6; border-left: none;">
                         <div class="text-xs rcorners3" style="position: absolute; top: 131px;">
+                            @if ($dataIBSH->PACKAGE_BOX == 'Y')
+                                <div class="ml-1 font-bold text-2xl" style="position: relative; top: -12px;">&#x2713;</div>
+                            @else
+                                <div class="ml-1 font-bold text-xl" style="position: relative; top: -10px;"></div>
+                            @endif
                         </div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">With an outer box</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">
+                            Without an outer box
+                        </div>
                     </div>
                 </div>
 
@@ -583,11 +604,11 @@
                     </div>
                     <div class="eight_6" style="border-right: none;">
                         <div class="text-xs" style="position: absolute">TARGET BULK COST [BATH/KG]</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">5,000</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->PRICE_BULK }}</div>
                     </div>
                     <div class="eight_5" style="border-right: none; grid-column: 4/6;">
                         <div class="text-xs" style="position: absolute">TARGET LAUNCH DATE</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">30/11/2009</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->TARGET_STK }}</div>
                     </div>
                 </div>
 

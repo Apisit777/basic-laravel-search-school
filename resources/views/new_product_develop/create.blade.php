@@ -159,7 +159,7 @@
                                                                 </div>
                                                                 <div class="md:col-span-3" >
                                                                     <label for="DOC_DT">วันที่</label>
-                                                                    <input type="date" name="DOC_DT" id="DOC_DT" style="height: 38px;" class="form-control border-[#303030] bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer" data-date-format="dd/mm/yyyy" placeholder="" autocomplete="off" value="<?php echo date('Y-m-d'); ?>">
+                                                                    <input type="date" name="DOC_DT" id="DOC_DT" style="height: 38px;" class="form-control border-[#303030] bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer text-center" data-date-format="dd/mm/yyyy" placeholder="" autocomplete="off" value="<?php echo date('Y-m-d'); ?>">
                                                                 </div>
                                                                 <div class="md:col-span-6" style="position: relative;">
                                                                     <label for="CUST_OEM">Customer (OEM)</label>
@@ -171,7 +171,7 @@
                                                                     {{-- <select class="js-example-basic-single w-full rounded-sm text-xs select2" id="NPD" name="NPD"> --}}
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($product_co_ordimators as $key => $product_co_ordimator)
-                                                                            <option value={{ $product_co_ordimator->ID }}>{{ $product_co_ordimator->DESCRIPTION }}</option>
+                                                                            <option value="{{ $product_co_ordimator->DESCRIPTION }}">{{ $product_co_ordimator->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <span id="NPD_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
@@ -182,7 +182,7 @@
                                                                     <!-- <select class="js-example-basic-single w-full rounded-sm text-xs select2" id="PDM" name="PDM"> -->
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($marketing_managers as $key => $marketing_manager)
-                                                                            <option value={{ $marketing_manager->ID }}>{{ $marketing_manager->DESCRIPTION }}</option>
+                                                                            <option value="{{ $marketing_manager->DESCRIPTION }}">{{ $marketing_manager->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <span id="PDM_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
@@ -197,7 +197,7 @@
                                                                     <!-- <select class="js-example-basic-single w-full rounded-sm text-xs select2" id="CATEGORY" name="CATEGORY"> -->
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($type_categorys as $key => $type_category)
-                                                                            <option value={{ $type_category->ID }}>{{ $type_category->DESCRIPTION }}</option>
+                                                                            <option value="{{ $type_category->DESCRIPTION }}">{{ $type_category->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <span id="CATEGORY_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
@@ -289,7 +289,7 @@
                                                                     <!-- <select class="js-example-basic-single w-full rounded-sm text-xs select2" id="TEXTURE" name="TEXTURE"> -->
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($textures as $key => $texture)
-                                                                            <option value={{ $texture->ID }}>{{ $texture->DESCRIPTION }}</option>
+                                                                            <option value="{{ $texture->DESCRIPTION }}">{{ $texture->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                     <span id="TEXTURE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
