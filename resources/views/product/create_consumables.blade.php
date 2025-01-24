@@ -1198,7 +1198,7 @@
                         },
                         success: function(res){
                             if(res.success == true) {
-                                window.location = "/product";
+                                window.location = "/product_master/pd_master";
                             } else {
                                 setTimeout(function() {
                                     toastr.error("เพิ่มขู้อมูลไม่สำเร็จ!");

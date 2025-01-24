@@ -596,11 +596,11 @@
                 <div class="wrapper mt-10" style="position: relative;">
                     <div class="eight_4" style="border-right: none;">
                         <div class="text-xs" style="position: absolute">TARGET BULK COST [BATH/KG]</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">3.65</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
                     </div>
                     <div class="eight_5" style="border-right: none;">
                         <div class="text-xs" style="position: absolute">NET QUANTITY [g or ml]</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">4.5g x 2</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
                     </div>
                     <div class="eight_6" style="border-right: none;">
                         <div class="text-xs" style="position: absolute">TARGET BULK COST [BATH/KG]</div>
@@ -728,23 +728,23 @@
                     </div>
                     <div class="eight_4" style="border-right: none; border-top: none;">
                         <div class="text-xs" style="position: absolute">DATE</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">xxxxx</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
                     </div>
                     <div class="eight_5" style="border-right: none; border-top: none;">
                         <div class="text-xs" style="position: absolute">DATE</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">xxxxx</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
                     </div>
                     <div class="eight_6" style="border-right: none; border-top: none;">
                         <div class="text-xs" style="position: absolute">DATE</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">xxxxx</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
                     </div>
                     <div class="eight_7" style="border-right: none; border-top: none;">
                         <div class="text-xs" style="position: absolute">DATE</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">xxxxx</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
                     </div>
                     <div class="eight_8" style="border-right: none; border-top: none;">
                         <div class="text-xs" style="position: absolute">DATE</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">xxxxx</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
                     </div>
                 </div>
             </div>

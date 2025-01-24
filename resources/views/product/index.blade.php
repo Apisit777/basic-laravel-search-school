@@ -279,7 +279,7 @@
                         clip-rule="evenodd" />
                     </svg>
                     </span>
-                        เพิ่มข้อมูลสิ้นค้า
+                        เพิ่มข้อมูลสินค้า
                 </button>
                 <ul style="z-index: 999999999;" class="absolute divide-y divide-gray-600 rounded-sm w-48 md:w-52 dark:divide-gray-600 float-left m-0 hidden min-w-max list-none overflow-hidden border-none bg-white bg-clip-padding text-base shadow-lg data-[twe-dropdown-show]:block dark:bg-surface-dark"
                     aria-labelledby="dropdownMenuButton1s"
@@ -296,7 +296,7 @@
                                 </g>
                             </svg>
                             <span class="ml-2.5">
-                                เพิ่มข้อมูลสิ้นค้า
+                                เพิ่มข้อมูลสินค้า
                             </span>
                         </a>
                     </li>
@@ -326,7 +326,7 @@
                                     <path d="M360.5 196.5h65.4v21.8h-65.4zM404.1 174.7h152.5v21.8H404.1zM578.4 196.5h21.8v108.9h-21.8z" fill="#446EB1" />
                                 </svg>
                                 <span class="text-black dark:text-white">
-                                    Copy ข้อมูลสิ้นค้า
+                                    Copy ข้อมูลสินค้า
                                 </span>
                             </a>
                         </li>
@@ -1446,7 +1446,11 @@
 
         });
 
-        function modelCopyConsumables(id, name_position) {
+        // function modelCopyConsumables(id, name_position) {
+        //     jQuery("#data_coppy_consumables").val('').change();
+        //     jQuery("#PRODUCT_Consumables").val('');
+        // }
+        function modelCopyConsumables() {
             jQuery("#data_coppy_consumables").val('').change();
             jQuery("#PRODUCT_Consumables").val('');
         }
