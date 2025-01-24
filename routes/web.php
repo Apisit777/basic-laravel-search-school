@@ -12,6 +12,7 @@ use App\Http\Controllers\Warehouse\ComProductController;
 use App\Http\Controllers\Tool\ToolController;
 use App\Http\Controllers\PusherController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\ExportExcel\ExportExcelController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +53,14 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
 
     // npd
     Route::group(['prefix' => 'new_product_develop', 'as' => 'new_product_develop.'], function () {
+        // Export Excel New Product Develop
+        Route::get('/pro_develops_get_select2', [ExportExcelController::class, 'getSelect2NewProductDevelop'])->name('pro_develops_get_select2');
+        Route::post('/export_excel_new_product_develop', [ExportExcelController::class, 'exportExcelNewProductDevelop'])->name('export_excel_new_product_develop');
+        
+        // Export Excel Account
+        Route::get('/account_get_select2', [ExportExcelController::class, 'getSelect2Account'])->name('account_get_select2');
+        Route::post('/export_excel_account', [ExportExcelController::class, 'exportExcelAccount'])->name('export_excel_account');
+
         Route::get('', [ProductFormController::class, 'index'])->name('index');
         Route::post('/list_npd', [ProductFormController::class, 'list_npd'])->name('list_npd');
         Route::post('/', [ProductFormController::class, 'store'])->name('store');

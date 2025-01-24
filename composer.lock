@@ -4,8 +4,241 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1dce883afa2726604834ada7516846eb",
+    "content-hash": "08bfe58640add9ec0e5c84a6c5933497",
     "packages": [
+        {
+            "name": "avadim/fast-excel-helper",
+            "version": "v1.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aVadim483/fast-excel-helper.git",
+                "reference": "aed67aa6e4cb516f86ebf7c3c9ef209209e70c53"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aVadim483/fast-excel-helper/zipball/aed67aa6e4cb516f86ebf7c3c9ef209209e70c53",
+                "reference": "aed67aa6e4cb516f86ebf7c3c9ef209209e70c53",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-zip": "*",
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "avadim\\FastExcelHelper\\": "./src/FastExcelHelper"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Helper for avadim/fast-excel-reader and avadim/fast-excel-writer",
+            "homepage": "https://github.com/aVadim483/fast-excel-helper",
+            "keywords": [
+                "MS Office",
+                "PHPExcel",
+                "excel",
+                "library",
+                "office 2007",
+                "parser",
+                "php",
+                "reader",
+                "spreadsheet",
+                "writer",
+                "xlsx"
+            ],
+            "support": {
+                "issues": "https://github.com/aVadim483/fast-excel-helper/issues",
+                "source": "https://github.com/aVadim483/fast-excel-helper/tree/v1.2.2"
+            },
+            "time": "2024-10-31T17:42:37+00:00"
+        },
+        {
+            "name": "avadim/fast-excel-laravel",
+            "version": "v2.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aVadim483/fast-excel-laravel.git",
+                "reference": "624f8dcf0d508a36ebdf5723fadb392587b64a50"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aVadim483/fast-excel-laravel/zipball/624f8dcf0d508a36ebdf5723fadb392587b64a50",
+                "reference": "624f8dcf0d508a36ebdf5723fadb392587b64a50",
+                "shasum": ""
+            },
+            "require": {
+                "avadim/fast-excel-reader": "^2.20",
+                "avadim/fast-excel-writer": "^6.4",
+                "ext-json": "*",
+                "illuminate/contracts": "^6.0|^7.0|^8.0|^9.0|^10.0",
+                "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0",
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^4.0|^5.0|^6.0",
+                "phpunit/phpunit": "^8.0|^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Excel": "avadim\\FastExcelLaravel\\Facades\\Excel"
+                    },
+                    "providers": [
+                        "avadim\\FastExcelLaravel\\Providers\\ExcelServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "avadim\\FastExcelLaravel\\": "./src/FastExcelLaravel"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Lightweight and very fast XLSX Excel Spreadsheet Export/Import for Laravel",
+            "homepage": "https://github.com/aVadim483/fast-excel-laravel",
+            "keywords": [
+                "MS Office",
+                "PHPExcel",
+                "excel",
+                "export",
+                "import",
+                "laravel",
+                "office 2007",
+                "spreadsheet",
+                "xlsx"
+            ],
+            "support": {
+                "issues": "https://github.com/aVadim483/fast-excel-laravel/issues",
+                "source": "https://github.com/aVadim483/fast-excel-laravel/tree/v2.8.0"
+            },
+            "time": "2025-01-18T19:17:41+00:00"
+        },
+        {
+            "name": "avadim/fast-excel-reader",
+            "version": "v2.22.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aVadim483/fast-excel-reader.git",
+                "reference": "8bdc35fa08f11888f2fdcf771188c985ea2aa558"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aVadim483/fast-excel-reader/zipball/8bdc35fa08f11888f2fdcf771188c985ea2aa558",
+                "reference": "8bdc35fa08f11888f2fdcf771188c985ea2aa558",
+                "shasum": ""
+            },
+            "require": {
+                "avadim/fast-excel-helper": "^1.1",
+                "ext-ctype": "*",
+                "ext-mbstring": "*",
+                "ext-xmlreader": "*",
+                "ext-zip": "*",
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "avadim\\FastExcelReader\\": "./src/FastExcelReader"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Lightweight and very fast XLSX Excel Spreadsheet Reader in PHP",
+            "homepage": "https://github.com/aVadim483/fast-excel-reader",
+            "keywords": [
+                "MS Office",
+                "PHPExcel",
+                "excel",
+                "import",
+                "library",
+                "office 2007",
+                "parser",
+                "php",
+                "reader",
+                "spreadsheet",
+                "xls",
+                "xlsx"
+            ],
+            "support": {
+                "issues": "https://github.com/aVadim483/fast-excel-reader/issues",
+                "source": "https://github.com/aVadim483/fast-excel-reader/tree/v2.22.1"
+            },
+            "time": "2024-12-21T17:23:01+00:00"
+        },
+        {
+            "name": "avadim/fast-excel-writer",
+            "version": "v6.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aVadim483/fast-excel-writer.git",
+                "reference": "48f44246726bd045fc46db90d67abba456630fca"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aVadim483/fast-excel-writer/zipball/48f44246726bd045fc46db90d67abba456630fca",
+                "reference": "48f44246726bd045fc46db90d67abba456630fca",
+                "shasum": ""
+            },
+            "require": {
+                "avadim/fast-excel-helper": "^1.2",
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-zip": "*",
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "avadim/fast-excel-reader": "^2.22",
+                "ext-fileinfo": "*",
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "avadim\\FastExcelWriter\\": "./src/FastExcelWriter"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Lightweight and very fast XLSX Excel Spreadsheet Writer in PHP",
+            "homepage": "https://github.com/aVadim483/fast-excel-writer",
+            "keywords": [
+                "MS Office",
+                "PHPExcel",
+                "excel",
+                "export",
+                "library",
+                "office 2007",
+                "php",
+                "spreadsheet",
+                "xls",
+                "xlsx"
+            ],
+            "support": {
+                "issues": "https://github.com/aVadim483/fast-excel-writer/issues",
+                "source": "https://github.com/aVadim483/fast-excel-writer/tree/v6.4.1"
+            },
+            "time": "2025-01-11T12:46:04+00:00"
+        },
         {
             "name": "brick/math",
             "version": "0.12.1",

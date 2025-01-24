@@ -45,6 +45,9 @@ class TransferDataOnce extends Command
                 case 'consumsbles_duplicate_to_product1s':
                     $this->tranfer_consumsbles_to_product1s_duplicate();
                     break;
+                // case 'tranfer_consumsbles_to_product1s_not_duplicate':
+                //     $this->tranfer_consumsbles_to_product1s_not_duplicate();
+                //     break;
                 case 'tranfer_to_products_channels':
                     $this->tranfer_to_products_channels();
                     break;
@@ -666,7 +669,7 @@ class TransferDataOnce extends Command
                                                 UNION ALL
                                                 SELECT *
                                                     FROM `product1s_all`
-                                                    WHERE BRAND_ORIGINAL IN  ('CPS','OP','BB','LL','GNC','KTY') AND (PRODUCT REGEXP '^[8-9]') AND LENGTH(PRODUCT) = 7 AND BARCODE not REGEXP '^[A-Z]'
+                                                    WHERE BRAND_ORIGINAL IN  ('CPS','OP','BB','LL','GNC','KTY') AND (PRODUCT REGEXP '^[8-9]') AND LENGTH(PRODUCT) >= 7 AND BARCODE not REGEXP '^[A-Z]'
                                                     GROUP BY PRODUCT
                                                     HAVING COUNT(*) = 1) AS data GROUP BY data.product
 
@@ -822,6 +825,7 @@ class TransferDataOnce extends Command
                     'TESTER' => $rs->TESTER,
                     'USER_EDIT' => $rs->USER_EDIT,
                     'EDIT_DT' => $rs->EDIT_DT,
+                    'STATUS_EDIT_DT' => $rs->EDIT_DT,
                 ]);
                 $this->output->progressAdvance();
             }
@@ -1019,6 +1023,7 @@ class TransferDataOnce extends Command
                     'TESTER' => $rs->TESTER,
                     'USER_EDIT' => $rs->USER_EDIT,
                     'EDIT_DT' => $rs->EDIT_DT,
+                    'STATUS_EDIT_DT' => $rs->EDIT_DT,
                 ]);
                 $this->output->progressAdvance();
             }
@@ -1299,11 +1304,6 @@ class TransferDataOnce extends Command
                     } elseif ($rs->PRODUCT[0] == 1 && strlen($rs->PRODUCT) === 5) {
                         $brand_value = 'KM';
                     }
-                    // print_r($brand_value);
-                    // exit;
-                    // $brand_value = ($rs->PRODUCT[0] == $key_parts_number_3 || ($rs->PRODUCT[0] == 1 && strlen((string)$rs->PRODUCT) == 5)) ? $brand : 'KM';
-
-                    // $brand_value = ($rs->PRODUCT[0] == $key_parts_number_3) ? $brand : (($rs->PRODUCT[0] != 8 && $rs->PRODUCT[0] != 9) ? 'KM' : $brand);
 
                     $REG_DATE_RP = $rs->REG_DATE === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->REG_DATE;
                     $OPT_DATE1_RP = $rs->OPT_DATE1 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE1;
