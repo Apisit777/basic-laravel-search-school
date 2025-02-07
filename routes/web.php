@@ -6,6 +6,8 @@ use App\Http\Controllers\ProductImageController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\ProductForm\ProductFormController;
 use App\Http\Controllers\Product\ProductController;
+use App\Http\Controllers\ProductDetail\ProductDetailController;
+use App\Http\Controllers\ProductOther\ProductOtherController;
 use App\Http\Controllers\ProductChannel\ProductChannelController;
 use App\Http\Controllers\Managemenu\ManageMenuController;
 use App\Http\Controllers\Warehouse\ComProductController;
@@ -56,7 +58,7 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         // Export Excel New Product Develop
         Route::get('/pro_develops_get_select2', [ExportExcelController::class, 'getSelect2NewProductDevelop'])->name('pro_develops_get_select2');
         Route::post('/export_excel_new_product_develop', [ExportExcelController::class, 'exportExcelNewProductDevelop'])->name('export_excel_new_product_develop');
-        
+
         // Export Excel Account
         Route::get('/account_get_select2', [ExportExcelController::class, 'getSelect2Account'])->name('account_get_select2');
         Route::post('/export_excel_account', [ExportExcelController::class, 'exportExcelAccount'])->name('export_excel_account');
@@ -83,6 +85,10 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
 
     // product
     Route::group(['prefix' => 'product_master', 'as' => 'product_master.'], function () {
+        // Export Excel Product Master
+        Route::get('/product_master_get_select2', [ExportExcelController::class, 'getSelect2ProductMaster'])->name('product_master_get_select2');
+        Route::post('/export_excel_product_master', [ExportExcelController::class, 'exportExcelProductMaster'])->name('export_excel_product_master');
+
         Route::get('/pd_master', [ProductController::class, 'index'])->name('index');
         // Solution
         Route::get('/solution', [ToolController::class, 'solution'])->name('solution');
@@ -110,6 +116,11 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
 
         // Sub Category
         Route::get('/sub_category', [ToolController::class, 'subCategory'])->name('sub_category');
+        Route::get('/manage_sub_category', [ToolController::class, 'manageSubCategory'])->name('manage_sub_category');
+        Route::post('/sub_category_checkname', [ToolController::class, 'subCategoryCheckName'])->name('sub_category_checkname');
+        Route::post('/sub_category_create', [ToolController::class, 'subCategoryCreate'])->name('sub_category_create');
+        Route::post('/sub_category_update/{id}', [ToolController::class, 'subCategoryUpdate'])->name('sub_category_update');
+        Route::post('/list_sub_category', [ToolController::class, 'listSubCategory'])->name('list_sub_category');
 
         // Product Group
         Route::get('/product_group', [ToolController::class, 'productGroup'])->name('product_group');
@@ -118,6 +129,21 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         Route::post('/product_group_create', [ToolController::class, 'productGroupCreate'])->name('product_group_create');
         Route::post('/product_group_update/{id}', [ToolController::class, 'productGroupUpdate'])->name('product_group_update');
         Route::post('/list_product_group', [ToolController::class, 'listProductGroup'])->name('list_product_group');
+
+        // Product co-ordinator
+        Route::get('/product_co_ordinator', [ToolController::class, 'productCoOrdinator'])->name('product_co_ordinator');
+        Route::post('/product_co_ordinator_checkname', [ToolController::class, 'productCoOrdinatorCheckName'])->name('product_co_ordinator_checkname');
+        Route::post('/product_co_ordinator_create', [ToolController::class, 'productCoOrdinatorCreate'])->name('product_co_ordinator_create');
+        Route::post('/product_co_ordinator_update/{id}', [ToolController::class, 'productCoOrdinatorUpdate'])->name('product_co_ordinator_update');
+        Route::post('/list_product_co_ordinator', [ToolController::class, 'listProductCoOrdinator'])->name('list_product_co_ordinator');
+
+        // Marketing Manager 
+        Route::get('/marketing_manager', [ToolController::class, 'marketingManager'])->name('marketing_manager');
+        // Route::post('/productgroup_check_id', [ToolController::class, 'productGroupCheckId'])->name('productgroup_check_id');
+        // Route::post('/productgroup_checkname', [ToolController::class, 'productGroupCheckName'])->name('productgroup_checkname');
+        // Route::post('/product_group_create', [ToolController::class, 'productGroupCreate'])->name('product_group_create');
+        // Route::post('/product_group_update/{id}', [ToolController::class, 'productGroupUpdate'])->name('product_group_update');
+        Route::post('/list_marketing_manager', [ToolController::class, 'listMarketingManager'])->name('list_marketing_manager');
 
         //
         Route::get('/supplier', [ToolController::class, 'supplier'])->name('supplier');
@@ -140,9 +166,22 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         Route::delete('/update_product_status/{id}', [ProductController::class, 'upate_product_status'])->name('update_product_status');
     });
 
+    // Main Menu Product Detail
+    Route::group(['prefix' => 'product_detail', 'as' => 'product_detail.'], function () {
+        // Sub Menu Product Detail1(Product Detail)
+        Route::get('/pd_detail', [ProductDetailController::class, 'index'])->name('pd_detail_index');
+        Route::get('/pd_detail/create', [ProductDetailController::class, 'create'])->name('pd_detail_create');
+        
+        // Sub Menu Product Detail2(Product Other)
+        Route::get('/pd_other', [ProductOtherController::class, 'index'])->name('pd_other_index');
+        Route::get('/pd_other/create', [ProductOtherController::class, 'create'])->name('pd_other_create');
+        Route::get('/product_Other_category', [ProductOtherController::class, 'productOtherCategory'])->name('product_Other_category');
+        Route::get('/product_Other_sub_category', [ProductOtherController::class, 'productOtherSubCategory'])->name('product_Other_sub_category');
+    });
+
     // product_channel
     Route::group(['prefix' => 'channel', 'as' => 'channel.'], function () {
-        Route::get('', [ProductChannelController::class, 'index'])->name('index');
+        Route::get('/', [ProductChannelController::class, 'index'])->name('index');
         Route::post('/list_product_channel', [ProductChannelController::class, 'list_product_channel'])->name('list_product_channel');
     });
 
@@ -203,7 +242,7 @@ Route::post('/list_brand_empty', [HomeController::class, 'listBrandEmpty'])->nam
 
 Route::get('/get_users', [ProductController::class, 'get_users'])->name('get_users');
 
-Route::get('/product_detail_create', [ProductController::class, 'productDetailCreate'])->name('product_detail_create');
+// Route::get('/product_detail_create', [ProductController::class, 'productDetailCreate'])->name('product_detail_create');
 Route::post('/checknamebrand', [ProductController::class, 'checkname_brand'])->name('checknamebrand');
 // Route::post('/checkproduct', [ProductController::class, 'check_product'])->name('checkproduct');
 

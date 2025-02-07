@@ -556,7 +556,7 @@ class HomeController extends Controller
         ->orderBy('PRODUCT', 'ASC')
         ->toSql();
 
-        dd($productsAll);
+        // dd($productsAll);
         return view('home');
     }
 

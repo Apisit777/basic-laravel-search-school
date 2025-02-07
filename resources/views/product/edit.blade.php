@@ -625,7 +625,7 @@
                                                                     </div>
                                                                 </div> -->
                                                                 <div class="md:col-span-6">
-                                                                    <ul class="width-full pt-2.5 mt-3 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
+                                                                    <ul class="width-full pt-2.5 mt-3 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
                                                                     <div class="md:col-span-1 mt-2">
                                                                         <input type="checkbox" id="RETURN" name="RETURN" value="Y" @if ($data->RETURN == 'Y') checked @endif>
                                                                         <label for="RETURN">คืนซาก</label>
@@ -646,7 +646,7 @@
                                                                         <input type="checkbox" id="TESTER" name="TESTER" value="Y" @if ($data->TESTER == 'Y') checked @endif>
                                                                         <label for="TESTER">มี Tester</label>
                                                                     </div>
-                                                                    <ul class="width-full pt-2.5 mt-4 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
+                                                                    <ul class="width-full pt-2.5 mt-4 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -658,7 +658,7 @@
                                 </div>
                             </li>
                         </ul>
-                        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
+                        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
                         <div id="loader" class="loading absolute hidden bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 animate-spin dark:text-white">
                                 <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />

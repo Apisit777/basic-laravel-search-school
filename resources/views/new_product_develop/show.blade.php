@@ -464,7 +464,7 @@
                         <div class="" style="border-bottom: 1px solid #000; height:35px"></div>
                         <div class="" style="border-bottom: 1px solid #000; height:35px"></div>
                         <div class="" style="border-bottom: 1px solid #000; height:35px"></div>
-                        <div class="" style="border-bottom: 1px solid #000; height:35px"></div>
+                        <!-- <div class="" style="border-bottom: 1px solid #000; height:35px"></div> -->
                         <div class="text-md font-semibold" style="position:absolute">Formulation Requirements</div>
                     </div>
                 </div>
@@ -475,11 +475,11 @@
                     </div>
                     <div class="nine" style="border-right: none; grid-column: 4/6;">
                         <div class="text-xs" style="position:absolute">TEXTURE</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->TEXTURE }}</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->T_DESCRIPTION }}</div>
                     </div>
                     <div class="ten" style="border-right: none;">
                         <div class="text-xs" style="position:absolute">REF. PRODUCT / BENCHMARK (PLEASE IDENTIFY)</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">Kiss From a Rose Sheeny Tint & Gloss</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->STD }}</div>
                     </div>
                     <div class="elevent" style="border-right: none;">
                         <div class="text-xs" style="position:absolute">TOTAL COLOR</div>
@@ -517,23 +517,37 @@
                 <div class="wrapper mt-10" style="position: relative;">
                     <div class="eight_1" style="border-right: none;">
                         <div class="text-xs" style="position: absolute">EFFICACY TEST</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">-</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->OTHER }}</div>
                     </div>
                     <div class="nine_1" style="border-right: none; grid-column: 4/6;">
                         <div class="text-xs" style="position: absolute">COMPARING WITH OEM OR BENCHMARK / OTHERS</div>  
                         <!-- Compare with benchmark/OEM -->
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">Other</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->REASON2_DES }}</div>
                     </div>
                     <div class="eight_2" style="border-right: none; border-bottom: none;">
                         <div class="text-xs" style="position: absolute">REASON OF USE</div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                        <div class="" style="position: relative; display:flex; justify-content:center; align-items: center; height: 100%;">
+                            
+                        </div>
                     </div>
                     <div class="nine_2" style="border-right: none; border-bottom: none;">
-                        <div class="text-xs rcorners1" style="position: absolute; top: 50px;"></div>
+                        <div class="text-xs rcorners1" style="position: absolute; top: 50px;">
+                            <!-- <div style="position: absolute; top: -12px; line-height: 34.5px; text-indent: 120px">
+                                @if ($dataIBSH->REASON1 == 'Y')
+                                    <div class=" font-bold text-2xl" style="margin-left: -115px; position: relative; top: 0px;">&#x2713;</div>
+                                @else
+                                    <div class="ml-1 font-bold text-xl" style="position: relative; top: -10px;"></div>
+                                @endif
+                            </div> -->
+                        </div>
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">To claim in advertising media</div>
                     </div>
                     <div class="eight_3" style="border-right: none; border-left: none; grid-column: 4/6; border-bottom: none;">
+                        <div style="margin-left: -36px; position: absolute;top: 45px; line-height: 29.5px; text-indent: 62px;">
+                            Others
+                        </div>
                         <div style="margin-left: 15px; position: absolute;top: 45px; line-height: 29.5px; text-indent: 62px;">
+                            
                             {{ $dataIBSH->REASON3_DES }}
                         </div>
                         <div class="text-sm rcorners1" style="position: absolute; top: 50px;">
@@ -553,12 +567,22 @@
                         <div class="" style="position: absolute; top: -12px; right: 8px; display:flex; justify-content:center; align-items: center; height: 100%;">-----------</div>
                     </div>
                     <div class="eight_2" style="border-right: none; border-bottom: none;">
-                        
                         <div class="text-xs" style="position: absolute"></div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">
+                        </div>
                     </div>
                     <div class="nine_2" style="border-right: none; border-bottom: none;">
-                        <div class="text-xs rcorners2" style="position: absolute; top: 90px;"></div>
+                        <!-- <div style="position: relative;"> -->
+                            <div class="text-xs rcorners2" style="position: absolute; top: 90px;">
+                                <div style="position: absolute; top: -13px; line-height: 34.5px; text-indent: 120px">
+                                    @if ($dataIBSH->REASON2 == 'Y')
+                                        <div class=" font-bold text-2xl" style="margin-left: -115px; position: relative; top: 0px;">&#x2713;</div>
+                                    @else
+                                        <div class="ml-1 font-bold text-xl" style="position: relative; top: -10px;"></div>
+                                    @endif
+                                </div>
+                            </div>
+                        <!-- </div> -->
                         <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">To compare with OEM/Benchmark</div>
                     </div>
                     <div class="eight_3" style="border-right: none; border-left: none; grid-column: 4/6; border-bottom: none;">
@@ -566,16 +590,23 @@
                     </div>
                     <div class="eight" style="border-right: none;">
                         <div class="text-xs" style="position:absolute">PRIMARY PACKAGING</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">ร่วมกับ 22657</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->PK }}</div>
                     </div>
                     <div class="nine" style="border-right: none; grid-column: 4/5; border-left: none;">
                         <div class="text-xs rcorners3" style="position: absolute; top: 131px;">
+                            @if ($dataIBSH->PACKAGE_BOX == 'Y')
+                                <div class="ml-1 font-bold text-2xl" style="position: relative; top: -12px;">&#x2713;</div>
+                            @else
+                                <div class="ml-1 font-bold text-xl" style="position: relative; top: -10px;"></div>
+                            @endif
                         </div>
-                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">With an outer box</div>
+                        <div class="" style="display:flex; justify-content:center; align-items: center; height: 100%;">
+                            With an outer box
+                        </div>
                     </div>
                     <div class="nine" style="border-right: none; grid-column: 5/6; border-left: none;">
                         <div class="text-xs rcorners3" style="position: absolute; top: 131px;">
-                            @if ($dataIBSH->PACKAGE_BOX == 'Y')
+                            @if ($dataIBSH->PACKAGE_BOX == 'N')
                                 <div class="ml-1 font-bold text-2xl" style="position: relative; top: -12px;">&#x2713;</div>
                             @else
                                 <div class="ml-1 font-bold text-xl" style="position: relative; top: -10px;"></div>
@@ -596,15 +627,15 @@
                 <div class="wrapper mt-10" style="position: relative;">
                     <div class="eight_4" style="border-right: none;">
                         <div class="text-xs" style="position: absolute">TARGET BULK COST [BATH/KG]</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->PRICE_BULK }}</div>
                     </div>
                     <div class="eight_5" style="border-right: none;">
                         <div class="text-xs" style="position: absolute">NET QUANTITY [g or ml]</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;"></div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->CAPACITY }}</div>
                     </div>
                     <div class="eight_6" style="border-right: none;">
-                        <div class="text-xs" style="position: absolute">TARGET BULK COST [BATH/KG]</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->PRICE_BULK }}</div>
+                        <div class="text-xs" style="position: absolute">FIRST ORDER(PCS)</div>
+                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->FIRST_ORD }}</div>
                     </div>
                     <div class="eight_5" style="border-right: none; grid-column: 4/6;">
                         <div class="text-xs" style="position: absolute">TARGET LAUNCH DATE</div>
@@ -614,7 +645,7 @@
 
                 <div style="position: relative;">
                     <div class="">
-                        <div class="text-md font-semibold" style="position:absolute">Target Cost & Launching Plan</div>
+                        <div class="text-md font-semibold" style="position:absolute">Authorization of Customer</div>
                     </div>
                 </div>
                 <div class="wrapper mt-10" style="position: relative;">

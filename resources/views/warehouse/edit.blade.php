@@ -168,7 +168,7 @@
                                                             </div>
                                                             <div class="lg:col-span-6">
                                                                 <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ความกว้าง</label>
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ความกว้าง</label>
                                                                     <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
                                                                     <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
                                                                     <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ความยาว</label>
@@ -460,7 +460,7 @@
                 },
                 success: function(res){
                     if(res.success == true) {
-                        window.location = "/product";
+                        // window.location = "/product";
                     } else {
                         toastr.error("Can't Create Product!");
                     }

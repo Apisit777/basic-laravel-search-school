@@ -60,6 +60,9 @@
             font-size: 20px!important;
         }
 
+        .table td, .table th {
+            padding: 0.55rem !important;
+        }
     </style>
 
 
@@ -70,7 +73,7 @@
 
     <div class="justify-center items-center">
         <div class="mt-6 mb-4 flex justify-center items-center">
-            <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">NPD Request List</p>
+            <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">NPD REQUEST</p>
         </div>
 
         <form action="#">
@@ -387,7 +390,7 @@
             "order": [
                 [0, "desc"]
             ],
-            "lengthMenu": [10, 20, 30, 50],
+            "lengthMenu": [20, 30, 50],
             // "layout": {
             //     "topEnd": {
             //         "buttons": ['excel', 'colvis']

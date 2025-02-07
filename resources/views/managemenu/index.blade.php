@@ -607,22 +607,6 @@
         </div>
     </div>
 
-    <!-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
-    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap5.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/dataTables.buttons.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.bootstrap5.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.html5.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.print.min.js"></script>
-    <script src="https://cdn.datatables.net/buttons/3.0.2/js/buttons.colVis.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
-
     <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
     <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
     <script src="{{ asset('js/flowbite-2.3.0.min.js') }}"></script>
@@ -930,6 +914,119 @@
             let dataJson = JSON.parse(dataLogin)
         }
 
+        // function ajaxGetMenuAccess(pos_id) {
+        //     $.ajax({
+        //         url: "{{ route('menu_access') }}?pos_id=" + pos_id,
+        //         type: "GET",
+        //         beforeSend: function () {
+        //             $('#loader').removeClass('hidden')
+        //             setTimeout(function() {
+        //                 $('#loader').addClass('hidden');
+        //             },dlayMessage)
+        //         },
+        //         success:function(res){
+        //             let menuAll = <?php echo json_encode($menus); ?>;
+        //             let menupermission = res.submenu_array.length ? res.submenu_array : []
+        //             // console.log("🚀 ~ ajaxGetMenuAccess ~ menupermission:", menupermission)
+        //             const result = Object.groupBy(menupermission, ({ menu_id }) => menu_id);
+        //             // console.log("🚀 ~ ajaxGetMenuAccess ~ result:", result)
+        //             if(true) {
+        //                 menuAll.forEach(menu => {
+        //                     const currentMenu = result[menu.id]
+        //                     // console.log("🚀 ~ ajaxGetMenuAccess ~ currentMenu:", currentMenu)
+        //                     if(currentMenu != undefined){
+        //                         const menu_id = menu.id
+        //                         currentMenu.forEach(fmenu => {
+        //                             const submenu_id = fmenu.submenu_id || 0
+        //                             $(`#action_view_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.view);
+        //                             $(`#action_create_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.create);
+        //                             $(`#action_edit_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.edit);
+        //                             $(`#action_delete_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.delete);
+        //                             if(submenu_id === 0 && menu.submenus.length){
+        //                                 let isHaveSubmenu = false;
+        //                                 menu.submenus.forEach(submenu => {
+        //                                     if (!fmenu.view) {
+        //                                         $(`#action_view_${menu.id}_${submenu.id}`).prop("disabled", true);
+        //                                     }else {
+        //                                         $(`#action_view_${menu.id}_${0}`).prop("disabled", true);
+        //                                     }
+        //                                     if (!fmenu.create) {
+        //                                         $(`#action_create_${menu.id}_${submenu.id}`).prop("disabled", true);
+        //                                     } else {
+        //                                         $(`#action_create_${menu.id}_${0}`).prop("disabled", true);
+        //                                     }
+        //                                     if (!fmenu.edit) {
+        //                                         $(`#action_edit_${menu.id}_${submenu.id}`).prop("disabled", true);
+        //                                     } else {
+        //                                         $(`#action_edit_${menu.id}_${0}`).prop("disabled", true);
+        //                                     }
+        //                                     if (!fmenu.delete) {
+        //                                         $(`#action_delete_${menu.id}_${submenu.id}`).prop("disabled", true);
+        //                                     } else {
+        //                                         $(`#action_delete_${menu.id}_${0}`).prop("disabled", true);
+        //                                     }
+        //                                     $(`#action_view_${menu.id}_${submenu.id}`).prop("checked",false);
+        //                                     $(`#action_create_${menu.id}_${submenu.id}`).prop("checked",false);
+        //                                     $(`#action_edit_${menu.id}_${submenu.id}`).prop("checked",false);
+        //                                     $(`#action_delete_${menu.id}_${submenu.id}`).prop("checked",false);
+        //                                 })
+        //                             }
+        //                         })
+        //                         let dummy = [...currentMenu]
+        //                         dummy.shift()
+        //                         if(dummy.every(e => !e.view)){
+        //                             $(`#action_view_${menu.id}_${0}`).prop("disabled", false);
+        //                         } else {
+        //                             $(`#action_view_${menu.id}_${0}`).prop("disabled", true);
+        //                         }
+        //                         if(dummy.every(e => !e.create)){
+        //                             $(`#action_create_${menu.id}_${0}`).prop("disabled", false);
+        //                         } else {
+        //                             $(`#action_create_${menu.id}_${0}`).prop("disabled", true);
+        //                         }
+        //                         if(dummy.every(e => !e.edit)){
+        //                             $(`#action_edit_${menu.id}_${0}`).prop("disabled", false);
+        //                         } else {
+        //                             $(`#action_edit_${menu.id}_${0}`).prop("disabled", true);
+        //                         }
+        //                         if(dummy.every(e => !e.delete)){
+        //                             $(`#action_delete_${menu.id}_${0}`).prop("disabled", false);
+        //                         } else {
+        //                             $(`#action_delete_${menu.id}_${0}`).prop("disabled", false);
+        //                         }
+        //                     } else {
+        //                         $(`#action_view_${menu.id}_${0}`).prop("checked",false);
+        //                         $(`#action_create_${menu.id}_${0}`).prop("checked",false);
+        //                         $(`#action_edit_${menu.id}_${0}`).prop("checked",false);
+        //                         $(`#action_delete_${menu.id}_${0}`).prop("checked",false);
+
+        //                         $(`#action_view_${menu.id}_${0}`).prop("disabled", false);
+        //                         $(`#action_create_${menu.id}_${0}`).prop("disabled", false);
+        //                         $(`#action_edit_${menu.id}_${0}`).prop("disabled", false);
+        //                         $(`#action_delete_${menu.id}_${0}`).prop("disabled", false);
+
+        //                         if(menu.submenus.length){
+        //                             menu.submenus.forEach(submenu => {
+        //                                 $(`#action_view_${menu.id}_${submenu.id}`).prop("disabled", true);
+        //                                 $(`#action_create_${menu.id}_${submenu.id}`).prop("disabled", true);
+        //                                 $(`#action_edit_${menu.id}_${submenu.id}`).prop("disabled", true);
+        //                                 $(`#action_delete_${menu.id}_${submenu.id}`).prop("disabled", true);
+
+        //                                 $(`#action_view_${menu.id}_${submenu.id}`).prop("checked", false);
+        //                                 $(`#action_create_${menu.id}_${submenu.id}`).prop("checked", false);
+        //                                 $(`#action_edit_${menu.id}_${submenu.id}`).prop("checked", false);
+        //                                 $(`#action_delete_${menu.id}_${submenu.id}`).prop("checked", false);
+        //                             })
+        //                         }
+        //                     }
+        //                 });
+        //             }else {
+        //                 console.log('no data');
+        //             }
+        //         }
+        //     });
+        // }
+
         function ajaxGetMenuAccess(pos_id) {
             $.ajax({
                 url: "{{ route('menu_access') }}?pos_id=" + pos_id,
@@ -940,108 +1037,94 @@
                         $('#loader').addClass('hidden');
                     },dlayMessage)
                 },
-                success:function(res){
+                success: function (res) {
                     let menuAll = <?php echo json_encode($menus); ?>;
-                    let menupermission = res.submenu_array.length ? res.submenu_array : []
-                    // console.log("🚀 ~ ajaxGetMenuAccess ~ menupermission:", menupermission)
+                    let menupermission = res.submenu_array.length ? res.submenu_array : [];
                     const result = Object.groupBy(menupermission, ({ menu_id }) => menu_id);
-                    // console.log("🚀 ~ ajaxGetMenuAccess ~ result:", result)
-                    if(true) {
+                    if (menuAll && menuAll.length) {
                         menuAll.forEach(menu => {
-                            const currentMenu = result[menu.id]
-                            // console.log("🚀 ~ ajaxGetMenuAccess ~ currentMenu:", currentMenu)
-                            if(currentMenu != undefined){
-                                const menu_id = menu.id
+                            const currentMenu = result[menu.id];
+                            const menuId = menu.id;
+                            if (currentMenu) {
                                 currentMenu.forEach(fmenu => {
-                                    const submenu_id = fmenu.submenu_id || 0
-                                    $(`#action_view_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.view);
-                                    $(`#action_create_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.create);
-                                    $(`#action_edit_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.edit);
-                                    $(`#action_delete_${menu_id}_${submenu_id}`).prop("checked",!!fmenu.delete);
-                                    if(submenu_id === 0 && menu.submenus.length){
-                                        let isHaveSubmenu = false;
+                                    const submenuId = fmenu.submenu_id || 0;
+
+                                    // Set permissions for actions
+                                    $(`#action_view_${menuId}_${submenuId}`).prop("checked", !!fmenu.view);
+                                    $(`#action_create_${menuId}_${submenuId}`).prop("checked", !!fmenu.create);
+                                    $(`#action_edit_${menuId}_${submenuId}`).prop("checked", !!fmenu.edit);
+                                    $(`#action_delete_${menuId}_${submenuId}`).prop("checked", !!fmenu.delete);
+
+                                    // Handle submenu permissions
+                                    if (submenuId === 0 && menu.submenus.length) {
                                         menu.submenus.forEach(submenu => {
-                                            if (!fmenu.view) {
-                                                $(`#action_view_${menu.id}_${submenu.id}`).prop("disabled", true);
-                                            }else {
-                                                $(`#action_view_${menu.id}_${0}`).prop("disabled", true);
-                                            }
-                                            if (!fmenu.create) {
-                                                $(`#action_create_${menu.id}_${submenu.id}`).prop("disabled", true);
-                                            } else {
-                                                $(`#action_create_${menu.id}_${0}`).prop("disabled", true);
-                                            }
-                                            if (!fmenu.edit) {
-                                                $(`#action_edit_${menu.id}_${submenu.id}`).prop("disabled", true);
-                                            } else {
-                                                $(`#action_edit_${menu.id}_${0}`).prop("disabled", true);
-                                            }
-                                            if (!fmenu.delete) {
-                                                $(`#action_delete_${menu.id}_${submenu.id}`).prop("disabled", true);
-                                            } else {
-                                                $(`#action_delete_${menu.id}_${0}`).prop("disabled", true);
-                                            }
-                                            $(`#action_view_${menu.id}_${submenu.id}`).prop("checked",false);
-                                            $(`#action_create_${menu.id}_${submenu.id}`).prop("checked",false);
-                                            $(`#action_edit_${menu.id}_${submenu.id}`).prop("checked",false);
-                                            $(`#action_delete_${menu.id}_${submenu.id}`).prop("checked",false);
-                                        })
+                                            const submenuElemId = `${menuId}_${submenu.id}`;
+
+                                            setSubmenuState("view", submenuElemId, fmenu.view);
+                                            setSubmenuState("create", submenuElemId, fmenu.create);
+                                            setSubmenuState("edit", submenuElemId, fmenu.edit);
+                                            setSubmenuState("delete", submenuElemId, fmenu.delete);
+
+                                            resetSubmenuCheckbox(submenuElemId);
+                                        });
                                     }
-                                })
-                                let dummy = [...currentMenu]
-                                dummy.shift()
-                                if(dummy.every(e => !e.view)){
-                                    $(`#action_view_${menu.id}_${0}`).prop("disabled", false);
-                                } else {
-                                    $(`#action_view_${menu.id}_${0}`).prop("disabled", true);
-                                }
-                                if(dummy.every(e => !e.create)){
-                                    $(`#action_create_${menu.id}_${0}`).prop("disabled", false);
-                                } else {
-                                    $(`#action_create_${menu.id}_${0}`).prop("disabled", true);
-                                }
-                                if(dummy.every(e => !e.edit)){
-                                    $(`#action_edit_${menu.id}_${0}`).prop("disabled", false);
-                                } else {
-                                    $(`#action_edit_${menu.id}_${0}`).prop("disabled", true);
-                                }
-                                if(dummy.every(e => !e.delete)){
-                                    $(`#action_delete_${menu.id}_${0}`).prop("disabled", false);
-                                } else {
-                                    $(`#action_delete_${menu.id}_${0}`).prop("disabled", false);
-                                }
+                                });
+                                // Disable parent actions if all submenus are unchecked
+                                const dummy = [...currentMenu];
+                                dummy.shift(); // Remove the first menu item
+
+                                toggleParentAction("view", menuId, dummy.every(e => !e.view));
+                                toggleParentAction("create", menuId, dummy.every(e => !e.create));
+                                toggleParentAction("edit", menuId, dummy.every(e => !e.edit));
+                                toggleParentAction("delete", menuId, dummy.every(e => !e.delete));
                             } else {
-                                $(`#action_view_${menu.id}_${0}`).prop("checked",false);
-                                $(`#action_create_${menu.id}_${0}`).prop("checked",false);
-                                $(`#action_edit_${menu.id}_${0}`).prop("checked",false);
-                                $(`#action_delete_${menu.id}_${0}`).prop("checked",false);
+                                // Reset and enable main menu actions
+                                resetMainMenuActions(menuId);
 
-                                $(`#action_view_${menu.id}_${0}`).prop("disabled", false);
-                                $(`#action_create_${menu.id}_${0}`).prop("disabled", false);
-                                $(`#action_edit_${menu.id}_${0}`).prop("disabled", false);
-                                $(`#action_delete_${menu.id}_${0}`).prop("disabled", false);
-
-                                if(menu.submenus.length){
+                                // Reset all submenu actions
+                                if (menu.submenus.length) {
                                     menu.submenus.forEach(submenu => {
-                                        $(`#action_view_${menu.id}_${submenu.id}`).prop("disabled", true);
-                                        $(`#action_create_${menu.id}_${submenu.id}`).prop("disabled", true);
-                                        $(`#action_edit_${menu.id}_${submenu.id}`).prop("disabled", true);
-                                        $(`#action_delete_${menu.id}_${submenu.id}`).prop("disabled", true);
-
-                                        $(`#action_view_${menu.id}_${submenu.id}`).prop("checked", false);
-                                        $(`#action_create_${menu.id}_${submenu.id}`).prop("checked", false);
-                                        $(`#action_edit_${menu.id}_${submenu.id}`).prop("checked", false);
-                                        $(`#action_delete_${menu.id}_${submenu.id}`).prop("checked", false);
-                                    })
+                                        resetSubmenuActions(`${menuId}_${submenu.id}`);
+                                    });
                                 }
                             }
                         });
-                    }else {
+
+                        // Helper Functions
+                        function setSubmenuState(action, submenuId, state) {
+                            $(`#action_${action}_${submenuId}`).prop("disabled", !state);
+                        }
+
+                        function resetSubmenuCheckbox(submenuId) {
+                            ["view", "create", "edit", "delete"].forEach(action => {
+                                $(`#action_${action}_${submenuId}`).prop("checked", false);
+                            });
+                        }
+
+                        function toggleParentAction(action, menuId, condition) {
+                            $(`#action_${action}_${menuId}_0`).prop("disabled", !condition);
+                        }
+
+                        function resetMainMenuActions(menuId) {
+                            ["view", "create", "edit", "delete"].forEach(action => {
+                                $(`#action_${action}_${menuId}_0`).prop("checked", false).prop("disabled", false);
+                            });
+                        }
+
+                        function resetSubmenuActions(submenuId) {
+                            ["view", "create", "edit", "delete"].forEach(action => {
+                                $(`#action_${action}_${submenuId}`).prop("checked", false).prop("disabled", true);
+                            });
+                        }
+                    } else {
                         console.log('no data');
                     }
                 }
             });
         }
+
+
+
 
         function removeMenu() {
             let menu_count = $("#menuTable").find("input[type='checkbox']").length;

@@ -27,7 +27,7 @@
     <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4 mt-10">
         <div class="justify-center items-center">
             <div class="mt-5 flex justify-items-start">
-                <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">New Product Development Request</p>
+                <p class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 text-xl font-bold text-gray-900 dark:text-gray-100">New Product Development Request</p>
             </div>
             <form class="" action="" method="POST" id="update_NPDRequest">
                 <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
@@ -135,7 +135,7 @@
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="CAPACITY">ปริมาณสุทธิ</label>
+                                                                    <label for="CAPACITY">ปริมาณสุทธิ กรัม/M</label>
                                                                     <input type="text" name="CAPACITY" id="CAPACITY" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->CAPACITY }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
@@ -163,7 +163,7 @@
                                                                     <input type="text" name="PRICE_COST" id="PRICE_COST" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PRICE_COST }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="PRICE_BULK">Bulk</label>
+                                                                    <label for="PRICE_BULK">Bulk COST [BATH/KG]</label>
                                                                     <input type="text" name="PRICE_BULK" id="PRICE_BULK" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->PRICE_BULK }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
@@ -303,7 +303,7 @@
                                                                             {{ $data->OEM == 'N' ? 'checked' : '' }}>
                                                                         <label for="">no</label>
                                                                     </div>
-                                                                    <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
+                                                                    <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
                                                                 </div>
                                                                 <!-- <div class="md:col-span-6 mt-2">
                                                                     <label for="name">Reason of use</label>
@@ -318,13 +318,13 @@
                                                                     <div class="md:col-span-4 mt-5">
                                                                         <input class="-mt-1" type="checkbox" id="REASON1" name="REASON1" value="Y" @if ($data->REASON1 == 'Y') checked @endif>
                                                                         <label for="REASON1" class="mr-5">Reason of use</label>
-                                                                        <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
+                                                                        <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="REASON1_DES"></label>
                                                                     <input type="text" name="REASON1_DES" id="REASON1_DES" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->REASON1_DES }}" />
-                                                                    <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
+                                                                    <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
                                                                 </div>
 
                                                                 <div class="md:col-span-3">
@@ -341,13 +341,13 @@
                                                                     <div class="md:col-span-4 mt-5">
                                                                         <input class="-mt-1" type="checkbox" id="REASON3" name="REASON3" value="Y" @if ($data->REASON3 == 'Y') checked @endif>
                                                                         <label for="REASON3" class="mr-5">Others</label>
-                                                                        <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
+                                                                        <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="REASON3_DES"></label>
                                                                     <input type="text" name="REASON3_DES" id="REASON3_DES" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->REASON3_DES }}" />
-                                                                    <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-800"></ul>
+                                                                    <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
                                                                 </div>
                                                                 <div class="md:col-span-3 mt-2">
                                                                     <div class="md:col-span-4 mt-3">
@@ -384,7 +384,7 @@
                                 </div>
                             </li>
                         </ul>
-                        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-700"></ul>
+                        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
                         <div id="loader" class="loading absolute hidden bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 animate-spin dark:text-white">
                                 <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />

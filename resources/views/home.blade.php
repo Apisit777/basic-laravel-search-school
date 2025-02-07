@@ -1,6 +1,6 @@
-@extends('layouts.layout')
+<!-- @extends('layouts.layout')
 @section('title', 'Inspection & deteils')
-@section('content')
+@section('content') -->
 
     <style>
         span.dt-column-order {
@@ -933,4 +933,4 @@
         });
 
     </script>
-@endsection
+<!-- @endsection -->

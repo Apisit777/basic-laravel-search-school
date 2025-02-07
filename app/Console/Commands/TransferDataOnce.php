@@ -2416,4 +2416,96 @@ class TransferDataOnce extends Command
         $date = \Carbon\Carbon::createFromFormat('M d Y h:iA', $date_str)->format('Y-m-d');
         return $date;
     }
+
+    public function production_transfer_data_age_error()
+    {
+        info('RunMidnightTask');
+        set_time_limit(0);
+        ini_set('memory_limit', '512M');
+        $url_dot_30 = config('app.dot_30');
+        $endpoint = $url_dot_30 . "/ims/dealer_transfer_service/dl_mid_query_dot1.php";
+
+        $test_database = [
+            'dbBBMAS|BB|8|9|6' => ['PRODUCT1', 'PRODUCT2', 'PRODUCT1_DES'],
+            'dbCPMAS|CPS|8|9|7' => ['PRODUCT1', 'PRODUCT2', 'PRODUCT1_DES'],
+            'dbGNCMAS|GNC|8|9' => ['PRODUCT1', 'PRODUCT2', 'PRODUCT1_DES'],
+            'dbKSHOPMAS|KTY|8|9|1' => ['PRODUCT1', 'PRODUCT2', 'PRODUCT1_DES'],
+            'dbLLMAS|LL|8|9|3' => ['PRODUCT1', 'PRODUCT2', 'PRODUCT1_DES'],
+            'dbOPMAS|OP|8|9|2' => ['PRODUCT1', 'PRODUCT2', 'PRODUCT1_DES']
+        ];
+
+        $dataProducts1 = DB::table('product_channels')
+            ->select('product1s.*', 'product_channels.BRAND', 'product_channels.PRODUCT')
+            ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT')
+            ->whereRaw('product_channels.PRODUCT NOT REGEXP "^[A-Z]"')
+            ->where('product1s.STATUS_EDIT_DT', '=', '')
+            ->get();
+
+        $diff_count = count($dataProducts1);
+        $this->info("Transferring product_channels data back to dot1");
+        $this->output->progressStart($diff_count);
+
+        foreach ($test_database as $key => $value) {
+            $exploded_key = explode('|', $key);
+            $dbName = $exploded_key[0];
+            $brand = $exploded_key[1];
+            $key_parts_number_1 = $exploded_key[2] ?? null;
+            $key_parts_number_2 = $exploded_key[3] ?? null;
+            $key_parts_number_3 = $exploded_key[4] ?? null;
+
+            $brand_value = $brand;
+            foreach ($dataProducts1 as $rs) {
+                if ($dbName == 'dbCPMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
+                    $brand_value = 'KM';
+                    if ($rs->PRODUCT[0] == $key_parts_number_3 || ($rs->PRODUCT[0] == 1 && strlen((string)$rs->PRODUCT) == 7) || ($rs->PRODUCT[0] == 2 && strlen((string)$rs->PRODUCT) == 7)) {
+                        $brand_value = $brand;
+                    } else if ($rs->PRODUCT[0] == 0 && strlen($rs->PRODUCT) === 5) {
+                        $brand_value = $brand;
+                    } else if ($rs->PRODUCT[0] == 1 && strlen($rs->PRODUCT) === 5) {
+                        $brand_value = 'KM';
+                    }
+                    // dd($brand_value);
+                    $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
+                        'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                    ]);
+                    $origin_data_product = json_decode($origin_data_product, true);
+                    if ($rs->STATUS_EDIT_DT == '' && !empty($origin_data_product) == true) {
+                
+                        $sql_update = "
+                            UPDATE [$dbName].[dbo].[$value[0]] SET
+                            [BRAND] = '{$brand_value}',
+                            [PRODUCT] = '{$rs->PRODUCT}',
+                            [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "'
+                            WHERE [PRODUCT] = '{$rs->PRODUCT}';
+                        ";
+                        Http::asForm()->withHeaders([])->post($endpoint, [
+                            'statement' => $sql_update
+                        ]);
+                        $this->output->progressAdvance();
+                    } 
+                } 
+                else if ($dbName == 'dbCPMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string) $rs->PRODUCT) >= 7) {
+                    // dd ($brand);
+                    $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
+                        'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                    ]);
+                    $origin_data_product = json_decode($origin_data_product, true);
+                    if ($rs->STATUS_EDIT_DT == '' && !empty($origin_data_product) == true) {
+                
+                        $sql_update = "
+                            UPDATE [$dbName].[dbo].[$value[0]] SET
+                            [BRAND] = '{$brand_value}',
+                            [PRODUCT] = '{$rs->PRODUCT}',
+                            [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "'
+                            WHERE [PRODUCT] = '{$rs->PRODUCT}';
+                        ";
+                        Http::asForm()->withHeaders([])->post($endpoint, [
+                            'statement' => $sql_update
+                        ]);
+                        $this->output->progressAdvance();
+                    } 
+                }
+            }
+        }
+    }
 }

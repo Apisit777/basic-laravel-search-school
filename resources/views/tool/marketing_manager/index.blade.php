@@ -41,7 +41,7 @@
 @section('content')
     <div class="justify-center items-center">
         <div class="mt-6 mb-4 flex justify-center items-center">
-            <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">CATEGORY</p>
+            <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">MARKETING MANAGER</p>
         </div>
 
         <div class="flex xs:right-12 sm:right-12 md:right-14 lg:right-14 xl:right-14 z-10 absolute mt-3">
@@ -141,7 +141,7 @@
                             </div>
                         </div>
                         <div class="p-4 text-gray-900 dark:text-gray-100" style="position: relative;">
-                            <label for="DESCRIPTION">Description</label>
+                            <label for="DESCRIPTION">Name</label>
                             <input type="text" id="DESCRIPTION" name="DESCRIPTION" onkeyup="checkProductGroupName()" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                             <div class="col-auto" style="position: absolute; right: 2.5%; top: 57.2%;">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="username_loading" style="margin-right: -2.5px;" class="w-6 h-6 animate-spin -mt-1">
@@ -203,7 +203,7 @@
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Description</th>
+                            <th>Name</th>
                             <th>Brand</th>
                             <!-- <th>วันที่อัปเดดข้อมูล</th> -->
                             <th>Action</th>
@@ -360,7 +360,7 @@
                 jQuery("#Edit_ProductGroup_ID").val(id)
                 jQuery("#ID").val(id).attr("readonly", true).addClass('h-10 rounded-sm px-4 w-full text-center bg-[#E7E7E7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#000000] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500')
                 jQuery("#DESCRIPTION").val(DESCRIPTION)
-                jQuery("#staticBackdropLabel").text('แก้ไข Category')
+                jQuery("#staticBackdropLabel").text('แก้ไข Marketing Manager')
                 jQuery("#submitButton").attr("disabled", false);
                 jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
                 jQuery('#username_loading').hide();
@@ -373,7 +373,7 @@
                 jQuery("#Edit_ProductGroup_ID").val('')
                 jQuery("#ID").val('').removeClass('bg-[#E7E7E7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-[#000000] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500')
                 jQuery("#DESCRIPTION").val('')
-                jQuery("#staticBackdropLabel").text('เพิ่ม Category')
+                jQuery("#staticBackdropLabel").text('เพิ่ม Marketing Manager')
                 jQuery("#submitButton").attr("disabled", true);
                 jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
                 jQuery('#username_loading').hide();
@@ -407,7 +407,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
 
-                "url": "{{ route('product_master.list_category') }}",
+                "url": "{{ route('product_master.list_marketing_manager') }}",
                 "type": "POST",
                 'data': function(data) {
                     // Read values

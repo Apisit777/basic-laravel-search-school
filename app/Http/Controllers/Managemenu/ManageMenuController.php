@@ -107,6 +107,7 @@ class ManageMenuController extends Controller
         $menus = menu::with('submenus')->get();
         // dd($menus);
         $authPosition = Auth::user()->getUserPermission->position_id;
+
         $menusAuthPosition = menu::with(['getPermissionSubmenus' => function ($query) use ($authPosition) {
                 $query->where('menu_relations.position_id', $authPosition)
                 ->whereNotNull('submenu_id');
@@ -120,6 +121,27 @@ class ManageMenuController extends Controller
             })
         ->get();
         // dd($menusAuthPosition);
+        
+        $userPermission = optional(Auth::user()->getUserPermission)->name_position;
+        $authPosition = Auth::user()->getUserPermission->position_id;
+
+        $routeName = menu::with([
+            'getPermissionSubmenus' => function ($query) use ($authPosition) {
+                $query->where('menu_relations.position_id', $authPosition)
+                    ->whereNotNull('submenu_id');
+            },
+            'getMenuRelation' => function ($query) use ($authPosition) {
+                $query->where('menu_relations.position_id', $authPosition)
+                    ->whereNotNull('menu_relations.submenu_id');
+            }
+        ])
+        ->whereHas('getMenuRelation', function ($query) use ($authPosition) {
+            $query->where('menu_relations.position_id', $authPosition);
+        })
+        ->get();
+
+        // dd($routeName);
+
         // $filters = [
         //     ['some_filter' => true],
         //     ['some_filter' => false],
