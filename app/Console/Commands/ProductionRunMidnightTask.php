@@ -159,7 +159,7 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -245,7 +245,7 @@ class ProductionRunMidnightTask extends Command
                                         '" . $rs->PACK_SIZE3 . "',
                                         '" . $rs->PACK_SIZE4 . "',
                                         '" . $REG_DATE_RP . "',
-                                        '" . $rs->AGE . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                         '" . $rs->WIDTH . "',
                                         '" . $rs->HEIGHT . "',
                                         '" . $rs->WIDE . "',
@@ -356,7 +356,7 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -446,7 +446,7 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->PACK_SIZE3 . "',
                                             '" . $rs->PACK_SIZE4 . "',
                                             '" . $REG_DATE_RP . "',
-                                            '" . $rs->AGE . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                             '" . $rs->WIDTH . "',
                                             '" . $rs->HEIGHT . "',
                                             '" . $rs->WIDE . "',
@@ -559,7 +559,7 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -643,7 +643,7 @@ class ProductionRunMidnightTask extends Command
                                         '" . $rs->PACK_SIZE3 . "',
                                         '" . $rs->PACK_SIZE4 . "',
                                         '" . $REG_DATE_RP . "',
-                                        '" . $rs->AGE . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                         '" . $rs->WIDTH . "',
                                         '" . $rs->HEIGHT . "',
                                         '" . $rs->WIDE . "',
@@ -748,7 +748,7 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -837,7 +837,7 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->PACK_SIZE3 . "',
                                             '" . $rs->PACK_SIZE4 . "',
                                             '" . $REG_DATE_RP . "',
-                                            '" . $rs->AGE . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                             '" . $rs->WIDTH . "',
                                             '" . $rs->HEIGHT . "',
                                             '" . $rs->WIDE . "',
@@ -950,7 +950,7 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -979,6 +979,10 @@ class ProductionRunMidnightTask extends Command
                                 ]);
                                 $this->output->progressAdvance();
 
+                                $product1_STATUS_EDIT_DT = DB::table('product1s')->where('PRODUCT', $rs->PRODUCT)->update([
+                                    'EDIT_DT' => $rs->EDIT_DT,
+                                    'STATUS_EDIT_DT' => $rs->EDIT_DT
+                                ]);
                             } else {
                                 $REG_DATE_RP = $rs->REG_DATE === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->REG_DATE;
                                 $OPT_DATE1_RP = $rs->OPT_DATE1 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE1;
@@ -1030,7 +1034,7 @@ class ProductionRunMidnightTask extends Command
                                         '" . $rs->PACK_SIZE3 . "',
                                         '" . $rs->PACK_SIZE4 . "',
                                         '" . $REG_DATE_RP . "',
-                                        '" . $rs->AGE . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                         '" . $rs->WIDTH . "',
                                         '" . $rs->HEIGHT . "',
                                         '" . $rs->WIDE . "',
@@ -1135,7 +1139,7 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -1168,7 +1172,6 @@ class ProductionRunMidnightTask extends Command
                                     'EDIT_DT' => $rs->EDIT_DT,
                                     'STATUS_EDIT_DT' => $rs->EDIT_DT
                                 ]);
-
                             } else if ($dbName == 'dbGNCMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string)$rs->PRODUCT) >= 7) {
                                 $dataproduct = DB::table('product1s')
                                     ->select('*')     
@@ -1225,7 +1228,7 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->PACK_SIZE3 . "',
                                             '" . $rs->PACK_SIZE4 . "',
                                             '" . $REG_DATE_RP . "',
-                                            '" . $rs->AGE . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                             '" . $rs->WIDTH . "',
                                             '" . $rs->HEIGHT . "',
                                             '" . $rs->WIDE . "',
@@ -1339,7 +1342,7 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -1423,7 +1426,7 @@ class ProductionRunMidnightTask extends Command
                                         '" . $rs->PACK_SIZE3 . "',
                                         '" . $rs->PACK_SIZE4 . "',
                                         '" . $REG_DATE_RP . "',
-                                        '" . $rs->AGE . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                         '" . $rs->WIDTH . "',
                                         '" . $rs->HEIGHT . "',
                                         '" . $rs->WIDE . "',
@@ -1528,7 +1531,7 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -1617,7 +1620,7 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->PACK_SIZE3 . "',
                                             '" . $rs->PACK_SIZE4 . "',
                                             '" . $REG_DATE_RP . "',
-                                            '" . $rs->AGE . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                             '" . $rs->WIDTH . "',
                                             '" . $rs->HEIGHT . "',
                                             '" . $rs->WIDE . "',
@@ -1729,7 +1732,7 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -1813,7 +1816,7 @@ class ProductionRunMidnightTask extends Command
                                         '" . $rs->PACK_SIZE3 . "',
                                         '" . $rs->PACK_SIZE4 . "',
                                         '" . $REG_DATE_RP . "',
-                                        '" . $rs->AGE . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                         '" . $rs->WIDTH . "',
                                         '" . $rs->HEIGHT . "',
                                         '" . $rs->WIDE . "',
@@ -1918,7 +1921,7 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -2007,7 +2010,7 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->PACK_SIZE3 . "',
                                             '" . $rs->PACK_SIZE4 . "',
                                             '" . $REG_DATE_RP . "',
-                                            '" . $rs->AGE . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                             '" . $rs->WIDTH . "',
                                             '" . $rs->HEIGHT . "',
                                             '" . $rs->WIDE . "',
@@ -2120,7 +2123,7 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -2153,7 +2156,6 @@ class ProductionRunMidnightTask extends Command
                                     'EDIT_DT' => $rs->EDIT_DT,
                                     'STATUS_EDIT_DT' => $rs->EDIT_DT
                                 ]);
-
                             } else {
                                 $REG_DATE_RP = $rs->REG_DATE === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->REG_DATE;
                                 $OPT_DATE1_RP = $rs->OPT_DATE1 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE1;
@@ -2205,7 +2207,7 @@ class ProductionRunMidnightTask extends Command
                                         '" . $rs->PACK_SIZE3 . "',
                                         '" . $rs->PACK_SIZE4 . "',
                                         '" . $REG_DATE_RP . "',
-                                        '" . $rs->AGE . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                         '" . $rs->WIDTH . "',
                                         '" . $rs->HEIGHT . "',
                                         '" . $rs->WIDE . "',
@@ -2311,7 +2313,7 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -2400,7 +2402,7 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->PACK_SIZE3 . "',
                                             '" . $rs->PACK_SIZE4 . "',
                                             '" . $REG_DATE_RP . "',
-                                            '" . $rs->AGE . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                             '" . $rs->WIDTH . "',
                                             '" . $rs->HEIGHT . "',
                                             '" . $rs->WIDE . "',

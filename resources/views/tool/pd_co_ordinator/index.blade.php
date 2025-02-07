@@ -30,6 +30,42 @@
             /* color: #FFFFFF!important; */
             color: #818181!important;
         }
+
+        .search-input {
+            width: 100%;
+            padding: 3px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .table td, .table th {
+            padding: 0.55rem !important;
+        }
+
+        .select2-container .select2-dropdown .select2-results__options {
+            max-height: 360px !important;
+        }
+        .select2 {
+            width: 100%!important; /* force fluid responsive */
+        }
+        .swal2-select option {
+            background-color: #303030;
+        }
+        .select2-container--open {
+            z-index: 99999999999999;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__clear {
+            float: right;
+            cursor: pointer;
+            --tw-text-opacity: 1;
+            color: rgb(200 30 30 / var(--tw-text-opacity));
+            margin-right: 24px!important;
+            margin-top: -1px!important;
+            font-size: 20px!important;
+        }
+        .select2-container {
+            margin-bottom: 0rem!important;
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -41,7 +77,7 @@
 @section('content')
     <div class="justify-center items-center">
         <div class="mt-6 mb-4 flex justify-center items-center">
-            <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">CATEGORY</p>
+            <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">PRODUCT CO-ORDINATOR</p>
         </div>
 
         <div class="flex xs:right-12 sm:right-12 md:right-14 lg:right-14 xl:right-14 z-10 absolute mt-3">
@@ -106,9 +142,9 @@
                             </span>
                         </button>
                     </div>
-                    <form id="form_product_group" class="" method="POST">
-                        <input class="" type="hidden" id="Edit_ProductGroup_ID" name="ID" value="">
-                        <div class="p-4 text-gray-900 dark:text-gray-100" style="position: relative;">
+                    <form id="product_co_ordinator" class="" method="POST">
+                        <input class="" type="hidden" id="Edit_Product_Co_Ordinator_ID" name="ID" value="">
+                        <!-- <div class="p-4 text-gray-900 dark:text-gray-100" style="position: relative;">
                             <label for="ID">ID</label>
                             <input type="text" id="ID" name="ID" onkeyup="checkProductGroupId()" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                             <div class="col-auto" style="position: absolute; right: 2.5%; top: 57.2%;">
@@ -139,9 +175,9 @@
                                         c-11.2,11.2-30.4,11.2-41.6,0l-22.4-22.4c-11.2-11.2-11.2-30.4,0-41.6L309.6,133.6z"/>
                                 </svg>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="p-4 text-gray-900 dark:text-gray-100" style="position: relative;">
-                            <label for="DESCRIPTION">Description</label>
+                            <label for="DESCRIPTION">Name</label>
                             <input type="text" id="DESCRIPTION" name="DESCRIPTION" onkeyup="checkProductGroupName()" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                             <div class="col-auto" style="position: absolute; right: 2.5%; top: 57.2%;">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="username_loading" style="margin-right: -2.5px;" class="w-6 h-6 animate-spin -mt-1">
@@ -199,14 +235,33 @@
 
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
             <div id="containerexample" class="text-gray-900 dark:text-gray-100">
-                <table id="product_group" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
+                <table id="pd_co_ordinator" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Description</th>
+                            <th>Name</th>
                             <th>Brand</th>
-                            <!-- <th>วันที่อัปเดดข้อมูล</th> -->
                             <th>Action</th>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <th>
+                                <select id="DESCRIPTION_SEARCH" name="DESCRIPTION" class="js-example-basic-single search-input w-full rounded-sm text-xs" onchange="tentSearch()">
+                                    <option value=""> --- กรุณาเลือก ---</option>
+                                    @foreach ($dataNpdCoss as $key => $dataNpdCos)
+                                        <option value="{{ $dataNpdCos }}">{{ $dataNpdCos }}</option>
+                                    @endforeach
+                                </select>
+                            </th>
+                            <th>
+                                <select id="BRAND_SEARCH" name="BRAND" class="js-example-basic-single search-input w-full rounded-sm text-xs" onchange="tentSearch()">
+                                    <option value=""> --- กรุณาเลือก ---</option>
+                                    @foreach ($brands as $key => $brand)
+                                        <option value="{{ $brand }}">{{ $brand }}</option>
+                                    @endforeach
+                                </select>
+                            </th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -214,6 +269,7 @@
                 </table>
             </div>
         </div>
+
 
     </div>
 
@@ -262,105 +318,63 @@
     @endif
 
     <script>
-        jQuery('#username_loading_id').hide();
-        jQuery("#username_aler_id").hide();
-        jQuery("#correct_username_id").hide();
-
-        function checkProductGroupId() {
-            const Edit_ProductGroup_ID = jQuery('#Edit_ProductGroup_ID').val();
-            const ID = jQuery('#ID').val();
-
-            jQuery.ajax({
-                method: "POST",
-                url: "{{ route('product_master.category_check_id') }}",
-                data: {
-                        _token: "{{ csrf_token() }}",
-                        Edit_ProductGroup_ID, ID
-                    },
-                dataType: 'json',
-                beforeSend: function () {
-                    jQuery("#submitButton").attr("disabled", true);
-                    jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
-                    jQuery('#username_loading_id').show();
-                    jQuery("#correct_username_id").hide();
-                    jQuery("#username_aler_id").hide();
-                },
-                success: function (checknamebrand) {
-                    jQuery('#username_loading_id').hide();
-                    jQuery("#correct_username_id").hide();
-
-                    if (ID == '') {
-                        jQuery("#submitButton").attr("disabled", false);
-                        jQuery("#correct_username_id").hide();
-                        jQuery("#username_aler_id").hide();
-                    } else if (checknamebrand == true) {
-                        jQuery("#submitButton").attr("disabled", false);
-                        jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
-                        jQuery("#username_aler_id").hide();
-                        jQuery("#correct_username_id").show();
-                    } else {
-                        jQuery("#username_aler_id").show();
-                        jQuery("#correct_username_id").hide();
-                    }
-                },
-                error: function (params) {
-                }
-            });
-        }
 
         jQuery('#username_loading').hide();
         jQuery("#username_alert").hide();
         jQuery("#correct_username").hide();
 
         function checkProductGroupName() {
-            const Edit_ProductGroup_ID = jQuery('#Edit_ProductGroup_ID').val();
+            const Edit_Product_Co_Ordinator_ID = jQuery('#Edit_Product_Co_Ordinator_ID').val();
             const DESCRIPTION = jQuery('#DESCRIPTION').val();
 
-            jQuery.ajax({
-                method: "POST",
-                url: "{{ route('product_master.category_check_name') }}",
-                data: {
-                        _token: "{{ csrf_token() }}",
-                        Edit_ProductGroup_ID, DESCRIPTION
+            if (DESCRIPTION) {
+                jQuery.ajax({
+                    method: "POST",
+                    url: "{{ route('product_master.product_co_ordinator_checkname') }}",
+                    data: {
+                            _token: "{{ csrf_token() }}",
+                            Edit_Product_Co_Ordinator_ID, DESCRIPTION
+                        },
+                    dataType: 'json',
+                    beforeSend: function () {
+                        jQuery("#submitButton").attr("disabled", true);
+                        jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                        jQuery('#username_loading').show();
+                        jQuery("#correct_username").hide();
+                        jQuery("#username_alert").hide();
                     },
-                dataType: 'json',
-                beforeSend: function () {
-                    jQuery("#submitButton").attr("disabled", true);
-                    jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
-                    jQuery('#username_loading').show();
-                    jQuery("#correct_username").hide();
-                    jQuery("#username_alert").hide();
-                },
-                success: function (checknamebrand) {
-                    jQuery('#username_loading').hide();
-                    jQuery("#correct_username").hide();
-
-                    if (DESCRIPTION == '') {
-                        jQuery("#submitButton").attr("disabled", false);
+                    success: function (productCoOrdinatorCheckName) {
+                        jQuery('#username_loading').hide();
                         jQuery("#correct_username").hide();
-                        jQuery("#username_alert").hide();
-                    } else if (checknamebrand == true) {
-                        jQuery("#submitButton").attr("disabled", false);
-                        jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
-                        jQuery("#username_alert").hide();
-                        jQuery("#correct_username").show();
-                    } else {
-                        jQuery("#username_alert").show();
-                        jQuery("#correct_username").hide();
+    
+                        if (productCoOrdinatorCheckName == true) {
+                            jQuery("#submitButton").attr("disabled", false);
+                            jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
+                            jQuery("#username_alert").hide();
+                            jQuery("#correct_username").show();
+                        } else {
+                            jQuery("#username_alert").show();
+                            jQuery("#correct_username").hide();
+                        }
+                    },
+                    error: function (params) {
                     }
-                },
-                error: function (params) {
-                }
-            });
+                });
+            } else {
+                jQuery("#submitButton").attr("disabled", true);
+                jQuery("#correct_username").hide();
+                jQuery("#username_alert").hide();
+                jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+            }
         }
 
         function modelProductGroup(id, DESCRIPTION) {
             console.log("🚀 ~ modelProductGroup ~ id:", id, DESCRIPTION)
             if (id) {
-                jQuery("#Edit_ProductGroup_ID").val(id)
+                jQuery("#Edit_Product_Co_Ordinator_ID").val(id)
                 jQuery("#ID").val(id).attr("readonly", true).addClass('h-10 rounded-sm px-4 w-full text-center bg-[#E7E7E7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#000000] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500')
                 jQuery("#DESCRIPTION").val(DESCRIPTION)
-                jQuery("#staticBackdropLabel").text('แก้ไข Category')
+                jQuery("#staticBackdropLabel").text('แก้ไข Product Co-Ordinator')
                 jQuery("#submitButton").attr("disabled", false);
                 jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
                 jQuery('#username_loading').hide();
@@ -370,10 +384,10 @@
                 jQuery("#username_aler_id").hide();
                 jQuery("#correct_username_id").hide();
             } else {
-                jQuery("#Edit_ProductGroup_ID").val('')
+                jQuery("#Edit_Product_Co_Ordinator_ID").val('')
                 jQuery("#ID").val('').removeClass('bg-[#E7E7E7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-[#000000] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500')
                 jQuery("#DESCRIPTION").val('')
-                jQuery("#staticBackdropLabel").text('เพิ่ม Category')
+                jQuery("#staticBackdropLabel").text('เพิ่ม Product Co-Ordinator')
                 jQuery("#submitButton").attr("disabled", true);
                 jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
                 jQuery('#username_loading').hide();
@@ -385,45 +399,44 @@
             }
         }
 
-        const mytableDatatable = $('#product_group').DataTable({
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
+
+        const mytableDatatable = $('#pd_co_ordinator').DataTable({
             'searching': false,
             "serverSide": true,
             searching: false,
             resposive: true,
             scrollX: true,
             orderCellsTop: true,
+            ordering: false,
             "order": [
                 [0, "desc"]
             ],
-            "lengthMenu": [10, 20, 30, 50],
-            // "layout": {
-            //     "topEnd": {
-            //         "buttons": ['excel', 'colvis']
-            //         // buttons: ['copy', 'excel', 'pdf', 'colvis']
-            //     }
-            // },
+            "lengthMenu": [20, 30, 50],
             "ajax": {
                 "headers": {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
 
-                "url": "{{ route('product_master.list_category') }}",
+                "url": "{{ route('product_master.list_product_co_ordinator') }}",
                 "type": "POST",
                 'data': function(data) {
+                    console.log("🚀 ~ data:", data)
                     // Read values
-                    data.brand_id = $('#brand_id').val();
-                    data.BARCODE = $('#BARCODE').val();
-                    data.search = $('#search').val();
+                    data.DESCRIPTION = $('#DESCRIPTION_SEARCH').val();
+                    data.BRAND = $('#BRAND_SEARCH').val();
 
                     data._token = $('meta[name="csrf-token"]').attr('content');
                 }
             },
             orderable: true,
             columnDefs: [{
-                    targets: 0,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.ID;
+                    targets: 0, 
+                    orderable: false, 
+                    render: function(data, type, row, meta) {
+                        return meta.row + 1; // ✅ ใช้ index ของ DataTable ไล่เรียง
                     }
                 },
                 {
@@ -440,13 +453,6 @@
                         return row.BRAND;
                     }
                 },
-                // {
-                //     targets: 3,
-                //     orderable: true,
-                //     render: function(data, type, row) {
-                //         return row.EDIT_DT;
-                //     }
-                // },
                 {
                     targets: 3,
                     orderable: true,
@@ -478,6 +484,62 @@
             ]
         });
 
+        function tentSearch() {
+            mytableDatatable.draw();
+        }
+        // $(document).ready(function() {
+        //     const mytableDatatable = $('#pd_co_ordinator').DataTable({
+        //         'searching': true,  // ✅ เปิดใช้งาน Searching
+        //         "serverSide": true,
+        //         "responsive": true,
+        //         "scrollX": true,
+        //         "orderCellsTop": true,
+        //         "order": [[0, "desc"]],
+        //         "lengthMenu": [20, 30, 50],
+        //         "ajax": {
+        //             "headers": {
+        //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //             },
+        //             "url": "{{ route('product_master.list_product_co_ordinator') }}",
+        //             "type": "POST",
+        //             "data": function(data) {
+        //                 data.brand_id = $('#brand_id').val();
+        //                 data.BARCODE = $('#BARCODE').val();
+        //                 data.search = $('#search').val();
+        //                 data._token = $('meta[name="csrf-token"]').attr('content');
+        //             }
+        //         },
+        //         "columnDefs": [
+        //             { targets: 0, orderable: true, render: function(data, type, row) { return row.ID; }},
+        //             { targets: 1, orderable: true, render: function(data, type, row) { return row.DESCRIPTION; }},
+        //             { targets: 2, orderable: true, render: function(data, type, row) { return row.BRAND; }},
+        //             { 
+        //                 targets: 3, 
+        //                 orderable: false, 
+        //                 className: 'text-center', 
+        //                 render: function(data, type, row) {
+        //                     return `<button onclick="modelProductGroup('${row.ID}','${row.DESCRIPTION}')" class="px-2 py-1 bg-gray-700 text-white rounded">Edit</button>`;
+        //                 }
+        //             }
+        //         ]
+        //     });
+
+        //     // ✅ DEBUG: ตรวจสอบว่ามี input ค้นหาหรือไม่
+        //     console.log("🚀 ~ ตรวจสอบ Input จำนวน:", $('#pd_co_ordinator thead .search-input').length);
+
+        //     // ✅ ฟังก์ชันค้นหาตามค่าที่ป้อนในช่อง input
+        //     $('#pd_co_ordinator thead').on('keyup', '.search-input', function() {
+        //         let colIndex = $(this).closest('th').index(); // ✅ ดึง index ของคอลัมน์ให้ถูกต้อง
+        //         let searchValue = this.value;
+
+        //         console.log("🚀 ~ Keyup detected! ~ Column Index:", colIndex, "Value:", searchValue);
+
+        //         if (colIndex !== -1) {
+        //             mytableDatatable.column(colIndex).search(searchValue).draw();
+        //         }
+        //     });
+        // });
+
         const dlayMessage = 100;
         function createProductGroup() {
             jQuery.ajaxSetup({
@@ -487,18 +549,18 @@
             });
 
             let url = ''
-            const Edit_ProductGroup_ID = jQuery('#Edit_ProductGroup_ID').val();
+            const Edit_Product_Co_Ordinator_ID = jQuery('#Edit_Product_Co_Ordinator_ID').val();
 
-            if(Edit_ProductGroup_ID) {
-                url = "{{ route('product_master.category_update', 0) }}".replaceAll('/0', '/' + Edit_ProductGroup_ID);
+            if(Edit_Product_Co_Ordinator_ID) {
+                url = "{{ route('product_master.product_co_ordinator_update', 0) }}".replaceAll('/0', '/' + Edit_Product_Co_Ordinator_ID);
             } else {
-                url = "{{ route('product_master.category_create') }}"
+                url = "{{ route('product_master.product_co_ordinator_create') }}"
             }
 
             jQuery.ajax({
                 method: "POST",
                 url,
-                data: $("#form_product_group").serialize(),
+                data: $("#product_co_ordinator").serialize(),
                 beforeSend: function () {
                     $('#loader_create_menu_consumables').removeClass('hidden')
                 },

@@ -40,7 +40,7 @@
 
 @section('content')
     <div class="justify-center items-center">
-        <div class="mt-6 mb-5 flex justify-center items-center">
+        <div class="mt-6 mb-4 flex justify-center items-center">
             <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการกลุ่มสินค้า</p>
         </div>
 
@@ -204,8 +204,8 @@
                         <tr>
                             <th>ID</th>
                             <th>Drescription</th>
-                            <th>แบรนด์</th>
-                            <th>วันที่อัปเดดข้อมูล</th>
+                            <th>Brand</th>
+                            <!-- <th>วันที่อัปเดดข้อมูล</th> -->
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -440,15 +440,15 @@
                         return row.BRAND;
                     }
                 },
+                // {
+                //     targets: 3,
+                //     orderable: true,
+                //     render: function(data, type, row) {
+                //         return row.EDIT_DT;
+                //     }
+                // },
                 {
                     targets: 3,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.EDIT_DT;
-                    }
-                },
-                {
-                    targets: 4,
                     orderable: true,
                     className: 'text-center',
                     render: function(data, type, row) {
