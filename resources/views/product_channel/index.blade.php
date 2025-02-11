@@ -179,7 +179,7 @@
 @section('content')
     <div class="justify-center items-center">
         <div class="mt-6 mb-4 flex justify-center items-center">
-            <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">@lang('global.content.product_registration_list')</p>
+            <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">@lang('global.content.product_channel_list')</p>
         </div>
         <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
             <div class="lg:col-span-4 xl:grid-cols-4">
@@ -195,7 +195,7 @@
                     </div>
 
                     <div class="md:col-span-3" >
-                        <label for="">ค้นหา</label>
+                        <label for="">Search</label>
                         <input type="text" name="search" id="search" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" />
                     </div>
                     <div class="md:col-span-6 text-center">
@@ -204,7 +204,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                     <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
                                 </svg>
-                                ค้นหา
+                                Search
                             </a>
                         </div>
                     </div>
@@ -279,16 +279,11 @@
             resposive: true,
             scrollX: true,
             orderCellsTop: true,
+            ordering: false,
             "order": [
                 [0, "desc"]
             ],
-            "lengthMenu": [10, 25, 50, 100],
-            "layout": {
-                "topEnd": {
-                    // "buttons": ['excel', 'colvis']
-                    // buttons: ['copy', 'excel', 'pdf', 'colvis']
-                }
-            },
+            "lengthMenu": [20, 50, 100],
             // "layout": {
             //     "topStart": {
             //         "buttons": ['excel', 'colvis']

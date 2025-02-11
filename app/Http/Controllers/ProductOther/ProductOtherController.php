@@ -9,6 +9,8 @@ use App\Models\Product1;
 use App\Models\Series;
 use App\Models\Category;
 use App\Models\Sub_category;
+use App\Models\ProductLine;
+use App\Models\ProductType;
 use App\Models\MasterBrand;
 use Illuminate\Http\Request;
 
@@ -298,6 +300,48 @@ class ProductOtherController extends Controller
         return view('product_other.create', compact(  'brands', 'series', 'categorys', 'sub_categorys'));
     }
 
+    public function productLine(Request $request) 
+    {
+        $isSuperAdmin = (Auth::user()->id === 26);
+        $userpermission = Auth::user()->getUserPermission->name_position;
+        $namePosition = explode('-', $userpermission);
+        $userpermission = trim(end($namePosition));
+
+        // กำหนดรายการ Brand ที่รองรับ
+        $validBrands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
+
+        // ตรวจสอบว่า user มีสิทธิ์ใน Brand ใด
+        $brand = in_array($userpermission, $validBrands) ? $userpermission : 'OP';
+
+        $data = ProductLine::select('ID', 'CATEGORY_ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')
+            ->where('BRAND', $brand)
+            ->where('CATEGORY_ID', $request->category_id)
+            ->get();
+
+        return response()->json($data);
+    }
+
+    public function productType(Request $request) 
+    {
+        $isSuperAdmin = (Auth::user()->id === 26);
+        $userpermission = Auth::user()->getUserPermission->name_position;
+        $namePosition = explode('-', $userpermission);
+        $userpermission = trim(end($namePosition));
+
+        // กำหนดรายการ Brand ที่รองรับ
+        $validBrands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
+
+        // ตรวจสอบว่า user มีสิทธิ์ใน Brand ใด
+        $brand = in_array($userpermission, $validBrands) ? $userpermission : 'OP';
+
+        $data = ProductType::select('ID', 'PRODUCT_LINE_ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')
+            ->where('BRAND', $brand)
+            ->where('PRODUCT_LINE_ID', $request->line_id)
+            ->get();
+
+        return response()->json($data);
+    }
+
     public function productOtherCategory(Request $request) 
     {
         $isSuperAdmin = (Auth::user()->id === 26);
@@ -352,7 +396,7 @@ class ProductOtherController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(ProductOther $productOther)
+    public function show(Request $request)
     {
         //
     }
@@ -360,7 +404,7 @@ class ProductOtherController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(ProductOther $productOther)
+    public function edit(Request $request)
     {
         //
     }
@@ -368,15 +412,15 @@ class ProductOtherController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, ProductOther $productOther)
+    public function update(Request $request)
     {
-        //
+        dd($request);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ProductOther $productOther)
+    public function destroy(Request $request)
     {
         //
     }

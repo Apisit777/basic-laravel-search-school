@@ -177,6 +177,10 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         Route::get('/pd_other/create', [ProductOtherController::class, 'create'])->name('pd_other_create');
         Route::get('/product_Other_category', [ProductOtherController::class, 'productOtherCategory'])->name('product_Other_category');
         Route::get('/product_Other_sub_category', [ProductOtherController::class, 'productOtherSubCategory'])->name('product_Other_sub_category');
+        Route::get('/product_line', [ProductOtherController::class, 'productLine'])->name('product_line');
+        Route::get('/product_type', [ProductOtherController::class, 'productType'])->name('product_type');
+        Route::post('/pd_other_update', [ProductOtherController::class, 'update'])->name('pd_other_update');
+        // Route::post('/pd_other_update/{id}', [ProductOtherController::class, 'update'])->name('pd_other_update');
     });
 
     // product_channel
@@ -281,15 +285,34 @@ Route::group(['prefix' => 'images', 'as' => 'images.'], function () {
 });
 
 // Language
+// Route::get('/greeting/{locale}', function ($locale) {
+//     if (! in_array($locale, ['en', 'th'])) {
+//         return response()->json([
+//             'status' => 400
+//         ]);
+//     }
+//     session()->put('locale', $locale);
+
+//     return response()->json([
+//         'status' => 200
+//     ]);
+// })->name('setLocale');
+
 Route::get('/greeting/{locale}', function ($locale) {
-    if (! in_array($locale, ['en', 'th'])) {
+    if (!in_array($locale, ['en', 'th'])) {
         return response()->json([
-            'status' => 400
+            'status' => 400,
+            'message' => 'Invalid language',
+            'session_locale' => session()->get('locale')
         ]);
     }
+
     session()->put('locale', $locale);
+    session()->save(); // บังคับบันทึกค่าใน Session
 
     return response()->json([
-        'status' => 200
+        'status' => 200,
+        'message' => "Language changed to $locale",
+        'session_locale' => session()->get('locale')
     ]);
 })->name('setLocale');

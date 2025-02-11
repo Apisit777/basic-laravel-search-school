@@ -28,7 +28,7 @@
     <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4 mt-10">
         <div class="justify-center items-center">
             <div class="mt-5 flex justify-items-start">
-                <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">แก้ไขรายการสินค้า</p>
+                <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">แก้ไขรายการสินค้า</p>
             </div>
             <div class='w-12/12 mt-4 relative'>
                 <form class="" action="" method="POST" id="create_product">       
@@ -64,7 +64,7 @@
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
                                                                 <div class="md:col-span-3">
                                                                     <label for="seq">รหัสสินค้า</label>
-                                                                    <input type="text" name="seq" id="seq" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-[#101010] dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled>
+                                                                    <input type="text" name="seq" id="seq" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="" readonly>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">การมองเห็นข้อมูล<span class="text-danger"> *</span></label>
@@ -323,7 +323,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="p-2 ">
+                                                    <!-- <div class="p-2 ">
                                                         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
                                                         <p class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 text-xl font-bold text-gray-900 dark:text-gray-100">รายละเอียดสินค้า(Case KM)</p>
                                                     </div>
@@ -355,7 +355,7 @@
                                                                 <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">g</label>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> -->
                                                     <div class="p-2 ">
                                                         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
                                                         <p class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 text-xl font-bold text-gray-900 dark:text-gray-100">Unit</p>

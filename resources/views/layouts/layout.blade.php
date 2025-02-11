@@ -79,17 +79,41 @@
             }
         });
 
+        // $('#select_locale').change(function(event) {
+        //     jQuery.ajax({
+        //         url: "{{ route('setLocale', 0) }}/".replaceAll('/0', '/' + event.target.value),
+        //         type: 'GET',
+        //         success: function (response) {
+        //             if(response.status === 200) {
+        //                 window.location.reload()
+        //             }
+        //         }
+        //     })
+        // })
+
         $('#select_locale').change(function(event) {
+            let newLang = event.target.value;
+            let url = "{{ route('setLocale', 0) }}/".replaceAll('/0', '/' + newLang);
+
+            console.log("Switching language to:", newLang);
+            console.log("API Call to:", url);
+
             jQuery.ajax({
-                url: "{{ route('setLocale', 0) }}/".replaceAll('/0', '/' + event.target.value),
+                url: url,
                 type: 'GET',
                 success: function (response) {
-                    if(response.status === 200) {
-                        window.location.reload()
+                    if (response.status === 200) {
+                        console.log("✅ Language changed successfully, reloading...");
+                        window.location.reload(); // รีโหลดหน้าใหม่หลังจากเปลี่ยนภาษา
+                    } else {
+                        console.error("❌ Failed to change language:", response);
                     }
+                },
+                error: function(xhr, status, error) {
+                    console.error("❌ AJAX Error:", status, error);
                 }
-            })
-        })
+            });
+        });
 
         let dataLogin = sessionStorage.getItem("credetail");
         let role = sessionStorage.getItem("role");

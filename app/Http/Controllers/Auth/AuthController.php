@@ -205,7 +205,7 @@ class AuthController extends Controller
                         ->first();
                     if ($namePosition) {
                         $namePositionStr_3 = substr($role, -3);
-                        if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC') {
+                        if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC' || $namePositionStr_3 == 'ACC') {
                             $createPosition = position::updateOrCreate(['id' => $namePosition->id],
                                 [
                                     'name_position' => $role,
@@ -221,7 +221,7 @@ class AuthController extends Controller
                         }
                     } else {
                         $namePositionStr_3 = substr($role, -3);
-                        if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC') {
+                        if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC' || $namePositionStr_3 == 'ACC') {
                             $createPosition = position::create([
                                 'name_position' => $role,
                                 'brand' => $namePositionStr_3
@@ -357,6 +357,7 @@ class AuthController extends Controller
             //     // 'userRole' => $userRole,
             //     'Response' => $response['data']['roles']
             // ]);
+            
             if ($user == NULL) {
                 // dd(1);
                 $createUser = User::create([
@@ -368,7 +369,7 @@ class AuthController extends Controller
                         ->first();
                     if ($namePosition) {
                         $namePositionStr_3 = substr($role, -3);
-                        if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC') {
+                        if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC' || $namePositionStr_3 == 'ACC') {
                             $createPosition = position::updateOrCreate(['id' => $namePosition->id],
                                 [
                                     'name_position' => $role,
@@ -384,7 +385,7 @@ class AuthController extends Controller
                         }
                     } else {
                         $namePositionStr_3 = substr($role, -3);
-                        if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC') {
+                        if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC' || $namePositionStr_3 == 'ACC') {
                             $createPosition = position::create([
                                 'name_position' => $role,
                                 'brand' => $namePositionStr_3
@@ -455,7 +456,7 @@ class AuthController extends Controller
         //         if ($namePosition) {
         //             // dd(1);
         //             $namePositionStr_3 = substr($response['data']['roles'][0], -3);
-        //             if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC') {
+        //             if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC' || $namePositionStr_3 == 'ACC') {
         //                 // dd(1.1);
 
         //                 // $productUpddate = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
@@ -489,7 +490,7 @@ class AuthController extends Controller
         //         } else {
         //             // dd(2);
         //             $namePositionStr_3 = substr($response['data']['roles'][0], -3);
-        //             if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC') {
+        //             if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC' || $namePositionStr_3 == 'ACC') {
         //                     $createPosition = position::create([
         //                         'name_position' => $response['data']['roles'][0],
         //                         'brand' => $namePositionStr_3
