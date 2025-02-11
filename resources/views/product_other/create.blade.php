@@ -31,7 +31,7 @@
                 <p class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 text-xl font-bold text-gray-900 dark:text-gray-100">แก้ไขรายการสินค้า</p>
             </div>
             <div class='w-12/12 mt-4 relative'>
-                <form class="" action="" method="POST" id="create_product">       
+                <form class="" action="" method="POST" id="update_product_detail2">       
                     <div class="p-2">
                         <ul class="relative m-0 w-full list-none overflow-hidden p-0 transition-[height] duration-200 ease-in-out" data-twe-stepper-init="" data-twe-stepper-type="vertical">
                             <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
@@ -77,7 +77,7 @@
                                                                     <input type="text" name="AGE" id="AGE" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
 
-                                                                <div class="md:col-span-3">
+                                                                <!-- <div class="md:col-span-3">
                                                                     <label for="name">Series</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="SERIES" id="SERIES" onchange="getajaxCategory(this)">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
@@ -99,23 +99,19 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="S_CAT" id="S_CAT">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                     </select>
-                                                                </div>
+                                                                </div> -->
 
-                                                                <div class="md:col-span-3">
-                                                                    <label for="name">Test</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="" id="">
-                                                                        <option value=""> --- กรุณาเลือก ---</option>
-                                                                    </select>
-                                                                </div>
-
-                                                                <div class="md:col-span-6">
+                                                                <!-- <div class="md:col-span-6">
                                                                     <ul class="width-full pt-2.5 mt-2 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
-                                                                </div>
+                                                                </div> -->
 
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Category Name</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="" id="">
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="CATEGORY_DESCRIPTION" id="CATEGORY_ID" onchange="getajaxLine(this)">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($categorys as $category)
+                                                                            <option value="{{ $category->ID }}">{{ $category->ID. ' - '.$category->DESCRIPTION }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3">
@@ -126,7 +122,7 @@
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Product Line</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="" id="">
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="LINE_DESCRIPTION" id="LINE_ID" onchange="getajaxType(this)">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                     </select>
                                                                 </div>
@@ -138,7 +134,7 @@
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Product Type</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="" id="">
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="TYPE_DESCRIPTION" id="TYPE_ID">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                     </select>
                                                                 </div>
@@ -174,12 +170,29 @@
                                                                 </div>
 
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="NAME_THAI">ชื่อภาษาไทย</label>
+                                                                    <label for="NAME_THAI">ชื่อสีภาษาไทย</label>
                                                                     <input required type="text" name="NAME_THAI" id="NAME_THAI" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="NAME_ENG">ชื่อภาษาอังกฤษ</label>
+                                                                    <label for="NAME_ENG">ชื่อสีภาษาอังกฤษ</label>
                                                                     <input required type="text" name="NAME_ENG" id="NAME_ENG" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="" />
+                                                                </div>
+
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="">Suppiler name(ไทย)</label>
+                                                                    <input required type="text" name="" id="" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="" />
+                                                                </div>
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="">Suppiler name(อังกฤษ)</label>
+                                                                    <input required type="text" name="" id="" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="" />
+                                                                </div>
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="">รหัสสี</label>
+                                                                    <input required type="text" name="" id="" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="" />
+                                                                </div>
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="">อื่นๆ</label>
+                                                                    <input required type="text" name="" id="" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -541,7 +554,7 @@
                                     </svg>
                                     Back
                                 </a>
-                                <button id="submitButton" type="button" class="bg-[#3b5998] text-white font-bold py-1.5 px-4 rounded cursor-not-allowed opacity-50" disabled>
+                                <button id="submitButton" type="button" class="bg-[#3b5998] text-white font-bold py-1.5 px-4 rounded" onclick="updateProductDetail2()">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF" class="-mt-1 w-5 h-5 hidden md:inline-block">
                                         <path d="M0 0h24v24H0V0z" fill="none"></path>
                                         <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
@@ -549,6 +562,14 @@
                                     </svg>
                                     Save
                                 </button>
+                                <!-- <button id="submitButton" type="button" class="bg-[#3b5998] text-white font-bold py-1.5 px-4 rounded cursor-not-allowed opacity-50" onclick="updateProductDetail2()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF" class="-mt-1 w-5 h-5 hidden md:inline-block">
+                                        <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                        <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
+                                        <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
+                                    </svg>
+                                    Save
+                                </button> -->
                             </div>
                         </div>
                     </div>
@@ -657,62 +678,64 @@
 
         const dlayMessage = 1000;
 
-        // ฟังก์ชันดึง Category ตาม Series ที่เลือก
-        function getajaxCategory(e) {
-            const categorySelect = jQuery('#CATEGORY');
-            categorySelect.find("option").remove();
-            categorySelect.empty().append(new Option("--- กรุณาเลือก ---", ""));
-            const subCategorySelect = jQuery('#S_CAT');
-            subCategorySelect.find("option").remove();
-            subCategorySelect.empty().append(new Option("--- กรุณาเลือก ---", ""));
+        // ฟังก์ชันดึง Line ตาม Category ที่เลือก
+        function getajaxLine(e) {
+            const lineSelect = jQuery('#LINE_ID');
+            lineSelect.find("option").remove();
+            lineSelect.empty().append(new Option("--- กรุณาเลือก ---", ""));
+            const typeSelect = jQuery('#TYPE_ID');
+            typeSelect.find("option").remove();
+            typeSelect.empty().append(new Option("--- กรุณาเลือก ---", ""));
 
             jQuery.ajax({
                 type: "GET",
-                url: '{{ route('product_detail.product_Other_category') }}?series_id=' + e.value,
+                url: '{{ route('product_detail.product_line') }}?category_id=' + e.value,
                 beforeSend: function () {
-                    categorySelect.find("option").remove();
-                    categorySelect.append(new Option("LOADING...", ""));
+                    lineSelect.find("option").remove();
+                    lineSelect.append(new Option("LOADING...", ""));
                 },
                 success: function(data) {
-                    console.log("Categories Data:", data);
-                    categorySelect.find("option[value='']").remove();
-                    categorySelect.append(new Option("--- กรุณาเลือก ---", ""));
+                    console.log("Line Data:", data);
+                    lineSelect.find("option[value='']").remove();
+                    lineSelect.append(new Option("--- กรุณาเลือก ---", ""));
                     
                     if (data.length > 0) {
                         data.forEach(item => {
-                            categorySelect.append(new Option(item.DESCRIPTION, item.ID));
+                            let displayText = `${item.ID} - ${item.DESCRIPTION}`;
+                            lineSelect.append(new Option(displayText, item.ID));
                         });
                     } else {
-                        console.warn("No Categories Found");
+                        console.warn("No Line Found");
                     }
                 },
                 error: function(xhr) {
-                    console.error("Error fetching categories:", xhr.responseText);
+                    console.error("Error fetching Line:", xhr.responseText);
                 }
             });
         }
 
-        // ฟังก์ชันดึง SubCategory ตาม Category ที่เลือก
-        function getajaxSubCategory(e) {
-            const subCategorySelect = jQuery('#S_CAT');
-            subCategorySelect.find("option").remove();
-            subCategorySelect.empty().append(new Option("--- กรุณาเลือก ---", ""));
+        // ฟังก์ชันดึง Type ตาม Line ที่เลือก
+        function getajaxType(e) {
+            const typeSelect = jQuery('#TYPE_ID');
+            typeSelect.find("option").remove();
+            typeSelect.empty().append(new Option("--- กรุณาเลือก ---", ""));
 
             jQuery.ajax({
                 type: "GET",
-                url: '{{ route('product_detail.product_Other_sub_category') }}?category_id=' + e.value,
+                url: '{{ route('product_detail.product_type') }}?line_id=' + e.value,
                 beforeSend: function () {
-                    subCategorySelect.find("option").remove();
-                    subCategorySelect.append(new Option("LOADING...", ""));
+                    typeSelect.find("option").remove();
+                    typeSelect.append(new Option("LOADING...", ""));
                 },
                 success: function(data) {
                     console.log("Sub Categories Data:", data);
-                    subCategorySelect.find("option[value='']").remove();
-                    subCategorySelect.append(new Option("--- กรุณาเลือก ---", ""));
+                    typeSelect.find("option[value='']").remove();
+                    typeSelect.append(new Option("--- กรุณาเลือก ---", ""));
                     
                     if (data.length > 0) {
                         data.forEach(item => {
-                            subCategorySelect.append(new Option(item.DESCRIPTION, item.ID));
+                            let displayText = `${item.ID} - ${item.DESCRIPTION}`;
+                            typeSelect.append(new Option(displayText, item.ID));
                         });
                     } else {
                         console.warn("No Sub Categories Found");
@@ -723,5 +746,123 @@
                 }
             });
         }
+
+        // // ฟังก์ชันดึง Category ตาม Series ที่เลือก
+        // function getajaxCategory(e) {
+        //     const categorySelect = jQuery('#CATEGORY');
+        //     categorySelect.find("option").remove();
+        //     categorySelect.empty().append(new Option("--- กรุณาเลือก ---", ""));
+        //     const subCategorySelect = jQuery('#S_CAT');
+        //     subCategorySelect.find("option").remove();
+        //     subCategorySelect.empty().append(new Option("--- กรุณาเลือก ---", ""));
+
+        //     jQuery.ajax({
+        //         type: "GET",
+        //         url: '{{ route('product_detail.product_Other_category') }}?series_id=' + e.value,
+        //         beforeSend: function () {
+        //             categorySelect.find("option").remove();
+        //             categorySelect.append(new Option("LOADING...", ""));
+        //         },
+        //         success: function(data) {
+        //             console.log("Categories Data:", data);
+        //             categorySelect.find("option[value='']").remove();
+        //             categorySelect.append(new Option("--- กรุณาเลือก ---", ""));
+                    
+        //             if (data.length > 0) {
+        //                 data.forEach(item => {
+        //                     categorySelect.append(new Option(item.DESCRIPTION, item.ID));
+        //                 });
+        //             } else {
+        //                 console.warn("No Categories Found");
+        //             }
+        //         },
+        //         error: function(xhr) {
+        //             console.error("Error fetching categories:", xhr.responseText);
+        //         }
+        //     });
+        // }
+
+        // // ฟังก์ชันดึง SubCategory ตาม Category ที่เลือก
+        // function getajaxSubCategory(e) {
+        //     const subCategorySelect = jQuery('#S_CAT');
+        //     subCategorySelect.find("option").remove();
+        //     subCategorySelect.empty().append(new Option("--- กรุณาเลือก ---", ""));
+
+        //     jQuery.ajax({
+        //         type: "GET",
+        //         url: '{{ route('product_detail.product_Other_sub_category') }}?category_id=' + e.value,
+        //         beforeSend: function () {
+        //             subCategorySelect.find("option").remove();
+        //             subCategorySelect.append(new Option("LOADING...", ""));
+        //         },
+        //         success: function(data) {
+        //             console.log("Sub Categories Data:", data);
+        //             subCategorySelect.find("option[value='']").remove();
+        //             subCategorySelect.append(new Option("--- กรุณาเลือก ---", ""));
+                    
+        //             if (data.length > 0) {
+        //                 data.forEach(item => {
+        //                     subCategorySelect.append(new Option(item.DESCRIPTION, item.ID));
+        //                 });
+        //             } else {
+        //                 console.warn("No Sub Categories Found");
+        //             }
+        //         },
+        //         error: function(xhr) {
+        //             console.error("Error fetching subcategories:", xhr.responseText);
+        //         }
+        //     });
+        // }
+
+        function updateProductDetail2() {
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                method: "POST",
+                url: "{{ route('product_detail.pd_other_update') }}",
+                data: $("#update_product_detail2").serialize(),
+                beforeSend: function () {
+                    $('#loader').removeClass('hidden')
+                },
+                success: function(res){
+                    if(res.success == true) {
+                        window.location = "/product_detail/pd_other_index";
+                    } else {
+                        setTimeout(function() {
+                            toastr.error("เพิ่มขู้อมูลไม่สำเร็จ!");
+                        },dlayMessage)
+                        setTimeout(function() {
+                            $('#loader').addClass('hidden')
+                        },dlayMessage)
+                        setTimeout(function() {
+                            $('#BRAND').val('')
+                            $("#NUMBER").val('').change();
+                        },dlayMessage)
+                    }
+                    return false;
+                },
+                error: function (params) {
+                    setTimeout(function() {
+                        errorMessage("เพิ่มขู้อมูลไม่สำเร็จ");
+                    },dlayMessage)
+                    setTimeout(function() {
+                        toastr.error("เพิ่มขู้อมูลไม่สำเร็จ");
+                    },dlayMessage)
+                }
+            });
+        }
+
+        function successMessage(text) {
+            $('#loader').addClass('hidden');
+            $('#name').val('')
+        }
+        function errorMessage(text) {
+            $('#loader').addClass('hidden');
+            $('#name').val('')
+        }
+
     </script>
 @endsection

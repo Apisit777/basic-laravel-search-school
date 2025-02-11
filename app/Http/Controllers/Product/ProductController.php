@@ -419,6 +419,40 @@ class ProductController extends Controller
                 ->whereIn('BRAND', ['LL'])
                 ->pluck('PRODUCT')
                 ->toArray();
+        } else if ($userpermission == 'ACC') {
+
+            $brands = Barcode::select(
+            'BRAND',
+                'STATUS')
+            ->whereIn('STATUS', ['OP', 'CPS', 'KM', 'KTY', 'GNC', 'BB', 'LL'])
+            ->pluck('BRAND')
+            ->toArray();
+
+            $dataProductMasterArr = Product1::select(
+            'PRODUCT')
+            ->whereNotIn('BRAND', ['OP', 'CPS', 'KM', 'KTY', 'GNC', 'BB'])
+            ->pluck('PRODUCT')
+            ->toArray();
+
+            $data_PRODUCT = Product1::select('PRODUCT')->pluck('PRODUCT')->toArray();
+            $dataProductMaster = Pro_develops::select(
+            'PRODUCT')
+            ->whereIn('BRAND', ['LL'])
+            ->whereNotIn('PRODUCT', $data_PRODUCT)
+            ->get();
+
+            $dataProductMasterConsumablesArr = Product1::select(
+            'PRODUCT')
+            ->where('BRAND', 'LL')
+            ->whereRaw("PRODUCT REGEXP '^[8-9]' AND LENGTH(PRODUCT) >= 7")
+            ->pluck('PRODUCT')
+            ->toArray();
+
+            $getSelect2ProDevelops = Pro_develops::select(
+                'PRODUCT')
+                ->whereIn('BRAND', ['LL'])
+                ->pluck('PRODUCT')
+                ->toArray();
         }
         // else if (in_array($userpermission, ['Accounting'])) {
 
@@ -3731,6 +3765,16 @@ class ProductController extends Controller
             )
             // ->whereIn('BRAND', ['OP', 'CPS', 'KTY', 'GNC', 'BB', 'LL', 'KM'])
             ->where('BRAND', 'KM')
+            ->orderBy('BARCODE', 'DESC');
+        } else if ($userpermission == 'ACC') {
+            $data = Product1::select(
+                'BRAND',
+                'GRP_P',
+                'PRODUCT',
+                'BARCODE',
+                'NAME_THAI'
+            )
+            ->whereIn('BRAND', ['OP', 'CPS', 'KTY', 'GNC', 'BB', 'LL'])
             ->orderBy('BARCODE', 'DESC');
         }
 

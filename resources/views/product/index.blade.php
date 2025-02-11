@@ -1,3 +1,4 @@
+
 @extends('layouts.layout')
 @section('title', '')
     <style>
@@ -185,7 +186,7 @@
 @section('content')
     <div class="justify-center items-center">
         <div class="mt-6 mb-4 flex justify-center items-center">
-            <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">@lang('global.content.product_registration_list')</p>
+            <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">@lang('global.content.product_master_list')</p>
         </div>
         <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
             <div class="lg:col-span-4 xl:grid-cols-4">
@@ -280,7 +281,6 @@
                         <h5 class="text-xl font-medium leading-normal text-surface dark:text-white" id="exampleModalLabel">
                             รหัสที่ต้องการ
                         </h5>
-                        <!-- Close button -->
                         <button
                             type="button"
                             class="box-content rounded-none border-none text-neutral-500 hover:text-neutral-800 hover:no-underline focus:text-neutral-800 focus:opacity-100 focus:shadow-none focus:outline-none dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"
@@ -303,7 +303,7 @@
                             </span>
                         </button>
                     </div>
-                    <form id="form_copy" action="{{ route('product_master.export_excel_product_master') }}" method="POST">
+                    <form id="" action="{{ route('product_master.export_excel_product_master') }}" method="POST">
                         @csrf
                         <div class="p-8 lg:col-span-4 text-gray-900 dark:text-gray-100">
                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
@@ -328,7 +328,7 @@
                             <ul class="space-y-2 font-large border-t-2 border-[#E5E5E5] dark:border-[#373737]"></ul>
                         </div>
                         <div class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md p-2">
-                            <button data-twe-modal-dismiss id="submitButton" type="submit" class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-4 rounded cursor-not-allowed opacity-50 group" disabled>
+                            <button data-twe-modal-dismiss id="submitButtonDownLoadExcel" type="submit" class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-4 rounded cursor-not-allowed opacity-50 group" disabled>
                                 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-cloud-arrow-down-fill hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                     <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708z"/>
                                 </svg>
@@ -1299,6 +1299,7 @@
             resposive: true,
             scrollX: true,
             orderCellsTop: true,
+            ordering: false,
             "order": [
                 [0, "desc"]
             ],
@@ -1559,7 +1560,7 @@
             const selectedId = $(this).val();
             if (!selectedId) {
                 $('#end_product').html('<option value="">--- กรุณาเลือก ---</option>');
-                jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                jQuery("#submitButtonDownLoadExcel").addClass('cursor-not-allowed opacity-50');
                 return;
             }
             $.ajax({
@@ -1570,8 +1571,8 @@
                 },
                 success: function (response) {
                     $('#end_product').html('<option value="">--- กรุณาเลือก ---</option>');
-                    jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
-                    jQuery("#submitButton").attr("disabled", false);
+                    jQuery("#submitButtonDownLoadExcel").removeClass('cursor-not-allowed opacity-50');
+                    jQuery("#submitButtonDownLoadExcel").attr("disabled", false);
                     response.forEach(function (item) {
                         $('#end_product').append(`<option value="${item}">${item}</option>`);
                     });

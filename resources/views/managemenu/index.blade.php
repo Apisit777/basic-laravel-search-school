@@ -35,6 +35,10 @@
         .rotate{
             transition: 0.5s all;
         }
+
+        .table td, .table th {
+            padding: 0.55rem!important;
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -44,7 +48,7 @@
 @section('content')
     <div class="justify-center items-center">
         <div class="mt-6 flex justify-center items-center">
-            <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">@lang('global.content.list_manage_menu')</p>
+            <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">@lang('global.content.list_manage_menu')</p>
         </div>
         {{-- @foreach($menusAuthPosition as $submenu)
             <p>{{!empty($submenu['getSubMenu'][0]['name'])}}</p>
@@ -458,7 +462,7 @@
                         <div class="mt-8 flex justify-center items-center">
                             <form id="posForm" method="post">
                                 <div class="table-responsive">
-                                    <table id="positionTable" class="table table-bordered text-gray-900 dark:text-white cursor-pointer" style="width: 100%;">
+                                    <table id="positionTable" class="table table-bordered text-gray-900 dark:text-white cursor-pointer text-sm" style="width: 100%;">
                                         <thead>
                                             <tr>
                                                 <th style="width: 30px">Action</th>
