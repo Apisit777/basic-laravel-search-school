@@ -403,7 +403,13 @@
                 <div class="wrapper" style="position: relative;">
                     <div class="one" style="border-left: none; border-right: none;">
                         <div class="text-xs" style="position: absolute">BRAND</div>
-                        <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->BRAND }}</div>
+                        @if ( $dataIBSH->Code >= 20000 && $dataIBSH->Code <= 28999 )
+                            <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->BRAND }}</div>
+                        @elseif ( $dataIBSH->Code >= 29000 && $dataIBSH->Code <= 29699 )
+                            <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">RI</div>
+                        @else
+                            <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">CM</div>
+                        @endif
                     </div>
                     <div class="" style="border-right: none; border-bottom: 1px solid #000; border-left: 1px solid #000;">
                         <div class="text-xs" style="position:absolute">PRODUCT TYPE</div>

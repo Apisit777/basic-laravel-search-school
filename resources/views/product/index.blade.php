@@ -1007,19 +1007,6 @@
         </div>
     </div>
 
-
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tw-elements/1.0.0-alpha.6/tw-elements.min.js"></script> -->
-
     <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
     <script src="{{ asset('js/flowbite-2.3.0.min.js') }}"></script>
     <script src="{{ asset('js/3.10.1-jszip.min.js') }}"></script>
@@ -1033,7 +1020,7 @@
     <script src="{{ asset('js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
-    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+    <!-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script> -->
 
     @if (session('status'))
         <script>
@@ -1274,8 +1261,8 @@
         //     // console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
         // }
 
-        const pusher  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
-        const channel = pusher.subscribe('public');
+        // const pusher  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
+        // const channel = pusher.subscribe('public');
 
         const add_element = () => {
             const template = document.createElement('div');
