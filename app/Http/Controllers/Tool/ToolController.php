@@ -92,16 +92,35 @@ class ToolController extends Controller
 
     public function productCoOrdinator()
     {
-        $dataNpdCoss = Npd_cos::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')
-            ->whereIn('BRAND', ['OP', 'BB'])
-            ->pluck('DESCRIPTION')
-            ->toArray();
 
-        $brands = MasterBrand::select(
-            'BRAND')
-            ->whereIn('BRAND', ['OP', 'BB'])
-            ->pluck('BRAND')
-            ->toArray();
+        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        $userpermission = Auth::user()->getUserPermission->name_position;
+        $namePosition  = explode('-', $userpermission);
+        $userpermission = trim(end($namePosition));
+
+        if ($userpermission == 'OP') {
+            $dataNpdCoss = Npd_cos::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')
+                ->where('BRAND', 'OP')
+                ->pluck('DESCRIPTION')
+                ->toArray();
+
+            $brands = MasterBrand::select(
+                'BRAND')
+                ->where('BRAND', 'OP')
+                ->pluck('BRAND')
+                ->toArray();
+        } else if ($userpermission == 'CPS') {
+            $dataNpdCoss = Npd_cos::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')
+                ->where('BRAND', 'CPS')
+                ->pluck('DESCRIPTION')
+                ->toArray();
+
+            $brands = MasterBrand::select(
+                'BRAND')
+                ->where('BRAND', 'CPS')
+                ->pluck('BRAND')
+                ->toArray();
+        }
 
         // dd($data);
         return view('tool.pd_co_ordinator.index', compact('dataNpdCoss', 'brands'));
@@ -1459,7 +1478,7 @@ class ToolController extends Controller
                 'BRAND',
                 'EDIT_DT'
             )
-            ->whereIn('BRAND', ['OP', 'BB'])
+            ->whereIn('BRAND', ['OP'])
             ->orderBy('DESCRIPTION', 'ASC');
 
         } else if ($userpermission == 'CPS') {

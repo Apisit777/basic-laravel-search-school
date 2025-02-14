@@ -319,69 +319,69 @@ $menuPpermissions = ManageMenuController::menus_data();
 <!-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script> -->
 <script>
 
-    function ajaxGetNotiPM() {
-        $.ajax({
-            type: "GET",
-            url: "{{ route('get_receive_pm') }}",
-            success: function (res) {
-                console.log('res', res);
-                if(res){
-                    $("#count_noti_pm").html(res);
+    // function ajaxGetNotiPM() {
+    //     $.ajax({
+    //         type: "GET",
+    //         url: "{{ route('get_receive_pm') }}",
+    //         success: function (res) {
+    //             console.log('res', res);
+    //             if(res){
+    //                 $("#count_noti_pm").html(res);
 
-                }else{
-                    $("#count_noti_pm").empty();
-                }
-            },
-            error: function(){
-                console.log(res);
-            }
-        });
-    }
-    function ajaxGetNoti() {
-        $.ajax({
-            type: "GET",
-            url: "{{ route('get_receive') }}",
-            success: function (res) {
-                console.log('res', res);
-                if(res){
-                    $("#count_noti").html(res);
+    //             }else{
+    //                 $("#count_noti_pm").empty();
+    //             }
+    //         },
+    //         error: function(){
+    //             console.log(res);
+    //         }
+    //     });
+    // }
+    // function ajaxGetNoti() {
+    //     $.ajax({
+    //         type: "GET",
+    //         url: "{{ route('get_receive') }}",
+    //         success: function (res) {
+    //             console.log('res', res);
+    //             if(res){
+    //                 $("#count_noti").html(res);
 
-                }else{
-                    $("#count_noti").empty();
-                }
-            },
-            error: function(){
-                console.log(res);
-            }
-        });
-    }
+    //             }else{
+    //                 $("#count_noti").empty();
+    //             }
+    //         },
+    //         error: function(){
+    //             console.log(res);
+    //         }
+    //     });
+    // }
 
-    ajaxGetNotiPM();
-    ajaxGetNoti();
+    // ajaxGetNotiPM();
+    // ajaxGetNoti();
 
-    const pusher1  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
-    const channel1 = pusher1.subscribe('public');
+    // const pusher1  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
+    // const channel1 = pusher1.subscribe('public');
 
-    channel1.bind('chat', function (data) {
-        $.post("/receive", {
-            _token:  '{{csrf_token()}}',
-            message: data.message,
-        })
-        .done(function (res) {
-            console.log("🚀 ~ res:", res)
-            const count_noti = document.getElementById('count_noti')
-            if (res == 0) {
-                count_noti.remove()
-            }else {
-                count_noti.innerHTML = res
-            }
-        });
-    });
+    // channel1.bind('chat', function (data) {
+    //     $.post("/receive", {
+    //         _token:  '{{csrf_token()}}',
+    //         message: data.message,
+    //     })
+    //     .done(function (res) {
+    //         console.log("🚀 ~ res:", res)
+    //         const count_noti = document.getElementById('count_noti')
+    //         if (res == 0) {
+    //             count_noti.remove()
+    //         }else {
+    //             count_noti.innerHTML = res
+    //         }
+    //     });
+    // });
 
-    let menuAll = <?php echo json_encode($menuPpermissions); ?>;
-        // console.log("🚀 ~ menuAll:", menuAll)
-        // if(){
-            menuAll.forEach((element, index) => {
-            });
-        // }
+    // let menuAll = <?php echo json_encode($menuPpermissions); ?>;
+    //     // console.log("🚀 ~ menuAll:", menuAll)
+    //     // if(){
+    //         menuAll.forEach((element, index) => {
+    //         });
+    //     // }
 </script>

@@ -1,28 +1,14 @@
 @extends('layouts.layout')
 @section('title', '')
     <style>
-        .loaderslide {
+        .loading_create_menu_consumables {
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
             height: 100%;
-            background-color: #303030;
-            position: fixed;
             top: 0;
-            z-index: 1000;
-            animation: slide_up 1s linear 0.7s forwards;
-        }
-        .btn {
-            z-index: 10;
-        }
-        @keyframes slide_up{
-            0% {
-                height: 100%;
-            }
-            70% {
-                height: 10%;
-            }
-            100% {
-                height: 0%;
-            }
+            left: 0;
         }
         .page-item.active .page-link {
             color: #fff !important;
@@ -36,9 +22,25 @@
             color: #fff !important;
             background: #1F2226 !important;
         }
-        [x-cloak] {
+        span.dt-column-order {
             display: none;
         }
+        .dt-length  {
+            /* color: #FFFFFF!important; */
+            color: #818181!important;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 3px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .table td, .table th {
+            padding: 0.55rem !important;
+        }
+
         .select2-container .select2-dropdown .select2-results__options {
             max-height: 360px !important;
         }
@@ -60,172 +62,60 @@
             margin-top: -1px!important;
             font-size: 20px!important;
         }
-        .loading_create_menu {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-        }
-        .loading_create_menu_consumables {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
+        .select2-container {
+            margin-bottom: 0rem!important;
         }
 
-        *{margin: 0;padding:0px}
-
-        .header{
-            width: 100%;
-            /* background-color: #0d77b6 !important; */
-            height: 0px;
-        }
-
-        .showLeft{
-            /* background-color: #0d77b6 !important;
-            border:1px solid #0d77b6 !important;
-            text-shadow: none !important;
-            color:#fff !important; */
-            padding:10px;
-        }
-
-        .icons li {
-            /* background: none repeat scroll 0 0 #fff; */
-            height: 7px;
-            width: 7px;
-            line-height: 0;
-            list-style: none outside none;
-            margin-right: 15px;
-            margin-top: 3px;
-            vertical-align: top;
-            border-radius:50%;
-            pointer-events: none;
-        }
-
-        .btn-left {
-            left: 0.4em;
-        }
-
-        .btn-right {
-            right: 0.4em;
-        }
-
-        .btn-left, .btn-right {
-            position: absolute;
-            top: -2.5em;
-            right: -105px;
-            z-index: 999;
-        }
-
-        .dropbtn {
-            /* background-color: #4CAF50; */
-            position: fixed;
-            /* color: white; */
-            font-size: 13.5px;
-            border: none;
-            cursor: pointer;
-        }
-
-        .dropbtn:hover, .dropbtn:focus {
-            /* background-color: #3e8e41; */
-        }
-
-        .dropdown {
-            position: absolute;
-            display: inline-block;
-            left: 500px;
-            /* right: -54.5em; */
-        }
-
-        .dropdown-content {
-            display: none;
-            position: relative;
-            margin-top: 60px;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            overflow: auto;
-            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-            z-index: 1;
-        }
-
-        .dropdown-content a {
-            /* color: black; */
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-
-        /* .dropdown a:hover {background-color: rgb(229 231 235);} */
-
-        .show {display:block;}
-        span.dt-column-order {
-            display: none;
-        }
-        .dt-length  {
-            color: #818181!important;
-        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/select2@4.1.0.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap.css') }}" />
 
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 @section('content')
     <div class="justify-center items-center">
         <div class="mt-6 mb-4 flex justify-center items-center">
             <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">@lang('global.content.product_channel_list')</p>
         </div>
-        <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
-            <div class="lg:col-span-4 xl:grid-cols-4">
-                <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                    <div class="md:col-span-3">
-                        <label for="BRAND" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Brand</label>
-                        <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND">
-                            <option value=""> --- กรุณาเลือก ---</option>
-                            @foreach ($allBrands as $key => $allBrand)
-                                <option value={{ $allBrand }}>{{ $allBrand }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="md:col-span-3" >
-                        <label for="">Search</label>
-                        <input type="text" name="search" id="search" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" />
-                    </div>
-                    <div class="md:col-span-6 text-center">
-                        <div class="inline-flex items-center">
-                            <a href="#" id="btnSerarch" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                                    <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
-                                </svg>
-                                Search
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-700 relative"></ul>
 
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
             <div id="containerexample" class="text-gray-900 dark:text-gray-100">
                 <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Brand</th>
-                            <th>Product</th>
-                            <th>Product Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
+                <thead>
+        <tr>
+            <th>Brand</th>
+            <th>Product</th>
+            <th>Product Name</th>
+        </tr>
+        <tr>
+            <th>
+                <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="" onchange="tentSearch()">
+                    <option value=""> --- กรุณาเลือก ---</option>
+                    @foreach ($allBrands as $key => $allBrand)
+                        <option value={{ $allBrand }}>{{ $allBrand }}</option>
+                    @endforeach
+                </select>
+            </th>
+            <th>
+                <select class="js-example-basic-single w-full rounded-sm text-xs" id="" name="">
+                    <option value=""> --- กรุณาเลือก ---</option>
+                    @foreach ($allBrands as $key => $allBrand)
+                        <option value={{ $allBrand }}>{{ $allBrand }}</option>
+                    @endforeach
+                </select>
+            </th>
+            <th>
+                <select class="js-example-basic-single w-full rounded-sm text-xs" id="" name="">
+                    <option value=""> --- กรุณาเลือก ---</option>
+                    @foreach ($allBrands as $key => $allBrand)
+                        <option value={{ $allBrand }}>{{ $allBrand }}</option>
+                    @endforeach
+                </select>
+            </th>
+        </tr>
+    </thead>
+    <tbody></tbody>
                 </table>
             </div>
         </div>
@@ -270,6 +160,11 @@
         </script>
     @endif
     <script>
+
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
+
         const mytableDatatable = $('#example').DataTable({
             // new DataTable('#example', {
             'searching': false,
@@ -282,7 +177,8 @@
             "order": [
                 [0, "desc"]
             ],
-            "lengthMenu": [20, 50, 100],
+            // "lengthMenu": [20, 50, 100],
+            "lengthMenu": [1000],
             // "layout": {
             //     "topStart": {
             //         "buttons": ['excel', 'colvis']
@@ -334,9 +230,9 @@
             return false;
         });
 
-        $(document).ready(function() {
-            $('.js-example-basic-single').select2();
-        });
+        function tentSearch() {
+            mytableDatatable.draw();
+        }
 
     </script>
 @endsection

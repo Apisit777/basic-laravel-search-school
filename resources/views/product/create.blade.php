@@ -755,7 +755,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE1" id="PACK_SIZE1" onchange="packSize1Change(this, 'PACK_SIZE1')">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @php
-                                                                            $packSizes = [3, 6, 9, 12, 24, 30, 48, 144];
+                                                                            $packSizes = [3, 4, 6, 8, 9, 12, 24, 30, 36, 48, 144];
                                                                         @endphp
                                                                         @foreach ($packSizes as $size)
                                                                             <option value="{{ $size }}">
@@ -774,7 +774,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE2" id="PACK_SIZE2" onchange="packSize2Change(this, 'PACK_SIZE2')">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @php
-                                                                            $packSizes = [3, 6, 9, 12, 24, 30, 48, 144];
+                                                                            $packSizes = [3, 4, 6, 8, 9, 12, 24, 30, 36, 48, 144];
                                                                         @endphp
                                                                         @foreach ($packSizes as $size)
                                                                             <option value="{{ $size }}">
