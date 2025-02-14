@@ -3227,10 +3227,9 @@ class ProductController extends Controller
             ->where('BRAND', 'KM')
             ->get();
             $owners = Owner::select(
-                'OWNER',
+                'OWNER AS VENDOR',
                 'REMARK',
                 'BRAND')
-            // ->where('BRAND', 'OP')
             ->where('BRAND', 'KM')
             ->get()->toArray();
             if (!in_array($data->VENDOR, array_column($owners, 'VENDOR')))

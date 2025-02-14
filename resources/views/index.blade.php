@@ -49,47 +49,48 @@
 </body>
 
 <script>
-    const pusher  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
-    const channel = pusher.subscribe('public');
+    // const pusher  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
+    // const channel = pusher.subscribe('public');
 
-    //Receive messages
-    channel.bind('chat', function (data) {
-        $.post("/receive", {
-        _token:  '{{csrf_token()}}',
-        message: data.message,
-        })
-        .done(function (res) {
-        $(".messages > .message").last().after(res);
-        $(document).scrollTop($(document).height());
-        });
-    });
+    // //Receive messages
+    // channel.bind('chat', function (data) {
+    //     $.post("/receive", {
+    //     _token:  '{{csrf_token()}}',
+    //     message: data.message,
+    //     })
+    //     .done(function (res) {
+    //     $(".messages > .message").last().after(res);
+    //     $(document).scrollTop($(document).height());
+    //     });
+    // });
 
-    //Broadcast messages
-    $("form").submit(function (event) {
-        event.preventDefault();
+    // //Broadcast messages
+    // $("form").submit(function (event) {
+    //     event.preventDefault();
 
-        $.ajax({
-        url:     "/broadcast",
-        method:  'POST',
-        headers: {
-            'X-Socket-Id': pusher.connection.socket_id
-        },
-        data:    {
-            _token:  '{{csrf_token()}}',
-            message: $("form #message").val(),
-        }
-        }).done(function (res) {
-        $(".messages > .message").last().after(res);
-        $("form #message").val('');
-        $(document).scrollTop($(document).height());
-        });
-    });
+    //     $.ajax({
+    //     url:     "/broadcast",
+    //     method:  'POST',
+    //     headers: {
+    //         'X-Socket-Id': pusher.connection.socket_id
+    //     },
+    //     data:    {
+    //         _token:  '{{csrf_token()}}',
+    //         message: $("form #message").val(),
+    //     }
+    //     }).done(function (res) {
+    //     $(".messages > .message").last().after(res);
+    //     $("form #message").val('');
+    //     $(document).scrollTop($(document).height());
+    //     });
+    // });
 
-    let dataLogin = sessionStorage.getItem("credetail");
-    let dataJson = JSON.parse(dataLogin)
-    console.log("🚀 ~ dataJson:", dataJson)
-    $('#top').append(
-        `<img class="w-8 h-8 rounded" src="${dataJson.data.photo}">`
-    );
+    // let dataLogin = sessionStorage.getItem("credetail");
+    // let dataJson = JSON.parse(dataLogin)
+    // console.log("🚀 ~ dataJson:", dataJson)
+    // $('#top').append(
+    //     `<img class="w-8 h-8 rounded" src="${dataJson.data.photo}">`
+    // );
+
 </script>
 </html>

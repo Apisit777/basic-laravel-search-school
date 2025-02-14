@@ -361,8 +361,8 @@
             console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
         }
 
-        const pusher  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
-        const channel = pusher.subscribe('public');
+        // const pusher  = new Pusher('{{config('broadcasting.connections.pusher.key')}}', {cluster: 'ap1'});
+        // const channel = pusher.subscribe('public');
 
         const add_element = () => {
             const template = document.createElement('div');
