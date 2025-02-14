@@ -316,7 +316,7 @@ $menuPpermissions = ManageMenuController::menus_data();
 <!-- <script src="https://cdn.tailwindcss.com"></script> -->
 <!-- <script type="text/javascript"  src="../node_modules/tw-elements/dist/js/tw-elements.umd.min.js"></script> -->
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<script src="https://js.pusher.com/7.2/pusher.min.js"></script>
+<!-- <script src="https://js.pusher.com/7.2/pusher.min.js"></script> -->
 <script>
 
     function ajaxGetNotiPM() {

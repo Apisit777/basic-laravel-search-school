@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use InvalidArgumentException;
 use App\Models\Brand;
 use App\Models\Accessery;
 use App\Models\Owner;
@@ -604,37 +605,23 @@ class ProductController extends Controller
         // return response()->json(['productCodes' => $productCodes, 'digits_barcode' => $digits_barcode]);
     }
 
-    // private function ean13_check_digit()
-    // {
-    //     $request = request();
-    //         $lastElement = Pro_develops::max('BARCODE');
-    //         if ($request->BRAND == 'OP') {
-    //             // $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->where('STATUS', '=', 'OP')->max('BARCODE');
-    //             $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->max('BARCODE');
-    //         }
-    //         if ($request->BRAND == 'RE') {
-    //             $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->where('STATUS', '=', 'RE')->max('BARCODE');
-    //         }
-    //         if ($request->BRAND == 'CPS') {
-    //             // $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->where('STATUS', '=', 'CPS')->max('BARCODE');
-    //             $lastElement = Pro_develops::where('BRAND', '=', $request->BRAND)->max('BARCODE');
-    //         }
-    //         // dd($lastElement);
-    //         $barcodeMax = substr_replace($lastElement, '', -1);
-    //         // dd($barcodeMax);
-    //         $barcodeNumber =  preg_replace('/[^0-9]/', '', $barcodeMax) + 1;
-    //         $barcode = sprintf('%04d', $barcodeNumber);
+    public function calculateEAN14CheckDigit($ean13)
+    {
+        if (!preg_match('/^\d{12,13}$/', $ean13)) { // รองรับ 12 หรือ 13 หลัก
+            return response()->json(['error' => "ต้องเป็นตัวเลข 12 หรือ 13 หลักเท่านั้น"], 400);
+        }
 
-    //         $digits =(string)$barcode;
-    //         $even_sum = $digits[1] + $digits[3] + $digits[5] + $digits[7] + $digits[9] + $digits[11];
-    //         $even_sum_three = $even_sum * 3;
-    //         $odd_sum = $digits[0] + $digits[2] + $digits[4] + $digits[6] + $digits[8] + $digits[10];
-    //         $total_sum = $even_sum_three + $odd_sum;
-    //         $next_ten = (ceil($total_sum/10))*10;
-    //         $check_digit = $next_ten - $total_sum;
+        $ean13 = str_pad($ean13, 13, '0', STR_PAD_LEFT); // ถ้าเป็น 12 หลัก ให้เติม 0 ข้างหน้า
+        $sum = 0;
+        for ($i = 0; $i < 13; $i++) {
+            $digit = (int) $ean13[$i];
+            $sum += ($i % 2 === 0) ? $digit * 3 : $digit;
+        }
 
-    //     return $digits . $check_digit;
-    // }
+        $checkDigit = (10 - ($sum % 10)) % 10;
+        return response()->json(['checkDigit' => $ean13 . $checkDigit]); // ส่ง EAN-14 กลับ
+    }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -644,8 +631,11 @@ class ProductController extends Controller
         // $digits_barcode = $this->ean13_check_digit();
         // $ = $this->productMasterGetBrandListAjax();
         // dd($accessery);
+
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
+        $namePosition  = explode('-', $userpermission);
+        $userpermission = trim(end($namePosition));
 
         $owners = Owner::all();
         $grp_ps = Grp_p::all();
@@ -669,7 +659,7 @@ class ProductController extends Controller
         $brands = MasterBrand::all();
 
         // dd($series);
-        if (in_array($userpermission, [$isSuperAdmin])) {
+        if ($userpermission == $isSuperAdmin) {
             $brands = MasterBrand::select(
                 'BRAND')
             ->get();
@@ -714,8 +704,7 @@ class ProductController extends Controller
                 'REMARK',
                 'BRAND')
             ->get();
-        }
-        else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP', 'Senior Executive - Product Development-OP', 'Assistant-Product-Manager-OP', 'Assistant Manager - Product Development-OP', 'Product Manager-OP'])) {
+        } else if ($userpermission == 'OP') {
             $defaultBrands = MasterBrand::select(
                 'BRAND')
             ->where('BRAND', 'OP')
@@ -791,7 +780,7 @@ class ProductController extends Controller
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
-        } else if (in_array($userpermission, ['Marketing - CPS', 'Division Manager- Strategy & New Product Development-CPS', 'Department Manager - New Product Development Manager-CPS', 'Senior Executive - New Product Development-CPS', 'Senior Executive - Packaging Development-CPS', 'Senior Executive - Product Designer-CPS', 'Executive - New Product Development-CPS', 'MARKETING DIRECTOR-CPS', 'Department Manager - Marketing Support & Executive Assistant to Marketing Director-CPS', 'Department Manager - Category Manager-CPS'])) {
+        } else if ($userpermission == 'CPS') {
             $defaultBrands = MasterBrand::select(
                 'BRAND')
             ->where('BRAND', 'CPS')
@@ -860,7 +849,7 @@ class ProductController extends Controller
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
-        } else if (in_array($userpermission, ['Procurement - KTY'])) {
+        } else if ($userpermission == 'KTY') {
             $defaultBrands = MasterBrand::select(
                 'BRAND')
             ->where('BRAND', 'KTY')
@@ -901,7 +890,7 @@ class ProductController extends Controller
             ->get();
 
             // KTY ไม่มี Series, Category, Sub_category, Pdm
-        } else if (in_array($userpermission, ['Regional Operation Manager-GNC'])) {
+        } else if ($userpermission == 'GNC') {
             $defaultBrands = MasterBrand::select(
                 'BRAND')
             ->where('BRAND', 'GNC')
@@ -976,7 +965,7 @@ class ProductController extends Controller
                 'BRAND')
             ->where('BRAND', 'GNC')
             ->get();
-        } else if (in_array($userpermission, ['BB'])) {
+        } else if ($userpermission == 'BB') {
             $defaultBrands = MasterBrand::select(
                 'BRAND')
             ->where('BRAND', 'BB')
@@ -1051,7 +1040,7 @@ class ProductController extends Controller
                 'BRAND')
             ->where('BRAND', 'BB')
             ->get();
-        } else if (in_array($userpermission, ['LL'])) {
+        } else if ($userpermission == 'LL') {
             $defaultBrands = MasterBrand::select(
                 'BRAND')
             ->where('BRAND', 'LL')
@@ -1126,7 +1115,7 @@ class ProductController extends Controller
                 'BRAND')
             ->where('BRAND', 'LL')
             ->get();
-        } else if (in_array($userpermission, ['KM'])) {
+        } else if ($userpermission == 'KM') {
             $defaultBrands = MasterBrand::select(
                 'BRAND')
             ->where('BRAND', 'KM')
@@ -1207,9 +1196,14 @@ class ProductController extends Controller
         // $productCodeNumber =  preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
         // $productCode = 'P'.sprintf('%05d', $productCodeNumber);
         // $list_position = position::select('id', 'name_position')->get();
-        // dd($product_groups);
 
-        return view('product.create', compact(  'brands', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions', 'product_groups'));
+        // ทดสอบตัวอย่าง
+        // $ean13 = "3885008021578"; // เปลี่ยนเป็นเลขที่ต้องการ
+        // $checkDigit = $this->calculateEAN14CheckDigit($ean13);
+        // $ean14 = $ean13 . $checkDigit;
+        // dd($userpermission);
+
+        return view('product.create', compact(  'brands', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions', 'product_groups', 'userpermission'));
     }
 
     public function createConsumables(Request $request)
@@ -1751,7 +1745,7 @@ class ProductController extends Controller
             ->get();
         }
 
-        // dd($brands);
+        // dd($userpermission);
         return view('product.create_consumables', compact(  'brands', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
     }
     // public function productDetailCreate(Request $request)
@@ -3431,10 +3425,10 @@ class ProductController extends Controller
                     'WHOLE_SALE' => $request->input('WHOLE_SALE'),
                     'GP' => $request->input('GP'),
                     'O_PRODUCT' => $request->input('O_PRODUCT'),
-                    // 'BAR_PACK1' => $request->input('BAR_PACK1'),
-                    // 'BAR_PACK2' => $request->input('BAR_PACK2'),
-                    // 'BAR_PACK3' => $request->input('BAR_PACK3'),
-                    // 'BAR_PACK4' => $request->input('BAR_PACK4'),
+                    'BAR_PACK1' => $request->input('BAR_PACK1'),
+                    'BAR_PACK2' => $request->input('BAR_PACK2'),
+                    'BAR_PACK3' => $request->input('BAR_PACK3'),
+                    'BAR_PACK4' => $request->input('BAR_PACK4'),
                     'PACK_SIZE1' => $request->input('PACK_SIZE1'),
                     'PACK_SIZE2' => $request->input('PACK_SIZE2'),
                     'PACK_SIZE3' => $request->input('PACK_SIZE3'),
@@ -3521,10 +3515,10 @@ class ProductController extends Controller
                     'WHOLE_SALE' => $request->input('WHOLE_SALE'),
                     'GP' => $request->input('GP'),
                     'O_PRODUCT' => $request->input('O_PRODUCT'),
-                    // 'BAR_PACK1' => $request->input('BAR_PACK1'),
-                    // 'BAR_PACK2' => $request->input('BAR_PACK2'),
-                    // 'BAR_PACK3' => $request->input('BAR_PACK3'),
-                    // 'BAR_PACK4' => $request->input('BAR_PACK4'),
+                    'BAR_PACK1' => $request->input('BAR_PACK1'),
+                    'BAR_PACK2' => $request->input('BAR_PACK2'),
+                    'BAR_PACK3' => $request->input('BAR_PACK3'),
+                    'BAR_PACK4' => $request->input('BAR_PACK4'),
                     'PACK_SIZE1' => $request->input('PACK_SIZE1'),
                     'PACK_SIZE2' => $request->input('PACK_SIZE2'),
                     'PACK_SIZE3' => $request->input('PACK_SIZE3'),

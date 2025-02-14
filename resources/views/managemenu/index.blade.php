@@ -624,7 +624,6 @@
     <script src="{{ asset('js/buttons-colVis.min.js') }}"></script>
     <script src="{{ asset('js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
-    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 
     <script>
         toastr.options = {

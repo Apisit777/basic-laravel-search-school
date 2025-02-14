@@ -66,7 +66,7 @@
 
     <div class="justify-center items-center">
         <div class="mt-6 mb-4 flex justify-center items-center">
-            <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">@lang('global.content.product_accounting_list')</p>
+            <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">@lang('global.content.product_account_list')</p>
         </div>
         <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
             <div class="lg:col-span-4 xl:grid-cols-4">
@@ -253,7 +253,6 @@
     <script src="{{ asset('js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
-    <script src="https://js.pusher.com/7.2/pusher.min.js"></script>
 
     @if (session('status'))
         <script>
@@ -444,81 +443,81 @@
         $('#btnSerarch').click(function() {
             mytableDatatable.draw();
         });
-        function disableAppointment(url,e,id) {
-            const mytableDatatable = $('#example').DataTable();
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#303030',
-                cancelButtonColor: '#e13636',
-                confirmButtonText: `
-                    <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" class="size-6 hidden h-6 w-6 md:inline-block">
-                        <path d="M0 0h24v24H0V0z" fill="none"></path>
-                        <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
-                        <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
-                    </svg>
-                    Save
-                `,
-                cancelButtonText: `Cancel`,
-                color: "#ffffff",
-                background: "#202020",
+        // function disableAppointment(url,e,id) {
+        //     const mytableDatatable = $('#example').DataTable();
+        //     Swal.fire({
+        //         title: 'Are you sure?',
+        //         text: "You won't be able to revert this!",
+        //         icon: 'warning',
+        //         showCancelButton: true,
+        //         confirmButtonColor: '#303030',
+        //         cancelButtonColor: '#e13636',
+        //         confirmButtonText: `
+        //             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" class="size-6 hidden h-6 w-6 md:inline-block">
+        //                 <path d="M0 0h24v24H0V0z" fill="none"></path>
+        //                 <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
+        //                 <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
+        //             </svg>
+        //             Save
+        //         `,
+        //         cancelButtonText: `Cancel`,
+        //         color: "#ffffff",
+        //         background: "#202020",
 
-            }).then(result => {
-                console.log("🚀 ~ disableAppointment ~ result:", result)
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url:"/broadcast_npd",
-                        method:'POST',
-                        headers:{
-                            'X-Socket-Id': pusher.connection.socket_id
-                        },
-                        data:{
-                            _token:  '{{csrf_token()}}',
-                            message: 'update notify'
-                        }
-                        }).done(function (res) {
-                            console.log("🚀 ~ $ ~ res:", res)
-                    });
-                    $.ajax({
-                        type: "DELETE",
-                        url: url,
-                        beforeSend: function() {
-                            $(e).parent().parent().addClass('d-none');
-                        },
-                        success: function (params) {
-                            if(params.success){
-                                Swal.fire({
-                                    title:'อัปเดตข้อมูลสำเร็จ',
-                                    text:'',
-                                    icon:'success',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                });
-                                mytableDatatable.draw();
-                            }
-                            else{
-                                Swal.fire({
-                                    title:'อัปเดตข้อมูลไม่สำเร็จ',
-                                    text:'',
-                                    icon:'error',
-                                });
-                                $(e).parent().parent().removeClass('d-none');
-                            }
-                        },
-                        error: function(er){
-                            Swal.fire({
-                                title:'อัปเดตข้อมูลไม่สำเร็จ',
-                                text:'',
-                                icon:'error',
-                            });
-                            $(e).parent().parent().removeClass('d-none');
-                        }
-                    });
-                }
-            });
-        }
+        //     }).then(result => {
+        //         console.log("🚀 ~ disableAppointment ~ result:", result)
+        //         if (result.isConfirmed) {
+        //             $.ajax({
+        //                 url:"/broadcast_npd",
+        //                 method:'POST',
+        //                 headers:{
+        //                     'X-Socket-Id': pusher.connection.socket_id
+        //                 },
+        //                 data:{
+        //                     _token:  '{{csrf_token()}}',
+        //                     message: 'update notify'
+        //                 }
+        //                 }).done(function (res) {
+        //                     console.log("🚀 ~ $ ~ res:", res)
+        //             });
+        //             $.ajax({
+        //                 type: "DELETE",
+        //                 url: url,
+        //                 beforeSend: function() {
+        //                     $(e).parent().parent().addClass('d-none');
+        //                 },
+        //                 success: function (params) {
+        //                     if(params.success){
+        //                         Swal.fire({
+        //                             title:'อัปเดตข้อมูลสำเร็จ',
+        //                             text:'',
+        //                             icon:'success',
+        //                             showConfirmButton: false,
+        //                             timer: 1500
+        //                         });
+        //                         mytableDatatable.draw();
+        //                     }
+        //                     else{
+        //                         Swal.fire({
+        //                             title:'อัปเดตข้อมูลไม่สำเร็จ',
+        //                             text:'',
+        //                             icon:'error',
+        //                         });
+        //                         $(e).parent().parent().removeClass('d-none');
+        //                     }
+        //                 },
+        //                 error: function(er){
+        //                     Swal.fire({
+        //                         title:'อัปเดตข้อมูลไม่สำเร็จ',
+        //                         text:'',
+        //                         icon:'error',
+        //                     });
+        //                     $(e).parent().parent().removeClass('d-none');
+        //                 }
+        //             });
+        //         }
+        //     });
+        // }
     </script>
 
     <!-- <style>

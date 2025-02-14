@@ -155,6 +155,8 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         Route::get('/checkproduct_consumables', [ProductController::class, 'check_product_consumables'])->name('checkproduct_consumables');
         Route::post('/list_products', [ProductController::class, 'list_products'])->name('list_products');
         Route::get('/product_master_get_brand_list_ajax', [ProductController::class, 'productMasterGetBrandListAjax'])->name('product_master_get_brand_list_ajax');
+        // Ean14 CheckDigit
+        Route::get('/calculate_ean14_check_digit/{baocodeCheckDigit}', [ProductController::class, 'calculateEAN14CheckDigit'])->name('calculate_ean14_check_digit');
         Route::post('/', [ProductController::class, 'store'])->name('store');
         Route::post('/store_consumables', [ProductController::class, 'storeConsumables'])->name('store_consumables');
         Route::post('/create_copy', [ProductController::class, 'createCopy'])->name('create_copy');

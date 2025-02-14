@@ -11,7 +11,8 @@
     @font-face {
         font-family: NotoColorEmojiLimited;
         unicode-range: U+1F1E6-1F1FF;
-        src: url(https://raw.githack.com/googlefonts/noto-emoji/main/fonts/NotoColorEmoji.ttf);
+        /* src: url(https://raw.githack.com/googlefonts/noto-emoji/main/fonts/NotoColorEmoji.ttf); */
+        src: url('{{ asset('fonts/noto.ttf') }}');
     }
 
     div {
@@ -20,7 +21,7 @@
         'Segoe UI Emoji', 'Segoe UI Symbol';
     }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css"> -->
 </head>
 
 <nav class="fixed top-0 z-50 w-full border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-[#202020] duration-500 no-print">
