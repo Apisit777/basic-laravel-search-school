@@ -29,8 +29,17 @@ $menuPpermissions = ManageMenuController::menus_data();
 <!-- Active menu checked -->
 <!-- #C7D7F0 #ABC2E8 -->
 <!-- hover:bg-opacity-500 -->
- 
-<aside id="logo-sidebar" class="sidebar fixed top-12 left-0 z-40 w-64 h-screen -translate-x-full border-r border-gray-200 md:translate-x-0 dark:border-gray-700 transition-all duration-500" aria-label="Sidebar">
+
+{{-- <aside id="logo-sidebar" class="sidebar fixed top-12 left-0 z-40 w-64 h-screen -translate-x-full border-r border-gray-200 md:translate-x-0 dark:border-gray-700 transition-all duration-500" aria-label="Sidebar"> --}}
+<aside id="logo-sidebar"
+    {{-- x-data="{ show: false }"
+    x-init="setTimeout(() => show = true, 100)"
+    x-show="show"
+    x-transition:enter="transform ease-out duration-500"
+    x-transition:enter-start="opacity-0 -translate-x-4"
+    x-transition:enter-end="opacity-100 translate-x-0" --}}
+    class="sidebar fixed top-12 left-0 z-40 w-64 h-screen -translate-x-full border-r border-gray-200 md:translate-x-0 dark:border-gray-700 transition-all duration-500 animate-fade-in-left"
+    aria-label="Sidebar">
     <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-[#202020] duration-500 mt">
         @if (!empty($routeName))
             @foreach($routeName as $menu)
@@ -123,7 +132,7 @@ $menuPpermissions = ManageMenuController::menus_data();
                                         {{$menu['menu_name']}}
                                     </h1>
                                 </a>
-                            </li>  
+                            </li>
                         @endif -->
                     @endif
                 </ul>

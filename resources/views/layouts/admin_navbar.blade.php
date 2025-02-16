@@ -16,15 +16,15 @@
     }
 
     div {
-        font-family: 'NotoColorEmojiLimited', -apple-system, BlinkMacSystemFont, 
-        'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 
+        font-family: 'NotoColorEmojiLimited', -apple-system, BlinkMacSystemFont,
+        'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji',
         'Segoe UI Emoji', 'Segoe UI Symbol';
     }
     </style>
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css"> -->
 </head>
 
-<nav class="fixed top-0 z-50 w-full border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-[#202020] duration-500 no-print">
+<nav class="fixed top-0 z-50 w-full border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-[#202020] duration-500 no-print animate-fade-in-down">
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
         <div class="flex items-center justify-between">
             <div class="flex items-center justify-start rtl:justify-end">
@@ -93,7 +93,7 @@
                         @if (Auth::user()->userRole->pluck('position.name_position')->count() > 1)
                             <li>
                                 <a href="{{ route('switch_role') }}">
-                                    <div class="text-center cursor-pointer bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-[#303030] dark:text-white dark:hover:bg-[#404040] dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25">  
+                                    <div class="text-center cursor-pointer bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-[#303030] dark:text-white dark:hover:bg-[#404040] dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25">
                                         <span class="text-gray-900 dark:text-white">Switch Role</span>
                                     </div>
                                 </a>
@@ -101,7 +101,7 @@
                         @endif
                         <li>
                             <a href="{{ route('logout') }}" class="flex items-center justify-center w-full bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-[#303030] dark:text-white dark:hover:bg-[#404040] dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group">
-                                <svg fill="currentColor" class="mr-1 mt-1 hidden h-5 w-5 transition-transform group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                <svg fill="currentColor" class="mr-1 mt-1 hidden h-5 w-5 transition-transform group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                     viewBox="0 0 187.338 187.338"
                                     xml:space="preserve">
                                     <g>
@@ -200,7 +200,7 @@
                         </option>
                     </select>
                 </div> -->
-                
+
                 @php
                     $current_lang = session()->get('locale', 'en');
                     $languages = [
