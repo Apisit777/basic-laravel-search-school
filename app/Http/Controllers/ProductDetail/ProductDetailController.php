@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Barcode;
 use App\Models\Product1;
+use App\Models\ProductDetail;
 use Illuminate\Http\Request;
 
 class ProductDetailController extends Controller
@@ -62,74 +63,6 @@ class ProductDetailController extends Controller
             ->pluck('PRODUCT')
             ->toArray();
 
-        } else if ($userpermission == 'KTY') {
-            $brands = Barcode::select(
-                'BRAND',
-                'STATUS')
-            ->whereIn('STATUS', ['KTY'])
-            ->pluck('BRAND')
-            ->toArray();
-
-            $dataProductMasterArr = Product1::select(
-            'PRODUCT')
-            ->whereNotIn('BRAND', ['OP', 'CPS', 'KM', 'BB', 'LL'])
-            ->pluck('PRODUCT')
-            ->toArray();
-        } else if ($userpermission == 'GNC') {
-            $brands = Barcode::select(
-            'BRAND',
-                'STATUS')
-            ->whereIn('STATUS', ['GNC'])
-            ->pluck('BRAND')
-            ->toArray();
-
-            $dataProductMasterArr = Product1::select(
-            'PRODUCT')
-            ->whereNotIn('BRAND', ['OP', 'CPS', 'KM', 'KTY', 'BB', 'LL'])
-            ->pluck('PRODUCT')
-            ->toArray();
-        } else if ($userpermission == 'KM') {
-
-            $brands = Barcode::select(
-            'BRAND',
-                'STATUS')
-            ->whereIn('STATUS', ['GNC'])
-            ->pluck('BRAND')
-            ->toArray();
-
-            $dataProductMasterArr = Product1::select(
-            'PRODUCT')
-            ->whereNotIn('BRAND', ['OP', 'CPS', 'KM', 'KTY', 'BB', 'LL'])
-            ->pluck('PRODUCT')
-            ->toArray();
-        } else if ($userpermission == 'BB') {
-
-            $brands = Barcode::select(
-            'BRAND',
-                'STATUS')
-            ->whereIn('STATUS', ['BB'])
-            ->pluck('BRAND')
-            ->toArray();
-
-            $dataProductMasterArr = Product1::select(
-            'PRODUCT')
-            ->whereNotIn('BRAND', ['OP', 'CPS', 'KM', 'KTY', 'GNC', 'LL'])
-            ->pluck('PRODUCT')
-            ->toArray();
-        } else if ($userpermission == 'LL') {
-
-            $brands = Barcode::select(
-            'BRAND',
-                'STATUS')
-            ->whereIn('STATUS', ['LL'])
-            ->pluck('BRAND')
-            ->toArray();
-
-            $dataProductMasterArr = Product1::select(
-            'PRODUCT')
-            ->whereNotIn('BRAND', ['OP', 'CPS', 'KM', 'KTY', 'GNC', 'BB'])
-            ->pluck('PRODUCT')
-            ->toArray();
         }
 
         // dd($dataProductMasterArr);
@@ -174,9 +107,18 @@ class ProductDetailController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Request $request)
+    public function edit(Request $request, $id)
     {
-        //
+        // dd($id);
+        $data = ProductDetail::select(
+            'product_details.*',
+        )
+        ->firstWhere('product_details.product_id', '=', $id);
+
+        // $data->REG_DATE = date('Y-m-d', strtotime($data->REG_DATE));
+
+        // dd($venders);
+        return view('product_detail.edit', compact('data'));
     }
 
     /**
@@ -193,5 +135,35 @@ class ProductDetailController extends Controller
     public function destroy(Request $request)
     {
         //
+    }
+
+    public function listProductDetail(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $data = ProductDetail::select(
+            'corporation_id',
+            'product_id',
+            'inner_barcode'
+        )
+        ->orderBy('product_id', 'DESC');
+
+        // dd($data->toSql());
+        // ดึงจำนวน record ก่อน
+        $totalRecords = $data->count();
+        
+        // ใช้ paginate ดึงข้อมูล
+        $data = $data->paginate($limit);
+        $totalRecordwithFilter = $data->total();
+
+        return response()->json([
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ]);
     }
 }

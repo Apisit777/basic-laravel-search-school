@@ -41,6 +41,7 @@ use App\Models\SeleChannel;
 use App\Models\ProductChannel;
 use App\Models\ProductGroup;
 use App\Models\Account;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -259,20 +260,6 @@ class ProductController extends Controller
                 ->pluck('PRODUCT')
                 ->toArray();
         } else if ($userpermission == 'GNC') {
-
-            // $brands = Product1::select(
-            //     'BRAND',
-            // )
-            // ->where(function ($query) {
-            //     $query->whereIn('BRAND', ['OP', 'KM'])
-            //         ->orWhereHas('productChannel', function ($q) {
-            //             $q->whereIn('BRAND', ['OP']);
-            //         });
-            // })
-            // ->groupBy('BRAND')
-            // ->pluck('BRAND')
-            // ->toArray();
-
             $brands = Barcode::select(
             'BRAND',
                 'STATUS')
@@ -286,12 +273,6 @@ class ProductController extends Controller
             ->pluck('PRODUCT')
             ->toArray();
 
-            // $data_PRODUCT = Product1::select('PRODUCT')->pluck('PRODUCT')->toArray();
-            // $dataProductMaster = Pro_develops::select(
-            // 'PRODUCT')
-            // ->whereIn('BRAND', ['OP', 'RE'])
-            // ->whereNotIn('PRODUCT', $data_PRODUCT)
-            // ->get();
             $dataProductMaster = Product1::select('PRODUCT')
                 // ->whereNotIn('BRAND', ['OP', 'CPS'])
                 ->whereNotIn('BRAND', ['GNC'])
@@ -304,7 +285,7 @@ class ProductController extends Controller
             ->pluck('PRODUCT')
             ->toArray();
 
-            $getSelect2ProDevelops = Pro_develops::select(
+            $getSelect2ProDevelops = Product1::select(
                 'PRODUCT')
                 ->whereIn('BRAND', ['GNC'])
                 ->pluck('PRODUCT')
@@ -516,6 +497,27 @@ class ProductController extends Controller
         return view('product.index', compact('user',  'brands', 'productCodeArr', 'dataProductMasterArr', 'dataProductMasterConsumablesArr', 'data_barcode', 'getSelect2ProDevelops'));
     }
 
+    public function ean13_check_digit_GNC($barcode)
+    {
+        $digits = (string)$barcode;
+        $even_sum = $digits[1] + $digits[3] + $digits[5] + $digits[7] + $digits[9] + $digits[11];
+        $even_sum_three = $even_sum * 3;
+        $odd_sum = $digits[0] + $digits[2] + $digits[4] + $digits[6] + $digits[8] + $digits[10];
+        $total_sum = $even_sum_three + $odd_sum;
+        $next_ten = (ceil($total_sum/10))*10;
+        $check_digit = $next_ten - $total_sum;
+
+        return $digits . $check_digit;
+    }
+
+    public function generatebarcodeGNC(Request $request, $baocode)
+    {
+        $digits_barcode_gnc = $this->ean13_check_digit_GNC($baocode);
+
+        // dd($digits_barcode_gnc);
+        return response()->json(['digitsBarcodeGnc' => $digits_barcode_gnc]);
+    }
+
     public function getBarcode(Request $request)
     {
         $product = $request->input('PRODUCT');
@@ -545,14 +547,26 @@ class ProductController extends Controller
         return response()->json($data > 0 ? false : true);
     }
 
+    // public function checkCode(Request $request)
+    // {
+    //     // dd($request);
+    //     $data = Product1::select('PRODUCT')
+    //         ->where('PRODUCT', $request->PRODUCT)
+    //         ->count();
+
+    //     return response()->json($data > 0 ? false : true);
+    // }
+
     public function checkCode(Request $request)
     {
-        // dd($request);
-        $data = Product1::select('PRODUCT')
-            ->where('PRODUCT', $request->PRODUCT)
-            ->count();
+        $productCode = trim($request->PRODUCT); // ตัดช่องว่างด้านหน้า/หลัง
+        \Log::info("🚀 Checking PRODUCT in DB: " . $productCode);
 
-        return response()->json($data > 0 ? false : true);
+        $isDuplicate = Product1::whereRaw("CAST(PRODUCT AS CHAR) = ?", [$productCode])->exists();
+
+        \Log::info("🚀 isDuplicate (Backend Result): " . ($isDuplicate ? 'true' : 'false'));
+
+        return response()->json(['isDuplicate' => $isDuplicate]);
     }
 
     public function checkBarcode(Request $request)
@@ -1894,19 +1908,6 @@ class ProductController extends Controller
         // dd($changeBrand);
         // dd($dataProductBarcode->BRAND);
 
-        // $venders = Vendor::all();
-        // $type_gs = Type_g::all();
-        // $solutions = Solution::all();
-        // $series = Series::all();
-        // $categorys = Category::all();
-        // $sub_categorys = Sub_category::all();
-        // $pdms = Pdm::all();
-        // $p_statuss = P_status::all();
-        // $unit_ps = Unit_p::all();
-        // $unit_types = Unit_type::all();
-        // $acctypes = Acctype::all();
-        // $conditions = Condition::all();
-
         $data = Product1::select(
             'product1s.*',
             'owners.OWNER AS VENDOR', // ในเอกสารสลับกัน
@@ -1922,6 +1923,7 @@ class ProductController extends Controller
         ->leftJoin('type_gs', 'product1s.TYPE_G', '=', 'type_gs.ID')
         ->firstWhere('PRODUCT', '=', $request->PRODUCT);
 
+        // dd($data);
         DB::beginTransaction();
         try {
             $data_product = [
@@ -1990,6 +1992,7 @@ class ProductController extends Controller
                 'EDIT_DT' => date("Y/m/d h:i:s")
             ];
 
+            // dd($data_product, $data->BRAND);
             $copyProductMaster = Product1::create($data_product);
 
             $craeteProductAccount = Account::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
@@ -1997,7 +2000,23 @@ class ProductController extends Controller
                 'created_at' => date("Y/m/d h:i:s"),
             ]);
 
-            // dd($copyProductMaster);
+            if (!is_null($data->BRAND)) {
+
+                $user = Auth::user()->username;
+                $dateTime = date('Y-m-d H:i:s');
+
+                $updateData = [
+                    'UPDATED_BY' => $user,
+                    'UPDATED_AT' => $dateTime
+                ];
+
+                $createSeleChannel = ProductChannel::updateOrCreate(
+        ['PRODUCT' => $data_product['PRODUCT'], 'BRAND' => $data_product['BRAND']],
+            $updateData
+                );
+            }
+
+            // dd($createSeleChannel);
             DB::commit();
             $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
             return response()->json(['success' => true]);
@@ -2021,11 +2040,13 @@ class ProductController extends Controller
         )
         ->firstWhere('PRODUCT', '=', $request->NUMBER);
 
+        // dd($dataProductBarcode);
         // $digits_barcode = $this->ean13_check_digit();
         // $digits_code = substr($digits_barcode, 7, 5);
         $company = substr($request->BRAND, 0, 2);
         $description = substr($request->BRAND, 2, 2);
         $status = $company.' - '.$description;
+
         DB::beginTransaction();
         try {
 
@@ -2058,8 +2079,10 @@ class ProductController extends Controller
             $data_product = [
                 'BRAND' => $request->input('BRAND') ?? '',
                 // 'BRAND' => $request->input('BRAND') ?? '',
-                'PRODUCT' => $dataProductBarcode->PRODUCT,
-                'BARCODE' => $dataProductBarcode->BARCODE,
+                // 'PRODUCT' => $dataProductBarcode->PRODUCT,
+                // 'BARCODE' => $dataProductBarcode->BARCODE,
+                'PRODUCT' => $request->input('PRODUCT') ?? '',
+                'BARCODE' => $request->input('BARCODE') ?? '',
                 'COLOR' => $request->input('COLOR') ?? '',
                 'GRP_P' => $request->input('GRP_P') ?? '',
                 'SUPPLIER' => $request->input('SUPPLIER') ?? '',
@@ -2122,6 +2145,8 @@ class ProductController extends Controller
                 'EDIT_DT' => date("Y-m-d"),
                 'STATUS_EDIT_DT' => '',
             ];
+
+            // dd($data_product);
 
             $productMaster = Product1::create($data_product);
 
@@ -3398,7 +3423,7 @@ class ProductController extends Controller
                 $data_product_upddate = [
                     'BRAND' => $request->input('BRAND'),
                     'PRODUCT' => $request->input('Code'),
-                    'BARCODE' => $request->input('Code'),
+                    'BARCODE' => $request->input('BARCODE'),
                     'COLOR' => $request->input('COLOR'),
                     'GRP_P' => $request->input('GRP_P'),
                     'SUPPLIER' => $request->input('SUPPLIER'),
@@ -3614,20 +3639,15 @@ class ProductController extends Controller
 
     public function list_products(Request $request)
     {
-        $limit = $request->input('length'); // limit per page
-        $request->merge([
-            'page' => ceil(($request->input('start') + 1) / $limit),
-        ]);
+        // $limit = $request->input('length'); // limit per page
+        // $request->merge([
+        //     'page' => ceil(($request->input('start') + 1) / $limit),
+        // ]);
+        $limit = (int) $request->input('length'); // จำนวนต่อหน้า
+        $start = (int) $request->input('start', 0);
 
         $BRAND = $request->input('brand_id');
-        $PRODUCT = $request->input('PRODUCT');
-        // $BARCODE = $request->input('BARCODE');
-        $DOC_NO = $request->search;
-        $field_detail = [
-            'product1s.PRODUCT',
-            'product1s.NAME_THAI',
-            'product1s.BARCODE',
-        ];
+        $searchAll = $request->input('search', '');
 
         $data = Product1::select(
    'BRAND',
@@ -3773,29 +3793,33 @@ class ProductController extends Controller
 
         // dd($data);
         if ($BRAND != null) {
-            $data->where('product1s.BRAND', $BRAND);
+            $data->where('product1s.GRP_P', $BRAND);
         }
 
-        if (null != $DOC_NO) {
-            $data = $data->where(function ($data) use ($DOC_NO, $field_detail) {
-                for ($i = 0; $i < count($field_detail); $i++) {
-                    $data->orWhere($field_detail[$i], 'like', '%'.$DOC_NO.'%');
-                }
+        // กรองข้อมูลถ้ามีคำค้นหา
+        if (!empty($searchAll)) {
+            $data->where(function ($q) use ($searchAll) {
+                $q->orWhere('PRODUCT', 'like', '%' . $searchAll . '%')
+                ->orWhere('NAME_THAI', 'like', '%' . $searchAll . '%')
+                ->orWhere('BARCODE', 'like', '%' . $searchAll . '%');
             });
         }
 
-        // dd($data->toSql());
-        $data = $data->paginate($limit);
-        $totalRecords = $data->total();
-        $totalRecordwithFilter = $data->count();
-        $response = [
-            'draw' => intval($request->draw),
-            'iTotalRecords' => $totalRecordwithFilter,
-            'iTotalDisplayRecords' => $totalRecords,
-            'aaData' => $data->items(),
-        ];
+        // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
+        $totalRecords = $data->count();
+        // 🔹 ตรวจสอบ limit
+        if ($limit > 0) {
+            $data->limit($limit)->offset($start);
+        }
+        // 🔹 ดึงข้อมูลตาม limit และ offset
+        $records = $data->get();
 
-        return response()->json($response);
+        return response()->json([
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
+            'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
+            'aaData' => $records,
+        ]);
     }
 
     public function checkname_brand(Request $request)

@@ -1,15 +1,6 @@
 @extends('layouts.layout')
 @section('title', '')
     <style>
-        .loading_create_menu_consumables {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-        }
         .page-item.active .page-link {
             color: #fff !important;
             background: #1F2226 !important;
@@ -66,13 +57,26 @@
             margin-bottom: 0rem!important;
         }
 
+        .select2-container--default .select2-selection--single {
+            height: 2rem!important;
+            border-width: 1px;
+            padding: 0.1rem!important;
+        }
+
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            position: absolute;
+            margin-top: -5px!important;
+        }
+        .h-10 {
+            height: 2rem!important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            font-size: small!important;
+        }
     </style>
 
-    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/select2@4.1.0.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap.css') }}" />
-
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 @section('content')
     <div class="justify-center items-center">
         <div class="mt-6 mb-4 flex justify-center items-center">
@@ -82,40 +86,30 @@
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
             <div id="containerexample" class="text-gray-900 dark:text-gray-100">
                 <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
-                <thead>
-        <tr>
-            <th>Brand</th>
-            <th>Product</th>
-            <th>Product Name</th>
-        </tr>
-        <tr>
-            <th>
-                <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="" onchange="tentSearch()">
-                    <option value=""> --- กรุณาเลือก ---</option>
-                    @foreach ($allBrands as $key => $allBrand)
-                        <option value={{ $allBrand }}>{{ $allBrand }}</option>
-                    @endforeach
-                </select>
-            </th>
-            <th>
-                <select class="js-example-basic-single w-full rounded-sm text-xs" id="" name="">
-                    <option value=""> --- กรุณาเลือก ---</option>
-                    @foreach ($allBrands as $key => $allBrand)
-                        <option value={{ $allBrand }}>{{ $allBrand }}</option>
-                    @endforeach
-                </select>
-            </th>
-            <th>
-                <select class="js-example-basic-single w-full rounded-sm text-xs" id="" name="">
-                    <option value=""> --- กรุณาเลือก ---</option>
-                    @foreach ($allBrands as $key => $allBrand)
-                        <option value={{ $allBrand }}>{{ $allBrand }}</option>
-                    @endforeach
-                </select>
-            </th>
-        </tr>
-    </thead>
-    <tbody></tbody>
+                    <thead>
+                        <tr>
+                            <th>Brand</th>
+                            <th>Product</th>
+                            <th>Product Name</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <select class="js-example-basic-single w-full rounded-sm text-xs" id="BRAND_SEARCH" name="" onchange="tentSearch()">
+                                    <option value="" class="text-xs"> --- กรุณาเลือก ---</option>
+                                    @foreach ($allBrands as $key => $allBrand)
+                                        <option value="{{ $allBrand }}">{{ $allBrand }}</option>
+                                    @endforeach
+                                </select>
+                            </th>
+                            <th>
+                            <input type="text" name="" id="searchProduct" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า . . ." value="" onkeyup="searchTable()" />
+                            </th>
+                            <th>
+                                <input type="text" name="" id="searchProductName" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="ชื่อสินค้า . . ." value="" onkeyup="searchTable()" />
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
                 </table>
             </div>
         </div>
@@ -131,34 +125,7 @@
     <script src="{{ asset('js/buttons-html5.min.js') }}"></script>
     <script src="{{ asset('js/buttons-print.min.js') }}"></script>
     <script src="{{ asset('js/buttons-colVis.min.js') }}"></script>
-    <script src="{{ asset('js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
-    <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
-
-    @if (session('status'))
-        <script>
-            toastr.options = {
-                "closeButton": true,
-                "debug": false,
-                "newestOnTop": false,
-                "progressBar": true,
-                "positionClass": "toast-top-right",
-                "preventDuplicates": false,
-                "onclick": null,
-                "showDuration": "300",
-                "hideDuration": "1000",
-                "timeOut": "5000",
-                "extendedTimeOut": "1000",
-                "showEasing": "swing",
-                "hideEasing": "linear",
-                "showMethod": "fadeIn",
-                "hideMethod": "fadeOut"
-            }
-            jQuery().ready(function () {
-                toastr.success('{{ session('status') }}');
-            });
-        </script>
-    @endif
     <script>
 
         $(document).ready(function() {
@@ -166,25 +133,15 @@
         });
 
         const mytableDatatable = $('#example').DataTable({
-            // new DataTable('#example', {
-            'searching': false,
-            "serverSide": true,
+            serverSide: true,
             searching: false,
             resposive: true,
             scrollX: true,
             orderCellsTop: true,
             ordering: false,
-            "order": [
-                [0, "desc"]
-            ],
-            // "lengthMenu": [20, 50, 100],
-            "lengthMenu": [1000],
-            // "layout": {
-            //     "topStart": {
-            //         "buttons": ['excel', 'colvis']
-            //         // buttons: ['copy', 'excel', 'pdf', 'colvis']
-            //     }
-            // },
+            "order": [[1, "desc"]],
+            "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
+            "pageLength": 20, // ค่าเริ่มต้นคือ "20"
             "ajax": {
                 "headers": {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -194,8 +151,10 @@
                 "type": "POST",
                 'data': function(data) {
                     // Read values
-                    data.brand_id = $('#brand_id').val();
-                    data.search = $('#search').val();
+                    data.BRAND = $('#BRAND_SEARCH').val();
+                    data.NAME_THAI = $('#NAME_THAI_SEARCH').val();
+                    data.searchProduct = $('#searchProduct').val();
+                    data.searchProductName = $('#searchProductName').val();
 
                     data._token = $('meta[name="csrf-token"]').attr('content');
                 }
@@ -225,10 +184,12 @@
             ]
         });
 
-        $('#btnSerarch').click(function() {
-            mytableDatatable.draw();
-            return false;
-        });
+        // Function สำหรับเรียกใช้ DataTable เมื่อมีการพิมพ์
+        function searchTable() {
+            console.log("Search: ", $('#search').val());
+            // บังคับให้ DataTables รีโหลดข้อมูลใหม่
+            mytableDatatable.ajax.reload(null, false); 
+        }
 
         function tentSearch() {
             mytableDatatable.draw();

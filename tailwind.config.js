@@ -30,7 +30,7 @@ module.exports = {
     },
     animation: {
     'fade-in-left': 'fade-in-left 0.2s ease-out',
-    'fade-in-down': 'fade-in-down 0.3s ease-out' // ตั้งค่า Animation 0.3 วินาที
+    'fade-in-down': 'fade-in-down 0.3s ease-out', // ตั้งค่า Animation 0.3 วินาที
     },
   },
   plugins: [

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\ProductChannel;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product1;
 use App\Models\ProductChannel;
 use App\Models\MasterBrand;
 use Illuminate\Http\Request;
@@ -16,6 +17,18 @@ class ProductChannelController extends Controller
     {
         $allBrands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
 
+        // $allProducts = Product1::select(
+        //     'product1s.PRODUCT AS PRODUCT',
+        // )
+        // ->join('product_channels', 'product1s.PRODUCT', '=', 'product_channels.PRODUCT')
+        // ->pluck('PRODUCT')->toArray();
+
+        // $allNameThais = Product1::select(
+        //     'NAME_THAI'
+        // )
+        // ->pluck('NAME_THAI')->toArray();
+
+        // dd($allProducts);
         return view('product_channel.index', compact('allBrands'));
     }
 
@@ -69,50 +82,59 @@ class ProductChannelController extends Controller
 
     public function list_product_channel(Request $request)
     {
-        $limit = $request->input('length'); // limit per page
-        $request->merge([
-            'page' => ceil(($request->input('start') + 1) / $limit),
-        ]);
+        $limit = (int) $request->input('length'); // จำนวนต่อหน้า
+        $start = (int) $request->input('start', 0);
 
-        $BRAND = $request->input('brand_id');
-        $DOC_NO = $request->search;
-        $field_detail = [
-            'product_channels.PRODUCT',
-            'product_channels.BRAND',
-        ];
+        // $data = ProductChannel::select(
+        //     'product_channels.BRAND AS BRAND',
+        //     'product1s.PRODUCT AS PRODUCT',
+        //     'product1s.NAME_THAI AS NAME_THAI'
+        // )
+        // ->join('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT')
+        // ->whereColumn('product_channels.PRODUCT', 'product1s.PRODUCT')
+        // ->orderBy('PRODUCT', 'DESC');
 
-        $data = ProductChannel::select(
+        $searchProductAll = $request->input('searchProduct', '');
+        $searchProductNameAll = $request->input('searchProductName', '');
+        $data = Product1::select(
             'product_channels.BRAND AS BRAND',
             'product1s.PRODUCT AS PRODUCT',
             'product1s.NAME_THAI AS NAME_THAI'
         )
-        ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT')
-        ->whereColumn('product_channels.PRODUCT', 'product1s.PRODUCT')
-        ->orderBy('PRODUCT', 'DESC');
+        ->join('product_channels', 'product1s.PRODUCT', '=', 'product_channels.PRODUCT');
 
-        if ($BRAND != null) {
-            $data->where('product_channels.BRAND', $BRAND);
+        if ($request->BRAND) {
+            $data = $data->where('product_channels.BRAND', $request->BRAND);
         }
 
-        if (null != $DOC_NO) {
-            $data = $data->where(function ($data) use ($DOC_NO, $field_detail) {
-                for ($i = 0; $i < count($field_detail); $i++) {
-                    $data->orWhere($field_detail[$i], 'like', '%'.$DOC_NO.'%');
-                }
+        if ($request->PRODUCT) {
+            $data->where('product_channels.PRODUCT', $request->PRODUCT);
+        }
+
+        if (!empty($searchProductAll)) {
+            $data->where(function ($q) use ($searchProductAll) {
+                $q->orWhere('product1s.PRODUCT', 'like', '%' . $searchProductAll . '%');
             });
         }
 
+        if (!empty($searchProductNameAll)) {
+            $data->where(function ($q) use ($searchProductNameAll) {
+                $q->orWhere('product1s.NAME_THAI', 'like', '%' . $searchProductNameAll . '%');
+            });
+        }
         // dd($data->toSql());
-        $data = $data->paginate($limit);
-        $totalRecords = $data->total();
-        $totalRecordwithFilter = $data->count();
-        $response = [
-            'draw' => intval($request->draw),
-            'iTotalRecords' => $totalRecordwithFilter,
-            'iTotalDisplayRecords' => $totalRecords,
-            'aaData' => $data->items(),
-        ];
-
-        return response()->json($response);
+         // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
+         $totalRecords = $data->count();
+         if ($limit > 0) {
+             $data->limit($limit)->offset($start);
+         }
+         $records = $data->get();
+ 
+         return response()->json([
+             'draw' => intval($request->draw),
+             'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
+             'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
+             'aaData' => $records,
+         ]);
     }
 }

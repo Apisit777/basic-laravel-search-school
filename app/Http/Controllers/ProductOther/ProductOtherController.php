@@ -12,6 +12,7 @@ use App\Models\Sub_category;
 use App\Models\ProductLine;
 use App\Models\ProductType;
 use App\Models\MasterBrand;
+use App\Models\MasterBrandChannel;
 use Illuminate\Http\Request;
 
 class ProductOtherController extends Controller
@@ -152,6 +153,9 @@ class ProductOtherController extends Controller
         $namePosition  = explode('-', $userpermission);
         $userpermission = trim(end($namePosition));
 
+        $allChannels = MasterBrandChannel::select('CHANNEL_NAME')->pluck('CHANNEL_NAME')->toArray();
+        $defaultAllChannels = MasterBrandChannel::all();
+
         if ($userpermission == $isSuperAdmin) {
             $brands = MasterBrand::select(
                 'BRAND')
@@ -166,31 +170,12 @@ class ProductOtherController extends Controller
                 'DESCRIPTION',
                 'BRAND')
             ->get();
-        } else if ($userpermission == 'OP') {
-            $brands = MasterBrand::select(
-                'BRAND')
-            ->where('BRAND', 'OP')
-            ->get();
-            $series = Series::select(
-                'ID',
-                'DESCRIPTION',
-                'BRAND')
-            ->where('BRAND', 'OP')
-            ->get();
-            $categorys = Category::select(
-                'ID',
-                'DESCRIPTION',
-                'BRAND')
-            ->where('BRAND', 'OP')
-            ->get();
-            $sub_categorys = Sub_category::select(
-                'ID',
-                'CATEGORY_ID',
-                'DESCRIPTION',
-                'BRAND')
-            ->where('BRAND', 'OP')
-            ->get();
         } else if ($userpermission == 'CPS') {
+            $defaultAllChannels = MasterBrandChannel::select(
+                'BRAND')
+            ->where('BRAND', 'CPS')
+            ->pluck('BRAND')
+            ->toArray();
             $brands = MasterBrand::select(
                 'BRAND')
             ->where('BRAND', 'CPS')
@@ -213,91 +198,12 @@ class ProductOtherController extends Controller
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'CPS')
-            ->get();
-        } else if ($userpermission == 'KTY') {
-            $brands = MasterBrand::select(
-                'BRAND')
-            ->where('BRAND', 'KTY')
-            ->get();
-
-            // KTY ไม่มี Series, Category, Sub_category, Pdm
-        } else if (in_array($userpermission, ['Regional Operation Manager-GNC'])) {
-            $brands = MasterBrand::select(
-                'BRAND')
-            ->where('BRAND', 'GNC')
-            ->get();
-            $categorys = Category::select(
-                'ID',
-                'DESCRIPTION',
-                'BRAND')
-            ->where('BRAND', 'GNC')
-            ->get();
-            $sub_categorys = Sub_category::select(
-                'ID',
-                'CATEGORY_ID',
-                'DESCRIPTION',
-                'BRAND')
-            ->where('BRAND', 'GNC')
-            ->get();
-        } else if (in_array($userpermission, ['BB'])) {
-            $brands = MasterBrand::select(
-                'BRAND')
-            ->where('BRAND', 'BB')
-            ->get();
-            $categorys = Category::select(
-                'ID',
-                'DESCRIPTION',
-                'BRAND')
-            ->where('BRAND', 'BB')
-            ->get();
-            $sub_categorys = Sub_category::select(
-                'ID',
-                'CATEGORY_ID',
-                'DESCRIPTION',
-                'BRAND')
-            ->where('BRAND', 'BB')
-            ->get();
-        } else if (in_array($userpermission, ['LL'])) {
-            $brands = MasterBrand::select(
-                'BRAND')
-            ->where('BRAND', 'LL')
-            ->get();
-            $categorys = Category::select(
-                'ID',
-                'DESCRIPTION',
-                'BRAND')
-            ->where('BRAND', 'LL')
-            ->get();
-            $sub_categorys = Sub_category::select(
-                'ID',
-                'CATEGORY_ID',
-                'DESCRIPTION',
-                'BRAND')
-            ->where('BRAND', 'LL')
-            ->get();
-        } else if (in_array($userpermission, ['KM'])) {
-            $brands = MasterBrand::select(
-                'BRAND')
-            ->where('BRAND', 'KM')
-            ->get();
-            $categorys = Category::select(
-                'ID',
-                'DESCRIPTION',
-                'BRAND')
-            ->where('BRAND', 'KM')
-            ->get();
-            $sub_categorys = Sub_category::select(
-                'ID',
-                'CATEGORY_ID',
-                'DESCRIPTION',
-                'BRAND')
-            ->where('BRAND', 'KM')
             ->get();
         }
 
-        // dd($product_groups);
+        // dd($categorys);
 
-        return view('product_other.create', compact(  'brands', 'series', 'categorys', 'sub_categorys'));
+        return view('product_other.create', compact(  'brands', 'series', 'categorys', 'sub_categorys', 'allChannels', 'defaultAllChannels'));
     }
 
     public function productLine(Request $request) 

@@ -79,6 +79,7 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         Route::get('', [ProductFormController::class, 'indexAccount'])->name('index');
         Route::post('/list_ajax_account', [ProductFormController::class, 'listAjaxAccount'])->name('list_ajax_account');
         Route::get('/create', [ProductFormController::class, 'createAccount'])->name('create');
+        Route::get('/show/{product}', [ProductFormController::class, 'showAccount'])->name('show'); 
         Route::get('/edit/{product}', [ProductFormController::class, 'editAccount'])->name('edit'); 
         Route::post('/update_account/{product}', [ProductFormController::class, 'updateAccount'])->name('update_account');
     });
@@ -155,6 +156,8 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         Route::get('/checkproduct_consumables', [ProductController::class, 'check_product_consumables'])->name('checkproduct_consumables');
         Route::post('/list_products', [ProductController::class, 'list_products'])->name('list_products');
         Route::get('/product_master_get_brand_list_ajax', [ProductController::class, 'productMasterGetBrandListAjax'])->name('product_master_get_brand_list_ajax');
+        // Ean13 Barcode GNC
+        Route::post('/generate_barcode_gnc/{baocode}', [ProductController::class, 'generatebarcodeGNC'])->name('generate_barcode_gnc');
         // Ean14 CheckDigit
         Route::get('/calculate_ean14_check_digit/{baocodeCheckDigit}', [ProductController::class, 'calculateEAN14CheckDigit'])->name('calculate_ean14_check_digit');
         Route::post('/', [ProductController::class, 'store'])->name('store');
@@ -173,6 +176,8 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         // Sub Menu Product Detail1(Product Detail)
         Route::get('/pd_detail', [ProductDetailController::class, 'index'])->name('pd_detail_index');
         Route::get('/pd_detail/create', [ProductDetailController::class, 'create'])->name('pd_detail_create');
+        Route::post('/list_product_detail', [ProductDetailController::class, 'listProductDetail'])->name('list_product_detail');
+        Route::get('/pd_detail/edit/{product_id}', [ProductDetailController::class, 'edit'])->name('pd_detail_edit');
         
         // Sub Menu Product Detail2(Product Other)
         Route::get('/pd_other', [ProductOtherController::class, 'index'])->name('pd_other_index');
