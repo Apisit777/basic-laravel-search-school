@@ -33,6 +33,17 @@
             padding-left: 12px!important;
             padding-right: 5px;
         }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])

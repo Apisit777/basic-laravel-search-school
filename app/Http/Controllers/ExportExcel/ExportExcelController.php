@@ -162,7 +162,7 @@ class ExportExcelController extends Controller
         $namePosition  = explode('-', $userpermission);
         $userpermission = trim(end($namePosition)); 
 
-        $getSelect2ProDevelops = Pro_develops::select(
+        $getSelect2ProDevelops = Product1::select(
             'PRODUCT'
         )
         ->get();
@@ -185,6 +185,8 @@ class ExportExcelController extends Controller
                 ->pluck('PRODUCT')
                 ->toArray();
     
+            // dd($getSelect2ProDevelops);
+
             if (empty($getSelect2ProDevelops)) {
                 return response()->json(['message' => 'No data found'], 404);
             }
@@ -244,51 +246,241 @@ class ExportExcelController extends Controller
             if (empty($getSelect2ProDevelops)) {
                 return response()->json(['message' => 'No data found'], 404);
             }
+        } else if ($userpermission == 'GNC') {
+            if (!$request->has('id') || !is_numeric($request->id)) {
+                return response()->json(['error' => 'Invalid ID'], 400);
+            }
+            $PRODUCT = intval($request->id);
+
+            $getSelect2ProDevelops = Product1::where('PRODUCT', '>', $PRODUCT)
+                ->where('BRAND', 'GNC')
+                ->pluck('PRODUCT')
+                ->toArray();
+    
+            if (empty($getSelect2ProDevelops)) {
+                return response()->json(['message' => 'No data found'], 404);
+            }
         }
 
+        // dd($getSelect2ProDevelops);
         return response()->json($getSelect2ProDevelops);
     }
 
     public function exportExcelProductMaster(Request $request)
     {
-        // dd($request->all());
-        if (!isset($request->start_product) || $request->start_product == null) {
-            $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
-                                    ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
-                                    ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
-                                    ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
-                                    ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
-                                    ->groupBy('product1s.PRODUCT')
-                                    ->orderBy('product1s.PRODUCT', 'asc')
-                                    ->get()
-                                    ->toArray();
-                                    // dd($ProDevelops);
-        } else if (!isset($request->end_product) || $request->end_product == null) {
-            $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
-                                    ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
-                                    ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
-                                    ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
-                                    ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
-                                    ->groupBy('product1s.PRODUCT')
-                                    ->where('PRODUCT', $request->start_product)
-                                    ->get()
-                                    ->toArray();
-                                    // dd($ProDevelops);
-        } else {
-            $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
-                                    ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
-                                    ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
-                                    ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
-                                    ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
-                                    ->whereBetween('product1s.PRODUCT', [$request->start_product, $request->end_product])
-                                    ->groupBy('product1s.PRODUCT')
-                                    ->orderBy('product1s.PRODUCT', 'asc')
-                                    ->get()
-                                    ->toArray();
-        
-                                    // dd($ProDevelops);
-                                    // dd($ProDevelops->toSql(), $ProDevelops->getBindings());
+        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        $userpermission = Auth::user()->getUserPermission->name_position;
+        $namePosition  = explode('-', $userpermission);
+        $userpermission = trim(end($namePosition));
+        // dd($request->all(), $userpermission);
+
+        if ($userpermission == 'OP') {
+            if (!isset($request->start_product) || $request->start_product == null) {
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
+                                        ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+                                        ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+                                        ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+                                        ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                                        ->where('product1s.BRAND', 'GNC')
+                                        ->groupBy('product1s.PRODUCT')
+                                        ->orderBy('product1s.PRODUCT', 'asc')
+                                        ->get()
+                                        ->toArray();
+                                        // dd($ProDevelops);
+            } else if (!isset($request->end_product) || $request->end_product == null) {
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
+                                        ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+                                        ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+                                        ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+                                        ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                                        ->groupBy('product1s.PRODUCT')
+                                        ->where('product1s.BRAND', 'GNC')
+                                        ->where('PRODUCT', $request->start_product)
+                                        ->get()
+                                        ->toArray();
+                                        // dd($ProDevelops);
+            } else {
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
+                                        ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+                                        ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+                                        ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+                                        ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                                        ->where('product1s.BRAND', 'GNC')
+                                        ->whereBetween('product1s.PRODUCT', [$request->start_product, $request->end_product])
+                                        ->groupBy('product1s.PRODUCT')
+                                        ->orderBy('product1s.PRODUCT', 'asc')
+                                        ->get()
+                                        ->toArray();
+            
+                                        // dd($ProDevelops);
+                                        // dd($ProDevelops->toSql(), $ProDevelops->getBindings());
+            }
+        } else if ($userpermission == 'CPS') {
+            if (!isset($request->start_product) || $request->start_product == null) {
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
+                                        ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+                                        ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+                                        ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+                                        ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                                        ->where('product1s.BRAND', 'GNC')
+                                        ->groupBy('product1s.PRODUCT')
+                                        ->orderBy('product1s.PRODUCT', 'asc')
+                                        ->get()
+                                        ->toArray();
+                                        // dd($ProDevelops);
+            } else if (!isset($request->end_product) || $request->end_product == null) {
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
+                                        ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+                                        ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+                                        ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+                                        ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                                        ->groupBy('product1s.PRODUCT')
+                                        ->where('product1s.BRAND', 'GNC')
+                                        ->where('PRODUCT', $request->start_product)
+                                        ->get()
+                                        ->toArray();
+                                        // dd($ProDevelops);
+            } else {
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
+                                        ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+                                        ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+                                        ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+                                        ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                                        ->where('product1s.BRAND', 'GNC')
+                                        ->whereBetween('product1s.PRODUCT', [$request->start_product, $request->end_product])
+                                        ->groupBy('product1s.PRODUCT')
+                                        ->orderBy('product1s.PRODUCT', 'asc')
+                                        ->get()
+                                        ->toArray();
+            
+                                        // dd($ProDevelops);
+                                        // dd($ProDevelops->toSql(), $ProDevelops->getBindings());
+            }
+        } else if ($userpermission == 'BB') {
+            if (!isset($request->start_product) || $request->start_product == null) {
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
+                                        ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+                                        ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+                                        ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+                                        ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                                        ->where('product1s.BRAND', 'GNC')
+                                        ->groupBy('product1s.PRODUCT')
+                                        ->orderBy('product1s.PRODUCT', 'asc')
+                                        ->get()
+                                        ->toArray();
+                                        // dd($ProDevelops);
+            } else if (!isset($request->end_product) || $request->end_product == null) {
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
+                                        ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+                                        ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+                                        ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+                                        ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                                        ->groupBy('product1s.PRODUCT')
+                                        ->where('product1s.BRAND', 'GNC')
+                                        ->where('PRODUCT', $request->start_product)
+                                        ->get()
+                                        ->toArray();
+                                        // dd($ProDevelops);
+            } else {
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
+                                        ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+                                        ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+                                        ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+                                        ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                                        ->where('product1s.BRAND', 'GNC')
+                                        ->whereBetween('product1s.PRODUCT', [$request->start_product, $request->end_product])
+                                        ->groupBy('product1s.PRODUCT')
+                                        ->orderBy('product1s.PRODUCT', 'asc')
+                                        ->get()
+                                        ->toArray();
+            
+                                        // dd($ProDevelops);
+                                        // dd($ProDevelops->toSql(), $ProDevelops->getBindings());
+            }
+        } else if ($userpermission == 'LL') {
+            if (!isset($request->start_product) || $request->start_product == null) {
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
+                                        ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+                                        ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+                                        ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+                                        ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                                        ->where('product1s.BRAND', 'GNC')
+                                        ->groupBy('product1s.PRODUCT')
+                                        ->orderBy('product1s.PRODUCT', 'asc')
+                                        ->get()
+                                        ->toArray();
+                                        // dd($ProDevelops);
+            } else if (!isset($request->end_product) || $request->end_product == null) {
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
+                                        ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+                                        ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+                                        ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+                                        ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                                        ->groupBy('product1s.PRODUCT')
+                                        ->where('product1s.BRAND', 'GNC')
+                                        ->where('PRODUCT', $request->start_product)
+                                        ->get()
+                                        ->toArray();
+                                        // dd($ProDevelops);
+            } else {
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
+                                        ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+                                        ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+                                        ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+                                        ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                                        ->where('product1s.BRAND', 'GNC')
+                                        ->whereBetween('product1s.PRODUCT', [$request->start_product, $request->end_product])
+                                        ->groupBy('product1s.PRODUCT')
+                                        ->orderBy('product1s.PRODUCT', 'asc')
+                                        ->get()
+                                        ->toArray();
+            
+                                        // dd($ProDevelops);
+                                        // dd($ProDevelops->toSql(), $ProDevelops->getBindings());
+            }
+        } else if ($userpermission == 'GNC') {
+            if (!isset($request->start_product) || $request->start_product == null) {
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
+                                        ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+                                        ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+                                        ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+                                        ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                                        ->where('product1s.BRAND', 'GNC')
+                                        ->groupBy('product1s.PRODUCT')
+                                        ->orderBy('product1s.PRODUCT', 'asc')
+                                        ->get()
+                                        ->toArray();
+                                        // dd($ProDevelops);
+            } else if (!isset($request->end_product) || $request->end_product == null) {
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
+                                        ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+                                        ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+                                        ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+                                        ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                                        ->groupBy('product1s.PRODUCT')
+                                        ->where('product1s.BRAND', 'GNC')
+                                        ->where('PRODUCT', $request->start_product)
+                                        ->get()
+                                        ->toArray();
+                                        // dd($ProDevelops);
+            } else {
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
+                                        ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+                                        ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+                                        ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+                                        ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                                        ->where('product1s.BRAND', 'GNC')
+                                        ->whereBetween('product1s.PRODUCT', [$request->start_product, $request->end_product])
+                                        ->groupBy('product1s.PRODUCT')
+                                        ->orderBy('product1s.PRODUCT', 'asc')
+                                        ->get()
+                                        ->toArray();
+            
+                                        // dd($ProDevelops);
+                                        // dd($ProDevelops->toSql(), $ProDevelops->getBindings());
+            }
         }
+        
         $columns = [];
         $columns = array('Brand', 'Product ID', 'Barcode', 'Name Thai', 'Name English', 'Short Name Thai', 'Short Name English', 'Retail Price', 'Solution', 'Series', 'Category', 'Sub Category');
         // dd($columns);

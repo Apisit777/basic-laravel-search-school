@@ -175,6 +175,18 @@
         .table td, .table th {
             padding: 0.55rem !important;
         }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -193,7 +205,7 @@
                 <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                     <div class="md:col-span-3">
                         <label for="BRAND" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Brand</label>
-                        <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND">
+                        <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND" onchange="brandSearch()">
                             <option value=""> --- กรุณาเลือก ---</option>
                             @foreach ($brands as $key => $brand)
                                 <option value={{ $brand }}>{{ $brand }}</option>
@@ -203,9 +215,9 @@
 
                     <div class="md:col-span-3" >
                         <label for="">ค้นหา</label>
-                        <input type="text" name="search" id="search" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" />
+                        <input type="text" name="search" id="search" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" onkeyup="searchTable()" />
                     </div>
-                    <div class="md:col-span-6 text-center">
+                    <!-- <div class="md:col-span-6 text-center">
                         <div class="inline-flex items-center">
                             <a href="#" id="btnSerarch" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
@@ -214,7 +226,7 @@
                                 ค้นหา
                             </a>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -989,7 +1001,7 @@
         </div> -->
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
             <div id="containerexample" class="text-gray-900 dark:text-gray-100">
-                <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
+                <table id="product_master_table" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
                     <thead>
                         <tr>
                             <th>แบรนด์</th>
@@ -1278,7 +1290,7 @@
             $("#slide").remove();
         }
 
-        const mytableDatatable = $('#example').DataTable({
+        const mytableDatatable = $('#product_master_table').DataTable({
             // new DataTable('#example', {
             'searching': false,
             "serverSide": true,
@@ -1287,23 +1299,12 @@
             scrollX: true,
             orderCellsTop: true,
             ordering: false,
-            "order": [
-                [0, "desc"]
-            ],
-            "lengthMenu": [20, 50, 100],
-            // "lengthMenu": [1000],
-            "layout": {
-                "topEnd": {
-                    // "buttons": ['excel', 'colvis']
-                    // buttons: ['copy', 'excel', 'pdf', 'colvis']
-                }
-            },
-            // "layout": {
-            //     "topStart": {
-            //         "buttons": ['excel', 'colvis']
-            //         // buttons: ['copy', 'excel', 'pdf', 'colvis']
-            //     }
-            // },
+            deferRender: true,
+            scroller: true,
+            scrollY: "600px",
+            "order": [[1, "desc"]],
+            "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
+            "pageLength": 20, // ค่าเริ่มต้นคือ "20"
             "ajax": {
                 "headers": {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1318,6 +1319,10 @@
                     data.search = $('#search').val();
 
                     data._token = $('meta[name="csrf-token"]').attr('content');
+                },
+                "error": function(xhr, error, thrown) {
+                    console.log("AJAX Error: ", error, thrown);
+                    console.log(xhr.responseText); // Debug error
                 }
             },
             orderable: true,
@@ -1381,10 +1386,21 @@
             ]
         });
 
-        $('#btnSerarch').click(function() {
+        // $('#btnSerarch').click(function() {
+        //     mytableDatatable.draw();
+        //     return false;
+        // });
+
+        // Function สำหรับเรียกใช้ DataTable เมื่อมีการพิมพ์
+        function searchTable() {
+            console.log("Search: ", $('#search').val());
+            // บังคับให้ DataTables รีโหลดข้อมูลใหม่
+            mytableDatatable.ajax.reload(null, false); 
+        }
+
+        function brandSearch() {
             mytableDatatable.draw();
-            return false;
-        });
+        }
 
         function modelCopy(id, name_position) {
             jQuery("#data_coppy").val('').change();

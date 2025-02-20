@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\ProductMasterController;
 use App\Http\Controllers\Api\CommonController;
 
 /*
@@ -18,10 +19,14 @@ use App\Http\Controllers\Api\CommonController;
 Route::post('/apiLogin', [AuthController::class, 'apiLogin'])->name('apiLogin');
 Route::get('/api_apps_login', [AuthController::class, 'apiAppsLogin'])->name('api_apps_login');
 Route::get('/users', [AuthController::class, 'list_user']);
-Route::get('/series', [AuthController::class, 'list_series']);
-Route::get('/solutions', [AuthController::class, 'list_solutions']);
-Route::get('/categorys', [AuthController::class, 'list_categorys']);
-Route::get('/sub_categorys', [AuthController::class, 'list_sub_categorys']);
+
+// API ProductMaster
+Route::get('/products', [ProductMasterController::class, 'listProducts']);
+
+Route::get('/series', [ProductMasterController::class, 'list_series']);
+Route::get('/solutions', [ProductMasterController::class, 'list_solutions']);
+Route::get('/categorys', [ProductMasterController::class, 'list_categorys']);
+Route::get('/sub_categorys', [ProductMasterController::class, 'list_sub_categorys']);
 
 // Command transfer
 Route::get('/transfer/{task}', [CommonController::class, 'transfer']);

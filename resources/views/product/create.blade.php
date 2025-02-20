@@ -113,6 +113,17 @@
         .select2-container {
             margin-bottom: 0rem!important;
         }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -244,7 +255,7 @@
                                 </div>
                                 <div class="md:col-span-2" style="position: relative;">
                                     <label for="NUMBER">รหัสที่ต้องการ</label>
-                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="NUMBER" name="NUMBER" onchange="onSelect(this, 'BARCODE')">
+                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="NUMBER" name="PRODUCT" onchange="onSelect(this, 'BARCODE')">
                                         <option value=""> --- กรุณาเลือก ---</option>
                                     </select>
                                     <div class="col-auto" style="position: absolute; right: 6.5%; top: 57.2%;">
@@ -450,7 +461,7 @@
                                                     <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
-                                                                @if ($userPermission == 'Retail Operation - GNC')
+                                                                @if ($userpermission == 'GNC')
                                                                     <div class="md:col-span-3" style="position: relative;">
                                                                         <label for="BARCODE">รหัส Barcode<span class="text-danger"> *</span></label>
                                                                         <input required type="number" name="BARCODE" id="ID_BARCODE" onkeyup="checkBarCode()" class="text-compleace-auto-barcode2 h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2_barcode" />
@@ -488,11 +499,11 @@
                                                                     <div class="md:col-span-3" style="position: relative;">
                                                                         <label for="BARCODE">รหัส Barcode<span class="text-danger"> *</span></label>
                                                                         <!-- <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-sm font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" disabled> -->
-                                                                        <input type="text" name="PRODUCT" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="" readonly>
+                                                                        <input type="text" name="BARCODE" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="" readonly>
                                                                     </div>
                                                                 @endif
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name">Product Channel</label>
+                                                                    <label for="name">Product Channel(Brand)</label>
                                                                     <select class="js-example-basic-multiple w-full rounded-sm text-xs select2" id="multiSelect" name="sele_channel[]" multiple="multiple">
                                                                     </select>
                                                                 </div>
@@ -1188,24 +1199,24 @@
             };
 
             $(document).ready(function () {
-                $('.text-compleace-auto-code1').on('change', function () {
-                    newBarcodeValue = $(this).val();
-                    $('.text-compleace-auto-barcode2').val(newBarcodeValue);
-                    jQuery("#ID_BARCODE").removeClass('select2_barcode');
-                    console.log('Updated Value:', newBarcodeValue); // Log the updated value
-                    console.log('Updated Value:', typeof newBarcodeValue); // Log the updated value
-                    jQuery("#username_alert_gnc_barcode").hide();
-                    // onchangeValueSelect2()
-                    // let checkvalue = checkValueSelect2();
-                    // console.log("🚀 ~ checkvalue:", checkvalue)
-                    // if (!checkvalue) {
-                    //     jQuery("#submitButton").attr("disabled", true);
-                    //     jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
-                    // } else {
-                    //     jQuery("#submitButton").attr("disabled", false);
-                    //     jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
-                    // }
-                });
+                // $('.text-compleace-auto-code1').on('change', function () {
+                //     newBarcodeValue = $(this).val();
+                //     $('.text-compleace-auto-barcode2').val(newBarcodeValue);
+                //     jQuery("#ID_BARCODE").removeClass('select2_barcode');
+                //     console.log('Updated Value:', newBarcodeValue); // Log the updated value
+                //     console.log('Updated Value:', typeof newBarcodeValue); // Log the updated value
+                //     jQuery("#username_alert_gnc_barcode").hide();
+                //     // onchangeValueSelect2()
+                //     // let checkvalue = checkValueSelect2();
+                //     // console.log("🚀 ~ checkvalue:", checkvalue)
+                //     // if (!checkvalue) {
+                //     //     jQuery("#submitButton").attr("disabled", true);
+                //     //     jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                //     // } else {
+                //     //     jQuery("#submitButton").attr("disabled", false);
+                //     //     jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
+                //     // }
+                // });
             });
         });
 
@@ -1427,59 +1438,183 @@
         jQuery("#username_alert_gnc").hide();
         jQuery("#correct_username_gnc").hide();
 
+        // function checkCode() {
+        //     PRODUCT = jQuery('#ID_PRODUCT').val();
+        //     console.log("🚀 ~ checkNameBrand ~ PRODUCT:", PRODUCT)
+        //     if (PRODUCT.length >= 6) {
+        //         jQuery.ajax({
+        //             method: "POST",
+        //             url: '{{ route('product_master.check_code_gnc') }}',
+        //             data: { PRODUCT },
+        //             dataType: 'json',
+        //             beforeSend: function () {
+        //                 jQuery("#submitButton").attr("disabled", true);
+        //                 jQuery('#username_loading_gnc').show();
+        //                 jQuery("#correct_username_gnc").hide();
+        //                 jQuery("#username_alert_gnc").hide();
+        //             },
+        //             success: function (checknamebrand) {
+        //                 codeConsumables = checknamebrand
+        //                 jQuery('#username_loading_gnc').hide();
+        //                 jQuery("#correct_username_gnc").hide();
+        //                 let checkvalue = checkValueSelect2();
+        //                 if (PRODUCT == '') {
+        //                     jQuery("#submitButton").attr("disabled", true);
+        //                     jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+        //                     jQuery("#correct_username_gnc").hide();
+        //                     jQuery("#username_alert_gnc").hide();
+        //                 } else if (!checknamebrand) {
+        //                     jQuery("#submitButton").attr("disabled", true);
+        //                     jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+        //                     jQuery("#correct_username_gnc").hide();
+        //                     jQuery("#username_alert_gnc").show();
+        //                 } else {
+        //                     jQuery("#submitButton").attr("disabled", false);
+        //                     jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
+        //                     jQuery("#username_alert_gnc").hide();
+        //                     jQuery("#correct_username_gnc").show();
+        //                 }
+        //                 if (!checkvalue) {
+        //                     jQuery("#submitButton").attr("disabled", true);
+        //                     jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+        //                 } else {
+        //                     jQuery("#submitButton").attr("disabled", false);
+        //                     jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
+        //                 }
+        //             },
+        //             error: function (params) {
+        //             }
+        //         });
+        //     } else {
+        //         jQuery("#submitButton").attr("disabled", true);
+        //         jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+        //         jQuery("#correct_username_gnc").hide();
+        //         jQuery("#username_alert_gnc").hide();
+        //     }
+        // }
+
         function checkCode() {
-            PRODUCT = jQuery('#ID_PRODUCT').val();
-            console.log("🚀 ~ checkNameBrand ~ PRODUCT:", PRODUCT)
-            if (PRODUCT.length >= 6) {
-                jQuery.ajax({
-                    method: "POST",
-                    url: '{{ route('product_master.check_code_gnc') }}',
-                    data: { PRODUCT },
-                    dataType: 'json',
-                    beforeSend: function () {
-                        jQuery("#submitButton").attr("disabled", true);
-                        jQuery('#username_loading_gnc').show();
+            let PRODUCT = jQuery('#ID_PRODUCT').val().trim();
+            console.log("🚀 ~ checkNameBrand ~ PRODUCT:", PRODUCT);
+
+            let url = "{{ route('product_master.check_code_gnc') }}"; // Default URL เช็คซ้ำ
+            let newBarcodeValue = PRODUCT;
+
+            if (PRODUCT === '' || PRODUCT.length < 6 || (PRODUCT.length >= 8 && PRODUCT.length <= 9) || PRODUCT.length > 10) {
+                console.log("🚀 ~ PRODUCT is empty or invalid length (1-5, 8-9, more than 10), clearing barcode...");
+                // ✅ เคลียร์ค่าในช่อง Barcode
+                $('.text-compleace-auto-barcode2').val('');
+                
+                // ✅ ซ่อนข้อความแจ้งเตือน
+                jQuery("#username_alert_gnc").hide();
+                jQuery("#correct_username_gnc").hide();
+
+                // ✅ ปิดปุ่ม Submit
+                jQuery("#submitButton").attr("disabled", true).addClass('cursor-not-allowed opacity-50');
+                return;
+            }
+            // ✅ ถ้า PRODUCT เป็น 6 หลัก → ให้ Barcode เป็นค่าว่าง
+            if (PRODUCT.length === 6) {
+                console.log("🚀 ~ PRODUCT length 6: Checking duplicate, but clearing barcode...");
+                // ✅ เคลียร์ค่า Barcode
+                $('.text-compleace-auto-barcode2').val('');
+                // ✅ ตรวจสอบข้อมูลซ้ำ
+                checkDuplicate(PRODUCT, url, function(isDuplicate) {
+                    if (isDuplicate) {
+                        jQuery("#username_alert_gnc").show();
                         jQuery("#correct_username_gnc").hide();
+                    } else {
                         jQuery("#username_alert_gnc").hide();
-                    },
-                    success: function (checknamebrand) {
-                        codeConsumables = checknamebrand
-                        jQuery('#username_loading_gnc').hide();
-                        jQuery("#correct_username_gnc").hide();
-                        let checkvalue = checkValueSelect2();
-                        if (PRODUCT == '') {
-                            jQuery("#submitButton").attr("disabled", true);
-                            jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
-                            jQuery("#correct_username_gnc").hide();
-                            jQuery("#username_alert_gnc").hide();
-                        } else if (!checknamebrand) {
-                            jQuery("#submitButton").attr("disabled", true);
-                            jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
-                            jQuery("#correct_username_gnc").hide();
-                            jQuery("#username_alert_gnc").show();
-                        } else {
-                            jQuery("#submitButton").attr("disabled", false);
-                            jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
-                            jQuery("#username_alert_gnc").hide();
-                            jQuery("#correct_username_gnc").show();
-                        }
-                        if (!checkvalue) {
-                            jQuery("#submitButton").attr("disabled", true);
-                            jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
-                        } else {
-                            jQuery("#submitButton").attr("disabled", false);
-                            jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
-                        }
-                    },
-                    error: function (params) {
+                        jQuery("#correct_username_gnc").show();
                     }
                 });
-            } else {
-                jQuery("#submitButton").attr("disabled", true);
-                jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
-                jQuery("#correct_username_gnc").hide();
-                jQuery("#username_alert_gnc").hide();
+                return;
             }
+
+            // ✅ เช็คข้อมูลซ้ำกับ Backend (ใช้สำหรับ 6, 7, และ 10 หลัก)
+            console.log("🚀 Checking duplicate for PRODUCT:", PRODUCT);
+            checkDuplicate(PRODUCT, url, function(isDuplicate) {
+                console.log("🚀 isDuplicate received:", isDuplicate);
+
+                if (isDuplicate === true) {
+                    // ❌ ข้อมูลซ้ำ
+                    console.log("🚀 Duplicate detected: ❌", PRODUCT);
+                    jQuery("#username_alert_gnc").show();
+                    jQuery("#correct_username_gnc").hide();
+                    jQuery("#submitButton").attr("disabled", true).addClass('cursor-not-allowed opacity-50');
+                } else {
+                    // ✅ ข้อมูลไม่ซ้ำ
+                    console.log("🚀 No duplicate found: ✅", PRODUCT);
+                    jQuery("#username_alert_gnc").hide();
+                    jQuery("#correct_username_gnc").show();
+                    jQuery("#submitButton").attr("disabled", false).removeClass('cursor-not-allowed opacity-50');
+
+                    // ✅ เฉพาะ 7 และ 10 หลัก ให้เติม 0 และสร้าง Barcode
+                    if (PRODUCT.length === 7) {
+                        newBarcodeValue = '00000' + PRODUCT;
+                        console.log("🚀 Generating Barcode for 7-digit PRODUCT:", newBarcodeValue);
+                        generateBarcode(newBarcodeValue);
+                    } else if (PRODUCT.length === 10) {
+                        newBarcodeValue = '00' + PRODUCT;
+                        console.log("🚀 Generating Barcode for 10-digit PRODUCT:", newBarcodeValue);
+                        generateBarcode(newBarcodeValue);
+                    }
+                }
+            });
+        }
+
+        function checkDuplicate(PRODUCT, url, callback) {
+    console.log("🚀 Checking duplicate for PRODUCT:", PRODUCT);
+    
+    jQuery.ajax({
+        method: "POST",
+        url: url,
+        data: { PRODUCT },
+        dataType: 'json',
+        beforeSend: function () {
+            jQuery("#submitButton").attr("disabled", true);
+            jQuery("#username_loading_gnc").show();
+        },
+        success: function (response) {
+            console.log("🚀 Response from Backend:", response);
+
+            // ✅ ตรวจสอบว่าค่า isDuplicate ถูกต้องหรือไม่
+            let isDuplicate = (response.isDuplicate === true);
+            console.log("🚀 isDuplicate (processed):", isDuplicate);
+
+            if (callback) callback(isDuplicate); // ✅ ส่งค่าที่ถูกต้องกลับไป
+        },
+        error: function (params) {
+            console.error("🚀 AJAX Error:", params);
+            if (callback) callback(true); // ❌ ถ้าเกิด Error ให้ถือว่าซ้ำ (ป้องกันปัญหา)
+        },
+        complete: function () {
+            jQuery("#username_loading_gnc").hide();
+            jQuery("#submitButton").attr("disabled", false);
+        }
+    });
+}
+
+        // ✅ ฟังก์ชัน generate Barcode และ update ค่าไปยัง #ID_BARCODE
+        function generateBarcode(newBarcodeValue) {
+            let barcodeUrl = "{{ route('product_master.generate_barcode_gnc', 0) }}".replaceAll('/0', '/' + newBarcodeValue);
+            console.log("🚀 ~ Generating Barcode for:", newBarcodeValue);
+
+            jQuery.ajax({
+                method: "POST",
+                url: barcodeUrl,
+                dataType: 'json',
+                success: function (response) {
+                    console.log("🚀 ~ Barcode Generation Response:", response);
+                    let barcode13 = response.digitsBarcodeGnc || newBarcodeValue;
+                    $('.text-compleace-auto-barcode2').val(barcode13);
+                    jQuery("#ID_BARCODE").removeClass('select2_barcode');
+                    console.log("🚀 ~ Barcode set successfully:", barcode13);
+                },
+                error: function (params) {
+                    console.error("🚀 ~ Barcode Generation Error:", params);
+                }
+            });
         }
 
         jQuery('#username_loading_gnc_barcode').hide();
@@ -1516,14 +1651,22 @@
                             jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
                             jQuery("#correct_username_gnc_barcode").hide();
                             jQuery("#username_alert_gnc_barcode").hide();
+                        // } else if (!checknamebrand && BARCODE == false) {
+                        //     console.log("🚀 ~ 2:", 2)
+                        //     jQuery("#submitButton").attr("disabled", true);
+                        //     jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                        //     jQuery("#correct_username_gnc_barcode").hide();
+                        //     jQuery("#username_alert_gnc_barcode").show();
+                        //     jQuery("#ID_BARCODE").addClass('select2_barcode');
                         } else if (!checknamebrand) {
-                            console.log("🚀 ~ 2:", 2)
+                            console.log("🚀 ~ 3:", 3)
                             jQuery("#submitButton").attr("disabled", true);
                             jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
                             jQuery("#correct_username_gnc_barcode").hide();
                             jQuery("#username_alert_gnc_barcode").show();
                             jQuery("#ID_BARCODE").addClass('select2_barcode');
                         } else {
+                            console.log("🚀 ~ 4:", 4)
                             jQuery("#submitButton").attr("disabled", false);
                             jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
                             jQuery("#username_alert_gnc_barcode").hide();
@@ -1743,6 +1886,7 @@
 
         function onchangeValueSelect2() {
             let checkvalue = checkValueSelect2();
+            console.log("🚀 ~ onchangeValueSelect2 ~ checkvalue:", checkvalue)
             // let checkFormClickAutoIndex1 = checkFormClickAuto1();
             // let checkFormClickAutoIndex2 = checkFormClickAuto2();
             // if (checkFormClickAutoIndex1) {
@@ -1753,6 +1897,9 @@
             // }
             const code = jQuery('#NUMBER').val();
             if (checkvalue && codeConsumables) {
+                jQuery("#submitButton").attr("disabled", false);
+                jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
+            }else if (checkvalue === true) {
                 jQuery("#submitButton").attr("disabled", false);
                 jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
             }else {
@@ -1847,6 +1994,8 @@
         function createProductMaster() {
             code = jQuery("#NUMBER").val()
             ID_BARCODE = jQuery("#ID_BARCODE").val()
+            ID_PRODUCT = jQuery("#ID_PRODUCT").val()
+            console.log("🚀 ~ createProductMaster ~ ID_BARCODE:", ID_BARCODE)
             console.log('code', code)
             jQuery.ajaxSetup({
                 headers: {
@@ -1856,8 +2005,9 @@
             Swal.fire({
                 title: 'Are you sure?',
                 width: 400,
-                text: @if ($userPermission == 'Retail Operation - GNC')
-                        'ข้อมูลรหัสบาร์โค้ด ' + ID_BARCODE + ' ข้อมูลรหัส ' + newBarcodeValue
+                text: @if ($userpermission == 'GNC')
+                        // 'ข้อมูลรหัสบาร์โค้ด ' + ID_BARCODE + ' ข้อมูลรหัส ' + newBarcodeValue
+                        'ข้อมูลรหัสบาร์โค้ด ' + ID_BARCODE + ' ข้อมูลรหัส ' + ID_PRODUCT
                       @else
                         'ข้อมูลรหัสบาร์โค้ด ' + barcode + ' ข้อมูลรหัส ' + code
                       @endif,

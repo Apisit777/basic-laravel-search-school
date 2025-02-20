@@ -220,24 +220,22 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
         </svg> -->
         
-        <div class="fixed flex bottom-5 right-5 z-10">
+        <!-- <div class="fixed flex bottom-5 right-5 z-10">
             <a href="{{ route('product_detail.pd_detail_create') }}" class="bg-[#303030] hover:bg-[#404040] text-white font-bold cursor-pointer py-2 px-2 mr-2 mt-20 rounded-full group">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                     <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
                 </svg>
             </a>
-        </div>
+        </div> -->
 
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
             <div id="containerexample" class="text-gray-900 dark:text-gray-100">
-                <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
+                <table id="table_product_detail" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
                     <thead>
                         <tr>
                             <th>Brand</th>
-                            <th>Company Products</th>
                             <th>Product</th>
-                            <th>Product Name</th>
-                            <th>Barcode</th>
+                            <th>Inner Barcode</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -300,93 +298,76 @@
 
         });
 
-        // const mytableDatatable = $('#example').DataTable({
-        //     // new DataTable('#example', {
-        //     'searching': false,
-        //     "serverSide": true,
-        //     searching: false,
-        //     resposive: true,
-        //     scrollX: true,
-        //     orderCellsTop: true,
-        //     "order": [
-        //         [0, "desc"]
-        //     ],
-        //     "lengthMenu": [10, 25, 50, 100],
-        //     "ajax": {
-        //         "headers": {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         },
+        const mytableDatatable = $('#table_product_detail').DataTable({
+            serverSide: true,
+            searching: false,
+            resposive: true,
+            scrollX: true,
+            orderCellsTop: true,
+            ordering: false,
+            "order": [
+                [0, "desc"]
+            ],
+            "lengthMenu": [20, 50, 100],
+            "ajax": {
+                "headers": {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
 
-        //         "url": "{{ route('product_master.list_products') }}",
-        //         "type": "POST",
-        //         'data': function(data) {
-        //             data.brand_id = $('#brand_id').val();
-        //             data.BARCODE = $('#BARCODE').val();
-        //             data.search = $('#search').val();
+                "url": "{{ route('product_detail.list_product_detail') }}",
+                "type": "POST",
+                'data': function(data) {
+                    data.brand_id = $('#brand_id').val();
+                    data.BARCODE = $('#BARCODE').val();
+                    data.search = $('#search').val();
 
-        //             data._token = $('meta[name="csrf-token"]').attr('content');
-        //         }
-        //     },
-        //     orderable: true,
-        //     columnDefs: [{
-        //             targets: 0,
-        //             orderable: true,
-        //             render: function(data, type, row) {
-        //                 return row.BRAND;
-        //             }
-        //         },
-        //         {
-        //             targets: 1,
-        //             orderable: true,
-        //             render: function(data, type, row) {
-        //                 return row.GRP_P;
-        //             }
-        //         },
-        //         {
-        //             targets: 2,
-        //             orderable: true,
-        //             render: function(data, type, row) {
-        //                 return row.PRODUCT;
-        //             }
-        //         },
-        //         {
-        //             targets: 3,
-        //             orderable: true,
-        //             render: function(data, type, row) {
-        //                 return row.NAME_THAI;
-        //             }
-        //         },
-        //         {
-        //             targets: 4,
-        //             orderable: true,
-        //             render: function(data, type, row) {
-        //                 return row.BARCODE;
-        //             }
-        //         },
-        //         {
-        //             targets: 5,
-        //             orderable: true,
-        //             className: 'text-center',
-        //             render: function(data, type, row) {
-        //                 let disabledRoute = "{{route('product_master.update', 0)}}".replace('/0', "/" + row.PRODUCT)
-        //                 let text = "#"
-        //                     return `<div class="inline-flex flex items-center rounded-md shadow-sm">
-        //                                 <a href="{{route('product_master.edit', 0)}}"
-        //                                     type="button" class="px-2 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group">
-        //                                     <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="-mt-1.5 hidden h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-        //                                         <path d="M0 0h24v24H0V0z" fill="none"></path>
-        //                                         <path d="M5 18.08V19h.92l9.06-9.06-.92-.92z" opacity=".3"></path>
-        //                                         <path d="M20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29s-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83zM3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM5.92 19H5v-.92l9.06-9.06.92.92L5.92 19z"></path>
-        //                                     </svg>
-        //                                     Edit
-        //                                 </a>
-        //                             </div>
-        //                         `.replaceAll('/0', "/" + row.PRODUCT);
+                    data._token = $('meta[name="csrf-token"]').attr('content');
+                }
+            },
+            orderable: true,
+            columnDefs: [{
+                    targets: 0,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.corporation_id;
+                    }
+                },
+                {
+                    targets: 1,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.product_id;
+                    }
+                },
+                {
+                    targets: 2,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.inner_barcode;
+                    }
+                },
+                {
+                    targets: 3,
+                    orderable: true,
+                    className: 'text-center',
+                    render: function(data, type, row) {
+                        return `<div class="inline-flex flex items-center rounded-md shadow-sm">
+                                    <a href="{{route('product_detail.pd_detail_edit', 0)}}"
+                                        type="button" class="px-2 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="-mt-1.5 hidden h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                            <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                            <path d="M5 18.08V19h.92l9.06-9.06-.92-.92z" opacity=".3"></path>
+                                            <path d="M20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29s-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83zM3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM5.92 19H5v-.92l9.06-9.06.92.92L5.92 19z"></path>
+                                        </svg>
+                                        Edit
+                                    </a>
+                                </div>
+                            `.replaceAll('/0', "/" + row.product_id);
 
-        //             }
-        //         }
-        //     ]
-        // });
+                    }
+                }
+            ]
+        });
 
         $('#btnSerarch').click(function() {
             mytableDatatable.draw();

@@ -406,7 +406,7 @@
                         @if ( $dataIBSH->Code >= 20000 && $dataIBSH->Code <= 28999 )
                             <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->BRAND }}</div>
                         @elseif ( $dataIBSH->Code >= 29000 && $dataIBSH->Code <= 29699 )
-                            <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">RI</div>
+                            <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">RE</div>
                         @else
                             <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">CM</div>
                         @endif

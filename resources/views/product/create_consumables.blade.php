@@ -82,6 +82,17 @@
             font-size: 1rem;
             line-height: 1.5rem;
         }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])

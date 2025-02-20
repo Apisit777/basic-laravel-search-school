@@ -19,6 +19,15 @@
         .select2 {
             width: 100%!important; /* force fluid responsive */
         }
+        .select2-container--default .select2-selection--multiple {
+            height: 55%!important;
+            min-height: 50%!important;
+        }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+            cursor: default;
+            padding-left: 12px!important;
+            padding-right: 5px;
+        }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -67,9 +76,8 @@
                                                                     <input type="text" name="seq" id="seq" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="" readonly>
                                                                 </div>
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name">Channel</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="" id="">
-                                                                        <option value=""> --- กรุณาเลือก ---</option>
+                                                                    <label for="name">Product Channel</label>
+                                                                    <select class="js-example-basic-multiple w-full rounded-sm text-xs select2" id="multiSelect" name="sele_channel[]" multiple="multiple">
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
@@ -622,11 +630,43 @@
         }
 
         $(document).ready(function() {
-            $('.js-example-basic-single').select2();
             onOpenhandler()
             document.querySelectorAll('.setcheckbox')[0].checked = true
             document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
             document.querySelectorAll('.bg_step_color')[0].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+
+            // Convert PHP arrays to JavaScript objects
+            let defaultBrands = <?php echo json_encode($defaultAllChannels); ?>;
+            let allBrands = <?php echo json_encode($allChannels); ?>;
+
+            $('.js-example-basic-single').select2();
+            $('#multiSelect').select2({
+                placeholder: "--- กรุณาเลือก ---",
+                closeOnSelect: false,
+            });
+
+            // Populate the dropdown with allBrands
+            if (defaultBrands[0] === 'CPS') {
+                // If the default brand is "KM", set allBrands as the selected values
+                $('#multiSelect').empty(); // Clear existing options
+                allBrands.forEach(function(brand) {
+                    let newOption = new Option(brand, brand, false, true);
+                    $('#multiSelect').append(newOption);
+                });
+                $('#multiSelect').trigger("change"); // Update Select2
+            } else {
+                // Add any missing brands from allBrands to the dropdown
+                allBrands.forEach(function(brand) {
+                    if (!$('#multiSelect').find(`option[value="${brand}"]`).length) {
+                        let newOption = new Option(brand, brand, false, false);
+                        $('#multiSelect').append(newOption);
+                    }
+                });
+                $('#multiSelect').trigger("change"); // Update Select2
+                    setTimeout(function() {
+                    $('#multiSelect').val(defaultBrands).trigger("change");
+                }, 600);
+            }
         });
 
         jQuery('#username_loading').hide();

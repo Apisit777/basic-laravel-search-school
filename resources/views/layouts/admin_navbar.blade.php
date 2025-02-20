@@ -8,6 +8,10 @@
         padding: 5px;
         border-radius: 5px;
     }
+    .btn-rotate:hover .rotate{
+        transform: rotate(180deg);
+        transition: 0.5s all;
+    }
     @font-face {
         font-family: NotoColorEmojiLimited;
         unicode-range: U+1F1E6-1F1FF;
@@ -92,8 +96,13 @@
                         </li>
                         @if (Auth::user()->userRole->pluck('position.name_position')->count() > 1)
                             <li>
-                                <a href="{{ route('switch_role') }}">
+                                <a href="{{ route('switch_role') }}" class="btn-rotate">
                                     <div class="text-center cursor-pointer bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-[#303030] dark:text-white dark:hover:bg-[#404040] dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25">
+                                        <svg class="hidden h-4 w-4 md:inline-block rotate"
+                                            viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" version="1.1" fill="currentColor">
+                                            <path d="M 93,62 C 83,82 65,96 48,96 32,96 19,89 15,79 L 5,90 5,53 40,53 29,63 c 0,0 5,14 26,14 16,0 38,-15 38,-15 z"/>
+                                            <path d="M 5,38 C 11,18 32,4 49,4 65,4 78,11 85,21 L 95,10 95,47 57,47 68,37 C 68,37 63,23 42,23 26,23 5,38 5,38 z"/>
+                                        </svg>
                                         <span class="text-gray-900 dark:text-white">Switch Role</span>
                                     </div>
                                 </a>

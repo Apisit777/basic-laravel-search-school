@@ -9,6 +9,7 @@ use App\Models\Series;
 use App\Models\Solution;
 use App\Models\Category;
 use App\Models\Sub_category;
+use App\Models\Product1;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +34,7 @@ class AuthController extends Controller
 
         return response()->json($users);
     }
+
     public function list_series()
     {
         $series = Series::all();

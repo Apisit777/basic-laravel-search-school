@@ -550,6 +550,58 @@ class ProductFormController extends Controller
         // dd($productCode);
         return view('account.create');
     }
+    public function showAccount(Request $request)
+    {
+        $data = Account::select(
+            // 'id',
+            'accounts.product AS product',
+            'accounts.cost AS cost',
+            'sale_tp',
+            'cost_km',
+            'perfume_tax',
+            'cost_perfume_tax',
+            'cost5percent',
+            'cost10percent',
+            'cost_other',
+            'sale_km',
+            'sale_km20percent',
+            'sale_km_other',
+            'price_start_date',
+            'note',
+            'product1s.BRAND AS BRAND',
+            'product1s.NAME_THAI AS NAME_THAI',
+            'product1s.NAME_ENG AS NAME_ENG',
+            'product1s.SHORT_THAI AS SHORT_THAI',
+            'product1s.SHORT_ENG AS SHORT_ENG',
+            'type_gs.ID AS TYPE_G',
+            'acctypes.ID AS ACC_TYPE',
+            'owners.OWNER AS VENDOR',
+            'grp_ps.GRP_P AS GRP_P',
+            'product1s.PRICE AS PRICE',
+            'product1s.REG_DATE AS REG_DATE',
+            'product1s.EDIT_DT AS EDIT_DT',
+        )
+        ->leftJoin('product1s', 'accounts.product', '=', 'product1s.PRODUCT')
+        ->leftJoin('owners', 'product1s.VENDOR', '=', 'owners.OWNER')
+        ->leftJoin('grp_ps', 'product1s.GRP_P', '=', 'grp_ps.GRP_P')
+        ->leftJoin('type_gs', 'product1s.TYPE_G', '=', 'type_gs.ID')
+        ->leftJoin('acctypes', 'product1s.ACC_TYPE', '=', 'acctypes.ID')
+        ->where('accounts.product', $request->product)
+        ->first();
+
+        $data->REG_DATE = date('Y-m-d', strtotime($data->REG_DATE));
+        $data->EDIT_DT = date('Y-m-d', strtotime($data->EDIT_DT));
+        // dd($data);
+
+        $owners = Owner::select('OWNER AS VENDOR', 'REMARK')->get();
+        $grp_ps = Grp_p::select('GRP_P AS GRP_P', 'REMARK')->get();        
+        $type_gs = Type_g::select('ID AS TYPE_G', 'DESCRIPTION')->get();
+        $acctypes = Acctype::select('ID AS ACC_TYPE', 'DESCRIPTION')->get();
+
+        // dd($data);
+        return view('account.show', compact('data', 'owners', 'grp_ps', 'type_gs', 'acctypes'));
+    }
+
     public function editAccount(Request $request)
     {
         $data = Account::select(
@@ -579,6 +631,7 @@ class ProductFormController extends Controller
             'grp_ps.GRP_P AS GRP_P',
             'product1s.PRICE AS PRICE',
             'product1s.REG_DATE AS REG_DATE',
+            'product1s.EDIT_DT AS EDIT_DT',
         )
         ->leftJoin('product1s', 'accounts.product', '=', 'product1s.PRODUCT')
         ->leftJoin('owners', 'product1s.VENDOR', '=', 'owners.OWNER')
@@ -589,6 +642,7 @@ class ProductFormController extends Controller
         ->first();
 
         $data->REG_DATE = date('Y-m-d', strtotime($data->REG_DATE));
+        $data->EDIT_DT = date('Y-m-d', strtotime($data->EDIT_DT));
         // dd($data);
 
         $owners = Owner::select('OWNER AS VENDOR', 'REMARK')->get();
