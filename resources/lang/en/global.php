@@ -10,6 +10,8 @@ return [
         'th' => 'TH',
     ],
     'content' => [
+        'search' => 'Search',
+        'clear' => 'Clear',
         'product_master_list' => 'PRODUCT MASTER',
         'product_channel_list' => 'PRODUCT CHANNEL',
         'product_account_list' => 'PRODUCT ACCOUNTING',

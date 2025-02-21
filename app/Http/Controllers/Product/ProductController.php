@@ -41,6 +41,7 @@ use App\Models\SeleChannel;
 use App\Models\ProductChannel;
 use App\Models\ProductGroup;
 use App\Models\Account;
+use App\Models\ProductDetail;
 use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
@@ -1995,6 +1996,14 @@ class ProductController extends Controller
             // dd($data_product, $data->BRAND);
             $copyProductMaster = Product1::create($data_product);
 
+            // $craeteProductretail = ProductDetail::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
+            //     'fad' => $copyProductMaster->COST,
+            //     'inner_barcode' => $copyProductMaster->COST,
+            //     'inner_pack_size' => $copyProductMaster->COST,
+            //     'upd_user' => Auth::user()->username,
+            //     'upd_date' => date("Y/m/d H:i:s"),
+            // ]);
+
             $craeteProductAccount = Account::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
                 'COST' => $copyProductMaster->COST,
                 'created_at' => date("Y/m/d h:i:s"),
@@ -2149,6 +2158,14 @@ class ProductController extends Controller
             // dd($data_product);
 
             $productMaster = Product1::create($data_product);
+
+            // $craeteProductretail = ProductDetail::updateOrCreate(['product' => $productMaster->PRODUCT], [
+            //     'fad' => $productMaster->COST,
+            //     'inner_barcode' => $productMaster->COST,
+            //     'inner_pack_size' => $productMaster->COST,
+            //     'upd_user' => Auth::user()->username,
+            //     'upd_date' => date("Y/m/d H:i:s"),
+            // ]);
 
             $craeteProductAccount = Account::updateOrCreate(['product' => $productMaster->PRODUCT], [
                 'COST' => $productMaster->COST,

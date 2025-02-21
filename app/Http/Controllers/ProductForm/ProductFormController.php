@@ -1620,19 +1620,11 @@ class ProductFormController extends Controller
 
     public function list_npd(Request $request)
     {
-        $limit = $request->input('length'); // limit per page
-        $request->merge([
-            'page' => ceil(($request->input('start') + 1) / $limit),
-        ]);
+        $limit = (int) $request->input('length'); // จำนวนต่อหน้า
+        $start = (int) $request->input('start', 0);
 
         $BRAND = $request->input('brand_id');
-        $BARCODE = $request->input('BARCODE');
-        $DOC_NO = $request->search;
-        $field_detail = [
-            'pro_develops.DOC_NO',
-            'pro_develops.NAME_ENG',
-            'pro_develops.BARCODE',
-        ];
+        $searchAll = $request->input('search', '');
 
         $data = Pro_develops::select(
             'BRAND',
@@ -1728,46 +1720,58 @@ class ProductFormController extends Controller
             $data->where('pro_develops.BRAND', $BRAND);
         }
 
-        if (null != $DOC_NO) {
-            $data = $data->where(function ($data) use ($DOC_NO, $field_detail) {
-                for ($i = 0; $i < count($field_detail); $i++) {
-                    $data->orWhere($field_detail[$i], 'like', '%'.$DOC_NO.'%');
-                }
+        // if (null != $DOC_NO) {
+        //     $data = $data->where(function ($data) use ($DOC_NO, $field_detail) {
+        //         for ($i = 0; $i < count($field_detail); $i++) {
+        //             $data->orWhere($field_detail[$i], 'like', '%'.$DOC_NO.'%');
+        //         }
+        //     });
+        // }
+
+        // if (null != $BARCODE) {
+        //     $productCodes = $data->where(DB::raw('SUBSTRING(BARCODE, 8, 5)'), $request->input('BARCODE'))->pluck('BARCODE');
+        //     // $productCodeArr = [];
+        //     // foreach($productCodes as $productCodeLast) {
+        //     //     $productCodeArrLast = [];
+        //     //     $productCodeArrLast[] = substr_replace($productCodeLast, '', -1);
+        //     //     foreach($productCodeArrLast as $productCodeFirst) {
+        //     //         $productCodeArr[] = substr($productCodeFirst, 7, 11);
+        //     //     }
+        //     // }
+        //     // $productCodesObject = json_decode(json_encode($productCodes));
+        //     // $data->where($productCodeArr, $BARCODE);
+        //     // $data= collect($productCodes);
+        //     // if (null != $productCodeArr) {
+        //     // }
+
+        //     // $obj->where('pro_develops.BARCODE', function ($barcode) use ($request) {
+        //     //     $barcode->orWhere('BARCODE', $request->BARCODE);
+        //     // });
+        // }
+
+        // กรองข้อมูลถ้ามีคำค้นหา
+        if (!empty($searchAll)) {
+            $data->where(function ($q) use ($searchAll) {
+                $q->orWhere('PRODUCT', 'like', '%' . $searchAll . '%')
+                ->orWhere('NAME_ENG', 'like', '%' . $searchAll . '%')
+                ->orWhere('BARCODE', 'like', '%' . $searchAll . '%');
             });
         }
 
-        if (null != $BARCODE) {
-            $productCodes = $data->where(DB::raw('SUBSTRING(BARCODE, 8, 5)'), $request->input('BARCODE'))->pluck('BARCODE');
-            // $productCodeArr = [];
-            // foreach($productCodes as $productCodeLast) {
-            //     $productCodeArrLast = [];
-            //     $productCodeArrLast[] = substr_replace($productCodeLast, '', -1);
-            //     foreach($productCodeArrLast as $productCodeFirst) {
-            //         $productCodeArr[] = substr($productCodeFirst, 7, 11);
-            //     }
-            // }
-            // $productCodesObject = json_decode(json_encode($productCodes));
-            // $data->where($productCodeArr, $BARCODE);
-            // $data= collect($productCodes);
-            // if (null != $productCodeArr) {
-            // }
-
-            // $obj->where('pro_develops.BARCODE', function ($barcode) use ($request) {
-            //     $barcode->orWhere('BARCODE', $request->BARCODE);
-            // });
+        // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
+        $totalRecords = $data->count();
+        // 🔹 ตรวจสอบ limit
+        if ($limit > 0) {
+            $data->limit($limit)->offset($start);
         }
+        // 🔹 ดึงข้อมูลตาม limit และ offset
+        $records = $data->get();
 
-        // dd($data);
-        $data = $data->paginate($limit);
-        $totalRecords = $data->total();
-        $totalRecordwithFilter = $data->count();
-        $response = [
+        return response()->json([
             'draw' => intval($request->draw),
-            'iTotalRecords' => $totalRecordwithFilter,
-            'iTotalDisplayRecords' => $totalRecords,
-            'aaData' => $data->items(),
-        ];
-
-        return response()->json($response);
+            'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
+            'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
+            'aaData' => $records,
+        ]);
     }
 }

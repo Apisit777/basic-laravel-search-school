@@ -99,24 +99,24 @@
                             </select>
                         </div> -->
                         <div class="md:col-span-3" >
-                            <label for="">ค้นหา</label>
-                            <input type="text" name="search" id="search" onkeyup="checkNameBrand()" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" />
+                            <label for="" class="font-medium">@lang('global.content.search')</label>
+                            <input type="text" name="search" id="search" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" onkeyup="searchTable()" />
                         </div>
                         <div class="md:col-span-6 text-center">
                             <div class="inline-flex items-center">
-                                <a href="#" id="btnSerarch" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
+                                <!-- <a href="#" id="btnSerarch" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                         <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
                                     </svg>
                                     ค้นหา
-                                </a>
-                                <button  id="" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group cursor-pointer btn-rotate" type="reset">
+                                </a> -->
+                                <button  id="" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-2.5 mr-2 rounded group cursor-pointer btn-rotate" type="reset">
                                     <svg class="hidden h-6 w-6 md:inline-block rotate"
                                         viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
                                         <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 93,62 C 83,82 65,96 48,96 32,96 19,89 15,79 L 5,90 5,53 40,53 29,63 c 0,0 5,14 26,14 16,0 38,-15 38,-15 z"/>
                                         <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 5,38 C 11,18 32,4 49,4 65,4 78,11 85,21 L 95,10 95,47 57,47 68,37 C 68,37 63,23 42,23 26,23 5,38 5,38 z"/>
                                     </svg>
-                                    ล้างข้อมูล
+                                    @lang('global.content.clear')
                                 </button>
                             </div>
                         </div>
@@ -306,6 +306,13 @@
             $('#start_product').select2();
             $('#end_product').select2();
             jQuery("#start_product").val('').change();
+
+            // กำหนด event เมื่อกดปุ่ม "ล้างข้อมูล"
+            $('button[type="reset"]').click(function() {
+                $('#brand_id').val(null).trigger('change'); // Clear ค่า select2
+                $('#search').val(''); // เคลียร์ค่า input ค้นหา
+            });
+
         });
 
         $('#start_product').on('change', function () {
@@ -379,23 +386,19 @@
         }
 
         const mytableDatatable = $('#example').DataTable({
-                // new DataTable('#example', {
             'searching': false,
             "serverSide": true,
             searching: false,
             resposive: true,
             scrollX: true,
             orderCellsTop: true,
-            "order": [
-                [0, "desc"]
-            ],
-            "lengthMenu": [20, 30, 50],
-            // "layout": {
-            //     "topEnd": {
-            //         "buttons": ['excel', 'colvis']
-            //         // buttons: ['copy', 'excel', 'pdf', 'colvis']
-            //     }
-            // },
+            ordering: false,
+            deferRender: true,
+            scroller: true,
+            scrollY: "600px",
+            "order": [[1, "desc"]],
+            "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
+            "pageLength": 20, // ค่าเริ่มต้นคือ "20"
             "ajax": {
                 "headers": {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -505,10 +508,18 @@
             ]
         });
 
-        $('#btnSerarch').click(function() {
-            mytableDatatable.draw();
-            return false;
-        });
+        // $('#btnSerarch').click(function() {
+        //     mytableDatatable.draw();
+        //     return false;
+        // });
+
+        // Function สำหรับเรียกใช้ DataTable เมื่อมีการพิมพ์
+        function searchTable() {
+            console.log("Search: ", $('#search').val());
+            // บังคับให้ DataTables รีโหลดข้อมูลใหม่
+            mytableDatatable.ajax.reload(null, false); 
+        }
+
         // <a onclick="disableAppointment('${disabledRoute}',this,'${row.BARCODE}')" type="button"
         //     class="bclose btn btn-sm btn-success refersh_btn"
         // >
