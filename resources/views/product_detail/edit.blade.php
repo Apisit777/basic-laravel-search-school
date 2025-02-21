@@ -127,8 +127,8 @@
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">เลข อย.<span class="text-danger"> *</span></label>
-                                                                    <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->fad }}" />
+                                                                    <label for="fad">เลข อย.<span class="text-danger"> *</span></label>
+                                                                    <input type="text" name="fad" id="fad" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->fad }}" />
                                                                 </div>
                                                             </div>
                                                         </div>

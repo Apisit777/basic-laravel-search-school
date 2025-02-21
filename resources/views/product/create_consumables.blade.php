@@ -214,13 +214,14 @@
                             <div class="md:col-span-3">
                                 <label for="BRAND">Brand</label>
                                 <!-- <select class="js-example-basic-single w-full rounded-sm text-xs" id="BRAND" name="BRAND" onchange="brandIdChange(this, 'BRAND')"> -->
-                                <select class="js-example-basic-single w-full rounded-sm text-xs" id="BRAND" name="BRAND">
+                                <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="BRAND" id="BRAND" onchange="onchangeValueSelect2()">
                                     <option value=""> --- กรุณาเลือก ---</option>
                                     @foreach ($brands as $key => $brand)
                                         <option value={{ $brand->BRAND }}>{{ $brand->BRAND }}</option>
                                         <!-- <option value={{ $brand->COMPANY }}{{ $brand->DESCRIPTION }}>{{ $brand->COMPANY.' - ('.$brand->DESCRIPTION.')' }}</option> -->
                                     @endforeach
                                 </select>
+                                <span id="BRAND_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                             </div>
                             <!-- <div class="md:col-span-3" >
                                 <label for="NUMBER">รหัส</label>
@@ -797,7 +798,7 @@
                 element.addEventListener('click', function (params) {
                     let el = document.querySelectorAll('.setcheckbox')[index]
                     let el_colr = document.querySelectorAll('.bg_step_color')[index]
-                    console.log("🚀 ~ el.checked:", el.checked)
+                    // console.log("🚀 ~ el.checked:", el.checked)
                     if( el.checked){
                         el_colr.classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
                         el_colr.classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
@@ -872,10 +873,13 @@
         jQuery("#correct_username_consumables").hide();
 
         let codeConsumables = ''
+        let BRAND = ''
         let PRODUCT = ''
         function checkNameBrand() {
             PRODUCT = jQuery('#ID_PRODUCT').val();
-            console.log("🚀 ~ checkNameBrand ~ PRODUCT:", PRODUCT)
+            BRAND = jQuery('#BRAND').val();
+            // console.log("🚀 ~ checkNameBrand ~ BRAND:", BRAND)
+            // console.log("🚀 ~ checkNameBrand ~ PRODUCT:", PRODUCT)
             if (PRODUCT.length > 4) {
                 jQuery.ajax({
                     method: "POST",
@@ -893,6 +897,10 @@
                         jQuery('#username_loading_consumables').hide();
                         jQuery("#correct_username_consumables").hide();
                         let checkvalue = checkValueSelect2();
+                        // if (BRAND == '') {
+                        //     jQuery("#submitButton_consumables").attr("disabled", true);
+                        //     jQuery("#submitButton_consumables").addClass('cursor-not-allowed opacity-50');
+                        // } else 
                         if (PRODUCT == '') {
                             jQuery("#submitButton_consumables").attr("disabled", true);
                             jQuery("#submitButton_consumables").addClass('cursor-not-allowed opacity-50');
@@ -900,12 +908,18 @@
                             jQuery("#username_alert_consumables").hide();
                             jQuery("#ID_PRODUCT").removeClass("is-invalid");
                         } else if (!checknamebrand) {
+                            // console.log("🚀 ~ 1 ~ 1:", 1)
                             jQuery("#submitButton_consumables").attr("disabled", true);
                             jQuery("#submitButton_consumables").addClass('cursor-not-allowed opacity-50');
                             jQuery("#correct_username_consumables").hide();
                             jQuery("#username_alert_consumables").show();
                             jQuery("#ID_PRODUCT").removeClass("is-invalid");
+                        } else if (BRAND == '') {
+                            jQuery("#submitButton_consumables").attr("disabled", true);
+                            jQuery("#submitButton_consumables").addClass('cursor-not-allowed opacity-50');
+                            jQuery("#correct_username_consumables").show();
                         } else {
+                            // console.log("🚀 ~ 2 ~ :", 2)
                             jQuery("#submitButton_consumables").attr("disabled", false);
                             jQuery("#submitButton_consumables").removeClass('cursor-not-allowed opacity-50');
                             jQuery("#username_alert_consumables").hide();
@@ -932,7 +946,8 @@
         }
 
         function checkValueSelect2(id) {
-            console.log("🚀 ~ checkValueSelect2 ~ test:")
+            // console.log("🚀 ~ checkValueSelect2 ~ test:")
+            const BRAND = jQuery('#BRAND').val();
             // const VENDOR = jQuery('#VENDOR').val();
             // const GRP_P = jQuery('#GRP_P').val();
             // const BRAND_P = jQuery('#BRAND_P').val();
@@ -948,6 +963,12 @@
             // const UNIT_TYPE = jQuery('#UNIT_TYPE').val();
             // const ACC_TYPE = jQuery('#ACC_TYPE').val();
             // const CONDITION_SALE = jQuery('#CONDITION_SALE').val();
+
+            if (BRAND) {
+                jQuery('#BRAND_textalert').addClass('hidden');
+            } else {
+                jQuery('#BRAND_textalert').removeClass('hidden');
+            }
 
             // if (VENDOR) {
             //     jQuery('#VENDOR_textalert').addClass('hidden');
@@ -1025,15 +1046,20 @@
             //     jQuery('#CONDITION_SALE_textalert').removeClass('hidden');
             // }
 
+            return !!BRAND
             // return !!VENDOR && !!SUPPLIER && !!STATUS && !!CONDITION_SALE
             // return !!VENDOR && !!GRP_P && !!SUPPLIER && !!TYPE_G && !!SOLUTION && !!SERIES && !!CATEGORY && !!S_CAT && !!PDM_GROUP && !!STATUS && !!UNIT && !!UNIT_TYPE && !!ACC_TYPE && !!CONDITION_SALE
         }
 
         function onchangeValueSelect2() {
-            // let checkvalue = checkValueSelect2();
+            let checkvalue = checkValueSelect2();
+            // console.log("🚀 ~ onchangeValueSelect2 ~ checkvalue:", checkvalue)
             const PRODUCT = jQuery('#ID_PRODUCT').val();
-            // if (checkvalue && codeConsumables) {
-            if (codeConsumables) {
+            // if (codeConsumables) {
+            if (checkvalue && codeConsumables && PRODUCT) {
+                jQuery("#submitButton_consumables").attr("disabled", false);
+                jQuery("#submitButton_consumables").removeClass('cursor-not-allowed opacity-50');
+            } else if (checkvalue === false && checkvalue === '') {
                 jQuery("#submitButton_consumables").attr("disabled", false);
                 jQuery("#submitButton_consumables").removeClass('cursor-not-allowed opacity-50');
             } else {
