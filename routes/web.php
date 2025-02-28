@@ -82,6 +82,10 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         Route::get('/show/{product}', [ProductFormController::class, 'showAccount'])->name('show'); 
         Route::get('/edit/{product}', [ProductFormController::class, 'editAccount'])->name('edit'); 
         Route::post('/update_account/{product}', [ProductFormController::class, 'updateAccount'])->name('update_account');
+
+        // Schedule
+        Route::post('/list_account_schedule', [ProductFormController::class, 'listAccountSchedule'])->name('list_account_schedule');
+        Route::post('/update_account_schedule/{product}', [ProductFormController::class, 'updateAccountSchedule'])->name('update_account_schedule');
     });
 
     // product

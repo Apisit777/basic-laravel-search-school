@@ -28,59 +28,107 @@ class ToolController extends Controller
 
     public function solution()
     {
-        $data = Solution::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
-        return view('tool.solution.index', compact('data'));
-    }
-
-    public function series()
-    {
-        $data = Series::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
-        return view('tool.series.index', compact('data'));
-    }
-
-    public function category()
-    {
-        $data = Category::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
-        return view('tool.category.index', compact('data'));
-    }
-
-    public function subCategory()
-    {
-        $data = Sub_category::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
-
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
         $namePosition  = explode('-', $userpermission);
         $userpermission = trim(end($namePosition));
 
+        $data = Solution::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
         if ($userpermission == 'OP') {
-            $dataCategories = Category::select(
+            $idSolutions = Solution::select('ID')->where('BRAND', 'OP')->pluck('ID')->toArray();
+        } else if ($userpermission == 'CPS') {
+            $idSolutions = Solution::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+        } else if ($userpermission == 'BB') {
+            $idSolutions = Solution::select('ID')->where('BRAND', 'BB')->pluck('ID')->toArray();
+        } else if ($userpermission == 'LL') {
+            $idSolutions = Solution::select('ID')->where('BRAND', 'LL')->pluck('ID')->toArray();
+        }
+
+        return view('tool.solution.index', compact('data', 'idSolutions'));
+    }
+
+    public function series()
+    {
+        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        $userpermission = Auth::user()->getUserPermission->name_position;
+        $namePosition  = explode('-', $userpermission);
+        $userpermission = trim(end($namePosition));
+
+        $data = Series::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        if ($userpermission == 'OP') {
+            $idSeries = Series::select('ID')->where('BRAND', 'OP')->pluck('ID')->toArray();
+        } else if ($userpermission == 'CPS') {
+            $idSeries = Series::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+        } else if ($userpermission == 'BB') {
+            $idSeries = Series::select('ID')->where('BRAND', 'BB')->pluck('ID')->toArray();
+        } else if ($userpermission == 'LL') {
+            $idSeries = Series::select('ID')->where('BRAND', 'LL')->pluck('ID')->toArray();
+        }
+
+        return view('tool.series.index', compact('data', 'idSeries'));
+    }
+
+    public function category()
+    {
+        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        $userpermission = Auth::user()->getUserPermission->name_position;
+        $namePosition  = explode('-', $userpermission);
+        $userpermission = trim(end($namePosition));
+
+        $data = Category::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        if ($userpermission == 'OP') {
+            $idCategories = Category::select('ID')->where('BRAND', 'OP')->pluck('ID')->toArray();
+        } else if ($userpermission == 'CPS') {
+            $idCategories = Category::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+        } else if ($userpermission == 'BB') {
+            $idCategories = Category::select('ID')->where('BRAND', 'BB')->pluck('ID')->toArray();
+        } else if ($userpermission == 'LL') {
+            $idCategories = Category::select('ID')->where('BRAND', 'LL')->pluck('ID')->toArray();
+        }
+
+        return view('tool.category.index', compact('data', 'idCategories'));
+    }
+
+    public function subCategory()
+    {
+        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        $userpermission = Auth::user()->getUserPermission->name_position;
+        $namePosition  = explode('-', $userpermission);
+        $userpermission = trim(end($namePosition));
+
+        $data = Sub_category::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        if ($userpermission == 'OP') {
+            $dataCategories = Sub_category::select(
                 'ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'OP')
             ->orderby('ID', 'ASC')
             ->get();
+
+            $SubCategories = Sub_category::select('ID')->where('BRAND', 'OP')->pluck('ID')->toArray();
         } else if ($userpermission == 'CPS') {
-            $dataCategories = Category::select(
+            $dataCategories = Sub_category::select(
                 'ID',
                 'DESCRIPTION',
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->orderby('ID', 'ASC')
             ->get();
-        } else if ($userpermission == 'KTY') {
-            $userpermission = 'KTY';
-        } else if ($userpermission == 'GNC') {
-            $userpermission = 'GNC';
+
+            $SubCategories = Sub_category::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
         } else if ($userpermission == 'BB') {
             $userpermission = 'BB';
         } else if ($userpermission == 'LL') {
             $userpermission = 'LL';
         }
 
-        // dd($dataCategories);
-        return view('tool.sub_category.index', compact('data', 'dataCategories'));
+        // dd($SubCategories);
+        return view('tool.sub_category.index', compact('data', 'dataCategories', 'SubCategories'));
     }
 
     public function productGroup()
@@ -841,16 +889,10 @@ class ToolController extends Controller
 
     public function listSolution(Request $request)
     {
-        $limit = $request->input('length'); // limit per page
-        $request->merge([
-            'page' => ceil(($request->input('start') + 1) / $limit),
-        ]);
+        $limit = (int) $request->input('length'); // จำนวนต่อหน้า
+        $start = (int) $request->input('start', 0);
 
-        $GRP_P = $request->input('brand_id');
-        $DOC_NO = $request->search;
-        $field_detail = [
-            'product1s.PRODUCT',
-        ];
+        $searchSolutionNameAll = $request->input('searchSolutiontName', '');
 
         $data = Solution::select(
             'ID',
@@ -858,6 +900,7 @@ class ToolController extends Controller
             'BRAND',
             'EDIT_DT'
         )
+        // ->join('product1s', 'solutions.ID', '=', 'product1s.SOLUTION')
         ->orderBy('DESCRIPTION', 'ASC');
 
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
@@ -869,26 +912,24 @@ class ToolController extends Controller
                 $data = Solution::select(
                 'ID',
                 'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
+                'BRAND'
             )
             ->orderBy('DESCRIPTION', 'ASC');
         } else if ($userpermission == 'OP') {
             $data = Solution::select(
                 'ID',
                 'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
+                'solutions.BRAND AS BRAND'
             )
-            ->where('BRAND', 'OP')
+            // ->join('product1s', 'solutions.ID', '=', 'product1s.SOLUTION')
+            ->where('solutions.BRAND', 'OP')
             ->orderBy('DESCRIPTION', 'ASC');
 
         } else if ($userpermission == 'CPS') {
             $data = Solution::select(
                 'ID',
                 'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
+                'BRAND'
             )
             ->where('BRAND', 'CPS')
             ->orderBy('DESCRIPTION', 'ASC');
@@ -896,8 +937,7 @@ class ToolController extends Controller
             $data = Solution::select(
                 'ID',
                 'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
+                'BRAND'
             )
             ->where('BRAND', 'KTY')
             ->orderBy('DESCRIPTION', 'ASC');
@@ -905,8 +945,7 @@ class ToolController extends Controller
             $data = Solution::select(
                 'ID',
                 'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
+                'BRAND'
             )
             ->where('BRAND', 'KTY')
             ->orderBy('DESCRIPTION', 'ASC');
@@ -915,8 +954,7 @@ class ToolController extends Controller
             $data = Solution::select(
                 'ID',
                 'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
+                'BRAND'
             )
             ->where('BRAND', 'BB')
             ->orderBy('DESCRIPTION', 'ASC');
@@ -924,52 +962,45 @@ class ToolController extends Controller
             $data = Solution::select(
                 'ID',
                 'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
+                'BRAND'
             )
             ->where('BRAND', 'LL')
             ->orderBy('DESCRIPTION', 'ASC');
         }
 
-        if ($GRP_P != null) {
-            $data->where('product1s.GRP_P', $GRP_P);
+        if ($request->searchSolutionId) {
+            $data = $data->where('solutions.ID', $request->searchSolutionId);
         }
 
-        if (null != $DOC_NO) {
-            $data = $data->where(function ($data) use ($DOC_NO, $field_detail) {
-                for ($i = 0; $i < count($field_detail); $i++) {
-                    $data->orWhere($field_detail[$i], 'like', '%'.$DOC_NO.'%');
-                }
+        if (!empty($searchSolutionNameAll)) {
+            $data->where(function ($q) use ($searchSolutionNameAll) {
+                $q->orWhere('solutions.DESCRIPTION', 'like', '%' . $searchSolutionNameAll . '%');
             });
         }
 
         // dd($data->toSql());
-        $data = $data->paginate($limit);
-        $totalRecords = $data->total();
-        $totalRecordwithFilter = $data->count();
-        $response = [
-            'draw' => intval($request->draw),
-            'iTotalRecords' => $totalRecordwithFilter,
-            'iTotalDisplayRecords' => $totalRecords,
-            'aaData' => $data->items(),
-        ];
-
-        return response()->json($response);
+        // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
+        $totalRecords = $data->count();
+        if ($limit > 0) {
+             $data->limit($limit)->offset($start);
+        }
+        $records = $data->get();
+ 
+        return response()->json([
+             'draw' => intval($request->draw),
+             'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
+             'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
+             'aaData' => $records,
+        ]);
     }
 
     public function listSeries(Request $request)
     {
-        $limit = $request->input('length'); // limit per page
-        $request->merge([
-            'page' => ceil(($request->input('start') + 1) / $limit),
-        ]);
+        $limit = (int) $request->input('length'); // จำนวนต่อหน้า
+        $start = (int) $request->input('start', 0);
 
-        $GRP_P = $request->input('brand_id');
-        $DOC_NO = $request->search;
-        $field_detail = [
-            'product1s.PRODUCT',
-        ];
-
+        $searchSeriesNameAll = $request->input('searchSeriesName', '');
+        
         $data = Series::select(
             'ID',
             'DESCRIPTION',
@@ -1049,44 +1080,38 @@ class ToolController extends Controller
             ->orderBy('DESCRIPTION', 'ASC');
         }
 
-        if ($GRP_P != null) {
-            $data->where('product1s.GRP_P', $GRP_P);
+        if ($request->searchSeriesId) {
+            $data = $data->where('series.ID', $request->searchSeriesId);
         }
 
-        if (null != $DOC_NO) {
-            $data = $data->where(function ($data) use ($DOC_NO, $field_detail) {
-                for ($i = 0; $i < count($field_detail); $i++) {
-                    $data->orWhere($field_detail[$i], 'like', '%'.$DOC_NO.'%');
-                }
+        if (!empty($searchSeriesNameAll)) {
+            $data->where(function ($q) use ($searchSeriesNameAll) {
+                $q->orWhere('series.DESCRIPTION', 'like', '%' . $searchSeriesNameAll . '%');
             });
         }
 
         // dd($data->toSql());
-        $data = $data->paginate($limit);
-        $totalRecords = $data->total();
-        $totalRecordwithFilter = $data->count();
-        $response = [
-            'draw' => intval($request->draw),
-            'iTotalRecords' => $totalRecordwithFilter,
-            'iTotalDisplayRecords' => $totalRecords,
-            'aaData' => $data->items(),
-        ];
-
-        return response()->json($response);
+        // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
+        $totalRecords = $data->count();
+        if ($limit > 0) {
+             $data->limit($limit)->offset($start);
+        }
+        $records = $data->get();
+ 
+        return response()->json([
+             'draw' => intval($request->draw),
+             'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
+             'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
+             'aaData' => $records,
+        ]);
     }
 
     public function listCategory(Request $request)
     {
-        $limit = $request->input('length'); // limit per page
-        $request->merge([
-            'page' => ceil(($request->input('start') + 1) / $limit),
-        ]);
+        $limit = (int) $request->input('length'); // จำนวนต่อหน้า
+        $start = (int) $request->input('start', 0);
 
-        $GRP_P = $request->input('brand_id');
-        $DOC_NO = $request->search;
-        $field_detail = [
-            'product1s.PRODUCT',
-        ];
+        $searchCategoryNameAll = $request->input('searchCategoryName', '');
 
         $data = Category::select(
             'ID',
@@ -1167,44 +1192,38 @@ class ToolController extends Controller
             ->orderBy('DESCRIPTION', 'ASC');
         }
 
-        if ($GRP_P != null) {
-            $data->where('product1s.GRP_P', $GRP_P);
+        if ($request->searchCategoryId) {
+            $data = $data->where('categories.ID', $request->searchCategoryId);
         }
 
-        if (null != $DOC_NO) {
-            $data = $data->where(function ($data) use ($DOC_NO, $field_detail) {
-                for ($i = 0; $i < count($field_detail); $i++) {
-                    $data->orWhere($field_detail[$i], 'like', '%'.$DOC_NO.'%');
-                }
+        if (!empty($searchCategoryNameAll)) {
+            $data->where(function ($q) use ($searchCategoryNameAll) {
+                $q->orWhere('categories.DESCRIPTION', 'like', '%' . $searchCategoryNameAll . '%');
             });
         }
 
         // dd($data->toSql());
-        $data = $data->paginate($limit);
-        $totalRecords = $data->total();
-        $totalRecordwithFilter = $data->count();
-        $response = [
-            'draw' => intval($request->draw),
-            'iTotalRecords' => $totalRecordwithFilter,
-            'iTotalDisplayRecords' => $totalRecords,
-            'aaData' => $data->items(),
-        ];
-
-        return response()->json($response);
+        // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
+        $totalRecords = $data->count();
+        if ($limit > 0) {
+             $data->limit($limit)->offset($start);
+        }
+        $records = $data->get();
+ 
+        return response()->json([
+             'draw' => intval($request->draw),
+             'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
+             'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
+             'aaData' => $records,
+        ]);
     }
 
     public function listSubCategory(Request $request)
     {
-        $limit = $request->input('length'); // limit per page
-        $request->merge([
-            'page' => ceil(($request->input('start') + 1) / $limit),
-        ]);
+        $limit = (int) $request->input('length'); // จำนวนต่อหน้า
+        $start = (int) $request->input('start', 0);
 
-        $GRP_P = $request->input('brand_id');
-        $DOC_NO = $request->search;
-        $field_detail = [
-            'product1s.PRODUCT',
-        ];
+        $searchSubCategoryNameAll = $request->input('searchSubCategoryName', '');
 
         $data = Sub_category::select(
             'ID',
@@ -1292,30 +1311,30 @@ class ToolController extends Controller
             ->orderBy('DESCRIPTION', 'ASC');
         }
 
-        if ($GRP_P != null) {
-            $data->where('product1s.GRP_P', $GRP_P);
+        if ($request->searchSubCategoryId) {
+            $data = $data->where('sub_categories.ID', $request->searchSubCategoryId);
         }
 
-        if (null != $DOC_NO) {
-            $data = $data->where(function ($data) use ($DOC_NO, $field_detail) {
-                for ($i = 0; $i < count($field_detail); $i++) {
-                    $data->orWhere($field_detail[$i], 'like', '%'.$DOC_NO.'%');
-                }
+        if (!empty($searchSubCategoryNameAll)) {
+            $data->where(function ($q) use ($searchSubCategoryNameAll) {
+                $q->orWhere('sub_categories.DESCRIPTION', 'like', '%' . $searchSubCategoryNameAll . '%');
             });
         }
 
         // dd($data->toSql());
-        $data = $data->paginate($limit);
-        $totalRecords = $data->total();
-        $totalRecordwithFilter = $data->count();
-        $response = [
-            'draw' => intval($request->draw),
-            'iTotalRecords' => $totalRecordwithFilter,
-            'iTotalDisplayRecords' => $totalRecords,
-            'aaData' => $data->items(),
-        ];
-
-        return response()->json($response);
+        // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
+        $totalRecords = $data->count();
+        if ($limit > 0) {
+             $data->limit($limit)->offset($start);
+        }
+        $records = $data->get();
+ 
+        return response()->json([
+             'draw' => intval($request->draw),
+             'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
+             'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
+             'aaData' => $records,
+        ]);
     }
 
     public function listProductGroup(Request $request)

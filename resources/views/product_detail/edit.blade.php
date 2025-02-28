@@ -230,11 +230,11 @@
                                                                     <textarea id="message" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">สี(ภาษาอังกฤษ)<span class="text-danger"> *</span></label>
+                                                                    <label for="name">สี(ภาษาอังกฤษ)</label>
                                                                     <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="name">สี(ภาษาอังกฤษ)<span class="text-danger"> *</span></label>
+                                                                    <label for="name">สี(ภาษาอังกฤษ)</label>
                                                                     <input type="text" name="name" id="name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                             </div>

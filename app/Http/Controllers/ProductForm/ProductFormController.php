@@ -24,6 +24,7 @@ use App\Models\Acctype;
 use App\Models\Owner;
 use App\Models\Grp_p;
 use App\Models\TestNewBarcode;
+use App\Models\ProductPriceSchedule;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -604,45 +605,65 @@ class ProductFormController extends Controller
 
     public function editAccount(Request $request)
     {
+        // $data = Account::select(
+        //     // 'id',
+        //     'accounts.product AS product',
+        //     'accounts.cost AS cost',
+        //     'sale_tp',
+        //     'cost_km',
+        //     'perfume_tax',
+        //     'cost_perfume_tax',
+        //     'cost5percent',
+        //     'cost10percent',
+        //     'cost_other',
+        //     'sale_km',
+        //     'sale_km20percent',
+        //     'sale_km_other',
+        //     'price_start_date',
+        //     'note',
+        //     'product1s.BRAND AS BRAND',
+        //     'product1s.NAME_THAI AS NAME_THAI',
+        //     'product1s.NAME_ENG AS NAME_ENG',
+        //     'product1s.SHORT_THAI AS SHORT_THAI',
+        //     'product1s.SHORT_ENG AS SHORT_ENG',
+        //     'type_gs.ID AS TYPE_G',
+        //     'acctypes.ID AS ACC_TYPE',
+        //     'owners.OWNER AS VENDOR',
+        //     'grp_ps.GRP_P AS GRP_P',
+        //     'product1s.PRICE AS PRICE',
+        //     'product1s.REG_DATE AS REG_DATE',
+        //     'product1s.EDIT_DT AS EDIT_DT',
+        // )
+        // ->leftJoin('product1s', 'accounts.product', '=', 'product1s.PRODUCT')
+        // ->leftJoin('owners', 'product1s.VENDOR', '=', 'owners.OWNER')
+        // ->leftJoin('grp_ps', 'product1s.GRP_P', '=', 'grp_ps.GRP_P')
+        // ->leftJoin('type_gs', 'product1s.TYPE_G', '=', 'type_gs.ID')
+        // ->leftJoin('acctypes', 'product1s.ACC_TYPE', '=', 'acctypes.ID')
+        // ->where('accounts.product', $request->product)
+        // ->first();
+        
         $data = Account::select(
             // 'id',
             'accounts.product AS product',
-            'accounts.cost AS cost',
+            'accounts.cost AS cost_old',
             'sale_tp',
-            'cost_km',
-            'perfume_tax',
-            'cost_perfume_tax',
-            'cost5percent',
-            'cost10percent',
-            'cost_other',
-            'sale_km',
-            'sale_km20percent',
-            'sale_km_other',
             'price_start_date',
-            'note',
             'product1s.BRAND AS BRAND',
-            'product1s.NAME_THAI AS NAME_THAI',
-            'product1s.NAME_ENG AS NAME_ENG',
-            'product1s.SHORT_THAI AS SHORT_THAI',
-            'product1s.SHORT_ENG AS SHORT_ENG',
-            'type_gs.ID AS TYPE_G',
-            'acctypes.ID AS ACC_TYPE',
-            'owners.OWNER AS VENDOR',
-            'grp_ps.GRP_P AS GRP_P',
-            'product1s.PRICE AS PRICE',
-            'product1s.REG_DATE AS REG_DATE',
-            'product1s.EDIT_DT AS EDIT_DT',
+            'product_price_schedules.price AS price',
+            'product_price_schedules.active_date AS active_date',
         )
         ->leftJoin('product1s', 'accounts.product', '=', 'product1s.PRODUCT')
         ->leftJoin('owners', 'product1s.VENDOR', '=', 'owners.OWNER')
         ->leftJoin('grp_ps', 'product1s.GRP_P', '=', 'grp_ps.GRP_P')
         ->leftJoin('type_gs', 'product1s.TYPE_G', '=', 'type_gs.ID')
         ->leftJoin('acctypes', 'product1s.ACC_TYPE', '=', 'acctypes.ID')
+        ->leftJoin('product_price_schedules', 'accounts.product', '=', 'product_price_schedules.product_id')
         ->where('accounts.product', $request->product)
         ->first();
 
         $data->REG_DATE = date('Y-m-d', strtotime($data->REG_DATE));
         $data->EDIT_DT = date('Y-m-d', strtotime($data->EDIT_DT));
+        $data->active_date = date('Y-m-d', strtotime($data->active_date));
         // dd($data);
 
         $owners = Owner::select('OWNER AS VENDOR', 'REMARK')->get();
@@ -654,6 +675,59 @@ class ProductFormController extends Controller
         return view('account.edit', compact('data', 'owners', 'grp_ps', 'type_gs', 'acctypes'));
     }
 
+    public function updateAccountSchedule(Request $request)
+    {
+        // dd($request);
+        DB::beginTransaction();
+        try {
+            // dd($request);
+            $data_product_account_upddate = [
+                'price' => $request->price,
+                'active_date' => $request->active_date,
+
+                // 'NAME_THAI' => $request->NAME_THAI,
+                // 'SHORT_THAI' => $request->SHORT_THAI,
+                // 'NAME_ENG' => $request->NAME_ENG,
+                // 'SHORT_ENG' => $request->SHORT_ENG,
+                // 'TYPE_G' => $request->TYPE_G,
+                // 'ACC_TYPE' => $request->ACC_TYPE,
+            ];
+
+            // dd($data_product_account_upddate);
+            $updateAccountSchedule = ProductPriceSchedule::updateOrCreate(['product_id' => $request->product], [
+                'price' => $data_product_account_upddate['price'],
+                // 'price_old',
+
+                'active_date' => $data_product_account_upddate['active_date'],
+                'status' => 0,
+                // 'cost' => $data_product_account_upddate['cost'],
+
+                // 'perfume_tax',
+                // 'cost_perfume_tax',
+                // 'cost5percent',
+                // 'cost10percent',
+                // 'cost_other',
+                // 'sale_km',
+                // 'sale_km20percent',
+                // 'sale_km_other',
+                // 'note',
+                // 'status_edit_dt',
+                // 'note' => $request->note,
+                // 'status_edit_dt' => '',
+                // 'updated_by' => Auth::user()->username,
+                // 'updated_at' => date("Y/m/d H:i:s")
+            ]);
+
+            // dd($updateAccountSchedule);
+            DB::commit();
+            $request->session()->flash('status', 'อัปเดตข้อมูลสำเร็จ');
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'อัปเดตข้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
     public function updateAccount(Request $request)
     {
         // dd($request);
@@ -797,6 +871,55 @@ class ProductFormController extends Controller
         ];
 
         return response()->json($response);
+    }
+
+    public function listAccountSchedule(Request $request)
+    {
+        $limit = (int) $request->input('length'); // จำนวนต่อหน้า
+        $start = (int) $request->input('start', 0);
+
+        $data = ProductPriceSchedule::select(
+            'accounts.cost AS cost_old',
+            'product_price_schedules.id AS id',
+            'product_id',
+            'price',
+            'price_old',
+            'active_date',
+            'status',
+            // 'cost',
+            // 'perfume_tax',  
+            // 'cost_perfume_tax', 
+            // 'cost5percent',
+            // 'cost10percent',
+            // 'cost_other',
+            // 'sale_km',
+            // 'sale_km20percent',
+            // 'sale_km_other',
+            // 'note',
+            // 'status_edit_dt'
+        )
+        ->join('accounts', 'accounts.product', '=', 'product_price_schedules.product_id') 
+        ->orderBy('id', 'DESC');
+
+        // dd($data);
+        // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
+        $totalRecords = $data->count();
+        if ($limit > 0) {
+            $data->limit($limit)->offset($start);
+        }
+        $records = $data->get();
+
+        $records = $records->map(function($item){
+            $item->active_date = date('d-m-Y', strtotime($item->active_date));
+            return $item;
+        });
+
+        return response()->json([
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
+            'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
+            'aaData' => $records,
+        ]);
     }
 
     private function ean13_check_digit()

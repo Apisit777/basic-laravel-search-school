@@ -30,6 +30,48 @@
             /* color: #FFFFFF!important; */
             color: #818181!important;
         }
+        .table td, .table th {
+            padding: 0.55rem !important;
+        }
+        .select2-container .select2-dropdown .select2-results__options {
+            max-height: 360px !important;
+        }
+        .select2 {
+            width: 100%!important; /* force fluid responsive */
+        }
+        .swal2-select option {
+            background-color: #303030;
+        }
+        .select2-container--open {
+            z-index: 99999999999999;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__clear {
+            float: right;
+            cursor: pointer;
+            --tw-text-opacity: 1;
+            color: rgb(200 30 30 / var(--tw-text-opacity));
+            margin-right: 24px!important;
+            margin-top: -1px!important;
+            font-size: 20px!important;
+        }
+        .select2-container {
+            margin-bottom: 0rem!important;
+        }
+        .select2-container--default .select2-selection--single {
+            height: 2rem!important;
+            border-width: 1px;
+            padding: 0.1rem!important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            position: absolute;
+            margin-top: -5px!important;
+        }
+        .h-10 {
+            height: 2rem!important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            font-size: small!important;
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -205,8 +247,24 @@
                             <th>ID</th>
                             <th>Description</th>
                             <th>Brand</th>
-                            <!-- <th>วันที่อัปเดดข้อมูล</th> -->
                             <th>Action</th>
+                        </tr>
+                        <tr>
+                            <th>
+                                <select class="js-example-basic-single w-full rounded-sm text-xs" id="searchSeriesId" name="" onchange="seriesSearch()">
+                                    <option value="" class="text-xs"> --- กรุณาเลือก ---</option>
+                                    @foreach ($idSeries as $key => $idSerie)
+                                        <option value="{{ $idSerie }}">{{ $idSerie }}</option>
+                                    @endforeach
+                                </select>
+                            </th>
+                            <th>
+                            <input type="text" name="" id="searchSeriesName" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="ชื่อสินค้า . . ." value="" onkeyup="searchTable()" />
+                            </th>
+                            <th>
+                            </th>
+                            <th>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
@@ -261,6 +319,10 @@
     @endif
 
     <script>
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
+
         jQuery('#username_loading_id').hide();
         jQuery("#username_aler_id").hide();
         jQuery("#correct_username_id").hide();
@@ -391,16 +453,13 @@
             resposive: true,
             scrollX: true,
             orderCellsTop: true,
-            "order": [
-                [0, "desc"]
-            ],
-            "lengthMenu": [10, 20, 30, 50],
-            // "layout": {
-            //     "topEnd": {
-            //         "buttons": ['excel', 'colvis']
-            //         // buttons: ['copy', 'excel', 'pdf', 'colvis']
-            //     }
-            // },
+            ordering: false,
+            deferRender: true,
+            scroller: true,
+            scrollY: "800px",
+            "order": [[1, "desc"]],
+            "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
+            "pageLength": 20, // ค่าเริ่มต้นคือ "20"
             "ajax": {
                 "headers": {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -410,9 +469,8 @@
                 "type": "POST",
                 'data': function(data) {
                     // Read values
-                    data.brand_id = $('#brand_id').val();
-                    data.BARCODE = $('#BARCODE').val();
-                    data.search = $('#search').val();
+                    data.searchSeriesId = $('#searchSeriesId').val();
+                    data.searchSeriesName = $('#searchSeriesName').val();
 
                     data._token = $('meta[name="csrf-token"]').attr('content');
                 }
@@ -476,6 +534,17 @@
                 }
             ]
         });
+
+        // Function สำหรับเรียกใช้ DataTable เมื่อมีการพิมพ์
+        function searchTable() {
+            console.log("Search: ", $('#search').val());
+            // บังคับให้ DataTables รีโหลดข้อมูลใหม่
+            mytableDatatable.ajax.reload(null, false); 
+        }
+
+        function seriesSearch() {
+            mytableDatatable.draw();
+        }
 
         const dlayMessage = 100;
         function createProductGroup() {

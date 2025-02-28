@@ -7,6 +7,8 @@ use App\Models\Food;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 class ProductImageController extends Controller
 {
@@ -66,28 +68,63 @@ class ProductImageController extends Controller
             if ($request->hasFile('images')) {
                 $year = date('Y');
                 $month = date('m');
+                $seq = Food::max('seq') + 1; // ค้นหาค่า seq สูงสุดแล้วเพิ่ม 1
                 foreach ($request->file('images') as $file) {
-                    $filename = 'img_' . uniqid() . '.' . $file->getClientOriginalExtension();
                     $img_path = "uploads/warehouse/$year/$month/";
+                    $filename = 'img_' . Str::uuid() . '.' . $file->getClientOriginalExtension();
+                    // สร้างโฟลเดอร์ถ้ายังไม่มี
+                    if (!file_exists(public_path($img_path))) {
+                        mkdir(public_path($img_path), 0777, true);
+                    }
                     $file->move(public_path($img_path), $filename);
-                    Food::create([
-                        'path' => $img_path . $filename
-                    ]);
+                    Food::updateOrCreate(
+                        ['seq' => $seq], // ตรวจสอบ seq ในฐานข้อมูล
+                        [
+                            'path' => $img_path . $filename,
+                            'seq' => $seq // บันทึกค่า seq ใหม่
+                        ]
+                    );
+                    $seq++; // เพิ่มค่า seq สำหรับรายการถัดไป
                 }
             }
 
             DB::commit();
-            session()->flash('status', 'อัปเดตข้อมูลสำเร็จ');
+            session()->flash('message', 'อัปเดตข้อมูลสำเร็จ');
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
             DB::rollback();
-            session()->flash('status', 'อัปเดตข้อมูลไม่สำเร็จ!');
+            session()->flash('message', 'อัปเดตข้อมูลไม่สำเร็จ!');
             return response()->json([
                 'success' => false,
                 'status' => 'failed',
                 'message' => 'Line ' . $e->getLine() . ': ' . $e->getMessage()
             ]);
         }
+    }
+
+    public function deleteImg($id) 
+    {
+        // ค้นหาข้อมูล
+        $data = Food::select('path')->where('id', $id)->first();
+
+        // เช็คว่าพบข้อมูลหรือไม่
+        if (!$data) {
+            return response()->json(['message' => 'Image not found in database.'], 404);
+        }
+
+        $fullpath = public_path($data->path);
+
+        // เช็คว่าไฟล์มีอยู่จริงหรือไม่
+        if (File::exists($fullpath)) { 
+            File::delete($fullpath); // ลบไฟล์จริง
+        } else { 
+            return response()->json(['message' => 'File does not exist.'], 404);
+        } 
+
+        // ลบข้อมูลออกจากฐานข้อมูล
+        Food::where('id', $id)->delete();
+
+        return response()->json(['message' => 'Image deleted successfully.'], 200);
     }
 
     /**

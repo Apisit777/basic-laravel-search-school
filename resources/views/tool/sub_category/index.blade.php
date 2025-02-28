@@ -30,7 +30,9 @@
             /* color: #FFFFFF!important; */
             color: #818181!important;
         }
-
+        .table td, .table th {
+            padding: 0.55rem !important;
+        }
         .select2-container .select2-dropdown .select2-results__options {
             max-height: 360px !important;
         }
@@ -51,6 +53,24 @@
             margin-right: 24px!important;
             margin-top: -1px!important;
             font-size: 20px!important;
+        }
+        .select2-container {
+            margin-bottom: 0rem!important;
+        }
+        .select2-container--default .select2-selection--single {
+            height: 2rem!important;
+            border-width: 1px;
+            padding: 0.1rem!important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            position: absolute;
+            margin-top: -5px!important;
+        }
+        .h-10 {
+            height: 2rem!important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            font-size: small!important;
         }
     </style>
 
@@ -276,6 +296,23 @@
                             <th>Brand</th>
                             <th>Action</th>
                         </tr>
+                        <tr>
+                            <th>
+                                <select class="js-example-basic-single w-full rounded-sm text-xs" id="searchSubCategoryId" name="" onchange="subCategorySearch()">
+                                    <option value="" class="text-xs"> --- กรุณาเลือก ---</option>
+                                    @foreach ($SubCategories as $key => $SubCategorie)
+                                        <option value="{{ $SubCategorie }}">{{ $SubCategorie }}</option>
+                                    @endforeach
+                                </select>
+                            </th>
+                            <th>
+                            <input type="text" name="" id="searchSubCategoryName" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="ชื่อสินค้า . . ." value="" onkeyup="searchTable()" />
+                            </th>
+                            <th>
+                            </th>
+                            <th>
+                            </th>
+                        </tr>
                     </thead>
                     <tbody>
                     </tbody>
@@ -432,16 +469,13 @@
             resposive: true,
             scrollX: true,
             orderCellsTop: true,
-            "order": [
-                [0, "desc"]
-            ],
-            "lengthMenu": [10, 20, 30, 50],
-            // "layout": {
-            //     "topEnd": {
-            //         "buttons": ['excel', 'colvis']
-            //         // buttons: ['copy', 'excel', 'pdf', 'colvis']
-            //     }
-            // },
+            ordering: false,
+            deferRender: true,
+            scroller: true,
+            scrollY: "800px",
+            "order": [[1, "desc"]],
+            "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
+            "pageLength": 20, // ค่าเริ่มต้นคือ "20"
             "ajax": {
                 "headers": {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -451,9 +485,8 @@
                 "type": "POST",
                 'data': function(data) {
                     // Read values
-                    data.brand_id = $('#brand_id').val();
-                    data.BARCODE = $('#BARCODE').val();
-                    data.search = $('#search').val();
+                    data.searchSubCategoryId = $('#searchSubCategoryId').val();
+                    data.searchSubCategoryName = $('#searchSubCategoryName').val();
 
                     data._token = $('meta[name="csrf-token"]').attr('content');
                 }
@@ -510,6 +543,17 @@
                 }
             ]
         });
+
+        // Function สำหรับเรียกใช้ DataTable เมื่อมีการพิมพ์
+        function searchTable() {
+            console.log("Search: ", $('#search').val());
+            // บังคับให้ DataTables รีโหลดข้อมูลใหม่
+            mytableDatatable.ajax.reload(null, false); 
+        }
+
+        function subCategorySearch() {
+            mytableDatatable.draw();
+        }
 
         const dlayMessage = 100;
         function createProductGroup() {

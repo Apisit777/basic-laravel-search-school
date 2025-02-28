@@ -41,6 +41,7 @@ use App\Models\SeleChannel;
 use App\Models\ProductChannel;
 use App\Models\ProductGroup;
 use App\Models\Account;
+use App\Models\ProductPriceSchedule;
 use App\Models\ProductDetail;
 use Illuminate\Support\Facades\Log;
 
@@ -1870,6 +1871,7 @@ class ProductController extends Controller
 
             $craeteProductAccount = Account::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
                 'COST' => $copyProductMaster->COST,
+                'status_edit_dt' => '',
                 'created_at' => date("Y/m/d h:i:s"),
             ]);
 
@@ -2007,6 +2009,14 @@ class ProductController extends Controller
             $craeteProductAccount = Account::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
                 'COST' => $copyProductMaster->COST,
                 'created_at' => date("Y/m/d h:i:s"),
+            ]);
+
+            $craeteProductAccount = ProductPriceSchedule::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
+                'price' => $copyProductMaster->COST,
+                'status' => 0,
+                'status_edit_dt' => '',
+                'created_by' => Auth::user()->username,
+                'created_at' => date("Y/m/d H:i:s")
             ]);
 
             if (!is_null($data->BRAND)) {
@@ -2155,22 +2165,10 @@ class ProductController extends Controller
                 'STATUS_EDIT_DT' => '',
             ];
 
+             // dd($data_product);
             // dd($data_product);
 
             $productMaster = Product1::create($data_product);
-
-            // $craeteProductretail = ProductDetail::updateOrCreate(['product' => $productMaster->PRODUCT], [
-            //     'fad' => $productMaster->COST,
-            //     'inner_barcode' => $productMaster->COST,
-            //     'inner_pack_size' => $productMaster->COST,
-            //     'upd_user' => Auth::user()->username,
-            //     'upd_date' => date("Y/m/d H:i:s"),
-            // ]);
-
-            $craeteProductAccount = Account::updateOrCreate(['product' => $productMaster->PRODUCT], [
-                'COST' => $productMaster->COST,
-                'created_at' => date("Y/m/d H:i:s"),
-            ]);
 
             // dd($request);
             // if(!is_null($request->sele_channel[0])) {
@@ -2202,6 +2200,39 @@ class ProductController extends Controller
                     );
                 }
             }
+
+            // $craeteProductAccount = Account::updateOrCreate(['product' => $data_product['PRODUCT']], [
+            //     'COST' => $productMaster->COST,
+            //     'status_edit_dt' => '',
+            //     'created_at' => date("Y/m/d H:i:s"),
+            // ]);
+
+            // if ( $productMaster['BRAND'] == 'CPS' ) {
+            //     $craeteProductretail = ProductDetail::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+            //         'corporation_id' => $productMaster->BRAND,
+            //         'fad' => $productMaster->REGISTER,
+            //         'inner_barcode' => $productMaster->BAR_PACK1,
+            //         'inner_pack_size' => $productMaster->PACK_SIZE1,
+            //         'upd_user' => Auth::user()->username,
+            //         'upd_date' => date("Y/m/d H:i:s"),
+            //     ]);
+    
+            //     $craeteProductAccountSchedule = ProductPriceSchedule::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+            //         // 'price' => $productMaster->COST,
+            //         'price' => 0,
+            //         'status' => 0,
+            //         'status_edit_dt' => '',
+            //         'created_by' => Auth::user()->username,
+            //         'created_at' => date("Y/m/d H:i:s")
+            //     ]);
+            // }
+
+            // dd($attributes = [
+            //     'productMaster' => $productMaster->toArray(),
+            //     'craeteProductAccount' => $craeteProductAccount->toArray(),
+            //     'craeteProductretail' => $craeteProductretail->toArray(),
+            //     'craeteProductAccountSchedule' => $craeteProductAccountSchedule->toArray(),
+            // ]);
 
             DB::commit();
             $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
@@ -3499,6 +3530,24 @@ class ProductController extends Controller
                     'EDIT_DT' => date("Y-m-d"),
                     'STATUS_EDIT_DT' => '',
                 ];
+
+                if (!is_null($request->sele_channel[0])) {
+                    $multiChannels = ProductChannel::select('BRAND')->where('PRODUCT', $data_product_upddate['PRODUCT'])->whereNotIn('BRAND', $request->sele_channel)->delete();
+                    $user = Auth::user()->username;
+                    $dateTime = date('Y-m-d H:i:s');
+
+                    $updateData = [
+                        'UPDATED_BY' => $user,
+                        'UPDATED_AT' => $dateTime
+                    ];
+
+                    foreach ($request->sele_channel as $value) {
+                        $createSeleChannel = ProductChannel::updateOrCreate(
+            ['PRODUCT' => $data_product_upddate['PRODUCT'], 'BRAND' => $value],
+                    $updateData
+                        );
+                    }
+                }
 
                 // dd($data_product_upddate);
                 $productUpddateConsumables = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
