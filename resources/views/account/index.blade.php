@@ -216,6 +216,7 @@
                     <thead>
                         <tr>
                             <!-- <th>ID</th> -->
+                            <th>Action</th>
                             <th>Brand Product</th>
                             <th>รหัสสินค้า</th>
                             <!-- <th>ภาษีน้ำหอม</th>
@@ -230,7 +231,6 @@
                             <th>ประเภทสินค้า[บัญชี]</th></th>
                             <!-- <th>ราคาขาย KM + 20%</th>
                             <th>ราคาขาย KM+อื่นๆ</th> -->
-                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -355,70 +355,9 @@
                 }
             },
             orderable: true,
-            columnDefs: [{
+            columnDefs: [
+                {
                     targets: 0,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.BRAND;
-                    }
-                },
-                {
-                    targets: 1,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.product;
-                    }
-                },
-                // {
-                //     targets: 2,
-                //     orderable: true,
-                //     render: function(data, type, row) {
-                //         return row.NAME_THAI;
-                //     }
-                // },
-                {
-                    targets: 2,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.SHORT_ENG;
-                    }
-                },
-                // {
-                //     targets: 3,
-                //     orderable: true,
-                //     render: function(data, type, row) {
-                    //         return new Intl.NumberFormat('en-US', {
-                        //             minimumFractionDigits: 2,
-                        //             maximumFractionDigits: 2
-                        //         }).format(row.cost);
-                        //     }
-                        // },
-                {
-                    targets: 3,
-                    orderable: true,
-                    render: function(data, type, row) {
-                    return new Intl.NumberFormat('en-US', {
-                            minimumFractionDigits: 2,
-                            maximumFractionDigits: 2
-                        }).format(row.sale_tp);
-                    }
-                },
-                {
-                    targets: 4,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.DESCRIPTION;
-                    }
-                },
-                {
-                    targets: 5,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.ACC_DESCRIPTION;
-                    }
-                },
-                {
-                    targets: 6,
                     orderable: true,
                     className: 'text-center',
                     render: function(data, type, row) {
@@ -445,7 +384,68 @@
                                 </div>
                                `.replaceAll('/0', '/' + row.product);
                     }
+                },{
+                    targets: 1,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.BRAND;
+                    }
                 },
+                {
+                    targets: 2,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.product;
+                    }
+                },
+                // {
+                //     targets: 2,
+                //     orderable: true,
+                //     render: function(data, type, row) {
+                //         return row.NAME_THAI;
+                //     }
+                // },
+                {
+                    targets: 3,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.SHORT_ENG;
+                    }
+                },
+                // {
+                //     targets: 3,
+                //     orderable: true,
+                //     render: function(data, type, row) {
+                    //         return new Intl.NumberFormat('en-US', {
+                        //             minimumFractionDigits: 2,
+                        //             maximumFractionDigits: 2
+                        //         }).format(row.cost);
+                        //     }
+                        // },
+                {
+                    targets: 4,
+                    orderable: true,
+                    render: function(data, type, row) {
+                    return new Intl.NumberFormat('en-US', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }).format(row.sale_tp);
+                    }
+                },
+                {
+                    targets: 5,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.DESCRIPTION;
+                    }
+                },
+                {
+                    targets: 6,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.ACC_DESCRIPTION;
+                    }
+                }
             ]
         });
 

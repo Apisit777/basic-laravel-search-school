@@ -2,6 +2,16 @@
 @section('title', '')
 
     <style>
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* background-color: #7f7f7fe3; */
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
         .page-item.active .page-link {
             color: #fff !important;
             background: #1F2226 !important;
@@ -57,6 +67,24 @@
         }
         .dt-length  {
             color: #818181!important;
+        }
+
+        .table td, .table th {
+            padding: 0.55rem !important;
+        }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .animate-quarter-spin {
+            animation: spin 6s steps(2, end) infinite;
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
         }
     </style>
 
@@ -119,32 +147,33 @@
                                                             <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                                                                 @php
                                                                     $formattedDate = null;
-                                                                    if (!empty($data->price_start_date)) {
+                                                                    if (!empty($data->active_date)) {
                                                                         try {
-                                                                            $formattedDate = \Carbon\Carbon::createFromFormat('d/m/Y', $data->price_start_date)->format('Y-m-d');
+                                                                            $formattedDate = \Carbon\Carbon::createFromFormat('d/m/Y', $data->active_date)->format('Y-m-d');
                                                                         } catch (\Exception $e) {
                                                                             $formattedDate = null; // หากฟอร์แมตผิด ให้ใช้ค่า null
                                                                         }
                                                                     }
                                                                 @endphp
                                                                 <div class="md:col-span-4" style="position: relative;">
-                                                                    <label for="price_start_date">วันที่เริ่มใช้ราคา</label>
-                                                                    <input type="date" name="price_start_date" id="price_start_date"
+                                                                    <label for="active_date">วันที่เริ่มใช้ราคา</label>
+                                                                    <input type="date" name="active_date" id="active_date"
                                                                         class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center"
                                                                         placeholder=""
                                                                         autocomplete="off"
-                                                                        value="{{ $formattedDate }}"
+                                                                        value="{{ $data->active_date }}"
                                                                         min="2025-02-01" />
                                                                 </div>
                                                             </div>
                                                             <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                                                                 <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="COST">ต้นทุน Brand</label>
-                                                                    <input type="text" name="COST" id="COST" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <!-- <label for="sale_tp">ราคาขายบัญชี(TP)</label> -->
+                                                                    <label for="price">ราคาบัญชีใหม่</label>
+                                                                    <input type="text" name="price" id="price" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->price }}" />
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
-                                                                    <label for="sale_tp">ราคาขายบัญชี(TP)</label>
-                                                                    <input type="text" name="sale_tp" id="sale_tp" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                    <label for="COST">ต้นทุน Brand</label>
+                                                                    <input type="text" name="COST" id="COST" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
                                                                     <label for="cost_km">ต้นทุนผลิต KM</label>
@@ -212,7 +241,7 @@
                                     </svg>
                                     Back
                                 </a>
-                                <a class=" bg-[#3b5998] hover:bg-[#48639d] text-white font-bold py-1.5 px-4 rounded cursor-pointer" onclick="updateAccount()" disabled>
+                                <a id="btnSerarch" class=" bg-[#3b5998] hover:bg-[#48639d] text-white font-bold py-1.5 px-4 rounded cursor-pointer" onclick="accountSchedule()" disabled>
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF" class="-mt-1 w-5 h-5 hidden md:inline-block">
                                         <path d="M0 0h24v24H0V0z" fill="none"></path>
                                         <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
@@ -233,7 +262,7 @@
                 </div>
             </form>
 
-            <div class='w-12/12 mt-4 relative'>
+            <div class='w-12/12 relative'>
                     <div class="p-4">
                         <ul class="relative m-0 w-full list-none overflow-hidden p-0 transition-[height] duration-200 ease-in-out" data-twe-stepper-init="" data-twe-stepper-type="vertical">
                             <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
@@ -262,7 +291,7 @@
                                                 </div>
                                                 <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
                                                     <div id="containerexample" class="text-gray-900 dark:text-gray-100">
-                                                        <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
+                                                        <table id="account_schedule" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
                                                             <thead>
                                                                 <tr>
                                                                     <!-- <th>ID</th> -->
@@ -270,14 +299,14 @@
                                                                     <th>วันที่เริ่มใช้</th>
                                                                     <th>ราคาบัญชีใหม่</th>
                                                                     <th>ต้นทุน</th>
-                                                                    <th>ภาษีน้ำหอม</th>
+                                                                    <!-- <th>ภาษีน้ำหอม</th>
                                                                     <th>ต้นทุน + ภาษีน้ำหอม</th>
                                                                     <th>ต้นทุน+5%</th>
                                                                     <th>ต้นทุน+10%</th>
                                                                     <th>ต้นทุน+อื่นๆ</th>
                                                                     <th>ราคาขาย KM</th>
                                                                     <th>ราคาขาย KM + 20%</th>
-                                                                    <th>ราคาขาย KM+อื่นๆ</th>
+                                                                    <th>ราคาขาย KM+อื่นๆ</th> -->
                                                                     <!-- <th>ต้นทุน</th> -->
                                                                 </tr>
                                                             </thead>
@@ -353,6 +382,7 @@
     </div>
 
     <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
+    <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
     <script src="{{ asset('js/flowbite-2.3.0.min.js') }}"></script>
     <script src="{{ asset('js/3.10.1-jszip.min.js') }}"></script>
     <script src="{{ asset('js/2.0.5-dataTables.js') }}"></script>
@@ -364,9 +394,32 @@
     <script src="{{ asset('js/buttons-colVis.min.js') }}"></script>
     <script src="{{ asset('js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
-    <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
+
+    @if (session('status'))
+        <script>
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "preventDuplicates": false,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+            jQuery().ready(function () {
+                toastr.success('{{ session('status') }}');
+            });
+        </script>
+    @endif
+
     <script>
-        
         getParmeterLogin()
         function getParmeterLogin() {
             let dataLogin = sessionStorage.getItem("credetail");
@@ -413,8 +466,14 @@
             $('.js-example-basic-single').select2();
             onOpenhandler();
             document.querySelectorAll('.setcheckbox')[0].checked = true
+            document.querySelectorAll('.setcheckbox')[1].checked = true
+            document.querySelectorAll('.setcheckbox')[2].checked = true
             document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
             document.querySelectorAll('.bg_step_color')[0].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+            document.querySelectorAll('.bg_step_color')[1].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+            document.querySelectorAll('.bg_step_color')[1].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+            document.querySelectorAll('.bg_step_color')[2].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+            document.querySelectorAll('.bg_step_color')[2].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
         });
 
         let i = 0;
@@ -550,9 +609,9 @@
             // }
         }
 
-        const dlayMessage = 1000;
+        const dlayMessage = 500;
 
-        function createAccount() {
+        function accountSchedule() {
             jQuery.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
@@ -560,25 +619,44 @@
             });
             $.ajax({
                 method: "POST",
-                url: "/create_new_product_develop",
-                data: $("#create_NPDRequest").serialize(),
+                url: "{{ route('account.update_account_schedule', $data->product) }}",
+                data: $("#update_product_account").serialize(),
                 beforeSend: function () {
                     $('#loader').removeClass('hidden')
                 },
                 success: function(res){
                     if(res.success == true) {
-                        window.location = "/new_product_develop";
+                        toastr.options = {
+                            "closeButton": true,
+                            "debug": false,
+                            "newestOnTop": false,
+                            "progressBar": true,
+                            "positionClass": "toast-top-right",
+                            "preventDuplicates": false,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "3000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        }
+                        toastr.success("อัปเดทราคาสำเร็จ!");
+                        setTimeout(function() {
+                            $('#loader').addClass('hidden');
+                        },dlayMessage)
                     } else {
-                        toastr.error("Can't Create Product!");
+                        toastr.error("Can't Set Schedule!");
                     }
                     return false;
                 },
                 error: function (params) {
                     setTimeout(function() {
-                        errorMessage("Can't Create Username!");
+                        errorMessage("Can't Set Schedule!");
                     },dlayMessage)
                     setTimeout(function() {
-                        toastr.error("Can't Create Username!");
+                        toastr.error("Can't Set Schedule!");
                     },dlayMessage)
                 }
             });
@@ -593,78 +671,108 @@
             $('#name').val('')
         }
 
-        // const mytableDatatable = $('#example').DataTable({
-        //     'searching': false,
-        //     "serverSide": true,
-        //     searching: false,
-        //     resposive: true,
-        //     scrollX: true,
-        //     orderCellsTop: true,
-        //     "order": [
-        //         [0, "desc"]
-        //     ],
-        //     "ajax": {
-        //         "headers": {
-        //             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //         },
+        const mytableDatatable = $('#account_schedule').DataTable({
+            'searching': false,
+            "serverSide": true,
+            searching: false,
+            resposive: true,
+            orderCellsTop: true,
+            "order": [[1, "desc"]],
+            "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
+            "pageLength": 20, // ค่าเริ่มต้นคือ "20"
+            "ajax": {
+                "headers": {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                "url": "{{ route('account.list_account_schedule') }}",
+                "type": "POST",
+                'data': function(data) {
+                    // Read values
+                    data.brand_id = $('#brand_id').val();
+                    data.search = $('#search').val();
 
-        //         "url": "{{ route('account.list_ajax_account') }}",
-        //         "type": "POST",
-        //         'data': function(data) {
-        //             // Read values
-        //             data.brand_id = $('#brand_id').val();
-        //             data.search = $('#search').val();
+                    data._token = $('meta[name="csrf-token"]').attr('content');
+                }
+            },
+            rowCallback: function(row, data, index) {
+                // ถ้า product_id ไม่ตรงเงื่อนไข ให้ซ่อนแถวนี้
+                if (data.product_id != {{ $data->product }}) {
+                    $(row).hide(); // หรือ $(row).remove();
+                }
+            },
+            orderable: true,
+            columnDefs: [{
+                targets: 0,
+                orderable: true,
+                defaultContent: "-",
+                render: function(data, type, row) {
+                        let scheduleStatus = '';
+                            if(row.status == 0) {
+                                scheduleStatus = `
+                                            <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img"
+                                            class="animate-quarter-spin iconify iconify--emojione mb-0.5 hidden h-9 w-9 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" preserveAspectRatio="xMidYMid meet">
+                                            <path d="M36.9 33.6c-1.6-.5-2.6-.7-2.6-1.6c0-.8 1-1 2.6-1.6C45.6 28 48.1 21.7 48.1 11H15.9c0 10.7 2.5 17 11.2 19.4c1.6.5 2.6.7 2.6 1.6c0 .9-1 1-2.6 1.6C18.4 36 15.9 42.3 15.9 53h32.2c0-10.7-2.5-17-11.2-19.4" fill="#e5e5e5"></path>
+                                            <path d="M35.5 33.6c-1.2-.5-1.9-.7-1.9-1.6c0-.8.7-1 1.9-1.6c6.3-2.5 6.9-8.8 6.9-19.4H21.6c0 10.7.6 17 6.9 19.4c1.2.5 1.9.7 1.9 1.6c0 .9-.7 1-1.9 1.6c-6.3 2.5-6.9 8.8-6.9 19.4h20.9c-.1-10.7-.7-17-7-19.4" fill="#f5f5f5"></path>
+                                            <path d="M32.9 53s-.6-17.9-.6-21c0-.8 1.6-2 2.3-2.4c3.1-1.8 7-5.3 7-8.9H22.3c0 3.7 4 7.2 7 8.9c.7.4 2.3 1.6 2.3 2.4c0 3.2-.6 21-.6 21h1.9" fill="#428bc1"></path>
+                                            <g fill="#212528">
+                                                <path d="M56 62c0 1.1-.8 2-1.9 2H9.9c-1 0-1.9-.9-1.9-2v-3c0-1.1.8-2 1.9-2h44.3c1 0 1.9.9 1.9 2l-.1 3"></path>
+                                                <path d="M50 10.2c0 .4-.4.8-.9.8H14.9c-.5 0-.9-.4-.9-.8V7.8c0-.4.4-.8.9-.8h34.2c.5 0 .9.4.9.8v2.4"></path>
+                                            </g>
+                                            <path d="M45 10.2c0 .4-.3.8-.7.8H19.7c-.4 0-.7-.4-.7-.8V7.8c0-.4.3-.8.7-.8h24.6c.4 0 .7.4.7.8v2.4" fill="#51575b"></path>
+                                            <g fill="#212528">
+                                                <path d="M50 56.2c0 .4-.4.8-.9.8H14.9c-.5 0-.9-.4-.9-.8v-2.4c0-.4.4-.8.9-.8h34.2c.5 0 .9.4.9.8v2.4"></path>
+                                                <path d="M56 5c0 1.1-.8 2-1.9 2H9.9C8.8 7 8 6.1 8 5V2c0-1.1.8-2 1.9-2h44.3c1 0 1.9.9 1.9 2L56 5"></path>
+                                            </g>
+                                            <g fill="#51575b">
+                                                <path d="M50 5c0 1.1-.7 2-1.5 2h-33c-.8 0-1.5-.9-1.5-2V2c0-1.1.7-2 1.5-2h33.1c.7 0 1.4.9 1.4 2v3"></path>
+                                                <path d="M50 62c0 1.1-.7 2-1.5 2h-33c-.8 0-1.5-.9-1.5-2v-3c0-1.1.7-2 1.5-2h33.1c.8 0 1.5.9 1.5 2c-.1 0-.1 3-.1 3"></path>
+                                            </g>
+                                            <path fill="#919191" d="M12 7h1v50h-1z"></path>
+                                            <path fill="#cecece" d="M11 7h1v50h-1z"></path>
+                                            <path fill="#919191" d="M52 7h1v50h-1z"></path>
+                                            <path fill="#cecece" d="M51 7h1v50h-1z"></path>
+                                            <path d="M45 56.2c0 .4-.3.8-.7.8H19.7c-.4 0-.7-.4-.7-.8v-2.4c0-.4.3-.8.7-.8h24.6c.4 0 .7.4.7.8v2.4" fill="#51575b"></path>
+                                        </svg>
+                                        รอดำเนินการ
+                                `;
+                            } else if(row.status == 1) {
+                                scheduleStatus = `
+                                        ดำเนินการแล้ว
+                                `;
+                            } 
+                        return scheduleStatus != "" ? scheduleStatus : "-";
+                    }
+                },
+                {
+                    targets: 1,
+                    orderable: true,
+                    defaultContent: "-",
+                    render: function(data, type, row) {
+                        return row.active_date;
+                    }
+                },
+                {
+                    targets: 2,
+                    orderable: true,
+                    defaultContent: "-",
+                    render: function(data, type, row) {
+                        return row.price;
+                    }
+                },
+                {
+                    targets: 3,
+                    orderable: true,
+                    defaultContent: "-",
+                    render: function(data, type, row) {
+                        return row.cost_old;
+                    }
+                }
+            ]
+        });
 
-        //             data._token = $('meta[name="csrf-token"]').attr('content');
-        //         }
-        //     },
-        //     orderable: true,
-        //     columnDefs: [{
-        //             targets: 0,
-        //             orderable: true,
-        //             render: function(data, type, row) {
-        //                 return row.BRAND;
-        //             }
-        //         },
-        //         {
-        //             targets: 1,
-        //             orderable: true,
-        //             render: function(data, type, row) {
-        //                 return row.product;
-        //             }
-        //         },
-        //         {
-        //             targets: 2,
-        //             orderable: true,
-        //             render: function(data, type, row) {
-        //                 return row.SHORT_ENG;
-        //             }
-        //         },
-        //         {
-        //             targets: 3,
-        //             orderable: true,
-        //             render: function(data, type, row) {
-        //             return new Intl.NumberFormat('en-US', {
-        //                     minimumFractionDigits: 2,
-        //                     maximumFractionDigits: 2
-        //                 }).format(row.sale_tp);
-        //             }
-        //         },
-        //         {
-        //             targets: 4,
-        //             orderable: true,
-        //             render: function(data, type, row) {
-        //                 return row.DESCRIPTION;
-        //             }
-        //         },
-        //         {
-        //             targets: 5,
-        //             orderable: true,
-        //             render: function(data, type, row) {
-        //                 return row.ACC_DESCRIPTION;
-        //             }
-        //         },
-        //     ]
-        // });
+        $('#btnSerarch').click(function() {
+            mytableDatatable.draw();
+            return false;
+        });
     </script>
 @endsection

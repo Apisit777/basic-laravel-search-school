@@ -51,7 +51,7 @@ class ProductionRunMidnightTask extends Command
     public function production_transfer_data_task()
     {
         $now = now();
-        $start = $now->copy()->setTime(18, 30); // 18:30
+        $start = $now->copy()->setTime(12, 30); // 18:30
         $end = $now->copy()->setTime(20, 0);  // 20:00
 
         if (now()->isWeekday() === true && $now->between($start, $end)) {
@@ -111,8 +111,13 @@ class ProductionRunMidnightTask extends Command
                         
                             // dd($brand_value);
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
+
+                            // $query = "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'";
+                            // print_r($query);
+                            // exit;
+
                             $origin_data_product = json_decode($origin_data_product, true);
                             if ($rs->STATUS_EDIT_DT == '' && !empty($origin_data_product) == true) {
                                 $REG_DATE_RP = $rs->REG_DATE === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->REG_DATE;
@@ -186,6 +191,8 @@ class ProductionRunMidnightTask extends Command
                                 Http::asForm()->withHeaders([])->post($endpoint, [
                                     'statement' => $sql_update
                                 ]);
+                                // print_r( $sql_update . "\n" );
+                                // exit;
                                 $this->output->progressAdvance();
                         
                                 $product1_STATUS_EDIT_DT = DB::table('product1s')->where('PRODUCT', $rs->PRODUCT)->update([
@@ -201,7 +208,7 @@ class ProductionRunMidnightTask extends Command
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
                         
                                 $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                    'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                    'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                 ]);
                                 $origin_data_product = json_decode($origin_data_product, true);
                         
@@ -272,6 +279,9 @@ class ProductionRunMidnightTask extends Command
                                     Http::asForm()->withHeaders([])->post($endpoint, [
                                         'statement' => $sql_insert
                                     ]);
+
+                                //     print_r( $sql_insert . "\n" );
+                                // exit;
                                     $this->output->progressAdvance();
                                 }
                         
@@ -307,7 +317,7 @@ class ProductionRunMidnightTask extends Command
                         if ($dbName == 'dbCPMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string) $rs->PRODUCT) >= 7) {
                             // dd ($brand);
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
                             if ($rs->STATUS_EDIT_DT == '' && !empty($origin_data_product) == true) {
@@ -380,9 +390,12 @@ class ProductionRunMidnightTask extends Command
                                     [EDIT_DT] = '{$rs->EDIT_DT}'
                                     WHERE [PRODUCT] = '{$rs->PRODUCT}';
                                 ";
-                                Http::asForm()->withHeaders([])->post($endpoint, [
-                                    'statement' => $sql_update
-                                ]);
+                                // Http::asForm()->withHeaders([])->post($endpoint, [
+                                //     'statement' => $sql_update
+                                // ]);
+
+                                // print_r( $sql_update . "\n" );
+                                // exit;
                                 $this->output->progressAdvance();
                         
                                 $product1_STATUS_EDIT_DT = DB::table('product1s')->where('PRODUCT', $rs->PRODUCT)->update([
@@ -402,7 +415,7 @@ class ProductionRunMidnightTask extends Command
                                     $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
                             
                                     $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                        'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                        'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                     ]);
                                     $origin_data_product = json_decode($origin_data_product, true);
                             
@@ -470,9 +483,11 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->EDIT_DT . "'
                                         )";
 
-                                        Http::asForm()->withHeaders([])->post($endpoint, [
-                                            'statement' => $sql_insert
-                                        ]);
+                                        // Http::asForm()->withHeaders([])->post($endpoint, [
+                                        //     'statement' => $sql_insert
+                                        // ]);
+                                        // print_r( $sql_insert . "\n" );
+                                        // exit;
                                         $this->output->progressAdvance();
                                     }
                                 }
@@ -510,7 +525,7 @@ class ProductionRunMidnightTask extends Command
                             }
 
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
 
@@ -599,7 +614,7 @@ class ProductionRunMidnightTask extends Command
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                 $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                    'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                    'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                 ]);
                                 $origin_data_product = json_decode($origin_data_product, true);
 
@@ -699,7 +714,7 @@ class ProductionRunMidnightTask extends Command
                             }       
                         } else if ($dbName == 'dbBBMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string)$rs->PRODUCT) >= 7) {
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
 
@@ -793,7 +808,7 @@ class ProductionRunMidnightTask extends Command
                                     $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                     $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                        'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                        'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                     ]);
                                     $origin_data_product = json_decode($origin_data_product, true);
             
@@ -894,14 +909,24 @@ class ProductionRunMidnightTask extends Command
                             }  
                         }
 
-                        if ($dbName == 'dbGNCMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
+                        // if ($dbName == 'dbGNCMAS' && $brand == $rs->BRAND && (strlen($rs->PRODUCT) != 7)) {
+                        //     $brand_value = 'KM';
+                        //     if ((strlen($rs->PRODUCT) === 6 && $rs->PRODUCT[0] <= 9) || (strlen($rs->PRODUCT) === 10 && $rs->PRODUCT[0] <= 9)  ) {
+                        //         $brand_value = $brand;
+                        //     } else {
+                        //         $brand_value = 'KM';
+                        //     }
+
+                        if ($dbName == 'dbGNCMAS' && $brand == $rs->BRAND && (strlen($rs->PRODUCT) != 7)) {
                             $brand_value = 'KM';
-                            if ($rs->PRODUCT[0] == $key_parts_number_3) {
+                            if ((strlen($rs->PRODUCT) === 6 && $rs->PRODUCT[0] <= 9) || (strlen($rs->PRODUCT) === 10 && $rs->PRODUCT[0] <= 9)  ) {
                                 $brand_value = $brand;
+                            } else {
+                                $brand_value = 'KM';
                             }
                             
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
 
@@ -990,7 +1015,7 @@ class ProductionRunMidnightTask extends Command
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                 $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                    'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                    'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                 ]);
                                 $origin_data_product = json_decode($origin_data_product, true);
 
@@ -1088,9 +1113,11 @@ class ProductionRunMidnightTask extends Command
                                     'STATUS_EDIT_DT' => $rs->EDIT_DT
                                 ]);
                             }       
-                        } else if ($dbName == 'dbGNCMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string)$rs->PRODUCT) >= 7) {
+
+                            // if ($dbName == 'dbGNCMAS' && (strlen($rs->PRODUCT) === 7 && $rs->PRODUCT[0] >= 8) && $brand == $rs->BRAND) {
+                        } else if ($dbName == 'dbGNCMAS' && (strlen($rs->PRODUCT) === 7 && $rs->PRODUCT[0] >= 8) && $brand == $rs->BRAND) {
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
 
@@ -1172,7 +1199,7 @@ class ProductionRunMidnightTask extends Command
                                     'EDIT_DT' => $rs->EDIT_DT,
                                     'STATUS_EDIT_DT' => $rs->EDIT_DT
                                 ]);
-                            } else if ($dbName == 'dbGNCMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string)$rs->PRODUCT) >= 7) {
+                            } else if ($dbName == 'dbGNCMAS' && (strlen($rs->PRODUCT) === 7 && $rs->PRODUCT[0] >= 8) && $brand == $rs->BRAND) {
                                 $dataproduct = DB::table('product1s')
                                     ->select('*')     
                                     ->where('PRODUCT', '=', $rs->PRODUCT)  
@@ -1184,7 +1211,7 @@ class ProductionRunMidnightTask extends Command
                                     $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                     $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                        'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                        'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                     ]);
                                     $origin_data_product = json_decode($origin_data_product, true);
             
@@ -1293,7 +1320,7 @@ class ProductionRunMidnightTask extends Command
                             }
 
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
 
@@ -1382,7 +1409,7 @@ class ProductionRunMidnightTask extends Command
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                 $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                    'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                    'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                 ]);
                                 $origin_data_product = json_decode($origin_data_product, true);
 
@@ -1482,7 +1509,7 @@ class ProductionRunMidnightTask extends Command
                             }       
                         } else if ($dbName == 'dbKSHOPMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string)$rs->PRODUCT) >= 7) {
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
 
@@ -1576,7 +1603,7 @@ class ProductionRunMidnightTask extends Command
                                     $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                     $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                        'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                        'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                     ]);
                                     $origin_data_product = json_decode($origin_data_product, true);
             
@@ -1683,7 +1710,7 @@ class ProductionRunMidnightTask extends Command
                             }
 
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
 
@@ -1772,7 +1799,7 @@ class ProductionRunMidnightTask extends Command
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                 $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                    'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                    'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                 ]);
                                 $origin_data_product = json_decode($origin_data_product, true);
 
@@ -1872,7 +1899,7 @@ class ProductionRunMidnightTask extends Command
                             }       
                         } else if ($dbName == 'dbLLMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string)$rs->PRODUCT) >= 7) {
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
 
@@ -1966,7 +1993,7 @@ class ProductionRunMidnightTask extends Command
                                     $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                     $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                        'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                        'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                     ]);
                                     $origin_data_product = json_decode($origin_data_product, true);
             
@@ -2073,7 +2100,7 @@ class ProductionRunMidnightTask extends Command
                             }
 
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
 
@@ -2163,7 +2190,7 @@ class ProductionRunMidnightTask extends Command
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                 $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                    'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                    'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                 ]);
                                 $origin_data_product = json_decode($origin_data_product, true);
 
@@ -2263,7 +2290,7 @@ class ProductionRunMidnightTask extends Command
                             }       
                         } else if ($dbName == 'dbOPMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string)$rs->PRODUCT) >= 7) {
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
 
@@ -2358,7 +2385,7 @@ class ProductionRunMidnightTask extends Command
                                     $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                     $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                        'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                        'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                     ]);
                                     $origin_data_product = json_decode($origin_data_product, true);
             

@@ -53,7 +53,7 @@
     <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4 mt-10">
         <div class="justify-center items-center">
             <div class="mt-5 flex justify-items-start">
-                <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">ทะเบียนสินค้า</p>
+                <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">ทะเบียนสินค้า</p>
             </div>
             <form class="" action="" method="POST" id="update_product_master">
 
@@ -945,6 +945,12 @@
         function packSize1Change(e) {
             let BARCODE = jQuery("#BARCODE").val();
             let packSize = e.value;
+            console.log("🚀 ~ packSize1Change ~ packSize:", packSize)
+
+            if (packSize.length > 1) {
+                packSize = packSize.substring(0, 1);
+            }
+            console.log("🚀 ~ packSize1Change ~ substring:", packSize)
             
             if (!BARCODE || packSize === "") {
                 jQuery("#BAR_PACK1").val('');
@@ -984,6 +990,12 @@
         function packSize2Change(e) {
             let BARCODE = jQuery("#BARCODE").val();
             let packSize = e.value;
+            console.log("🚀 ~ packSize1Change ~ packSize:", packSize)
+
+            if (packSize.length > 1) {
+                packSize = packSize.substring(0, 1);
+            }
+            console.log("🚀 ~ packSize1Change ~ substring:", packSize)
             
             if (!BARCODE || packSize === "") {
                 jQuery("#BAR_PACK2").val('');

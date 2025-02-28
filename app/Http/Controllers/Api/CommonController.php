@@ -58,4 +58,17 @@ class CommonController extends Controller
             echo 'no task';
         }
     }
+
+    public function accountSchedule($task)
+    {
+        // dd($task);  
+        if (!empty($task)) {          
+            $output = Artisan::call('app:account-schedule ' . $task);
+            $output = Artisan::output();
+            echo '<pre>';
+            print($output);
+        } else {
+            echo 'no task';
+        }
+    }
 }
