@@ -89,113 +89,113 @@
         padding: .75rem 1.25rem;
         margin-bottom: -1px;
         background-color: #fff;
-        }
+    }
 
-        .img-wrap {
-            position: relative;
+    .img-wrap {
+        position: relative;
+    }
+    .img-wrap .close {
+        position: absolute;
+        right: 0px;
+        z-index: 100;
+    }
+    .close {
+        opacity: 0.8;
+    }
+    .img-thumbnail{
+        border: 0px;
+        padding: 2px;
+        height: 150px;
+    }
+    .container {
+        max-width: 700px;
+    }
+    dl, ol, ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+    .imgPreview img {
+        border-radius: .25rem;
+        padding: 2px;
+        max-height: 150px;
+    }
+    .color_reload{
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        background-color: #f5f5f5e0;
+        z-index: 999;
+    }
+    .hide-success .active{
+        transition: all 5s;
+        visibility: visible;
+        opacity: 1;
+    }
+    .hide-success .active{
+        transform: translateY(-130%);
+        transition-timing-function: ease-in;
+        transition: 1s;
+        visibility: hidden;
+        opacity: 0;
+    }
+    .closebtn {
+        position: absolute;
+        top: 7px;
+        right: 10px;
+        color: rgb(92, 92, 92);
+        float: right;
+        font-size: 15px;
+        line-height: 20px;
+        cursor: pointer;
+    }
+    .upload__img-close {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        /* background-color: rgba(255, 0, 0, 0.734); */
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        text-align: center;
+        line-height: 21px;
+        z-index: 1;
+        cursor: pointer;
+    }
+    .upload__img-close:after {
+        content: "✖";
+        font-size: 14px;
+        color: white;
+    }
+    .loading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        /* background-color: #7f7f7fe3; */
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
         }
-        .img-wrap .close {
-            position: absolute;
-            right: 0px;
-            z-index: 100;
+        to {
+            transform: rotate(360deg);
         }
-        .close {
-            opacity: 0.8;
-        }
-        .img-thumbnail{
-            border: 0px;
-            padding: 2px;
-            height: 150px;
-        }
-        .container {
-            max-width: 700px;
-        }
-        dl, ol, ul {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-        }
-        .imgPreview img {
-            border-radius: .25rem;
-            padding: 2px;
-            max-height: 150px;
-        }
-        .color_reload{
-            position: absolute;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-            background-color: #f5f5f5e0;
-            z-index: 999;
-        }
-        .hide-success .active{
-            transition: all 5s;
-            visibility: visible;
-            opacity: 1;
-        }
-        .hide-success .active{
-            transform: translateY(-130%);
-            transition-timing-function: ease-in;
-            transition: 1s;
-            visibility: hidden;
-            opacity: 0;
-        }
-        .closebtn {
-            position: absolute;
-            top: 7px;
-            right: 10px;
-            color: rgb(92, 92, 92);
-            float: right;
-            font-size: 15px;
-            line-height: 20px;
-            cursor: pointer;
-        }
-        .upload__img-close {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            /* background-color: rgba(255, 0, 0, 0.734); */
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            text-align: center;
-            line-height: 21px;
-            z-index: 1;
-            cursor: pointer;
-        }
-        .upload__img-close:after {
-            content: "✖";
-            font-size: 14px;
-            color: white;
-        }
-        .loading {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            /* background-color: #7f7f7fe3; */
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 1;
-        }
-        @keyframes spin {
-            from {
-                transform: rotate(0deg);
-            }
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        .animate-spin {
-            animation: spin 1s linear infinite;
-        }
+    }
+    .animate-spin {
+        animation: spin 1s linear infinite;
+    }
 
-        /* Tailwind CSS Animations */
+    /* Tailwind CSS Animations */
 
-        .after_upload_upload__img_close {
+    .after_upload_upload__img_close {
         width: 24px;
         height: 24px;
         border-radius: 50%;
@@ -218,47 +218,172 @@
         opacity: 1;
     }
 
-       /* ✅ เปิด Modal แบบ Smooth (Zoom In) */
-@keyframes zoomIn {
-    from { transform: scale(0.5); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
+    /* ✅ เปิด Modal แบบ Smooth (Zoom In) */
+    @keyframes zoomIn {
+        from { transform: scale(0.5); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
 
-/* ✅ ปิด Modal แบบ Smooth (Zoom Out) */
-@keyframes zoomOut {
-    from { transform: scale(1); opacity: 1; }
-    to { transform: scale(0.5); opacity: 0; }
-}
+    /* ✅ ปิด Modal แบบ Smooth (Zoom Out) */
+    @keyframes zoomOut {
+        from { transform: scale(1); opacity: 1; }
+        to { transform: scale(0.5); opacity: 0; }
+    }
 
-/* ✅ ใช้ตอนเปิด Modal */
-.modal-enter { animation: zoomIn 0.3s ease-out forwards; }
+    /* ✅ ใช้ตอนเปิด Modal */
+    .modal-enter { animation: zoomIn 0.3s ease-out forwards; }
 
-/* ✅ ใช้ตอนปิด Modal */
-.modal-leave { animation: zoomOut 0.3s ease-in forwards; }
+    /* ✅ ใช้ตอนปิด Modal */
+    .modal-leave { animation: zoomOut 0.3s ease-in forwards; }
 
-/* ✅ ป้องกันรูปค้าง */
-.active-image {
-    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-}
+    /* ✅ ป้องกันรูปค้าง */
+    .active-image {
+        transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    }
 
-.image-slide-prev {
-    transform: translateX(-100%);
-    opacity: 0;
-    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-}
+    .image-slide-prev {
+        transform: translateX(-100%);
+        opacity: 0;
+        transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    }
 
-.image-slide-next {
-    transform: translateX(100%);
-    opacity: 0;
-    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-}
+    .image-slide-next {
+        transform: translateX(100%);
+        opacity: 0;
+        transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    }
 
-.image-slide-active {
-    transform: translateX(0);
-    opacity: 1;
-    transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-}
+    .image-slide-active {
+        transform: translateX(0);
+        opacity: 1;
+        transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    }
 
+    /* ************************************************************************************************* */
+
+    *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        /* html,body{
+        display: grid;
+        height: 100%;
+        place-items: center;
+        background: #efefef;
+        } */
+        .copyright{
+            font-size: 150%;
+        }
+        .camera-center {
+            display: flex;
+            justify-content: center;
+        }
+        .img-center {
+            display: flex;
+            justify-content: center;
+            height: 90%;
+            width: 100%;
+        }
+        .wrapper{
+            position: relative;
+            height: 50%;
+            width: 68%;
+            overflow: hidden;
+            background: #fff;
+            border: 7px solid #fff;
+            box-shadow: 0px 0px 15px rgba(0,0,0,0.15);
+            /* left: 215px; */
+        }
+        .wrapper .images{
+            height: 100%;
+            width: 100%;
+            display: flex;
+        }
+        .wrapper .images .img-1{
+            height: 100%;
+            width: 100%;
+            /* background-image: url(https://render.fineartamerica.com/images/rendered/default/greeting-card/images/artworkimages/medium/3/black-sports-car-on-carbon-fiber-background-gualtiero-boffi.jpg?&targetx=-112&targety=0&imagewidth=924&imageheight=500&modelwidth=700&modelheight=500&backgroundcolor=41454A&orientation=0); */
+            background: url(https://www.orientalprincess.com/pub/media/wysiwyg/block-img-m2/beneficial/Getthelook-Website-04.jpg) no-repeat;
+            /* background-size: cover; */
+        }
+        .wrapper .images .img-2{
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            /* filter: blur(5px); */
+            /* background-image: url(https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2019/6/10/738354/595097.jpg); */
+            background: url(https://www.orientalprincess.com/pub/media/wysiwyg/block-img-m2/beneficial/Getthelook-Website-05.jpg) no-repeat;
+            /* background-size: cover; */
+        }
+        .wrapper .slider{
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: 99;
+        }
+        .wrapper .slider input{
+            width: 100%;
+            outline: none;
+            background: none;
+            -webkit-appearance: none;
+        }
+        .slider input::-webkit-slider-thumb{
+            height: 486px;
+            width: 3px;
+            background: none;
+            -webkit-appearance: none;
+            cursor: col-resize;
+        }
+        .slider .drag-line{
+            width: 3px;
+            height: 486px;
+            position: absolute;
+            left: 49.85%;
+            pointer-events: none;
+        }
+        .slider .drag-line::before,
+        .slider .drag-line::after{
+            position: absolute;
+            content: "";
+            width: 100%;
+            height: 222px;
+            background: #fff;
+        }
+        .slider .drag-line::before{
+            top: 0;
+        }
+        .slider .drag-line::after{
+            bottom: 0;
+        }
+        .slider .drag-line span{
+            height: 42px;
+            width: 42px;
+            border: 3px solid #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .slider .drag-line span::before,
+        .slider .drag-line span::after{
+            position: absolute;
+            content: "";
+            top: 50%;
+            border: 10px solid transparent;
+            border-bottom-width: 0px;
+            border-right-width: 0px;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+        .slider .drag-line span::before{
+            left: 40%;
+            border-left-color: #fff;
+        }
+        .slider .drag-line span::after{
+            left: 60%;
+            border-top-color: #fff;
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -303,63 +428,205 @@
         <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการ Preview Images</p>
     </div>
 
-    <section x-data="gallery()" x-init="initGallery()" 
-        @keyup.right.window="nextImage()" 
-        @keyup.left.window="prevImage()" 
-        @keydown.escape.window="closeGallery()" 
-        class="select-none">
+    <div class="p-10">
+        <h1 class="mb-8 font-extrabold text-4xl">Register</h1>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
-        <!-- Image Gallery Grid -->
-        <div x-ref="gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-gray-200">
-            @foreach($images as $index => $image)
-                <div class="relative group">
-                    <img 
-                        src="{{ asset($image->path) }}" 
-                        class="h-auto max-w-full cursor-pointer rounded shadow-md"
-                        @click="openGallery({{ $index }})"
-                        alt="Uploaded Image"
-                    >
-                    <div class="after_upload_upload__img_close delete-uploaded"  
-                        data-id="{{ $image->id }}" 
-                        data-path="{{ asset($image->path) }}">
-                        ✖
-                    </div>
+            <aside class="">
+                <div class="bg-gray-100 p-8 rounded">
+                    <h2 class="font-bold text-2xl">Instructions</h2>
+                    {{-- <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full"> --}}
+                        <div class="camera-center mt-5">
+                            <div class="panel">
+                                <button id="switchFrontBtn" type="button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">
+                                    เปิดกล้อง
+                                </button>
+                            </div>
+                            <div class="flex justify-items-center">
+                                <video id="cam" autoplay muted playsinline>Not available</video>
+                                <canvas id="canvas" style="display:none"></canvas>
+                            </div>
+                        </div>
+                        <div class="p-2 grid mt-5 mb-20 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
+                            <div class="lg:col-span-4">
+                                <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6 mb-5">
+                                    <div class="md:col-span-3" style="position: relative;">
+                                        <div class="panel">
+                                            <button id="snapBtnFont" type="button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">Snap หน้า</button>
+                                        </div>
+                                        <div style="width:100%">
+                                            <img id="photoFont" alt="The screen capture will appear in this box.">
+                                        </div>
+                                    </div>
+                                    <div class="md:col-span-3" style="position: relative;">
+                                        <div class="panel">
+                                            <button id="snapBtnBack" type="button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">Snap หลัง</button>
+                                        </div>
+                                        <div style="width:100%">
+                                            <img id="photoBack" alt="The screen capture will appear in this box.">
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="p-2 mb-5">
+                                    <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-500"></ul>
+                                </div>
+
+                                {{-- <div id="" class="bg-[#d7d8db] dark:bg-[#303030] p-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"> --}}
+                                    <div class="img-center mb-56">
+                                        <div class="wrapper">
+                                            <div class="images">
+                                                <div id="img-1" class="img-1"></div>
+                                                <div id="img-2" class="img-2"></div>
+                                            </div>
+                                            <div class="slider">
+                                                <div class="drag-line">
+                                                    <span></span>
+                                                </div>
+                                                <input type="range" min="0" max="100" value="50">
+                                            </div>
+                                        </div>
+                                    </div>
+                                {{-- </div> --}}
+
+                                {{-- <div class="img-center mb-96">
+                                    <div class="wrapper">
+                                        <div class="images">
+                                            <div id="img-1" class="img-1"></div>
+                                            <div id="img-2" class="img-2"></div>
+                                        </div>
+                                        <div class="slider">
+                                            <div class="drag-line">
+                                                <span></span>
+                                            </div>
+                                            <input type="range" min="0" max="100" value="50">
+                                        </div>
+                                    </div>
+                                </div> --}}
+                            </div>
+                        </div>
+                    {{-- </div> --}}
                 </div>
-            @endforeach
+            </aside>
+
+            <form>
+                <div>
+                    <label class="block font-semibold" for="name">Name</label>
+                    <input class="w-full shadow-inner bg-gray-100 rounded-lg placeholder-black text-2xl p-4 border-none block mt-1 w-full" id="name" type="text" name="name" required="required" autofocus="autofocus">
+                </div>
+
+                <div class="mt-4">
+                    <label class="block font-semibold" for="email">Email</label>
+                    <input class="w-full shadow-inner bg-gray-100 rounded-lg placeholder-black text-2xl p-4 border-none block mt-1 w-full" id="email" type="email" name="email" required="required">
+                </div>
+
+                <div class="mt-4">
+                    <label class="block font-semibold" for="password">Password</label>
+                    <input class="w-full shadow-inner bg-gray-100 rounded-lg placeholder-black text-2xl p-4 border-none block mt-1 w-full" id="password" type="password" name="password" required="required" autocomplete="new-password">
+                </div>
+
+                <div class="flex items-center justify-between mt-8">
+                    <button type="submit" class="flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">Register</button>
+                    <a class="font-semibold">
+                        Already registered?
+                    </a>
+                </div>
+            </form>
         </div>
-        <!-- Modal Popup for Large Image View -->
-        <div x-show="modalVisible" x-cloak 
-            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 transition-opacity duration-300"
-            :class="{ 'modal-enter': galleryOpen, 'modal-leave': !galleryOpen }">
-            <div class="relative w-11/12 h-11/12 xl:w-4/5 flex items-center justify-center overflow-hidden">
+    </div>
 
-                <!-- รูปภาพ -->
-                <img :src="activeImageUrl" class="active-image object-contain w-full h-full" :class="slideDirection">
+    <div class='w-12/12 mt-4 relative'>
+        <div class="p-4">
+            <ul class="relative m-0 w-full list-none overflow-hidden p-0 transition-[height] duration-200 ease-in-out" data-twe-stepper-init="" data-twe-stepper-type="vertical">
+                <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
+                    <div data-twe-stepper-head-ref="" class="setpcollep flex cursor-pointer items-center p-1 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
+                        <span data-twe-stepper-head-icon-ref="" class="bg_step_color me-3 flex h-[1.938rem] w-[1.938rem] items-center justify-center rounded-full text-sm  !bg-primary-100 !text-primary-700 dark:!bg-slate-900 dark:!text-primary-500">
+                            1
+                        </span>
+                        <span data-twe-stepper-head-text-ref="" class="after:absolute after:flex after:text-[0.8rem] text-black/50 dark:text-white/50 font-medium !text-black/50 dark:!text-white/50">
+                            รายละเอียด1
+                        </span>
+                    </div>
+                    <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[1.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
+                        <div class="grid grid-cols-5 gap-10">
+                            <div class="form col-span-5">
+                                <div class="relative w-full overflow-hidden peer-checked:hidden">
+                                    <input type="checkbox" class="setcheckbox peer absolute top-0 inset-x-0 w-full h-12 opacity-0 cursor-pointer">
+                                    <div class="bg-[#d7d8db] dark:bg-[#303030] text-white h-12 w-full pl-5 flex items-center">
+                                        <h1 class="text-gray-900 dark:text-white text-lg">
+                                            รายละเอียด1
+                                        </h1>
+                                    </div>
+                                    <div class="absolute top-3 right-3 text-white transition-tranform duration-500 rotate-180 peer-checked:rotate-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900 dark:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
+                                        <section x-data="gallery()" x-init="initGallery()"
+                                            @keyup.right.window="nextImage()"
+                                            @keyup.left.window="prevImage()"
+                                            @keydown.escape.window="closeGallery()"
+                                            class="select-none">
 
-                <!-- ปุ่มปิด -->
-                <button @click="closeGallery()" class="absolute top-1 right-1 bg-[#d7d8db] p-2 rounded-full z-50">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
+                                            <div x-ref="gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-[#d7d8db] dark:bg-[#303030] p-4">
+                                                @foreach($images as $index => $image)
+                                                    <div class="relative group">
+                                                        <img
+                                                            src="{{ asset($image->path) }}"
+                                                            class="h-auto max-w-full cursor-pointer rounded shadow-md"
+                                                            @click="openGallery({{ $index }})"
+                                                            alt="Uploaded Image"
+                                                        >
+                                                        <div class="after_upload_upload__img_close delete-uploaded"
+                                                            data-id="{{ $image->id }}"
+                                                            data-path="{{ asset($image->path) }}">
+                                                            ✖
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                            <!-- Modal Popup for Large Image View -->
+                                            <div x-show="modalVisible" x-cloak
+                                                class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 transition-opacity duration-300"
+                                                @click.away="closeGallery()" :class="{ 'modal-enter': galleryOpen, 'modal-leave': !galleryOpen }">
 
-                <!-- ปุ่ม Prev -->
-                <button @click="prevImage()" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-[#d7d8db] p-2 rounded-full z-50">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-                    </svg>
-                </button>
+                                                <div class="relative w-full h-full flex items-center justify-center">
+                                                    <!-- รูปภาพ -->
+                                                    <img :src="activeImageUrl" class="max-w-[90%] max-h-[90%] object-contain rounded-lg shadow-lg" :class="slideDirection">
 
-                <!-- ปุ่ม Next -->
-                <button @click="nextImage()" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-[#d7d8db] p-2 rounded-full z-50">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-                    </svg>
-                </button>
+                                                    <!-- ปุ่มปิด -->
+                                                    <button @click="closeGallery()" class="absolute top-4 right-4 p-2 rounded-full z-50 bg-gray-300 hover:bg-gray-400">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                        </svg>
+                                                    </button>
 
-            </div>
+                                                    <!-- ปุ่ม Prev -->
+                                                    <button @click="prevImage()" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-300 hover:bg-gray-400 p-2 rounded-full z-50">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                                                        </svg>
+                                                    </button>
+
+                                                    <!-- ปุ่ม Next -->
+                                                    <button @click="nextImage()" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-300 hover:bg-gray-400 p-2 rounded-full z-50">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
         </div>
-    </section>
+    </div>
 
     <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
     <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
@@ -374,7 +641,9 @@
     <script src="{{ asset('js/buttons-colVis.min.js') }}"></script>
     <script src="{{ asset('js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
-    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
+
     @if (session('status'))
         <script>
             toastr.options = {
@@ -398,85 +667,250 @@
             });
         </script>
     @endif
-    
+
     <script>
 
-function gallery() {
-    return {
-        galleryOpen: false,
-        modalVisible: false,
-        activeImageUrl: '',
-        currentIndex: 0,
-        images: [],
-        isAnimating: false,
-        transitionDelay: 400,
-        slideDirection: 'image-slide-active',
+        // Image comparison
+        // const slider = document.querySelector(".slider input");
+        // const img = document.querySelector(".images .img-2");
+        // const dragLine = document.querySelector(".slider .drag-line");
+        // slider.oninput = ()=> {
+        //     let sliderVal = slider.value;
+        //     dragLine.style.left = sliderVal + "%";
+        //     img.style.width = sliderVal + "%";
+        // }
+        // End Image comparison
 
-        openGallery(index) {
-            console.log('📸 เปิดรูป Index:', index);
-            this.currentIndex = index;
-            this.modalVisible = true;
-            this.galleryOpen = false;
-            this.activeImageUrl = '';
+        // reference to the current media stream
+        var mediaStream = null;
+        // Prefer camera resolution nearest to 1280x720.
+        var constraints = {
+        audio: false,
+        video: {
+            width: {ideal: 640},
+            height: {ideal: 480},
+            facingMode: "environment"
+        }
+        };
+        async function getMediaStream(constraints) {
+            try {
+                mediaStream =  await navigator.mediaDevices.getUserMedia(constraints);
+                let video = document.getElementById('cam');
+                video.srcObject = mediaStream;
+                video.onloadedmetadata = (event) => {
+                video.play();
+                };
+            } catch (err)  {
+                console.error(err.message);
+            }
+        };
+        async function switchCamera(cameraMode) {
+            try {
+                // stop the current video stream
+                if (mediaStream != null && mediaStream.active) {
+                    var tracks = mediaStream.getVideoTracks();
+                    tracks.forEach(track => {
+                        track.stop();
+                    })
+                }
+                // set the video source to null
+                document.getElementById('cam').srcObject = null;
+                // change "facingMode"
+                constraints.video.facingMode = cameraMode;
+                // get new media stream
+                await getMediaStream(constraints);
+            } catch (err)  {
+                console.error(err.message);
+                alert(err.message);
+            }
+        }
+        function takePictureFont() {
+            let canvas = document.getElementById('canvas');
+            let video = document.getElementById('cam');
+            let photoFont = document.getElementById('photoFont');
+            let context = canvas.getContext('2d');
 
-            // setTimeout(() => {
-                this.activeImageUrl = this.images[this.currentIndex];
-                this.galleryOpen = true;
-            // }, 50);
-        },
+            const height = video.videoHeight;
+            const width = video.videoWidth;
 
-        closeGallery() {
-            console.log('❌ ปิด Gallery');
-            this.galleryOpen = false;
+            if (width && height) {
+                canvas.width = width;
+                canvas.height = height;
+                context.drawImage(video, 0, 0, width, height);
+                var data = canvas.toDataURL('image/png');
+                photoFont.setAttribute('src', data);
+                document.getElementById("img-1").style.backgroundImage = `url(${data})`;
+            } else {
+                clearphotoFont();
+            }
+        }
+        function takePictureBack() {
+            let canvas = document.getElementById('canvas');
+            let video = document.getElementById('cam');
+            let photoBack = document.getElementById('photoBack');
+            let context = canvas.getContext('2d');
 
-            setTimeout(() => {
-                this.modalVisible = false;
-                this.activeImageUrl = '';
-                this.currentIndex = null;
-            }, this.transitionDelay);
-        },
+            const height = video.videoHeight;
+            const width = video.videoWidth;
 
-        prevImage() {
-            if (this.isAnimating) return;
-            this.isAnimating = true;
+            if (width && height) {
+                canvas.width = width;
+                canvas.height = height;
+                context.drawImage(video, 0, 0, width, height);
+                var data = canvas.toDataURL('image/png');
+                photoBack.setAttribute('src', data);
+                document.getElementById("img-2").style.backgroundImage = `url(${data})`;
+            } else {
+                clearphotoBack();
+            }
+        }
 
-            let newIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
-            this.changeImage(newIndex, 'prev');
-        },
+        function clearPhotoFont() {
+            let canvas = document.getElementById('canvas');
+            let photoFont = document.getElementById('photoFont');
+            let context = canvas.getContext('2d');
 
-        nextImage() {
-            if (this.isAnimating) return;
-            this.isAnimating = true;
+            context.fillStyle = "#AAA";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            var data = canvas.toDataURL('image/png');
+            photoFont.setAttribute('src', data);
+        }
+        function clearPhotoBack() {
+            let canvas = document.getElementById('canvas');
+            let photoBack = document.getElementById('photoBack');
+            let context = canvas.getContext('2d');
 
-            let newIndex = (this.currentIndex + 1) % this.images.length;
-            this.changeImage(newIndex, 'next');
-        },
+            context.fillStyle = "#AAA";
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            var data = canvas.toDataURL('image/png');
+            photoBack.setAttribute('src', data);
+        }
+        document.getElementById('switchFrontBtn').onclick = (event) => {
+            switchCamera("user");
+        }
+        document.getElementById('snapBtnFont').onclick = (event) => {
+            takePictureFont();
+            event.preventDefault();
+        }
+        document.getElementById('snapBtnBack').onclick = (event) => {
+            takePictureBack();
+            event.preventDefault();
+        }
+        clearPhotoFont();
+        clearPhotoBack();
 
-        changeImage(newIndex, direction) {
-            console.log('🔄 Slide:', this.currentIndex, '->', newIndex, 'ทิศทาง:', direction);
-
-            this.slideDirection = direction === 'next' ? 'image-slide-next' : 'image-slide-prev';
-
-            setTimeout(() => {
-                this.currentIndex = newIndex;
-                this.activeImageUrl = this.images[newIndex];
-
-                this.$nextTick(() => {
-                    this.slideDirection = 'image-slide-active';
-                });
-
-                this.isAnimating = false;
-            }, 400);
-        },
-
-        initGallery() {
-            this.$nextTick(() => {
-                this.images = [...this.$refs.gallery.querySelectorAll('img')].map(img => img.src);
-                console.log('📂 โหลดรูป:', this.images);
+        function onOpenhandler(params) {
+            document.querySelectorAll('.setpcollep').forEach((element, index) => {
+                element.addEventListener('click', function (params) {
+                    document.querySelectorAll('.setcheckbox').forEach(ee => {
+                        ee.checked = false
+                    });
+                    document.querySelectorAll('.bg_step_color').forEach(ee => {
+                        ee.classList.remove('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+                        ee.classList.add('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+                    });
+                    let el = document.querySelectorAll('.setcheckbox')[index]
+                    let el_colr = document.querySelectorAll('.bg_step_color')[index]
+                    el.checked = !el.checked
+                    if( el.checked){
+                        el_colr.classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+                        el_colr.classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+                    }
+                })
+            });
+            document.querySelectorAll('.setcheckbox').forEach((element, index) => {
+                element.addEventListener('click', function (params) {
+                    let el = document.querySelectorAll('.setcheckbox')[index]
+                    let el_colr = document.querySelectorAll('.bg_step_color')[index]
+                    console.log("🚀 ~ el.checked:", el.checked)
+                    BARCODE = jQuery("#BARCODE").val()
+                    console.log("🚀 ~ BARCODE:", BARCODE)
+                    if( el.checked){
+                        el_colr.classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+                        el_colr.classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+                    } else {
+                        el_colr.classList.remove('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+                        el_colr.classList.add('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+                    }
+                })
             });
         }
-    };
-}
+
+        $(document).ready(function() {
+            onOpenhandler()
+            document.querySelectorAll('.setcheckbox')[0].checked = true
+            document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+            document.querySelectorAll('.bg_step_color')[0].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+        });
+
+        function gallery() {
+            return {
+                galleryOpen: false,
+                modalVisible: false,
+                activeImageUrl: '',
+                currentIndex: 0,
+                images: [],
+                isAnimating: false,
+                transitionDelay: 400,
+                slideDirection: 'image-slide-active',
+                openGallery(index) {
+                    console.log('📸 เปิดรูป Index:', index);
+                    this.currentIndex = index;
+                    this.modalVisible = true;
+                    this.galleryOpen = false;
+                    this.activeImageUrl = '';
+                    // setTimeout(() => {
+                        this.activeImageUrl = this.images[this.currentIndex];
+                        this.galleryOpen = true;
+                    // }, 50);
+                },
+                closeGallery() {
+                    console.log('❌ ปิด Gallery');
+                    this.galleryOpen = false;
+
+                    setTimeout(() => {
+                        this.modalVisible = false;
+                        this.activeImageUrl = '';
+                        this.currentIndex = null;
+                    }, this.transitionDelay);
+                },
+                prevImage() {
+                    if (this.isAnimating) return;
+                    this.isAnimating = true;
+
+                    let newIndex = (this.currentIndex - 1 + this.images.length) % this.images.length;
+                    this.changeImage(newIndex, 'prev');
+                },
+                nextImage() {
+                    if (this.isAnimating) return;
+                    this.isAnimating = true;
+
+                    let newIndex = (this.currentIndex + 1) % this.images.length;
+                    this.changeImage(newIndex, 'next');
+                },
+                changeImage(newIndex, direction) {
+                    console.log('🔄 Slide:', this.currentIndex, '->', newIndex, 'ทิศทาง:', direction);
+                    this.slideDirection = direction === 'next' ? 'image-slide-next' : 'image-slide-prev';
+
+                    setTimeout(() => {
+                        this.currentIndex = newIndex;
+                        this.activeImageUrl = this.images[newIndex];
+
+                        this.$nextTick(() => {
+                            this.slideDirection = 'image-slide-active';
+                        });
+
+                        this.isAnimating = false;
+                    }, 400);
+                },
+                initGallery() {
+                    this.$nextTick(() => {
+                        this.images = [...this.$refs.gallery.querySelectorAll('img')].map(img => img.src);
+                        // console.log('📂 โหลดรูป:', this.images);
+                    });
+                }
+            };
+        }
 
         let imageFiles = []; // Store selected files here
         console.log("🚀 ~ imageFiles:", imageFiles)
@@ -485,12 +919,11 @@ function gallery() {
         document.getElementById('images').onchange = function(event) {
             const preview = document.getElementById('preview');
             const files = Array.from(event.target.files);
-            
+
             // Append selected files to imageFiles array
             files.forEach(file => {
                 imageFiles.push(file);
             });
-
             updatePreview(); // Call function to update the preview display
         }
 
@@ -540,7 +973,6 @@ function gallery() {
             imageFiles.forEach(file => {
                 formData.append('images[]', file);
             });
-
             $.ajax({
                 url: '{{ route('images.store') }}',
                 type: 'POST',
@@ -629,7 +1061,6 @@ function gallery() {
                         if (!f.type.match('image.*')) {
                             return;
                         }
-
                         if (imgArray.length > maxLength) {
                             return false
                         } else {
