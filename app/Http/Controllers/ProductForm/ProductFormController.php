@@ -25,6 +25,7 @@ use App\Models\Owner;
 use App\Models\Grp_p;
 use App\Models\TestNewBarcode;
 use App\Models\ProductPriceSchedule;
+use App\Models\ProductPriceScheduleLog;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -693,6 +694,23 @@ class ProductFormController extends Controller
                 // 'ACC_TYPE' => $request->ACC_TYPE,
             ];
 
+            $data_old = ProductPriceSchedule::select(
+                'product_price_schedules.*',
+            )
+            ->firstWhere('product_price_schedules.product_id', '=', $request->Code);
+
+            $data_old_arr = $data_old->toArray();
+
+            if ($request) {
+                $log = [
+                    'update_dt' => date("Y/m/d H:i:s"),
+                    'user_update' => Auth::user()->username
+                ];
+
+                $data_old_arr = array_merge($data_old_arr, $log);
+                $logProductPriceScheduleUpddate = ProductPriceScheduleLog::create($data_old_arr);
+            }
+
             // dd($data_product_account_upddate);
             $updateAccountSchedule = ProductPriceSchedule::updateOrCreate(['product_id' => $request->product], [
                 'price' => $data_product_account_upddate['price'],
@@ -807,19 +825,11 @@ class ProductFormController extends Controller
     }
     public function listAjaxAccount(Request $request)
     {
-        $limit = $request->input('length'); // limit per page
-        $request->merge([
-            'page' => ceil(($request->input('start') + 1) / $limit),
-        ]);
+        $limit = (int) $request->input('length'); // จำนวนต่อหน้า
+        $start = (int) $request->input('start', 0);
 
         $BRAND = $request->input('brand_id');
-        $PRODUCT = $request->input('PRODUCT');
-        $DOC_NO = $request->search;
-        $field_detail = [
-            'product1s.PRODUCT',
-            'product1s.NAME_THAI',
-            'product1s.NAME_ENG',
-        ];
+        $searchAll = $request->input('search', '');
 
         $data = Account::select(
             'accounts.id as id',
@@ -852,25 +862,29 @@ class ProductFormController extends Controller
             $data->where('product1s.BRAND', $BRAND);
         }
 
-        if (null != $DOC_NO) {
-            $data = $data->where(function ($data) use ($DOC_NO, $field_detail) {
-                for ($i = 0; $i < count($field_detail); $i++) {
-                    $data->orWhere($field_detail[$i], 'like', '%'.$DOC_NO.'%');
-                }
+        // กรองข้อมูลถ้ามีคำค้นหา
+        if (!empty($searchAll)) {
+            $data->where(function ($q) use ($searchAll) {
+                $q->orWhere('product1s.PRODUCT', 'like', '%' . $searchAll . '%')
+                ->orWhere('product1s.SHORT_ENG', 'like', '%' . $searchAll . '%');
             });
         }
-        // dd($data);
-        $data = $data->paginate($limit);
-        $totalRecords = $data->total();
-        $totalRecordwithFilter = $data->count();
-        $response = [
-            'draw' => intval($request->draw),
-            'iTotalRecords' => $totalRecordwithFilter,
-            'iTotalDisplayRecords' => $totalRecords,
-            'aaData' => $data->items(),
-        ];
 
-        return response()->json($response);
+        // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
+        $totalRecords = $data->count();
+        // 🔹 ตรวจสอบ limit
+        if ($limit > 0) {
+            $data->limit($limit)->offset($start);
+        }
+        // 🔹 ดึงข้อมูลตาม limit และ offset
+        $records = $data->get();
+
+        return response()->json([
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
+            'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
+            'aaData' => $records,
+        ]);
     }
 
     public function listAccountSchedule(Request $request)
@@ -900,6 +914,60 @@ class ProductFormController extends Controller
         )
         ->join('accounts', 'accounts.product', '=', 'product_price_schedules.product_id') 
         ->orderBy('id', 'DESC');
+
+        // dd($data);
+        // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
+        $totalRecords = $data->count();
+        if ($limit > 0) {
+            $data->limit($limit)->offset($start);
+        }
+        $records = $data->get();
+
+        $records = $records->map(function($item){
+            $item->active_date = date('d-m-Y', strtotime($item->active_date));
+            return $item;
+        });
+
+        return response()->json([
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
+            'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
+            'aaData' => $records,
+        ]);
+    }
+
+    public function listAccountScheduleLog(Request $request)
+    {
+        $limit = (int) $request->input('length'); // จำนวนต่อหน้า
+        $start = (int) $request->input('start', 0);
+
+        $data = ProductPriceScheduleLog::select(
+            'accounts.cost AS cost_old',
+            'product_price_schedule_logs.id AS id',
+            'product_price_schedules.price AS price_schedule',
+            'product_price_schedule_logs.product_id AS product_id',
+            'product_price_schedule_logs.price AS price_log',
+            'product_price_schedule_logs.price_old AS price_old',
+            'product_price_schedule_logs.active_date AS active_date',
+            'product_price_schedule_logs.status',
+            'update_dt',
+            'user_update',
+            // 'cost',
+            // 'perfume_tax',  
+            // 'cost_perfume_tax', 
+            // 'cost5percent',
+            // 'cost10percent',
+            // 'cost_other',
+            // 'sale_km',
+            // 'sale_km20percent',
+            // 'sale_km_other',
+            // 'note',
+            // 'status_edit_dt'
+        )
+        ->join('accounts', 'accounts.product', '=', 'product_price_schedule_logs.product_id') 
+        ->join('product_price_schedules', 'product_price_schedules.product_id', '=', 'product_price_schedule_logs.product_id') 
+        // ->where('product_price_schedule_logs.active_date', '<', now())
+        ->orderBy('product_price_schedule_logs.active_date', 'DESC');
 
         // dd($data);
         // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`

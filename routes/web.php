@@ -85,6 +85,7 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
 
         // Schedule
         Route::post('/list_account_schedule', [ProductFormController::class, 'listAccountSchedule'])->name('list_account_schedule');
+        Route::post('/list_account_schedule_log', [ProductFormController::class, 'listAccountScheduleLog'])->name('list_account_schedule_log');
         Route::post('/update_account_schedule/{product}', [ProductFormController::class, 'updateAccountSchedule'])->name('update_account_schedule');
     });
 
@@ -210,7 +211,10 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         Route::post('/list_warehouse', [ComProductController::class, 'listWarehouse'])->name('list_warehouse');
         Route::get('/dimension/create', [ComProductController::class, 'create'])->name('create');
         Route::post('/', [ComProductController::class, 'store'])->name('store');
+        Route::post('/update_image_sequence', [ComProductController::class, 'updateImageSequence'])->name('update_image_sequence');
         Route::get('/dimension/edit/{product_id}', [ComProductController::class, 'edit'])->name('edit');
+        Route::post('/update_image/{product_id}', [ProductImageController::class, 'updateImage'])->name('update_image');
+        Route::delete('/delete_img/{product_id}', [ProductImageController::class, 'deleteImg'])->name('delete_img');
         Route::post('/update/{product_id}', [ComProductController::class, 'update'])->name('update');
     });
 

@@ -10,6 +10,8 @@ use App\Models\Barcode;
 use App\Models\Accessery;
 use App\Models\MasterBrand;
 use App\Models\Brand_p;
+use App\Models\Food;
+use App\Models\ComProductImage;
 use Illuminate\Support\Facades\Http;
 
 
@@ -146,6 +148,7 @@ class ComProductController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
         //
     }
 
@@ -167,7 +170,11 @@ class ComProductController extends Controller
         )
         ->firstWhere('product_id', '=', $product_id);
 
-        return view('warehouse.edit', compact('data'));
+        // $images = Food::all();
+        $images = ComProductImage::select('com_product_images.*')->where('product_id', $product_id)->get();
+        // dd($images);
+
+        return view('warehouse.edit', compact('data', 'images'));
     }
 
     /**
@@ -220,6 +227,20 @@ class ComProductController extends Controller
     //         ], $response->status());
     //     }
     // }
+
+    public function updateImageSequence(Request $request)
+    {
+        dd($request)->all();
+        if (!$request->has('img') || !is_array($request->img)) {
+            return response()->json(['status' => 400, 'message' => 'Invalid request'], 400);
+        }
+
+        foreach ($request->img as $index => $imageId) {
+            ComProductImage::where('id', $imageId)->update(['seq' => $index + 1]);
+        }
+
+        return response()->json(['status' => 200, 'message' => 'Sequence updated successfully']);
+    }
 
     public function filter(Request $request)
     {

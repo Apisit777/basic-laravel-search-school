@@ -360,7 +360,7 @@
                                 </div>
                                 <div class="md:col-span-3" style="position: relative;">
                                     <label for="NUMBER">รหัสที่ต้องการ</label>
-                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="NUMBER" name="NUMBER" onchange="onSelect(this, 'BARCODE')">
+                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="NUMBER" name="PRODUCT" onchange="onSelect(this, 'BARCODE')">
                                         <option value=""> --- กรุณาเลือก ---</option>
                                     </select>
                                     <div class="col-auto" style="position: absolute; right: 5.5%; top: 57.2%;">

@@ -1799,7 +1799,7 @@ class ProductController extends Controller
         ->leftJoin('type_gs', 'product1s.TYPE_G', '=', 'type_gs.ID')
         ->firstWhere('PRODUCT', '=', $request->PRODUCT);
 
-        // dd($data, $request->BARCODE);
+        // dd($data);
         DB::beginTransaction();
         try {
             $data_product = [
@@ -1869,13 +1869,29 @@ class ProductController extends Controller
 
             $copyProductMaster = Product1::create($data_product);
 
-            $craeteProductAccount = Account::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
-                'COST' => $copyProductMaster->COST,
-                'status_edit_dt' => '',
-                'created_at' => date("Y/m/d h:i:s"),
-            ]);
+            if (!is_null($data->BRAND)) {
 
-            // dd($copyProductMaster);
+                $user = Auth::user()->username;
+                $dateTime = date('Y-m-d H:i:s');
+
+                $updateData = [
+                    'UPDATED_BY' => $user,
+                    'UPDATED_AT' => $dateTime
+                ];
+
+                $createSeleChannel = ProductChannel::updateOrCreate(
+        ['PRODUCT' => $data_product['BARCODE'], 'BRAND' => $data_product['BRAND']],
+            $updateData
+                );
+            }
+
+            // $craeteProductAccount = Account::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
+            //     'COST' => $copyProductMaster->COST,
+            //     'status_edit_dt' => '',
+            //     'created_at' => date("Y/m/d h:i:s"),
+            // ]);
+
+            // dd($createSeleChannel);
             DB::commit();
             $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
             return response()->json(['success' => true]);
@@ -2006,18 +2022,18 @@ class ProductController extends Controller
             //     'upd_date' => date("Y/m/d H:i:s"),
             // ]);
 
-            $craeteProductAccount = Account::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
-                'COST' => $copyProductMaster->COST,
-                'created_at' => date("Y/m/d h:i:s"),
-            ]);
+            // $craeteProductAccount = Account::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
+            //     'COST' => $copyProductMaster->COST,
+            //     'created_at' => date("Y/m/d h:i:s"),
+            // ]);
 
-            $craeteProductAccount = ProductPriceSchedule::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
-                'price' => $copyProductMaster->COST,
-                'status' => 0,
-                'status_edit_dt' => '',
-                'created_by' => Auth::user()->username,
-                'created_at' => date("Y/m/d H:i:s")
-            ]);
+            // $craeteProductAccount = ProductPriceSchedule::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
+            //     'price' => $copyProductMaster->COST,
+            //     'status' => 0,
+            //     'status_edit_dt' => '',
+            //     'created_by' => Auth::user()->username,
+            //     'created_at' => date("Y/m/d H:i:s")
+            // ]);
 
             if (!is_null($data->BRAND)) {
 
@@ -3857,9 +3873,16 @@ class ProductController extends Controller
             ->orderBy('BARCODE', 'DESC');
         }
 
-        // dd($data);
-        if ($BRAND != null) {
-            $data->where('product1s.GRP_P', $BRAND);
+        if ($userpermission == 'OP') {
+            // dd($data);
+            if ($BRAND != null) {
+                $data->where('product1s.GRP_P', $BRAND);
+            }
+        } else {
+            // dd($data);
+            if ($BRAND != null) {
+                $data->where('product1s.BRAND', $BRAND);
+            }
         }
 
         // กรองข้อมูลถ้ามีคำค้นหา

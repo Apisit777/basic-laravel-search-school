@@ -187,6 +187,10 @@
             max-width: 100%;
             height: auto;
         }
+
+        .dt-length  {
+            color: #818181!important;
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -715,24 +719,18 @@
         }
 
         const mytableDatatable = $('#example').DataTable({
-            // new DataTable('#example', {
-
             'searching': false,
             "serverSide": true,
             searching: false,
-            resposive: true,
             scrollX: true,
             orderCellsTop: true,
-            "order": [
-                [0, "desc"]
-            ],
-            "lengthMenu": [10, 20, 30, 50],
-            "layout": {
-                "topStart": {
-                    "buttons": ['excel', 'colvis']
-                    // buttons: ['copy', 'excel', 'pdf', 'colvis']
-                }
-            },
+            ordering: false,
+            deferRender: true,
+            scroller: true,
+            scrollY: "600px",
+            "order": [[1, "desc"]],
+            "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
+            "pageLength": 20, // ค่าเริ่มต้นคือ "20"
             "ajax": {
                 "headers": {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
