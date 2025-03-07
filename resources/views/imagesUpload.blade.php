@@ -4,385 +4,297 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
         html * {
-        box-sizing: border-box;
-    }
-    p {
-        margin: 0;
-    }
-    .upload__box {
-        padding: 0 40px 0 40px;
-    }
-    .upload__inputfile {
-        width: 0.1px;
-        height: 0.1px;
-        opacity: 0;
-        overflow: hidden;
-        position: absolute;
-        z-index: -1;
-    }
-    .upload__btn {
-        display: inline-block;
-        font-weight: 600;
-        color: #fff;
-        text-align: center;
-        min-width: 116px;
-        padding: 5px;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        border: 2px solid;
-        background-color: #4045ba;
-        border-color: #4045ba;
-        border-radius: 10px;
-        line-height: 26px;
-        font-size: 14px;
-    }
-    .upload__btn:hover {
-        background-color: unset;
-        color: #4045ba;
-        transition: all 0.3s ease;
-    }
-    .upload__btn-box {
-        margin-bottom: 20px;
-    }
-    .upload__img-wrap {
-        display: flex;
-        flex-wrap: wrap;
-        margin: 0 -10px;
-    }
-    .upload__img-box {
-        width: 200px;
-        gap: 5px
-        /* padding: 0 10px; */
-        /* margin-bottom: 12px; */
-        /* margin-top: 12px; */
-    }
-    .upload__img-close {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background-color: rgba(0, 0, 0, 0.5);
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        text-align: center;
-        line-height: 24px;
-        z-index: 1;
-        cursor: pointer;
-    }
-    .upload__img-close:after {
-        content: '\2716';
-        font-size: 14px;
-        color: white;
-    }
-    .img-bg {
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-        position: relative;
-        padding-bottom: 100%;
-    }
-
-    /* ************************************************* */
-    .list-group{
-        position: relative;
-        display: block;
-        padding: .75rem 1.25rem;
-        margin-bottom: -1px;
-        background-color: #fff;
-    }
-
-    .img-wrap {
-        position: relative;
-    }
-    .img-wrap .close {
-        position: absolute;
-        right: 0px;
-        z-index: 100;
-    }
-    .close {
-        opacity: 0.8;
-    }
-    .img-thumbnail{
-        border: 0px;
-        padding: 2px;
-        height: 150px;
-    }
-    .container {
-        max-width: 700px;
-    }
-    dl, ol, ul {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-    }
-    .imgPreview img {
-        border-radius: .25rem;
-        padding: 2px;
-        max-height: 150px;
-    }
-    .color_reload{
-        position: absolute;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-        height: 100%;
-        background-color: #f5f5f5e0;
-        z-index: 999;
-    }
-    .hide-success .active{
-        transition: all 5s;
-        visibility: visible;
-        opacity: 1;
-    }
-    .hide-success .active{
-        transform: translateY(-130%);
-        transition-timing-function: ease-in;
-        transition: 1s;
-        visibility: hidden;
-        opacity: 0;
-    }
-    .closebtn {
-        position: absolute;
-        top: 7px;
-        right: 10px;
-        color: rgb(92, 92, 92);
-        float: right;
-        font-size: 15px;
-        line-height: 20px;
-        cursor: pointer;
-    }
-    .upload__img-close {
-        width: 22px;
-        height: 22px;
-        border-radius: 50%;
-        /* background-color: rgba(255, 0, 0, 0.734); */
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        text-align: center;
-        line-height: 21px;
-        z-index: 1;
-        cursor: pointer;
-    }
-    .upload__img-close:after {
-        content: "✖";
-        font-size: 14px;
-        color: white;
-    }
-    .loading {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        /* background-color: #7f7f7fe3; */
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        z-index: 1;
-    }
-    @keyframes spin {
-        from {
-            transform: rotate(0deg);
-        }
-        to {
-            transform: rotate(360deg);
-        }
-    }
-    .animate-spin {
-        animation: spin 1s linear infinite;
-    }
-
-    /* Tailwind CSS Animations */
-
-    .after_upload_upload__img_close {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-        background-color: rgba(0, 0, 0, 0.5);
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        text-align: center;
-        line-height: 24px;
-        color: white;
-        font-size: 16px;
-        font-weight: bold;
-        z-index: 1;
-        cursor: pointer;
-        opacity: 0.8;
-        transition: opacity 0.2s ease-in-out;
-    }
-
-    .after_upload_upload__img_close:hover {
-        opacity: 1;
-    }
-
-    /* ✅ เปิด Modal แบบ Smooth (Zoom In) */
-    @keyframes zoomIn {
-        from { transform: scale(0.5); opacity: 0; }
-        to { transform: scale(1); opacity: 1; }
-    }
-
-    /* ✅ ปิด Modal แบบ Smooth (Zoom Out) */
-    @keyframes zoomOut {
-        from { transform: scale(1); opacity: 1; }
-        to { transform: scale(0.5); opacity: 0; }
-    }
-
-    /* ✅ ใช้ตอนเปิด Modal */
-    .modal-enter { animation: zoomIn 0.3s ease-out forwards; }
-
-    /* ✅ ใช้ตอนปิด Modal */
-    .modal-leave { animation: zoomOut 0.3s ease-in forwards; }
-
-    /* ✅ ป้องกันรูปค้าง */
-    .active-image {
-        transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-    }
-
-    .image-slide-prev {
-        transform: translateX(-100%);
-        opacity: 0;
-        transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-    }
-
-    .image-slide-next {
-        transform: translateX(100%);
-        opacity: 0;
-        transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-    }
-
-    .image-slide-active {
-        transform: translateX(0);
-        opacity: 1;
-        transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
-    }
-
-    /* ************************************************************************************************* */
-
-    *{
-            margin: 0;
-            padding: 0;
             box-sizing: border-box;
         }
-        /* html,body{
-        display: grid;
-        height: 100%;
-        place-items: center;
-        background: #efefef;
-        } */
-        .copyright{
-            font-size: 150%;
+        p {
+            margin: 0;
         }
-        .camera-center {
-            display: flex;
-            justify-content: center;
+        .upload__box {
+            padding: 0 0px 0 0px;
         }
-        .img-center {
-            display: flex;
-            justify-content: center;
-            height: 90%;
-            width: 100%;
-        }
-        .wrapper{
-            position: relative;
-            height: 50%;
-            width: 68%;
+        .upload__inputfile {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
             overflow: hidden;
-            background: #fff;
-            border: 7px solid #fff;
-            box-shadow: 0px 0px 15px rgba(0,0,0,0.15);
-            /* left: 215px; */
+            position: absolute;
+            z-index: -1;
         }
-        .wrapper .images{
-            height: 100%;
-            width: 100%;
+        .upload__btn {
+            display: inline-block;
+            font-weight: 600;
+            color: #fff;
+            text-align: center;
+            min-width: 116px;
+            padding: 5px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 2px solid;
+            background-color: #4045ba;
+            border-color: #4045ba;
+            border-radius: 10px;
+            line-height: 26px;
+            font-size: 14px;
+        }
+        .upload__btn:hover {
+            background-color: unset;
+            color: #4045ba;
+            transition: all 0.3s ease;
+        }
+        .upload__btn-box {
+            margin-bottom: 20px;
+        }
+        .upload__img-wrap {
             display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
         }
-        .wrapper .images .img-1{
-            height: 100%;
+
+        /* .upload__img-wrap {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 8px;
+        } */
+
+        .upload__img-wrap .img-container {
+            position: relative;
             width: 100%;
-            /* background-image: url(https://render.fineartamerica.com/images/rendered/default/greeting-card/images/artworkimages/medium/3/black-sports-car-on-carbon-fiber-background-gualtiero-boffi.jpg?&targetx=-112&targety=0&imagewidth=924&imageheight=500&modelwidth=700&modelheight=500&backgroundcolor=41454A&orientation=0); */
-            background: url(https://www.orientalprincess.com/pub/media/wysiwyg/block-img-m2/beneficial/Getthelook-Website-04.jpg) no-repeat;
-            /* background-size: cover; */
+            height: 150px; /* ให้เท่ากับ `max-height` ของ img */
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
-        .wrapper .images .img-2{
+
+        .upload__img-wrap .delete-btn {
             position: absolute;
-            height: 100%;
-            width: 100%;
-            /* filter: blur(5px); */
-            /* background-image: url(https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2019/6/10/738354/595097.jpg); */
-            background: url(https://www.orientalprincess.com/pub/media/wysiwyg/block-img-m2/beneficial/Getthelook-Website-05.jpg) no-repeat;
-            /* background-size: cover; */
-        }
-        .wrapper .slider{
-            position: absolute;
-            top: 0;
-            width: 100%;
-            z-index: 99;
-        }
-        .wrapper .slider input{
-            width: 100%;
-            outline: none;
-            background: none;
-            -webkit-appearance: none;
-        }
-        .slider input::-webkit-slider-thumb{
-            height: 486px;
-            width: 3px;
-            background: none;
-            -webkit-appearance: none;
-            cursor: col-resize;
-        }
-        .slider .drag-line{
-            width: 3px;
-            height: 486px;
-            position: absolute;
-            left: 49.85%;
-            pointer-events: none;
-        }
-        .slider .drag-line::before,
-        .slider .drag-line::after{
-            position: absolute;
-            content: "";
-            width: 100%;
-            height: 222px;
-            background: #fff;
-        }
-        .slider .drag-line::before{
-            top: 0;
-        }
-        .slider .drag-line::after{
-            bottom: 0;
-        }
-        .slider .drag-line span{
-            height: 42px;
-            width: 42px;
-            border: 3px solid #fff;
-            position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 5px;
+            right: 5px;
+            background: red;
+            color: white;
             border-radius: 50%;
-            transform: translate(-50%, -50%);
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            cursor: pointer;
         }
-        .slider .drag-line span::before,
-        .slider .drag-line span::after{
+        .upload__img-box {
+            width: 200px;
+            gap: 5px
+            /* padding: 0 10px; */
+            /* margin-bottom: 12px; */
+            /* margin-top: 12px; */
+        }
+        .upload__img-close {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.5);
             position: absolute;
-            content: "";
-            top: 50%;
-            border: 10px solid transparent;
-            border-bottom-width: 0px;
-            border-right-width: 0px;
-            transform: translate(-50%, -50%) rotate(45deg);
+            top: 10px;
+            right: 10px;
+            text-align: center;
+            line-height: 24px;
+            z-index: 1;
+            cursor: pointer;
         }
-        .slider .drag-line span::before{
-            left: 40%;
-            border-left-color: #fff;
+        .upload__img-close:after {
+            content: '\2716';
+            font-size: 14px;
+            color: white;
         }
-        .slider .drag-line span::after{
-            left: 60%;
-            border-top-color: #fff;
+        .img-bg {
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            position: relative;
+            padding-bottom: 100%;
+        }
+
+        /* ************************************************* */
+        .list-group{
+            position: relative;
+            display: block;
+            padding: .75rem 1.25rem;
+            margin-bottom: -1px;
+            background-color: #fff;
+        }
+
+        .img-wrap {
+            position: relative;
+        }
+        .img-wrap .close {
+            position: absolute;
+            right: 0px;
+            z-index: 100;
+        }
+        .close {
+            opacity: 0.8;
+        }
+        .img-thumbnail{
+            border: 0px;
+            padding: 2px;
+            height: 150px;
+        }
+        .container {
+            max-width: 700px;
+        }
+        dl, ol, ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .imgPreview img {
+            border-radius: .25rem;
+            padding: 2px;
+            max-height: 150px;
+        }
+        .color_reload{
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            background-color: #f5f5f5e0;
+            z-index: 999;
+        }
+        .hide-success .active{
+            transition: all 5s;
+            visibility: visible;
+            opacity: 1;
+        }
+        .hide-success .active{
+            transform: translateY(-130%);
+            transition-timing-function: ease-in;
+            transition: 1s;
+            visibility: hidden;
+            opacity: 0;
+        }
+        .closebtn {
+            position: absolute;
+            top: 7px;
+            right: 10px;
+            color: rgb(92, 92, 92);
+            float: right;
+            font-size: 15px;
+            line-height: 20px;
+            cursor: pointer;
+        }
+        .upload__img-close {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            /* background-color: rgba(255, 0, 0, 0.734); */
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            text-align: center;
+            line-height: 21px;
+            z-index: 1;
+            cursor: pointer;
+        }
+        .upload__img-close:after {
+            content: "✖";
+            font-size: 14px;
+            color: white;
+        }
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* background-color: #7f7f7fe3; */
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+
+        /* Tailwind CSS Animations */
+
+        .after_upload_upload__img_close {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            text-align: center;
+            line-height: 24px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            z-index: 1;
+            cursor: pointer;
+            opacity: 0.8;
+            transition: opacity 0.2s ease-in-out;
+        }
+
+        .after_upload_upload__img_close:hover {
+            opacity: 1;
+        }
+
+        /* ✅ เปิด Modal แบบ Smooth (Zoom In) */
+        @keyframes zoomIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        /* ✅ ปิด Modal แบบ Smooth (Zoom Out) */
+        @keyframes zoomOut {
+            from { transform: scale(1); opacity: 1; }
+            to { transform: scale(0.5); opacity: 0; }
+        }
+
+        /* ✅ ใช้ตอนเปิด Modal */
+        .modal-enter { animation: zoomIn 0.3s ease-out forwards; }
+
+        /* ✅ ใช้ตอนปิด Modal */
+        .modal-leave { animation: zoomOut 0.3s ease-in forwards; }
+
+        /* ✅ ป้องกันรูปค้าง */
+        .active-image {
+            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+        }
+
+        .image-slide-prev {
+            transform: translateX(-100%);
+            opacity: 0;
+            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+        }
+
+        .image-slide-next {
+            transform: translateX(100%);
+            opacity: 0;
+            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+        }
+
+        .image-slide-active {
+            transform: translateX(0);
+            opacity: 1;
+            transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+        }
+
+        video {
+            max-width: 85%!important;
+            height: auto!important;
+        }
+        #cam {
+            border: 1px;
+            border-color: black;
+            border-style: solid;
         }
     </style>
 
@@ -392,10 +304,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 @section('content')
-    <div class="mt-5 mb-3 flex justify-center items-center">
+    <div class="mt-7 mb-3 flex justify-center items-center">
         <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการ Upload Images</p>
     </div>
-    <div class="justify-center items-center duration-500 p-4" style="position: relative;">
+    <!-- <div class="justify-center items-center duration-500 p-4" style="position: relative;">
         <form id="uploadForm" enctype="multipart/form-data">
             @csrf
             <div class="upload__box mt-5">
@@ -422,117 +334,168 @@
                 </div>
             </div>
         </form>
+    </div> -->
+
+    <div class='w-12/12 mt-4 relative'>
+        <div class="p-4">
+            <ul class="relative m-0 w-full list-none overflow-hidden p-0 transition-[height] duration-200 ease-in-out" data-twe-stepper-init="" data-twe-stepper-type="vertical">
+                <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
+                    <div data-twe-stepper-head-ref="" class="setpcollep  flex cursor-pointer items-center p-1 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
+                        <span data-twe-stepper-head-icon-ref="" class="bg_step_color me-3 flex h-[1.938rem] w-[1.938rem] items-center justify-center rounded-full text-sm  !bg-primary-100 !text-primary-700 dark:!bg-slate-900 dark:!text-primary-500">
+                            1
+                        </span>
+                        <span data-twe-stepper-head-text-ref="" class="after:absolute after:flex after:text-[0.8rem] text-black/50 dark:text-white/50 font-medium !text-black/50 dark:!text-white/50">
+                            รายละเอียด 1
+                        </span>
+                    </div>
+                    <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[1.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
+                        <div class="grid grid-cols-5 gap-10">
+                            <div class="form col-span-5">
+                                <div class="relative w-full overflow-hidden">
+                                    <input type="checkbox" class="setcheckbox peer absolute top-0 inset-x-0 w-full h-12 opacity-0 cursor-pointer">
+                                    <div class="bg-[#d7d8db] dark:bg-[#303030] text-white h-12 w-full pl-5 flex items-center">
+                                        <h1 class="text-gray-900 dark:text-white text-lg">
+                                            รายละเอียด 1
+                                        </h1>
+                                    </div>
+                                    <div class="absolute top-3 right-3 text-white transition-tranform duration-500 rotate-180 peer-checked:rotate-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900 dark:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
+                                        <div class="p-8">
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                                <aside class="">
+                                                        <div class="camera-center">
+                                                            <div class="panel">
+                                                                <button id="switchFrontBtn" type="button" class="text-sm text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">
+                                                                    <svg class="-mt-1 size-6 hidden h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" viewBox="0 -2 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+                                                                        <g id="Page-1" stroke="none" stroke-width="1" fill-rule="evenodd" sketch:type="MSPage">
+                                                                            <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-258.000000, -467.000000)" fill="currentColor">
+                                                                                <path d="M286,471 L283,471 L282,469 C281.411,467.837 281.104,467 280,467 L268,467 C266.896,467 266.53,467.954 266,469 L265,471 L262,471 C259.791,471 258,472.791 258,475 L258,491 C258,493.209 259.791,495 262,495 L286,495 C288.209,495 290,493.209 290,491 L290,475 C290,472.791 288.209,471 286,471 Z M274,491 C269.582,491 266,487.418 266,483 C266,478.582 269.582,475 274,475 C278.418,475 282,478.582 282,483 C282,487.418 278.418,491 274,491 Z M274,477 C270.687,477 268,479.687 268,483 C268,486.313 270.687,489 274,489 C277.313,489 280,486.313 280,483 C280,479.687 277.313,477 274,477 L274,477 Z" id="camera" sketch:type="MSShapeGroup"></path>
+                                                                            </g>
+                                                                        </g>
+                                                                    </svg>
+                                                                    เปิดกล้อง
+                                                                </button>
+                                                            </div>
+                                                            <div class="flex justify-items-center">
+                                                                <video id="cam" autoplay muted playsinline>Not available</video>
+                                                                <canvas id="canvas" style="display:none"></canvas>
+                                                            </div>
+                                                        </div>
+                                                        <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
+                                                            <div class="lg:col-span-4">
+                                                                <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
+                                                                    <div class="md:col-span-3" style="position: relative;">
+                                                                        <div class="panel">
+                                                                            <button id="snapBtnFont" type="button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">Snap หน้า</button>
+                                                                        </div>
+                                                                        <div style="width:100%">
+                                                                            <img id="photoFont" alt="The screen capture will appear in this box.">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="md:col-span-3" style="position: relative;">
+                                                                        <div class="panel">
+                                                                            <button id="snapBtnBack" type="button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">Snap หลัง</button>
+                                                                        </div>
+                                                                        <div style="width:100%">
+                                                                            <img id="photoBack" alt="The screen capture will appear in this box.">
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                                <div class="">
+                                                                    <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-500"></ul>
+                                                                </div>
+
+                                                                <div class="p-1" style="position: relative;">
+                                                                    <div class="mt-2 justify-center items-center duration-500">
+                                                                        <form>
+                                                                            <div class="upload__box">
+                                                                                <div class="upload__btn-box w-full">
+                                                                                    <label class="w-full h-10 text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-2 px-2 rounded cursor-pointer flex justify-center items-center relative">
+                                                                                        <input type="file" name="images[]" id="images" multiple class="w-full">
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="p-3">
+                                                                                    <div id="preview" class="upload__img-wrap bg-[#d7d8db] dark:bg-[#303030] p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+                                                                                </div>
+                                                                                
+                                                                                <div class="flex justify-center items-center mt-10">
+                                                                                    <a href="" type="button" id="upload-button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">
+                                                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF" class="-mt-1 size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                                                                            <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                                                                            <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
+                                                                                            <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
+                                                                                        </svg>
+                                                                                        Upload
+                                                                                    </a>
+                                                                                </div>
+                                                                            </div>
+                                                                        </form>
+                                                                        <div class="images">
+                                                                            <div id="img-1" class="img-1"></div>
+                                                                            <div id="img-2" class="img-2"></div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div id="loader" class="loading absolute hidden bg-[#e4e4e4e3] dark:bg-[#2a2a2afa]">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 animate-spin dark:text-white">
+                                                                            <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
+                                                                            <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
+                                                                        </svg>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                </aside>
+
+                                                <form>
+                                                    <div class="mb-5">
+                                                        <p class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 text-xl font-bold text-gray-900 dark:text-gray-100">รายละเอียดสินค้า(Case KM)</p>
+                                                    </div>
+                                                    <div class="grid gap-4 gap-y-10 text-sm grid-cols-1 md:grid-cols-3">
+                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">กว้าง</label>
+                                                        <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
+                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ยาว</label>
+                                                        <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
+
+                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">สูง</label>
+                                                        <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
+                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">พื้นที่(ก * ย * ส)</label>
+                                                        <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ลูกบาศก์เซนติเมตร</label>
+
+                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ชิ้นต่อลัง</label>
+                                                        <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ชิ้น</label>
+                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ลังต่อพาเลท</label>
+                                                        <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ลัง</label>
+                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(สินค้า + กล่อง)</label>
+                                                        <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">กรัม</label>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <div class="mt-5 mb-3 flex justify-center items-center">
         <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">รายการ Preview Images</p>
-    </div>
-
-    <div class="p-10">
-        <h1 class="mb-8 font-extrabold text-4xl">Register</h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-            <aside class="">
-                <div class="bg-gray-100 p-8 rounded">
-                    <h2 class="font-bold text-2xl">Instructions</h2>
-                    {{-- <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full"> --}}
-                        <div class="camera-center mt-5">
-                            <div class="panel">
-                                <button id="switchFrontBtn" type="button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">
-                                    เปิดกล้อง
-                                </button>
-                            </div>
-                            <div class="flex justify-items-center">
-                                <video id="cam" autoplay muted playsinline>Not available</video>
-                                <canvas id="canvas" style="display:none"></canvas>
-                            </div>
-                        </div>
-                        <div class="p-2 grid mt-5 mb-20 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
-                            <div class="lg:col-span-4">
-                                <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6 mb-5">
-                                    <div class="md:col-span-3" style="position: relative;">
-                                        <div class="panel">
-                                            <button id="snapBtnFont" type="button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">Snap หน้า</button>
-                                        </div>
-                                        <div style="width:100%">
-                                            <img id="photoFont" alt="The screen capture will appear in this box.">
-                                        </div>
-                                    </div>
-                                    <div class="md:col-span-3" style="position: relative;">
-                                        <div class="panel">
-                                            <button id="snapBtnBack" type="button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">Snap หลัง</button>
-                                        </div>
-                                        <div style="width:100%">
-                                            <img id="photoBack" alt="The screen capture will appear in this box.">
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="p-2 mb-5">
-                                    <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t border-gray-200 dark:border-gray-500"></ul>
-                                </div>
-
-                                {{-- <div id="" class="bg-[#d7d8db] dark:bg-[#303030] p-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"> --}}
-                                    <div class="img-center mb-56">
-                                        <div class="wrapper">
-                                            <div class="images">
-                                                <div id="img-1" class="img-1"></div>
-                                                <div id="img-2" class="img-2"></div>
-                                            </div>
-                                            <div class="slider">
-                                                <div class="drag-line">
-                                                    <span></span>
-                                                </div>
-                                                <input type="range" min="0" max="100" value="50">
-                                            </div>
-                                        </div>
-                                    </div>
-                                {{-- </div> --}}
-
-                                {{-- <div class="img-center mb-96">
-                                    <div class="wrapper">
-                                        <div class="images">
-                                            <div id="img-1" class="img-1"></div>
-                                            <div id="img-2" class="img-2"></div>
-                                        </div>
-                                        <div class="slider">
-                                            <div class="drag-line">
-                                                <span></span>
-                                            </div>
-                                            <input type="range" min="0" max="100" value="50">
-                                        </div>
-                                    </div>
-                                </div> --}}
-                            </div>
-                        </div>
-                    {{-- </div> --}}
-                </div>
-            </aside>
-
-            <form>
-                <div>
-                    <label class="block font-semibold" for="name">Name</label>
-                    <input class="w-full shadow-inner bg-gray-100 rounded-lg placeholder-black text-2xl p-4 border-none block mt-1 w-full" id="name" type="text" name="name" required="required" autofocus="autofocus">
-                </div>
-
-                <div class="mt-4">
-                    <label class="block font-semibold" for="email">Email</label>
-                    <input class="w-full shadow-inner bg-gray-100 rounded-lg placeholder-black text-2xl p-4 border-none block mt-1 w-full" id="email" type="email" name="email" required="required">
-                </div>
-
-                <div class="mt-4">
-                    <label class="block font-semibold" for="password">Password</label>
-                    <input class="w-full shadow-inner bg-gray-100 rounded-lg placeholder-black text-2xl p-4 border-none block mt-1 w-full" id="password" type="password" name="password" required="required" autocomplete="new-password">
-                </div>
-
-                <div class="flex items-center justify-between mt-8">
-                    <button type="submit" class="flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 md:py-4 md:text-lg md:px-10">Register</button>
-                    <a class="font-semibold">
-                        Already registered?
-                    </a>
-                </div>
-            </form>
-        </div>
     </div>
 
     <div class='w-12/12 mt-4 relative'>
@@ -541,10 +504,10 @@
                 <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
                     <div data-twe-stepper-head-ref="" class="setpcollep flex cursor-pointer items-center p-1 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
                         <span data-twe-stepper-head-icon-ref="" class="bg_step_color me-3 flex h-[1.938rem] w-[1.938rem] items-center justify-center rounded-full text-sm  !bg-primary-100 !text-primary-700 dark:!bg-slate-900 dark:!text-primary-500">
-                            1
+                            2
                         </span>
                         <span data-twe-stepper-head-text-ref="" class="after:absolute after:flex after:text-[0.8rem] text-black/50 dark:text-white/50 font-medium !text-black/50 dark:!text-white/50">
-                            รายละเอียด1
+                            รายละเอียด 2
                         </span>
                     </div>
                     <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[1.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
@@ -554,7 +517,7 @@
                                     <input type="checkbox" class="setcheckbox peer absolute top-0 inset-x-0 w-full h-12 opacity-0 cursor-pointer">
                                     <div class="bg-[#d7d8db] dark:bg-[#303030] text-white h-12 w-full pl-5 flex items-center">
                                         <h1 class="text-gray-900 dark:text-white text-lg">
-                                            รายละเอียด1
+                                            รายละเอียด 2
                                         </h1>
                                     </div>
                                     <div class="absolute top-3 right-3 text-white transition-tranform duration-500 rotate-180 peer-checked:rotate-0">
@@ -569,15 +532,17 @@
                                             @keydown.escape.window="closeGallery()"
                                             class="select-none">
 
-                                            <div x-ref="gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-[#d7d8db] dark:bg-[#303030] p-4">
+                                            <div x-ref="gallery" class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 bg-[#d7d8db] dark:bg-[#404040] p-4">
                                                 @foreach($images as $index => $image)
-                                                    <div class="relative group">
+                                                    <div class="relative group mb-4 break-inside-avoid">
                                                         <img
                                                             src="{{ asset($image->path) }}"
-                                                            class="h-auto max-w-full cursor-pointer rounded shadow-md"
+                                                            class="w-full h-auto cursor-pointer rounded shadow-sm hover:shadow-md hover:shadow-gray-400 
+                                                                dark:hover:shadow-md dark:hover:shadow-gray-400 
+                                                                transition-transform duration-300 ease-in-out hover:scale-105"
                                                             @click="openGallery({{ $index }})"
                                                             alt="Uploaded Image"
-                                                        >
+                                                        />
                                                         <div class="after_upload_upload__img_close delete-uploaded"
                                                             data-id="{{ $image->id }}"
                                                             data-path="{{ asset($image->path) }}">
@@ -586,6 +551,7 @@
                                                     </div>
                                                 @endforeach
                                             </div>
+
                                             <!-- Modal Popup for Large Image View -->
                                             <div x-show="modalVisible" x-cloak
                                                 class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 transition-opacity duration-300"
@@ -644,7 +610,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script>
 
-    @if (session('status'))
+    @if (session('message'))
         <script>
             toastr.options = {
                 "closeButton": true,
@@ -663,23 +629,12 @@
                 "hideMethod": "fadeOut"
             }
             jQuery().ready(function () {
-                toastr.success('{{ session('status') }}');
+                toastr.success('{{ session('message') }}');
             });
         </script>
     @endif
 
     <script>
-
-        // Image comparison
-        // const slider = document.querySelector(".slider input");
-        // const img = document.querySelector(".images .img-2");
-        // const dragLine = document.querySelector(".slider .drag-line");
-        // slider.oninput = ()=> {
-        //     let sliderVal = slider.value;
-        //     dragLine.style.left = sliderVal + "%";
-        //     img.style.width = sliderVal + "%";
-        // }
-        // End Image comparison
 
         // reference to the current media stream
         var mediaStream = null;
@@ -724,44 +679,125 @@
                 alert(err.message);
             }
         }
+
+        function updatePreviewFromSnap(imageData, isFront, file) {
+            const preview = document.getElementById('preview');
+            // **เก็บค่า isFront ลงในไฟล์เพื่อให้ removeImageFile() ใช้งานได้**
+            file.isFront = isFront;
+            // สร้าง container ของรูป
+            const imgContainer = document.createElement('div');
+            imgContainer.className = 'relative w-full h-32 object-cover rounded-lg shadow-md overflow-hidden';
+            // ใช้ Base64 แสดงรูปใน preview
+            const img = document.createElement('img');
+            img.src = imageData;
+            img.className = 'w-full h-full object-cover rounded-lg';
+            // ปุ่ม ❌ เพื่อลบรูป
+            const closeButton = document.createElement('button');
+            closeButton.innerHTML = '&times;';
+            closeButton.className = 'absolute top-1 right-1 bg-red-500 text-white rounded-full px-2 py-1 text-sm';
+            closeButton.onclick = function () {
+                preview.removeChild(imgContainer);
+                console.log(`❌ กำลังลบรูป Snap ${isFront ? "หน้า" : "หลัง"} - ส่งค่าไป removeImageFile()`);
+                removeImageFile(file, isFront);
+            };
+            // เพิ่มองค์ประกอบเข้าไปใน preview
+            imgContainer.appendChild(img);
+            imgContainer.appendChild(closeButton);
+            preview.appendChild(imgContainer);
+        }
+
+        function removeImageFile(index) {
+            console.log(`❌ กำลังลบรูปที่ index ${index} ออกจาก imageFiles`);
+            // ลบรูปจาก imageFiles
+            imageFiles.splice(index, 1);
+            // อัปเดต input#images
+            updateFileInput();
+            // อัปเดต preview
+            updatePreview();
+        }
+
+        function base64ToUUIDFile(base64Data) {
+            if (!base64Data.startsWith('data:image/')) {
+                console.error("❌ base64ToUUIDFile: ค่า Base64 ไม่ถูกต้อง", base64Data);
+                return null; // ป้องกันการคืนค่าผิดพลาด
+            }
+            // สร้างชื่อไฟล์แบบ UUID
+            let filename = 'img_' + crypto.randomUUID() + '.jpg';
+            // แปลง Base64 เป็นไฟล์
+            let arr = base64Data.split(',');
+            let mime = arr[0].match(/:(.*?);/)[1];
+            let bstr = atob(arr[1]);
+            let n = bstr.length;
+            let u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+
+            let file = new File([u8arr], filename, { type: mime });
+
+            console.log("✅ base64ToUUIDFile: ได้ไฟล์", file);
+            return file;
+        }
+
         function takePictureFont() {
             let canvas = document.getElementById('canvas');
             let video = document.getElementById('cam');
             let photoFont = document.getElementById('photoFont');
             let context = canvas.getContext('2d');
 
-            const height = video.videoHeight;
             const width = video.videoWidth;
+            const height = video.videoHeight;
 
             if (width && height) {
                 canvas.width = width;
                 canvas.height = height;
                 context.drawImage(video, 0, 0, width, height);
-                var data = canvas.toDataURL('image/png');
-                photoFont.setAttribute('src', data);
-                document.getElementById("img-1").style.backgroundImage = `url(${data})`;
-            } else {
-                clearphotoFont();
+                let dataUrl = canvas.toDataURL('image/png');
+
+                // แสดงรูปที่ photoFont และ img-1
+                photoFont.src = dataUrl;
+                document.getElementById("img-1").style.backgroundImage = `url(${dataUrl})`;
+
+                // แปลง Base64 เป็นไฟล์ UUID และ Push เข้า `#images`
+                let file = base64ToUUIDFile(dataUrl);
+                if (file) {
+                    file.isFront = true; // **เก็บค่า isFront**
+                    imageFiles.push(file);
+                    updateFileInput();
+                    console.log("📸 Snap หน้า - ส่งค่าไป updatePreviewFromSnap()");
+                    updatePreviewFromSnap(dataUrl, true, file);
+                }
             }
         }
+
         function takePictureBack() {
             let canvas = document.getElementById('canvas');
             let video = document.getElementById('cam');
             let photoBack = document.getElementById('photoBack');
             let context = canvas.getContext('2d');
 
-            const height = video.videoHeight;
             const width = video.videoWidth;
+            const height = video.videoHeight;
 
             if (width && height) {
                 canvas.width = width;
                 canvas.height = height;
                 context.drawImage(video, 0, 0, width, height);
-                var data = canvas.toDataURL('image/png');
-                photoBack.setAttribute('src', data);
-                document.getElementById("img-2").style.backgroundImage = `url(${data})`;
-            } else {
-                clearphotoBack();
+                let dataUrl = canvas.toDataURL('image/png');
+
+                // แสดงรูปที่ photoBack และ img-2
+                photoBack.src = dataUrl;
+                document.getElementById("img-2").style.backgroundImage = `url(${dataUrl})`;
+
+                // แปลง Base64 เป็นไฟล์ UUID และ Push เข้า `#images`
+                let file = base64ToUUIDFile(dataUrl);
+                if (file) {
+                    file.isFront = false; // **เก็บค่า isFront**
+                    imageFiles.push(file);
+                    updateFileInput();
+                    console.log("📸 Snap หลัง - ส่งค่าไป updatePreviewFromSnap()");
+                    updatePreviewFromSnap(dataUrl, false, file);
+                }
             }
         }
 
@@ -837,10 +873,13 @@
         }
 
         $(document).ready(function() {
-            onOpenhandler()
+            onOpenhandler();
             document.querySelectorAll('.setcheckbox')[0].checked = true
+            document.querySelectorAll('.setcheckbox')[1].checked = true
             document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
             document.querySelectorAll('.bg_step_color')[0].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+            document.querySelectorAll('.bg_step_color')[1].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+            document.querySelectorAll('.bg_step_color')[1].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
         });
 
         function gallery() {
@@ -912,6 +951,20 @@
             };
         }
 
+        function updateFileInput() {
+            console.log(`📂 อัปเดต input#images: imageFiles.length = ${imageFiles.length}`);
+
+            let dataTransfer = new DataTransfer();
+            
+            // เพิ่มเฉพาะไฟล์ที่ยังเหลืออยู่
+            imageFiles.forEach(file => {
+                dataTransfer.items.add(file);
+            });
+
+            // อัปเดต input#images
+            document.getElementById('images').files = dataTransfer.files;
+        }
+
         let imageFiles = []; // Store selected files here
         console.log("🚀 ~ imageFiles:", imageFiles)
 
@@ -930,13 +983,13 @@
         // Function to update the preview display
         function updatePreview() {
             const preview = document.getElementById('preview');
-            preview.innerHTML = ''; // Clear previous preview
+            preview.innerHTML = ''; // เคลียร์ preview
 
             imageFiles.forEach((file, index) => {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     const imgContainer = document.createElement('div');
-                    imgContainer.className = 'relative w-full h-64 object-cover rounded-lg shadow-md';
+                    imgContainer.className = 'relative w-full h-32 object-cover rounded-lg shadow-md';
 
                     const img = document.createElement('img');
                     img.src = e.target.result;
@@ -944,15 +997,17 @@
 
                     const closeButton = document.createElement('button');
                     closeButton.innerHTML = '&times;';
-                    closeButton.className = 'absolute top-2 right-2 bg-red-500 text-white rounded-full px-2 py-1 text-sm';
-                    closeButton.onclick = function() {
-                        removeImage(index); // Call the remove image function when clicked
+                    closeButton.className = 'absolute top-1 right-1 bg-red-500 text-white rounded-full px-2 py-1 text-sm';
+                    
+                    closeButton.onclick = function () {
+                        console.log(`❌ ลบรูปที่ index ${index}`);
+                        removeImageFile(index);
                     };
 
                     imgContainer.appendChild(img);
                     imgContainer.appendChild(closeButton);
                     preview.appendChild(imgContainer);
-                }
+                };
                 reader.readAsDataURL(file);
             });
         }
@@ -960,7 +1015,8 @@
         // Remove image from preview and imageFiles array
         function removeImage(index) {
             imageFiles.splice(index, 1); // Remove image from array
-            updatePreview(); // Update the preview to reflect the change
+            updateFileInput();
+            updatePreview();
         }
 
         // Handle form submission and upload

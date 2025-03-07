@@ -51,8 +51,8 @@ class ProductionRunMidnightTask extends Command
     public function production_transfer_data_task()
     {
         $now = now();
-        $start = $now->copy()->setTime(12, 30); // 18:30
-        $end = $now->copy()->setTime(20, 0);  // 20:00
+        $start = $now->copy()->setTime(10, 00); // 18:30
+        $end = $now->copy()->setTime(20, 00);  // 20:00
 
         if (now()->isWeekday() === true && $now->between($start, $end)) {
 
@@ -390,9 +390,9 @@ class ProductionRunMidnightTask extends Command
                                     [EDIT_DT] = '{$rs->EDIT_DT}'
                                     WHERE [PRODUCT] = '{$rs->PRODUCT}';
                                 ";
-                                // Http::asForm()->withHeaders([])->post($endpoint, [
-                                //     'statement' => $sql_update
-                                // ]);
+                                Http::asForm()->withHeaders([])->post($endpoint, [
+                                    'statement' => $sql_update
+                                ]);
 
                                 // print_r( $sql_update . "\n" );
                                 // exit;
@@ -483,9 +483,9 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->EDIT_DT . "'
                                         )";
 
-                                        // Http::asForm()->withHeaders([])->post($endpoint, [
-                                        //     'statement' => $sql_insert
-                                        // ]);
+                                        Http::asForm()->withHeaders([])->post($endpoint, [
+                                            'statement' => $sql_insert
+                                        ]);
                                         // print_r( $sql_insert . "\n" );
                                         // exit;
                                         $this->output->progressAdvance();

@@ -86,6 +86,42 @@
         .animate-spin {
             animation: spin 1s linear infinite;
         }
+
+        /* กำหนดขนาดของ div ที่ใช้แสดง toastr */
+        .toastr-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ปรับแต่ง Toast ให้อยู่ตรงกลางของเซลล์ */
+        .toast {
+            position: absolute !important;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 65% !important;
+            text-align: center;
+        }
+
+        /* ปรับสีเขียว และเพิ่ม ✔ ไอคอน */
+        .toast-success {
+            background-color: #51a351 !important; /* สีเขียว */
+            position: relative;
+            padding-left: 50px !important; /* เว้นที่ให้ไอคอน */
+        }
+
+        /* แสดงไอคอน ✔ ใน toastr */
+        .custom-toastr-icon::before {
+            content: "✔";
+            font-size: 20px;
+            position: absolute;
+            left: 20px;
+            top: 43%;
+            transform: translateY(-50%);
+            color: white;
+            font-weight: bold;
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -96,7 +132,7 @@
 <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4 mt-10">
         <div class="justify-center items-center">
             <div class="mt-5 flex justify-items-start">
-                <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">Account Schedule</p>
+                <p class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 text-xl font-bold text-gray-900 dark:text-gray-100">Account Schedule</p>
             </div>
             <form class="" action="" method="POST" id="update_product_account">
                 <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
@@ -163,6 +199,10 @@
                                                                         autocomplete="off"
                                                                         value="{{ $data->active_date }}"
                                                                         min="2025-02-01" />
+                                                                </div>
+                                                                <div class="md:col-span-2" style="position: relative;">
+                                                                    <label for="test_cost">ต้นทุน</label>
+                                                                    <input type="text" name="test_cost" id="test_cost" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
                                                             </div>
                                                             <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
@@ -276,7 +316,7 @@
                                 </div>
                                 <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[1.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
                                     <div class="grid grid-cols-5 gap-10">
-                                                <div class="form col-span-5">
+                                        <div class="form col-span-5">
                                             <div class="relative w-full overflow-hidden">
                                                 <input type="checkbox" class="setcheckbox peer absolute top-0 inset-x-0 w-full h-12 opacity-0 cursor-pointer">
                                                 <div class="bg-[#d7d8db] dark:bg-[#303030] text-white h-12 w-full pl-5 flex items-center">
@@ -290,24 +330,14 @@
                                                     </svg>
                                                 </div>
                                                 <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
-                                                    <div id="containerexample" class="text-gray-900 dark:text-gray-100">
+                                                    <div id="" class="text-gray-900 dark:text-gray-100">
                                                         <table id="account_schedule" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
                                                             <thead>
                                                                 <tr>
-                                                                    <!-- <th>ID</th> -->
-                                                                    <th>สถานะ</th>
                                                                     <th>วันที่เริ่มใช้</th>
+                                                                    <th>สถานะดำเนินการ</th>
                                                                     <th>ราคาบัญชีใหม่</th>
                                                                     <th>ต้นทุน</th>
-                                                                    <!-- <th>ภาษีน้ำหอม</th>
-                                                                    <th>ต้นทุน + ภาษีน้ำหอม</th>
-                                                                    <th>ต้นทุน+5%</th>
-                                                                    <th>ต้นทุน+10%</th>
-                                                                    <th>ต้นทุน+อื่นๆ</th>
-                                                                    <th>ราคาขาย KM</th>
-                                                                    <th>ราคาขาย KM + 20%</th>
-                                                                    <th>ราคาขาย KM+อื่นๆ</th> -->
-                                                                    <!-- <th>ต้นทุน</th> -->
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -331,7 +361,7 @@
                                 </div>
                                 <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[1.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
                                     <div class="grid grid-cols-5 gap-10">
-                                                <div class="form col-span-5">
+                                        <div class="form col-span-5">
                                             <div class="relative w-full overflow-hidden">
                                                 <input type="checkbox" class="setcheckbox peer absolute top-0 inset-x-0 w-full h-12 opacity-0 cursor-pointer">
                                                 <div class="bg-[#d7d8db] dark:bg-[#303030] text-white h-12 w-full pl-5 flex items-center">
@@ -345,17 +375,16 @@
                                                     </svg>
                                                 </div>
                                                 <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
-                                                    <div id="containerexample" class="text-gray-900 dark:text-gray-100">
-                                                        <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
+                                                    <div id="" class="text-gray-900 dark:text-gray-100">
+                                                        <table id="account_schedule_log" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
                                                             <thead>
                                                                 <tr>
-                                                                    <!-- <th>ID</th> -->
                                                                     <th>วันที่เริ่มใช้</th>
                                                                     <th>ราคาเดิม</th>
-                                                                    <th>ราคาที่ตั้ง</th></th>
-                                                                    <th>Note</th></th>
-                                                                    <th>เคลื่อนไหวเมื่อ</th></th>
-                                                                    <th>โดย</th></th>
+                                                                    <th>ราคาที่ตั้ง</th>
+                                                                    <th>Note</th>
+                                                                    <th>เคลื่อนไหวเมื่อ</th>
+                                                                    <th>โดย</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
@@ -420,12 +449,37 @@
     @endif
 
     <script>
-        getParmeterLogin()
-        function getParmeterLogin() {
-            let dataLogin = sessionStorage.getItem("credetail");
-            let dataJson = JSON.parse(dataLogin)
-            console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
-        }
+
+        // $("#test").on("input", funtion() {
+            
+        // });
+
+        $("#test_cost").on("input", function(){
+            let cost = parseFloat($(this).val()); // รับค่าที่ป้อนใน input
+            console.log("🚀 ~ $ ~ cost:", cost)
+            if (!isNaN(cost)) { // ตรวจสอบว่าป้อนค่าถูกต้องหรือไม่
+                let cost5percent = (cost * 1.05).toFixed(2); // คำนวณ +5% และปัดเป็นทศนิยม 2 ตำแหน่ง
+                console.log("🚀 ~ $ ~ cost5percent:", cost5percent)
+                let cost10percent = (cost * 1.10).toFixed(2); // คำนวณ +10% และปัดเป็นทศนิยม 2 ตำแหน่ง
+                
+                $("#cost5percent").val(cost5percent);
+                $("#cost10percent").val(cost10percent);
+            } else {
+                $("#cost5percent").val(""); // ล้างค่าเมื่อป้อนผิด
+                $("#cost10percent").val("");
+            }
+        });
+
+        $("#sale_km").on("input", function(){
+            let sale_km = parseFloat($(this).val()); // รับค่าที่ป้อนใน input
+            if (!isNaN(sale_km)) { // ตรวจสอบว่าป้อนค่าถูกต้องหรือไม่
+                let sale_km20percent = (sale_km * 1.20).toFixed(2); // คำนวณ +10% และปัดเป็นทศนิยม 2 ตำแหน่ง
+                
+                $("#sale_km20percent").val(sale_km20percent);
+            } else {
+                $("#sale_km20percent").val(""); // ล้างค่าเมื่อป้อนผิด
+            }
+        });
 
         function onOpenhandler(params) {
             document.querySelectorAll('.setpcollep').forEach((element, index) => {
@@ -676,7 +730,9 @@
             "serverSide": true,
             searching: false,
             resposive: true,
+            ordering: false,
             orderCellsTop: true,
+            // scrollX: true,
             "order": [[1, "desc"]],
             "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
             "pageLength": 20, // ค่าเริ่มต้นคือ "20"
@@ -701,11 +757,12 @@
                 }
             },
             orderable: true,
-            columnDefs: [{
-                targets: 0,
-                orderable: true,
-                defaultContent: "-",
-                render: function(data, type, row) {
+            columnDefs: [
+                {
+                    targets: 0,
+                    orderable: true,
+                    defaultContent: "-",
+                    render: function(data, type, row) {
                         let scheduleStatus = '';
                             if(row.status == 0) {
                                 scheduleStatus = `
@@ -735,11 +792,11 @@
                                         </svg>
                                         รอดำเนินการ
                                 `;
-                            } else if(row.status == 1) {
+                            } else if (row.status == 1) {
                                 scheduleStatus = `
-                                        ดำเนินการแล้ว
-                                `;
-                            } 
+                                ดำเนินการแล้ว
+                                 `;
+                            }
                         return scheduleStatus != "" ? scheduleStatus : "-";
                     }
                 },
@@ -767,11 +824,96 @@
                         return row.cost_old;
                     }
                 }
+            ],
+        });
+
+        const mytableDatatableLog = $('#account_schedule_log').DataTable({
+            'searching': false,
+            "serverSide": true,
+            searching: false,
+            resposive: true,
+            ordering: false,
+            orderCellsTop: true,
+            scrollX: true,
+            "order": [[1, "desc"]],
+            "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
+            "pageLength": 20, // ค่าเริ่มต้นคือ "20"
+            "ajax": {
+                "headers": {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                "url": "{{ route('account.list_account_schedule_log') }}",
+                "type": "POST",
+                'data': function(data) {
+                    // Read values
+                    data.brand_id = $('#brand_id').val();
+                    data.search = $('#search').val();
+
+                    data._token = $('meta[name="csrf-token"]').attr('content');
+                }
+            },
+            rowCallback: function(row, data, index) {
+                // ถ้า product_id ไม่ตรงเงื่อนไข ให้ซ่อนแถวนี้
+                if (data.product_id != {{ $data->product }}) {
+                    $(row).hide(); // หรือ $(row).remove();
+                }
+            },
+            orderable: true,
+            columnDefs: [
+                {
+                    targets: 0,
+                    orderable: true,
+                    defaultContent: "-",
+                    render: function(data, type, row) {
+                        return row.active_date;
+                    }
+                },
+                {
+                    targets: 1,
+                    orderable: true,
+                    defaultContent: "-",
+                    render: function(data, type, row) {
+                        return row.price_log;
+                    }
+                },
+                {
+                    targets: 2,
+                    orderable: true,
+                    defaultContent: "-",
+                    render: function(data, type, row) {
+                        return row.price_log;
+                    }
+                },
+                {
+                    targets: 3,
+                    orderable: true,
+                    defaultContent: "-",
+                    render: function(data, type, row) {
+                        return row.update_dt;
+                    }
+                },
+                {
+                    targets: 4,
+                    orderable: true,
+                    defaultContent: "-",
+                    render: function(data, type, row) {
+                        return row.update_dt;
+                    }
+                },
+                {
+                    targets: 5,
+                    orderable: true,
+                    defaultContent: "-",
+                    render: function(data, type, row) {
+                        return row.user_update;
+                    }
+                }
             ]
         });
 
         $('#btnSerarch').click(function() {
             mytableDatatable.draw();
+            mytableDatatableLog.draw();
             return false;
         });
     </script>

@@ -1302,7 +1302,6 @@
             'searching': false,
             "serverSide": true,
             searching: false,
-            resposive: true,
             scrollX: true,
             orderCellsTop: true,
             ordering: false,
