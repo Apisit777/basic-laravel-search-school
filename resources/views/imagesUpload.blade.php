@@ -412,7 +412,7 @@
 
                                                                 <div class="p-1" style="position: relative;">
                                                                     <div class="mt-2 justify-center items-center duration-500">
-                                                                        <form>
+                                                                        <form id="uploadForm" enctype="multipart/form-data">
                                                                             <div class="upload__box">
                                                                                 <div class="upload__btn-box w-full">
                                                                                     <label class="w-full h-10 text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-2 px-2 rounded cursor-pointer flex justify-center items-center relative">
@@ -422,16 +422,16 @@
                                                                                 <div class="p-3">
                                                                                     <div id="preview" class="upload__img-wrap bg-[#d7d8db] dark:bg-[#303030] p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
                                                                                 </div>
-                                                                                
+
                                                                                 <div class="flex justify-center items-center mt-10">
-                                                                                    <a href="" type="button" id="upload-button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">
-                                                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF" class="-mt-1 size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                                                                    <button href="" type="submit" id="upload-button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">
+                                                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF" class="-mt-1 size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                                                                             <path d="M0 0h24v24H0V0z" fill="none"></path>
                                                                                             <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
                                                                                             <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
                                                                                         </svg>
                                                                                         Upload
-                                                                                    </a>
+                                                                                    </button>
                                                                                 </div>
                                                                             </div>
                                                                         </form>
@@ -449,7 +449,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        
+
                                                 </aside>
 
                                                 <form>
@@ -537,8 +537,8 @@
                                                     <div class="relative group mb-4 break-inside-avoid">
                                                         <img
                                                             src="{{ asset($image->path) }}"
-                                                            class="w-full h-auto cursor-pointer rounded shadow-sm hover:shadow-md hover:shadow-gray-400 
-                                                                dark:hover:shadow-md dark:hover:shadow-gray-400 
+                                                            class="w-full h-auto cursor-pointer rounded shadow-sm hover:shadow-md hover:shadow-gray-400
+                                                                dark:hover:shadow-md dark:hover:shadow-gray-400
                                                                 transition-transform duration-300 ease-in-out hover:scale-105"
                                                             @click="openGallery({{ $index }})"
                                                             alt="Uploaded Image"
@@ -955,7 +955,7 @@
             console.log(`📂 อัปเดต input#images: imageFiles.length = ${imageFiles.length}`);
 
             let dataTransfer = new DataTransfer();
-            
+
             // เพิ่มเฉพาะไฟล์ที่ยังเหลืออยู่
             imageFiles.forEach(file => {
                 dataTransfer.items.add(file);
@@ -998,7 +998,7 @@
                     const closeButton = document.createElement('button');
                     closeButton.innerHTML = '&times;';
                     closeButton.className = 'absolute top-1 right-1 bg-red-500 text-white rounded-full px-2 py-1 text-sm';
-                    
+
                     closeButton.onclick = function () {
                         console.log(`❌ ลบรูปที่ index ${index}`);
                         removeImageFile(index);
@@ -1019,8 +1019,76 @@
             updatePreview();
         }
 
-        // Handle form submission and upload
-        document.getElementById('uploadForm').onsubmit = function(event) {
+        // // Handle form submission and upload
+        // document.getElementById('uploadForm').onsubmit = function(event) {
+        //     event.preventDefault();
+        //     const formData = new FormData();
+        //     console.log("🚀 ~ document.getElementById ~ formData:", formData)
+
+        //     // Append files from imageFiles to the formData
+        //     imageFiles.forEach(file => {
+        //         formData.append('images[]', file);
+        //     });
+        //     $.ajax({
+        //         url: '{{ route('images.store') }}',
+        //         type: 'POST',
+        //         data: formData,
+        //         contentType: false,
+        //         processData: false,
+        //         beforeSend: function () {
+        //             $('#loader').removeClass('hidden')
+        //         },
+        //         success: function(response) {
+        //             if (response.success == true) {
+        //                 window.location.reload();
+        //                 $('#imagePreview').html(''); // Clear after success
+        //                 response.images.forEach(function(image) {
+        //                     $('#imagePreview').append(`
+        //                         <div class="relative">
+        //                             <img src="${image}" class="w-full h-64 object-cover rounded-lg shadow-md" alt="Image">
+        //                         </div>
+        //                     `);
+        //                 });
+        //                 // Clear preview after upload
+        //                 $('#preview').html('');
+        //                 document.getElementById('images').value = ''; // Reset the input
+        //                 imageFiles = []; // Clear imageFiles after upload
+        //             } else if (response.status === 'failed') {
+        //                 setTimeout(function() {
+        //                     errorMessage("Can't Create Username!");
+        //                 },dlayMessage)
+        //                 setTimeout(function() {
+        //                     toastr.options = {
+        //                         "closeButton": true,
+        //                         "debug": false,
+        //                         "newestOnTop": false,
+        //                         "progressBar": true,
+        //                         "positionClass": "toast-top-right",
+        //                         "preventDuplicates": false,
+        //                         "showDuration": "300",
+        //                         "hideDuration": "1000",
+        //                         "timeOut": "3000",
+        //                         "extendedTimeOut": "1000",
+        //                         "showEasing": "swing",
+        //                         "hideEasing": "linear",
+        //                         "showMethod": "fadeIn",
+        //                         "hideMethod": "fadeOut"
+        //                     }
+        //                     toastr.error("กรุณาเลือกรูปภาพ !");
+        //                 },dlayMessage)
+        //             }
+        //         },
+        //         error: (params) => {
+        //         console.log("🚀 ~ checkLogin ~ params:", params)
+
+        //         toastr.error("Please select image!");
+        //         // errorMessage('Check Username Or Password!')
+        //     }
+        //     });
+        // }
+
+         // Handle form submission and upload
+         document.getElementById('uploadForm').onsubmit = function(event) {
             event.preventDefault();
             const formData = new FormData();
             console.log("🚀 ~ document.getElementById ~ formData:", formData)
@@ -1029,6 +1097,7 @@
             imageFiles.forEach(file => {
                 formData.append('images[]', file);
             });
+
             $.ajax({
                 url: '{{ route('images.store') }}',
                 type: 'POST',
@@ -1086,6 +1155,7 @@
             }
             });
         }
+
         const dlayMessage = 500;
         jQuery(document).ready(function () {
             ImgUpload();
