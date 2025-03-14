@@ -82,10 +82,8 @@ class ComProductController extends Controller
 
     public function listWarehouse(Request $request)
     {
-        $limit = $request->input('length'); // limit per page
-        $request->merge([
-            'page' => ceil(($request->input('start') + 1) / $limit),
-        ]);
+        $limit = (int) $request->input('length'); // จำนวนต่อหน้า
+        $start = (int) $request->input('start', 0);
 
         $company_id = $request->input('brand_id');
         // $BARCODE = $request->input('BARCODE');
@@ -98,12 +96,14 @@ class ComProductController extends Controller
 
         $data = Com_product::select(
             'company_id',
-            'product_id',
-            'barcode',
+            'com_products.product_id AS product_id',
+            'com_products.barcode AS barcode',
             'vendor_id',
-            'name_thai'
+            'com_products.name_thai AS name_thai',
+            'com_products.img_url AS img_url',
         )
-        ->orderBy('product_id', 'DESC');
+        ->join('product1s', 'com_products.product_id', '=', 'product1s.PRODUCT');
+        // ->orderBy('product_id', 'DESC');
 
         if ($company_id != null) {
             $data->where('com_products.company_id', $company_id);
@@ -121,18 +121,19 @@ class ComProductController extends Controller
         //     $productCodes = $data->where(DB::raw('SUBSTRING(BARCODE, 8, 5)'), $request->input('BARCODE'))->pluck('BARCODE');
         // }
 
-        // dd($data);
-        $data = $data->paginate($limit);
-        $totalRecords = $data->total();
-        $totalRecordwithFilter = $data->count();
-        $response = [
-            'draw' => intval($request->draw),
-            'iTotalRecords' => $totalRecordwithFilter,
-            'iTotalDisplayRecords' => $totalRecords,
-            'aaData' => $data->items(),
-        ];
+        // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
+        $totalRecords = $data->count();
+        if ($limit > 0) {
+            $data->limit($limit)->offset($start);
+        }
+        $records = $data->get();
 
-        return response()->json($response);
+        return response()->json([
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
+            'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
+            'aaData' => $records,
+        ]);
     }
 
     /**
@@ -163,7 +164,7 @@ class ComProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Com_product $com_product, $product_id)
+    public function edit(Request $request, $product_id)
     {
         $data = Com_product::select(
             'com_products.*',
@@ -172,6 +173,12 @@ class ComProductController extends Controller
 
         // $images = Food::all();
         $images = ComProductImage::select('com_product_images.*')->where('product_id', $product_id)->get();
+
+        // $images = Com_product::select('com_products.*')
+        //     ->leftJoin('com_product_images', 'com_products.product_id', '=', 'com_product_images.product_id')
+        //     ->where('com_products.product_id', $product_id)
+        //     ->get();
+
         // dd($images);
 
         return view('warehouse.edit', compact('data', 'images'));

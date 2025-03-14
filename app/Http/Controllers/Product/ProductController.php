@@ -43,6 +43,7 @@ use App\Models\ProductGroup;
 use App\Models\Account;
 use App\Models\ProductPriceSchedule;
 use App\Models\ProductDetail;
+use App\Models\ProductOther;
 use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
@@ -1885,11 +1886,29 @@ class ProductController extends Controller
                 );
             }
 
-            // $craeteProductAccount = Account::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
-            //     'COST' => $copyProductMaster->COST,
-            //     'status_edit_dt' => '',
-            //     'created_at' => date("Y/m/d h:i:s"),
-            // ]);
+            // Phase 2
+            // if ( $copyProductMaster->BRAND == 'CPS' ) {
+                //     $craeteProductretail = ProductDetail::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+                //         'corporation_id' => $productMaster->BRAND,
+                //         'fad' => $productMaster->REGISTER,
+                //         'inner_barcode' => $productMaster->BAR_PACK1,
+                //         'inner_pack_size' => $productMaster->PACK_SIZE1,
+                //         'upd_user' => Auth::user()->username,
+                //         'upd_date' => date("Y/m/d H:i:s"),
+                //     ]);
+
+                //     $craeteProductretail = ProductOther::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+                //         'corporation_id' => $productMaster->BRAND,
+                //         'upd_user' => Auth::user()->username,
+                //         'upd_date' => date("Y/m/d H:i:s"),
+                //     ]);
+
+                // $craeteProductAccount = Account::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
+                //     'COST' => $copyProductMaster->COST,
+                //     'status_edit_dt' => '',
+                //     'created_at' => date("Y/m/d h:i:s"),
+                // ]);
+            // }
 
             // dd($createSeleChannel);
             DB::commit();
@@ -2014,27 +2033,6 @@ class ProductController extends Controller
             // dd($data_product, $data->BRAND);
             $copyProductMaster = Product1::create($data_product);
 
-            // $craeteProductretail = ProductDetail::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
-            //     'fad' => $copyProductMaster->COST,
-            //     'inner_barcode' => $copyProductMaster->COST,
-            //     'inner_pack_size' => $copyProductMaster->COST,
-            //     'upd_user' => Auth::user()->username,
-            //     'upd_date' => date("Y/m/d H:i:s"),
-            // ]);
-
-            // $craeteProductAccount = Account::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
-            //     'COST' => $copyProductMaster->COST,
-            //     'created_at' => date("Y/m/d h:i:s"),
-            // ]);
-
-            // $craeteProductAccount = ProductPriceSchedule::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
-            //     'price' => $copyProductMaster->COST,
-            //     'status' => 0,
-            //     'status_edit_dt' => '',
-            //     'created_by' => Auth::user()->username,
-            //     'created_at' => date("Y/m/d H:i:s")
-            // ]);
-
             if (!is_null($data->BRAND)) {
 
                 $user = Auth::user()->username;
@@ -2050,6 +2048,36 @@ class ProductController extends Controller
             $updateData
                 );
             }
+
+            // Phase 2
+            // if ( $copyProductMaster->BRAND == 'CPS' ) {
+                // $craeteProductretail = ProductDetail::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
+                //     'fad' => $copyProductMaster->COST,
+                //     'inner_barcode' => $copyProductMaster->COST,
+                //     'inner_pack_size' => $copyProductMaster->COST,
+                //     'upd_user' => Auth::user()->username,
+                //     'upd_date' => date("Y/m/d H:i:s"),
+                // ]);
+
+                //     $craeteProductretail = ProductOther::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+                //         'corporation_id' => $productMaster->BRAND,
+                //         'upd_user' => Auth::user()->username,
+                //         'upd_date' => date("Y/m/d H:i:s"),
+                //     ]);
+
+                // $craeteProductAccount = Account::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
+                //     'COST' => $copyProductMaster->COST,
+                //     'created_at' => date("Y/m/d h:i:s"),
+                // ]);
+
+                // $craeteProductAccount = ProductPriceSchedule::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
+                //     'price' => $copyProductMaster->COST,
+                //     'status' => 0,
+                //     'status_edit_dt' => '',
+                //     'created_by' => Auth::user()->username,
+                //     'created_at' => date("Y/m/d H:i:s")
+                // ]);
+            // }
 
             // dd($createSeleChannel);
             DB::commit();
@@ -2217,18 +2245,25 @@ class ProductController extends Controller
                 }
             }
 
+            // Phase 2
             // $craeteProductAccount = Account::updateOrCreate(['product' => $data_product['PRODUCT']], [
             //     'COST' => $productMaster->COST,
             //     'status_edit_dt' => '',
             //     'created_at' => date("Y/m/d H:i:s"),
             // ]);
 
-            // if ( $productMaster['BRAND'] == 'CPS' ) {
+            // if ( $productMaster->BRAND == 'CPS' ) {
             //     $craeteProductretail = ProductDetail::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
             //         'corporation_id' => $productMaster->BRAND,
             //         'fad' => $productMaster->REGISTER,
             //         'inner_barcode' => $productMaster->BAR_PACK1,
             //         'inner_pack_size' => $productMaster->PACK_SIZE1,
+            //         'upd_user' => Auth::user()->username,
+            //         'upd_date' => date("Y/m/d H:i:s"),
+            //     ]);
+
+            //     $craeteProductretail = ProductOther::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+            //         'corporation_id' => $productMaster->BRAND,
             //         'upd_user' => Auth::user()->username,
             //         'upd_date' => date("Y/m/d H:i:s"),
             //     ]);
@@ -2360,6 +2395,40 @@ class ProductController extends Controller
                 'created_at' => date("Y/m/d H:i:s"),
             ]);
             // dd($productMaster);
+
+            // Phase 2
+            // $craeteProductAccount = Account::updateOrCreate(['product' => $data_product['PRODUCT']], [
+            //     'COST' => $productMaster->COST,
+            //     'status_edit_dt' => '',
+            //     'created_at' => date("Y/m/d H:i:s"),
+            // ]);
+
+            // if ( $productMaster->BRAND == 'CPS' ) {
+            //     $craeteProductretail = ProductDetail::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+            //         'corporation_id' => $productMaster->BRAND,
+            //         'fad' => $productMaster->REGISTER,
+            //         'inner_barcode' => $productMaster->BAR_PACK1,
+            //         'inner_pack_size' => $productMaster->PACK_SIZE1,
+            //         'upd_user' => Auth::user()->username,
+            //         'upd_date' => date("Y/m/d H:i:s"),
+            //     ]);
+
+            //     $craeteProductretail = ProductOther::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+            //         'corporation_id' => $productMaster->BRAND,
+            //         'upd_user' => Auth::user()->username,
+            //         'upd_date' => date("Y/m/d H:i:s"),
+            //     ]);
+    
+            //     $craeteProductAccountSchedule = ProductPriceSchedule::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+            //         // 'price' => $productMaster->COST,
+            //         'price' => 0,
+            //         'status' => 0,
+            //         'status_edit_dt' => '',
+            //         'created_by' => Auth::user()->username,
+            //         'created_at' => date("Y/m/d H:i:s")
+            //     ]);
+            // }
+            
             DB::commit();
             $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
             return response()->json(['success' => true]);
@@ -3569,6 +3638,35 @@ class ProductController extends Controller
                 $productUpddateConsumables = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
 
                 // dd($productUpddateConsumables);
+
+                // Phase 2
+                // if ( $productUpddateConsumables->BRAND == 'CPS' ) {
+                    // $data_consumables_old = ProductDetail::select(
+                    //     'product_details.*',
+                    // )
+                    // ->firstWhere('product_details.product_id', '=', $PRODUCT);
+
+                    // $data_product_detail_consumables_old_arr = $data_consumables_old->toArray();
+
+                    // if ($request) {
+                    //     $log = [
+                    //         'UPDATE_DT' => date("Y/m/d H:i:s"),
+                    //         'USER_UPDATE' => Auth::user()->username
+                    //     ];
+
+                    //     $data_product_detail_consumables_old_arr = array_merge($data_product_detail_consumables_old_arr, $log);
+                    //     // dd($data_product_detail_consumables_old_arr);
+                    //     $logProductUpddate = Product1Log::create($data_product_detail_consumables_old_arr);
+                    // }
+                    // $craeteProductretail = ProductDetail::updateOrCreate(['product' => $productUpddateConsumables->PRODUCT], [
+                    //     'fad' => $productUpddateConsumables->COST ?? '',
+                    //     'inner_barcode' => $productUpddateConsumables->COST ?? '',
+                    //     'inner_pack_size' => $productUpddateConsumables->COST ?? '',
+                    //     'upd_user' => Auth::user()->username,
+                    //     'upd_date' => date("Y/m/d H:i:s"),
+                    // ]);
+                // }
+            
                 DB::commit();
                 $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
                 return response()->json(['success' => true]);
@@ -3679,8 +3777,36 @@ class ProductController extends Controller
                 //     ]);
 
                 $productUpddate = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
-
                 // dd($productUpddate);
+
+                // Phase 2
+                // if ( $productUpddate->BRAND == 'CPS' ) {
+                    // $data_consumables_old = ProductDetail::select(
+                    //     'product_details.*',
+                    // )
+                    // ->firstWhere('product_details.product_id', '=', $PRODUCT);
+    
+                    // $data_old_arr = $data_old->toArray();
+    
+                    // if ($request) {
+                    //     $log = [
+                    //         'UPDATE_DT' => date("Y/m/d H:i:s"),
+                    //         'USER_UPDATE' => Auth::user()->username
+                    //     ];
+    
+                    //     $data_old_arr = array_merge($data_old_arr, $log);
+                    //     // dd($data_old_arr);
+                    //     $logProductUpddate = Product1Log::create($data_old_arr);
+                    // }
+                    // $craeteProductretail = ProductDetail::updateOrCreate(['product' => $productUpddate->PRODUCT], [
+                    //     'fad' => $productUpddate->COST ?? '',
+                    //     'inner_barcode' => $productUpddate->COST ?? '',
+                    //     'inner_pack_size' => $productUpddate->COST ?? '',
+                    //     'upd_user' => Auth::user()->username,
+                    //     'upd_date' => date("Y/m/d H:i:s"),
+                    // ]);
+                // }
+
                 DB::commit();
                 $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
                 return response()->json(['success' => true]);

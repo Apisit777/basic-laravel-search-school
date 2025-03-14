@@ -586,7 +586,7 @@
                                                                                     <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
                                                                                         <div class="md:col-span-3" style="position: relative;">
                                                                                             <div class="panel">
-                                                                                                <button id="snapBtnFont" type="button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">Snap หน้า</button>
+                                                                                                <button id="snapBtnFont" type="button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">ถ่ายด้านหน้า</button>
                                                                                             </div>
                                                                                             <div style="width:100%">
                                                                                                 <img id="photoFont" alt="The screen capture will appear in this box.">
@@ -594,7 +594,7 @@
                                                                                         </div>
                                                                                         <div class="md:col-span-3" style="position: relative;">
                                                                                             <div class="panel">
-                                                                                                <button id="snapBtnBack" type="button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">Snap หลัง</button>
+                                                                                                <button id="snapBtnBack" type="button" class="text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-1.5 px-4 mr-2 rounded group">ถ่ายด้านหลัง</button>
                                                                                             </div>
                                                                                             <div style="width:100%">
                                                                                                 <img id="photoBack" alt="The screen capture will appear in this box.">
@@ -664,14 +664,14 @@
                                                                         </div>
                                                                         <div class="grid gap-4 gap-y-10 text-sm grid-cols-1 md:grid-cols-3">
                                                                             <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">กว้าง</label>
-                                                                            <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                            <input value="{{ $data->width }}" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
                                                                             <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
                                                                             <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ยาว</label>
-                                                                            <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                            <input value="{{ $data->long }}" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
                                                                             <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
 
                                                                             <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">สูง</label>
-                                                                            <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                            <input value="{{ $data->height }}" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
                                                                             <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
                                                                             <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">พื้นที่(ก * ย * ส)</label>
                                                                             <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
@@ -802,21 +802,23 @@
                                                         @endforeach
                                                     </div> -->
 
-                                                    <div x-ref="gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-[#d7d8db] dark:bg-[#303030] p-4 imgSortable" id="img-drop">
+                                                    <div x-ref="gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-gray-100 dark:bg-[#404040] p-4 imgSortable" id="img-drop">
                                                         @foreach($images as $index => $image)
                                                             <div class="relative group img-item" data-id="{{ $image->id }}">
                                                                 <img
-                                                                    src="{{ asset($image->path) }}"
+                                                                    src="{{ $image->path ? asset($image->path) : 'https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg' }}"
                                                                     class="h-auto max-w-full cursor-pointer rounded shadow-sm hover:shadow-md hover:shadow-gray-400 
                                                                     dark:hover:shadow-md dark:hover:shadow-gray-400 transition-transform duration-300 ease-in-out hover:scale-105" 
-                                                                    @click="openGallery({{ $index }})"
+                                                                    @if($image->path) @click="openGallery({{ $index }})" @endif
                                                                     alt="Uploaded Image"
                                                                 >
-                                                                <div class="after_upload_upload__img_close delete-uploaded"
-                                                                    data-id="{{ $image->id }}"
-                                                                    data-path="{{ asset($image->path) }}">
-                                                                    ✖
-                                                                </div>
+                                                                @if($image->path)
+                                                                    <div class="after_upload_upload__img_close delete-uploaded"
+                                                                        data-id="{{ $image->id }}"
+                                                                        data-path="{{ asset($image->path) }}">
+                                                                        ✖
+                                                                    </div>
+                                                                @endif
                                                             </div>
                                                         @endforeach
                                                     </div>
@@ -1461,7 +1463,7 @@
                                     "showMethod": "fadeIn",
                                     "hideMethod": "fadeOut"
                                 }
-                                toastr.error("กรุณาเลือกรูปภาพ !");
+                                toastr.error("เกิดข้อผิดพลาดในการอัปโหลด!");
                             },dlayMessage)
                         }
                     },
@@ -1483,7 +1485,7 @@
                                 "showMethod": "fadeIn",
                                 "hideMethod": "fadeOut"
                             }
-                            toastr.error("กรุณาเลือกรูปภาพ !");
+                            toastr.error("กรุณาเลือกรูปภาพ!");
                         setTimeout(function() {
                             $('#loader').addClass('hidden');
                         },dlayMessage)
@@ -1539,8 +1541,9 @@
                                 })
                                 .then(data => {
                                     if (data.success) {
-                                        Swal.fire("ลบสำเร็จ!", "รูปภาพถูกลบเรียบร้อยแล้ว", "success");
-                                        parentDiv.remove(); // ลบออกจากหน้าเว็บ
+                                        window.location.reload();
+                                        // Swal.fire("ลบสำเร็จ!", "รูปภาพถูกลบเรียบร้อยแล้ว", "success");
+                                        // parentDiv.remove(); // ลบออกจากหน้าเว็บ
                                     } else {
                                         Swal.fire("เกิดข้อผิดพลาด!", data.message, "error");
                                     }

@@ -183,16 +183,41 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         Route::get('/pd_detail/create', [ProductDetailController::class, 'create'])->name('pd_detail_create');
         Route::post('/list_product_detail', [ProductDetailController::class, 'listProductDetail'])->name('list_product_detail');
         Route::get('/pd_detail/edit/{product_id}', [ProductDetailController::class, 'edit'])->name('pd_detail_edit');
+        Route::post('/pd_detail_update/{product_id}', [ProductDetailController::class, 'update'])->name('pd_detail_update');
         
         // Sub Menu Product Detail2(Product Other)
         Route::get('/pd_other', [ProductOtherController::class, 'index'])->name('pd_other_index');
         Route::get('/pd_other/create', [ProductOtherController::class, 'create'])->name('pd_other_create');
+        Route::post('/list_product_other', [ProductOtherController::class, 'listProductOther'])->name('list_product_other');
         Route::get('/product_Other_category', [ProductOtherController::class, 'productOtherCategory'])->name('product_Other_category');
         Route::get('/product_Other_sub_category', [ProductOtherController::class, 'productOtherSubCategory'])->name('product_Other_sub_category');
         Route::get('/product_line', [ProductOtherController::class, 'productLine'])->name('product_line');
         Route::get('/product_type', [ProductOtherController::class, 'productType'])->name('product_type');
+        Route::get('/pd_other/edit/{product_id}', [ProductOtherController::class, 'edit'])->name('pd_other_edit');
         Route::post('/pd_other_update', [ProductOtherController::class, 'update'])->name('pd_other_update');
         // Route::post('/pd_other_update/{id}', [ProductOtherController::class, 'update'])->name('pd_other_update');
+        
+        // Skin Type
+        Route::get('/skin_type', [ToolController::class, 'skinType'])->name('skin_type');
+        Route::post('/list_skin_type', [ToolController::class, 'listSkinType'])->name('list_skin_type');
+        // Coverage & Benefit
+        Route::get('/coverage_benefit', [ToolController::class, 'CoverageBenefit'])->name('coverage_benefit');
+        Route::post('/list_coverage_benefit', [ToolController::class, 'listCoverageBenefit'])->name('list_coverage_benefit');
+        // UsageArea
+        Route::get('/usage_area', [ToolController::class, 'usageArea'])->name('usage_area');
+        Route::post('/list_usage_area', [ToolController::class, 'listUsageArea'])->name('list_usage_area');
+        // TextureFormula
+        Route::get('/texture_formula', [ToolController::class, 'textureFormula'])->name('texture_formula');
+        Route::post('/list_texture_formula', [ToolController::class, 'listTextureFormula'])->name('list_texture_formula');
+        // Finish
+        Route::get('/finish', [ToolController::class, 'finish'])->name('finish');
+        Route::post('/list_finish', [ToolController::class, 'listFinish'])->name('list_finish');
+        // Package Type1
+        Route::get('/package_type1', [ToolController::class, 'packageType1'])->name('package_type1');
+        Route::post('/list_package_type1', [ToolController::class, 'listPackageType1'])->name('list_package_type1');
+        // Package Type2
+        Route::get('/package_type2', [ToolController::class, 'packageType2'])->name('package_type2');
+        Route::post('/list_package_type2', [ToolController::class, 'listPackageType2'])->name('list_package_type2');
     });
 
     // product_channel

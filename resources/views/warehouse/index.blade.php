@@ -324,6 +324,7 @@
                             <th>Barcode</th>
                             <th>รหัสผู้ขาย</th>
                             <th>ชื่อภาษาไทย</th>
+                            <th>รูปภาพ</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -727,7 +728,7 @@
             ordering: false,
             deferRender: true,
             scroller: true,
-            scrollY: "600px",
+            scrollY: "750px",
             "order": [[1, "desc"]],
             "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
             "pageLength": 20, // ค่าเริ่มต้นคือ "20"
@@ -788,20 +789,35 @@
                     orderable: true,
                     className: 'text-center',
                     render: function(data, type, row) {
+                        // ถ้า img_url เป็นค่าว่าง หรือ null ให้ใช้รูป default
+                        let imageUrl = row.img_url && row.img_url.trim() !== "" ? row.img_url : "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg";
+                        
+                        return `
+                            <div class="flex justify-center items-center">
+                                <img src="${imageUrl}" class="w-20 h-16 object-cover rounded-sm shadow-md border border-gray-300 cursor-pointer transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-md hover:shadow-gray-400 dark:hover:shadow-md dark:hover:shadow-gray-400" alt="Product Image">
+                            </div>
+                        `;
+                    }
+                },
+                {
+                    targets: 6,
+                    orderable: true,
+                    className: 'text-center',
+                    render: function(data, type, row) {
                         let disabledRoute = "{{route('warehouse.update', 0)}}".replace('/0', "/" + row.product_id)
                         let text = "#"
-                            return `<div class="inline-flex flex items-center rounded-md shadow-sm">
-                                        <a href="{{route('warehouse.edit', 0)}}"
-                                            type="button" class="px-2 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group">
-                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="-mt-1.5 hidden h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                                                <path d="M0 0h24v24H0V0z" fill="none"></path>
-                                                <path d="M5 18.08V19h.92l9.06-9.06-.92-.92z" opacity=".3"></path>
-                                                <path d="M20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29s-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83zM3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM5.92 19H5v-.92l9.06-9.06.92.92L5.92 19z"></path>
-                                            </svg>
-                                            Edit
-                                        </a>
-                                    </div>
-                                `.replaceAll('/0', "/" + row.product_id);
+                        return `<div class="inline-flex flex items-center rounded-md shadow-sm">
+                                    <a href="{{route('warehouse.edit', 0)}}"
+                                        type="button" class="px-2 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="-mt-1.5 hidden h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                            <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                            <path d="M5 18.08V19h.92l9.06-9.06-.92-.92z" opacity=".3"></path>
+                                            <path d="M20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29s-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83zM3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM5.92 19H5v-.92l9.06-9.06.92.92L5.92 19z"></path>
+                                        </svg>
+                                        Edit
+                                    </a>
+                                </div>
+                            `.replaceAll('/0', "/" + row.product_id);
 
                     }
                 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProductImage;
 use App\Models\Food;
+use App\Models\Com_product;
 use App\Models\ComProductImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -165,6 +166,15 @@ class ProductImageController extends Controller
                     }
                     // ย้ายไฟล์ไปยังโฟลเดอร์
                     $file->move(public_path($img_path), $filename);
+                    // รูปโชว์
+                    if ($seq === 1) {
+                        $imageData = Com_product::updateOrCreate(
+                            ['product_id' => $id], // ค้นหาจาก product_id และ seq
+                            [
+                                'path' => $img_path . $filename,
+                            ]
+                        );
+                    }
                     // อัปเดตหรือเพิ่มข้อมูลรูปภาพใหม่
                     $imageData = ComProductImage::updateOrCreate(
                         ['product_id' => $id, 'seq' => $seq], // ค้นหาจาก product_id และ seq
@@ -205,7 +215,7 @@ class ProductImageController extends Controller
 
     public function deleteImg($id) 
     {
-        dd($id);
+        // dd($id);
         // ค้นหาข้อมูล
         $data = ComProductImage::select('path')->where('id', $id)->first();
 
@@ -227,7 +237,10 @@ class ProductImageController extends Controller
         // ลบข้อมูลออกจากฐานข้อมูล
         ComProductImage::where('id', $id)->delete();
 
-        return response()->json(['message' => 'Image deleted successfully.'], 200);
+        session()->flash('message', 'Image deleted successfully.');
+        return response()->json([
+            'success' => true,
+        ]);
     }
 
     /**

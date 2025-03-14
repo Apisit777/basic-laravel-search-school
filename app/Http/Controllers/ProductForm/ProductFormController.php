@@ -296,6 +296,7 @@ class ProductFormController extends Controller
                 // }
                 if ($data->Code >= 10000 && $data->Code <= 14999) {
                     $productCodeMax = Document::where('STATUS', '=', 'KTY')->max('NUMBER');
+                    // dd($productCodeMax);
                 }
                 if ($data->Code >= 15000 && $data->Code <= 19999) {
                     $productCodeMax = Document::where('STATUS', '=', 'FR')->max('NUMBER');
@@ -314,6 +315,7 @@ class ProductFormController extends Controller
                 // }
 
                 $productCodeNumberDocument =  (int) preg_replace('/[^0-9]/', '', $productCodeMax) + 1;
+                // dd($productCodeNumberDocument, 'Test');
                 $productCodeDocument = $productCodeNumberDocument;
 
                 // dd($productCodeDocument, $data->Code);
@@ -337,7 +339,7 @@ class ProductFormController extends Controller
                 } elseif ($data->Code == 'CPS') {
                     // dd(4);
                     $data_BRAND_Document = Document::updateOrCreate(
-                        ['COMPANY' => $request->BRAND, 'BRAND' => 'CPS', 'STATUS' => 'CPS'],
+                        ['COMPANY' => $data->BRAND, 'BRAND' => 'CPS', 'STATUS' => 'CPS'],
                         ['NUMBER' => $productCodeDocument]
                     );
                 } 
@@ -348,9 +350,8 @@ class ProductFormController extends Controller
                 //     );
                 // } 
                 elseif ($data->Code >= 10000 && $data->Code <= 14999) {
-                    // dd($productCodeDocument);
                     $data_BRAND_Document = Document::updateOrCreate(
-                        ['COMPANY' => $request->BRAND, 'BRAND' => 'KTY','STATUS' => 'KTY'],
+                        ['COMPANY' => $data->BRAND, 'BRAND' => 'KTY','STATUS' => 'KTY'],
                         ['NUMBER' => $productCodeDocument]
                     );
                 } elseif ($data->Code >= 15000 && $data->Code <= 19999) {
@@ -361,12 +362,12 @@ class ProductFormController extends Controller
                     );
                 } elseif ($data->Code == 'BB') {
                     $data_BRAND_Document = Document::updateOrCreate(
-                        ['COMPANY' => $request->BRAND, 'BRAND' => 'BB', 'STATUS' => 'BB'],
+                        ['COMPANY' => $data->BRAND, 'BRAND' => 'BB', 'STATUS' => 'BB'],
                         ['NUMBER' => $productCodeDocument]
                     );
                 } elseif ($data->Code == 'LL') {
                     $data_BRAND_Document = Document::updateOrCreate(
-                        ['COMPANY' => $request->BRAND, 'BRAND' => 'LL', 'STATUS' => 'LL'],
+                        ['COMPANY' => $data->BRAND, 'BRAND' => 'LL', 'STATUS' => 'LL'],
                         ['NUMBER' => $productCodeDocument]
                     );
                 } 
@@ -1028,6 +1029,7 @@ class ProductFormController extends Controller
             // $barcodeMax = substr_replace($lastElement, '', -1);
             $barcodeNumber =  (int) preg_replace('/[^0-9]/', '', $barcodeMax) + 1;
 
+            // dd($barcodeNumber);
             if ($request->BRAND) {
                 $prefixBarcode = Barcode::select('B_CODE')->where('BRAND', $request->BRAND)->pluck('B_CODE')->toArray();
             } else {
@@ -1659,22 +1661,46 @@ class ProductFormController extends Controller
 
         $product_co_ordimators = Npd_cos::select('ID AS NPD', 'DESCRIPTION')->get()->toArray();
 
-        if (!in_array($data->NPD, array_column($product_co_ordimators, 'NPD')))
+        if ($userpermission == 'OP') {
+            $product_co_ordimators = Npd_cos::select('ID AS NPD', 'DESCRIPTION')->where('BRAND', 'OP')->get()->toArray();
+            if (!in_array($data->NPD, array_column($product_co_ordimators, 'NPD')))
             {
                 $product_co_ordimators[] =  [
                     'NPD' => $data->NPD,
                     'DESCRIPTION' => $data->NPD,
                 ];
-            } 
+            }
+        } else if ($userpermission == 'KTY') {
+            $product_co_ordimators = Npd_cos::select('ID AS NPD', 'DESCRIPTION')->where('BRAND', 'KTY')->get()->toArray();
+            if (!in_array($data->NPD, array_column($product_co_ordimators, 'NPD')))
+            {
+                $product_co_ordimators[] =  [
+                    'NPD' => $data->NPD,
+                    'DESCRIPTION' => $data->NPD,
+                ];
+            }
+        }
 
         $marketing_managers = Npd_pdms::select('ID AS PDM', 'DESCRIPTION')->get()->toArray();
 
-        if (!in_array($data->PDM, array_column($marketing_managers, 'PDM')))
-        {
-            $marketing_managers[] =  [
-                'PDM' => $data->PDM,
-                'DESCRIPTION' => $data->PDM,
-            ];
+        if ($userpermission == 'OP') {
+            $marketing_managers = Npd_pdms::select('ID AS PDM', 'DESCRIPTION')->where('BRAND', 'OP')->get()->toArray();
+            if (!in_array($data->PDM, array_column($marketing_managers, 'PDM')))
+            {
+                $marketing_managers[] =  [
+                    'PDM' => $data->PDM,
+                    'DESCRIPTION' => $data->PDM,
+                ];
+            }
+        } else if ($userpermission == 'KTY') {
+            $marketing_managers = Npd_pdms::select('ID AS PDM', 'DESCRIPTION')->where('BRAND', 'KTY')->get()->toArray();
+            if (!in_array($data->PDM, array_column($marketing_managers, 'PDM')))
+            {
+                $marketing_managers[] =  [
+                    'PDM' => $data->PDM,
+                    'DESCRIPTION' => $data->PDM,
+                ];
+            }
         }
 
         $type_categorys = Npd_categorys::select('ID AS CATEGORY', 'DESCRIPTION')->get()->toArray();

@@ -295,15 +295,15 @@
                                                                     <textarea id="P_BENEFIT" name="P_BENEFIT" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
                                                                 </div>
                                                                 <div class="md:col-span-2" >
-                                                                    <label for="TEXTURE">texture<span class="text-danger"> *</span></label>
-                                                                    <select required class="js-example-basic-single w-full rounded-sm text-xs select2" id="TEXTURE" name="TEXTURE" onchange="onchangeValueSelect2()">
-                                                                    <!-- <select class="js-example-basic-single w-full rounded-sm text-xs select2" id="TEXTURE" name="TEXTURE"> -->
+                                                                    <label for="TEXTURE">texture</label>
+                                                                    <!-- <select required class="js-example-basic-single w-full rounded-sm text-xs select2" id="TEXTURE" name="TEXTURE" onchange="onchangeValueSelect2()"> -->
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs select2" id="TEXTURE" name="TEXTURE">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($textures as $key => $texture)
                                                                             <option value="{{ $texture->DESCRIPTION }}">{{ $texture->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
-                                                                    <span id="TEXTURE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
+                                                                    <!-- <span id="TEXTURE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span> -->
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
                                                                     <label for="TEXTURE_OT">ระบุ</label>
@@ -654,7 +654,7 @@
             const NPD = jQuery('#NPD').val();
             const PDM = jQuery('#PDM').val();
             const CATEGORY = jQuery('#CATEGORY').val();
-            const TEXTURE = jQuery('#TEXTURE').val();
+            // const TEXTURE = jQuery('#TEXTURE').val();
 
             if (NPD) {
                 jQuery('#NPD_textalert').addClass('hidden');
@@ -671,13 +671,13 @@
             } else {
                 jQuery('#CATEGORY_textalert').removeClass('hidden');
             }
-            if (TEXTURE) {
-                jQuery('#TEXTURE_textalert').addClass('hidden');
-            } else {
-                jQuery('#TEXTURE_textalert').removeClass('hidden');
-            }
+            // if (TEXTURE) {
+            //     jQuery('#TEXTURE_textalert').addClass('hidden');
+            // } else {
+            //     jQuery('#TEXTURE_textalert').removeClass('hidden');
+            // }
 
-            return !!NPD && !!PDM && !!CATEGORY && !!TEXTURE
+            return !!NPD && !!PDM && !!CATEGORY
         }
 
         function onchangeValueSelect2() {

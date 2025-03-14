@@ -123,18 +123,18 @@ class ProductChannelController extends Controller
             });
         }
         // dd($data->toSql());
-         // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
-         $totalRecords = $data->count();
-         if ($limit > 0) {
-             $data->limit($limit)->offset($start);
-         }
-         $records = $data->get();
- 
-         return response()->json([
-             'draw' => intval($request->draw),
-             'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
-             'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
-             'aaData' => $records,
-         ]);
+        // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
+        $totalRecords = $data->count();
+        if ($limit > 0) {
+            $data->limit($limit)->offset($start);
+        }
+        $records = $data->get();
+
+        return response()->json([
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
+            'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
+            'aaData' => $records,
+        ]);
     }
 }

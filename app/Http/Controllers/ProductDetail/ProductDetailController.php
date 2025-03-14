@@ -7,7 +7,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Barcode;
 use App\Models\Product1;
 use App\Models\ProductDetail;
+use App\Models\Com_product;
+use App\Models\Countrie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 
 class ProductDetailController extends Controller
 {
@@ -115,18 +119,92 @@ class ProductDetailController extends Controller
         )
         ->firstWhere('product_details.product_id', '=', $id);
 
-        // $data->REG_DATE = date('Y-m-d', strtotime($data->REG_DATE));
+        $data->launch = date('Y-m', strtotime($data->launch));
 
-        // dd($venders);
-        return view('product_detail.edit', compact('data'));
+        $dataComProduct = Com_product::select(
+            'com_products.*',
+        )
+        ->firstWhere('product_id', '=', $id);
+
+        // ✅ เรียก API ข้อมูลประเทศ
+        // $endpoint = "https://restcountries.com/v3.1/all?fields=name";
+        // $apiResponse = Http::asForm()->get($endpoint);
+        // if (!$apiResponse->successful()) {
+        //     return redirect()->back()->with('error', 'Failed to fetch country data.');
+        // }
+        // $countriesData = collect($apiResponse->json());
+        // $countriesDatas = $countriesData->pluck('name.common')->toArray();
+
+        $countriesDatas = Countrie::select('id AS country', 'name_country')->get()->toArray();
+        if (!in_array($data->country, array_column($countriesDatas, 'country')))
+            {
+                $countriesDatas[] =  [
+                    'id' => $data->country,
+                    'name_country' => $data->country,
+                ];
+            }
+
+        // dd($countriesDatas);
+        return view('product_detail.edit', compact('data', 'countriesDatas', 'dataComProduct'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        //
+        dd($request);
+        DB::beginTransaction();
+        try {
+                $data_old = ProductDetail::select(
+                    'product1s.*',
+                )
+                ->firstWhere('product1s.PRODUCT', '=', $id);
+
+                $data_old_arr = $data_old->toArray();
+
+                if ($request) {
+                    $log = [
+                        'UPDATE_DT' => date("Y/m/d H:i:s"),
+                        'USER_UPDATE' => Auth::user()->username
+                    ];
+
+                    $data_old_arr = array_merge($data_old_arr, $log);
+                    // dd($data_old_arr);
+                    $logProductUpddate = Product1Log::create($data_old_arr);
+                }
+
+                $data_product_upddate = [
+                    'corporation_id' => $request->input('corporation_id'),
+                    'product_id' => $request->input('product_id'),
+                    'launch' => $request->input('launch'),
+                    'country' => $request->input('country'),
+                    'fad' => $request->input('fad'),
+                    'after_open_m' => $request->input('after_open_m'),
+                    'description_th' => $request->input('description_th'),
+                    'description_en' => $request->input('description_en'),
+                    'usage_direction_th' => $request->input('usage_direction_th'),
+                    'usage_direction_en' => $request->input('usage_direction_en'),
+                    'color_code_th' => $request->input('color_code_th'),
+                    'color_code_en' => $request->input('color_code_en'),
+
+                    // 'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
+                    // 'USER_EDIT' => Auth::user()->username,
+                    // 'EDIT_DT' => date("Y-m-d"),
+                    // 'STATUS_EDIT_DT' => '',
+                ];
+
+                $productUpddate = ProductDetail::where('PRODUCT', $id)->update($data_product_upddate);
+
+                // dd($productUpddate);
+                DB::commit();
+                $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
+                return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
     }
 
     /**
@@ -139,10 +217,8 @@ class ProductDetailController extends Controller
 
     public function listProductDetail(Request $request)
     {
-        $limit = $request->input('length'); // limit per page
-        $request->merge([
-            'page' => ceil(($request->input('start') + 1) / $limit),
-        ]);
+        $limit = (int) $request->input('length'); // จำนวนต่อหน้า
+        $start = (int) $request->input('start', 0);
 
         $data = ProductDetail::select(
             'corporation_id',
@@ -152,18 +228,18 @@ class ProductDetailController extends Controller
         ->orderBy('product_id', 'DESC');
 
         // dd($data->toSql());
-        // ดึงจำนวน record ก่อน
+        // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
         $totalRecords = $data->count();
-        
-        // ใช้ paginate ดึงข้อมูล
-        $data = $data->paginate($limit);
-        $totalRecordwithFilter = $data->total();
+        if ($limit > 0) {
+            $data->limit($limit)->offset($start);
+        }
+        $records = $data->get();
 
         return response()->json([
             'draw' => intval($request->draw),
-            'iTotalRecords' => $totalRecordwithFilter,
-            'iTotalDisplayRecords' => $totalRecords,
-            'aaData' => $data->items(),
+            'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
+            'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
+            'aaData' => $records,
         ]);
     }
 }

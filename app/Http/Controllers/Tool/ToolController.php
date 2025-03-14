@@ -11,6 +11,13 @@ use App\Models\Sub_category;
 use App\Models\Npd_cos;
 use App\Models\Npd_pdms;
 use App\Models\MasterBrand;
+use App\Models\CpsSkinType;
+use App\Models\CpsCoverageBenefit;
+use App\Models\CpsUsageArea;
+use App\Models\CpsTextureFormula;
+use App\Models\CpsFinish;
+use App\Models\CpsPackageType1;
+use App\Models\CpsPackageType2;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -181,6 +188,73 @@ class ToolController extends Controller
         return view('tool.marketing_manager.index', compact('data'));
     }
 
+    public function skinType()
+    {
+        $data = CpsSkinType::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        $skinTypes = CpsSkinType::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+
+        // dd($skinTypes);
+        return view('tool.skin_type.index', compact('data', 'skinTypes'));
+    }
+
+    public function CoverageBenefit()
+    {
+        $data = CpsCoverageBenefit::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        $coverageBenefits = CpsCoverageBenefit::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+
+        // dd($skinTypes);
+        return view('tool.coverage_benefit.index', compact('data', 'coverageBenefits'));
+    }
+
+    public function usageArea()
+    {
+        $data = CpsUsageArea::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        $usageAreas = CpsUsageArea::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+
+        // dd($skinTypes);
+        return view('tool.usage_area.index', compact('data', 'usageAreas'));
+    }
+
+    public function textureFormula()
+    {
+        $data = CpsTextureFormula::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        $textureFormulas = CpsTextureFormula::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+
+        // dd($skinTypes);
+        return view('tool.texture_formula.index', compact('data', 'textureFormulas'));
+    }
+    public function finish()
+    {
+        $data = CpsFinish::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        $finishs = CpsFinish::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+
+        // dd($skinTypes);
+        return view('tool.finish.index', compact('data', 'finishs'));
+    }
+    public function packageType1()
+    {
+        $data = CpsPackageType1::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        $packageType1s = CpsPackageType1::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+
+        // dd($skinTypes);
+        return view('tool.package_type1.index', compact('data', 'packageType1s'));
+    }
+    public function packageType2()
+    {
+        $data = CpsPackageType2::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        $packageType2s = CpsPackageType2::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+
+        // dd($skinTypes);
+        return view('tool.package_type2.index', compact('data', 'packageType2s'));
+    }
+
     public function solutionCheckId(Request $request)
     {
         // dd($request);
@@ -299,7 +373,6 @@ class ToolController extends Controller
         }
         return response()->json($data > 0 ? false : true);
     }
-
 
     public function manageSubCategory(Request $request)
     {
@@ -430,6 +503,7 @@ class ToolController extends Controller
             return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
         }
     }
+
     public function solutionUpdate(Request $request, $id)
     {
         // dd($request->all());
@@ -1684,6 +1758,209 @@ class ToolController extends Controller
                 }
             });
         }
+
+        // dd($data->toSql());
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
+    }
+
+    public function listSkinType(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $data = CpsSkinType::select(
+            'ID',
+            'DESCRIPTION',
+            'BRAND',
+            'EDIT_DT'
+        )
+        ->orderBy('ID', 'ASC');
+
+        // dd($data->toSql());
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
+    }
+
+    public function listCoverageBenefit(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $data = CpsCoverageBenefit::select(
+            'ID',
+            'DESCRIPTION',
+            'BRAND',
+            'EDIT_DT'
+        )
+        ->orderBy('ID', 'ASC');
+
+        // dd($data->toSql());
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
+    }
+
+    public function listUsageArea(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $data = CpsUsageArea::select(
+            'ID',
+            'DESCRIPTION',
+            'BRAND',
+            'EDIT_DT'
+        )
+        ->orderBy('ID', 'ASC');
+
+        // dd($data->toSql());
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
+    }
+
+    public function listTextureFormula(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $data = CpsTextureFormula::select(
+            'ID',
+            'DESCRIPTION',
+            'BRAND',
+            'EDIT_DT'
+        )
+        ->orderBy('ID', 'ASC');
+
+        // dd($data->toSql());
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
+    }
+
+    public function listFinish(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $data = CpsFinish::select(
+            'ID',
+            'DESCRIPTION',
+            'BRAND',
+            'EDIT_DT'
+        )
+        ->orderBy('ID', 'ASC');
+
+        // dd($data->toSql());
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
+    }
+
+    public function listPackageType1(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $data = CpsPackageType1::select(
+            'ID',
+            'DESCRIPTION',
+            'BRAND',
+            'EDIT_DT'
+        )
+        ->orderBy('ID', 'ASC');
+
+        // dd($data->toSql());
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
+    }
+
+    public function listPackageType2(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $data = CpsPackageType2::select(
+            'ID',
+            'DESCRIPTION',
+            'BRAND',
+            'EDIT_DT'
+        )
+        ->orderBy('ID', 'ASC');
 
         // dd($data->toSql());
         $data = $data->paginate($limit);
