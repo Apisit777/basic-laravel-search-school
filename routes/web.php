@@ -123,6 +123,8 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         // Sub Category
         Route::get('/sub_category', [ToolController::class, 'subCategory'])->name('sub_category');
         Route::get('/manage_sub_category', [ToolController::class, 'manageSubCategory'])->name('manage_sub_category');
+        Route::post('/data_categories', [ToolController::class, 'dataCategories'])->name('data_categories');
+        Route::post('/sub_category_check_id', [ToolController::class, 'subCategoryCheckId'])->name('sub_category_check_id');
         Route::post('/sub_category_checkname', [ToolController::class, 'subCategoryCheckName'])->name('sub_category_checkname');
         Route::post('/sub_category_create', [ToolController::class, 'subCategoryCreate'])->name('sub_category_create');
         Route::post('/sub_category_update/{id}', [ToolController::class, 'subCategoryUpdate'])->name('sub_category_update');
@@ -194,9 +196,18 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         Route::get('/product_line', [ProductOtherController::class, 'productLine'])->name('product_line');
         Route::get('/product_type', [ProductOtherController::class, 'productType'])->name('product_type');
         Route::get('/pd_other/edit/{product_id}', [ProductOtherController::class, 'edit'])->name('pd_other_edit');
-        Route::post('/pd_other_update', [ProductOtherController::class, 'update'])->name('pd_other_update');
-        // Route::post('/pd_other_update/{id}', [ProductOtherController::class, 'update'])->name('pd_other_update');
+        Route::post('/pd_other_update/{id}', [ProductOtherController::class, 'update'])->name('pd_other_update');
         
+        // productLine
+        Route::get('/manage_product_line', [ToolController::class, 'manageProductLine'])->name('manage_product_line');
+        Route::post('/product_line_check_id', [ToolController::class, 'productLineCheckId'])->name('product_line_check_id');
+        Route::post('/product_line_check_name', [ToolController::class, 'productLineCheckName'])->name('product_line_check_name');
+        Route::post('/list_product_line', [ToolController::class, 'listProductLine'])->name('list_product_line');
+        // productType
+        Route::get('/manage_product_type', [ToolController::class, 'manageProductType'])->name('manage_product_type');
+        Route::post('/product_type_check_id', [ToolController::class, 'productTypeCheckId'])->name('product_type_check_id');
+        Route::post('/product_type_check_name', [ToolController::class, 'productTypeCheckName'])->name('product_type_check_name');
+        Route::post('/list_product_type', [ToolController::class, 'listProductType'])->name('list_product_type');
         // Skin Type
         Route::get('/skin_type', [ToolController::class, 'skinType'])->name('skin_type');
         Route::post('/list_skin_type', [ToolController::class, 'listSkinType'])->name('list_skin_type');
@@ -230,7 +241,7 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
     Route::group(['prefix' => 'warehouse', 'as' => 'warehouse.'], function () {
         Route::get('/dimension', [ComProductController::class, 'index'])->name('index');
 
-        Route::get('/filter-cards', [ComProductController::class, 'filter'])->name('filter.cards');
+        // Route::get('/filter-cards', [ComProductController::class, 'filter'])->name('filter.cards');
 
         Route::get('/document', [ComProductController::class, 'indexDocument'])->name('document');
         Route::post('/list_warehouse', [ComProductController::class, 'listWarehouse'])->name('list_warehouse');

@@ -7,7 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Barcode;
 use App\Models\Product1;
 use App\Models\ProductDetail;
+use App\Models\ProductDetailLog;
 use App\Models\Com_product;
+use App\Models\ComProductLog;
 use App\Models\Countrie;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -116,10 +118,16 @@ class ProductDetailController extends Controller
         // dd($id);
         $data = ProductDetail::select(
             'product_details.*',
+            'com_products.barcode AS barcode',
         )
+        ->leftJoin('com_products', 'product_details.product_id', '=', 'com_products.product_id')
         ->firstWhere('product_details.product_id', '=', $id);
 
-        $data->launch = date('Y-m', strtotime($data->launch));
+        // dd($data);
+        // แปลงวันที่เฉพาะตอนที่มีค่า
+        if ($data && $data->launch) {
+            $data->launch = date('Y-m', strtotime($data->launch));
+        }
 
         $dataComProduct = Com_product::select(
             'com_products.*',
@@ -153,25 +161,23 @@ class ProductDetailController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd($request);
+        // dd($request);
         DB::beginTransaction();
         try {
-                $data_old = ProductDetail::select(
-                    'product1s.*',
-                )
-                ->firstWhere('product1s.PRODUCT', '=', $id);
+                // ค้นหาข้อมูลเดิมจาก ProductDetail
+                $data_old = ProductDetail::where('product_id', $id)->first();
 
-                $data_old_arr = $data_old->toArray();
-
-                if ($request) {
+                // ตรวจสอบว่าเจอข้อมูลหรือไม่
+                if ($data_old) {
+                    $data_old_arr = $data_old->toArray();
+                    // เพิ่ม Log ถ้ามีค่าที่ต้องการอัปเดต
                     $log = [
-                        'UPDATE_DT' => date("Y/m/d H:i:s"),
-                        'USER_UPDATE' => Auth::user()->username
+                        'update_dt' => date("Y/m/d H:i:s"),
+                        'user_update' => Auth::user()->username,
                     ];
 
                     $data_old_arr = array_merge($data_old_arr, $log);
-                    // dd($data_old_arr);
-                    $logProductUpddate = Product1Log::create($data_old_arr);
+                    ProductDetailLog::create($data_old_arr);
                 }
 
                 $data_product_upddate = [
@@ -187,6 +193,20 @@ class ProductDetailController extends Controller
                     'usage_direction_en' => $request->input('usage_direction_en'),
                     'color_code_th' => $request->input('color_code_th'),
                     'color_code_en' => $request->input('color_code_en'),
+                    // 'case_width' => $request->input('case_width'),
+                    // 'case_length' => $request->input('case_length'),
+                    // 'case_height' => $request->input('case_height'),
+                    // 'case_barcode' => $request->input('case_barcode'),
+                    // 'case_weight' => $request->input('case_weight'),
+                    // 'case_pack_size' => $request->input('case_pack_size'),
+                    // 'inner_width' => $request->input('inner_width'),
+                    // 'inner_length' => $request->input('inner_length'),
+                    // 'inner_height' => $request->input('inner_height'),
+                    // 'inner_barcode' => $request->input('inner_barcode'),
+                    // 'inner_weight' => $request->input('inner_weight'),
+                    // 'inner_pack_size' => $request->input('inner_pack_size'),
+                    'upd_user' => Auth::user()->username,
+                    'upd_date' => date("Y/m/d H:i:s"),
 
                     // 'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
                     // 'USER_EDIT' => Auth::user()->username,
@@ -194,9 +214,10 @@ class ProductDetailController extends Controller
                     // 'STATUS_EDIT_DT' => '',
                 ];
 
-                $productUpddate = ProductDetail::where('PRODUCT', $id)->update($data_product_upddate);
+                // อัปเดตข้อมูล
+                $upddateProductDetail = ProductDetail::where('product_id', $id)->update($data_product_upddate);
 
-                // dd($productUpddate);
+                // dd($upddateProductDetail);
                 DB::commit();
                 $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
                 return response()->json(['success' => true]);

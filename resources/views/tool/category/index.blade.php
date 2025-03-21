@@ -72,6 +72,17 @@
         .select2-container--default .select2-selection--single .select2-selection__rendered {
             font-size: small!important;
         }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -329,6 +340,7 @@
 
         function checkProductGroupId() {
             const Edit_ProductGroup_ID = jQuery('#Edit_ProductGroup_ID').val();
+            console.log("🚀 ~ checkProductGroupId ~ Edit_ProductGroup_ID:", Edit_ProductGroup_ID)
             const ID = jQuery('#ID').val();
 
             jQuery.ajax({

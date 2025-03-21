@@ -503,7 +503,7 @@
                                                                     </div>
                                                                 @endif
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name">Product Channel(Brand)</label>
+                                                                    <label for="name">Product Channel (Brand)</label>
                                                                     <select class="js-example-basic-multiple w-full rounded-sm text-xs select2" id="multiSelect" name="sele_channel[]" multiple="multiple">
                                                                     </select>
                                                                 </div>

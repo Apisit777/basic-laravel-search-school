@@ -28,6 +28,17 @@
             padding-left: 12px!important;
             padding-right: 5px;
         }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -76,13 +87,13 @@
                                                                     <input type="text" name="product_id" id="product_id" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->product_id }}" readonly>
                                                                 </div>
                                                                 <div class="md:col-span-3">
-                                                                    <label for="name">Product Channel</label>
+                                                                    <label for="name">Product Channel (Channel of Brand)</label>
                                                                     <select class="js-example-basic-multiple w-full rounded-sm text-xs select2" id="multiSelect" name="sele_channel[]" multiple="multiple">
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="AGE">Item Name</label>
-                                                                    <input type="text" name="AGE" id="AGE" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->item_name }}" />
+                                                                    <label for="item_name">Item Name</label>
+                                                                    <input type="text" name="item_name" id="item_name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->item_name }}" />
                                                                 </div>
 
                                                                 <!-- <div class="md:col-span-3">
@@ -115,7 +126,7 @@
 
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Category Name</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="CATEGORY_DESCRIPTION" id="CATEGORY_ID" onchange="getajaxLine(this)">
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="cat_name" id="CATEGORY_ID" onchange="getajaxLine(this)">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($categorys as $category)
                                                                             <option value="{{ $category->ID }}" {{ $category->ID == $data->category_id ? 'selected' : '' }}>{{ $category->DESCRIPTION }}</option>
@@ -124,13 +135,16 @@
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Usage Area</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="" id="">
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="usage_area" id="usage_area">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($usageAreas as $usageArea)
+                                                                            <option value="{{ $usageArea->ID }}" {{ $usageArea->ID == $data->usage_area_id ? 'selected' : '' }}>{{ $usageArea->DESCRIPTION }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Product Line</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="LINE_DESCRIPTION" id="LINE_ID" onchange="getajaxType(this)">
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="product_line" id="LINE_ID" onchange="getajaxType(this)">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($product_lines as $product_line)
                                                                             <option value="{{ $product_line->ID }}" {{ $product_line->ID == $data->product_line_id ? 'selected' : '' }}>{{ $product_line->DESCRIPTION }}</option>
@@ -139,13 +153,16 @@
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Texture/Formula</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="" id="">
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="texture" id="texture">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($textureFormulas as $textureFormula)
+                                                                            <option value="{{ $textureFormula->ID }}" {{ $textureFormula->ID == $data->texture_id ? 'selected' : '' }}>{{ $textureFormula->DESCRIPTION }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Product Type</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="TYPE_DESCRIPTION" id="TYPE_ID">
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="product_type" id="TYPE_ID">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($product_types as $product_type)
                                                                             <option value="{{ $product_type->ID }}" {{ $product_type->ID == $data->product_type_id ? 'selected' : '' }}>{{ $product_type->DESCRIPTION }}</option>
@@ -154,59 +171,74 @@
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Finish</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="" id="">
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="finish" id="finish">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($finishs as $finish)
+                                                                            <option value="{{ $finish->ID }}" {{ $finish->ID == $data->finish_id ? 'selected' : '' }}>{{ $finish->DESCRIPTION }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Skin Type</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="" id="">
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="skin_type" id="skin_type">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($skinTypes as $skinType)
+                                                                            <option value="{{ $skinType->ID }}" {{ $skinType->ID == $data->skin_type_id ? 'selected' : '' }}>{{ $skinType->DESCRIPTION }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Package Type1</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="" id="">
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="package" id="package">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($packageType1s as $packageType1)
+                                                                            <option value="{{ $packageType1->ID }}" {{ $packageType1->ID == $data->package_type1_id ? 'selected' : '' }}>{{ $packageType1->DESCRIPTION }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Coverage/Benefit</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="" id="">
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="coverage" id="coverage">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($coverageBenefits as $coverageBenefit)
+                                                                            <option value="{{ $coverageBenefit->ID }}" {{ $coverageBenefit->ID == $data->coverage_id ? 'selected' : '' }}>{{ $coverageBenefit->DESCRIPTION }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Package Type2</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="" id="">
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="package2" id="package2">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($packageType2s as $packageType2)
+                                                                            <option value="{{ $packageType2->ID }}" {{ $packageType2->ID == $data->package_type2_id ? 'selected' : '' }}>{{ $packageType2->DESCRIPTION }}</option>
+                                                                        @endforeach
                                                                     </select>
                                                                 </div>
 
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="NAME_THAI">ชื่อสีภาษาไทย</label>
-                                                                    <input required type="text" name="NAME_THAI" id="NAME_THAI" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="" />
+                                                                    <label for="color_name_th">ชื่อสีภาษาไทย</label>
+                                                                    <input required type="text" name="color_name_th" id="color_name_th" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="{{ $data->color_name_th }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="NAME_ENG">ชื่อสีภาษาอังกฤษ</label>
-                                                                    <input required type="text" name="NAME_ENG" id="NAME_ENG" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="" />
+                                                                    <label for="color_name_en">ชื่อสีภาษาอังกฤษ</label>
+                                                                    <input required type="text" name="color_name_en" id="color_name_en" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="{{ $data->color_name_en }}" />
                                                                 </div>
 
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="">Suppiler name(ไทย)</label>
-                                                                    <input required type="text" name="" id="" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="" />
+                                                                    <label for="suppiler_th">Suppiler name(ไทย)</label>
+                                                                    <input required type="text" name="suppiler_th" id="suppiler_th" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="{{ $data->suppiler_th }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="">Suppiler name(อังกฤษ)</label>
-                                                                    <input required type="text" name="" id="" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="" />
+                                                                    <label for="suppiler_en">Suppiler name(อังกฤษ)</label>
+                                                                    <input required type="text" name="suppiler_en" id="suppiler_en" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="{{ $data->suppiler_en }}" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="">รหัสสี</label>
-                                                                    <input required type="text" name="" id="" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="" />
+                                                                    <label for="color_code">รหัสสี</label>
+                                                                    <input required type="text" name="color_code" id="color_code" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="" />
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
-                                                                    <label for="">อื่นๆ</label>
-                                                                    <input required type="text" name="" id="" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="" />
+                                                                    <label for="other_detail">อื่นๆ</label>
+                                                                    <input required type="text" name="other_detail" id="other_detail" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="{{ $data->other_detail }}" />
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -248,18 +280,22 @@
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">SL S/SLES - free</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact1" value="Y" />
+                                                                        <input type="radio" id="sls_free_y" name="sls_free" value="Y"
+                                                                            {{ $data->sls_free == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact1" value="N" />
+                                                                        <input type="radio" id="sls_free_n" name="sls_free" value="N"
+                                                                            {{ $data->sls_free == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Natural alcohol</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact2" value="Y" />
+                                                                        <input type="radio" id="natural_alcohol_y" name="natural_alcohol" value="Y"
+                                                                            {{ $data->natural_alcohol == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact2" value="N" />
+                                                                        <input type="radio" id="natural_alcohol_n" name="natural_alcohol" value="N"
+                                                                            {{ $data->natural_alcohol == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
@@ -269,18 +305,22 @@
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Silicone - free</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact3" value="Y" />
+                                                                        <input type="radio" id="silicone_free_y" name="silicone_free" value="Y"
+                                                                            {{ $data->silicone_free == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact3" value="N" />
+                                                                        <input type="radio" id="silicone_free_n" name="silicone_free" value="N"
+                                                                            {{ $data->silicone_free == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Certified food grade flavors</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact4" value="Y" />
+                                                                        <input type="radio" id="certified_food_y" name="certified_food" value="Y"
+                                                                            {{ $data->certified_food == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact4" value="N" />
+                                                                        <input type="radio" id="certified_food_n" name="certified_food" value="N"
+                                                                            {{ $data->certified_food == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
@@ -290,18 +330,22 @@
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Mineral oil free</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact5" value="Y" />
+                                                                        <input type="radio" id="mineral_free_y" name="mineral_free" value="Y"
+                                                                            {{ $data->mineral_free == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact5" value="N" />
+                                                                        <input type="radio" id="mineral_free_n" name="mineral_free" value="N"
+                                                                            {{ $data->mineral_free == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Made with certified organic</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact6" value="Y" />
+                                                                        <input type="radio" id="certified_organic_y" name="certified_organic" value="Y"
+                                                                            {{ $data->certified_organic == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact6" value="N" />
+                                                                        <input type="radio" id="certified_organic_n" name="certified_organic" value="N"
+                                                                            {{ $data->certified_organic == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
@@ -311,18 +355,22 @@
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Colorant - free</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact7" value="Y" />
+                                                                        <input type="radio" id="colorant_free_y" name="colorant_free" value="Y"
+                                                                            {{ $data->colorant_free == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact7" value="N" />
+                                                                        <input type="radio" id="colorant_free_n" name="colorant_free" value="N"
+                                                                            {{ $data->colorant_free == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Hypoallergenic</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact8" value="Y" />
+                                                                        <input type="radio" id="hypoallergenic_y" name="hypoallergenic" value="Y"
+                                                                            {{ $data->hypoallergenic == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact8" value="N" />
+                                                                        <input type="radio" id="hypoallergenic_n" name="hypoallergenic" value="N"
+                                                                            {{ $data->hypoallergenic == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
@@ -332,18 +380,22 @@
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Phthalate - free</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact9" value="Y" />
+                                                                        <input type="radio" id="phthalate_free_y" name="phthalate_free" value="Y"
+                                                                            {{ $data->phthalate_free == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact9" value="N" />
+                                                                        <input type="radio" id="phthalate_free_n" name="phthalate_free" value="N"
+                                                                            {{ $data->phthalate_free == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Irritation tested</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact10" value="Y" />
+                                                                        <input type="radio" id="tested_y" name="tested" value="Y"
+                                                                            {{ $data->tested == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact10" value="N" />
+                                                                        <input type="radio" id="tested_n" name="tested" value="N"
+                                                                            {{ $data->tested == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
@@ -353,18 +405,22 @@
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Cruelty - free</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact11" value="Y" />
+                                                                        <input type="radio" id="cruelty_free_y" name="cruelty_free" value="Y"
+                                                                            {{ $data->cruelty_free == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact11" value="N" />
+                                                                        <input type="radio" id="cruelty_free_n" name="cruelty_free" value="N"
+                                                                            {{ $data->cruelty_free == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Non - comedogenic (ingrsdients)</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact12" value="Y" />
+                                                                        <input type="radio" id="non_comedogenic_y" name="non_comedogenic" value="Y"
+                                                                            {{ $data->non_comedogenic == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact12" value="N" />
+                                                                        <input type="radio" id="non_comedogenic_n" name="non_comedogenic" value="N"
+                                                                            {{ $data->non_comedogenic == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
@@ -374,18 +430,22 @@
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Talc - free</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact14" value="Y" />
+                                                                        <input type="radio" id="talc_free_y" name="talc_free" value="Y"
+                                                                            {{ $data->talc_free == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact14" value="N" />
+                                                                        <input type="radio" id="talc_free_n" name="talc_free" value="N"
+                                                                            {{ $data->talc_free == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">No synthetic colorant</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact15" value="Y" />
+                                                                        <input type="radio" id="synthetic_colorant_y" name="synthetic_colorant" value="Y"
+                                                                            {{ $data->synthetic_colorant == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact15" value="N" />
+                                                                        <input type="radio" id="synthetic_colorant_n" name="synthetic_colorant" value="N"
+                                                                            {{ $data->synthetic_colorant == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
@@ -395,18 +455,22 @@
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Oil - free</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact16" value="Y" />
+                                                                        <input type="radio" id="oil_free_y" name="oil_free" value="Y" 
+                                                                            {{ $data->oil_free == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact16" value="N" />
+                                                                        <input type="radio" id="oil_free_n" name="oil_free" value="N"
+                                                                            {{ $data->oil_free == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">No synthetic fragrance</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact17" value="Y" />
+                                                                        <input type="radio" id="synthetic_fragrance_y" name="synthetic_fragrance" value="Y"
+                                                                            {{ $data->synthetic_fragrance == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact17" value="N" />
+                                                                        <input type="radio" id="synthetic_fragrance_n" name="synthetic_fragrance" value="N"
+                                                                            {{ $data->synthetic_fragrance == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
@@ -416,18 +480,22 @@
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Triethanolamin - free</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact18" value="Y" />
+                                                                        <input type="radio" id="triethanolamin_free_y" name="triethanolamin_free" value="Y"
+                                                                            {{ $data->triethanolamin_free == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact18" value="N" />
+                                                                        <input type="radio" id="triethanolamin_free_n" name="triethanolamin_free" value="N"
+                                                                            {{ $data->triethanolamin_free == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">pH balance (5.0-5.5)</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact19" value="Y" />
+                                                                        <input type="radio" id="ph_balance_y" name="ph_balance" value="Y"
+                                                                            {{ $data->ph_balance == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact19" value="N" />
+                                                                        <input type="radio" id="ph_balance_n" name="ph_balance" value="N"
+                                                                            {{ $data->ph_balance == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
@@ -437,18 +505,22 @@
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Petroleum - free</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact20" value="Y" />
+                                                                        <input type="radio" id="petroleum_free_y" name="petroleum_free" value="Y"
+                                                                            {{ $data->petroleum_free == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact20" value="N" />
+                                                                        <input type="radio" id="petroleum_free_n" name="petroleum_free" value="N"
+                                                                            {{ $data->petroleum_free == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Children over 6 year old</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact21" value="Y" />
+                                                                        <input type="radio" id="chil_over_6year_y" name="chil_over_6year" value="Y"
+                                                                            {{ $data->chil_over_6year == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact21" value="N" />
+                                                                        <input type="radio" id="chil_over_6year_n" name="chil_over_6year" value="N"
+                                                                            {{ $data->chil_over_6year == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
@@ -458,18 +530,22 @@
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Petrolatum - free</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact22" value="Y" />
+                                                                        <input type="radio" id="petrolatum_free_y" name="petrolatum_free" value="Y"
+                                                                            {{ $data->petrolatum_free == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact22" value="N" />
+                                                                        <input type="radio" id="petrolatum_free_n" name="petrolatum_free" value="N"
+                                                                            {{ $data->petrolatum_free == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Fragrance - free</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact23" value="Y" />
+                                                                        <input type="radio" id="fragrance_free_y" name="fragrance_free" value="Y"
+                                                                            {{ $data->fragrance_free == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact23" value="N" />
+                                                                        <input type="radio" id="fragrance_free_n" name="fragrance_free" value="N"
+                                                                            {{ $data->fragrance_free == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
@@ -479,18 +555,22 @@
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">alcohol - free</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact24" value="Y" />
+                                                                        <input type="radio" id="alcohol_free_y" name="alcohol_free" value="Y"
+                                                                            {{ $data->alcohol_free == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact24" value="N" />
+                                                                        <input type="radio" id="alcohol_free_n" name="alcohol_free" value="N"
+                                                                            {{ $data->alcohol_free == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">paraben - free</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact25" value="Y" />
+                                                                        <input type="radio" id="paraben_free_y" name="paraben_free" value="Y"
+                                                                            {{ $data->paraben_free == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact25" value="N" />
+                                                                        <input type="radio" id="paraben_free_n" name="paraben_free" value="N"
+                                                                            {{ $data->paraben_free == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
@@ -500,18 +580,22 @@
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">คนท้องใช้ได้ ใช่หรือไม่</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact26" value="Y" />
+                                                                        <input type="radio" id="pregnancy_y" name="pregnancy" value="Y"
+                                                                            {{ $data->pregnancy == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact26" value="N" />
+                                                                        <input type="radio" id="pregnancy_n" name="pregnancy" value="N"
+                                                                            {{ $data->pregnancy == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">ให้นมบุตรใช้ได้ ใช่หรือไม่</label>
                                                                     <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="" name="contact27" value="Y" />
+                                                                        <input type="radio" id="breastfeed_y" name="breastfeed" value="Y"
+                                                                            {{ $data->breastfeed == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">ใช่</label>
-                                                                        <input type="radio" id="" name="contact27" value="N" />
+                                                                        <input type="radio" id="breastfeed_n" name="breastfeed" value="N"
+                                                                            {{ $data->breastfeed == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ไม่ใช่</label>
                                                                     </div>
                                                                 </div>
@@ -663,14 +747,21 @@
 
             // Set default values after a short delay
             setTimeout(function() {
+                let selectedValues = [];
+
                 if (defaultAllChannel[0] === 'all') {
-                    $('#multiSelect').val(allChannel).trigger("change");
+                    selectedValues = allChannel; // ถ้าเลือก "all" ให้เลือกทั้งหมด
                 } else {
-                    $('#multiSelect').val(defaultChannel).trigger("change");
+                    // ตรวจสอบค่าที่ตรงกันใน allChannel
+                    selectedValues = defaultChannel.map(c => 
+                        allChannel.find(ac => ac.trim().toLowerCase() === c.trim().toLowerCase()) || c
+                    ).filter(Boolean);
                 }
-                
-                // Debug selected values after populating
-                console.log('Selected values after timeout:', $('#multiSelect').val());
+
+                $('#multiSelect').val(selectedValues).trigger("change");
+
+                // Debugging หลังจาก set ค่า
+                console.log("Selected values after setting:", $('#multiSelect').val());
             }, 600);
         });
 
@@ -798,14 +889,14 @@
             });
             $.ajax({
                 method: "POST",
-                url: "{{ route('product_detail.pd_other_update') }}",
+                url: "{{ route('product_detail.pd_other_update', $data->product_id) }}",
                 data: $("#update_product_detail2").serialize(),
                 beforeSend: function () {
                     $('#loader').removeClass('hidden')
                 },
                 success: function(res){
                     if(res.success == true) {
-                        window.location = "/product_detail/pd_other_index";
+                        window.location = "/product_detail/pd_other";
                     } else {
                         setTimeout(function() {
                             toastr.error("เพิ่มขู้อมูลไม่สำเร็จ!");

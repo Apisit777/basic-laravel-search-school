@@ -72,6 +72,17 @@
         .select2-container--default .select2-selection--single .select2-selection__rendered {
             font-size: small!important;
         }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -154,21 +165,19 @@
                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
                                 <div class="md:col-span-6">
                                     <label for="countries" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">รหัส Category - Name Category</label>
-                                    <select class="js-example-basic-single w-full rounded-sm text-xs text-center" id="ID" name="CATEGORY_ID">
+                                    <select class="js-example-basic-single w-full rounded-sm text-xs text-center CATEGORY_ID" id="CATEGORY_ID" name="CATEGORY_ID">
                                         <option class="" value=""> --- กรุณาเลือก ---</option>
                                         @foreach ($dataCategories as $dataCategorie)
-                                            <option value="{{ $dataCategorie['ID'] }}">{{ $dataCategorie['ID'] . ' - ' . $dataCategorie['DESCRIPTION'] }}</option>
+                                            <option value="{{ $dataCategorie['ID'] }}">{{ $dataCategorie['DESCRIPTION'] }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                         </div>
-
                         <div class="p-4 text-gray-900 dark:text-gray-100" style="position: relative;">
-
                             <label for="ID">ID</label>
-                            <input type="text" id="SubCategory_ID" name="SubCategory_ID" onkeyup="checkProductGroupId()" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                            <div class="col-auto" style="position: absolute; right: 2.5%; top: 57.2%;">
+                            <input type="text" id="ID" name="SubCategory_ID" onkeyup="checkSubCategoryId()" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                            <div class="col-auto" style="position: absolute; right: 2.5%; top: 30%;">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="username_loading_id" style="margin-right: -2.5px;" class="w-6 h-6 animate-spin -mt-1">
                                     <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
                                     <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
@@ -227,46 +236,13 @@
                                         c-11.2,11.2-30.4,11.2-41.6,0l-22.4-22.4c-11.2-11.2-11.2-30.4,0-41.6L309.6,133.6z"/>
                                 </svg>
                             </div>
-
-                            <!-- <div class="p-4 text-gray-900 dark:text-gray-100" style="position: relative;">
-                                <label for="ID">ID</label>
-                                <input type="text" id="ID" name="ID" onkeyup="checkProductGroupId()" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
-                                <div class="col-auto" style="position: absolute; right: 2.5%; top: 57.2%;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="username_loading_id" style="margin-right: -2.5px;" class="w-6 h-6 animate-spin -mt-1">
-                                        <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
-                                        <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
-                                    </svg>
-                                    <svg id="correct_username_id" style="margin-right: 2.5px;" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                        viewBox="0 0 507.2 507.2" xml:space="preserve">
-                                        <circle style="fill:#32BA7C;" cx="253.6" cy="253.6" r="253.6"/>
-                                        <path style="fill:#0AA06E;" d="M188.8,368l130.4,130.4c108-28.8,188-127.2,188-244.8c0-2.4,0-4.8,0-7.2L404.8,152L188.8,368z"/>
-                                        <g>
-                                            <path style="fill:#FFFFFF;" d="M260,310.4c11.2,11.2,11.2,30.4,0,41.6l-23.2,23.2c-11.2,11.2-30.4,11.2-41.6,0L93.6,272.8
-                                                c-11.2-11.2-11.2-30.4,0-41.6l23.2-23.2c11.2-11.2,30.4-11.2,41.6,0L260,310.4z"/>
-                                            <path style="fill:#FFFFFF;" d="M348.8,133.6c11.2-11.2,30.4-11.2,41.6,0l23.2,23.2c11.2,11.2,11.2,30.4,0,41.6l-176,175.2
-                                                c-11.2,11.2-30.4,11.2-41.6,0l-23.2-23.2c-11.2-11.2-11.2-30.4,0-41.6L348.8,133.6z"/>
-                                        </g>
-                                    </svg>
-                                    <svg id="username_aler_id" style="margin-right: 2.5px;" class="w-4 h-4" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                            viewBox="0 0 507.2 507.2" xml:space="preserve">
-                                        <circle style="fill:#F15249;" cx="253.6" cy="253.6" r="253.6"/>
-                                        <path style="fill:#AD0E0E;" d="M147.2,368L284,504.8c115.2-13.6,206.4-104,220.8-219.2L367.2,148L147.2,368z"/>
-                                        <path style="fill:#FFFFFF;" d="M373.6,309.6c11.2,11.2,11.2,30.4,0,41.6l-22.4,22.4c-11.2,11.2-30.4,11.2-41.6,0l-176-176
-                                            c-11.2-11.2-11.2-30.4,0-41.6l23.2-23.2c11.2-11.2,30.4-11.2,41.6,0L373.6,309.6z"/>
-                                        <path style="fill:#D6D6D6;" d="M280.8,216L216,280.8l93.6,92.8c11.2,11.2,30.4,11.2,41.6,0l23.2-23.2c11.2-11.2,11.2-30.4,0-41.6
-                                            L280.8,216z"/>
-                                        <path style="fill:#FFFFFF;" d="M309.6,133.6c11.2-11.2,30.4-11.2,41.6,0l23.2,23.2c11.2,11.2,11.2,30.4,0,41.6L197.6,373.6
-                                            c-11.2,11.2-30.4,11.2-41.6,0l-22.4-22.4c-11.2-11.2-11.2-30.4,0-41.6L309.6,133.6z"/>
-                                    </svg>
-                                </div>
-                            </div> -->
                         </div>
 
                         <div class="p-2 ">
                             <ul class="space-y-2 font-large border-t border-gray-200 dark:border-gray-500"></ul>
                         </div>
                         <div class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md p-2">
-                            <button data-twe-modal-dismiss id="submitButton" type="button" class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 rounded group cursor-not-allowed opacity-50" onclick="createProductGroup()" disabled>
+                            <button data-twe-modal-dismiss id="submitButton" type="button" class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 rounded group cursor-not-allowed opacity-50" onclick="updateOrCreateSubCategory()" disabled>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                     <path d="M0 0h24v24H0V0z" fill="none"></path>
                                     <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
@@ -288,15 +264,18 @@
 
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
             <div id="containerexample" class="text-gray-900 dark:text-gray-100">
-                <table id="product_group" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
+                <table id="table_sub_category" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
                     <thead>
                         <tr>
-                            <th>ID</th>
+                            <th>CATEGORY_ID </th>
+                            <th>SUBCATEGORY_ID</th>
                             <th>Drescription</th>
                             <th>Brand</th>
                             <th>Action</th>
                         </tr>
                         <tr>
+                            <th>
+                            </th>
                             <th>
                                 <select class="js-example-basic-single w-full rounded-sm text-xs" id="searchSubCategoryId" name="" onchange="subCategorySearch()">
                                     <option value="" class="text-xs"> --- กรุณาเลือก ---</option>
@@ -306,7 +285,7 @@
                                 </select>
                             </th>
                             <th>
-                            <input type="text" name="" id="searchSubCategoryName" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="ชื่อสินค้า . . ." value="" onkeyup="searchTable()" />
+                                <input type="text" name="" id="searchSubCategoryName" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="ชื่อสินค้า . . ." value="" onkeyup="searchTable()" />
                             </th>
                             <th>
                             </th>
@@ -321,10 +300,6 @@
         </div>
 
     </div>
-
-    {{-- <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script> --}}
 
     <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
     <script src="{{ asset('js/flowbite-2.3.0.min.js') }}"></script>
@@ -371,73 +346,158 @@
             $('.js-example-basic-single').select2();
         });
 
-        jQuery('#username_loading').hide();
-        jQuery("#username_alert").hide();
-        jQuery("#correct_username").hide();
+        jQuery('#username_loading_id, #username_loading').hide();
+        jQuery("#username_aler_id, #username_alert").hide();
+        jQuery("#correct_username_id, #correct_username").hide();
 
-        function subCategoryCheckName(event) {
-            const ID_Category = jQuery('#ID').val();
-            const SubCategory_ID = jQuery('#Edit_SubCategory_ID').val();
-            const data = jQuery(event).val();
-            const key = jQuery(event).attr('name');
+        let isValidCategory = false; // ✅ เพิ่มตัวแปรตรวจสอบ CATEGORY_ID
+        let isValidID = false;
+        let isValidDescription = false;
 
-            if(data) {
-                jQuery.ajax({
-                    method: "POST",
-                    url: "{{ route('product_master.sub_category_checkname') }}",
-                    // data: {
-                    //         _token: "{{ csrf_token() }}",
-                    //         SubCategory_ID, DESCRIPTION
-                    //     },
-                    data: {
-                            // _token: "{{ csrf_token() }}",
-                            ID_Category, SubCategory_ID, data, key
-                        },
-                    dataType: 'json',
-                    beforeSend: function () {
-                        jQuery("#submitButton").attr("disabled", true);
-                        jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
-                        jQuery('#username_loading').show();
-                        jQuery("#correct_username").hide();
-                        jQuery("#username_alert").hide();
-                    },
-                    success: function (categorycheckname) {
-                        // console.log("🚀 ~ subCategoryCheckName ~ categorycheckname:", categorycheckname)
-                        jQuery('#username_loading').hide();
-                        jQuery("#correct_username").hide();
-
-                        if (categorycheckname == true) {
-                            jQuery("#submitButton").attr("disabled", false);
-                            jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
-                            jQuery("#username_alert").hide();
-                            jQuery("#correct_username").show();
-                        } else {
-                            jQuery("#username_alert").show();
-                            jQuery("#correct_username").hide();
-                        }
-                    },
-                    error: function (params) {
-                    }
-                });
+        function updateSaveButtonState() {
+            if (isValidID && isValidDescription && isValidCategory) {
+                jQuery("#submitButton").attr("disabled", false).removeClass('cursor-not-allowed opacity-50');
             } else {
-                jQuery("#submitButton").attr("disabled", true);
-                jQuery("#correct_username").hide();
-                jQuery("#username_alert").hide();
-                jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                jQuery("#submitButton").attr("disabled", true).addClass('cursor-not-allowed opacity-50');
             }
         }
+
+        function checkSubCategoryId() {
+            const Edit_SubCategory_ID = jQuery('#Edit_SubCategory_ID').val();
+            const ID = jQuery('#ID').val();
+
+            jQuery.ajax({
+                method: "POST",
+                url: "{{ route('product_master.sub_category_check_id') }}",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    Edit_SubCategory_ID, ID
+                },
+                dataType: 'json',
+                beforeSend: function () {
+                    isValidID = false;
+                    updateSaveButtonState();
+                    jQuery('#username_loading_id').show();
+                    jQuery("#correct_username_id, #username_aler_id").hide();
+                },
+                success: function (response) {
+                    jQuery('#username_loading_id').hide();
+
+                    if (ID === '') {
+                        isValidID = false;
+                        jQuery("#correct_username_id, #username_aler_id").hide();
+                    } else if (response === true) {
+                        isValidID = true;
+                        jQuery("#correct_username_id").show();
+                        jQuery("#username_aler_id").hide();
+                    } else {
+                        isValidID = false;
+                        jQuery("#username_aler_id").show();
+                        jQuery("#correct_username_id").hide();
+                    }
+                    updateSaveButtonState();
+                }
+            });
+        }
+
+        function subCategoryCheckName() {
+            const Edit_SubCategory_ID = jQuery('#Edit_SubCategory_ID').val();
+            const DESCRIPTION = jQuery('#DESCRIPTION').val();
+
+            jQuery.ajax({
+                method: "POST",
+                url: "{{ route('product_master.sub_category_checkname') }}",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    Edit_SubCategory_ID, DESCRIPTION
+                },
+                dataType: 'json',
+                beforeSend: function () {
+                    isValidDescription = false;
+                    updateSaveButtonState();
+                    jQuery('#username_loading').show();
+                    jQuery("#correct_username, #username_alert").hide();
+                },
+                success: function (response) {
+                    jQuery('#username_loading').hide();
+
+                    if (DESCRIPTION === '') {
+                        isValidDescription = false;
+                        jQuery("#correct_username, #username_alert").hide();
+                    } else if (response === true) {
+                        isValidDescription = true;
+                        jQuery("#correct_username").show();
+                        jQuery("#username_alert").hide();
+                    } else {
+                        isValidDescription = false;
+                        jQuery("#username_alert").show();
+                        jQuery("#correct_username").hide();
+                    }
+                    updateSaveButtonState();
+                }
+            });
+        }
+
+        // ✅ ฟังก์ชันตรวจสอบ CATEGORY_ID
+        function checkCategorySelection() {
+            const CATEGORY_ID = jQuery("#CATEGORY_ID").val();
+            if (CATEGORY_ID !== "") {
+                isValidCategory = true;
+            } else {
+                isValidCategory = false;
+            }
+            updateSaveButtonState();
+        }
+
+        // ✅ ผูก event ตรวจสอบ CATEGORY_ID เมื่อมีการเปลี่ยนค่า
+        jQuery("#CATEGORY_ID").on("change", checkCategorySelection);
+        // ✅ ผูก event กับ input fields
+        jQuery("#ID").on("keyup", checkSubCategoryId);
+        jQuery("#DESCRIPTION").on("keyup", subCategoryCheckName);
+
+        jQuery("#CATEGORY_ID option").each(function() {
+            // console.log("option value:", '"' + jQuery(this).val() + '"', "text:", '"' + jQuery(this).text() + '"');
+        });
+        // setTimeout(function() {
+        //     console.log("🔎 ค่าใน <option> ทั้งหมด (หลังหน่วงเวลา):");
+        //     jQuery("#CATEGORY_ID option").each(function() {
+        //         // console.log("option value:", '"' + jQuery(this).val() + '"');
+        //     });
+        // }, 1000); // รอ 1 วินาที
+
+        jQuery("#CATEGORY_ID").on("change", function() {
+            let oldValue = jQuery(this).data("previous");
+            let newValue = jQuery(this).val();
+            // console.log(`🔁 ค่าเปลี่ยนจาก "${oldValue}" เป็น "${newValue}"`);
+            // อัปเดตค่าเก่า
+            jQuery(this).data("previous", newValue);
+        });
 
         function modelProductGroup(ID, CATEGORY_ID, DESCRIPTION) {
-            console.log("🚀 ~ modelProductGroup ~ id:", ID, CATEGORY_ID, DESCRIPTION)
+            console.log("🚀 เปิด Modal Edit ~ ID:", ID, CATEGORY_ID, DESCRIPTION);
+
             if (ID) {
-                jQuery("#Edit_SubCategory_ID").val(ID)
-                jQuery("#ID").val(CATEGORY_ID).change()
-                jQuery("#SubCategory_ID").val(ID)
-                jQuery("#SubCategory_ID").val(ID).attr("readonly", true).addClass('h-10 rounded-sm px-4 w-full text-center bg-[#E7E7E7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#000000] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500')
-                jQuery("#DESCRIPTION").val(DESCRIPTION)
-                jQuery("#staticBackdropLabel").text('แก้ไข Sub Category')
-                jQuery("#submitButton").attr("disabled", false);
-                jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
+                jQuery("#Edit_SubCategory_ID").val(ID);
+                // ✅ รีเซ็ตตัวแปรสถานะของปุ่ม Save
+                isValidID = true;  
+                isValidDescription = true;
+                isValidCategory = CATEGORY_ID !== ""; // ถ้า CATEGORY_ID มีค่า ถือว่าถูกต้อง
+                // ✅ หน่วงเวลาให้ Select2 โหลดค่าก่อน
+                setTimeout(function () {
+                    if (CATEGORY_ID) {
+                        jQuery(".CATEGORY_ID").val(CATEGORY_ID).trigger("change");
+                        console.log("✅ ตั้งค่า CATEGORY_ID:", $('.CATEGORY_ID').val());
+                        // ✅ อัปเดตสถานะปุ่ม Save หลังจากตั้งค่า CATEGORY_ID
+                        checkCategorySelection();
+                    } else {
+                        console.warn("⚠️ ไม่พบค่า CATEGORY_ID ใน <option>!");
+                    }
+                }, 300);
+                jQuery("#ID").val(ID).attr("readonly", true).addClass('h-10 rounded-sm px-4 w-full text-center bg-[#E7E7E7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#000000] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500');
+                jQuery("#DESCRIPTION").val(DESCRIPTION);
+                jQuery("#staticBackdropLabel").text('แก้ไข Sub Category');
+                // ✅ อัปเดตปุ่ม Save ให้เช็คเงื่อนไขใหม่
+                updateSaveButtonState();
                 jQuery('#username_loading').hide();
                 jQuery("#username_alert").hide();
                 jQuery("#correct_username").hide();
@@ -445,14 +505,21 @@
                 jQuery("#username_aler_id").hide();
                 jQuery("#correct_username_id").hide();
             } else {
-                jQuery("#Edit_SubCategory_ID").val('')
-                jQuery("#ID").val('').change()
-                jQuery("#SubCategory_ID").val('')
-                jQuery("#ID").val('').removeClass('bg-[#E7E7E7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-[#000000] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500')
-                jQuery("#DESCRIPTION").val('')
-                jQuery("#staticBackdropLabel").text('เพิ่ม Sub Category')
+                jQuery("#Edit_SubCategory_ID").val('');
+                // ✅ รีเซ็ตค่าของ Select2 (CATEGORY_ID)
+                jQuery(".CATEGORY_ID").val("").trigger("change.select2");
+                jQuery("#ID").val('').removeAttr("readonly").removeClass('bg-[#E7E7E7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-[#000000] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed opacity-50');
+                jQuery("#DESCRIPTION").val('');
+                jQuery("#staticBackdropLabel").text('เพิ่ม Sub Category');
+                // ✅ รีเซ็ตตัวแปรสถานะของปุ่ม Save ให้เป็น false (เนื่องจากเป็น Create Modal)
+                isValidID = false;
+                isValidDescription = false;
+                isValidCategory = false;
+                updateSaveButtonState(); // ✅ อัปเดตปุ่ม Save ให้เป็น disabled
+
                 jQuery("#submitButton").attr("disabled", true);
                 jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+
                 jQuery('#username_loading').hide();
                 jQuery("#username_alert").hide();
                 jQuery("#correct_username").hide();
@@ -462,7 +529,7 @@
             }
         }
 
-        const mytableDatatable = $('#product_group').DataTable({
+        const mytableDatatable = $('#table_sub_category').DataTable({
             'searching': false,
             "serverSide": true,
             searching: false,
@@ -496,25 +563,32 @@
                     targets: 0,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.ID;
+                        return row.CATEGORY_ID || ''; // ถ้าเป็น undefined ให้เป็นค่าว่าง
                     }
                 },
                 {
                     targets: 1,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.DESCRIPTION;
+                        return row.ID;
                     }
                 },
                 {
                     targets: 2,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.BRAND;
+                        return row.DESCRIPTION;
                     }
                 },
                 {
                     targets: 3,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.BRAND;
+                    }
+                },
+                {
+                    targets: 4,
                     orderable: true,
                     className: 'text-center',
                     render: function(data, type, row) {
@@ -525,7 +599,7 @@
                                         data-twe-target="#staticBackdrop"
                                         data-twe-ripple-init
                                         data-twe-ripple-color="light"
-                                        onclick="modelProductGroup('${row.ID}', '${row.CATEGORY_ID}', '${row.DESCRIPTION}')"
+                                        onclick="modelProductGroup('${row.ID || ''}', '${row.CATEGORY_ID || ''}', '${row.DESCRIPTION || ''}')"
                                         type="button"
                                         class="px-2 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group"
                                     >
@@ -556,7 +630,7 @@
         }
 
         const dlayMessage = 100;
-        function createProductGroup() {
+        function updateOrCreateSubCategory() {
             jQuery.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
