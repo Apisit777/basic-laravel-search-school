@@ -11,6 +11,18 @@ use App\Models\Sub_category;
 use App\Models\Npd_cos;
 use App\Models\Npd_pdms;
 use App\Models\MasterBrand;
+<<<<<<< HEAD
+=======
+use App\Models\ProductLine;
+use App\Models\ProductType;
+use App\Models\CpsSkinType;
+use App\Models\CpsCoverageBenefit;
+use App\Models\CpsUsageArea;
+use App\Models\CpsTextureFormula;
+use App\Models\CpsFinish;
+use App\Models\CpsPackageType1;
+use App\Models\CpsPackageType2;
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
@@ -92,6 +104,22 @@ class ToolController extends Controller
         return view('tool.category.index', compact('data', 'idCategories'));
     }
 
+<<<<<<< HEAD
+=======
+    public function dataCategories()
+    {
+        $dataCategories = Sub_category::select(
+            'ID',
+            'DESCRIPTION',
+            'BRAND')
+        ->where('BRAND', 'OP')
+        ->orderby('ID', 'ASC')
+        ->get();
+
+        return response()->json($dataCategories);
+    }
+
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
     public function subCategory()
     {
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
@@ -102,7 +130,11 @@ class ToolController extends Controller
         $data = Sub_category::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
 
         if ($userpermission == 'OP') {
+<<<<<<< HEAD
             $dataCategories = Sub_category::select(
+=======
+            $dataCategories = Category::select(
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                 'ID',
                 'DESCRIPTION',
                 'BRAND')
@@ -112,7 +144,11 @@ class ToolController extends Controller
 
             $SubCategories = Sub_category::select('ID')->where('BRAND', 'OP')->pluck('ID')->toArray();
         } else if ($userpermission == 'CPS') {
+<<<<<<< HEAD
             $dataCategories = Sub_category::select(
+=======
+            $dataCategories = Category::select(
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                 'ID',
                 'DESCRIPTION',
                 'BRAND')
@@ -181,6 +217,112 @@ class ToolController extends Controller
         return view('tool.marketing_manager.index', compact('data'));
     }
 
+<<<<<<< HEAD
+=======
+    public function manageProductLine()
+    {
+        $data = ProductLine::select('ID', 'CATEGORY_ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        $productLines = ProductLine::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+
+        $dataCategories = Category::select(
+            'ID',
+            'DESCRIPTION',
+            'BRAND')
+        ->where('BRAND', 'CPS')
+        ->orderby('ID', 'ASC')
+        ->get();
+
+        // dd($skinTypes);
+        return view('tool.product_line.index', compact('data', 'productLines', 'dataCategories'));
+    }
+
+    public function manageProductType()
+    {
+        $data = ProductType::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        $productTypes = ProductType::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+
+        $dataProductLines = ProductLine::select(
+            'ID',
+            'DESCRIPTION',
+            'BRAND')
+        ->where('BRAND', 'CPS')
+        ->orderby('ID', 'ASC')
+        ->get();
+
+        // dd($skinTypes);
+        return view('tool.product_type.index', compact('data', 'productTypes', 'dataProductLines'));
+    }
+
+    public function skinType()
+    {
+        $data = CpsSkinType::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        $skinTypes = CpsSkinType::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+
+        // dd($skinTypes);
+        return view('tool.skin_type.index', compact('data', 'skinTypes'));
+    }
+
+    public function CoverageBenefit()
+    {
+        $data = CpsCoverageBenefit::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        $coverageBenefits = CpsCoverageBenefit::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+
+        // dd($skinTypes);
+        return view('tool.coverage_benefit.index', compact('data', 'coverageBenefits'));
+    }
+
+    public function usageArea()
+    {
+        $data = CpsUsageArea::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        $usageAreas = CpsUsageArea::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+
+        // dd($skinTypes);
+        return view('tool.usage_area.index', compact('data', 'usageAreas'));
+    }
+
+    public function textureFormula()
+    {
+        $data = CpsTextureFormula::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        $textureFormulas = CpsTextureFormula::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+
+        // dd($skinTypes);
+        return view('tool.texture_formula.index', compact('data', 'textureFormulas'));
+    }
+    public function finish()
+    {
+        $data = CpsFinish::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        $finishs = CpsFinish::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+
+        // dd($skinTypes);
+        return view('tool.finish.index', compact('data', 'finishs'));
+    }
+    public function packageType1()
+    {
+        $data = CpsPackageType1::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        $packageType1s = CpsPackageType1::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+
+        // dd($skinTypes);
+        return view('tool.package_type1.index', compact('data', 'packageType1s'));
+    }
+    public function packageType2()
+    {
+        $data = CpsPackageType2::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        $packageType2s = CpsPackageType2::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+
+        // dd($skinTypes);
+        return view('tool.package_type2.index', compact('data', 'packageType2s'));
+    }
+
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
     public function solutionCheckId(Request $request)
     {
         // dd($request);
@@ -282,6 +424,7 @@ class ToolController extends Controller
         return response()->json($data > 0 ? false : true);
     }
 
+<<<<<<< HEAD
     public function subCategoryCheckName(Request $request)
     {
         // dd($request);
@@ -295,11 +438,43 @@ class ToolController extends Controller
             $data = Sub_category::select('ID')
                 ->where('CATEGORY_ID',  $request->ID_Category)
                 ->where($request->key, $request->data)
+=======
+    public function subCategoryCheckId(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_SubCategory_ID) {
+            $data = Sub_category::select('ID')
+                ->where('ID', '!=', $request->Edit_SubCategory_ID)
+                ->where('ID', $request->ID)
+                ->count();
+        } else {
+            $data = Sub_category::select('ID')
+                ->where('ID', $request->ID)
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                 ->count();
         }
         return response()->json($data > 0 ? false : true);
     }
 
+<<<<<<< HEAD
+=======
+    public function subCategoryCheckName(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_SubCategory_ID) {
+            $data = Sub_category::select('ID')
+                ->where('ID', '!=', $request->SubCategory_ID)
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        } else {
+            $data = Sub_category::select('ID')
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        }
+
+        return response()->json($data > 0 ? false : true);
+    }
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
 
     public function manageSubCategory(Request $request)
     {
@@ -390,6 +565,75 @@ class ToolController extends Controller
         return response()->json($data > 0 ? false : true);
     }
 
+<<<<<<< HEAD
+=======
+    public function productLineCheckId(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_ProductLine_ID) {
+            $data = ProductLine::select('ID')
+                ->where('ID', '!=', $request->Edit_ProductLine_ID)
+                ->where('ID', $request->ID)
+                ->count();
+        } else {
+            $data = ProductLine::select('ID')
+                ->where('ID', $request->ID)
+                ->count();
+        }
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function productLineCheckName(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_ProductLine_ID) {
+            $data = ProductLine::select('ID')
+                ->where('ID', '!=', $request->Edit_ProductLine_ID)
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        } else {
+            $data = ProductLine::select('ID')
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        }
+
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function productTypeCheckId(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_ProductType_ID) {
+            $data = ProductType::select('ID')
+                ->where('ID', '!=', $request->Edit_ProductType_ID)
+                ->where('ID', $request->ID)
+                ->count();
+        } else {
+            $data = ProductType::select('ID')
+                ->where('ID', $request->ID)
+                ->count();
+        }
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function productTypeCheckName(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_ProductType_ID) {
+            $data = ProductType::select('ID')
+                ->where('ID', '!=', $request->Edit_ProductType_ID)
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        } else {
+            $data = ProductType::select('ID')
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        }
+
+        return response()->json($data > 0 ? false : true);
+    }
+
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
     public function solutionCreate(Request $request)
     {
         // dd($request->all());
@@ -430,6 +674,10 @@ class ToolController extends Controller
             return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
         }
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
     public function solutionUpdate(Request $request, $id)
     {
         // dd($request->all());
@@ -1699,6 +1947,308 @@ class ToolController extends Controller
         return response()->json($response);
     }
 
+<<<<<<< HEAD
+=======
+    public function listProductLine(Request $request)
+    {
+        $limit = (int) $request->input('length'); // จำนวนต่อหน้า
+        $start = (int) $request->input('start', 0);
+
+        $searchProductLineNameAll = $request->input('searchProductLineName', '');
+
+        $data = ProductLine::select(
+            'ID',
+            'CATEGORY_ID',
+            'DESCRIPTION',
+            'BRAND',
+            'EDIT_DT'
+        )
+        ->orderBy('ID', 'ASC');
+
+        if ($request->searchProductLineId) {
+            $data = $data->where('product_lines.ID', $request->searchProductLineId);
+        }
+
+        if (!empty($searchProductLineNameAll)) {
+            $data->where(function ($q) use ($searchProductLineNameAll) {
+                $q->orWhere('product_lines.DESCRIPTION', 'like', '%' . $searchProductLineNameAll . '%');
+            });
+        }
+
+        // dd($data->toSql());
+        // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
+        $totalRecords = $data->count();
+        if ($limit > 0) {
+             $data->limit($limit)->offset($start);
+        }
+        $records = $data->get();
+ 
+        return response()->json([
+             'draw' => intval($request->draw),
+             'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
+             'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
+             'aaData' => $records,
+        ]);
+    }
+
+    public function listProductType(Request $request)
+    {
+        $limit = (int) $request->input('length'); // จำนวนต่อหน้า
+        $start = (int) $request->input('start', 0);
+
+        $searchProductTypeNameAll = $request->input('searchProductTypeName', '');
+
+        $data = ProductType::select(
+            'ID',
+            'PRODUCT_LINE_ID',
+            'DESCRIPTION',
+            'BRAND',
+            'EDIT_DT'
+        )
+        ->orderBy('ID', 'ASC');
+
+        if ($request->searchProductTypeId) {
+            $data = $data->where('product_types.ID', $request->searchProductTypeId);
+        }
+
+        if (!empty($searchProductTypeNameAll)) {
+            $data->where(function ($q) use ($searchProductTypeNameAll) {
+                $q->orWhere('product_types.DESCRIPTION', 'like', '%' . $searchProductTypeNameAll . '%');
+            });
+        }
+
+        // dd($data->toSql());
+        // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
+        $totalRecords = $data->count();
+        if ($limit > 0) {
+             $data->limit($limit)->offset($start);
+        }
+        $records = $data->get();
+ 
+        return response()->json([
+             'draw' => intval($request->draw),
+             'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
+             'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
+             'aaData' => $records,
+        ]);
+    }
+
+    public function listSkinType(Request $request)
+    {
+        $limit = (int) $request->input('length'); // จำนวนต่อหน้า
+        $start = (int) $request->input('start', 0);
+
+        $searchSkinTypeNameAll = $request->input('searchSkinTypeName', '');
+
+        $data = CpsSkinType::select(
+            'ID',
+            'DESCRIPTION',
+            'BRAND',
+            'EDIT_DT'
+        )
+        ->orderBy('ID', 'ASC');
+
+        if ($request->searchSkinTypeId) {
+            $data = $data->where('cps_skin_types.ID', $request->searchSkinTypeId);
+        }
+
+        if (!empty($searchSkinTypeNameAll)) {
+            $data->where(function ($q) use ($searchSkinTypeNameAll) {
+                $q->orWhere('cps_skin_types.DESCRIPTION', 'like', '%' . $searchSkinTypeNameAll . '%');
+            });
+        }
+
+        // dd($data->toSql());
+        // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
+        $totalRecords = $data->count();
+        if ($limit > 0) {
+             $data->limit($limit)->offset($start);
+        }
+        $records = $data->get();
+ 
+        return response()->json([
+             'draw' => intval($request->draw),
+             'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
+             'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
+             'aaData' => $records,
+        ]);
+    }
+
+    public function listCoverageBenefit(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $data = CpsCoverageBenefit::select(
+            'ID',
+            'DESCRIPTION',
+            'BRAND',
+            'EDIT_DT'
+        )
+        ->orderBy('ID', 'ASC');
+
+        // dd($data->toSql());
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
+    }
+
+    public function listUsageArea(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $data = CpsUsageArea::select(
+            'ID',
+            'DESCRIPTION',
+            'BRAND',
+            'EDIT_DT'
+        )
+        ->orderBy('ID', 'ASC');
+
+        // dd($data->toSql());
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
+    }
+
+    public function listTextureFormula(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $data = CpsTextureFormula::select(
+            'ID',
+            'DESCRIPTION',
+            'BRAND',
+            'EDIT_DT'
+        )
+        ->orderBy('ID', 'ASC');
+
+        // dd($data->toSql());
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
+    }
+
+    public function listFinish(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $data = CpsFinish::select(
+            'ID',
+            'DESCRIPTION',
+            'BRAND',
+            'EDIT_DT'
+        )
+        ->orderBy('ID', 'ASC');
+
+        // dd($data->toSql());
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
+    }
+
+    public function listPackageType1(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $data = CpsPackageType1::select(
+            'ID',
+            'DESCRIPTION',
+            'BRAND',
+            'EDIT_DT'
+        )
+        ->orderBy('ID', 'ASC');
+
+        // dd($data->toSql());
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
+    }
+
+    public function listPackageType2(Request $request)
+    {
+        $limit = $request->input('length'); // limit per page
+        $request->merge([
+            'page' => ceil(($request->input('start') + 1) / $limit),
+        ]);
+
+        $data = CpsPackageType2::select(
+            'ID',
+            'DESCRIPTION',
+            'BRAND',
+            'EDIT_DT'
+        )
+        ->orderBy('ID', 'ASC');
+
+        // dd($data->toSql());
+        $data = $data->paginate($limit);
+        $totalRecords = $data->total();
+        $totalRecordwithFilter = $data->count();
+        $response = [
+            'draw' => intval($request->draw),
+            'iTotalRecords' => $totalRecordwithFilter,
+            'iTotalDisplayRecords' => $totalRecords,
+            'aaData' => $data->items(),
+        ];
+
+        return response()->json($response);
+    }
+
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
     public function supplier()
     {
         return view('tool.supplier.index');

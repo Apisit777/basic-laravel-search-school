@@ -123,6 +123,11 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         // Sub Category
         Route::get('/sub_category', [ToolController::class, 'subCategory'])->name('sub_category');
         Route::get('/manage_sub_category', [ToolController::class, 'manageSubCategory'])->name('manage_sub_category');
+<<<<<<< HEAD
+=======
+        Route::post('/data_categories', [ToolController::class, 'dataCategories'])->name('data_categories');
+        Route::post('/sub_category_check_id', [ToolController::class, 'subCategoryCheckId'])->name('sub_category_check_id');
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
         Route::post('/sub_category_checkname', [ToolController::class, 'subCategoryCheckName'])->name('sub_category_checkname');
         Route::post('/sub_category_create', [ToolController::class, 'subCategoryCreate'])->name('sub_category_create');
         Route::post('/sub_category_update/{id}', [ToolController::class, 'subCategoryUpdate'])->name('sub_category_update');
@@ -183,16 +188,61 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         Route::get('/pd_detail/create', [ProductDetailController::class, 'create'])->name('pd_detail_create');
         Route::post('/list_product_detail', [ProductDetailController::class, 'listProductDetail'])->name('list_product_detail');
         Route::get('/pd_detail/edit/{product_id}', [ProductDetailController::class, 'edit'])->name('pd_detail_edit');
+<<<<<<< HEAD
+=======
+        Route::post('/pd_detail_update/{product_id}', [ProductDetailController::class, 'update'])->name('pd_detail_update');
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
         
         // Sub Menu Product Detail2(Product Other)
         Route::get('/pd_other', [ProductOtherController::class, 'index'])->name('pd_other_index');
         Route::get('/pd_other/create', [ProductOtherController::class, 'create'])->name('pd_other_create');
+<<<<<<< HEAD
+=======
+        Route::post('/list_product_other', [ProductOtherController::class, 'listProductOther'])->name('list_product_other');
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
         Route::get('/product_Other_category', [ProductOtherController::class, 'productOtherCategory'])->name('product_Other_category');
         Route::get('/product_Other_sub_category', [ProductOtherController::class, 'productOtherSubCategory'])->name('product_Other_sub_category');
         Route::get('/product_line', [ProductOtherController::class, 'productLine'])->name('product_line');
         Route::get('/product_type', [ProductOtherController::class, 'productType'])->name('product_type');
+<<<<<<< HEAD
         Route::post('/pd_other_update', [ProductOtherController::class, 'update'])->name('pd_other_update');
         // Route::post('/pd_other_update/{id}', [ProductOtherController::class, 'update'])->name('pd_other_update');
+=======
+        Route::get('/pd_other/edit/{product_id}', [ProductOtherController::class, 'edit'])->name('pd_other_edit');
+        Route::post('/pd_other_update/{id}', [ProductOtherController::class, 'update'])->name('pd_other_update');
+        
+        // productLine
+        Route::get('/manage_product_line', [ToolController::class, 'manageProductLine'])->name('manage_product_line');
+        Route::post('/product_line_check_id', [ToolController::class, 'productLineCheckId'])->name('product_line_check_id');
+        Route::post('/product_line_check_name', [ToolController::class, 'productLineCheckName'])->name('product_line_check_name');
+        Route::post('/list_product_line', [ToolController::class, 'listProductLine'])->name('list_product_line');
+        // productType
+        Route::get('/manage_product_type', [ToolController::class, 'manageProductType'])->name('manage_product_type');
+        Route::post('/product_type_check_id', [ToolController::class, 'productTypeCheckId'])->name('product_type_check_id');
+        Route::post('/product_type_check_name', [ToolController::class, 'productTypeCheckName'])->name('product_type_check_name');
+        Route::post('/list_product_type', [ToolController::class, 'listProductType'])->name('list_product_type');
+        // Skin Type
+        Route::get('/skin_type', [ToolController::class, 'skinType'])->name('skin_type');
+        Route::post('/list_skin_type', [ToolController::class, 'listSkinType'])->name('list_skin_type');
+        // Coverage & Benefit
+        Route::get('/coverage_benefit', [ToolController::class, 'CoverageBenefit'])->name('coverage_benefit');
+        Route::post('/list_coverage_benefit', [ToolController::class, 'listCoverageBenefit'])->name('list_coverage_benefit');
+        // UsageArea
+        Route::get('/usage_area', [ToolController::class, 'usageArea'])->name('usage_area');
+        Route::post('/list_usage_area', [ToolController::class, 'listUsageArea'])->name('list_usage_area');
+        // TextureFormula
+        Route::get('/texture_formula', [ToolController::class, 'textureFormula'])->name('texture_formula');
+        Route::post('/list_texture_formula', [ToolController::class, 'listTextureFormula'])->name('list_texture_formula');
+        // Finish
+        Route::get('/finish', [ToolController::class, 'finish'])->name('finish');
+        Route::post('/list_finish', [ToolController::class, 'listFinish'])->name('list_finish');
+        // Package Type1
+        Route::get('/package_type1', [ToolController::class, 'packageType1'])->name('package_type1');
+        Route::post('/list_package_type1', [ToolController::class, 'listPackageType1'])->name('list_package_type1');
+        // Package Type2
+        Route::get('/package_type2', [ToolController::class, 'packageType2'])->name('package_type2');
+        Route::post('/list_package_type2', [ToolController::class, 'listPackageType2'])->name('list_package_type2');
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
     });
 
     // product_channel
@@ -205,7 +255,11 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
     Route::group(['prefix' => 'warehouse', 'as' => 'warehouse.'], function () {
         Route::get('/dimension', [ComProductController::class, 'index'])->name('index');
 
+<<<<<<< HEAD
         Route::get('/filter-cards', [ComProductController::class, 'filter'])->name('filter.cards');
+=======
+        // Route::get('/filter-cards', [ComProductController::class, 'filter'])->name('filter.cards');
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
 
         Route::get('/document', [ComProductController::class, 'indexDocument'])->name('document');
         Route::post('/list_warehouse', [ComProductController::class, 'listWarehouse'])->name('list_warehouse');

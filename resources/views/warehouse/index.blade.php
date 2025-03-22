@@ -1,6 +1,7 @@
 @extends('layouts.layout')
 @section('title', '')
     <style>
+<<<<<<< HEAD
         .loaderslide {
             width: 100%;
             height: 100%;
@@ -10,6 +11,8 @@
             z-index: 1000;
             animation: slide_up 1s linear 0.7s forwards;
         }
+=======
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
         .btn {
             z-index: 10;
         }
@@ -207,7 +210,11 @@
                 <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                     <div class="md:col-span-3">
                         <label for="BRAND" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Brand</label>
+<<<<<<< HEAD
                         <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND">
+=======
+                        <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND" onchange="brandSearch()">
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                             <option value=""> --- กรุณาเลือก ---</option>
                             @foreach ($brands as $key => $brand)
                                 <option value={{ $brand }}>{{ $brand }}</option>
@@ -216,17 +223,38 @@
                     </div>
 
                     <div class="md:col-span-3" >
+<<<<<<< HEAD
                         <label for="">ค้นหา</label>
                         <input type="text" name="search" id="search" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" />
                     </div>
                     <div class="md:col-span-6 text-center">
                         <div class="inline-flex items-center">
                             <a href="#" id="btnSerarch" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
+=======
+                        <label for="">@lang('global.content.search')</label>
+                        <input type="text" name="search" id="search" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" onkeyup="searchTable()" />
+                    </div>
+                    <div class="md:col-span-6 text-center">
+                        <div class="inline-flex items-center">
+                            <!-- <a href="#" id="btnSerarch" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                     <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
                                 </svg>
                                 ค้นหา
+<<<<<<< HEAD
                             </a>
+=======
+                            </a> -->
+                            <button  id="" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-2.5 mr-2 rounded group cursor-pointer btn-rotate" type="reset">
+                                <svg class="hidden h-6 w-6 md:inline-block rotate"
+                                    viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                    <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 93,62 C 83,82 65,96 48,96 32,96 19,89 15,79 L 5,90 5,53 40,53 29,63 c 0,0 5,14 26,14 16,0 38,-15 38,-15 z"/>
+                                    <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 5,38 C 11,18 32,4 49,4 65,4 78,11 85,21 L 95,10 95,47 57,47 68,37 C 68,37 63,23 42,23 26,23 5,38 5,38 z"/>
+                                </svg>
+                                @lang('global.content.clear')
+                            </button>
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                         </div>
                     </div>
                 </div>
@@ -316,7 +344,11 @@
 
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
             <div id="containerexample" class="text-gray-900 dark:text-gray-100">
+<<<<<<< HEAD
                 <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
+=======
+                <table id="table_dimension" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                     <thead>
                         <tr>
                             <th>รหัสบริษัท</th>
@@ -324,6 +356,10 @@
                             <th>Barcode</th>
                             <th>รหัสผู้ขาย</th>
                             <th>ชื่อภาษาไทย</th>
+<<<<<<< HEAD
+=======
+                            <th>รูปภาพ</th>
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -341,9 +377,12 @@
     <script src="{{ asset('js/3.0.2-dataTables.buttons.js') }}"></script>
     <script src="{{ asset('js/3.0.2-buttons.bootstrap5.js') }}"></script>
     <script src="{{ asset('js/dataTables.bootstrap5.js') }}"></script>
+<<<<<<< HEAD
     <script src="{{ asset('js/buttons-html5.min.js') }}"></script>
     <script src="{{ asset('js/buttons-print.min.js') }}"></script>
     <script src="{{ asset('js/buttons-colVis.min.js') }}"></script>
+=======
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
     <script src="{{ asset('js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
@@ -522,6 +561,7 @@
         //     fetchData();
         // });
 
+<<<<<<< HEAD
         // ตัวที่ใช้งาน
         // $(document).ready(function () {
         //     let currentPage = 1;
@@ -686,6 +726,21 @@
 
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
+=======
+        // Start ตัวที่ใช้งาน API Test filter-cards(Code อยู่ที่ public/conn.php(Route ต้องเปิด comment(Route::get('/filter-cards')))
+
+        // End ตัวที่ใช้งาน
+
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+
+            // กำหนด event เมื่อกดปุ่ม "ล้างข้อมูล"
+            $('button[type="reset"]').click(function() {
+                $('#brand_id').val(null).trigger('change'); // Clear ค่า select2
+                $('#search').val('').trigger('keyup'); // เคลียร์ค่า input ค้นหา
+            });
+
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
         });
         function changeLanguage(language) {
             var element = document.getElementById("url");
@@ -718,7 +773,11 @@
             console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
         }
 
+<<<<<<< HEAD
         const mytableDatatable = $('#example').DataTable({
+=======
+        const mytableDatatable = $('#table_dimension').DataTable({
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
             'searching': false,
             "serverSide": true,
             searching: false,
@@ -727,7 +786,11 @@
             ordering: false,
             deferRender: true,
             scroller: true,
+<<<<<<< HEAD
             scrollY: "600px",
+=======
+            scrollY: "750px",
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
             "order": [[1, "desc"]],
             "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
             "pageLength": 20, // ค่าเริ่มต้นคือ "20"
@@ -788,6 +851,7 @@
                     orderable: true,
                     className: 'text-center',
                     render: function(data, type, row) {
+<<<<<<< HEAD
                         let disabledRoute = "{{route('warehouse.update', 0)}}".replace('/0', "/" + row.product_id)
                         let text = "#"
                             return `<div class="inline-flex flex items-center rounded-md shadow-sm">
@@ -802,6 +866,37 @@
                                         </a>
                                     </div>
                                 `.replaceAll('/0', "/" + row.product_id);
+=======
+                        // ถ้า img_url เป็นค่าว่าง หรือ null ให้ใช้รูป default
+                        let imageUrl = row.img_url && row.img_url.trim() !== "" ? row.img_url : "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg";
+                        
+                        return `
+                            <div class="flex justify-center items-center">
+                                <img src="${imageUrl}" class="w-20 h-16 object-cover rounded-sm shadow-md border border-gray-300 cursor-pointer transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-md hover:shadow-gray-400 dark:hover:shadow-md dark:hover:shadow-gray-400" alt="Product Image">
+                            </div>
+                        `;
+                    }
+                },
+                {
+                    targets: 6,
+                    orderable: true,
+                    className: 'text-center',
+                    render: function(data, type, row) {
+                        let disabledRoute = "{{route('warehouse.update', 0)}}".replace('/0', "/" + row.product_id)
+                        let text = "#"
+                        return `<div class="inline-flex flex items-center rounded-md shadow-sm">
+                                    <a href="{{route('warehouse.edit', 0)}}"
+                                        type="button" class="px-2 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group">
+                                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="-mt-1.5 hidden h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                            <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                            <path d="M5 18.08V19h.92l9.06-9.06-.92-.92z" opacity=".3"></path>
+                                            <path d="M20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29s-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83zM3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM5.92 19H5v-.92l9.06-9.06.92.92L5.92 19z"></path>
+                                        </svg>
+                                        Edit
+                                    </a>
+                                </div>
+                            `.replaceAll('/0', "/" + row.product_id);
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
 
                     }
                 }
@@ -816,9 +911,28 @@
                 // return value > 20 ? true : false;
         } );
 
+<<<<<<< HEAD
         $('#btnSerarch').click(function() {
             mytableDatatable.draw();
             return false;
         });
+=======
+        // $('#btnSerarch').click(function() {
+        //     mytableDatatable.draw();
+        //     return false;
+        // });
+
+        // Function สำหรับเรียกใช้ DataTable เมื่อมีการพิมพ์
+        function searchTable() {
+            console.log("Search: ", $('#search').val());
+            // บังคับให้ DataTables รีโหลดข้อมูลใหม่
+            mytableDatatable.ajax.reload(null, false); 
+        }
+
+        function brandSearch() {
+            mytableDatatable.draw();
+        }
+
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
     </script>
 @endsection

@@ -216,12 +216,17 @@
 
         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-700 relative"></ul>
 
+<<<<<<< HEAD
         <div class="fixed flex bottom-5 right-5 z-10">
+=======
+        <!-- <div class="fixed flex bottom-5 right-5 z-10">
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
             <a href="{{ route('product_detail.pd_other_create') }}" class="bg-[#303030] hover:bg-[#404040] text-white font-bold cursor-pointer py-2 px-2 mr-2 mt-20 rounded-full group">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                     <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
                 </svg>
             </a>
+<<<<<<< HEAD
         </div>
 
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
@@ -234,6 +239,21 @@
                             <th>Product</th>
                             <th>Product Name</th>
                             <th>Barcode</th>
+=======
+        </div> -->
+
+        <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
+            <div id="containerexample" class="text-gray-900 dark:text-gray-100">
+                <table id="table_product_other" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Product Name</th>
+                            <th>Item Name</th>
+                            <th>Category Name</th>
+                            <th>Product Line</th>
+                            <th>Product Type</th>
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -296,6 +316,7 @@
 
         });
 
+<<<<<<< HEAD
         // const mytableDatatable = $('#example').DataTable({
         //     // new DataTable('#example', {
         //     'searching': false,
@@ -383,6 +404,103 @@
         //         }
         //     ]
         // });
+=======
+        const mytableDatatable = $('#table_product_other').DataTable({
+            'searching': false,
+            "serverSide": true,
+            searching: false,
+            scrollX: true,
+            orderCellsTop: true,
+            ordering: false,
+            deferRender: true,
+            scroller: true,
+            scrollY: "600px",
+            "order": [[1, "desc"]],
+            "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
+            "pageLength": 20, // ค่าเริ่มต้นคือ "20"
+            "ajax": {
+                "headers": {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+
+                "url": "{{ route('product_detail.list_product_other') }}",
+                "type": "POST",
+                'data': function(data) {
+                    data.brand_id = $('#brand_id').val();
+                    data.BARCODE = $('#BARCODE').val();
+                    data.search = $('#search').val();
+
+                    data._token = $('meta[name="csrf-token"]').attr('content');
+                }
+            },
+            orderable: true,
+            columnDefs: [{
+                    targets: 0,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.product_id;
+                    }
+                },
+                {
+                    targets: 1,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.NAME_THAI;
+                    }
+                },
+                {
+                    targets: 2,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.item_name;
+                    }
+                },
+                {
+                    targets: 3,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.cat_name;
+                    }
+                },
+                {
+                    targets: 4,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.product_line;
+                    }
+                },
+                {
+                    targets: 5,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.product_type;
+                    }
+                },
+                {
+                    targets: 6,
+                    orderable: true,
+                    className: 'text-center',
+                    render: function(data, type, row) {
+                        let disabledRoute = "{{route('product_master.update', 0)}}".replace('/0', "/" + row.product_id)
+                        let text = "#"
+                            return `<div class="inline-flex flex items-center rounded-md shadow-sm">
+                                        <a href="{{route('product_detail.pd_other_edit', 0)}}"
+                                            type="button" class="px-2 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group">
+                                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="-mt-1.5 hidden h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                                <path d="M0 0h24v24H0V0z" fill="none"></path>
+                                                <path d="M5 18.08V19h.92l9.06-9.06-.92-.92z" opacity=".3"></path>
+                                                <path d="M20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29s-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83zM3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM5.92 19H5v-.92l9.06-9.06.92.92L5.92 19z"></path>
+                                            </svg>
+                                            Edit
+                                        </a>
+                                    </div>
+                                `.replaceAll('/0', "/" + row.product_id);
+
+                    }
+                }
+            ]
+        });
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
 
         $('#btnSerarch').click(function() {
             mytableDatatable.draw();

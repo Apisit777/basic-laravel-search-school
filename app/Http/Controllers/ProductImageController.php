@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\ProductImage;
 use App\Models\Food;
+<<<<<<< HEAD
+=======
+use App\Models\Com_product;
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
 use App\Models\ComProductImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -165,6 +169,18 @@ class ProductImageController extends Controller
                     }
                     // ย้ายไฟล์ไปยังโฟลเดอร์
                     $file->move(public_path($img_path), $filename);
+<<<<<<< HEAD
+=======
+                    // รูปโชว์
+                    if ($seq === 1) {
+                        $imageData = Com_product::updateOrCreate(
+                            ['product_id' => $id], // ค้นหาจาก product_id และ seq
+                            [
+                                'path' => $img_path . $filename,
+                            ]
+                        );
+                    }
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                     // อัปเดตหรือเพิ่มข้อมูลรูปภาพใหม่
                     $imageData = ComProductImage::updateOrCreate(
                         ['product_id' => $id, 'seq' => $seq], // ค้นหาจาก product_id และ seq
@@ -205,7 +221,11 @@ class ProductImageController extends Controller
 
     public function deleteImg($id) 
     {
+<<<<<<< HEAD
         dd($id);
+=======
+        // dd($id);
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
         // ค้นหาข้อมูล
         $data = ComProductImage::select('path')->where('id', $id)->first();
 
@@ -227,7 +247,14 @@ class ProductImageController extends Controller
         // ลบข้อมูลออกจากฐานข้อมูล
         ComProductImage::where('id', $id)->delete();
 
+<<<<<<< HEAD
         return response()->json(['message' => 'Image deleted successfully.'], 200);
+=======
+        session()->flash('message', 'Image deleted successfully.');
+        return response()->json([
+            'success' => true,
+        ]);
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
     }
 
     /**

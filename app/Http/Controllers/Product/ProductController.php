@@ -41,8 +41,18 @@ use App\Models\SeleChannel;
 use App\Models\ProductChannel;
 use App\Models\ProductGroup;
 use App\Models\Account;
+<<<<<<< HEAD
 use App\Models\ProductPriceSchedule;
 use App\Models\ProductDetail;
+=======
+use App\Models\Com_product;
+use App\Models\ComProductLog;
+use App\Models\ProductPriceSchedule;
+use App\Models\ProductDetail;
+use App\Models\ProductDetailLog;
+use App\Models\ProductOther;
+use App\Models\ProductOtherLog;
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
 use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
@@ -1859,7 +1869,11 @@ class ProductController extends Controller
                 'ACC_TYPE' => $data->ACC_TYPE ?? '',
                 'ACC_DT' => $data->ACC_DT ?? '',
                 'RETURN' => is_null($data->RETURN) ? 'N' : 'Y',
+<<<<<<< HEAD
                 'NON_VAT' => is_null($data->NON_VAT) ? 'N' : 'Y',
+=======
+                'NON_VAT' => is_null($data->NON_VAT) ? '' : 'Y',
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                 'STORAGE_TEMP' => is_null($data->STORAGE_TEMP) ? 'N' : 'Y',
                 'CONTROL_STK' => is_null($data->CONTROL_STK) ? 'N' : 'Y',
                 'TESTER' =>  is_null($data->TESTER) ? 'N' : 'Y',
@@ -1885,11 +1899,37 @@ class ProductController extends Controller
                 );
             }
 
+<<<<<<< HEAD
             // $craeteProductAccount = Account::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
             //     'COST' => $copyProductMaster->COST,
             //     'status_edit_dt' => '',
             //     'created_at' => date("Y/m/d h:i:s"),
             // ]);
+=======
+            // Phase 2
+            // if ( $copyProductMaster->BRAND == 'CPS' ) {
+                //     $craeteProductretail = ProductDetail::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+                //         'corporation_id' => $productMaster->BRAND,
+                //         'fad' => $productMaster->REGISTER,
+                //         'inner_barcode' => $productMaster->BAR_PACK1,
+                //         'inner_pack_size' => $productMaster->PACK_SIZE1,
+                //         'upd_user' => Auth::user()->username,
+                //         'upd_date' => date("Y/m/d H:i:s"),
+                //     ]);
+
+                //     $craeteProductretail = ProductOther::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+                //         'corporation_id' => $productMaster->BRAND,
+                //         'upd_user' => Auth::user()->username,
+                //         'upd_date' => date("Y/m/d H:i:s"),
+                //     ]);
+
+                // $craeteProductAccount = Account::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
+                //     'COST' => $copyProductMaster->COST,
+                //     'status_edit_dt' => '',
+                //     'created_at' => date("Y/m/d h:i:s"),
+                // ]);
+            // }
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
 
             // dd($createSeleChannel);
             DB::commit();
@@ -2003,7 +2043,11 @@ class ProductController extends Controller
                 'ACC_TYPE' => $data->ACC_TYPE ?? '',
                 'ACC_DT' => $data->ACC_DT ?? '',
                 'RETURN' => is_null($data->RETURN) ? 'N' : 'Y',
+<<<<<<< HEAD
                 'NON_VAT' => is_null($data->NON_VAT) ? 'N' : 'Y',
+=======
+                'NON_VAT' => is_null($data->NON_VAT) ? '' : 'Y',
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                 'STORAGE_TEMP' => is_null($data->STORAGE_TEMP) ? 'N' : 'Y',
                 'CONTROL_STK' => is_null($data->CONTROL_STK) ? 'N' : 'Y',
                 'TESTER' =>  is_null($data->TESTER) ? 'N' : 'Y',
@@ -2014,6 +2058,7 @@ class ProductController extends Controller
             // dd($data_product, $data->BRAND);
             $copyProductMaster = Product1::create($data_product);
 
+<<<<<<< HEAD
             // $craeteProductretail = ProductDetail::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
             //     'fad' => $copyProductMaster->COST,
             //     'inner_barcode' => $copyProductMaster->COST,
@@ -2035,6 +2080,8 @@ class ProductController extends Controller
             //     'created_at' => date("Y/m/d H:i:s")
             // ]);
 
+=======
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
             if (!is_null($data->BRAND)) {
 
                 $user = Auth::user()->username;
@@ -2051,6 +2098,39 @@ class ProductController extends Controller
                 );
             }
 
+<<<<<<< HEAD
+=======
+            // Phase 2
+            // if ( $copyProductMaster->BRAND == 'CPS' ) {
+                // $craeteProductretail = ProductDetail::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
+                //     'fad' => $copyProductMaster->COST,
+                //     'inner_barcode' => $copyProductMaster->COST,
+                //     'inner_pack_size' => $copyProductMaster->COST,
+                //     'upd_user' => Auth::user()->username,
+                //     'upd_date' => date("Y/m/d H:i:s"),
+                // ]);
+
+                //     $craeteProductretail = ProductOther::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+                //         'corporation_id' => $productMaster->BRAND,
+                //         'upd_user' => Auth::user()->username,
+                //         'upd_date' => date("Y/m/d H:i:s"),
+                //     ]);
+
+                // $craeteProductAccount = Account::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
+                //     'COST' => $copyProductMaster->COST,
+                //     'created_at' => date("Y/m/d h:i:s"),
+                // ]);
+
+                // $craeteProductAccount = ProductPriceSchedule::updateOrCreate(['product' => $copyProductMaster->PRODUCT], [
+                //     'price' => $copyProductMaster->COST,
+                //     'status' => 0,
+                //     'status_edit_dt' => '',
+                //     'created_by' => Auth::user()->username,
+                //     'created_at' => date("Y/m/d H:i:s")
+                // ]);
+            // }
+
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
             // dd($createSeleChannel);
             DB::commit();
             $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
@@ -2172,7 +2252,11 @@ class ProductController extends Controller
                 // 'ACC_TYPE' => $request->input('ACC_TYPE') ?? '',
                 'ACC_DT' => $request->input('ACC_DT') ?? '',
                 'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
+<<<<<<< HEAD
                 'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',
+=======
+                'NON_VAT' => is_null($request->input('NON_VAT')) ? '' : 'Y',
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                 'STORAGE_TEMP' => is_null($request->input('STORAGE_TEMP')) ? 'N' : 'Y',
                 'CONTROL_STK' => is_null($request->input('CONTROL_STK')) ? 'N' : 'Y',
                 'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
@@ -2181,9 +2265,13 @@ class ProductController extends Controller
                 'STATUS_EDIT_DT' => '',
             ];
 
+<<<<<<< HEAD
              // dd($data_product);
             // dd($data_product);
 
+=======
+            // dd($data_product);
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
             $productMaster = Product1::create($data_product);
 
             // dd($request);
@@ -2217,11 +2305,47 @@ class ProductController extends Controller
                 }
             }
 
+<<<<<<< HEAD
+=======
+            // Phase 2
+            if ( $productMaster->BRAND == 'CPS' ) {
+                $createProductDetail = ProductDetail::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+                    'corporation_id' => $productMaster->BRAND,
+                    'fad' => $productMaster->REGISTER,
+                    'inner_barcode' => $productMaster->BAR_PACK1,
+                    'inner_pack_size' => $productMaster->PACK_SIZE1,
+                    'upd_user' => Auth::user()->username,
+                    'upd_date' => date("Y/m/d H:i:s"),
+                ]);
+
+                $createProductOther = ProductOther::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+                    'corporation_id' => $productMaster->BRAND,
+                    'item_name' => $productMaster->NAME_ENG,
+                    'cat_name' => $productMaster->CATEGORY,
+                    'upd_user' => Auth::user()->username,
+                    'upd_date' => date("Y/m/d H:i:s"),
+                ]);
+            }
+
+            $createComProduct = Com_product::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+                'company_id' => $productMaster->BRAND,
+                'barcode' => $productMaster->BARCODE,
+                'vendor_id' => $productMaster->VENDOR,
+                'name_thai' => $productMaster->NAME_THAI,
+                'name_eng' => $productMaster->NAME_ENG,
+                'short_thai' => $productMaster->SHORT_THAI,
+                'short_eng' => $productMaster->SHORT_ENG,
+                'upd_user' => Auth::user()->username,
+                'upd_date' => date("Y/m/d H:i:s"),
+            ]);
+
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
             // $craeteProductAccount = Account::updateOrCreate(['product' => $data_product['PRODUCT']], [
             //     'COST' => $productMaster->COST,
             //     'status_edit_dt' => '',
             //     'created_at' => date("Y/m/d H:i:s"),
             // ]);
+<<<<<<< HEAD
 
             // if ( $productMaster['BRAND'] == 'CPS' ) {
             //     $craeteProductretail = ProductDetail::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
@@ -2233,6 +2357,9 @@ class ProductController extends Controller
             //         'upd_date' => date("Y/m/d H:i:s"),
             //     ]);
     
+=======
+            
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
             //     $craeteProductAccountSchedule = ProductPriceSchedule::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
             //         // 'price' => $productMaster->COST,
             //         'price' => 0,
@@ -2241,6 +2368,7 @@ class ProductController extends Controller
             //         'created_by' => Auth::user()->username,
             //         'created_at' => date("Y/m/d H:i:s")
             //     ]);
+<<<<<<< HEAD
             // }
 
             // dd($attributes = [
@@ -2249,6 +2377,17 @@ class ProductController extends Controller
             //     'craeteProductretail' => $craeteProductretail->toArray(),
             //     'craeteProductAccountSchedule' => $craeteProductAccountSchedule->toArray(),
             // ]);
+=======
+
+            dd($attributes = [
+                'productMaster' => $productMaster->toArray(),
+                // 'craeteProductAccount' => $craeteProductAccount->toArray(),
+                'createProductDetail' => $createProductDetail->toArray(),
+                'createProductOther' => $createProductOther->toArray(),
+                'createComProduct' => $createComProduct->toArray(),
+                // 'craeteProductAccountSchedule' => $craeteProductAccountSchedule->toArray(),
+            ]);
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
 
             DB::commit();
             $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
@@ -2325,7 +2464,11 @@ class ProductController extends Controller
                 'ACC_TYPE' => $request->input('ACC_TYPE') ?? '',
                 'ACC_DT' => $request->input('ACC_DT') ?? '',
                 'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
+<<<<<<< HEAD
                 'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',
+=======
+                'NON_VAT' => is_null($request->input('NON_VAT')) ? '' : 'Y',
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                 'STORAGE_TEMP' => is_null($request->input('STORAGE_TEMP')) ? 'N' : 'Y',
                 'CONTROL_STK' => is_null($request->input('CONTROL_STK')) ? 'N' : 'Y',
                 'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
@@ -2360,6 +2503,43 @@ class ProductController extends Controller
                 'created_at' => date("Y/m/d H:i:s"),
             ]);
             // dd($productMaster);
+<<<<<<< HEAD
+=======
+
+            // Phase 2
+            // $craeteProductAccount = Account::updateOrCreate(['product' => $data_product['PRODUCT']], [
+            //     'COST' => $productMaster->COST,
+            //     'status_edit_dt' => '',
+            //     'created_at' => date("Y/m/d H:i:s"),
+            // ]);
+
+            // if ( $productMaster->BRAND == 'CPS' ) {
+            //     $craeteProductretail = ProductDetail::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+            //         'corporation_id' => $productMaster->BRAND,
+            //         'fad' => $productMaster->REGISTER,
+            //         'inner_barcode' => $productMaster->BAR_PACK1,
+            //         'inner_pack_size' => $productMaster->PACK_SIZE1,
+            //         'upd_user' => Auth::user()->username,
+            //         'upd_date' => date("Y/m/d H:i:s"),
+            //     ]);
+
+            //     $craeteProductretail = ProductOther::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+            //         'corporation_id' => $productMaster->BRAND,
+            //         'upd_user' => Auth::user()->username,
+            //         'upd_date' => date("Y/m/d H:i:s"),
+            //     ]);
+    
+            //     $craeteProductAccountSchedule = ProductPriceSchedule::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+            //         // 'price' => $productMaster->COST,
+            //         'price' => 0,
+            //         'status' => 0,
+            //         'status_edit_dt' => '',
+            //         'created_by' => Auth::user()->username,
+            //         'created_at' => date("Y/m/d H:i:s")
+            //     ]);
+            // }
+            
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
             DB::commit();
             $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
             return response()->json(['success' => true]);
@@ -3538,7 +3718,11 @@ class ProductController extends Controller
                     // 'ACC_TYPE' => $request->input('ACC_TYPE'),
                     'ACC_DT' => $request->input('ACC_DT'),
                     'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
+<<<<<<< HEAD
                     'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',
+=======
+                    'NON_VAT' => is_null($request->input('NON_VAT')) ? '' : 'Y',
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                     'STORAGE_TEMP' => is_null($request->input('STORAGE_TEMP')) ? 'N' : 'Y',
                     'CONTROL_STK' => is_null($request->input('CONTROL_STK')) ? 'N' : 'Y',
                     'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
@@ -3566,14 +3750,123 @@ class ProductController extends Controller
                 }
 
                 // dd($data_product_upddate);
+<<<<<<< HEAD
                 $productUpddateConsumables = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
 
                 // dd($productUpddateConsumables);
+=======
+                // อัปเดตข้อมูล
+                Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
+
+                // ดึงข้อมูลล่าสุดหลังจากอัปเดต
+                $productUpddateConsumables = Product1::where('PRODUCT', $PRODUCT)->first();
+
+                // Phase 2
+                // ตรวจสอบว่าพบข้อมูลหรือไม่ ก่อนใช้งานตัวแปร
+                if ($productUpddateConsumables && $productUpddateConsumables->BRAND == 'CPS') {
+                    // ค้นหาข้อมูลเดิมจาก ProductDetail
+                    $data_consumables_old_product_detail = ProductDetail::where('product_id', $PRODUCT)->first();
+
+                    // ตรวจสอบว่าเจอข้อมูลหรือไม่
+                    if ($data_consumables_old_product_detail) {
+                        $data_product_detail_consumables_old_arr = $data_consumables_old_product_detail->toArray();
+
+                        // เพิ่ม Log ถ้ามีค่าที่ต้องการอัปเดต
+                        $log = [
+                            'update_dt' => date("Y/m/d H:i:s"),
+                            'user_update' => Auth::user()->username,
+                        ];
+
+                        $data_product_detail_consumables_old_arr = array_merge($data_product_detail_consumables_old_arr, $log);
+                        ProductDetailLog::create($data_product_detail_consumables_old_arr);
+                    }
+                    // อัปเดตหรือสร้างข้อมูลใหม่
+                    ProductDetail::updateOrCreate(
+                        ['product_id' => $PRODUCT],
+                        [
+                            'corporation_id' => $productUpddateConsumables->BRAND,
+                            'fad' => $productUpddateConsumables->REGISTER ?? '',
+                            'inner_barcode' => $productUpddateConsumables->BAR_PACK1 ?? '',
+                            'inner_pack_size' => $productUpddateConsumables->PACK_SIZE1 ?? '',
+                            'upd_user' => Auth::user()->username,
+                            'upd_date' => date("Y/m/d H:i:s"),
+                        ]
+                    );
+
+                    // ค้นหาข้อมูลเดิมจาก ProductOther
+                    $data_consumables_old_product_other = ProductOther::where('product_id', $PRODUCT)->first();
+
+                    // ตรวจสอบว่าเจอข้อมูลหรือไม่
+                    if ($data_consumables_old_product_other) {
+                        $data_product_other_consumables_old_arr = $data_consumables_old_product_other->toArray();
+
+                        // เพิ่ม Log ถ้ามีค่าที่ต้องการอัปเดต
+                        $log = [
+                            'update_dt' => date("Y/m/d H:i:s"),
+                            'user_update' => Auth::user()->username,
+                        ];
+
+                        $data_product_other_consumables_old_arr = array_merge($data_product_other_consumables_old_arr, $log);
+                        ProductOtherLog::create($data_product_other_consumables_old_arr);
+                    }
+                    // อัปเดตหรือสร้างข้อมูลใหม่
+                    ProductOther::updateOrCreate(['product_id' => $PRODUCT],
+                [
+                            'corporation_id' => $productUpddateConsumables->BRAND,
+                            'item_name' => $productUpddateConsumables->NAME_ENG,
+                            'cat_name' => $productUpddateConsumables->CATEGORY,
+                            'upd_user' => Auth::user()->username,
+                            'upd_date' => date("Y/m/d H:i:s"),
+                        ]
+                    );
+                    // ค้นหาข้อมูลเดิมจาก ComProduct
+                    $data_consumables_old_com_product = Com_product::where('product_id', $PRODUCT)->first();
+
+                    // ตรวจสอบว่าเจอข้อมูลหรือไม่
+                    if ($data_consumables_old_com_product) {
+                        $data_com_product_consumables_old_arr = $data_consumables_old_com_product->toArray();
+
+                        // เพิ่ม Log ถ้ามีค่าที่ต้องการอัปเดต
+                        $log = [
+                            'update_dt' => date("Y/m/d H:i:s"),
+                            'user_update' => Auth::user()->username,
+                        ];
+
+                        $data_com_product_consumables_old_arr = array_merge($data_com_product_consumables_old_arr, $log);
+                        ComProductLog::create($data_com_product_consumables_old_arr);
+                    }
+                    // อัปเดตหรือสร้างข้อมูลใหม่
+                    Com_product::updateOrCreate(['product_id' => $PRODUCT],
+                [
+                            'company_id' => $productUpddateConsumables->BRAND,
+                            'barcode' => $productUpddateConsumables->BARCODE,
+                            'vendor_id' => $productUpddateConsumables->VENDOR,
+                            'name_thai' => $productUpddateConsumables->NAME_THAI,
+                            'name_eng' => $productUpddateConsumables->NAME_ENG,
+                            'short_thai' => $productUpddateConsumables->SHORT_THAI,
+                            'short_eng' => $productUpddateConsumables->SHORT_ENG,
+                            'upd_user' => Auth::user()->username,
+                            'upd_date' => date("Y/m/d H:i:s"),
+                        ]
+                    );
+                }
+    
+                //     $craeteProductAccountSchedule = ProductPriceSchedule::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+                //         // 'price' => $productMaster->COST,
+                //         'price' => 0,
+                //         'status' => 0,
+                //         'status_edit_dt' => '',
+                //         'created_by' => Auth::user()->username,
+                //         'created_at' => date("Y/m/d H:i:s")
+                //     ]);
+
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                 DB::commit();
                 $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
                 return response()->json(['success' => true]);
             } else {
 
+<<<<<<< HEAD
                 $data_old = Product1::select(
                     'product1s.*',
                 )
@@ -3590,6 +3883,23 @@ class ProductController extends Controller
                     $data_old_arr = array_merge($data_old_arr, $log);
                     // dd($data_old_arr);
                     $logProductUpddate = Product1Log::create($data_old_arr);
+=======
+                // ค้นหาข้อมูลเดิมจาก Product1
+                $data_old = Product1::where('PRODUCT', $PRODUCT)->first();
+
+                // ตรวจสอบว่าเจอข้อมูลหรือไม่
+                if ($data_old) {
+                    $data_old_arr = $data_old->toArray();
+
+                    // เพิ่ม Log ถ้ามีค่าที่ต้องการอัปเดต
+                    $log = [
+                        'UPDATE_DT' => date("Y/m/d H:i:s"),
+                        'USER_UPDATE' => Auth::user()->username,
+                    ];
+
+                    $data_old_arr = array_merge($data_old_arr, $log);
+                    Product1Log::create($data_old_arr);
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                 }
 
                 $data_product_upddate = [
@@ -3646,7 +3956,11 @@ class ProductController extends Controller
                     // 'ACC_TYPE' => $request->input('ACC_TYPE'),
                     'ACC_DT' => $request->input('ACC_DT'),
                     'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
+<<<<<<< HEAD
                     'NON_VAT' => is_null($request->input('NON_VAT')) ? 'N' : 'Y',
+=======
+                    'NON_VAT' => is_null($request->input('NON_VAT')) ? '' : 'Y',
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                     'STORAGE_TEMP' => is_null($request->input('STORAGE_TEMP')) ? 'N' : 'Y',
                     'CONTROL_STK' => is_null($request->input('CONTROL_STK')) ? 'N' : 'Y',
                     'TESTER' =>  is_null($request->input('TESTER')) ? 'N' : 'Y',
@@ -3672,6 +3986,7 @@ class ProductController extends Controller
                         );
                     }
                 }
+<<<<<<< HEAD
                 // dd(
                 // $test = [
                 //         'data_product_upddate' => $data_product_upddate,
@@ -3681,6 +3996,123 @@ class ProductController extends Controller
                 $productUpddate = Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
 
                 // dd($productUpddate);
+=======
+
+                // อัปเดตข้อมูล
+                Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
+
+                // ดึงข้อมูลล่าสุดหลังจากอัปเดต
+                $productUpddate = Product1::where('PRODUCT', $PRODUCT)->first();
+
+                // Phase 2
+                // ตรวจสอบว่าพบข้อมูลหรือไม่ ก่อนใช้งานตัวแปร
+                if ($productUpddate && $productUpddate->BRAND == 'CPS') {
+                    // ค้นหาข้อมูลเดิมจาก ProductDetail
+                    $data_old_product_detail = ProductDetail::where('product_id', $PRODUCT)->first();
+
+                    // ตรวจสอบว่าเจอข้อมูลหรือไม่
+                    if ($data_old_product_detail) {
+                        $data_product_detail_old_arr = $data_old_product_detail->toArray();
+
+                        // เพิ่ม Log ถ้ามีค่าที่ต้องการอัปเดต
+                        $log = [
+                            'update_dt' => date("Y/m/d H:i:s"),
+                            'user_update' => Auth::user()->username,
+                        ];
+
+                        $data_product_detail_old_arr = array_merge($data_product_detail_old_arr, $log);
+                        ProductDetailLog::create($data_product_detail_old_arr);
+                    }
+                    // อัปเดตหรือสร้างข้อมูลใหม่
+                    $upddateProductDetail = ProductDetail::updateOrCreate(
+                        ['product_id' => $PRODUCT],
+                        [
+                            'corporation_id' => $productUpddate->BRAND,
+                            'fad' => $productUpddate->REGISTER ?? '',
+                            'inner_barcode' => $productUpddate->BAR_PACK1 ?? '',
+                            'inner_pack_size' => $productUpddate->PACK_SIZE1 ?? '',
+                            'upd_user' => Auth::user()->username,
+                            'upd_date' => date("Y/m/d H:i:s"),
+                        ]
+                    );
+
+                    // ค้นหาข้อมูลเดิมจาก ProductOther
+                    $data_old_product_other = ProductOther::where('product_id', $PRODUCT)->first();
+
+                    // ตรวจสอบว่าเจอข้อมูลหรือไม่
+                    if ($data_old_product_other) {
+                        $data_product_other_old_arr = $data_old_product_other->toArray();
+
+                        // เพิ่ม Log ถ้ามีค่าที่ต้องการอัปเดต
+                        $log = [
+                            'update_dt' => date("Y/m/d H:i:s"),
+                            'user_update' => Auth::user()->username,
+                        ];
+
+                        $data_product_other_old_arr = array_merge($data_product_other_old_arr, $log);
+                        ProductOtherLog::create($data_product_other_old_arr);
+                    }
+                    // อัปเดตหรือสร้างข้อมูลใหม่
+                    $updateProductOther = ProductOther::updateOrCreate(['product_id' => $PRODUCT],
+                [
+                            'corporation_id' => $productUpddate->BRAND,
+                            'item_name' => $productUpddate->NAME_ENG,
+                            'cat_name' => $productUpddate->CATEGORY,
+                            'upd_user' => Auth::user()->username,
+                            'upd_date' => date("Y/m/d H:i:s"),
+                        ]
+                    );
+                    // ค้นหาข้อมูลเดิมจาก ComProduct
+                    $data_old_com_product = Com_product::where('product_id', $PRODUCT)->first();
+
+                    // ตรวจสอบว่าเจอข้อมูลหรือไม่
+                    if ($data_old_com_product) {
+                        $data_com_product_old_arr = $data_old_com_product->toArray();
+
+                        // เพิ่ม Log ถ้ามีค่าที่ต้องการอัปเดต
+                        $log = [
+                            'update_dt' => date("Y/m/d H:i:s"),
+                            'user_update' => Auth::user()->username,
+                        ];
+
+                        $data_com_product_old_arr = array_merge($data_com_product_old_arr, $log);
+                        ComProductLog::create($data_com_product_old_arr);
+                    }
+                    // อัปเดตหรือสร้างข้อมูลใหม่
+                    $updateComProduct = Com_product::updateOrCreate(['product_id' => $PRODUCT],
+                [
+                            'company_id' => $productUpddate->BRAND,
+                            'barcode' => $productUpddate->BARCODE,
+                            'vendor_id' => $productUpddate->VENDOR,
+                            'name_thai' => $productUpddate->NAME_THAI,
+                            'name_eng' => $productUpddate->NAME_ENG,
+                            'short_thai' => $productUpddate->SHORT_THAI,
+                            'short_eng' => $productUpddate->SHORT_ENG,
+                            'upd_user' => Auth::user()->username,
+                            'upd_date' => date("Y/m/d H:i:s"),
+                        ]
+                    );
+                }
+    
+                //     $craeteProductAccountSchedule = ProductPriceSchedule::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+                //         // 'price' => $productMaster->COST,
+                //         'price' => 0,
+                //         'status' => 0,
+                //         'status_edit_dt' => '',
+                //         'created_by' => Auth::user()->username,
+                //         'created_at' => date("Y/m/d H:i:s")
+                //     ]);
+
+                dd($attributes = [
+                    'productUpddate' => $productUpddate->toArray(),
+                    // 'craeteProductAccount' => $craeteProductAccount->toArray(),
+                    'upddateProductDetail' => $upddateProductDetail->toArray(),
+                    'updateProductOther' => $updateProductOther->toArray(),
+                    'updateComProduct' => $updateComProduct->toArray(),
+                    // 'craeteProductAccountSchedule' => $craeteProductAccountSchedule->toArray(),
+                ]);
+
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                 DB::commit();
                 $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
                 return response()->json(['success' => true]);

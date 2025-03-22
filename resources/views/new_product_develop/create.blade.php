@@ -295,15 +295,25 @@
                                                                     <textarea id="P_BENEFIT" name="P_BENEFIT" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
                                                                 </div>
                                                                 <div class="md:col-span-2" >
+<<<<<<< HEAD
                                                                     <label for="TEXTURE">texture<span class="text-danger"> *</span></label>
                                                                     <select required class="js-example-basic-single w-full rounded-sm text-xs select2" id="TEXTURE" name="TEXTURE" onchange="onchangeValueSelect2()">
                                                                     <!-- <select class="js-example-basic-single w-full rounded-sm text-xs select2" id="TEXTURE" name="TEXTURE"> -->
+=======
+                                                                    <label for="TEXTURE">texture</label>
+                                                                    <!-- <select required class="js-example-basic-single w-full rounded-sm text-xs select2" id="TEXTURE" name="TEXTURE" onchange="onchangeValueSelect2()"> -->
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs select2" id="TEXTURE" name="TEXTURE">
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($textures as $key => $texture)
                                                                             <option value="{{ $texture->DESCRIPTION }}">{{ $texture->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
+<<<<<<< HEAD
                                                                     <span id="TEXTURE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
+=======
+                                                                    <!-- <span id="TEXTURE_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span> -->
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
                                                                 </div>
                                                                 <div class="md:col-span-2" style="position: relative;">
                                                                     <label for="TEXTURE_OT">ระบุ</label>
@@ -654,7 +664,11 @@
             const NPD = jQuery('#NPD').val();
             const PDM = jQuery('#PDM').val();
             const CATEGORY = jQuery('#CATEGORY').val();
+<<<<<<< HEAD
             const TEXTURE = jQuery('#TEXTURE').val();
+=======
+            // const TEXTURE = jQuery('#TEXTURE').val();
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
 
             if (NPD) {
                 jQuery('#NPD_textalert').addClass('hidden');
@@ -671,6 +685,7 @@
             } else {
                 jQuery('#CATEGORY_textalert').removeClass('hidden');
             }
+<<<<<<< HEAD
             if (TEXTURE) {
                 jQuery('#TEXTURE_textalert').addClass('hidden');
             } else {
@@ -678,6 +693,15 @@
             }
 
             return !!NPD && !!PDM && !!CATEGORY && !!TEXTURE
+=======
+            // if (TEXTURE) {
+            //     jQuery('#TEXTURE_textalert').addClass('hidden');
+            // } else {
+            //     jQuery('#TEXTURE_textalert').removeClass('hidden');
+            // }
+
+            return !!NPD && !!PDM && !!CATEGORY
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
         }
 
         function onchangeValueSelect2() {

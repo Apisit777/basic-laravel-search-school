@@ -72,6 +72,20 @@
         .select2-container--default .select2-selection--single .select2-selection__rendered {
             font-size: small!important;
         }
+<<<<<<< HEAD
+=======
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -329,6 +343,10 @@
 
         function checkProductGroupId() {
             const Edit_ProductGroup_ID = jQuery('#Edit_ProductGroup_ID').val();
+<<<<<<< HEAD
+=======
+            console.log("🚀 ~ checkProductGroupId ~ Edit_ProductGroup_ID:", Edit_ProductGroup_ID)
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
             const ID = jQuery('#ID').val();
 
             jQuery.ajax({

@@ -176,8 +176,11 @@
     <link rel="stylesheet" href="{{ asset('css/select2@4.1.0.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap.css') }}" />
 
+<<<<<<< HEAD
     <div id="slide" class="loaderslide"></div>
 
+=======
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
 @section('content')
     <div class="justify-center items-center">
         <div class="mt-6 mb-4 flex justify-center items-center">
@@ -299,6 +302,7 @@
         });
 
         const mytableDatatable = $('#table_product_detail').DataTable({
+<<<<<<< HEAD
             serverSide: true,
             searching: false,
             resposive: true,
@@ -309,6 +313,20 @@
                 [0, "desc"]
             ],
             "lengthMenu": [20, 50, 100],
+=======
+            'searching': false,
+            "serverSide": true,
+            searching: false,
+            scrollX: true,
+            orderCellsTop: true,
+            ordering: false,
+            deferRender: true,
+            scroller: true,
+            scrollY: "600px",
+            "order": [[1, "desc"]],
+            "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
+            "pageLength": 20, // ค่าเริ่มต้นคือ "20"
+>>>>>>> 91b246dbc35479f4c34ce8289271a80eccbbc360
             "ajax": {
                 "headers": {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
