@@ -49,7 +49,18 @@
                         d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
                     </svg>
                 </button>
-                <span class="self-center text-md font-semibold sm:text-xl whitespace-nowrap text-black dark:text-white ml-2.5">Product Master</span>
+
+                @php
+                    $text = "Product Master";
+                @endphp
+
+                <span class="self-center text-md font-semibold sm:text-xl whitespace-nowrap text-black dark:text-white ml-2.5 animate-fade-in-up">
+                    @foreach(collect(mb_str_split($text)) as $index => $char)
+                        <span class="text-black dark:text-white opacity-0 animate-slide-in" style="animation-delay: {{ $index * 0.1 }}s">
+                            {!! $char === ' ' ? '&nbsp;' : $char !!}
+                        </span>
+                    @endforeach
+                </span>
             </div>
             <div class="flex items-center space-x-1 rtl:space-x-reverse">
 
@@ -83,7 +94,7 @@
                         data-twe-dropdown-menu-ref>
                         <li>
                             <div class="text-center">
-                                <div id="profile_img" class="mb-1"></div>
+                                <div id="profile_img" class="mt-2 mb-1"></div>
                                 <div id="auth_fullname_login" class=""></div>
                                 <div id="auth_department" class=""></div>
                                 <div id="auth_email_login" class="text-gray-900 dark:text-white">

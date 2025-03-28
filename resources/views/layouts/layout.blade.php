@@ -119,7 +119,7 @@
         let role = sessionStorage.getItem("role");
         let dataJson = JSON.parse(dataLogin)
         $('#profile_img').append(
-            `<img class="w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-white dark:border-gray-600 mx-auto" src="${dataJson.data.photo}">`
+            `<img class="w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-white dark:border-gray-600 mx-auto object-cover cursor-pointer transition-transform duration-300 ease-in-out hover:scale-125" src="${dataJson.data.photo}">`
         );
         $('#auth_img').append(
             `<img class="w-8 h-8 rounded" src="${dataJson.data.photo}">`

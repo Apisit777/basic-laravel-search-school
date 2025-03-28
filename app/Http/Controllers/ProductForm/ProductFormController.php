@@ -154,6 +154,19 @@ class ProductFormController extends Controller
                 ->whereIn('BRAND', ['LL'])
                 ->pluck('PRODUCT')
                 ->toArray();
+        } else if ($userpermission == 'FR') {
+            $brands = Barcode::select(
+                'BRAND',
+                'STATUS')
+            ->whereIn('STATUS', ['FR'])
+            ->pluck('BRAND')
+            ->toArray();
+
+            $getSelect2ProDevelops = Pro_develops::select(
+                'PRODUCT')
+                ->whereIn('BRAND', ['LL'])
+                ->pluck('PRODUCT')
+                ->toArray();
         }
 
         return view('new_product_develop.index', compact('user', 'productCodeArr', 'brands', 'getSelect2ProDevelops'));
@@ -1254,6 +1267,13 @@ class ProductFormController extends Controller
                 'DESCRIPTION')
             ->where('BRAND', 'LL')
             ->get();
+        } else if ($userpermission == 'FR') {
+            $brands = Barcode::select(
+                'BRAND',
+                'STATUS')
+            ->whereIn('STATUS', ['FR'])
+            ->pluck('BRAND')
+            ->toArray();
         }
 
         $testBarcode = Barcode::all();
@@ -1932,6 +1952,18 @@ class ProductFormController extends Controller
             )
             ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
             ->whereIn('barcodes.BRAND', ['LL'])
+            ->orderBy('BARCODE', 'DESC');
+        } else if ($userpermission == 'FR') {
+            $data = Pro_develops::select(
+                'pro_develops.BRAND AS BRAND',
+                DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
+                'pro_develops.PRODUCT AS PRODUCT',
+                'pro_develops.BARCODE AS BARCODE',
+                'pro_develops.NAME_ENG AS NAME_ENG'
+            )
+            ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
+            // ->where('barcodes.BRAND', 'FR')
+            ->whereBetween('pro_develops.PRODUCT', [15000, 19999])
             ->orderBy('BARCODE', 'DESC');
         }
 

@@ -60,6 +60,24 @@
             margin-top: -1px!important;
             font-size: 20px!important;
         }
+        .select2-container {
+            margin-bottom: 0rem!important;
+        }
+        .select2-container--default .select2-selection--single {
+            height: 2rem!important;
+            border-width: 1px;
+            padding: 0.1rem!important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            position: absolute;
+            margin-top: -5px!important;
+        }
+        .h-10 {
+            height: 2rem!important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            font-size: small!important;
+        }
         .loading_create_menu {
             display: flex;
             align-items: center;
@@ -170,6 +188,9 @@
         .dt-length  {
             color: #818181!important;
         }
+        .table td, .table th {
+            padding: 0.55rem !important;
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -180,15 +201,15 @@
 
 @section('content')
     <div class="justify-center items-center">
-        <div class="mt-6 mb-4 flex justify-center items-center">
+        <div class="mt-6 flex justify-center items-center">
             <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">PRODUCT DETAIL2</p>
         </div>
-        <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
+        <div class="grid mt-2 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
             <div class="lg:col-span-4 xl:grid-cols-4">
                 <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                     <div class="md:col-span-3">
                         <label for="BRAND" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Brand</label>
-                        <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND">
+                        <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND" onchange="brandSearch()">
                             <option value=""> --- กรุณาเลือก ---</option>
                             @foreach ($brands as $key => $brand)
                                 <option value={{ $brand }}>{{ $brand }}</option>
@@ -198,17 +219,25 @@
 
                     <div class="md:col-span-3" >
                         <label for="">ค้นหา</label>
-                        <input type="text" name="search" id="search" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" />
+                        <input type="text" name="search" id="search" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" onkeyup="searchTable()"/>
                     </div>
                     <div class="md:col-span-6 text-center">
-                        <div class="inline-flex items-center">
+                        <!-- <div class="inline-flex items-center">
                             <a href="#" id="btnSerarch" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                     <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
                                 </svg>
                                 ค้นหา
                             </a>
-                        </div>
+                        </div> -->
+                        <button  id="" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-2.5 mr-2 rounded group cursor-pointer btn-rotate" type="reset">
+                            <svg class="hidden h-5 w-5 md:inline-block rotate"
+                                viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 93,62 C 83,82 65,96 48,96 32,96 19,89 15,79 L 5,90 5,53 40,53 29,63 c 0,0 5,14 26,14 16,0 38,-15 38,-15 z"/>
+                                <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 5,38 C 11,18 32,4 49,4 65,4 78,11 85,21 L 95,10 95,47 57,47 68,37 C 68,37 63,23 42,23 26,23 5,38 5,38 z"/>
+                            </svg>
+                            @lang('global.content.clear')
+                        </button>
                     </div>
                 </div>
             </div>
@@ -229,6 +258,7 @@
                 <table id="table_product_other" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
                     <thead>
                         <tr>
+                            <th>Brand</th>
                             <th>Product</th>
                             <th>Product Name</th>
                             <th>Item Name</th>
@@ -330,46 +360,53 @@
                     targets: 0,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.product_id;
+                        return row.company_id;
                     }
                 },
                 {
                     targets: 1,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.NAME_THAI;
+                        return row.product_id;
                     }
                 },
                 {
                     targets: 2,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.item_name;
+                        return row.NAME_THAI;
                     }
                 },
                 {
                     targets: 3,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.cat_name;
+                        return row.item_name;
                     }
                 },
                 {
                     targets: 4,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.product_line;
+                        return row.cat_name;
                     }
                 },
                 {
                     targets: 5,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.product_type;
+                        return row.product_line;
                     }
                 },
                 {
                     targets: 6,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.product_type;
+                    }
+                },
+                {
+                    targets: 7,
                     orderable: true,
                     className: 'text-center',
                     render: function(data, type, row) {
@@ -393,9 +430,20 @@
             ]
         });
 
-        $('#btnSerarch').click(function() {
+        // $('#btnSerarch').click(function() {
+        //     mytableDatatable.draw();
+        //     return false;
+        // });
+
+        // Function สำหรับเรียกใช้ DataTable เมื่อมีการพิมพ์
+        function searchTable() {
+            console.log("Search: ", $('#search').val());
+            // บังคับให้ DataTables รีโหลดข้อมูลใหม่
+            mytableDatatable.ajax.reload(null, false); 
+        }
+
+        function brandSearch() {
             mytableDatatable.draw();
-            return false;
-        });
+        }
     </script>
 @endsection

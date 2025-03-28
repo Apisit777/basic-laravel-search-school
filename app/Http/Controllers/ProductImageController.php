@@ -155,45 +155,62 @@ class ProductImageController extends Controller
                 $month = date('m');
                 $seq = ComProductImage::where('product_id', $id)->max('seq') + 1; // ค้นหาค่า seq สูงสุดที่เกี่ยวข้องกับ ID
     
+                // dd($seq);
                 $uploadedImages = []; // เก็บข้อมูลรูปภาพที่อัปโหลด
     
                 foreach ($request->file('images') as $file) {
-                    $img_path = "uploads/warehouse/$year/$month/";
-                    $filename = 'img_' . Str::uuid() . '.' . $file->getClientOriginalExtension();
-                    // สร้างโฟลเดอร์ถ้ายังไม่มี
+                    $img_path = "/uploads/warehouse/$year/$month/";
+                    $filename = 'img_' . 'product_' . $id . '_' . Str::uuid() . '.' . $file->getClientOriginalExtension();
+                
                     if (!file_exists(public_path($img_path))) {
                         mkdir(public_path($img_path), 0777, true);
                     }
-                    // ย้ายไฟล์ไปยังโฟลเดอร์
+                
                     $file->move(public_path($img_path), $filename);
-                    // รูปโชว์
-                    if ($seq === 1) {
-                        $imageData = Com_product::updateOrCreate(
-                            ['product_id' => $id], // ค้นหาจาก product_id และ seq
+                
+                    // ✅ ตรวจสอบว่ามีรูปที่ path = '' และ seq = 0 อยู่หรือไม่
+                    $existingEmptyImage = ComProductImage::where('product_id', $id)
+                        ->where('seq', 0)
+                        ->where(function ($q) {
+                            $q->whereNull('path')->orWhere('path', '');
+                        })
+                        ->first();
+                
+                    if ($existingEmptyImage) {
+                        // ถ้ามี ให้ update แทน
+                        $existingEmptyImage->update([
+                            'path' => $img_path . $filename,
+                            'seq' => 1
+                        ]);
+                        $usedSeq = 1;
+                    } else {
+                        // ถ้าไม่มี ใช้ seq ปกติ
+                        $imageData = ComProductImage::updateOrCreate(
+                            ['product_id' => $id, 'seq' => $seq],
                             [
+                                'product_id' => $id,
                                 'path' => $img_path . $filename,
+                                'seq' => $seq,
                             ]
                         );
+                        $usedSeq = $seq;
+                        $seq++;
                     }
-                    // อัปเดตหรือเพิ่มข้อมูลรูปภาพใหม่
-                    $imageData = ComProductImage::updateOrCreate(
-                        ['product_id' => $id, 'seq' => $seq], // ค้นหาจาก product_id และ seq
-                        [
-                            'product_id' => $id, // บันทึก ID ของ warehouse
-                            'path' => $img_path . $filename,
-                            'seq' => $seq,
-                            'created_at' => now(),
-                            'updated_at' => now()
-                        ]
-                    );
+                    // รูปโชว์
+                    if ($usedSeq === 1) {
+                        Com_product::updateOrCreate(
+                            ['product_id' => $id],
+                            ['img_url' => $img_path . $filename]
+                        );
+                    }
                     // เพิ่มข้อมูลลงใน array
                     $uploadedImages[] = [
-                        'id' => $imageData->id,
+                        'id' => $imageData->id ?? $existingEmptyImage->id,
                         'path' => asset($img_path . $filename),
-                        'seq' => $seq
+                        'seq' => $usedSeq
                     ];
-                    $seq++; // เพิ่มค่า seq สำหรับรายการถัดไป
                 }
+                // dd($uploadedImages);    
             }
             DB::commit();
             session()->flash('message', 'อัปเดตข้อมูลสำเร็จ');

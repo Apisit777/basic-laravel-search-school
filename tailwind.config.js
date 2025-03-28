@@ -19,18 +19,34 @@ module.exports = {
       },
     },
     keyframes: {
-        'fade-in-left': {
-            '0%': { opacity: 0, transform: 'translateX(-20px)' },
-            '100%': { opacity: 1, transform: 'translateX(0)' }
+      'fade-in-left': {
+          '0%': { opacity: 0, transform: 'translateX(-20px)' },
+          '100%': { opacity: 1, transform: 'translateX(0)' }
+      },
+      'fade-in-down': {
+        '0%': { opacity: 0, transform: 'translateY(-20px)' }, // เริ่มต้น: จาง และ เลื่อนขึ้น
+        '100%': { opacity: 1, transform: 'translateY(0)' } // จบ: ชัด และอยู่ตำแหน่งเดิม
+      },
+      'fade-in-up': {
+        '0%': {
+          opacity: '0',
+          transform: 'translateY(20px)',
         },
-        'fade-in-down': {
-          '0%': { opacity: 0, transform: 'translateY(-20px)' }, // เริ่มต้น: จาง และ เลื่อนขึ้น
-          '100%': { opacity: 1, transform: 'translateY(0)' } // จบ: ชัด และอยู่ตำแหน่งเดิม
-        }
+        '100%': {
+          opacity: '1',
+          transform: 'translateY(0)',
+        },
+      },
+      'slide-in': {
+        '0%': { opacity: '0', transform: 'translateX(-20px)' },
+        '100%': { opacity: '1', transform: 'translateX(0)' }, // green-500
+      },
     },
     animation: {
     'fade-in-left': 'fade-in-left 0.2s ease-out',
     'fade-in-down': 'fade-in-down 0.3s ease-out', // ตั้งค่า Animation 0.3 วินาที
+    'fade-in-up': 'fade-in-up 1s ease-out forwards',
+    'slide-in': 'slide-in 1s ease-out forwards',
     },
   },
   plugins: [
@@ -40,4 +56,3 @@ module.exports = {
     require('tailwind-scrollbar')
   ],
 }
-

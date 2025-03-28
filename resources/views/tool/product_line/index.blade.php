@@ -30,9 +30,6 @@
             /* color: #FFFFFF!important; */
             color: #818181!important;
         }
-        .table td, .table th {
-            padding: 0.55rem !important;
-        }
         .select2-container .select2-dropdown .select2-results__options {
             max-height: 360px !important;
         }
@@ -82,6 +79,9 @@
         }
         .animate-spin {
             animation: spin 1s linear infinite;
+        }
+        .table td, .table th {
+            padding: 0.55rem !important;
         }
     </style>
 
@@ -243,7 +243,7 @@
                             <ul class="space-y-2 font-large border-t border-gray-200 dark:border-gray-500"></ul>
                         </div>
                         <div class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md p-2">
-                            <button data-twe-modal-dismiss id="submitButton" type="button" class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 rounded group cursor-not-allowed opacity-50" onclick="createProductGroup()" disabled>
+                            <button data-twe-modal-dismiss id="submitButton" type="button" class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 rounded group cursor-not-allowed opacity-50" onclick="updateOrCreateProductLine()" disabled>
                                 <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                     <path d="M0 0h24v24H0V0z" fill="none"></path>
                                     <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
@@ -464,7 +464,7 @@
             if (ID) {
                 jQuery("#Edit_ProductLine_ID").val(ID)
                 // ✅ รีเซ็ตตัวแปรสถานะของปุ่ม Save
-                isValidID = true;  
+                isValidID = true;
                 isValidDescription = true;
                 isValidCategory = CATEGORY_ID !== ""; // ถ้า CATEGORY_ID มีค่า ถือว่าถูกต้อง
                 // ✅ หน่วงเวลาให้ Select2 โหลดค่าก่อน
@@ -524,7 +524,7 @@
             ordering: false,
             deferRender: true,
             scroller: true,
-            scrollY: "800px",
+            scrollY: "580px",
             "order": [[1, "desc"]],
             "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
             "pageLength": 20, // ค่าเริ่มต้นคือ "20"
@@ -607,7 +607,7 @@
         function searchTable() {
             console.log("Search: ", $('#search').val());
             // บังคับให้ DataTables รีโหลดข้อมูลใหม่
-            mytableDatatable.ajax.reload(null, false); 
+            mytableDatatable.ajax.reload(null, false);
         }
 
         function productLineSearch() {
@@ -615,7 +615,7 @@
         }
 
         const dlayMessage = 100;
-        function createProductGroup() {
+        function updateOrCreateProductLine() {
             jQuery.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
@@ -626,9 +626,9 @@
             const Edit_ProductLine_ID = jQuery('#Edit_ProductLine_ID').val();
 
             if(Edit_ProductLine_ID) {
-                url = "{{ route('product_master.series_update', 0) }}".replaceAll('/0', '/' + Edit_ProductLine_ID);
+                url = "{{ route('product_detail.product_line_update', 0) }}".replaceAll('/0', '/' + Edit_ProductLine_ID);
             } else {
-                url = "{{ route('product_master.series_create') }}"
+                url = "{{ route('product_detail.product_line_create') }}"
             }
 
             jQuery.ajax({
@@ -659,7 +659,7 @@
                     $('#loader_create_menu_consumables').addClass('hidden');
                 },
                 error: function(error) {
-                    $('#loader_create_menu_consumables').addClass('hidden');                   
+                    $('#loader_create_menu_consumables').addClass('hidden');
                 }
             });
         }

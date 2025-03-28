@@ -139,6 +139,9 @@
             scrollX: true,
             orderCellsTop: true,
             ordering: false,
+            deferRender: true,
+            scroller: true,
+            scrollY: "580px",
             "order": [[1, "desc"]],
             "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
             "pageLength": 20, // ค่าเริ่มต้นคือ "20"

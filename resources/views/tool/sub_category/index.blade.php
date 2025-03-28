@@ -93,7 +93,7 @@
 
 @section('content')
     <div class="justify-center items-center">
-        <div class="mt-6 mb-5 flex justify-center items-center">
+        <div class="mt-6 mb-4 flex justify-center items-center">
             <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">SUB CATEGORY</p>
         </div>
 
@@ -539,7 +539,7 @@
             ordering: false,
             deferRender: true,
             scroller: true,
-            scrollY: "800px",
+            scrollY: "580px",
             "order": [[1, "desc"]],
             "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
             "pageLength": 20, // ค่าเริ่มต้นคือ "20"

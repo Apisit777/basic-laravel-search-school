@@ -152,7 +152,11 @@ class ProductDetailController extends Controller
                 ];
             }
 
-        // dd($countriesDatas);
+        // dd($dataComProduct);
+        // $errorText = collect($dataComProduct);
+        // dd(response()->json([
+        //     'errorMessage' => $errorText,
+        // ]));
         return view('product_detail.edit', compact('data', 'countriesDatas', 'dataComProduct'));
     }
 
@@ -241,19 +245,39 @@ class ProductDetailController extends Controller
         $limit = (int) $request->input('length'); // จำนวนต่อหน้า
         $start = (int) $request->input('start', 0);
 
+        $BRAND = $request->input('brand_id');
+        $searchAll = $request->input('search', '');
+
         $data = ProductDetail::select(
             'corporation_id',
             'product_id',
-            'inner_barcode'
+            'inner_barcode',
+            'product1s.NAME_THAI AS NAME_THAI',
+            'product1s.BARCODE AS BARCODE',
         )
+        ->leftJoin('product1s', 'product_details.product_id', '=', 'product1s.PRODUCT')
         ->orderBy('product_id', 'DESC');
 
         // dd($data->toSql());
+        if ($BRAND != null) {
+            $data->where('product_details.corporation_id', $BRAND);
+        }
+        // กรองข้อมูลถ้ามีคำค้นหา
+        if (!empty($searchAll)) {
+            $data->where(function ($q) use ($searchAll) {
+                $q->orWhere('product_details.product_id', 'like', '%' . $searchAll . '%')
+                ->orWhere('product1s.NAME_THAI', 'like', '%' . $searchAll . '%')
+                ->orWhere('product1s.BARCODE', 'like', '%' . $searchAll . '%');
+            });
+        }
+
         // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
         $totalRecords = $data->count();
+        // 🔹 ตรวจสอบ limit
         if ($limit > 0) {
             $data->limit($limit)->offset($start);
         }
+        // 🔹 ดึงข้อมูลตาม limit และ offset
         $records = $data->get();
 
         return response()->json([

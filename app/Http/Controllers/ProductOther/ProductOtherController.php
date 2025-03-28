@@ -670,19 +670,38 @@ class ProductOtherController extends Controller
         $limit = (int) $request->input('length'); // จำนวนต่อหน้า
         $start = (int) $request->input('start', 0);
 
+        $BRAND = $request->input('brand_id');
+        $searchAll = $request->input('search', '');
+
         // product_others
         $data = ProductOther::select(
+            'product_others.company_id AS company_id',
             'product_others.product_id AS product_id',
             'product1s.NAME_THAI AS NAME_THAI',
             'product_others.item_name AS item_name',
             'product_others.cat_name AS cat_name',
             'product_others.product_line AS product_line',
             'product_others.product_type AS product_type',
-            'inner_barcode'
+            'inner_barcode',
+            'product1s.NAME_THAI AS NAME_THAI',
+            'product1s.BARCODE AS BARCODE',
         )
         ->join('product1s', 'product1s.PRODUCT', '=', 'product_others.product_id')
         ->leftjoin('product_details', 'product_details.product_id', '=', 'product_others.product_id')
         ->orderBy('product_id', 'DESC');
+
+        // dd($data->toSql());
+        if ($BRAND != null) {
+            $data->where('product_others.company_id', $BRAND);
+        }
+        // กรองข้อมูลถ้ามีคำค้นหา
+        if (!empty($searchAll)) {
+            $data->where(function ($q) use ($searchAll) {
+                $q->orWhere('product_others.product_id', 'like', '%' . $searchAll . '%')
+                ->orWhere('product1s.NAME_THAI', 'like', '%' . $searchAll . '%')
+                ->orWhere('product1s.BARCODE', 'like', '%' . $searchAll . '%');
+            });
+        }
 
         // dd($data->toSql());
         // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`

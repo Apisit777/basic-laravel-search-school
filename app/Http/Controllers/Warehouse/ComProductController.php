@@ -188,16 +188,14 @@ class ComProductController extends Controller
         ->firstWhere('com_products.product_id', '=', $product_id);
 
         // $images = Food::all();
-        $images = ComProductImage::select('com_product_images.*')->where('product_id', $product_id)->get();
-
-        // $images = Com_product::select('com_products.*')
-        //     ->leftJoin('com_product_images', 'com_products.product_id', '=', 'com_product_images.product_id')
-        //     ->where('com_products.product_id', $product_id)
-        //     ->get();
+        $images = ComProductImage::where('product_id', $product_id)
+            ->orderBy('seq', 'asc')
+            ->get();
+        $product_id = $images->first()->product_id ?? null;
 
         // dd($images);
 
-        return view('warehouse.edit', compact('data', 'images'));
+        return view('warehouse.edit', compact('data', 'images', 'product_id'));
     }
 
     /**
@@ -205,19 +203,19 @@ class ComProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        dd($request);
+        // dd($request);
         DB::beginTransaction();
         try {
                 // ค้นหาข้อมูลเดิมจาก ProductDetail
-                $data_old = ProductDetail::where('PRODUCT', $id)->first();
+                $data_old = ProductDetail::where('product_id', $id)->first();
 
                 // ตรวจสอบว่าเจอข้อมูลหรือไม่
                 if ($data_old) {
                     $data_old_arr = $data_old->toArray();
                     // เพิ่ม Log ถ้ามีค่าที่ต้องการอัปเดต
                     $log = [
-                        'update_dt' => date("Y/m/d H:i:s"),
                         'user_update' => Auth::user()->username,
+                        'update_dt' => date("Y/m/d H:i:s"),
                     ];
 
                     $data_old_arr = array_merge($data_old_arr, $log);
@@ -240,14 +238,12 @@ class ComProductController extends Controller
 
                     'unit_weight' => $request->input('unit_weight'),
                     'unit_pak_size' => $request->input('unit_pak_size'),
-
                     'case_width' => $request->input('case_width'),
                     'case_length' => $request->input('case_length'),
                     'case_height' => $request->input('case_height'),
                     'case_barcode' => $request->input('case_barcode'),
                     'case_weight' => $request->input('case_weight'),
                     'case_pack_size' => $request->input('case_pack_size'),
-
                     'inner_width' => $request->input('inner_width'),
                     'inner_length' => $request->input('inner_length'),
                     'inner_height' => $request->input('inner_height'),
@@ -259,10 +255,10 @@ class ComProductController extends Controller
                 ];
 
                 // อัปเดตข้อมูล
-                ProductDetail::where('PRODUCT', $id)->update($data_product_upddate);
+                ProductDetail::where('product_id', $id)->update($data_product_upddate);
 
                 // ดึงข้อมูลล่าสุดหลังจากอัปเดต
-                $comProductUpddate = ProductDetail::where('PRODUCT', $id)->first();
+                $comProductUpddate = ProductDetail::where('product_id', $id)->first();
 
                 $data_old_com_product = Com_product::where('product_id', $id)->first();
 
@@ -272,8 +268,8 @@ class ComProductController extends Controller
 
                     // เพิ่ม Log ถ้ามีค่าที่ต้องการอัปเดต
                     $log = [
-                        'update_dt' => date("Y/m/d H:i:s"),
                         'user_update' => Auth::user()->username,
+                        'update_dt' => date("Y/m/d H:i:s"),
                     ];
 
                     $data_data_old_com_product_arr = array_merge($data_data_old_com_product_arr, $log);
@@ -285,30 +281,25 @@ class ComProductController extends Controller
                     [
                         'unit_weight' => $comProductUpddate->unit_weight,
                         'unit_pak_size' => $comProductUpddate->unit_pak_size,
-
                         'case_width' => $comProductUpddate->case_width,
                         'case_length' => $comProductUpddate->case_length,
                         'case_height' => $comProductUpddate->case_height,
                         'case_barcode' => $comProductUpddate->case_barcode,
                         'case_weight' => $comProductUpddate->case_weight,
                         'case_pack_size' => $comProductUpddate->case_pack_size,
-
                         'inner_width' => $comProductUpddate->inner_width,
                         'inner_length' => $comProductUpddate->inner_length,
                         'inner_height' => $comProductUpddate->inner_height,
                         'inner_barcode' => $comProductUpddate->inner_barcode,
                         'inner_weight' => $comProductUpddate->inner_weight,
                         'inner_pack_size' => $comProductUpddate->inner_pack_size,
-
                         'width' => $comProductUpddate->inner_pack_size,
                         'long' => $comProductUpddate->inner_pack_size,
                         'height' => $comProductUpddate->inner_pack_size,
-
                         'area' => $comProductUpddate->inner_pack_size,
                         'box_qty' => $comProductUpddate->inner_pack_size,
                         'pallet_qty' => $comProductUpddate->inner_pack_size,
                         'weight' => $comProductUpddate->inner_pack_size,
-
                         'upd_user' => Auth::user()->username,
                         'upd_date' => date("Y/m/d H:i:s")
                     ]
@@ -368,42 +359,60 @@ class ComProductController extends Controller
     //     }
     // }
 
-    public function updateImageSequence(Request $request)
+    public function updateImageSequence(Request $request, $id)
     {
-        dd($request)->all();
+        // dd($request)->all();
         if (!$request->has('img') || !is_array($request->img)) {
             return response()->json(['status' => 400, 'message' => 'Invalid request'], 400);
         }
-
+    
         foreach ($request->img as $index => $imageId) {
             ComProductImage::where('id', $imageId)->update(['seq' => $index + 1]);
         }
+    
+        // ✅ Fix: เพิ่ม product_id filter
+        $mainImage = ComProductImage::where('product_id', $id)
+            ->where('seq', 1)
+            ->first();
+    
+        // dd($mainImage);
 
-        return response()->json(['status' => 200, 'message' => 'Sequence updated successfully']);
+        if ($mainImage && $mainImage->path) {
+            Com_product::updateOrCreate(
+                ['product_id' => $id],
+                ['img_url' => $mainImage->path]
+            );
+        }
+
+        session()->flash('message', 'อัปเดตข้อมูลสำเร็จ');
+        return response()->json([
+            'status' => 200, 
+            'message' => 'อัปเดตข้อมูลสำเร็จ'
+        ]);
     }
 
     public function filter(Request $request)
     {
-        $endpoint = "https://ins.schicher.com/api/users";
-        $response = Http::asForm()->get($endpoint);
+        // $endpoint = "https://ins.schicher.com/api/users";
+        // $response = Http::asForm()->get($endpoint);
 
-        if ($response->successful()) {
-            $data = collect($response->json()); // Convert data to a collection
+        // if ($response->successful()) {
+        //     $data = collect($response->json()); // Convert data to a collection
 
-            $type = $request->get('type'); // Retrieve the 'type' parameter from the request
+        //     $type = $request->get('type'); // Retrieve the 'type' parameter from the request
 
-            if ($type) {
-                $filteredData = $data->filter(fn($item) => $item['role'] === $type);
-            } else {
-                $filteredData = $data;
-            }
-            return response()->json($filteredData->values());
-        } else {
-            return response()->json([
-                'error' => 'Request failed',
-                'status' => $response->status(),
-                'body' => $response->body(),
-            ], $response->status());
-        }
+        //     if ($type) {
+        //         $filteredData = $data->filter(fn($item) => $item['role'] === $type);
+        //     } else {
+        //         $filteredData = $data;
+        //     }
+        //     return response()->json($filteredData->values());
+        // } else {
+        //     return response()->json([
+        //         'error' => 'Request failed',
+        //         'status' => $response->status(),
+        //         'body' => $response->body(),
+        //     ], $response->status());
+        // }
     }
 }

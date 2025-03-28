@@ -442,34 +442,32 @@ class ProductController extends Controller
                 ->whereIn('BRAND', ['LL'])
                 ->pluck('PRODUCT')
                 ->toArray();
+        } else if ($userpermission == 'FR') {
+
+            $brands = Barcode::select(
+            'BRAND',
+                'STATUS')
+            ->whereIn('STATUS', ['LL'])
+            ->pluck('BRAND')
+            ->toArray();
+
+            $dataProductMasterArr = Product1::select(
+            'PRODUCT')
+            ->whereNotIn('BRAND', ['OP', 'CPS', 'KM', 'KTY', 'GNC', 'BB'])
+            ->pluck('PRODUCT')
+            ->toArray();
+
+            $dataProductMaster = Product1::select('PRODUCT')
+                ->whereNotIn('BRAND', ['LL'])
+                ->get();
+
+            $dataProductMasterConsumablesArr = Product1::select(
+                'PRODUCT')
+                ->where('BRAND', 'LL')
+                ->whereRaw("PRODUCT REGEXP '^[8-9]' AND LENGTH(PRODUCT) >= 7")
+                ->pluck('PRODUCT')
+                ->toArray();
         }
-        // else if (in_array($userpermission, ['Accounting'])) {
-
-        //     $brands = Barcode::select(
-        //     'BRAND',
-        //         'STATUS')
-        //     ->whereIn('STATUS', ['LL'])
-        //     ->pluck('BRAND')
-        //     ->toArray();
-
-        //     $dataProductMasterArr = Product1::select(
-        //     'PRODUCT')
-        //     ->whereNotIn('BRAND', ['OP', 'CPS', 'KM', 'KTY', 'GNC', 'BB'])
-        //     ->pluck('PRODUCT')
-        //     ->toArray();
-
-        //     $dataProductMaster = Product1::select('PRODUCT')
-        //         // ->whereNotIn('BRAND', ['OP', 'CPS'])
-        //         ->whereNotIn('BRAND', ['LL'])
-        //         ->get();
-
-        //     $dataProductMasterConsumablesArr = Product1::select(
-        //     'PRODUCT')
-        //     ->where('BRAND', 'LL')
-        //     ->whereRaw("PRODUCT REGEXP '^[8-9]' AND LENGTH(PRODUCT) >= 7")
-        //     ->pluck('PRODUCT')
-        //     ->toArray();
-        // }
 
         // dd($dataProductMasterArr);
         $productCodeArr = $dataProductMaster->select('PRODUCT')->pluck('PRODUCT')->toArray();
@@ -2251,6 +2249,7 @@ class ProductController extends Controller
             if ( $productMaster->BRAND == 'CPS' ) {
                 $createProductDetail = ProductDetail::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
                     'corporation_id' => $productMaster->BRAND,
+                    'company_id' => $productMaster->BRAND,
                     'fad' => $productMaster->REGISTER,
                     'inner_barcode' => $productMaster->BAR_PACK1,
                     'inner_pack_size' => $productMaster->PACK_SIZE1,
@@ -2260,6 +2259,7 @@ class ProductController extends Controller
 
                 $createProductOther = ProductOther::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
                     'corporation_id' => $productMaster->BRAND,
+                    'company_id' => $productMaster->BRAND,
                     'item_name' => $productMaster->NAME_ENG,
                     'cat_name' => $productMaster->CATEGORY,
                     'upd_user' => Auth::user()->username,
@@ -2294,14 +2294,14 @@ class ProductController extends Controller
             //         'created_at' => date("Y/m/d H:i:s")
             //     ]);
 
-            dd($attributes = [
-                'productMaster' => $productMaster->toArray(),
-                // 'craeteProductAccount' => $craeteProductAccount->toArray(),
-                'createProductDetail' => $createProductDetail->toArray(),
-                'createProductOther' => $createProductOther->toArray(),
-                'createComProduct' => $createComProduct->toArray(),
-                // 'craeteProductAccountSchedule' => $craeteProductAccountSchedule->toArray(),
-            ]);
+            // dd($attributes = [
+            //     'productMaster' => $productMaster->toArray(),
+            //     // 'craeteProductAccount' => $craeteProductAccount->toArray(),
+            //     'createProductDetail' => $createProductDetail->toArray(),
+            //     'createProductOther' => $createProductOther->toArray(),
+            //     'createComProduct' => $createComProduct->toArray(),
+            //     // 'craeteProductAccountSchedule' => $craeteProductAccountSchedule->toArray(),
+            // ]);
 
             DB::commit();
             $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
@@ -2505,7 +2505,9 @@ class ProductController extends Controller
         ->leftJoin('conditions', 'product1s.CONDITION_SALE', '=', 'conditions.ID')
         ->firstWhere('product1s.PRODUCT', '=', $PRODUCT);
 
-        $data->REG_DATE = date('Y-m-d', strtotime($data->REG_DATE));
+        if ($data && $data->REG_DATE) {
+            $data->REG_DATE = date('Y-m-d', strtotime($data->REG_DATE));
+        }
         // dd($data);
 
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
@@ -2522,15 +2524,21 @@ class ProductController extends Controller
         $venders = Vendor::select('VEN_ID AS SUPPLIER', 'VEN_NTHAI')->get()->toArray();
 
         // dd($venders);
-        // dd(!in_array($data->SUPPLIER, array_column($venders, 'SUPPLIER')));
-        if (!in_array($data->SUPPLIER, array_column($venders, 'SUPPLIER')))
-        {
+        // if (!in_array($data->SUPPLIER, array_column($venders, 'SUPPLIER')))
+        // {
+        //     $venders[] =  [
+        //         'SUPPLIER' => $data->SUPPLIER,
+        //         'VEN_NTHAI' => $data->SUPPLIER,
+        //     ];
+        // } 
+        if ($data && !in_array($data->SUPPLIER, array_column($venders, 'SUPPLIER'))) {
             $venders[] =  [
                 'SUPPLIER' => $data->SUPPLIER,
                 'VEN_NTHAI' => $data->SUPPLIER,
             ];
-        } 
+        }
 
+        // dd($venders);
         // dd($data->SUPPLIER);
         $type_gs = Type_g::select('ID AS TYPE_G', 'DESCRIPTION')->get();
         $solutions = Solution::select('ID AS SOLUTION', 'DESCRIPTION')->get()->toArray();
@@ -2540,13 +2548,19 @@ class ProductController extends Controller
         $pdms = Pdm::select('ID AS PDM_GROUP', 'REMARK')->get()->toArray();
         $p_statuss = P_status::select('ID AS STATUS', 'DESCRIPTION')->get()->toArray();
 
-        if (!in_array($data->STATUS, array_column($p_statuss, 'STATUS')))
-        {
+        // if (!in_array($data->STATUS, array_column($p_statuss, 'STATUS')))
+        // {
+        //     $p_statuss[] =  [
+        //         'STATUS' => $data->STATUS,
+        //         'DESCRIPTION' => $data->STATUS,
+        //     ];
+        // } 
+        if ($data && !in_array($data->STATUS, array_column($p_statuss, 'STATUS'))) {
             $p_statuss[] =  [
                 'STATUS' => $data->STATUS,
                 'DESCRIPTION' => $data->STATUS,
             ];
-        } 
+        }
 
         // $unit_ps = Unit_p::all();
         $unit_ps = Unit_p::select('DESCRIPTION AS UNIT', 'BRAND')->get()->toArray();
@@ -2554,13 +2568,19 @@ class ProductController extends Controller
         $acctypes = Acctype::select('ID AS ACC_TYPE', 'DESCRIPTION')->get();
         $conditions = Condition::select('ID AS CONDITION_SALE', 'DESCRIPTION')->get()->toArray();
 
-        if (!in_array($data->CONDITION_SALE, array_column($conditions, 'CONDITION_SALE')))
-        {
+        // if (!in_array($data->CONDITION_SALE, array_column($conditions, 'CONDITION_SALE')))
+        // {
+        //     $conditions[] =  [
+        //         'CONDITION_SALE' => $data->CONDITION_SALE,
+        //         'DESCRIPTION' => $data->CONDITION_SALE,
+        //     ];
+        // } 
+        if ($data && !in_array($data->CONDITION_SALE, array_column($conditions, 'CONDITION_SALE'))) {
             $conditions[] =  [
                 'CONDITION_SALE' => $data->CONDITION_SALE,
                 'DESCRIPTION' => $data->CONDITION_SALE,
             ];
-        } 
+        }
 
         $multiChannels = ProductChannel::select('BRAND')->where('PRODUCT', '=', $PRODUCT)->pluck('BRAND')->toArray();
         $allBrands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
@@ -3535,6 +3555,149 @@ class ProductController extends Controller
                 'BRAND')
             ->where('BRAND', 'KM')
             ->get();
+        } else if ($userpermission == 'FR') {
+            $defaultBrands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->pluck('BRAND')
+            ->toArray();
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', 'FR')
+            ->get();
+            $owners = Owner::select(
+                'OWNER AS VENDOR',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get()->toArray();
+            if (!in_array($data->VENDOR, array_column($owners, 'VENDOR')))
+            {
+                $owners[] =  [
+                    'VENDOR' => $data->VENDOR,
+                    'REMARK' => $data->VENDOR,
+                ];
+            } 
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get()->toArray();
+            if (!in_array($data->GRP_P, array_column($grp_ps, 'GRP_P')))
+            {
+                $grp_ps[] =  [
+                    'GRP_P' => $data->GRP_P,
+                    'REMARK' => $data->GRP_P,
+                ];
+            }
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get()->toArray();
+            if (!in_array($data->BRAND_P, array_column($brand_ps, 'BRAND_P')))
+            {
+                $brand_ps[] =  [
+                    'BRAND_P' => $data->BRAND_P,
+                    'REMARK' => $data->BRAND_P,
+                ];
+            }
+            $solutions = Solution::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get()->toArray();
+            if (!in_array($data->SOLUTION, array_column($solutions, 'SOLUTION')))
+            {
+                $solutions[] =  [
+                    'SOLUTION' => $data->SOLUTION,
+                    'DESCRIPTION' => $data->SOLUTION,
+                ];
+            }
+            $series = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get()->toArray();
+            if (!in_array($data->SERIES, array_column($series, 'SERIES')))
+            {
+                $series[] =  [
+                    'SERIES' => $data->SERIES,
+                    'DESCRIPTION' => $data->SERIES,
+                ];
+            }
+            $categorys = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get()->toArray();
+            if (!in_array($data->CATEGORY, array_column($categorys, 'CATEGORY')))
+            {
+                $categorys[] =  [
+                    'CATEGORY' => $data->CATEGORY,
+                    'DESCRIPTION' => $data->CATEGORY,
+                ];
+            }
+            $sub_categorys = Sub_category::select(
+                'ID',
+                'CATEGORY_ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get()->toArray();
+            if (!in_array($data->S_CAT, array_column($sub_categorys, 'S_CAT')))
+            {
+                $sub_categorys[] =  [
+                    'S_CAT' => $data->S_CAT,
+                    'DESCRIPTION' => $data->S_CAT,
+                ];
+            }
+            $pdms = Pdm::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get()->toArray();
+            if (!in_array($data->PDM_GROUP, array_column($pdms, 'PDM_GROUP')))
+            {
+                $pdms[] =  [
+                    'PDM_GROUP' => $data->PDM_GROUP,
+                    'REMARK' => $data->PDM_GROUP,
+                ];
+            }
+            $unit_ps = Unit_p::select(
+                'DESCRIPTION AS UNIT',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get()->toArray();
+            if (!in_array($data->UNIT, array_column($unit_ps, 'UNIT')))
+            {
+                $unit_ps[] =  [
+                    'UNIT' => $data->UNIT,
+                ];
+            }
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get()->toArray();
+            if (!in_array($data->UNIT_TYPE, array_column($unit_types, 'UNIT_TYPE')))
+            {
+                $unit_types[] =  [
+                    'UNIT_TYPE' => $data->UNIT_TYPE,
+                ];
+            }
+            $product_groups = ProductGroup::select(
+                'ID',
+                'DESCRIPTION AS product_group_name',
+                'BRAND')
+            ->where('BRAND', 'KM')
+            ->get();
         }
 
         // dd($grp_ps);
@@ -3646,8 +3809,8 @@ class ProductController extends Controller
 
                     foreach ($request->sele_channel as $value) {
                         $createSeleChannel = ProductChannel::updateOrCreate(
-            ['PRODUCT' => $data_product_upddate['PRODUCT'], 'BRAND' => $value],
-                    $updateData
+                        ['PRODUCT' => $data_product_upddate['PRODUCT'], 'BRAND' => $value],
+                            $updateData
                         );
                     }
                 }
@@ -3709,7 +3872,7 @@ class ProductController extends Controller
                     }
                     // อัปเดตหรือสร้างข้อมูลใหม่
                     ProductOther::updateOrCreate(['product_id' => $PRODUCT],
-                [
+                        [
                             'corporation_id' => $productUpddateConsumables->BRAND,
                             'item_name' => $productUpddateConsumables->NAME_ENG,
                             'cat_name' => $productUpddateConsumables->CATEGORY,
@@ -3735,7 +3898,7 @@ class ProductController extends Controller
                     }
                     // อัปเดตหรือสร้างข้อมูลใหม่
                     Com_product::updateOrCreate(['product_id' => $PRODUCT],
-                [
+                        [
                             'company_id' => $productUpddateConsumables->BRAND,
                             'barcode' => $productUpddateConsumables->BARCODE,
                             'vendor_id' => $productUpddateConsumables->VENDOR,
@@ -3855,8 +4018,8 @@ class ProductController extends Controller
 
                     foreach ($request->sele_channel as $value) {
                         $createSeleChannel = ProductChannel::updateOrCreate(
-            ['PRODUCT' => $data_product_upddate['PRODUCT'], 'BRAND' => $value],
-                    $updateData
+                            ['PRODUCT' => $data_product_upddate['PRODUCT'], 'BRAND' => $value],
+                            $updateData
                         );
                     }
                 }
@@ -3917,7 +4080,7 @@ class ProductController extends Controller
                     }
                     // อัปเดตหรือสร้างข้อมูลใหม่
                     $updateProductOther = ProductOther::updateOrCreate(['product_id' => $PRODUCT],
-                [
+                        [
                             'corporation_id' => $productUpddate->BRAND,
                             'item_name' => $productUpddate->NAME_ENG,
                             'cat_name' => $productUpddate->CATEGORY,
@@ -3943,7 +4106,7 @@ class ProductController extends Controller
                     }
                     // อัปเดตหรือสร้างข้อมูลใหม่
                     $updateComProduct = Com_product::updateOrCreate(['product_id' => $PRODUCT],
-                [
+                        [
                             'company_id' => $productUpddate->BRAND,
                             'barcode' => $productUpddate->BARCODE,
                             'vendor_id' => $productUpddate->VENDOR,
@@ -3966,14 +4129,14 @@ class ProductController extends Controller
                 //         'created_at' => date("Y/m/d H:i:s")
                 //     ]);
 
-                dd($attributes = [
-                    'productUpddate' => $productUpddate->toArray(),
-                    // 'craeteProductAccount' => $craeteProductAccount->toArray(),
-                    'upddateProductDetail' => $upddateProductDetail->toArray(),
-                    'updateProductOther' => $updateProductOther->toArray(),
-                    'updateComProduct' => $updateComProduct->toArray(),
-                    // 'craeteProductAccountSchedule' => $craeteProductAccountSchedule->toArray(),
-                ]);
+                // dd($attributes = [
+                //     'productUpddate' => $productUpddate->toArray(),
+                //     // 'craeteProductAccount' => $craeteProductAccount->toArray(),
+                //     'upddateProductDetail' => $upddateProductDetail->toArray(),
+                //     'updateProductOther' => $updateProductOther->toArray(),
+                //     'updateComProduct' => $updateComProduct->toArray(),
+                //     // 'craeteProductAccountSchedule' => $craeteProductAccountSchedule->toArray(),
+                // ]);
 
                 DB::commit();
                 $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
@@ -4165,6 +4328,29 @@ class ProductController extends Controller
             )
             ->whereIn('BRAND', ['OP', 'CPS', 'KTY', 'GNC', 'BB', 'LL'])
             ->orderBy('BARCODE', 'DESC');
+        } else if ($userpermission == 'FR') {
+            $data = Product1::select(
+                'BRAND',
+                'GRP_P',
+                'PRODUCT',
+                'BARCODE',
+                'NAME_THAI'
+            )
+            // ->where('BRAND', 'KM')
+            ->whereBetween('PRODUCT', [15000, 19999])
+            ->orderBy('BARCODE', 'DESC');
+
+            // $data = Pro_develops::select(
+            //     'pro_develops.BRAND AS BRAND',
+            //     DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
+            //     'pro_develops.PRODUCT AS PRODUCT',
+            //     'pro_develops.BARCODE AS BARCODE',
+            //     'pro_develops.NAME_ENG AS NAME_ENG'
+            // )
+            // ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
+            // // ->where('barcodes.BRAND', 'FR')
+            // ->whereBetween('pro_develops.PRODUCT', [15000, 19999])
+            // ->orderBy('BARCODE', 'DESC');
         }
 
         if ($userpermission == 'OP') {

@@ -51,6 +51,24 @@
             margin-top: -1px!important;
             font-size: 20px!important;
         }
+        .select2-container {
+            margin-bottom: 0rem!important;
+        }
+        .select2-container--default .select2-selection--single {
+            height: 2rem!important;
+            border-width: 1px;
+            padding: 0.1rem!important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            position: absolute;
+            margin-top: -5px!important;
+        }
+        .h-10 {
+            height: 2rem!important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            font-size: small!important;
+        }
         .loading_create_menu {
             display: flex;
             align-items: center;
@@ -191,7 +209,7 @@
 @section('content')
     <div class="justify-center items-center">
         <div class="mt-6 mb-4 flex justify-center items-center">
-            <p class="inline-block space-y-2 border-b border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">List Dimension</p>
+            <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">List Dimension</p>
         </div>
         <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
             <div class="lg:col-span-4 xl:grid-cols-4">
@@ -231,7 +249,7 @@
                 </div>
             </div>
         </div>
-        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-700 relative"></ul>
+        <ul class="pt-2.5 mt-2 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-700 relative"></ul>
         <!-- <div class="flex right-12 z-10 absolute mt-3">
             <div class="relative" data-twe-dropdown-position="dropstart">
                 <button
@@ -573,7 +591,7 @@
             ordering: false,
             deferRender: true,
             scroller: true,
-            scrollY: "750px",
+            scrollY: "580px",
             "order": [[1, "desc"]],
             "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
             "pageLength": 20, // ค่าเริ่มต้นคือ "20"

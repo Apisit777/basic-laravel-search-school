@@ -170,7 +170,7 @@
                                                                 </div>
                                                                 <div class="md:col-span-3" >
                                                                     <label for="DOC_DT">วันที่</label>
-                                                                    <input type="date" name="DOC_DT" id="DOC_DT" style="height: 38px;" class="form-control border-[#303030] bg-white dark:bg-[#303030] text-gray-900 dark:text-gray-100 rounded-sm cursor-pointer text-center" data-date-format="dd/mm/yyyy" placeholder="" autocomplete="off" value="<?php echo date('Y-m-d'); ?>">
+                                                                    <input type="date" name="DOC_DT" id="DOC_DT" style="height: 38px;" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" data-date-format="dd/mm/yyyy" placeholder="" autocomplete="off" value="<?php echo date('Y-m-d'); ?>" readonly>
                                                                 </div>
                                                                 <div class="md:col-span-6" style="position: relative;">
                                                                     <label for="CUST_OEM">Customer (OEM)</label>

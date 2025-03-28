@@ -72,6 +72,17 @@
         .select2-container--default .select2-selection--single .select2-selection__rendered {
             font-size: small!important;
         }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -149,10 +160,10 @@
                         </button>
                     </div>
                     <form id="form_product_group" class="" method="POST">
-                        <input class="" type="hidden" id="Edit_ProductGroup_ID" name="ID" value="">
+                        <input class="" type="hidden" id="Edit_UsageArea_ID" name="ID" value="">
                         <div class="p-4 text-gray-900 dark:text-gray-100" style="position: relative;">
                             <label for="ID">ID</label>
-                            <input type="text" id="ID" name="ID" onkeyup="checkProductGroupId()" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                            <input type="text" id="ID" name="ID" onkeyup="checkUsageAreaId()" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                             <div class="col-auto" style="position: absolute; right: 2.5%; top: 57.2%;">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="username_loading_id" style="margin-right: -2.5px;" class="w-6 h-6 animate-spin -mt-1">
                                     <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
@@ -184,7 +195,7 @@
                         </div>
                         <div class="p-4 text-gray-900 dark:text-gray-100" style="position: relative;">
                             <label for="DESCRIPTION">Description</label>
-                            <input type="text" id="DESCRIPTION" name="DESCRIPTION" onkeyup="checkProductGroupName()" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                            <input type="text" id="DESCRIPTION" name="DESCRIPTION" onkeyup="checkUsageAreaName()" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                             <div class="col-auto" style="position: absolute; right: 2.5%; top: 57.2%;">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" id="username_loading" style="margin-right: -2.5px;" class="w-6 h-6 animate-spin -mt-1">
                                     <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
@@ -251,7 +262,7 @@
                         </tr>
                         <tr>
                             <th>
-                                <select class="js-example-basic-single w-full rounded-sm text-xs" id="searchSeriesId" name="" onchange="usageAreaSearch()">
+                                <select class="js-example-basic-single w-full rounded-sm text-xs" id="searchUsageAreaId" name="" onchange="usageAreaSearch()">
                                     <option value="" class="text-xs"> --- กรุณาเลือก ---</option>
                                     @foreach ($usageAreas as $key => $usageArea)
                                         <option value="{{ $usageArea }}">{{ $usageArea }}</option>
@@ -259,7 +270,7 @@
                                 </select>
                             </th>
                             <th>
-                            <input type="text" name="" id="searchusageAreaName" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="ประเภทสินค้า . . ." value="" onkeyup="searchTable()" />
+                            <input type="text" name="" id="searchUsageAreaName" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="ประเภทสินค้า . . ." value="" onkeyup="searchTable()" />
                             </th>
                             <th>
                             </th>
@@ -323,103 +334,113 @@
             $('.js-example-basic-single').select2();
         });
 
-        jQuery('#username_loading_id').hide();
-        jQuery("#username_aler_id").hide();
-        jQuery("#correct_username_id").hide();
+        jQuery('#username_loading_id, #username_loading').hide();
+        jQuery("#username_aler_id, #username_alert").hide();
+        jQuery("#correct_username_id, #correct_username").hide();
 
-        function checkProductGroupId() {
-            const Edit_ProductGroup_ID = jQuery('#Edit_ProductGroup_ID').val();
+        let isValidID = false;
+        let isValidDescription = false;
+
+        function updateSaveButtonState() {
+            if (isValidID && isValidDescription) {
+                jQuery("#submitButton").attr("disabled", false).removeClass('cursor-not-allowed opacity-50');
+            } else {
+                jQuery("#submitButton").attr("disabled", true).addClass('cursor-not-allowed opacity-50');
+            }
+        }
+
+        function checkUsageAreaId() {
+            const Edit_UsageArea_ID = jQuery('#Edit_UsageArea_ID').val();
             const ID = jQuery('#ID').val();
 
             jQuery.ajax({
                 method: "POST",
-                url: "{{ route('product_master.series_check_id') }}",
+                url: "{{ route('product_detail.usage_area_check_id') }}",
                 data: {
                         _token: "{{ csrf_token() }}",
-                        Edit_ProductGroup_ID, ID
+                        Edit_UsageArea_ID, ID
                     },
                 dataType: 'json',
                 beforeSend: function () {
-                    jQuery("#submitButton").attr("disabled", true);
-                    jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                    isValidID = false;
+                    updateSaveButtonState();
                     jQuery('#username_loading_id').show();
-                    jQuery("#correct_username_id").hide();
-                    jQuery("#username_aler_id").hide();
+                    jQuery("#correct_username_id, #username_aler_id").hide();
                 },
-                success: function (checknamebrand) {
+                success: function (response) {
                     jQuery('#username_loading_id').hide();
-                    jQuery("#correct_username_id").hide();
 
-                    if (ID == '') {
-                        jQuery("#submitButton").attr("disabled", false);
-                        jQuery("#correct_username_id").hide();
-                        jQuery("#username_aler_id").hide();
-                    } else if (checknamebrand == true) {
-                        jQuery("#submitButton").attr("disabled", false);
-                        jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
-                        jQuery("#username_aler_id").hide();
+                    if (ID === '') {
+                        isValidID = false;
+                        jQuery("#correct_username_id, #username_aler_id").hide();
+                    } else if (response === true) {
+                        isValidID = true;
                         jQuery("#correct_username_id").show();
+                        jQuery("#username_aler_id").hide();
                     } else {
+                        isValidID = false;
                         jQuery("#username_aler_id").show();
                         jQuery("#correct_username_id").hide();
                     }
+                    updateSaveButtonState();
                 },
                 error: function (params) {
                 }
             });
         }
 
-        jQuery('#username_loading').hide();
-        jQuery("#username_alert").hide();
-        jQuery("#correct_username").hide();
-
-        function checkProductGroupName() {
-            const Edit_ProductGroup_ID = jQuery('#Edit_ProductGroup_ID').val();
+        function checkUsageAreaName() {
+            const Edit_UsageArea_ID = jQuery('#Edit_UsageArea_ID').val();
             const DESCRIPTION = jQuery('#DESCRIPTION').val();
 
             jQuery.ajax({
                 method: "POST",
-                url: "{{ route('product_master.series_check_name') }}",
+                url: "{{ route('product_detail.usage_area_check_name') }}",
                 data: {
                         _token: "{{ csrf_token() }}",
-                        Edit_ProductGroup_ID, DESCRIPTION
+                        Edit_UsageArea_ID, DESCRIPTION
                     },
                 dataType: 'json',
                 beforeSend: function () {
-                    jQuery("#submitButton").attr("disabled", true);
-                    jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
+                    isValidDescription = false;
+                    updateSaveButtonState();
                     jQuery('#username_loading').show();
-                    jQuery("#correct_username").hide();
-                    jQuery("#username_alert").hide();
+                    jQuery("#correct_username, #username_alert").hide();
                 },
-                success: function (checknamebrand) {
+                success: function (response) {
                     jQuery('#username_loading').hide();
-                    jQuery("#correct_username").hide();
 
-                    if (DESCRIPTION == '') {
-                        jQuery("#submitButton").attr("disabled", false);
-                        jQuery("#correct_username").hide();
-                        jQuery("#username_alert").hide();
-                    } else if (checknamebrand == true) {
-                        jQuery("#submitButton").attr("disabled", false);
-                        jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
-                        jQuery("#username_alert").hide();
+                    if (DESCRIPTION === '') {
+                        isValidDescription = false;
+                        jQuery("#correct_username, #username_alert").hide();
+                    } else if (response === true) {
+                        isValidDescription = true;
                         jQuery("#correct_username").show();
+                        jQuery("#username_alert").hide();
                     } else {
+                        isValidDescription = false;
                         jQuery("#username_alert").show();
                         jQuery("#correct_username").hide();
                     }
+                    updateSaveButtonState();
                 },
                 error: function (params) {
                 }
             });
         }
 
-        function modelProductGroup(id, DESCRIPTION) {
-            console.log("🚀 ~ modelProductGroup ~ id:", id, DESCRIPTION)
-            if (id) {
-                jQuery("#Edit_ProductGroup_ID").val(id)
-                jQuery("#ID").val(id).attr("readonly", true).addClass('h-10 rounded-sm px-4 w-full text-center bg-[#E7E7E7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#000000] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500')
+        // ✅ ผูก event กับ input fields
+        jQuery("#ID").on("keyup", checkUsageAreaId);
+        jQuery("#DESCRIPTION").on("keyup", checkUsageAreaName);
+
+        function modelProductGroup(ID, DESCRIPTION) {
+            console.log("🚀 ~ modelProductGroup ~ ID:", ID, DESCRIPTION)
+            if (ID) {
+                jQuery("#Edit_UsageArea_ID").val(ID)
+                // ✅ รีเซ็ตตัวแปรสถานะของปุ่ม Save
+                isValidID = true;
+                isValidDescription = true;
+                jQuery("#ID").val(ID).attr("readonly", true).addClass('h-10 rounded-sm px-4 w-full text-center bg-[#E7E7E7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#000000] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500')
                 jQuery("#DESCRIPTION").val(DESCRIPTION)
                 jQuery("#staticBackdropLabel").text('แก้ไข Usage Area')
                 jQuery("#submitButton").attr("disabled", false);
@@ -431,10 +452,13 @@
                 jQuery("#username_aler_id").hide();
                 jQuery("#correct_username_id").hide();
             } else {
-                jQuery("#Edit_ProductGroup_ID").val('')
-                jQuery("#ID").val('').removeClass('bg-[#E7E7E7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-[#000000] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500')
+                jQuery("#Edit_UsageArea_ID").val('')
+                jQuery("#ID").val('').removeAttr("readonly").removeClass('bg-[#E7E7E7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-[#000000] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 cursor-not-allowed opacity-50');
                 jQuery("#DESCRIPTION").val('')
                 jQuery("#staticBackdropLabel").text('เพิ่ม Usage Area')
+                // ✅ รีเซ็ตตัวแปรสถานะของปุ่ม Save ให้เป็น false (เนื่องจากเป็น Create Modal)
+                isValidID = false;
+                isValidDescription = false;
                 jQuery("#submitButton").attr("disabled", true);
                 jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
                 jQuery('#username_loading').hide();
@@ -456,7 +480,7 @@
             ordering: false,
             deferRender: true,
             scroller: true,
-            scrollY: "800px",
+            scrollY: "580px",
             "order": [[1, "desc"]],
             "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
             "pageLength": 20, // ค่าเริ่มต้นคือ "20"
@@ -469,8 +493,8 @@
                 "type": "POST",
                 'data': function(data) {
                     // Read values
-                    data.searchSeriesId = $('#searchSeriesId').val();
-                    data.searchusageAreaName = $('#searchusageAreaName').val();
+                    data.searchUsageAreaId = $('#searchUsageAreaId').val();
+                    data.searchUsageAreaName = $('#searchUsageAreaName').val();
 
                     data._token = $('meta[name="csrf-token"]').attr('content');
                 }
@@ -548,12 +572,12 @@
             });
 
             let url = ''
-            const Edit_ProductGroup_ID = jQuery('#Edit_ProductGroup_ID').val();
+            const Edit_UsageArea_ID = jQuery('#Edit_UsageArea_ID').val();
 
-            if(Edit_ProductGroup_ID) {
-                url = "{{ route('product_master.series_update', 0) }}".replaceAll('/0', '/' + Edit_ProductGroup_ID);
+            if(Edit_UsageArea_ID) {
+                url = "{{ route('product_detail.usage_area_update', 0) }}".replaceAll('/0', '/' + Edit_UsageArea_ID);
             } else {
-                url = "{{ route('product_master.series_create') }}"
+                url = "{{ route('product_detail.usage_area_create') }}"
             }
 
             jQuery.ajax({

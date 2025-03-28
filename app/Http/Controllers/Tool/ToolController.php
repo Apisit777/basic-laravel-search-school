@@ -339,7 +339,7 @@ class ToolController extends Controller
         // dd($data);
         return response()->json($data > 0 ? false : true);
     }
-    
+
     public function seriesCheckId(Request $request)
     {
         // dd($request);
@@ -595,6 +595,237 @@ class ToolController extends Controller
         return response()->json($data > 0 ? false : true);
     }
 
+    public function skinTypeCheckId(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_SkinType_ID) {
+            $data = CpsSkinType::select('ID')
+                ->where('ID', '!=', $request->Edit_SkinType_ID)
+                ->where('ID', $request->ID)
+                ->count();
+        } else {
+            $data = CpsSkinType::select('ID')
+                ->where('ID', $request->ID)
+                ->count();
+        }
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function skinTypeCheckName(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_SkinType_ID) {
+            $data = CpsSkinType::select('ID')
+                ->where('ID', '!=', $request->Edit_SkinType_ID)
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        } else {
+            $data = CpsSkinType::select('ID')
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        }
+
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function CoverageBenefitId(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_CoverageBenefit_ID) {
+            $data = CpsCoverageBenefit::select('ID')
+                ->where('ID', '!=', $request->Edit_CoverageBenefit_ID)
+                ->where('ID', $request->ID)
+                ->count();
+        } else {
+            $data = CpsCoverageBenefit::select('ID')
+                ->where('ID', $request->ID)
+                ->count();
+        }
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function CoverageBenefitName(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_CoverageBenefit_ID) {
+            $data = CpsCoverageBenefit::select('ID')
+                ->where('ID', '!=', $request->Edit_CoverageBenefit_ID)
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        } else {
+            $data = CpsCoverageBenefit::select('ID')
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        }
+
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function usageAreaId(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_UsageArea_ID) {
+            $data = CpsUsageArea::select('ID')
+                ->where('ID', '!=', $request->Edit_UsageArea_ID)
+                ->where('ID', $request->ID)
+                ->count();
+        } else {
+            $data = CpsUsageArea::select('ID')
+                ->where('ID', $request->ID)
+                ->count();
+        }
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function usageAreaName(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_UsageArea_ID) {
+            $data = CpsUsageArea::select('ID')
+                ->where('ID', '!=', $request->Edit_UsageArea_ID)
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        } else {
+            $data = CpsUsageArea::select('ID')
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        }
+
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function textureFormulaId(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_Texture_Formula_ID) {
+            $data = CpsTextureFormula::select('ID')
+                ->where('ID', '!=', $request->Edit_Texture_Formula_ID)
+                ->where('ID', $request->ID)
+                ->count();
+        } else {
+            $data = CpsTextureFormula::select('ID')
+                ->where('ID', $request->ID)
+                ->count();
+        }
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function textureFormulaName(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_Texture_Formula_ID) {
+            $data = CpsTextureFormula::select('ID')
+                ->where('ID', '!=', $request->Edit_Texture_Formula_ID)
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        } else {
+            $data = CpsTextureFormula::select('ID')
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        }
+
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function finishId(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_Finish_ID) {
+            $data = CpsFinish::select('ID')
+                ->where('ID', '!=', $request->Edit_Finish_ID)
+                ->where('ID', $request->ID)
+                ->count();
+        } else {
+            $data = CpsFinish::select('ID')
+                ->where('ID', $request->ID)
+                ->count();
+        }
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function finishName(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_Finish_ID) {
+            $data = CpsFinish::select('ID')
+                ->where('ID', '!=', $request->Edit_Finish_ID)
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        } else {
+            $data = CpsFinish::select('ID')
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        }
+
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function packageType1Id(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_PackageType1_ID) {
+            $data = CpsPackageType1::select('ID')
+                ->where('ID', '!=', $request->Edit_PackageType1_ID)
+                ->where('ID', $request->ID)
+                ->count();
+        } else {
+            $data = CpsPackageType1::select('ID')
+                ->where('ID', $request->ID)
+                ->count();
+        }
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function packageType1Name(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_PackageType1_ID) {
+            $data = CpsPackageType1::select('ID')
+                ->where('ID', '!=', $request->Edit_PackageType1_ID)
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        } else {
+            $data = CpsPackageType1::select('ID')
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        }
+
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function packageType2Id(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_PackageType2_ID) {
+            $data = CpsPackageType2::select('ID')
+                ->where('ID', '!=', $request->Edit_PackageType2_ID)
+                ->where('ID', $request->ID)
+                ->count();
+        } else {
+            $data = CpsPackageType2::select('ID')
+                ->where('ID', $request->ID)
+                ->count();
+        }
+        return response()->json($data > 0 ? false : true);
+    }
+
+    public function packageType2Name(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_PackageType2_ID) {
+            $data = CpsPackageType2::select('ID')
+                ->where('ID', '!=', $request->Edit_PackageType2_ID)
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        } else {
+            $data = CpsPackageType2::select('ID')
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        }
+
+        return response()->json($data > 0 ? false : true);
+    }
+
     public function solutionCreate(Request $request)
     {
         // dd($request->all());
@@ -718,7 +949,7 @@ class ToolController extends Controller
             return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
         }
     }
-    
+
     public function seriesUpdate(Request $request, $id)
     {
         // dd($request->all());
@@ -828,7 +1059,7 @@ class ToolController extends Controller
             $data_category = [
                 'DESCRIPTION' => $request->DESCRIPTION,
                 'BRAND' => $userpermission,
-                'EDIT_DT' => ''
+                'EDIT_DT' => date("Y/m/d H:i:s")
             ];
 
             $data_category_upddate = Category::where('ID', $id)->update($data_category);
@@ -872,7 +1103,7 @@ class ToolController extends Controller
                 'CATEGORY_ID' => $request->CATEGORY_ID,
                 'DESCRIPTION' => $request->DESCRIPTION,
                 'BRAND' => $userpermission,
-                'EDIT_DT' => ''
+                'EDIT_DT' => date("Y/m/d H:i:s")
             ]);
 
             // dd($dataSubCategory);
@@ -951,7 +1182,7 @@ class ToolController extends Controller
             } else if ($userpermission == 'LL') {
                 $userpermission = 'LL';
             }
-            
+
             $dataProductGroup = ProductGroup::create([
                 'ID' => $request->ID,
                 'DESCRIPTION' => $request->DESCRIPTION,
@@ -1041,7 +1272,7 @@ class ToolController extends Controller
                 'EDIT_DT' => ''
             ]);
 
-            // dd($dataNpdCos); 
+            // dd($dataNpdCos);
             DB::commit();
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
@@ -1083,7 +1314,558 @@ class ToolController extends Controller
 
             $productCoOrdinatorUpddate = Npd_cos::where('ID', $id)->update($productCoOrdinator);
 
-            // dd($dataNpdCos); 
+            // dd($dataNpdCos);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function productLineCreate(Request $request)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            if ($userpermission == 'CPS') {
+                $userpermission = 'CPS';
+            }
+
+            $dataProductLine = ProductLine::create([
+                'ID' => $request->SubCategory_ID,
+                'CATEGORY_ID' => $request->CATEGORY_ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'EDIT_DT' => date("Y/m/d H:i:s")
+            ]);
+
+            // dd($dataProductLine);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function productLineUpdate(Request $request, $id)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            if ($userpermission == 'CPS') {
+                $userpermission = 'CPS';
+            }
+
+            $data_product_line = [
+                'CATEGORY_ID' => $request->CATEGORY_ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'EDIT_DT' => ''
+            ];
+
+            $data_product_line_upddate = ProductLine::where('ID', $id)->update($data_product_line);
+
+            // dd($data_sub_category_upddate);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function productTypeCreate(Request $request)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            if ($userpermission == 'CPS') {
+                $userpermission = 'CPS';
+            }
+
+            $dataProductType = ProductType::create([
+                'ID' => $request->SubCategory_ID,
+                'CATEGORY_ID' => $request->CATEGORY_ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'EDIT_DT' => date("Y/m/d H:i:s")
+            ]);
+
+            // dd($dataProductType);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function productTypeUpdate(Request $request, $id)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            if ($userpermission == 'CPS') {
+                $userpermission = 'CPS';
+            }
+
+            $data_product_type = [
+                'CATEGORY_ID' => $request->CATEGORY_ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'EDIT_DT' => ''
+            ];
+
+            $data_product_type_upddate = ProductType::where('ID', $id)->update($data_product_type);
+
+            // dd($data_product_type_upddate);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function skinTypeCreate(Request $request)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            if ($userpermission == 'CPS') {
+                $userpermission = 'CPS';
+            }
+
+            $dataCpsSkinType = CpsSkinType::create([
+                'ID' => $request->SubCategory_ID,
+                'CATEGORY_ID' => $request->CATEGORY_ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'EDIT_DT' => date("Y/m/d H:i:s")
+            ]);
+
+            // dd($dataCpsSkinType);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function skinTypeUpdate(Request $request, $id)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            if ($userpermission == 'CPS') {
+                $userpermission = 'CPS';
+            }
+
+            $data_skin_type = [
+                'CATEGORY_ID' => $request->CATEGORY_ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'EDIT_DT' => ''
+            ];
+
+            $data_skin_type_upddate = CpsSkinType::where('ID', $id)->update($data_skin_type);
+
+            // dd($data_skin_type_upddate);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function CoverageBenefitCreate(Request $request)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            if ($userpermission == 'CPS') {
+                $userpermission = 'CPS';
+            }
+
+            $dataCoverageBenefit = CpsCoverageBenefit::create([
+                'ID' => $request->SubCategory_ID,
+                'CATEGORY_ID' => $request->CATEGORY_ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'EDIT_DT' => date("Y/m/d H:i:s")
+            ]);
+
+            // dd($dataCoverageBenefit);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function usageAreaCreate(Request $request)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            if ($userpermission == 'CPS') {
+                $userpermission = 'CPS';
+            }
+
+            $dataCpsUsageArea = CpsUsageArea::create([
+                'ID' => $request->SubCategory_ID,
+                'CATEGORY_ID' => $request->CATEGORY_ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'EDIT_DT' => date("Y/m/d H:i:s")
+            ]);
+
+            // dd($dataCpsUsageArea);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function usageAreaUpdate(Request $request, $id)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            if ($userpermission == 'CPS') {
+                $userpermission = 'CPS';
+            }
+
+            $data_usage_area = [
+                'CATEGORY_ID' => $request->CATEGORY_ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'EDIT_DT' => ''
+            ];
+
+            $data_usage_area_upddate = CpsUsageArea::where('ID', $id)->update($data_usage_area);
+
+            // dd($data_usage_area_upddate);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function textureFormulaCreate(Request $request)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            if ($userpermission == 'CPS') {
+                $userpermission = 'CPS';
+            }
+
+            $dataCpsTextureFormula = CpsTextureFormula::create([
+                'ID' => $request->SubCategory_ID,
+                'CATEGORY_ID' => $request->CATEGORY_ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'EDIT_DT' => date("Y/m/d H:i:s")
+            ]);
+
+            // dd($dataCpsTextureFormula);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function textureFormulaUpdate(Request $request, $id)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            if ($userpermission == 'CPS') {
+                $userpermission = 'CPS';
+            }
+
+            $data_texture_formula = [
+                'CATEGORY_ID' => $request->CATEGORY_ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'EDIT_DT' => ''
+            ];
+
+            $data_texture_formula_upddate = CpsTextureFormula::where('ID', $id)->update($data_texture_formula);
+
+            // dd($data_texture_formula_upddate);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function finishCreate(Request $request)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            if ($userpermission == 'CPS') {
+                $userpermission = 'CPS';
+            }
+
+            $dataFinish = CpsFinish::create([
+                'ID' => $request->SubCategory_ID,
+                'CATEGORY_ID' => $request->CATEGORY_ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'EDIT_DT' => date("Y/m/d H:i:s")
+            ]);
+
+            // dd($dataFinish);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function finishUpdate(Request $request, $id)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            if ($userpermission == 'CPS') {
+                $userpermission = 'CPS';
+            }
+
+            $data_finish = [
+                'CATEGORY_ID' => $request->CATEGORY_ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'EDIT_DT' => ''
+            ];
+
+            $data_finish_upddate = CpsFinish::where('ID', $id)->update($data_finish);
+
+            // dd($data_finish_upddate);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+    public function packageType1Create(Request $request)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            if ($userpermission == 'CPS') {
+                $userpermission = 'CPS';
+            }
+
+            $dataPackageType1 = CpsPackageType1::create([
+                'ID' => $request->SubCategory_ID,
+                'CATEGORY_ID' => $request->CATEGORY_ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'EDIT_DT' => date("Y/m/d H:i:s")
+            ]);
+
+            // dd($dataPackageType1);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function packageType1Update(Request $request, $id)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            if ($userpermission == 'CPS') {
+                $userpermission = 'CPS';
+            }
+
+            $data_package_type1 = [
+                'CATEGORY_ID' => $request->CATEGORY_ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'EDIT_DT' => ''
+            ];
+
+            $data_package_type1_upddate = CpsPackageType1::where('ID', $id)->update($data_package_type1);
+
+            // dd($data_package_type1_upddate);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function packageType2Create(Request $request)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            if ($userpermission == 'CPS') {
+                $userpermission = 'CPS';
+            }
+
+            $dataPackageType2 = CpsPackageType2::create([
+                'ID' => $request->SubCategory_ID,
+                'CATEGORY_ID' => $request->CATEGORY_ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'EDIT_DT' => date("Y/m/d H:i:s")
+            ]);
+
+            // dd($dataPackageType2);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function packageType2Update(Request $request, $id)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            if ($userpermission == 'CPS') {
+                $userpermission = 'CPS';
+            }
+
+            $data_package_type2 = [
+                'CATEGORY_ID' => $request->CATEGORY_ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'EDIT_DT' => ''
+            ];
+
+            $data_package_type2_upddate = CpsPackageType2::where('ID', $id)->update($data_package_type2);
+
+            // dd($data_package_type2_upddate);
             DB::commit();
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
@@ -1155,7 +1937,7 @@ class ToolController extends Controller
             )
             ->where('BRAND', 'KTY')
             ->orderBy('DESCRIPTION', 'ASC');
-        } 
+        }
         else if ($userpermission == 'BB') {
             $data = Solution::select(
                 'ID',
@@ -1191,7 +1973,7 @@ class ToolController extends Controller
              $data->limit($limit)->offset($start);
         }
         $records = $data->get();
- 
+
         return response()->json([
              'draw' => intval($request->draw),
              'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
@@ -1206,7 +1988,7 @@ class ToolController extends Controller
         $start = (int) $request->input('start', 0);
 
         $searchSeriesNameAll = $request->input('searchSeriesName', '');
-        
+
         $data = Series::select(
             'ID',
             'DESCRIPTION',
@@ -1265,7 +2047,7 @@ class ToolController extends Controller
             )
             ->where('BRAND', 'GNC')
             ->orderBy('DESCRIPTION', 'ASC');
-        } 
+        }
         else if ($userpermission == 'BB') {
             $data = Series::select(
                 'ID',
@@ -1303,7 +2085,7 @@ class ToolController extends Controller
              $data->limit($limit)->offset($start);
         }
         $records = $data->get();
- 
+
         return response()->json([
              'draw' => intval($request->draw),
              'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
@@ -1331,7 +2113,7 @@ class ToolController extends Controller
         $userpermission = Auth::user()->getUserPermission->name_position;
         $namePosition  = explode('-', $userpermission);
         $userpermission = trim(end($namePosition));
-        
+
         if ($userpermission == $isSuperAdmin) {
             $data = Category::select(
             'ID',
@@ -1377,7 +2159,7 @@ class ToolController extends Controller
             )
             ->where('BRAND', 'GNC')
             ->orderBy('DESCRIPTION', 'ASC');
-        } 
+        }
         else if ($userpermission == 'BB') {
             $data = Category::select(
                 'ID',
@@ -1415,7 +2197,7 @@ class ToolController extends Controller
              $data->limit($limit)->offset($start);
         }
         $records = $data->get();
- 
+
         return response()->json([
              'draw' => intval($request->draw),
              'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
@@ -1443,7 +2225,7 @@ class ToolController extends Controller
         $userpermission = Auth::user()->getUserPermission->name_position;
         $namePosition  = explode('-', $userpermission);
         $userpermission = trim(end($namePosition));
-        
+
         if ($userpermission == $isSuperAdmin) {
             $data = Sub_category::select(
             'ID',
@@ -1494,7 +2276,7 @@ class ToolController extends Controller
             )
             ->where('BRAND', 'GNC')
             ->orderBy('DESCRIPTION', 'ASC');
-        } 
+        }
         else if ($userpermission == 'BB') {
             $data = Sub_category::select(
                 'ID',
@@ -1534,7 +2316,7 @@ class ToolController extends Controller
              $data->limit($limit)->offset($start);
         }
         $records = $data->get();
- 
+
         return response()->json([
              'draw' => intval($request->draw),
              'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
@@ -1568,7 +2350,7 @@ class ToolController extends Controller
         $userpermission = Auth::user()->getUserPermission->name_position;
         $namePosition  = explode('-', $userpermission);
         $userpermission = trim(end($namePosition));
-        
+
         if ($userpermission == $isSuperAdmin) {
             $data = ProductGroup::select(
             'ID',
@@ -1614,7 +2396,7 @@ class ToolController extends Controller
             )
             ->where('BRAND', 'GNC')
             ->orderBy('DESCRIPTION', 'ASC');
-        } 
+        }
         else if ($userpermission == 'BB') {
             $data = ProductGroup::select(
                 'ID',
@@ -1687,7 +2469,7 @@ class ToolController extends Controller
         $userpermission = Auth::user()->getUserPermission->name_position;
         $namePosition  = explode('-', $userpermission);
         $userpermission = trim(end($namePosition));
-        
+
         if ($userpermission == $isSuperAdmin) {
             $data = Npd_cos::select(
             'ID',
@@ -1733,7 +2515,7 @@ class ToolController extends Controller
             )
             ->where('BRAND', 'GNC')
             ->orderBy('DESCRIPTION', 'ASC');
-        } 
+        }
         else if ($userpermission == 'BB') {
             $data = Npd_cos::select(
                 'ID',
@@ -1812,7 +2594,7 @@ class ToolController extends Controller
         $userpermission = Auth::user()->getUserPermission->name_position;
         $namePosition  = explode('-', $userpermission);
         $userpermission = trim(end($namePosition));
-        
+
         if ($userpermission == $isSuperAdmin) {
             $data = Npd_pdms::select(
             'ID',
@@ -1858,7 +2640,7 @@ class ToolController extends Controller
             )
             ->where('BRAND', 'GNC')
             ->orderBy('DESCRIPTION', 'ASC');
-        } 
+        }
         else if ($userpermission == 'BB') {
             $data = Npd_pdms::select(
                 'ID',
@@ -1938,7 +2720,7 @@ class ToolController extends Controller
              $data->limit($limit)->offset($start);
         }
         $records = $data->get();
- 
+
         return response()->json([
              'draw' => intval($request->draw),
              'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
@@ -1980,7 +2762,7 @@ class ToolController extends Controller
              $data->limit($limit)->offset($start);
         }
         $records = $data->get();
- 
+
         return response()->json([
              'draw' => intval($request->draw),
              'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
@@ -2021,7 +2803,7 @@ class ToolController extends Controller
              $data->limit($limit)->offset($start);
         }
         $records = $data->get();
- 
+
         return response()->json([
              'draw' => intval($request->draw),
              'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
