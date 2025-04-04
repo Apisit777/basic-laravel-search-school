@@ -9,5 +9,8 @@ class ProductChannel extends Model
 {
     use HasFactory;
     public $timestamps = false;
+    protected $casts = [
+        'PRODUCT' => 'string',
+    ];
     protected $guarded = [];
 }

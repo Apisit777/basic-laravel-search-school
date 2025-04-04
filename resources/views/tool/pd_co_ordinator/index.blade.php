@@ -66,6 +66,32 @@
         .select2-container {
             margin-bottom: 0rem!important;
         }
+        .select2-container--default .select2-selection--single {
+            height: 2rem!important;
+            border-width: 1px;
+            padding: 0.1rem!important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            position: absolute;
+            margin-top: -5px!important;
+        }
+        .h-10 {
+            height: 2rem!important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            font-size: small!important;
+        }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -246,20 +272,9 @@
                         <tr>
                             <th></th>
                             <th>
-                                <select id="DESCRIPTION_SEARCH" name="DESCRIPTION" class="js-example-basic-single search-input w-full rounded-sm text-xs" onchange="tentSearch()">
-                                    <option value=""> --- กรุณาเลือก ---</option>
-                                    @foreach ($dataNpdCoss as $key => $dataNpdCos)
-                                        <option value="{{ $dataNpdCos }}">{{ $dataNpdCos }}</option>
-                                    @endforeach
-                                </select>
+                            <input type="text" name="" id="productCoOrdinatorName" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="ชื่อสินค้า . . ." value="" onkeyup="searchTable()" />
                             </th>
                             <th>
-                                <select id="BRAND_SEARCH" name="BRAND" class="js-example-basic-single search-input w-full rounded-sm text-xs" onchange="tentSearch()">
-                                    <option value=""> --- กรุณาเลือก ---</option>
-                                    @foreach ($brands as $key => $brand)
-                                        <option value="{{ $brand }}">{{ $brand }}</option>
-                                    @endforeach
-                                </select>
                             </th>
                             <th></th>
                         </tr>
@@ -410,10 +425,12 @@
             scrollX: true,
             orderCellsTop: true,
             ordering: false,
-            "order": [
-                [0, "desc"]
-            ],
-            "lengthMenu": [20, 30, 50],
+            deferRender: true,
+            scroller: true,
+            scrollY: "580px",
+            "order": [[1, "desc"]],
+            "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
+            "pageLength": 20, // ค่าเริ่มต้นคือ "20"
             "ajax": {
                 "headers": {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -422,10 +439,9 @@
                 "url": "{{ route('product_master.list_product_co_ordinator') }}",
                 "type": "POST",
                 'data': function(data) {
-                    console.log("🚀 ~ data:", data)
                     // Read values
-                    data.DESCRIPTION = $('#DESCRIPTION_SEARCH').val();
-                    data.BRAND = $('#BRAND_SEARCH').val();
+                    data.productCoOrdinatorName = $('#productCoOrdinatorName').val();
+                    // data.BRAND = $('#BRAND_SEARCH').val();
 
                     data._token = $('meta[name="csrf-token"]').attr('content');
                 }
@@ -483,61 +499,12 @@
             ]
         });
 
-        function tentSearch() {
-            mytableDatatable.draw();
+        // Function สำหรับเรียกใช้ DataTable เมื่อมีการพิมพ์
+        function searchTable() {
+            console.log("Search: ", $('#search').val());
+            // บังคับให้ DataTables รีโหลดข้อมูลใหม่
+            mytableDatatable.ajax.reload(null, false); 
         }
-        // $(document).ready(function() {
-        //     const mytableDatatable = $('#pd_co_ordinator').DataTable({
-        //         'searching': true,  // ✅ เปิดใช้งาน Searching
-        //         "serverSide": true,
-        //         "responsive": true,
-        //         "scrollX": true,
-        //         "orderCellsTop": true,
-        //         "order": [[0, "desc"]],
-        //         "lengthMenu": [20, 30, 50],
-        //         "ajax": {
-        //             "headers": {
-        //                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        //             },
-        //             "url": "{{ route('product_master.list_product_co_ordinator') }}",
-        //             "type": "POST",
-        //             "data": function(data) {
-        //                 data.brand_id = $('#brand_id').val();
-        //                 data.BARCODE = $('#BARCODE').val();
-        //                 data.search = $('#search').val();
-        //                 data._token = $('meta[name="csrf-token"]').attr('content');
-        //             }
-        //         },
-        //         "columnDefs": [
-        //             { targets: 0, orderable: true, render: function(data, type, row) { return row.ID; }},
-        //             { targets: 1, orderable: true, render: function(data, type, row) { return row.DESCRIPTION; }},
-        //             { targets: 2, orderable: true, render: function(data, type, row) { return row.BRAND; }},
-        //             { 
-        //                 targets: 3, 
-        //                 orderable: false, 
-        //                 className: 'text-center', 
-        //                 render: function(data, type, row) {
-        //                     return `<button onclick="modelProductGroup('${row.ID}','${row.DESCRIPTION}')" class="px-2 py-1 bg-gray-700 text-white rounded">Edit</button>`;
-        //                 }
-        //             }
-        //         ]
-        //     });
-
-        //     // ✅ DEBUG: ตรวจสอบว่ามี input ค้นหาหรือไม่
-        //     console.log("🚀 ~ ตรวจสอบ Input จำนวน:", $('#pd_co_ordinator thead .search-input').length);
-
-        //     // ✅ ฟังก์ชันค้นหาตามค่าที่ป้อนในช่อง input
-        //     $('#pd_co_ordinator thead').on('keyup', '.search-input', function() {
-        //         let colIndex = $(this).closest('th').index(); // ✅ ดึง index ของคอลัมน์ให้ถูกต้อง
-        //         let searchValue = this.value;
-
-        //         console.log("🚀 ~ Keyup detected! ~ Column Index:", colIndex, "Value:", searchValue);
-
-        //         if (colIndex !== -1) {
-        //             mytableDatatable.column(colIndex).search(searchValue).draw();
-        //         }
-        //     });
-        // });
 
         const dlayMessage = 100;
         function createProductGroup() {

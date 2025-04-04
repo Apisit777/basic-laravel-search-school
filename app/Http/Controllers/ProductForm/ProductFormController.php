@@ -91,13 +91,13 @@ class ProductFormController extends Controller
             $brands = Barcode::select(
                 'BRAND',
                 'STATUS')
-                ->whereIn('STATUS', ['OP'])
+                ->where('STATUS', 'OP')
             ->pluck('BRAND')
             ->toArray();
 
             $getSelect2ProDevelops = Pro_develops::select(
                 'PRODUCT')
-                ->whereIn('BRAND', ['OP'])
+                ->where('BRAND', 'OP')
                 ->pluck('PRODUCT')
                 ->toArray();
 
@@ -105,66 +105,26 @@ class ProductFormController extends Controller
             $brands = Barcode::select(
                 'BRAND',
                 'STATUS')
-            ->whereIn('STATUS', ['CPS'])
+            ->where('STATUS', 'CPS')
             ->pluck('BRAND')
             ->toArray();
 
             $getSelect2ProDevelops = Pro_develops::select(
                 'PRODUCT')
-                ->whereIn('BRAND', ['CPS'])
+                ->where('BRAND', 'CPS')
                 ->pluck('PRODUCT')
                 ->toArray();
-
-        } else if ($userpermission == 'KTY') {
+        } else {
             $brands = Barcode::select(
                 'BRAND',
                 'STATUS')
-            ->whereIn('STATUS', ['KTY'])
+            ->where('STATUS', $userpermission)
             ->pluck('BRAND')
             ->toArray();
 
             $getSelect2ProDevelops = Pro_develops::select(
                 'PRODUCT')
-                ->whereIn('BRAND', ['KTY'])
-                ->pluck('PRODUCT')
-                ->toArray();
-        } else if ($userpermission == 'BB') {
-            $brands = Barcode::select(
-                'BRAND',
-                'STATUS')
-            ->whereIn('STATUS', ['BB'])
-            ->pluck('BRAND')
-            ->toArray();
-
-            $getSelect2ProDevelops = Pro_develops::select(
-                'PRODUCT')
-                ->whereIn('BRAND', ['BB'])
-                ->pluck('PRODUCT')
-                ->toArray();
-        } else if ($userpermission == 'LL') {
-            $brands = Barcode::select(
-                'BRAND',
-                'STATUS')
-            ->whereIn('STATUS', ['LL'])
-            ->pluck('BRAND')
-            ->toArray();
-
-            $getSelect2ProDevelops = Pro_develops::select(
-                'PRODUCT')
-                ->whereIn('BRAND', ['LL'])
-                ->pluck('PRODUCT')
-                ->toArray();
-        } else if ($userpermission == 'FR') {
-            $brands = Barcode::select(
-                'BRAND',
-                'STATUS')
-            ->whereIn('STATUS', ['FR'])
-            ->pluck('BRAND')
-            ->toArray();
-
-            $getSelect2ProDevelops = Pro_develops::select(
-                'PRODUCT')
-                ->whereIn('BRAND', ['LL'])
+                ->where('BRAND', $userpermission)
                 ->pluck('PRODUCT')
                 ->toArray();
         }
@@ -191,7 +151,7 @@ class ProductFormController extends Controller
             ->leftJoin('npd_textures', 'pro_develops.TEXTURE', '=', 'npd_textures.ID')
             ->firstWhere('BARCODE', '=', $id_barcode);
 
-            // dd($data->Code);
+            // dd($data->Code, $data->BRAND);
             if($data->Code) {
                 $lastElementBarcode = Barcode::max('NUMBER');
                 if ($data->Code >= 20000 && $data->Code <= 28999) {
@@ -213,8 +173,8 @@ class ProductFormController extends Controller
                 if ($data->Code >= 10000 && $data->Code <= 14999) {
                     $lastElementBarcode = Barcode::where('STATUS', '=', 'KTY')->max('NUMBER');
                 }
-                if ((int) $data->Code >= 15000 && (int) $data->Code <= 19999) {
-                    $lastElementBarcode = Barcode::where('STATUS', '=', 'FR')->max('NUMBER');
+                if ($data->BRAND == 'FR') {
+                    $lastElementBarcode = Barcode::where('COMPANY', '=', $data->BRAND)->where('STATUS', '=', 'FR')->max('NUMBER');
                 }
                 // if ($data->BRAND == 'GNC') {
                 //     $lastElementBarcode = Barcode::where('COMPANY', '=', $data->BRAND)->where('STATUS', '=', 'GNC')->max('NUMBER');
@@ -267,9 +227,10 @@ class ProductFormController extends Controller
                         ['COMPANY' => $data->BRAND, 'STATUS' => 'KTY'],
                         ['NUMBER' => $productCodeBarcode]
                     );
-                } elseif ($data->Code >= 15000 && $data->Code <= 19999) {
+                } elseif ($data->BRAND == 'FR') {
+                    // dd($request->BRAND);
                     $data_BRAND_Barcode = Barcode::updateOrCreate(
-                        ['COMPANY' => $data->BRAND, 'STATUS' => 'FR'],
+                        ['COMPANY' => $data->BRAND, 'BRAND' => 'FR', 'STATUS' => 'FR'],
                         ['NUMBER' => $productCodeBarcode]
                     );
                 } elseif ($data->BRAND == 'BB') {
@@ -291,6 +252,7 @@ class ProductFormController extends Controller
                 // }
             }
             
+            // dd($data->Code, $data->BRAND);
             if($data->Code) {
                 $productCodeMax = Document::max('NUMBER');
                 if ($data->Code >= 20000 && $data->Code <= 28999) {
@@ -313,8 +275,9 @@ class ProductFormController extends Controller
                     $productCodeMax = Document::where('STATUS', '=', 'KTY')->max('NUMBER');
                     // dd($productCodeMax);
                 }
-                if ($data->Code >= 15000 && $data->Code <= 19999) {
-                    $productCodeMax = Document::where('STATUS', '=', 'FR')->max('NUMBER');
+                if ($data->BRAND == 'FR') {
+                    $productCodeMax = Document::where('COMPANY', '=', $data->BRAND)->where('STATUS', '=', 'FR')->max('NUMBER');
+                    // dd($productCodeMax);
                 }
                 // if ($data->BRAND == 'GNC') {
                 //     $productCodeMax = Document::where('COMPANY', '=', $data->BRAND)->where('STATUS', '=', 'KTY')->max('NUMBER');
@@ -369,10 +332,10 @@ class ProductFormController extends Controller
                         ['COMPANY' => $data->BRAND, 'BRAND' => 'KTY','STATUS' => 'KTY'],
                         ['NUMBER' => $productCodeDocument]
                     );
-                } elseif ($data->Code >= 15000 && $data->Code <= 19999) {
-                    // dd(4);
+                } elseif ($data->BRAND == 'FR') {
                     $data_BRAND_Document = Document::updateOrCreate(
-                        ['COMPANY' => 'KTY', 'BRAND' => 'FR', 'STATUS' => 'FR'],
+                        // ['COMPANY' => $request->BRAND, 'BRAND' => 'LL', 'STATUS' => 'LL'],
+                        ['COMPANY' => $data->BRAND, 'BRAND' => 'FR', 'STATUS' => 'FR'],
                         ['NUMBER' => $productCodeDocument]
                     );
                 } elseif ($data->BRAND == 'BB') {
@@ -414,8 +377,8 @@ class ProductFormController extends Controller
             if ($data->Code >= 10000 && $data->Code <= 14999) {
                 $lastElement = Barcode::where('STATUS', '=', 'KTY')->max('NUMBER');
             }
-            if ($data->Code >= 15000 && $data->Code <= 19999) {
-                $lastElement = Barcode::where('STATUS', '=', 'FR')->max('NUMBER');
+            if ($data->BRAND == 'FR') {
+                $lastElement = Barcode::where('COMPANY', '=', $data->BRAND)->where('STATUS', '=', 'FR')->max('NUMBER');
             }
             if ($data->BRAND == 'BB') {
                 $lastElement = Barcode::where('COMPANY', '=', $data->BRAND)->where('STATUS', '=', 'BB')->max('NUMBER');
@@ -430,7 +393,7 @@ class ProductFormController extends Controller
             // dd($barcodeMax);
             // $barcodeNumber =  (int) preg_replace('/[^0-9]/', '', $barcodeMax) + 1;
             // $barcodeNumber =  (int) preg_replace('/[^0-9]/', '', $barcodeMax) + 1;
-            $barcodeNumber =  (int) preg_replace('/[^0-9]/', '', $barcodeMax) + 1;
+            $barcodeNumber =  (int) preg_replace('/[^0-9]/', '', $barcodeMax) ;
             // dd($barcodeNumber);
             $prefixBarcode = Barcode::select('B_CODE')->where('BRAND', $data->BRAND)->pluck('B_CODE')->toArray();
 
@@ -1028,7 +991,7 @@ class ProductFormController extends Controller
                 $lastElement = Barcode::where('COMPANY', '=', $request->BRAND)->where('STATUS', '=', 'KTY')->max('NUMBER');
             }
             if ($request->BRAND == 'FR') {
-                $lastElement = Barcode::where('COMPANY', '=', 'KTY')->where('STATUS', '=', 'FR')->max('NUMBER');
+                $lastElement = Barcode::where('COMPANY', '=', 'FR')->where('STATUS', '=', 'FR')->max('NUMBER');
             }
             if ($request->BRAND == 'BB') {
                 $lastElement = Barcode::where('COMPANY', '=', $request->BRAND)->where('STATUS', '=', 'BB')->max('NUMBER');
@@ -1191,89 +1154,33 @@ class ProductFormController extends Controller
             ->toArray();
 
             $product_co_ordimators = Npd_cos::select(
-        'ID AS NPD',
+                'ID AS NPD',
                 'DESCRIPTION')
             ->where('BRAND', 'CPS')
             ->get();
 
             $marketing_managers = Npd_pdms::select(
-    'ID AS PDM',
+                'ID AS PDM',
                 'DESCRIPTION')
             ->where('BRAND', 'CPS')
             ->get();
-        } else if ($userpermission == 'KTY') {
+        } else {
             $brands = Barcode::select(
                 'BRAND',
                 'STATUS')
-            ->whereIn('STATUS', ['KTY', 'FR'])
+            ->where('STATUS', $userpermission)
             ->pluck('BRAND')
             ->toArray();
-
-            $product_co_ordimators = Npd_cos::select(
-        'ID AS NPD',
-                'DESCRIPTION')
-            ->where('BRAND', 'KTY')
-            ->get();
-
-            $marketing_managers = Npd_pdms::select(
-                'ID AS PDM',
-                'DESCRIPTION')
-            ->where('BRAND', 'KTY')
-            ->get();
-        } 
-        // else if (in_array($userpermission, ['Regional Operation Manager-GNC'])) {
-        //     $brands = Barcode::select(
-        //         'BRAND',
-        //         'STATUS')
-        //     ->whereIn('STATUS', ['GNC'])
-        //     ->pluck('BRAND')
-        //     ->toArray();
-        // }
-        else if ($userpermission == 'BB') {
-            $brands = Barcode::select(
-                'BRAND',
-                'STATUS')
-            ->whereIn('STATUS', ['BB'])
-            ->pluck('BRAND')
-            ->toArray();
-
-            $product_co_ordimators = Npd_cos::select(
-        'ID AS NPD',
-                'DESCRIPTION')
-            ->where('BRAND', 'BB')
-            ->get();
-
-            $marketing_managers = Npd_pdms::select(
-                'ID AS PDM',
-                'DESCRIPTION')
-            ->where('BRAND', 'BB')
-            ->get();
-        } else if ($userpermission == 'LL') {
-            $brands = Barcode::select(
-                'BRAND',
-                'STATUS')
-            ->whereIn('STATUS', ['LL'])
-            ->pluck('BRAND')
-            ->toArray();
-
             $product_co_ordimators = Npd_cos::select(
                 'ID AS NPD',
                 'DESCRIPTION')
-            ->where('BRAND', 'LL')
+            ->where('BRAND', $userpermission)
             ->get();
-
             $marketing_managers = Npd_pdms::select(
-        'ID AS PDM',
+                'ID AS PDM',
                 'DESCRIPTION')
-            ->where('BRAND', 'LL')
+            ->where('BRAND', $userpermission)
             ->get();
-        } else if ($userpermission == 'FR') {
-            $brands = Barcode::select(
-                'BRAND',
-                'STATUS')
-            ->whereIn('STATUS', ['FR'])
-            ->pluck('BRAND')
-            ->toArray();
         }
 
         $testBarcode = Barcode::all();
@@ -1308,43 +1215,43 @@ class ProductFormController extends Controller
             $data_product = [
                 // 'BRAND' => $request->input('BRAND') == 'OP' || $request->input('BRAND') == 'RE' || $request->input('BRAND') == 'CM' ? 'OP' : $request->input('BRAND'),
 
-                'BRAND' => in_array($request->input('BRAND'), ['OP', 'RE', 'CM']) ? 'OP' :
-                          (in_array($request->input('BRAND'), ['KTY', 'FR']) ? 'KTY' : $request->input('BRAND')),
+                'BRAND' => in_array($request->input('BRAND'), ['OP', 'RE', 'CM']) ? 'OP' :$request->input('BRAND'),
+                        //   (in_array($request->input('BRAND'), ['KTY', 'FR']) ? 'KTY' : $request->input('BRAND')),
 
-                'DOC_NO' => $request->input('DOC_NO'),
-                'REF_DOC' => $request->input('REF_DOC'),
-                'STATUS' => $request->input('STATUS'),
+                'DOC_NO' => $request->input('DOC_NO') ?? '',
+                'REF_DOC' => $request->input('REF_DOC') ?? '',
+                'STATUS' => $request->input('STATUS') ?? '',
                 'PRODUCT' => $digits_code,
                 'BARCODE' => $digits_barcode,
-                'JOB_REFNO' => $request->input('JOB_REFNO'),
+                'JOB_REFNO' => $request->input('JOB_REFNO') ?? '',
 
-                'DOC_DT' => $request->input('DOC_DT'),
+                'DOC_DT' => $request->input('DOC_DT') ?? '',
 
-                'CUST_OEM' => $request->input('CUST_OEM'),
-                'NPD' => $request->input('NPD'),
-                'PDM' => $request->input('PDM'),
-                'NAME_ENG' => $request->input('NAME_ENG'),
-                'CATEGORY' => $request->input('CATEGORY'),
-                'CAPACITY' => $request->input('CAPACITY'),
-                'Q_SMELL' => $request->input('Q_SMELL'),
-                'Q_COLOR' => $request->input('Q_COLOR'),
-                'TARGET_GRP' => $request->input('TARGET_GRP'),
-                'TARGET_STK' => $request->input('TARGET_STK'),
-                'PRICE_FG' => $request->input('PRICE_FG'),
-                'PRICE_COST' => $request->input('PRICE_COST'),
-                'PRICE_BULK' => $request->input('PRICE_BULK'),
-                'FIRST_ORD' => $request->input('FIRST_ORD'),
-                'P_CONCEPT' => $request->input('P_CONCEPT'),
-                'P_BENEFIT' => $request->input('P_BENEFIT'),
-                'TEXTURE' => $request->input('TEXTURE'),
-                'TEXTURE_OT' => $request->input('TEXTURE_OT'),
-                'COLOR1' => $request->input('COLOR1'),
-                'FRANGRANCE' => $request->input('FRANGRANCE'),
-                'INGREDIENT' => $request->input('INGREDIENT'),
-                'STD' => $request->input('STD'),
-                'PK' => $request->input('PK'),
-                'OTHER' => $request->input('OTHER'),
-                'DOCUMENT' => $request->input('DOCUMENT'),
+                'CUST_OEM' => $request->input('CUST_OEM') ?? '',
+                'NPD' => $request->input('NPD') ?? '',
+                'PDM' => $request->input('PDM') ?? '',
+                'NAME_ENG' => $request->input('NAME_ENG') ?? '',
+                'CATEGORY' => $request->input('CATEGORY') ?? '',
+                'CAPACITY' => $request->input('CAPACITY') ?? '',
+                'Q_SMELL' => $request->input('Q_SMELL') ?? '',
+                'Q_COLOR' => $request->input('Q_COLOR') ?? '',
+                'TARGET_GRP' => $request->input('TARGET_GRP') ?? '',
+                'TARGET_STK' => $request->input('TARGET_STK') ?? '',
+                'PRICE_FG' => $request->input('PRICE_FG') ?? '',
+                'PRICE_COST' => $request->input('PRICE_COST') ?? '',
+                'PRICE_BULK' => $request->input('PRICE_BULK') ?? '',
+                'FIRST_ORD' => $request->input('FIRST_ORD') ?? '',
+                'P_CONCEPT' => $request->input('P_CONCEPT') ?? '',
+                'P_BENEFIT' => $request->input('P_BENEFIT') ?? '',
+                'TEXTURE' => $request->input('TEXTURE') ?? '',
+                'TEXTURE_OT' => $request->input('TEXTURE_OT') ?? '',
+                'COLOR1' => $request->input('COLOR1') ?? '',
+                'FRANGRANCE' => $request->input('FRANGRANCE') ?? '',
+                'INGREDIENT' => $request->input('INGREDIENT') ?? '',
+                'STD' => $request->input('STD') ?? '',
+                'PK' => $request->input('PK') ?? '',
+                'OTHER' => $request->input('OTHER') ?? '',
+                'DOCUMENT' => $request->input('DOCUMENT') ?? '',
                 'OEM' => is_null($request->input('OEM')) ? 'N' : 'Y',
                 'REASON1' => is_null($request->input('REASON1')) ? 'N' : 'Y',
                 'REASON1_DES' => $request->input('REASON1_DES'),
@@ -1434,11 +1341,14 @@ class ProductFormController extends Controller
                 // if ($request->BRAND == 'KTY') {
                 //     $lastElementBarcode = Barcode::where('COMPANY', '=', $request->BRAND)->where('STATUS', '=', 'KTY')->max('NUMBER');
                 // }
+                if ($request->BRAND == 'FR') {
+                    $lastElementBarcode = Barcode::where('COMPANY', '=', $request->BRAND)->where('STATUS', '=', 'FR')->max('NUMBER');
+                }
                 if ((int) $request->code >= 10000 && (int) $request->code <= 14999) {
                     $lastElementBarcode = Barcode::where('STATUS', '=', 'KTY')->max('NUMBER');
                 }
-                if ((int) $request->code >= 15000 && (int) $request->code <= 19999) {
-                    $lastElementBarcode = Barcode::where('STATUS', '=', 'FR')->max('NUMBER');
+                if ($request->BRAND == 'FR') {
+                    $lastElementBarcode = Barcode::where('COMPANY', '=', $request->BRAND)->where('STATUS', '=', 'FR')->max('NUMBER');
                 }
                 if ($request->BRAND == 'BB') {
                     $lastElementBarcode = Barcode::where('COMPANY', '=', $request->BRAND)->where('STATUS', '=', 'BB')->max('NUMBER');
@@ -1452,55 +1362,62 @@ class ProductFormController extends Controller
 
                 // dd($lastElementBarcode);
                 $productCodeNumber =  (int) preg_replace('/[^0-9]/', '', $lastElementBarcode) + 1;
-                $productCodeDocument = $productCodeNumber;
-                // dd($productCodeDocument);
+                $productCodeBarcode = $productCodeNumber;
+                // dd($productCodeBarcode, $request->BRAND);
 
                 if ((int) $request->code >= 20000 && (int) $request->code <= 28999) {
                     $data_BRAND_Barcode = Barcode::updateOrCreate(
                         ['COMPANY' => $request->BRAND, 'STATUS' => 'OP'],
-                        ['NUMBER' => $productCodeDocument]
+                        ['NUMBER' => $productCodeBarcode]
                     );
                 } elseif ((int) $request->code >= 29000 && (int) $request->code <= 29699) {
                     $data_BRAND_Barcode = Barcode::updateOrCreate(
                         ['COMPANY' => 'OP', 'BRAND' => 'RE', 'STATUS' => 'RE'],
-                        ['NUMBER' => $productCodeDocument]
+                        ['NUMBER' => $productCodeBarcode]
                     );
                 } elseif ((int) $request->code >= 29700 && (int) $request->code <= 29999) {
                     $data_BRAND_Barcode = Barcode::updateOrCreate(
                         ['COMPANY' => 'OP', 'BRAND' => 'CM', 'STATUS' => 'CM'],
-                        ['NUMBER' => $productCodeDocument]
+                        ['NUMBER' => $productCodeBarcode]
                     );
                 } elseif ($request->BRAND == 'CPS') {
                     $data_BRAND_Barcode = Barcode::updateOrCreate(
                         ['COMPANY' => $request->BRAND, 'BRAND' => 'CPS', 'STATUS' => 'CPS'],
-                        ['NUMBER' => $productCodeDocument]
+                        ['NUMBER' => $productCodeBarcode]
                     );
                 } 
                 // elseif ($request->BRAND == 'KTY') {
                 //     $data_BRAND_Barcode = Barcode::updateOrCreate(
                 //         ['COMPANY' => $request->BRAND, 'BRAND' => 'KTY', 'STATUS' => 'KTY'],
-                //         ['NUMBER' => $productCodeDocument]
+                //         ['NUMBER' => $productCodeBarcode]
                 //     );
                 // } 
                 elseif ((int) $request->code >= 10000 && (int) $request->code <= 14999) {
                     $data_BRAND_Barcode = Barcode::updateOrCreate(
                         ['COMPANY' => 'KTY', 'BRAND' => 'KTY', 'STATUS' => 'KTY'],
-                        ['NUMBER' => $productCodeDocument]
+                        ['NUMBER' => $productCodeBarcode]
                     );
-                } elseif ((int) $request->code >= 15000 && (int) $request->code <= 19999) {
-                    $data_BRAND_Barcode = Barcode::updateOrCreate(
-                        ['COMPANY' => 'KTY', 'BRAND' => 'FR', 'STATUS' => 'FR'],
-                        ['NUMBER' => $productCodeDocument]
-                    );
-                } elseif ($request->BRAND == 'BB') {
+                // } elseif ((int) $request->code >= 15000 && (int) $request->code <= 19999) {
+                //     $data_BRAND_Barcode = Barcode::updateOrCreate(
+                //         ['COMPANY' => 'KTY', 'BRAND' => 'FR', 'STATUS' => 'FR'],
+                //         ['NUMBER' => $productCodeBarcode]
+                //     );
+                } 
+                elseif ($request->BRAND == 'BB') {
                     $data_BRAND_Barcode = Barcode::updateOrCreate(
                         ['COMPANY' => $request->BRAND, 'BRAND' => 'BB', 'STATUS' => 'BB'],
-                        ['NUMBER' => $productCodeDocument]
+                        ['NUMBER' => $productCodeBarcode]
                     );
                 } elseif ($request->BRAND == 'LL') {
                     $data_BRAND_Barcode = Barcode::updateOrCreate(
                         ['COMPANY' => $request->BRAND, 'BRAND' => 'LL', 'STATUS' => 'LL'],
-                        ['NUMBER' => $productCodeDocument]
+                        ['NUMBER' => $productCodeBarcode]
+                    );
+                } elseif ($request->BRAND == 'FR') {
+                    // dd($request->BRAND);
+                    $data_BRAND_Barcode = Barcode::updateOrCreate(
+                        ['COMPANY' => $request->BRAND, 'BRAND' => 'FR', 'STATUS' => 'FR'],
+                        ['NUMBER' => $productCodeBarcode]
                     );
                 }
             }
@@ -1522,6 +1439,9 @@ class ProductFormController extends Controller
                 // if ($request->BRAND == 'KTY') {
                 //     $lastElementDocument = Document::where('COMPANY', '=', $request->BRAND)->where('STATUS', '=', 'KTY')->max('NUMBER');
                 // }
+                if ($request->BRAND == 'FR') {
+                    $lastElementDocument = Document::where('COMPANY', '=', $request->BRAND)->where('STATUS', '=', 'FR')->max('NUMBER');
+                }
                 if ((int) $request->code >= 10000 && (int) $request->code <= 14999) {
                     $lastElementDocument = Document::where('STATUS', '=', 'KTY')->max('NUMBER');
                 }
@@ -1569,19 +1489,25 @@ class ProductFormController extends Controller
                         ['COMPANY' => 'KTY', 'BRAND' => 'KTY', 'STATUS' => 'KTY'],
                         ['NUMBER' => $productCodeDocument]
                     );
-                } elseif ((int) $request->code >= 15000 && (int) $request->code <= 19999) {
-                    $data_BRAND_Document = Document::updateOrCreate(
-                        ['COMPANY' => 'KTY', 'BRAND' => 'FR', 'STATUS' => 'FR'],
-                        ['NUMBER' => $productCodeDocument]
-                    );
+                // } elseif ((int) $request->code >= 15000 && (int) $request->code <= 19999) {
+                //     $data_BRAND_Document = Document::updateOrCreate(
+                //         ['COMPANY' => 'KTY', 'BRAND' => 'FR', 'STATUS' => 'FR'],
+                //         ['NUMBER' => $productCodeDocument]
+                //     );
                 } elseif ($request->BRAND == 'BB') {
                     $data_BRAND_Document = Document::updateOrCreate(
-                        ['COMPANY' => $request->BRAND, 'BRAND' => 'BB', 'STATUS' => 'LL'],
+                        ['COMPANY' => $request->BRAND, 'BRAND' => 'BB', 'STATUS' => 'BB'],
                         ['NUMBER' => $productCodeDocument]
                     );
                 } elseif ($request->BRAND == 'LL') {
                     $data_BRAND_Document = Document::updateOrCreate(
                         ['COMPANY' => $request->BRAND, 'BRAND' => 'LL', 'STATUS' => 'LL'],
+                        ['NUMBER' => $productCodeDocument]
+                    );
+                } elseif ($request->BRAND == 'FR') {
+                    $data_BRAND_Document = Document::updateOrCreate(
+                        // ['COMPANY' => $request->BRAND, 'BRAND' => 'LL', 'STATUS' => 'LL'],
+                        ['COMPANY' => $request->BRAND, 'BRAND' => 'FR', 'STATUS' => 'FR'],
                         ['NUMBER' => $productCodeDocument]
                     );
                 }
@@ -1692,8 +1618,8 @@ class ProductFormController extends Controller
                     'DESCRIPTION' => $data->NPD,
                 ];
             }
-        } else if ($userpermission == 'KTY') {
-            $product_co_ordimators = Npd_cos::select('ID AS NPD', 'DESCRIPTION')->where('BRAND', 'KTY')->get()->toArray();
+        } else {
+            $product_co_ordimators = Npd_cos::select('ID AS NPD', 'DESCRIPTION')->where('BRAND', $userpermission)->get()->toArray();
             if (!in_array($data->NPD, array_column($product_co_ordimators, 'NPD')))
             {
                 $product_co_ordimators[] =  [
@@ -1701,7 +1627,7 @@ class ProductFormController extends Controller
                     'DESCRIPTION' => $data->NPD,
                 ];
             }
-        }
+        } 
 
         $marketing_managers = Npd_pdms::select('ID AS PDM', 'DESCRIPTION')->get()->toArray();
 
@@ -1714,8 +1640,8 @@ class ProductFormController extends Controller
                     'DESCRIPTION' => $data->PDM,
                 ];
             }
-        } else if ($userpermission == 'KTY') {
-            $marketing_managers = Npd_pdms::select('ID AS PDM', 'DESCRIPTION')->where('BRAND', 'KTY')->get()->toArray();
+        } else {
+            $marketing_managers = Npd_pdms::select('ID AS PDM', 'DESCRIPTION')->where('BRAND', $userpermission)->get()->toArray();
             if (!in_array($data->PDM, array_column($marketing_managers, 'PDM')))
             {
                 $marketing_managers[] =  [
@@ -1908,7 +1834,7 @@ class ProductFormController extends Controller
             ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
             ->whereIn('barcodes.BRAND', ['CPS'])
             ->orderBy('BARCODE', 'DESC');
-        } else if ($userpermission == 'KTY') {
+        } else {
             $data = Pro_develops::select(
                 'pro_develops.BRAND AS BRAND',
                 DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
@@ -1917,58 +1843,8 @@ class ProductFormController extends Controller
                 'pro_develops.NAME_ENG AS NAME_ENG'
             )
             ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
-            ->whereIn('barcodes.BRAND', ['KTY'])
+            ->where('barcodes.BRAND', $userpermission)
             ->orderBy('BARCODE', 'DESC');
-        } 
-        // else if (in_array($userpermission, ['Regional Operation Manager-GNC'])) {
-        //     $data = Pro_develops::select(
-        //         'pro_develops.BRAND AS BRAND',
-        //         // DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
-        //         'pro_develops.BARCODE AS BARCODE',
-        //         'pro_develops.NAME_ENG AS NAME_ENG'
-        //     )
-        //     ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
-        //     ->whereIn('barcodes.BRAND', ['GNC'])
-        //     ->orderBy('BARCODE', 'DESC');
-        // } 
-        else if ($userpermission == 'BB') {
-            $data = Pro_develops::select(
-                'pro_develops.BRAND AS BRAND',
-                DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
-                'pro_develops.PRODUCT AS PRODUCT',
-                'pro_develops.BARCODE AS BARCODE',
-                'pro_develops.NAME_ENG AS NAME_ENG'
-            )
-            ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
-            ->whereIn('barcodes.BRAND', ['BB'])
-            ->orderBy('BARCODE', 'DESC');
-        } else if ($userpermission == 'LL') {
-            $data = Pro_develops::select(
-                'pro_develops.BRAND AS BRAND',
-                DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
-                'pro_develops.PRODUCT AS PRODUCT',
-                'pro_develops.BARCODE AS BARCODE',
-                'pro_develops.NAME_ENG AS NAME_ENG'
-            )
-            ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
-            ->whereIn('barcodes.BRAND', ['LL'])
-            ->orderBy('BARCODE', 'DESC');
-        } else if ($userpermission == 'FR') {
-            $data = Pro_develops::select(
-                'pro_develops.BRAND AS BRAND',
-                DB::raw('SUBSTRING(BARCODE, 8, 5) AS Code'),
-                'pro_develops.PRODUCT AS PRODUCT',
-                'pro_develops.BARCODE AS BARCODE',
-                'pro_develops.NAME_ENG AS NAME_ENG'
-            )
-            ->join('barcodes', 'pro_develops.BRAND', '=', 'barcodes.BRAND')
-            // ->where('barcodes.BRAND', 'FR')
-            ->whereBetween('pro_develops.PRODUCT', [15000, 19999])
-            ->orderBy('BARCODE', 'DESC');
-        }
-
-        if ($BRAND != null) {
-            $data->where('pro_develops.BRAND', $BRAND);
         }
 
         // if (null != $DOC_NO) {
@@ -1999,6 +1875,10 @@ class ProductFormController extends Controller
         //     //     $barcode->orWhere('BARCODE', $request->BARCODE);
         //     // });
         // }
+
+        if ($BRAND != null) {
+            $data->where('pro_develops.BRAND', $BRAND);
+        }
 
         // กรองข้อมูลถ้ามีคำค้นหา
         if (!empty($searchAll)) {

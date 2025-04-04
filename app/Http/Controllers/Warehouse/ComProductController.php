@@ -28,59 +28,37 @@ class ComProductController extends Controller
     {
         $brands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
 
-        // $group_data_origin = Http::asForm()->withHeaders([])->post($endpoint);
-
-        $endpoint = "https://ins.schicher.com/api/users";
-
-        // Send a GET request
-        $response = Http::asForm()->get($endpoint);
+        // $endpoint = "https://ins.schicher.com/api/users";
+        // // Send a GET request
+        // $response = Http::asForm()->get($endpoint);
 
         $roles = [];
-        if ($response->successful()) {
-            $data = $response->json();
+        // if ($response->successful()) {
+        //     $data = $response->json();
 
-            $roles = collect($data)
-                ->pluck('role')
-                ->unique()
-                ->values()
-                ->toArray();
+        //     $roles = collect($data)
+        //         ->pluck('role')
+        //         ->unique()
+        //         ->values()
+        //         ->toArray();
 
-            // $roles = DB::table('users')
-            //     ->select('role')
-            //     ->distinct()
-            //     ->get()
-            //     ->pluck('role')
-            //     ->toArray();
+        //     // $roles = DB::table('users')
+        //     //     ->select('role')
+        //     //     ->distinct()
+        //     //     ->get()
+        //     //     ->pluck('role')
+        //     //     ->toArray();
 
-            // dd($roles);
-        } else {
-            // Handle errors
-            dd('Request failed', [
-                'status' => $response->status(),
-                'body' => $response->body(),
-            ]);
-        }
-
-        // dd( $roles);
-        // $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
-        // $userpermission = Auth::user()->getUserPermission->name_position;
-
-        // if (in_array($userpermission, [$isSuperAdmin])) {
-        //     $brands = MasterBrand::select(
-        //         'BRAND')
-        //     ->get();
-        // } else if (in_array($userpermission, ['Category - OP', 'Product - OP', 'E-Commerce - OP'])) {
-        //     $brands = MasterBrand::select(
-        //         'BRAND')
-        //     ->whereIn('BRAND', $brands)
-        //     ->get();
-        // } else if (in_array($userpermission, ['Marketing - CPS'])) {
-        //     $brands = MasterBrand::select(
-        //         'BRAND')
-        //     ->whereIn('DESCRIPTION', $brands)
-        //     ->get();
+        //     // dd($roles);
+        // } else {
+        //     // Handle errors
+        //     dd('Request failed', [
+        //         'status' => $response->status(),
+        //         'body' => $response->body(),
+        //     ]);
         // }
 
+        // dd( $roles);
         return view('warehouse.index', compact('brands', 'roles'));
     }
 
@@ -115,10 +93,6 @@ class ComProductController extends Controller
                 ->orWhere('com_products.barcode', 'like', '%' . $searchAll . '%');
             });
         }
-
-        // if (null != $BARCODE) {
-        //     $productCodes = $data->where(DB::raw('SUBSTRING(BARCODE, 8, 5)'), $request->input('BARCODE'))->pluck('BARCODE');
-        // }
 
         // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
         $totalRecords = $data->count();
@@ -326,8 +300,11 @@ class ComProductController extends Controller
 
     public function indexDocument()
     {
+        $brands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
         $brand_ps = Brand_p::all();
-        return view('warehouse.document.index', compact('brand_ps'));
+        $roles = [];
+
+        return view('warehouse.document.index', compact('brand_ps', 'brands', 'roles'));
     }
 
     // public function filter(Request $request)
@@ -393,26 +370,26 @@ class ComProductController extends Controller
 
     public function filter(Request $request)
     {
-        // $endpoint = "https://ins.schicher.com/api/users";
-        // $response = Http::asForm()->get($endpoint);
+        $endpoint = "https://ins.schicher.com/api/users";
+        $response = Http::asForm()->get($endpoint);
 
-        // if ($response->successful()) {
-        //     $data = collect($response->json()); // Convert data to a collection
+        if ($response->successful()) {
+            $data = collect($response->json()); // Convert data to a collection
 
-        //     $type = $request->get('type'); // Retrieve the 'type' parameter from the request
+            $type = $request->get('type'); // Retrieve the 'type' parameter from the request
 
-        //     if ($type) {
-        //         $filteredData = $data->filter(fn($item) => $item['role'] === $type);
-        //     } else {
-        //         $filteredData = $data;
-        //     }
-        //     return response()->json($filteredData->values());
-        // } else {
-        //     return response()->json([
-        //         'error' => 'Request failed',
-        //         'status' => $response->status(),
-        //         'body' => $response->body(),
-        //     ], $response->status());
-        // }
+            if ($type) {
+                $filteredData = $data->filter(fn($item) => $item['role'] === $type);
+            } else {
+                $filteredData = $data;
+            }
+            return response()->json($filteredData->values());
+        } else {
+            return response()->json([
+                'error' => 'Request failed',
+                'status' => $response->status(),
+                'body' => $response->body(),
+            ], $response->status());
+        }
     }
 }

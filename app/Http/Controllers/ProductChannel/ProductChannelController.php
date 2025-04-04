@@ -129,7 +129,7 @@ class ProductChannelController extends Controller
             $data->limit($limit)->offset($start);
         }
         $records = $data->get();
-
+        // dd($records);
         return response()->json([
             'draw' => intval($request->draw),
             'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)

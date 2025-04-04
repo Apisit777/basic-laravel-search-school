@@ -400,12 +400,20 @@ class ProductOtherController extends Controller
             })
             ->toArray();
 
-        // ตรวจสอบให้แน่ใจว่ากลับมาเป็น Array แม้จะมีแค่ช่องเดียว
-        if (in_array('all', array_map('strtolower', $defaultChannel))) {
+        // ล้างค่าที่ว่างออกก่อน แล้วตรวจสอบ
+        $cleanedChannel = array_filter($defaultChannel, function ($value) {
+            return trim($value) !== '';
+        });
+
+        if (in_array('all', array_map('strtolower', $cleanedChannel))) {
             $defaultAllChannels = ['all'];
-            } else {
-            $defaultAllChannels = count($defaultChannel) > 0 ? $defaultChannel : [];
+        } elseif (empty($cleanedChannel)) {
+            $defaultAllChannels = ['all']; // ✅ ถ้าไม่มีข้อมูลหรือเป็นค่าว่าง ให้ default เป็น all
+        } else {
+            $defaultAllChannels = $cleanedChannel;
         }
+
+        // dd($defaultAllChannels);
 
         $brands = MasterBrand::select(
                 'BRAND')

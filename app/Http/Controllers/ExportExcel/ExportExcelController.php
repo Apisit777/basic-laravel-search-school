@@ -440,7 +440,7 @@ class ExportExcelController extends Controller
             }
         } else if ($userpermission == 'GNC') {
             if (!isset($request->start_product) || $request->start_product == null) {
-                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'p_statuses.DESCRIPTION AS STATUS')
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'product1s.COST', 'p_statuses.DESCRIPTION AS STATUS')
                                         ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
                                         ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
                                         ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
@@ -453,7 +453,7 @@ class ExportExcelController extends Controller
                                         ->toArray();
                                         // dd($ProDevelops);
             } else if (!isset($request->end_product) || $request->end_product == null) {
-                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'p_statuses.DESCRIPTION AS STATUS')
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'product1s.COST', 'p_statuses.DESCRIPTION AS STATUS')
                                         ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
                                         ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
                                         ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
@@ -466,7 +466,7 @@ class ExportExcelController extends Controller
                                         ->toArray();
                                         // dd($ProDevelops);
             } else {
-                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'p_statuses.DESCRIPTION AS STATUS')
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'product1s.COST', 'p_statuses.DESCRIPTION AS STATUS')
                                         ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
                                         ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
                                         ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
@@ -487,7 +487,7 @@ class ExportExcelController extends Controller
         $columns = [];
 
         if ($userpermission == 'GNC') {
-            $columns = array('Brand', 'Product ID', 'Barcode', 'Name Thai', 'Name English', 'Short Name Thai', 'Short Name English', 'Retail Price', 'Product Status');
+            $columns = array('Brand', 'Product ID', 'Barcode', 'Name Thai', 'Name English', 'Short Name Thai', 'Short Name English', 'Retail Price', 'Cost', 'Product Status');
         } else {
             $columns = array('Brand', 'Product ID', 'Barcode', 'Name Thai', 'Name English', 'Short Name Thai', 'Short Name English', 'Retail Price', 'Solution', 'Series', 'Category', 'Sub Category');
         }

@@ -31,7 +31,7 @@
             display: none;
         }
         .select2-container .select2-dropdown .select2-results__options {
-            max-height: 360px !important;
+            max-height: 258px !important;
         }
         .select2 {
             width: 100%!important; /* force fluid responsive */
@@ -87,15 +87,12 @@
             top: 0;
             left: 0;
         }
-
         *{margin: 0;padding:0px}
-
         .header{
             width: 100%;
             /* background-color: #0d77b6 !important; */
             height: 0px;
         }
-
         .showLeft{
             /* background-color: #0d77b6 !important;
             border:1px solid #0d77b6 !important;
@@ -103,7 +100,6 @@
             color:#fff !important; */
             padding:10px;
         }
-
         .icons li {
             /* background: none repeat scroll 0 0 #fff; */
             height: 7px;
@@ -116,22 +112,18 @@
             border-radius:50%;
             pointer-events: none;
         }
-
         .btn-left {
             left: 0.4em;
         }
-
         .btn-right {
             right: 0.4em;
         }
-
         .btn-left, .btn-right {
             position: absolute;
             top: -2.5em;
             right: -105px;
             z-index: 999;
         }
-
         .dropbtn {
             /* background-color: #4CAF50; */
             position: fixed;
@@ -140,18 +132,15 @@
             border: none;
             cursor: pointer;
         }
-
         .dropbtn:hover, .dropbtn:focus {
             /* background-color: #3e8e41; */
         }
-
         .dropdown {
             position: absolute;
             display: inline-block;
             left: 500px;
             /* right: -54.5em; */
         }
-
         .dropdown-content {
             display: none;
             position: relative;
@@ -162,43 +151,53 @@
             box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
             z-index: 1;
         }
-
         .dropdown-content a {
             /* color: black; */
             padding: 12px 16px;
             text-decoration: none;
             display: block;
         }
-
         /* .dropdown a:hover {background-color: rgb(229 231 235);} */
-
         .show {display:block;}
-
         span.dt-column-order {
             display: none;
         }
-
-
         /* ************************************************************** */
         .card-container {
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
         }
-
         .card {
             border: 1px solid #ccc;
             padding: 10px;
             text-align: center;
         }
-
         .card img {
             max-width: 100%;
             height: auto;
         }
-
         .dt-length  {
             color: #818181!important;
+        }
+        .view-toggle {
+            display: flex;
+            border: 1px solid #666;
+            border-radius: 5px;
+            overflow: hidden;
+            width: fit-content;
+        }
+        .toggle-btn {
+            padding: 4px 5px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: white;
+            background-color: #2a2a2a;
+            transition: background 0.3s;
+        }
+        .toggle-btn.active {
+            background-color: #05395D;
         }
     </style>
 
@@ -208,10 +207,10 @@
 
 @section('content')
     <div class="justify-center items-center">
-        <div class="mt-6 mb-4 flex justify-center items-center">
+        <div class="mt-6 mb-2 flex justify-center items-center">
             <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">List Dimension</p>
         </div>
-        <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
+        <div class="grid gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
             <div class="lg:col-span-4 xl:grid-cols-4">
                 <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                     <div class="md:col-span-3">
@@ -223,9 +222,15 @@
                             @endforeach
                         </select>
                     </div>
+                    <!-- <div class="md:col-span-3">
+                        <label for="BRAND" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Brand</label>
+                        <div class="md:col-span-3" >
+                            <select name="country"></select>
+                        </div>
+                    </div> -->
 
                     <div class="md:col-span-3" >
-                        <label for="">@lang('global.content.search')</label>
+                        <label for="" class="font-medium">@lang('global.content.search')</label>
                         <input type="text" name="search" id="search" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" onkeyup="searchTable()" />
                     </div>
                     <div class="md:col-span-6 text-center">
@@ -237,7 +242,7 @@
                                 ค้นหา
                             </a> -->
                             <button  id="" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-2.5 mr-2 rounded group cursor-pointer btn-rotate" type="reset">
-                                <svg class="hidden h-6 w-6 md:inline-block rotate"
+                                <svg class="hidden h-5 w-5 md:inline-block rotate"
                                     viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
                                     <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 93,62 C 83,82 65,96 48,96 32,96 19,89 15,79 L 5,90 5,53 40,53 29,63 c 0,0 5,14 26,14 16,0 38,-15 38,-15 z"/>
                                     <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 5,38 C 11,18 32,4 49,4 65,4 78,11 85,21 L 95,10 95,47 57,47 68,37 C 68,37 63,23 42,23 26,23 5,38 5,38 z"/>
@@ -315,23 +320,38 @@
                     @endforeach
                 </select>
             </form>
-        </div>
-
-        <div class="container mx-auto py-8">
-            <div id="cards-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
-        </div>
-
-        <div id="pagination-controls" class="mt-8 flex flex-wrap justify-center space-x-2">
-            <svg id="prev-btn" fill="currentColor" class="size-9 mt-0.5 ml-0.5 text-[#303030] dark:text-[#EAEAEA] cursor-pointer" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="m4.431 12.822 13 9A1 1 0 0 0 19 21V3a1 1 0 0 0-1.569-.823l-13 9a1.003 1.003 0 0 0 0 1.645z"/>
-            </svg>
-            <div id="pagination-numbers" class="flex flex-wrap justify-center space-x-2"></div>
-            <svg id="next-btn" fill="currentColor" class="size-10 mb-1 ml-0.5 text-[#303030] dark:text-[#EAEAEA] cursor-pointer" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path d="M5.536 21.886a1.004 1.004 0 0 0 1.033-.064l13-9a1 1 0 0 0 0-1.644l-13-9A1 1 0 0 0 5 3v18a1 1 0 0 0 .536.886z"/>
-            </svg>
         </div> -->
 
-        <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
+        <div class="flex right-10 z-10 absolute">
+            <!-- ปุ่มสลับมุมมอง -->
+            <div class="view-toggle">
+                <button id="btn-list" class="toggle-btn active">
+                    📋 ตาราง
+                </button>
+                <button id="btn-grid" class="toggle-btn">
+                    ☰ รายการ
+                </button>
+                
+            </div>
+        </div>
+
+        <div id="grid-view" class="view-section" style="display:none;">
+            <div class="container mx-auto py-8">
+                <div id="cards-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+            </div>
+    
+            <div id="pagination-controls" class="mt-8 flex flex-wrap justify-center space-x-2">
+                <svg id="prev-btn" fill="currentColor" class="size-9 mt-0.5 ml-0.5 text-[#303030] dark:text-[#EAEAEA] cursor-pointer" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="m4.431 12.822 13 9A1 1 0 0 0 19 21V3a1 1 0 0 0-1.569-.823l-13 9a1.003 1.003 0 0 0 0 1.645z"/>
+                </svg>
+                <div id="pagination-numbers" class="flex flex-wrap justify-center space-x-2"></div>
+                <svg id="next-btn" fill="currentColor" class="size-10 mb-1 ml-0.5 text-[#303030] dark:text-[#EAEAEA] cursor-pointer" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5.536 21.886a1.004 1.004 0 0 0 1.033-.064l13-9a1 1 0 0 0 0-1.644l-13-9A1 1 0 0 0 5 3v18a1 1 0 0 0 .536.886z"/>
+                </svg>
+            </div>
+        </div>
+
+        <div id="list-view" class="view-section bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
             <div id="containerexample" class="text-gray-900 dark:text-gray-100">
                 <table id="table_dimension" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
                     <thead>
@@ -538,11 +558,195 @@
         // });
 
         // Start ตัวที่ใช้งาน API Test filter-cards(Code อยู่ที่ public/conn.php(Route ต้องเปิด comment(Route::get('/filter-cards')))
+        $(document).ready(function () {
+            let currentPage = 1;
+            const cardsPerPage = 8;
+            let allData = [];
+            const cardContainer = $('#cards-container');
 
+            // Fetch data and initialize cards
+            function fetchData(type = '') {
+                const apiUrl = type
+                    ? '{{ route('warehouse.filter.cards') }}' // Backend API with filter
+                    : 'https://ins.schicher.com/api/users'; // Default API
+
+                const requestOptions = type
+                    ? {
+                        method: 'GET',
+                        data: { type },
+                    }
+                    : {
+                        method: 'GET',
+                        headers: {
+                            'X-RapidAPI-Key': '7115427d56mshfff5805283a13cep190338jsn4bc3f4689eb8',
+                            'X-RapidAPI-Host': 'ott-details.p.rapidapi.com',
+                        },
+                    };
+
+                $.ajax(apiUrl, requestOptions)
+                    .done((data) => {
+                        // console.log("🚀 ~ fetchData ~ requestOptions:", requestOptions)
+                        allData = data;
+                        renderCards(currentPage);
+                        renderPagination();
+                    })
+                    .fail(() => alert('Error fetching data'));
+            }
+
+            // Render cards for the current page
+            function renderCards(page) {
+                // console.log("🚀 Rendering cards with data:", allData);
+                // cardContainer.empty();
+                $('#cards-container').empty();
+                const start = (page - 1) * cardsPerPage;
+                const end = start + cardsPerPage;
+                const pageData = allData.slice(start, end);
+
+                pageData.forEach((item) => {
+                    // console.log("Item:", item); // Debugging to see item structure
+                    const name = item.name || 'Unknown Name';
+                    const role = item.role || 'Unknown Role';
+                    const imageUrl = item.imageurl || item.image || 'default-image-url.jpg'; // Replace with a fallback image if needed
+                    // ตัดชื่อไม่ให้เกิน 30 ตัวอักษร + ...
+                    const truncatedName = name.length > 30 ? name.substring(0, 29) + '…' : name;
+                    const card = `
+                        <div class="max-w-sm p-1 bg-[#eaeaea] dark:bg-[#292929] object-cover rounded-sm shadow-md border-gray-300 cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-md hover:shadow-gray-400 dark:hover:shadow-md dark:hover:shadow-gray-400">
+                            <img src="${imageUrl}" alt="${name}" class="w-full h-32 object-cover">
+                            <div class="p-4">
+                                <h2 class="text-lg font-semibold mb-1 text-gray-900 dark:text-gray-100">${truncatedName}</h2>
+                                <p class="text-sm text-gray-400 dark:text-gray-400 uppercase">${role}</p>
+                            </div>
+                            <div class="px-4 pb-4 flex items-center space-x-4 text-gray-500 dark:text-gray-300 base:text-xl sm:text-sm">
+                                <div class="flex items-center space-x-1">
+                                    <span>🔒</span>
+                                    <span>CORS</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <span>🔒</span>
+                                    <span>HTTPS</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    cardContainer.append(card);
+                });
+
+                updatePaginationControls();
+            }
+
+            // Render pagination
+            function renderPagination() {
+                $('#pagination-numbers').empty();
+                const totalPages = Math.ceil(allData.length / cardsPerPage);
+                const maxVisiblePages = 5; // You can adjust this value
+
+                function addPageButton(page, isActive = false) {
+                    const pageButton = `<button class="px-4 py-1 mb-2 sm:mb-0 ${isActive ? 'bg-[#303030] text-white' : 'bg-white text-gray-800 border border-gray-300'} rounded hover:bg-[#505050]" data-page="${page}">${page}</button>`;
+                    $('#pagination-numbers').append(pageButton);
+                }
+
+                if (totalPages <= maxVisiblePages) {
+                    // If total pages are less than max visible pages, show all
+                    for (let i = 1; i <= totalPages; i++) {
+                        addPageButton(i, i === currentPage);
+                    }
+                } else {
+                    // Show first page
+                    addPageButton(1, currentPage === 1);
+
+                    // Show an ellipsis if currentPage is far from the first page
+                    if (currentPage > 3) {
+                        $('#pagination-numbers').append('<span class="px-2 text-black dark:text-white">...</span>');
+                    }
+
+                    // Show pages around the current page
+                    let startPage = Math.max(2, currentPage - 1);
+                    let endPage = Math.min(currentPage + 1, totalPages - 1);
+
+                    for (let i = startPage; i <= endPage; i++) {
+                        addPageButton(i, i === currentPage);
+                    }
+
+                    // Show an ellipsis if currentPage is far from the last page
+                    if (currentPage < totalPages - 2) {
+                        $('#pagination-numbers').append('<span class="px-2 text-black dark:text-white">...</span>');
+                    }
+
+                    // Show last page
+                    addPageButton(totalPages, currentPage === totalPages);
+                }
+
+                // Add event listeners to page buttons
+                $('#pagination-numbers button').click(function () {
+                    const page = $(this).data('page');
+                    currentPage = page;
+                    renderCards(currentPage);
+                    renderPagination();
+                });
+            }
+
+            // Update pagination controls
+            function updatePaginationControls() {
+                const totalPages = Math.ceil(allData.length / cardsPerPage);
+                $('#prev-btn').prop('disabled', currentPage === 1);
+                $('#next-btn').prop('disabled', currentPage === totalPages);
+            }
+
+            // Pagination navigation buttons
+            $('#prev-btn').click(function () {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderCards(currentPage);
+                    renderPagination();
+                }
+            });
+
+            $('#next-btn').click(function () {
+                const totalPages = Math.ceil(allData.length / cardsPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderCards(currentPage);
+                    renderPagination();
+                }
+            });
+
+            // Filter cards by type
+            $('#filter-select').on('change', function () {
+                const type = $(this).val();
+                fetchData(type);
+            });
+
+            // Initial fetch
+            fetchData();
+        });
         // End ตัวที่ใช้งาน
 
+        $(function() {
+            $('#btn-list').click(function() {
+                $('#grid-view').hide();
+                $('#list-view').show();
+                $('.toggle-btn').removeClass('active');
+                $(this).addClass('active');
+            });
+
+            $('#btn-grid').click(function() {
+                $('#list-view').hide();
+                $('#grid-view').show();
+                $('.toggle-btn').removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+
         $(document).ready(function() {
-            $('.js-example-basic-single').select2();
+            // $('.js-example-basic-single').select2();
+            $('.js-example-basic-single').select2({
+                width: '100%',
+            }).on('select2:open', function () {
+                // ดึง element ของ dropdown
+                $('.select2-results__options').hide().slideDown(250);
+                }).on('select2:close', function () {
+                $('.select2-results__options').slideUp(200);
+            });
 
             // กำหนด event เมื่อกดปุ่ม "ล้างข้อมูล"
             $('button[type="reset"]').click(function() {

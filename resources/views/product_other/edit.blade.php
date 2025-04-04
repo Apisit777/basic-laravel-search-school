@@ -723,6 +723,11 @@
             console.log('defaultAllChannel:', defaultAllChannel);
             console.log('defaultChannel:', defaultChannel);
 
+            // ถ้า allChannel ยังไม่มี 'all' ให้เพิ่มเข้าไป
+            if (!allChannel.includes('all')) {
+                allChannel.unshift('all');
+            }
+
             $('.js-example-basic-single').select2();
             $('#multiSelect').select2({
                 placeholder: "--- กรุณาเลือก ---",
@@ -742,10 +747,10 @@
                 let selectedValues = [];
 
                 if (defaultAllChannel[0] === 'all') {
-                    selectedValues = allChannel; // ถ้าเลือก "all" ให้เลือกทั้งหมด
+                    selectedValues = ['all']; // ✅ เปลี่ยนตรงนี้ เพื่อเลือกแค่ 'all' อย่างเดียว
                 } else {
                     // ตรวจสอบค่าที่ตรงกันใน allChannel
-                    selectedValues = defaultChannel.map(c => 
+                    selectedValues = defaultChannel.map(c =>
                         allChannel.find(ac => ac.trim().toLowerCase() === c.trim().toLowerCase()) || c
                     ).filter(Boolean);
                 }

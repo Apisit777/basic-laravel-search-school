@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Pro_develops extends Model
 {
     use HasFactory;
+    protected $casts = [
+        'PRODUCT' => 'string',
+    ];
     public $timestamps = false;
     protected $guarded = [];
     public static function listBrandProDevelops($data = [])

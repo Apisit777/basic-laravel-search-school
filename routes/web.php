@@ -148,9 +148,9 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         // Marketing Manager
         Route::get('/marketing_manager', [ToolController::class, 'marketingManager'])->name('marketing_manager');
         // Route::post('/productgroup_check_id', [ToolController::class, 'productGroupCheckId'])->name('productgroup_check_id');
-        // Route::post('/productgroup_checkname', [ToolController::class, 'productGroupCheckName'])->name('productgroup_checkname');
-        // Route::post('/product_group_create', [ToolController::class, 'productGroupCreate'])->name('product_group_create');
-        // Route::post('/product_group_update/{id}', [ToolController::class, 'productGroupUpdate'])->name('product_group_update');
+        Route::post('/marketing_manager_checkname', [ToolController::class, 'marketingManagerCheckName'])->name('marketing_manager_checkname');
+        Route::post('/product_marketing_manager_create', [ToolController::class, 'productMarketingManagerCreate'])->name('product_marketing_manager_create');
+        Route::post('/product_marketing_manager_update/{id}', [ToolController::class, 'productMarketingManagerUpdate'])->name('product_marketing_manager_update');
         Route::post('/list_marketing_manager', [ToolController::class, 'listMarketingManager'])->name('list_marketing_manager');
 
         //
@@ -272,7 +272,7 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
     // Km
     Route::group(['prefix' => 'warehouse', 'as' => 'warehouse.'], function () {
         Route::get('/dimension', [ComProductController::class, 'index'])->name('index');
-        // Route::get('/filter-cards', [ComProductController::class, 'filter'])->name('filter.cards');
+        Route::get('/filter-cards', [ComProductController::class, 'filter'])->name('filter.cards');
 
         Route::get('/document', [ComProductController::class, 'indexDocument'])->name('document');
         Route::post('/list_warehouse', [ComProductController::class, 'listWarehouse'])->name('list_warehouse');

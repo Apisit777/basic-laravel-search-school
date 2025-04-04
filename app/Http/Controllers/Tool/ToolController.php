@@ -48,10 +48,8 @@ class ToolController extends Controller
             $idSolutions = Solution::select('ID')->where('BRAND', 'OP')->pluck('ID')->toArray();
         } else if ($userpermission == 'CPS') {
             $idSolutions = Solution::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
-        } else if ($userpermission == 'BB') {
-            $idSolutions = Solution::select('ID')->where('BRAND', 'BB')->pluck('ID')->toArray();
-        } else if ($userpermission == 'LL') {
-            $idSolutions = Solution::select('ID')->where('BRAND', 'LL')->pluck('ID')->toArray();
+        } else {
+            $idSolutions = Solution::select('ID')->where('BRAND', $userpermission)->pluck('ID')->toArray();
         }
 
         return view('tool.solution.index', compact('data', 'idSolutions'));
@@ -70,10 +68,8 @@ class ToolController extends Controller
             $idSeries = Series::select('ID')->where('BRAND', 'OP')->pluck('ID')->toArray();
         } else if ($userpermission == 'CPS') {
             $idSeries = Series::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
-        } else if ($userpermission == 'BB') {
-            $idSeries = Series::select('ID')->where('BRAND', 'BB')->pluck('ID')->toArray();
-        } else if ($userpermission == 'LL') {
-            $idSeries = Series::select('ID')->where('BRAND', 'LL')->pluck('ID')->toArray();
+        } else {
+            $idSeries = Series::select('ID')->where('BRAND', $userpermission)->pluck('ID')->toArray();
         }
 
         return view('tool.series.index', compact('data', 'idSeries'));
@@ -92,10 +88,8 @@ class ToolController extends Controller
             $idCategories = Category::select('ID')->where('BRAND', 'OP')->pluck('ID')->toArray();
         } else if ($userpermission == 'CPS') {
             $idCategories = Category::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
-        } else if ($userpermission == 'BB') {
-            $idCategories = Category::select('ID')->where('BRAND', 'BB')->pluck('ID')->toArray();
-        } else if ($userpermission == 'LL') {
-            $idCategories = Category::select('ID')->where('BRAND', 'LL')->pluck('ID')->toArray();
+         } else {
+            $idCategories = Category::select('ID')->where('BRAND', $userpermission)->pluck('ID')->toArray();
         }
 
         return view('tool.category.index', compact('data', 'idCategories'));
@@ -143,10 +137,16 @@ class ToolController extends Controller
             ->get();
 
             $SubCategories = Sub_category::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
-        } else if ($userpermission == 'BB') {
-            $userpermission = 'BB';
-        } else if ($userpermission == 'LL') {
-            $userpermission = 'LL';
+        } else {
+            $dataCategories = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', $userpermission)
+            ->orderby('ID', 'ASC')
+            ->get();
+
+            $SubCategories = Sub_category::select('ID')->where('BRAND', $userpermission)->pluck('ID')->toArray();
         }
 
         // dd($SubCategories);
@@ -162,7 +162,6 @@ class ToolController extends Controller
 
     public function productCoOrdinator()
     {
-
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
         $namePosition  = explode('-', $userpermission);
@@ -190,6 +189,17 @@ class ToolController extends Controller
                 ->where('BRAND', 'CPS')
                 ->pluck('BRAND')
                 ->toArray();
+        } else {
+            $dataNpdCoss = Npd_cos::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')
+                ->where('BRAND', $userpermission)
+                ->pluck('DESCRIPTION')
+                ->toArray();
+
+            $brands = MasterBrand::select(
+                'BRAND')
+                ->where('BRAND', $userpermission)
+                ->pluck('BRAND')
+                ->toArray();
         }
 
         // dd($data);
@@ -199,8 +209,49 @@ class ToolController extends Controller
     public function marketingManager()
     {
         $data = Npd_pdms::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')->get();
+
+        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        $userpermission = Auth::user()->getUserPermission->name_position;
+        $namePosition  = explode('-', $userpermission);
+        $userpermission = trim(end($namePosition));
+
+        if ($userpermission == 'OP') {
+            $dataNpdPdms = Npd_pdms::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')
+                ->where('BRAND', 'OP')
+                ->pluck('DESCRIPTION')
+                ->toArray();
+
+            $brands = MasterBrand::select(
+                'BRAND')
+                ->where('BRAND', 'OP')
+                ->pluck('BRAND')
+                ->toArray();
+        } else if ($userpermission == 'CPS') {
+            $dataNpdPdms = Npd_pdms::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')
+                ->where('BRAND', 'CPS')
+                ->pluck('DESCRIPTION')
+                ->toArray();
+
+            $brands = MasterBrand::select(
+                'BRAND')
+                ->where('BRAND', 'CPS')
+                ->pluck('BRAND')
+                ->toArray();
+        } else {
+            $dataNpdPdms = Npd_pdms::select('ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')
+                ->where('BRAND', $userpermission)
+                ->pluck('DESCRIPTION')
+                ->toArray();
+
+            $brands = MasterBrand::select(
+                'BRAND')
+                ->where('BRAND', $userpermission)
+                ->pluck('BRAND')
+                ->toArray();
+        }
+
         // dd($data);
-        return view('tool.marketing_manager.index', compact('data'));
+        return view('tool.marketing_manager.index', compact('data', 'dataNpdPdms', 'brands'));
     }
 
     public function manageProductLine()
@@ -529,6 +580,23 @@ class ToolController extends Controller
         return response()->json($data > 0 ? false : true);
     }
 
+    public function marketingManagerCheckName(Request $request)
+    {
+        // dd($request);
+        if ($request->Edit_MarketingManager_ID) {
+            $data = Npd_pdms::select('ID')
+                ->where('ID', '!=', $request->Edit_MarketingManager_ID)
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        } else {
+            $data = Npd_pdms::select('ID')
+                ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->count();
+        }
+        // dd($data);
+        return response()->json($data > 0 ? false : true);
+    }
+
     public function productLineCheckId(Request $request)
     {
         // dd($request);
@@ -836,20 +904,6 @@ class ToolController extends Controller
             $namePosition  = explode('-', $userpermission);
             $userpermission = trim(end($namePosition));
 
-            if ($userpermission == 'OP') {
-                $userpermission = 'OP';
-            } else if ($userpermission == 'CPS') {
-                $userpermission = 'CPS';
-            } else if ($userpermission == 'KTY') {
-                $userpermission = 'KTY';
-            } else if ($userpermission == 'GNC') {
-                $userpermission = 'GNC';
-            } else if ($userpermission == 'BB') {
-                $userpermission = 'BB';
-            } else if ($userpermission == 'LL') {
-                $userpermission = 'LL';
-            }
-
             $dataSolution = Solution::create([
                 'ID' => $request->ID,
                 'DESCRIPTION' => $request->DESCRIPTION,
@@ -857,7 +911,7 @@ class ToolController extends Controller
                 'EDIT_DT' => ''
             ]);
 
-            // dd($dataProductGroup);
+            // dd($dataSolution);
             DB::commit();
             return response()->json(['success' => true]);
         } catch (\Exception $e) {
@@ -1251,20 +1305,6 @@ class ToolController extends Controller
             $namePosition  = explode('-', $userpermission);
             $userpermission = trim(end($namePosition));
 
-            if ($userpermission == 'OP') {
-                $userpermission = 'OP';
-            } else if ($userpermission == 'CPS') {
-                $userpermission = 'CPS';
-            } else if ($userpermission == 'KTY') {
-                $userpermission = 'KTY';
-            } else if ($userpermission == 'GNC') {
-                $userpermission = 'GNC';
-            } else if ($userpermission == 'BB') {
-                $userpermission = 'BB';
-            } else if ($userpermission == 'LL') {
-                $userpermission = 'LL';
-            }
-
             $dataNpdCos = Npd_cos::create([
                 'ID' => $request->ID,
                 'DESCRIPTION' => $request->DESCRIPTION,
@@ -1292,20 +1332,6 @@ class ToolController extends Controller
             $namePosition  = explode('-', $userpermission);
             $userpermission = trim(end($namePosition));
 
-            if ($userpermission == 'OP') {
-                $userpermission = 'OP';
-            } else if ($userpermission == 'CPS') {
-                $userpermission = 'CPS';
-            } else if ($userpermission == 'KTY') {
-                $userpermission = 'KTY';
-            } else if ($userpermission == 'GNC') {
-                $userpermission = 'GNC';
-            } else if ($userpermission == 'BB') {
-                $userpermission = 'BB';
-            } else if ($userpermission == 'LL') {
-                $userpermission = 'LL';
-            }
-
             $productCoOrdinator = [
                 'DESCRIPTION' => $request->DESCRIPTION,
                 'BRAND' => $userpermission,
@@ -1313,6 +1339,61 @@ class ToolController extends Controller
             ];
 
             $productCoOrdinatorUpddate = Npd_cos::where('ID', $id)->update($productCoOrdinator);
+
+            // dd($dataNpdCos);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function productMarketingManagerCreate(Request $request)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            $dataMarketingManager = Npd_pdms::create([
+                'ID' => $request->ID,
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'EDIT_DT' => ''
+            ]);
+
+            // dd($dataMarketingManager);
+            DB::commit();
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
+    }
+
+    public function productMarketingManagerUpdate(Request $request, $id)
+    {
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            $productMarketingManager = [
+                'DESCRIPTION' => $request->DESCRIPTION,
+                'BRAND' => $userpermission,
+                'EDIT_DT' => ''
+            ];
+
+            $productMarketingManagerUpddate = Npd_pdms::where('ID', $id)->update($productMarketingManager);
 
             // dd($dataNpdCos);
             DB::commit();
@@ -1339,7 +1420,7 @@ class ToolController extends Controller
             }
 
             $dataProductLine = ProductLine::create([
-                'ID' => $request->SubCategory_ID,
+                'ID' => $request->ID,
                 'CATEGORY_ID' => $request->CATEGORY_ID,
                 'DESCRIPTION' => $request->DESCRIPTION,
                 'BRAND' => $userpermission,
@@ -1404,7 +1485,7 @@ class ToolController extends Controller
             }
 
             $dataProductType = ProductType::create([
-                'ID' => $request->SubCategory_ID,
+                'ID' => $request->ID,
                 'CATEGORY_ID' => $request->CATEGORY_ID,
                 'DESCRIPTION' => $request->DESCRIPTION,
                 'BRAND' => $userpermission,
@@ -1954,6 +2035,14 @@ class ToolController extends Controller
             )
             ->where('BRAND', 'LL')
             ->orderBy('DESCRIPTION', 'ASC');
+        } else {
+            $data = Solution::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND'
+            )
+            ->where('BRAND', $userpermission)
+            ->orderBy('DESCRIPTION', 'ASC');
         }
 
         if ($request->searchSolutionId) {
@@ -2029,42 +2118,14 @@ class ToolController extends Controller
             )
             ->where('BRAND', 'CPS')
             ->orderBy('DESCRIPTION', 'ASC');
-        } else if ($userpermission == 'KTY') {
+        } else {
             $data = Series::select(
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
                 'EDIT_DT'
             )
-            ->where('BRAND', 'KTY')
-            ->orderBy('DESCRIPTION', 'ASC');
-        }  else if ($userpermission == 'GNC') {
-            $data = Series::select(
-                'ID',
-                'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
-            )
-            ->where('BRAND', 'GNC')
-            ->orderBy('DESCRIPTION', 'ASC');
-        }
-        else if ($userpermission == 'BB') {
-            $data = Series::select(
-                'ID',
-                'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
-            )
-            ->where('BRAND', 'BB')
-            ->orderBy('DESCRIPTION', 'ASC');
-        } else if ($userpermission == 'LL') {
-            $data = Series::select(
-                'ID',
-                'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
-            )
-            ->where('BRAND', 'LL')
+            ->where('BRAND', $userpermission)
             ->orderBy('DESCRIPTION', 'ASC');
         }
 
@@ -2141,42 +2202,14 @@ class ToolController extends Controller
             )
             ->where('BRAND', 'CPS')
             ->orderBy('DESCRIPTION', 'ASC');
-        } else if ($userpermission == 'KTY') {
+        } else {
             $data = Category::select(
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
                 'EDIT_DT'
             )
-            ->where('BRAND', 'KTY')
-            ->orderBy('DESCRIPTION', 'ASC');
-        }  else if ($userpermission == 'GNC') {
-            $data = Category::select(
-                'ID',
-                'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
-            )
-            ->where('BRAND', 'GNC')
-            ->orderBy('DESCRIPTION', 'ASC');
-        }
-        else if ($userpermission == 'BB') {
-            $data = Category::select(
-                'ID',
-                'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
-            )
-            ->where('BRAND', 'BB')
-            ->orderBy('DESCRIPTION', 'ASC');
-        } else if ($userpermission == 'LL') {
-            $data = Category::select(
-                'ID',
-                'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
-            )
-            ->where('BRAND', 'LL')
+            ->where('BRAND', $userpermission)
             ->orderBy('DESCRIPTION', 'ASC');
         }
 
@@ -2256,7 +2289,7 @@ class ToolController extends Controller
             )
             ->where('BRAND', 'CPS')
             ->orderBy('DESCRIPTION', 'ASC');
-        } else if ($userpermission == 'KTY') {
+        } else {
             $data = Sub_category::select(
                 'ID',
                 'CATEGORY_ID',
@@ -2264,38 +2297,7 @@ class ToolController extends Controller
                 'BRAND',
                 'EDIT_DT'
             )
-            ->where('BRAND', 'KTY')
-            ->orderBy('DESCRIPTION', 'ASC');
-        }  else if ($userpermission == 'GNC') {
-            $data = Sub_category::select(
-                'ID',
-                'CATEGORY_ID',
-                'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
-            )
-            ->where('BRAND', 'GNC')
-            ->orderBy('DESCRIPTION', 'ASC');
-        }
-        else if ($userpermission == 'BB') {
-            $data = Sub_category::select(
-                'ID',
-                'CATEGORY_ID',
-                'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
-            )
-            ->where('BRAND', 'BB')
-            ->orderBy('DESCRIPTION', 'ASC');
-        } else if ($userpermission == 'LL') {
-            $data = Sub_category::select(
-                'ID',
-                'CATEGORY_ID',
-                'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
-            )
-            ->where('BRAND', 'LL')
+            ->where('BRAND', $userpermission)
             ->orderBy('DESCRIPTION', 'ASC');
         }
 
@@ -2445,17 +2447,10 @@ class ToolController extends Controller
 
     public function listProductCoOrdinator(Request $request)
     {
-        // dd($request);
-        $limit = $request->input('length'); // limit per page
-        $request->merge([
-            'page' => ceil(($request->input('start') + 1) / $limit),
-        ]);
+        $limit = (int) $request->input('length'); // จำนวนต่อหน้า
+        $start = (int) $request->input('start', 0);
 
-        $GRP_P = $request->input('brand_id');
-        $DOC_NO = $request->search;
-        $field_detail = [
-            'product1s.PRODUCT',
-        ];
+        $productCoOrdinatorNameAll = $request->input('productCoOrdinatorName', '');
 
         $data = Npd_cos::select(
             'ID',
@@ -2497,90 +2492,44 @@ class ToolController extends Controller
             )
             ->where('BRAND', 'CPS')
             ->orderBy('ID', 'ASC');
-        } else if ($userpermission == 'KTY') {
+        }  else {
             $data = Npd_cos::select(
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
                 'EDIT_DT'
             )
-            ->where('BRAND', 'KTY')
-            ->orderBy('DESCRIPTION', 'ASC');
-        }  else if ($userpermission == 'GNC') {
-            $data = Npd_cos::select(
-                'ID',
-                'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
-            )
-            ->where('BRAND', 'GNC')
-            ->orderBy('DESCRIPTION', 'ASC');
-        }
-        else if ($userpermission == 'BB') {
-            $data = Npd_cos::select(
-                'ID',
-                'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
-            )
-            ->where('BRAND', 'BB')
-            ->orderBy('DESCRIPTION', 'ASC');
-        } else if ($userpermission == 'LL') {
-            $data = Npd_cos::select(
-                'ID',
-                'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
-            )
-            ->where('BRAND', 'LL')
+            ->where('BRAND', $userpermission)
             ->orderBy('DESCRIPTION', 'ASC');
         }
 
-        if ($request->BRAND) {
-            $data = $data->where('npd_cos.BRAND', $request->BRAND);
+        if (!empty($productCoOrdinatorNameAll)) {
+            $data->where(function ($q) use ($productCoOrdinatorNameAll) {
+                $q->orWhere('npd_cos.DESCRIPTION', 'like', '%' . $productCoOrdinatorNameAll . '%');
+            });
         }
-
-        if ($request->DESCRIPTION) {
-            $data->where('npd_cos.DESCRIPTION', $request->DESCRIPTION);
-        }
-
-        if ($GRP_P != null) {
-            $data->where('product1s.GRP_P', $GRP_P);
-        }
-
-        // if (null != $DOC_NO) {
-        //     $data = $data->where(function ($data) use ($DOC_NO, $field_detail) {
-        //         for ($i = 0; $i < count($field_detail); $i++) {
-        //             $data->orWhere($field_detail[$i], 'like', '%'.$DOC_NO.'%');
-        //         }
-        //     });
-        // }
 
         // dd($data->toSql());
-        $data = $data->paginate($limit);
-        $totalRecords = $data->total();
-        $totalRecordwithFilter = $data->count();
-        $response = [
-            'draw' => intval($request->draw),
-            'iTotalRecords' => $totalRecordwithFilter,
-            'iTotalDisplayRecords' => $totalRecords,
-            'aaData' => $data->items(),
-        ];
+        // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
+        $totalRecords = $data->count();
+        if ($limit > 0) {
+             $data->limit($limit)->offset($start);
+        }
+        $records = $data->get();
 
-        return response()->json($response);
+        return response()->json([
+             'draw' => intval($request->draw),
+             'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
+             'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
+             'aaData' => $records,
+        ]);
     }
     public function listMarketingManager(Request $request)
     {
-        $limit = $request->input('length'); // limit per page
-        $request->merge([
-            'page' => ceil(($request->input('start') + 1) / $limit),
-        ]);
+        $limit = (int) $request->input('length'); // จำนวนต่อหน้า
+        $start = (int) $request->input('start', 0);
 
-        $GRP_P = $request->input('brand_id');
-        $DOC_NO = $request->search;
-        $field_detail = [
-            'product1s.PRODUCT',
-        ];
+        $productMarketingManagerNameAll = $request->input('productMarketingManagerName', '');
 
         $data = Npd_pdms::select(
             'ID',
@@ -2622,69 +2571,37 @@ class ToolController extends Controller
             )
             ->where('BRAND', 'CPS')
             ->orderBy('ID', 'ASC');
-        } else if ($userpermission == 'KTY') {
+        } else {
             $data = Npd_pdms::select(
                 'ID',
                 'DESCRIPTION',
                 'BRAND',
                 'EDIT_DT'
             )
-            ->where('BRAND', 'KTY')
-            ->orderBy('DESCRIPTION', 'ASC');
-        }  else if ($userpermission == 'GNC') {
-            $data = Npd_pdms::select(
-                'ID',
-                'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
-            )
-            ->where('BRAND', 'GNC')
-            ->orderBy('DESCRIPTION', 'ASC');
-        }
-        else if ($userpermission == 'BB') {
-            $data = Npd_pdms::select(
-                'ID',
-                'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
-            )
-            ->where('BRAND', 'BB')
-            ->orderBy('DESCRIPTION', 'ASC');
-        } else if ($userpermission == 'LL') {
-            $data = Npd_pdms::select(
-                'ID',
-                'DESCRIPTION',
-                'BRAND',
-                'EDIT_DT'
-            )
-            ->where('BRAND', 'LL')
+            ->where('BRAND', $userpermission)
             ->orderBy('DESCRIPTION', 'ASC');
         }
 
-        if ($GRP_P != null) {
-            $data->where('product1s.GRP_P', $GRP_P);
-        }
-
-        if (null != $DOC_NO) {
-            $data = $data->where(function ($data) use ($DOC_NO, $field_detail) {
-                for ($i = 0; $i < count($field_detail); $i++) {
-                    $data->orWhere($field_detail[$i], 'like', '%'.$DOC_NO.'%');
-                }
+        if (!empty($productMarketingManagerNameAll)) {
+            $data->where(function ($q) use ($productMarketingManagerNameAll) {
+                $q->orWhere('npd_pdms.DESCRIPTION', 'like', '%' . $productMarketingManagerNameAll . '%');
             });
         }
 
         // dd($data->toSql());
-        $data = $data->paginate($limit);
-        $totalRecords = $data->total();
-        $totalRecordwithFilter = $data->count();
-        $response = [
-            'draw' => intval($request->draw),
-            'iTotalRecords' => $totalRecordwithFilter,
-            'iTotalDisplayRecords' => $totalRecords,
-            'aaData' => $data->items(),
-        ];
+        // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
+        $totalRecords = $data->count();
+        if ($limit > 0) {
+             $data->limit($limit)->offset($start);
+        }
+        $records = $data->get();
 
-        return response()->json($response);
+        return response()->json([
+             'draw' => intval($request->draw),
+             'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
+             'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
+             'aaData' => $records,
+        ]);
     }
 
     public function listProductLine(Request $request)
