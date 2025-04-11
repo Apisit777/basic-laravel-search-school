@@ -328,15 +328,15 @@
                                                                     <label for="REGISTER">เลขที่ อย.</label>
                                                                     <input type="text" name="REGISTER" id="REGISTER" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->REGISTER }}" />
                                                                 </div>
-                                                                <!-- <div class="md:col-span-3">
+                                                                <div class="md:col-span-3">
                                                                     <label for="name">ประเภทสินค้า</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="TYPE_G" id="TYPE_G">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($type_gs as $key => $type_g)
-                                                                            <option value={{ $type_g->TYPE_G }} {{ $type_g->TYPE_G == $data->TYPE_G ? 'selected' : '' }}>{{ $type_g->TYPE_G.' - ('.$type_g->DESCRIPTION.')'}}</option>
+                                                                            <option value={{ $type_g->TYPE_G }} {{ $type_g->TYPE_G == $data->TYPE_G ? 'selected' : '' }}>{{ $type_g->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
-                                                                </div> -->
+                                                                </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="OPT_TXT1">รหัสสินค้าอ้างอิง</label>
                                                                     <input type="text" name="OPT_TXT1" id="OPT_TXT1" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->OPT_TXT1 }}" />

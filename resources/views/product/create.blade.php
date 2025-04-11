@@ -581,7 +581,7 @@
                                                                     <label for="REGISTER">เลขที่ อย.</label>
                                                                     <input type="text" name="REGISTER" id="REGISTER" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
                                                                 </div>
-                                                                <!-- <div class="md:col-span-3">
+                                                                <div class="md:col-span-3">
                                                                     <label for="name">ประเภทสินค้า<span class="text-danger"> *</span></label>
                                                                     <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="TYPE_G" id="TYPE_G" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
@@ -590,7 +590,7 @@
                                                                         @endforeach
                                                                     </select>
                                                                     <span id="TYPE_G_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
-                                                                </div> -->
+                                                                </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="OPT_TXT1">รหัสสินค้าอ้างอิง</label>
                                                                     <input type="text" name="OPT_TXT1" id="OPT_TXT1" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
@@ -1799,7 +1799,7 @@
             // const GRP_P = jQuery('#GRP_P').val();
             // const BRAND_P = jQuery('#BRAND_P').val();
             const SUPPLIER = jQuery('#SUPPLIER').val();
-            // const TYPE_G = jQuery('#TYPE_G').val();
+            const TYPE_G = jQuery('#TYPE_G').val();
             // const SOLUTION = jQuery('#SOLUTION').val();
             const STATUS = jQuery('#STATUS').val();
             // const UNIT = jQuery('#UNIT').val();
@@ -1816,6 +1816,11 @@
                 jQuery('#SUPPLIER_textalert').addClass('hidden');
             } else {
                 jQuery('#SUPPLIER_textalert').removeClass('hidden');
+            }
+            if (TYPE_G) {
+                jQuery('#TYPE_G_textalert').addClass('hidden');
+            } else {
+                jQuery('#TYPE_G_textalert').removeClass('hidden');
             }
             if (STATUS) {
                 jQuery('#STATUS_textalert').addClass('hidden');
@@ -1840,7 +1845,7 @@
 
             let checkInputAll = checkInput()
 
-            return !!VENDOR && !!SUPPLIER && !!STATUS && checkInputAll
+            return !!VENDOR && !!TYPE_G && !!SUPPLIER && !!STATUS && checkInputAll
         }
 
         // function checkFormClickAuto1() {

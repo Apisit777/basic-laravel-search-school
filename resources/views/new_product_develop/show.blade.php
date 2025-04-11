@@ -407,8 +407,12 @@
                             <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->BRAND }}</div>
                         @elseif ( $dataIBSH->Code >= 29000 && $dataIBSH->Code <= 29699 )
                             <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">RE</div>
-                        @else
+                        @elseif ( $dataIBSH->Code >= 29700 && $dataIBSH->Code <= 29999 )
                             <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">CM</div>
+                        @elseif ( $dataIBSH->Code >= 60000 && $dataIBSH->Code <= 69999 )
+                            <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">BB</div>
+                        @else
+                            <div class="mt-1" style="display:flex; justify-content:center; align-items: center; height: 100%;">{{ $dataIBSH->BRAND }}</div>
                         @endif
                     </div>
                     <div class="" style="border-right: none; border-bottom: 1px solid #000; border-left: 1px solid #000;">

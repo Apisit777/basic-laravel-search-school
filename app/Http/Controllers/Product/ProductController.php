@@ -1691,7 +1691,7 @@ class ProductController extends Controller
                 'NAME_EXP' => $request->input('NAME_EXP') ?? '',
                 'NET_WEIGHT' => $request->input('NET_WEIGHT') ?? '',
                 'UNIT_TYPE' => $request->input('UNIT_TYPE') ?? '',
-                // 'TYPE_G' => $request->input('TYPE_G') ?? '',
+                'TYPE_G' => $request->input('TYPE_G') ?? '',
 
                 'OPT_DATE1' => $request->input('OPT_DATE1') ?? '',
                 'OPT_DATE2' => $request->input('OPT_DATE2') ?? '',
@@ -2624,7 +2624,7 @@ class ProductController extends Controller
                     'NAME_EXP' => $request->input('NAME_EXP'),
                     'NET_WEIGHT' => $request->input('NET_WEIGHT'),
                     'UNIT_TYPE' => $request->input('UNIT_TYPE'),
-                    // 'TYPE_G' => $request->input('TYPE_G'),
+                    'TYPE_G' => $request->input('TYPE_G'),
                     'OPT_DATE1' => $request->input('OPT_DATE1'),
                     'OPT_DATE2' => $request->input('OPT_DATE2'),
                     'OPT_TXT2' => $request->input('OPT_TXT2'),
