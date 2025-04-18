@@ -249,7 +249,7 @@
                 <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                     <div class="md:col-span-3">
                         <label for="BRAND" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Brand</label>
-                        <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND">
+                        <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND" onchange="brandSearch()">
                             <option value=""> --- กรุณาเลือก ---</option>
                         </select>
                     </div>
@@ -264,6 +264,38 @@
             </div>
         </div>
         <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-700 relative"></ul>
+
+        <div id="typing-text" class="text-md font-semibold sm:text-xl text-black dark:text-white ml-2.5 whitespace-pre-line">
+        </div>
+
+        <!-- <button onclick="confirmUpdate()" class="btn btn-success">อัปเดตราคา</button> -->
+
+        <div class="flex xs:right-12 sm:right-12 md:right-14 lg:right-14 xl:right-14 z-10 absolute mt-3">  
+            <a 
+                onclick="confirmUpdate()" type="button" 
+                class="xs:mt-0 sm:mt-0 md:mt-2 lg:mt-2 xl:mt-2 -mr-4 px-1.5 py-1.5 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded cursor-pointer group" name="add" id="add">
+
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                    <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                </svg> -->
+
+                <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block"
+                    viewBox="0 0 291.764 291.764" xml:space="preserve">
+                    <g>
+                        <path style="fill:#F4B459;" d="M145.882,0c80.573,0,145.882,65.319,145.882,145.882s-65.31,145.882-145.882,145.882
+                            S0,226.446,0,145.882S65.31,0,145.882,0z"/>
+                        <path style="fill:#D07C40;" d="M145.882,27.399c-65.465,0-118.529,53.065-118.529,118.529s53.065,118.529,118.529,118.529 s118.529-53.065,118.529-118.529S211.347,27.399,145.882,27.399z M145.882,246.231c-55.39,0-100.294-44.914-100.294-100.294
+                            c0-55.39,44.904-100.294,100.294-100.294s100.294,44.904,100.294,100.294C246.176,201.318,201.272,246.231,145.882,246.231z M174.63,141.187c6.738-3.483,10.969-9.601,9.984-19.804c-1.331-13.941-14.369-18.618-29.395-19.949l-0.009-19.329h-9.355v18.828
+                            l-9.3,0.128V82.104h-9.063v19.329c-2.516,0.055-8.698,0.109-11.124,0.109v-0.064l-16.056-0.009v12.573c0,0,12.008-0.164,11.88,0 c4.714,0,6.255,2.772,6.683,5.161l0.009,22.028l1.231,0.082h-1.231v30.863c-0.201,1.504-1.076,3.902-4.367,3.911
+                            c0.146,0.137-11.889,0-11.889,0l-2.316,14.05h15.144l12.017,0.073l0.009,19.566h8.78l-0.009-19.357 c3.209,0.073,6.282,0.109,9.309,0.1v19.256h10.212v-19.53c19.566-1.131,33.836-6.118,35.541-24.709
+                            C192.701,150.56,185.736,143.886,174.63,141.187z M135.698,114.891c6.574,0,27.216-2.115,27.216,11.762 c0,13.294-20.642,11.753-27.216,11.753V114.891z M135.698,176.162V150.25c7.896,0,32.632-2.289,32.632,12.956
+                            C168.33,177.831,143.594,176.162,135.698,176.162z"/>
+                    </g>
+                </svg>
+                อัปเดตราคา
+            </a>
+        </div>
+
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
             <div id="containerexample" class="text-gray-900 dark:text-gray-100">
                 <table id="product_master_table" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
@@ -432,6 +464,8 @@
     <script src="{{ asset('js/buttons-print.min.js') }}"></script>
     <script src="{{ asset('js/buttons-colVis.min.js') }}"></script>
     <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
+    <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
+    
     <script>
 
 (function ($) {
@@ -1688,6 +1722,37 @@ function myFunction() {
 window.print();
 }
 
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     const lines = [
+        //         "คำเตือน",
+        //         "การ Update ราคาสินค้า",
+        //         "จะไม่สามารถกู้คืนราคาสินค้าเก่าได้",
+        //         "✅ Brand",
+        //         "✅ จำนวนสินค้าทั้งหมด",
+        //     ];
+        //     const el = document.getElementById('typing-text');
+        //     let currentLine = 0;
+        //     let currentChar = 0;
+
+        //     function typeNextChar() {
+        //         if (currentLine >= lines.length) return;
+
+        //         const line = lines[currentLine];
+
+        //         if (currentChar < line.length) {
+        //             el.textContent += line[currentChar];
+        //             currentChar++;
+        //             setTimeout(typeNextChar, 50);
+        //         } else {
+        //             el.textContent += '\n';
+        //             currentLine++;
+        //             currentChar = 0;
+        //             setTimeout(typeNextChar, 300); // delay between lines
+        //         }
+        //     }
+        //     typeNextChar();
+        // });
+
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
         });
@@ -1747,11 +1812,103 @@ window.print();
             ]
         });
 
-        // Function สำหรับเรียกใช้ DataTable เมื่อมีการพิมพ์
-        function searchTable() {
-            console.log("Search: ", $('#search').val());
-            // บังคับให้ DataTables รีโหลดข้อมูลใหม่
-            mytableDatatable.ajax.reload(null, false);
+        function saveUpdate() {
+            // ส่งข้อมูลไปหลังบ้าน
+            Swal.fire('กำลังอัปเดต...', '', 'info');
+            // $.ajax(...) เป็นต้น
+        }
+
+        const lines = [
+            "     คำเตือน",
+            "การ Update ราคาสินค้า",
+            "จะไม่สามารถกู้คืนราคาสินค้าเก่าได้",
+            "✅ Brand",
+            "✅ จำนวนสินค้าทั้งหมด",
+            '',
+            "🚀 ChatGPT(Product Master) V. 1.04.1",
+        ];
+
+        let currentLine = 0;
+        let currentChar = 0;
+        let message = '';
+
+        function typeNextCharSwal() {
+            if (currentLine >= lines.length) {
+                // เพิ่มปุ่มเมื่อพิมพ์จบ
+                Swal.update({
+                    showConfirmButton: true,
+                    showCancelButton: true,
+                    confirmButtonText: 'ใช่, อัปเดต!',
+                    cancelButtonText: 'ยกเลิก'
+                });
+                return;
+            }
+
+            const line = lines[currentLine];
+
+            if (currentChar < line.length) {
+                message += line[currentChar];
+                currentChar++;
+
+                Swal.update({ 
+                    html: `
+                        <div style="display: flex; justify-content: center; margin-bottom: 10px;">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 291.764 291.764" width="50" height="50">
+                                <g>
+                                    <path style="fill:#F4B459;" d="M145.882,0c80.573,0,145.882,65.319,145.882,145.882s-65.31,145.882-145.882,145.882
+                                        S0,226.446,0,145.882S65.31,0,145.882,0z"/>
+                                    <path style="fill:#D07C40;" d="M145.882,27.399c-65.465,0-118.529,53.065-118.529,118.529s53.065,118.529,118.529,118.529 s118.529-53.065,118.529-118.529S211.347,27.399,145.882,27.399z M145.882,246.231c-55.39,0-100.294-44.914-100.294-100.294
+                                        c0-55.39,44.904-100.294,100.294-100.294s100.294,44.904,100.294,100.294C246.176,201.318,201.272,246.231,145.882,246.231z M174.63,141.187c6.738-3.483,10.969-9.601,9.984-19.804c-1.331-13.941-14.369-18.618-29.395-19.949l-0.009-19.329h-9.355v18.828
+                                        l-9.3,0.128V82.104h-9.063v19.329c-2.516,0.055-8.698,0.109-11.124,0.109v-0.064l-16.056-0.009v12.573c0,0,12.008-0.164,11.88,0 c4.714,0,6.255,2.772,6.683,5.161l0.009,22.028l1.231,0.082h-1.231v30.863c-0.201,1.504-1.076,3.902-4.367,3.911
+                                        c0.146,0.137-11.889,0-11.889,0l-2.316,14.05h15.144l12.017,0.073l0.009,19.566h8.78l-0.009-19.357 c3.209,0.073,6.282,0.109,9.309,0.1v19.256h10.212v-19.53c19.566-1.131,33.836-6.118,35.541-24.709
+                                        C192.701,150.56,185.736,143.886,174.63,141.187z M135.698,114.891c6.574,0,27.216-2.115,27.216,11.762 c0,13.294-20.642,11.753-27.216,11.753V114.891z M135.698,176.162V150.25c7.896,0,32.632-2.289,32.632,12.956
+                                        C168.33,177.831,143.594,176.162,135.698,176.162z"/>
+                                </g>
+                            </svg>
+                        </div>
+                        <pre style="text-align: left; white-space: pre-line; color:#ffffff;">${message}</pre>
+                    `
+                });
+
+                setTimeout(typeNextCharSwal, 50);
+            } else {
+                message += '\n';
+                currentLine++;
+                currentChar = 0;
+                setTimeout(typeNextCharSwal, 300);
+            }
+        }
+
+        function confirmUpdate() {
+            // รีเซ็ตก่อนพิมพ์ใหม่
+            message = '';
+            currentLine = 0;
+            currentChar = 0;
+
+            Swal.fire({
+                title: 'คุณแน่ใจหรือไม่จะให้ AI อัปเดตราคาสินค้า?',
+                showConfirmButton: false, // ปิดปุ่มตอนพิมพ์
+                showCancelButton: false,
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                confirmButtonColor: '#303030',
+                cancelButtonColor: '#e13636',
+                color: "#ffffff",
+                background: "#202020",
+                didOpen: () => {
+                    typeNextCharSwal();
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    saveUpdate();
+                }
+            });
+        }
+
+        function saveUpdate() {
+            // ส่งข้อมูลไปหลังบ้าน
+            Swal.fire('กำลังอัปเดต...', '', 'info');
+            // $.ajax(...) เป็นต้น
         }
 
     </script>
