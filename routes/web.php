@@ -14,6 +14,7 @@ use App\Http\Controllers\Warehouse\ComProductController;
 use App\Http\Controllers\Tool\ToolController;
 use App\Http\Controllers\PusherController;
 use App\Http\Controllers\BrandController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ExportExcel\ExportExcelController;
 
 /*
@@ -30,6 +31,11 @@ use App\Http\Controllers\ExportExcel\ExportExcelController;
 Route::get('/', function () {
     return view('auth.login');
 });
+
+// Import Excel
+Route::get('users', [UserController::class, 'index']);
+Route::post('users-export', [UserController::class, 'export'])->name('users.export');
+Route::post('users-import', [UserController::class, 'import'])->name('users.import');
 
 // Login
 Route::get('/register', [AuthController::class, 'register']);

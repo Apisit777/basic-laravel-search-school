@@ -17,6 +17,9 @@ use App\Models\Food;
 use App\Models\ComProductImage;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
+use App\Imports\UserImport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Models\User;
 
 
 class ComProductController extends Controller
@@ -58,8 +61,13 @@ class ComProductController extends Controller
         //     ]);
         // }
 
-        // dd( $roles);
         return view('warehouse.index', compact('brands', 'roles'));
+    }
+
+    public function import()
+    {
+        Excel::import(new UserImport, request()->file('file'));
+        return back();
     }
 
     public function listWarehouse(Request $request)
@@ -304,7 +312,10 @@ class ComProductController extends Controller
         $brand_ps = Brand_p::all();
         $roles = [];
 
-        return view('warehouse.document.index', compact('brand_ps', 'brands', 'roles'));
+        $users = User::get();
+
+        // dd( $roles);
+        return view('warehouse.document.index', compact('users', 'brand_ps', 'brands', 'roles'));
     }
 
     // public function filter(Request $request)
@@ -342,16 +353,16 @@ class ComProductController extends Controller
         if (!$request->has('img') || !is_array($request->img)) {
             return response()->json(['status' => 400, 'message' => 'Invalid request'], 400);
         }
-    
+
         foreach ($request->img as $index => $imageId) {
             ComProductImage::where('id', $imageId)->update(['seq' => $index + 1]);
         }
-    
+
         // ✅ Fix: เพิ่ม product_id filter
         $mainImage = ComProductImage::where('product_id', $id)
             ->where('seq', 1)
             ->first();
-    
+
         // dd($mainImage);
 
         if ($mainImage && $mainImage->path) {
@@ -363,7 +374,7 @@ class ComProductController extends Controller
 
         session()->flash('message', 'อัปเดตข้อมูลสำเร็จ');
         return response()->json([
-            'status' => 200, 
+            'status' => 200,
             'message' => 'อัปเดตข้อมูลสำเร็จ'
         ]);
     }

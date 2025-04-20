@@ -230,6 +230,22 @@
             width: 100%;
         }
 
+        /* #coin {
+            width: 100px;
+            height: 100px;
+            animation: flip 2s infinite linear;
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+        }
+
+        @keyframes flip {
+            0% {
+                transform: rotateY(0deg);
+            }
+            100% {
+                transform: rotateY(360deg);
+            }
+        } */
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -270,9 +286,9 @@
 
         <!-- <button onclick="confirmUpdate()" class="btn btn-success">อัปเดตราคา</button> -->
 
-        <div class="flex xs:right-12 sm:right-12 md:right-14 lg:right-14 xl:right-14 z-10 absolute mt-3">  
-            <a 
-                onclick="confirmUpdate()" type="button" 
+        <div class="flex xs:right-12 sm:right-12 md:right-14 lg:right-14 xl:right-14 z-10 absolute mt-3">
+            <a
+                onclick="confirmUpdate()" type="button"
                 class="xs:mt-0 sm:mt-0 md:mt-2 lg:mt-2 xl:mt-2 -mr-4 px-1.5 py-1.5 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded cursor-pointer group" name="add" id="add">
 
                 <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
@@ -448,6 +464,92 @@
         </div>
     </div>
 
+    <div class="justify-center items-center no-print">
+        <div class="mt-6 mb-4 flex justify-center items-center">
+            <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">Import Data</p>
+        </div>
+
+        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-700"></ul>
+
+        <form action="{{ route('users.import') }}" method="POST" enctype="multipart/form-data" class="relative">
+            @csrf
+            <input type="file" name="file" class="form-control">
+            <br>
+            <button class="fa-solid far fa-file-excel btn btn-dark"> Import</button>
+
+            <div class="flex xs:right-10 sm:right-10 md:right-6 lg:right-6 xl:right-6 z-10 absolute mb-2">
+                <a href="{{ route('users.export') }}" class="fa-solid far fa-file-excel btn btn-danger float-end"> Export</a>
+            </div>
+
+        </form>
+
+        {{-- <div class="flex xs:right-10 sm:right-10 md:right-6 lg:right-6 xl:right-6 z-10 absolute mb-10">
+            <a href="{{ route('users.export') }}" class="fa-solid far fa-file-excel btn btn-danger float-end"> Export</a>
+        </div> --}}
+
+        <table class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100">
+            {{-- <tr>
+                <th colspan="4">
+                    List of Data
+                    <a href="{{ route('users.export') }}" class="fa-solid far fa-file-excel btn btn-danger float-end"> Export</a>
+                </th>
+            </tr> --}}
+            <tr>
+                <th>ID</th>
+                <th>User Name</th>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+            @foreach ($users as $user)
+                <tr>
+                    <td>{{ $user->id }}</td>
+                    <td>{{ $user->username }}</td>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->email }}</td>
+                </tr>
+            @endforeach
+        </table>
+    </div>
+
+    {{-- <div class="container">
+        <div class="card mt-3 mb-3">
+            <div class="card-header text-center">
+                <h4>Import Data</h4>
+            </div>
+            <div class="card-body">
+                <form action="{{ route('users.import') }}" method="POST" enctype="multipart/form-data">
+                    @csrf
+                    <input type="file" name="file" class="form-control">
+                    <br>
+                    <button class="fa-solid far fa-file-excel btn btn-dark"> Import</button>
+                </form>
+
+                <table class="table tavle-bordered mt-3">
+                    <tr>
+                        <th colspan="3">
+                            List of Data
+                            <a href="{{ route('users.export') }}" class="fa-solid far fa-file-excel btn btn-danger float-end"> Export</a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>ID</th>
+                        <th>User Name</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                    </tr>
+                    @foreach ($users as $user)
+                        <tr>
+                            <td>{{ $user->id }}</td>
+                            <td>{{ $user->username }}</td>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->email }}</td>
+                        </tr>
+                    @endforeach
+                </table>
+            </div>
+        </div>
+    </div> --}}
+
     {{-- <div class="mt-16 md:col-span-3" >
         <label for="">ค้นหา</label>
         <input type="text" name="search" id="search" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" onkeyup="searchTable()" />
@@ -465,7 +567,7 @@
     <script src="{{ asset('js/buttons-colVis.min.js') }}"></script>
     <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
     <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
-    
+
     <script>
 
 (function ($) {
@@ -1822,6 +1924,7 @@ window.print();
             "     คำเตือน",
             "การ Update ราคาสินค้า",
             "จะไม่สามารถกู้คืนราคาสินค้าเก่าได้",
+            "💰 Price",
             "✅ Brand",
             "✅ จำนวนสินค้าทั้งหมด",
             '',
@@ -1850,21 +1953,31 @@ window.print();
                 message += line[currentChar];
                 currentChar++;
 
-                Swal.update({ 
+                Swal.update({
                     html: `
                         <div style="display: flex; justify-content: center; margin-bottom: 10px;">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 291.764 291.764" width="50" height="50">
-                                <g>
-                                    <path style="fill:#F4B459;" d="M145.882,0c80.573,0,145.882,65.319,145.882,145.882s-65.31,145.882-145.882,145.882
-                                        S0,226.446,0,145.882S65.31,0,145.882,0z"/>
-                                    <path style="fill:#D07C40;" d="M145.882,27.399c-65.465,0-118.529,53.065-118.529,118.529s53.065,118.529,118.529,118.529 s118.529-53.065,118.529-118.529S211.347,27.399,145.882,27.399z M145.882,246.231c-55.39,0-100.294-44.914-100.294-100.294
-                                        c0-55.39,44.904-100.294,100.294-100.294s100.294,44.904,100.294,100.294C246.176,201.318,201.272,246.231,145.882,246.231z M174.63,141.187c6.738-3.483,10.969-9.601,9.984-19.804c-1.331-13.941-14.369-18.618-29.395-19.949l-0.009-19.329h-9.355v18.828
-                                        l-9.3,0.128V82.104h-9.063v19.329c-2.516,0.055-8.698,0.109-11.124,0.109v-0.064l-16.056-0.009v12.573c0,0,12.008-0.164,11.88,0 c4.714,0,6.255,2.772,6.683,5.161l0.009,22.028l1.231,0.082h-1.231v30.863c-0.201,1.504-1.076,3.902-4.367,3.911
-                                        c0.146,0.137-11.889,0-11.889,0l-2.316,14.05h15.144l12.017,0.073l0.009,19.566h8.78l-0.009-19.357 c3.209,0.073,6.282,0.109,9.309,0.1v19.256h10.212v-19.53c19.566-1.131,33.836-6.118,35.541-24.709
-                                        C192.701,150.56,185.736,143.886,174.63,141.187z M135.698,114.891c6.574,0,27.216-2.115,27.216,11.762 c0,13.294-20.642,11.753-27.216,11.753V114.891z M135.698,176.162V150.25c7.896,0,32.632-2.289,32.632,12.956
-                                        C168.33,177.831,143.594,176.162,135.698,176.162z"/>
-                                </g>
-                            </svg>
+                            <div class="coin-wrapper">
+                                <div id="coin">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 291.764 291.764" width="80" height="80">
+                                        <g>
+                                        <path style="fill:#F4B459;" d="M145.882,0c80.573,0,145.882,65.319,145.882,145.882s-65.31,145.882-145.882,145.882
+                                            S0,226.446,0,145.882S65.31,0,145.882,0z"/>
+                                        <path style="fill:#D07C40;" d="M145.882,27.399c-65.465,0-118.529,53.065-118.529,118.529s53.065,118.529,118.529,118.529
+                                            s118.529-53.065,118.529-118.529S211.347,27.399,145.882,27.399z M145.882,246.231c-55.39,0-100.294-44.914-100.294-100.294
+                                            c0-55.39,44.904-100.294,100.294-100.294s100.294,44.904,100.294,100.294
+                                            C246.176,201.318,201.272,246.231,145.882,246.231z M174.63,141.187c6.738-3.483,10.969-9.601,9.984-19.804
+                                            c-1.331-13.941-14.369-18.618-29.395-19.949l-0.009-19.329h-9.355v18.828l-9.3,0.128V82.104h-9.063v19.329
+                                            c-2.516,0.055-8.698,0.109-11.124,0.109v-0.064l-16.056-0.009v12.573c0,0,12.008-0.164,11.88,0
+                                            c4.714,0,6.255,2.772,6.683,5.161l0.009,22.028l1.231,0.082h-1.231v30.863c-0.201,1.504-1.076,3.902-4.367,3.911
+                                            c0.146,0.137-11.889,0-11.889,0l-2.316,14.05h15.144l12.017,0.073l0.009,19.566h8.78l-0.009-19.357
+                                            c3.209,0.073,6.282,0.109,9.309,0.1v19.256h10.212v-19.53c19.566-1.131,33.836-6.118,35.541-24.709
+                                            C192.701,150.56,185.736,143.886,174.63,141.187z M135.698,114.891c6.574,0,27.216-2.115,27.216,11.762
+                                            c0,13.294-20.642,11.753-27.216,11.753V114.891z M135.698,176.162V150.25c7.896,0,32.632-2.289,32.632,12.956
+                                            C168.33,177.831,143.594,176.162,135.698,176.162z"/>
+                                        </g>
+                                    </svg>
+                                </div>
+                            </div>
                         </div>
                         <pre style="text-align: left; white-space: pre-line; color:#ffffff;">${message}</pre>
                     `
