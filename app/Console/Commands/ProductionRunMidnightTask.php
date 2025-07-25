@@ -51,7 +51,7 @@ class ProductionRunMidnightTask extends Command
     public function production_transfer_data_task()
     {
         $now = now();
-        $start = $now->copy()->setTime(10, 00); // 18:30
+        $start = $now->copy()->setTime(10, 45); // 18:30
         $end = $now->copy()->setTime(20, 00);  // 20:00
 
         if (now()->isWeekday() === true && $now->between($start, $end)) {
@@ -327,6 +327,16 @@ class ProductionRunMidnightTask extends Command
                                 $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
                         
+                                $dataProducts1CheckBrand = DB::table('product1s')
+                                ->select('product1s.*')
+                                ->where('product1s.PRODUCT', '=', $rs->PRODUCT)
+                                ->first();
+
+                                // print_r($dataProducts1CheckBrand);
+                                // exit;
+
+                                $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -723,6 +733,16 @@ class ProductionRunMidnightTask extends Command
                                 $OPT_DATE1_RP = $rs->OPT_DATE1 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE1;
                                 $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
+
+                                $dataProducts1CheckBrand = DB::table('product1s')
+                                ->select('product1s.*')
+                                ->where('product1s.PRODUCT', '=', $rs->PRODUCT)
+                                ->first();
+
+                                // print_r($dataProducts1CheckBrand);
+                                // exit;
+
+                                $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
 
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
@@ -1127,6 +1147,16 @@ class ProductionRunMidnightTask extends Command
                                 $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
+                                $dataProducts1CheckBrand = DB::table('product1s')
+                                ->select('product1s.*')
+                                ->where('product1s.PRODUCT', '=', $rs->PRODUCT)
+                                ->first();
+
+                                // print_r($dataProducts1CheckBrand);
+                                // exit;
+
+                                $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -1519,6 +1549,16 @@ class ProductionRunMidnightTask extends Command
                                 $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
+                                $dataProducts1CheckBrand = DB::table('product1s')
+                                ->select('product1s.*')
+                                ->where('product1s.PRODUCT', '=', $rs->PRODUCT)
+                                ->first();
+
+                                // print_r($dataProducts1CheckBrand);
+                                // exit;
+
+                                $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -1908,6 +1948,16 @@ class ProductionRunMidnightTask extends Command
                                 $OPT_DATE1_RP = $rs->OPT_DATE1 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE1;
                                 $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
+
+                                $dataProducts1CheckBrand = DB::table('product1s')
+                                ->select('product1s.*')
+                                ->where('product1s.PRODUCT', '=', $rs->PRODUCT)
+                                ->first();
+
+                                // print_r($dataProducts1CheckBrand);
+                                // exit;
+
+                                $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
 
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
@@ -2300,6 +2350,16 @@ class ProductionRunMidnightTask extends Command
                                 $OPT_DATE1_RP = $rs->OPT_DATE1 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE1;
                                 $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
+
+                                $dataProducts1CheckBrand = DB::table('product1s')
+                                ->select('product1s.*')
+                                ->where('product1s.PRODUCT', '=', $rs->PRODUCT)
+                                ->first();
+
+                                // print_r($dataProducts1CheckBrand);
+                                // exit;
+
+                                $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
 
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET

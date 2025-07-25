@@ -45,6 +45,24 @@
             margin-top: -1px!important;
             font-size: 20px!important;
         }
+        .select2-container {
+            margin-bottom: 0rem!important;
+        }
+        .select2-container--default .select2-selection--single {
+            height: 2rem!important;
+            border-width: 1px;
+            padding: 0.1rem!important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            position: absolute;
+            margin-top: -5px!important;
+        }
+        .h-10 {
+            height: 2rem!important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            font-size: small!important;
+        }
         .btn-rotate:hover .rotate{
             transform: rotate(180deg);
             transition: 0.5s all;
@@ -58,6 +76,18 @@
         .dt-length  {
             color: #818181!important;
         }
+        .table td, .table th {
+            padding: 0.20rem !important;
+        }
+        div.dt-container div.dt-length select {
+            width: auto;
+            display: inline-block;
+            margin-right: 0.5em;
+            height: 36px !important;
+        }
+        /* .mt-2, .my-2 {
+            margin-top: 0rem !important;
+        } */
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -65,48 +95,50 @@
     <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap.css') }}" />
 
     <div class="justify-center items-center">
-        <div class="mt-8 mb-4 flex justify-center items-center">
-            <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">@lang('global.content.product_account_list')</p>
-        </div>
-        <div class="grid mt-5 gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
-            <div class="lg:col-span-4 xl:grid-cols-4">
-                <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                    <div class="md:col-span-3">
-                        <label for="BRAND" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Brand Product</label>
-                        <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND" onchange="brandSearch()">
-                            <option value=""> --- กรุณาเลือก ---</option>
-                            @foreach ($brands as $key => $brand)
-                                <option value={{ $brand }}>{{ $brand }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="md:col-span-3" >
-                        <label for="">Search</label>
-                        <input type="text" name="search" id="search" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า ..." value="" onkeyup="searchTable()"/>
-                    </div>
-                    <div class="md:col-span-6 text-center">
-                        <!-- <div class="inline-flex items-center">
-                            <a href="#" id="btnSerarch" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                                    <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
+        <div class="mt-9 bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-2">
+            <div class="flex justify-center items-center">
+                <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">@lang('global.content.product_account_list')</p>
+            </div>
+            <div class="grid gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
+                <div class="lg:col-span-4 xl:grid-cols-4">
+                    <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
+                        <div class="md:col-span-3">
+                            <label for="BRAND" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Brand Product</label>
+                            <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND" onchange="brandSearch()">
+                                <option value=""> --- กรุณาเลือก ---</option>
+                                @foreach ($brands as $key => $brand)
+                                    <option value={{ $brand }}>{{ $brand }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="md:col-span-3" >
+                            <label for="">Search</label>
+                            <input type="text" name="search" id="search" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า ..." value="" onkeyup="searchTable()"/>
+                        </div>
+                        <div class="md:col-span-6 text-center">
+                            <!-- <div class="inline-flex items-center">
+                                <a href="#" id="btnSerarch" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 mr-2 rounded group">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                        <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
+                                    </svg>
+                                    Search
+                                </a>
+                            </div> -->
+                            <button  id="" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-1 px-2 mr-2 rounded group cursor-pointer btn-rotate" type="reset">
+                                <svg class="hidden h-5 w-5 md:inline-block rotate"
+                                    viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                    <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 93,62 C 83,82 65,96 48,96 32,96 19,89 15,79 L 5,90 5,53 40,53 29,63 c 0,0 5,14 26,14 16,0 38,-15 38,-15 z"/>
+                                    <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 5,38 C 11,18 32,4 49,4 65,4 78,11 85,21 L 95,10 95,47 57,47 68,37 C 68,37 63,23 42,23 26,23 5,38 5,38 z"/>
                                 </svg>
-                                Search
-                            </a>
-                        </div> -->
-                        <button  id="" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-2.5 mr-2 rounded group cursor-pointer btn-rotate" type="reset">
-                            <svg class="hidden h-6 w-6 md:inline-block rotate"
-                                viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
-                                <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 93,62 C 83,82 65,96 48,96 32,96 19,89 15,79 L 5,90 5,53 40,53 29,63 c 0,0 5,14 26,14 16,0 38,-15 38,-15 z"/>
-                                <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 5,38 C 11,18 32,4 49,4 65,4 78,11 85,21 L 95,10 95,47 57,47 68,37 C 68,37 63,23 42,23 26,23 5,38 5,38 z"/>
-                            </svg>
-                            @lang('global.content.clear')
-                        </button>
+                                @lang('global.content.clear')
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-700 relative"></ul>
+        <ul class="pt-1 mt-1 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-700 relative"></ul>
 
         <!-- Modal -->
         <div
@@ -233,10 +265,11 @@
                             <th>ต้นทุน+10%</th>
                             <th>ต้นทุน+อื่นๆ</th> -->
                             <!-- <th>ชื่อสินค้าภาษาไทย</th></th> -->
-                            <th>ชื่อย่อภาษาอังกฤษ</th></th>
-                            <th>ราคาขายบัญชี TP</th></th>
-                            <th>ประเภทสินค้า</th></th>
-                            <th>ประเภทสินค้า[บัญชี]</th></th>
+                            <th>ชื่อย่อภาษาอังกฤษ</th>
+                            <th>สถานะตั้งราคา</th>
+                            <th>ราคาขายบัญชี TP</th>
+                            <th>ประเภทสินค้า</th>
+                            <th>ประเภทสินค้า[บัญชี]</th>
                             <!-- <th>ราคาขาย KM + 20%</th>
                             <th>ราคาขาย KM+อื่นๆ</th> -->
                         </tr>
@@ -345,7 +378,7 @@
             ordering: false,
             deferRender: true,
             scroller: true,
-            scrollY: "600px",
+            scrollY: "580px",
             "order": [[1, "desc"]],
             "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
             "pageLength": 20, // ค่าเริ่มต้นคือ "20"
@@ -371,28 +404,34 @@
                     orderable: true,
                     className: 'text-center',
                     render: function(data, type, row) {
-                        let text = "#"
 
-                        
+                        let showButton = `<a href="{{route('account.show',0)}}"
+                            type="button" class="px-1 py-0.5 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white mr-0.5 rounded group">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" fill="currentColor" class="mb-0.5 hidden h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1">
+                                <path d="M110.4 923.2c-56.8 0-102.4-48-102.4-106.4V285.6c0-58.4 45.6-106.4 102.4-106.4h800.8c56.8 0 102.4 48 102.4 106.4V816c0 58.4-45.6 106.4-102.4 106.4H110.4z m0-701.6c-34.4 0-61.6 28.8-61.6 64V816c0 35.2 28 64 61.6 64h800.8c34.4 0 61.6-28.8 61.6-64V285.6c0-35.2-28-64-61.6-64H110.4z" fill=""/>
+                                <path d="M541.6 392c-12.8 0-23.2-10.4-23.2-24s10.4-24 23.2-24h328c12.8 0 23.2 10.4 23.2 24s-10.4 24-23.2 24h-328zM541.6 511.2c-12.8 0-23.2-10.4-23.2-24s10.4-24 23.2-24h328c12.8 0 23.2 10.4 23.2 24s-10.4 24-23.2 24h-328zM541.6 638.4c-12.8 0-23.2-10.4-23.2-24s10.4-24 23.2-24h276.8c12.8 0 23.2 10.4 23.2 24s-10.4 24-23.2 24H541.6zM58.4 886.4c-2.4 0-4.8 0-7.2-0.8-12.8-4-20-18.4-16-32 23.2-78.4 77.6-142.4 148-176l16-8-13.6-12c-40-34.4-63.2-85.6-63.2-139.2 0-100 78.4-180.8 173.6-180.8 96 0 173.6 80.8 173.6 180.8 0 53.6-23.2 104.8-63.2 139.2l-13.6 12 16 8c68 32 132.8 112 157.6 194.4 16 52.8-16.8 36-1.6 16-3.2 4.8-16.8-5.6-32-5.6-12.8 0-19.2 24.8-19.2 22.4-31.2-104-120.8-203.2-217.6-203.2-99.2 0-186.4 67.2-216 166.4-1.6 11.2-11.2 18.4-21.6 18.4z m239.2-498.4c-69.6 0-126.4 58.4-126.4 130.4s56.8 130.4 126.4 130.4c69.6 0 126.4-58.4 126.4-130.4-0.8-72-56.8-130.4-126.4-130.4z" fill=""/>
+                            </svg>
+                            Show
+                        </a>`;
+
+                        let scheduleButton = `
+                            <div ${row.price < 2 ? 'title="กรุณาใส่ราคา Brand" class="cursor-not-allowed"' : ''}>
+                                <a href="{{route('account.edit',0)}}"
+                                    type="button"
+                                    ${row.price < 2 
+                                        ? 'class="opacity-50 pointer-events-none px-1 py-0.5 font-medium tracking-wide bg-[#303030] text-white rounded group"' 
+                                        : 'class="px-1 py-0.5 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group"'}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="mb-0.5 hidden h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                        <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                                    </svg>
+                                    Schedule
+                                </a>
+                            </div>`;
 
                         return `<div class="inline-flex items-center rounded-md shadow-sm">
-                                    <a href="{{route('account.show',0)}}"
-                                        type="button" class="px-1 py-0.5 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white mr-0.5 rounded group">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" fill="currentColor" class="mb-0.5 hidden h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1">
-                                            <path d="M110.4 923.2c-56.8 0-102.4-48-102.4-106.4V285.6c0-58.4 45.6-106.4 102.4-106.4h800.8c56.8 0 102.4 48 102.4 106.4V816c0 58.4-45.6 106.4-102.4 106.4H110.4z m0-701.6c-34.4 0-61.6 28.8-61.6 64V816c0 35.2 28 64 61.6 64h800.8c34.4 0 61.6-28.8 61.6-64V285.6c0-35.2-28-64-61.6-64H110.4z" fill=""/>
-                                            <path d="M541.6 392c-12.8 0-23.2-10.4-23.2-24s10.4-24 23.2-24h328c12.8 0 23.2 10.4 23.2 24s-10.4 24-23.2 24h-328zM541.6 511.2c-12.8 0-23.2-10.4-23.2-24s10.4-24 23.2-24h328c12.8 0 23.2 10.4 23.2 24s-10.4 24-23.2 24h-328zM541.6 638.4c-12.8 0-23.2-10.4-23.2-24s10.4-24 23.2-24h276.8c12.8 0 23.2 10.4 23.2 24s-10.4 24-23.2 24H541.6zM58.4 886.4c-2.4 0-4.8 0-7.2-0.8-12.8-4-20-18.4-16-32 23.2-78.4 77.6-142.4 148-176l16-8-13.6-12c-40-34.4-63.2-85.6-63.2-139.2 0-100 78.4-180.8 173.6-180.8 96 0 173.6 80.8 173.6 180.8 0 53.6-23.2 104.8-63.2 139.2l-13.6 12 16 8c68 32 132.8 112 157.6 194.4 16 52.8-16.8 36-1.6 16-3.2 4.8-16.8-5.6-32-5.6-12.8 0-19.2 24.8-19.2 22.4-31.2-104-120.8-203.2-217.6-203.2-99.2 0-186.4 67.2-216 166.4-1.6 11.2-11.2 18.4-21.6 18.4z m239.2-498.4c-69.6 0-126.4 58.4-126.4 130.4s56.8 130.4 126.4 130.4c69.6 0 126.4-58.4 126.4-130.4-0.8-72-56.8-130.4-126.4-130.4z" fill=""/>
-                                        </svg>
-                                        Show
-                                    </a>
-                                    <a href="{{route('account.edit',0)}}"
-                                        type="button" class="px-1 py-0.5 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="mb-0.5 hidden h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                                            <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
-                                        </svg>
-                                        Schedule
-                                    </a>
-                                </div>
-                               `.replaceAll('/0', '/' + row.product);
+                            ${showButton}
+                            ${scheduleButton}
+                        </div>`.replaceAll('/0', '/' + row.product_id);
                     }
                 },{
                     targets: 1,
@@ -405,7 +444,7 @@
                     targets: 2,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.product;
+                        return row.product_id;
                     }
                 },
                 // {
@@ -422,6 +461,27 @@
                         return row.SHORT_ENG;
                     }
                 },
+                {
+                    targets: 4,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        let scheduleStatus = '';
+                            if(row.status == 1) {
+                                scheduleStatus = `
+                                📌 สินค้าใหม่
+                                `;
+                            } else if (row.status == 2) {
+                                scheduleStatus = `
+                                🔁 รอดำเนินการตั้งราคา
+                                 `;
+                            } else if (row.status == 3) {
+                                scheduleStatus = `
+                                ✅ ตั้งราคาแล้ว
+                                 `;
+                            }
+                        return scheduleStatus != "" ? scheduleStatus : "-";
+                    }
+                },
                 // {
                 //     targets: 3,
                 //     orderable: true,
@@ -433,24 +493,24 @@
                         //     }
                         // },
                 {
-                    targets: 4,
+                    targets: 5,
                     orderable: true,
                     render: function(data, type, row) {
                     return new Intl.NumberFormat('en-US', {
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 2
-                        }).format(row.sale_tp);
+                        }).format(row.price);
                     }
                 },
                 {
-                    targets: 5,
+                    targets: 6,
                     orderable: true,
                     render: function(data, type, row) {
                         return row.DESCRIPTION;
                     }
                 },
                 {
-                    targets: 6,
+                    targets: 7,
                     orderable: true,
                     render: function(data, type, row) {
                         return row.ACC_DESCRIPTION;

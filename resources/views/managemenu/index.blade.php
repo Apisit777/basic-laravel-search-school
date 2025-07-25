@@ -567,7 +567,7 @@
                                                             data-twe-target="#exampleModalLg"
                                                             data-twe-ripple-init
                                                             data-twe-ripple-color="light"
-                                                            onclick="modelManageMenu('{{ $menu->id }}', '{{ $menu->menu_name }}', {{ $menu }})"
+                                                            onclick="modelManageMenu('{{ $menu->id }}', '{{ $menu->menu_name }}', '{{ $menu->url }}', {{ $menu }})"
                                                         >
                                                             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
                                                                 <path d="M0 0h24v24H0V0z" fill="none"></path>
@@ -669,12 +669,14 @@
             }
         }
 
-        function modelManageMenu(id, menu_name, submenus_name) {
+        function modelManageMenu(id, menu_name, name_url, submenus_name) {
+            console.log("🚀 ~ modelManageMenu ~ modelManageMenu:", id, menu_name, name_url, submenus_name)
             jQuery(".table_submenu").remove('')
             let url = ""
             if(id){
                 jQuery("#edit_id").val(id)
                 jQuery("#menu_id").val(menu_name)
+                jQuery("#url_id").val(name_url)
                 jQuery("#exampleModalLgLabel").text('แก้ไขรายการเมนู')
                 submenus_name.submenus.forEach((element, index) => {
                     // console.log("🚀 ~ submenus_name.submenu_array.forEach ~ element:", element.name)
@@ -708,6 +710,7 @@
                 jQuery("#edit_id").val('')
                 jQuery("#menu_id").val('')
                 jQuery("#url_id").val('')
+                jQuery("#inputs_submenu").val('')
                 jQuery("#submenu_id").val('')
                 jQuery("#submenu_url_id").val('')
                 jQuery("#exampleModalLgLabel").text('เพิ่มรายการเมนู')

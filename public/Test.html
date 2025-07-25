@@ -5,6 +5,111 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
+<style>
+    html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    }
+
+    body {
+    background: linear-gradient(to bottom right, #0c3ca5 ,#00103d);
+    /* background: linear-gradient(to bottom right, #ffffff ,#ffffff); */
+    }
+
+    .container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to bottom right, #3760b9 ,#629ab6);
+    /* background: linear-gradient(to bottom right, #777676 ,#777676); */
+    overflow: hidden;
+    }
+
+    /* CLOUDS (เดิม) */
+    .clouds {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%; /* <--- สำคัญ */
+    opacity: 0.4;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 2;
+    }
+    .clouds-1,
+    .clouds-2,
+    .clouds-3 {
+    height: 100%; /* จากเดิม 150px หรือ 500px */
+    background-repeat: repeat-x;
+    background-size: auto 100%; /* ยืดเฉพาะแนวสูง */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    }
+    .clouds-1 {
+    /* background-image: url("https://s.cdpn.io/15514/clouds_2.png"); */
+    /* background-image: url("https://sdmntprcentralus.oaiusercontent.com/files/00000000-63c4-61f5-97b9-7b2393396097/raw?se=2025-05-28T03%3A29%3A06Z&sp=r&sv=2024-08-04&sr=b&scid=b09797b1-9fa9-5cd2-92f6-1b16dad1fc88&skoid=e9d2f8b1-028a-4cff-8eb1-d0e66fbefcca&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-27T21%3A22%3A50Z&ske=2025-05-28T21%3A22%3A50Z&sks=b&skv=2024-08-04&sig=vzdQHp/GFqTmK/oFoDsIkrAL8w1iLP/5N0AflZXBCtA%3D"); */
+    background-image: url("https://sdmntprcentralus.oaiusercontent.com/files/00000000-63c4-61f5-97b9-7b2393396097/raw?se=2025-05-28T04%3A49%3A51Z&sp=r&sv=2024-08-04&sr=b&scid=96eb8214-fd88-5ca1-8664-3c069ef54e83&skoid=ec8eb293-a61a-47e0-abd0-6051cc94b050&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-27T21%3A40%3A09Z&ske=2025-05-28T21%3A40%3A09Z&sks=b&skv=2024-08-04&sig=xiCUzlwwsE9z/SyxSiavVYuGvpWKaO/0zyM/H3TjSzg%3D");
+    animation: clouds-loop-1 20s linear infinite;
+    }
+    .clouds-2 {
+    /* background-image: url("https://s.cdpn.io/15514/clouds_1.png"); */
+    /* background-image: url("https://sdmntprwestus2.oaiusercontent.com/files/00000000-b3c0-61f8-873a-77ccbab12eb7/raw?se=2025-05-28T03%3A52%3A38Z&sp=r&sv=2024-08-04&sr=b&scid=73636795-87ed-5077-bae9-b030726254f8&skoid=9ccea605-1409-4478-82eb-9c83b25dc1b0&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-27T21%3A41%3A15Z&ske=2025-05-28T21%3A41%3A15Z&sks=b&skv=2024-08-04&sig=t8ANPJXk%2Bpq559qgtuunF%2B3P/5TN1yXnmUs1shfoJ84%3D"); */
+    background-image: url("https://sdmntprcentralus.oaiusercontent.com/files/00000000-63c4-61f5-97b9-7b2393396097/raw?se=2025-05-28T04%3A49%3A51Z&sp=r&sv=2024-08-04&sr=b&scid=96eb8214-fd88-5ca1-8664-3c069ef54e83&skoid=ec8eb293-a61a-47e0-abd0-6051cc94b050&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-27T21%3A40%3A09Z&ske=2025-05-28T21%3A40%3A09Z&sks=b&skv=2024-08-04&sig=xiCUzlwwsE9z/SyxSiavVYuGvpWKaO/0zyM/H3TjSzg%3D");
+    animation: clouds-loop-2 15s linear infinite;
+    }
+    .clouds-3 {
+    /* background-image: url("https://s.cdpn.io/15514/clouds_3.png"); */
+    background-image: url("https://sdmntprcentralus.oaiusercontent.com/files/00000000-63c4-61f5-97b9-7b2393396097/raw?se=2025-05-28T04%3A49%3A51Z&sp=r&sv=2024-08-04&sr=b&scid=96eb8214-fd88-5ca1-8664-3c069ef54e83&skoid=ec8eb293-a61a-47e0-abd0-6051cc94b050&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-05-27T21%3A40%3A09Z&ske=2025-05-28T21%3A40%3A09Z&sks=b&skv=2024-08-04&sig=xiCUzlwwsE9z/SyxSiavVYuGvpWKaO/0zyM/H3TjSzg%3D");
+    animation: clouds-loop-3 17s linear infinite;
+    }
+    @keyframes clouds-loop-1 {
+    to { background-position: -1000px 0; }
+    }
+    @keyframes clouds-loop-2 {
+    to { background-position: -1000px 0; }
+    }
+    @keyframes clouds-loop-3 {
+    to { background-position: -1579px 0; }
+    }
+
+    /* RAIN DROPS */
+    .raindrop {
+    position: absolute;
+    width: 1.5px;
+    height: 15px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 0 0 50% 50%;
+    animation: fall linear infinite;
+    }
+    @keyframes fall {
+    0% {
+        transform: translateY(0);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+    }
+
+    .rain-area {
+        position: absolute;
+        top: 120px; /* ตำแหน่งใต้เมฆ */
+        left: 0;
+        width: 100%;
+        height: calc(100% - 120px); /* ความสูงจากใต้เมฆจนถึงล่าง */
+        pointer-events: none;
+        z-index: 10;
+        overflow: hidden;
+    }
+</style>
+
 <body>
     <nav class="fixed bottom-[calc(100vh-theme(spacing.16))] left-0 right-0 top-0 bg-white text-black border-b border-gray-200 dark:border-gray-700">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
@@ -55,7 +160,7 @@
     </aside>
 
     <div class="min-h-screen p-4 md:ml-64 bg-white dark:bg-[#202020] duration-500">
-        <div class="p-2 rounded-sm dark:border-gray-700 mt-4">
+        <!-- <div class="p-2 rounded-sm dark:border-gray-700 mt-4">
             <div class="max-w-8xl mx-auto">
                 <div class="p-4 rounded shadow-lg bg-[#232323] duration-500 md:p-4 mt-10">
                     <div class="justify-center items-center">
@@ -159,7 +264,29 @@
                     </div>
                 </div>
             </div>
+        </div> -->
+         <div class="p-2 rounded-sm dark:border-gray-700 mt-4">
+            <div class="max-w-8xl mx-auto">
+                <div class="p-4 rounded shadow-lg bg-[#232323] duration-500 md:p-4 mt-10">
+                    <div class="justify-center items-center">
+                        <!-- <section id="features" class="container mx-auto px-4 space-y-6 bg-slate-50 py-8 md:py-12 lg:py-20"> -->
+
+                            <div class="container">
+                                <div class='clouds'>
+                                    <div class='clouds-1'></div>
+                                    <div class='clouds-2'></div>
+                                    <div class='clouds-3'></div>
+                                    </div>
+                                <!-- Rain Effect -->
+                                <div class="rain-area"></div>
+                            </div>
+
+                        <!-- </section> -->
+                    </div>
+                </div>
+            </div>
         </div>
+
     </div>
 
 </body>
@@ -167,5 +294,24 @@
 
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+
 <script>
+    const rainArea = document.querySelector('.rain-area');
+    const dropCount = 150;
+
+    for (let i = 0; i < dropCount; i++) {
+        const drop = document.createElement('div');
+        drop.classList.add('raindrop');
+
+        // สุ่มตำแหน่ง และ ความเร็ว
+        drop.style.left = Math.random() * 100 + '%';
+        drop.style.top = (Math.random() * 100 - 100) + '%'; // ตกจากด้านบน
+        drop.style.animationDuration = (0.5 + Math.random() * 0.5) + 's';
+        drop.style.animationDelay = (Math.random() * 5) + 's';
+
+        // สุ่มความยาวเม็ดฝน
+        drop.style.height = (10 + Math.random() * 20) + 'px';
+
+        rainArea.appendChild(drop);
+    }
 </script>

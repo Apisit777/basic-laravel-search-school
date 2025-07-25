@@ -50,8 +50,9 @@ class RunMidnightTask extends Command
     // public function handle()
     public function transfer_data_task()
     {
+        
         $now = now();
-        $start = $now->copy()->setTime(18, 30); // 18:30
+        $start = $now->copy()->setTime(9, 00); // 18:30
         $end = $now->copy()->setTime(20, 0);  // 20:00
 
         if (now()->isWeekday() === true && $now->between($start, $end)) {
@@ -59,6 +60,9 @@ class RunMidnightTask extends Command
             $incompleteTasks = Task::where('is_completed', false)
                 ->whereDate('scheduled_date', Carbon::today()) // Only today's tasks
                 ->get();
+
+                // print_r($incompleteTasks);
+                // exit;
 
             if ($incompleteTasks->isEmpty()) {
 
@@ -68,24 +72,28 @@ class RunMidnightTask extends Command
                 $endpoint = $url_dot_30 . "/ims/dealer_transfer_service/dl_mid_query_dot1.php";
 
                 $test_database = [
-                    'dbBBMAS|BB|8|9|6' => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES'],
+                    // 'dbBBMAS|BB|8|9|6' => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES'],
                     'dbCPMAS|CPS|8|9|7' => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES'],
-                    'dbGNCMAS|GNC|8|9' => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES'],
-                    'dbKSHOPMAS|KTY|8|9|1' => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES'],
-                    'dbLLMAS|LL|8|9|3' => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES'],
-                    'dbOPMAS|OP|8|9|2' => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES']
+                    // 'dbGNCMAS|GNC|8|9' => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES'],
+                    // 'dbKSHOPMAS|KTY|8|9|1' => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES'],
+                    // 'dbLLMAS|LL|8|9|3' => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES'],
+                    // 'dbOPMAS|OP|8|9|2' => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES']
                 ];
 
                 $dataProducts1 = DB::table('product_channels')
                     ->select('product1s.*', 'product_channels.BRAND', 'product_channels.PRODUCT')
                     ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT')
-                    ->whereRaw('product_channels.PRODUCT NOT REGEXP "^[A-Z]"')
+                    ->where('product_channels.PRODUCT', '=', '95090026')
+                    // ->whereRaw('product_channels.PRODUCT NOT REGEXP "^[A-Z]"')
                     ->get();
 
                 $diff_count = count($dataProducts1);
                 $this->info("Transferring product_channels data back to dot1");
                 $this->output->progressStart($diff_count);
 
+                // dd($dataProducts1);
+                // print_r($dataProducts1);
+                // exit;
                 foreach ($test_database as $key => $value) {
                     $exploded_key = explode('|', $key);
                     $dbName = $exploded_key[0];
@@ -97,6 +105,7 @@ class RunMidnightTask extends Command
                     $brand_value = $brand;
                     foreach ($dataProducts1 as $rs) {
 
+                        // dd($brand_value);
                         if ($dbName == 'dbCPMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
                             $brand_value = 'KM';
                             if ($rs->PRODUCT[0] == $key_parts_number_3 || ($rs->PRODUCT[0] == 1 && strlen((string)$rs->PRODUCT) == 7) || ($rs->PRODUCT[0] == 2 && strlen((string)$rs->PRODUCT) == 7)) {
@@ -108,6 +117,8 @@ class RunMidnightTask extends Command
                             }
                         
                             // dd($brand_value);
+                            // print_r($brand_value);
+                            // exit;
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
                                 'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
                             ]);
@@ -315,6 +326,16 @@ class RunMidnightTask extends Command
                                 $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
                         
+                                $dataProducts1CheckBrand = DB::table('product1s')
+                                ->select('product1s.*')
+                                ->where('product1s.PRODUCT', '=', $rs->PRODUCT)
+                                ->first();
+
+                                // print_r($dataProducts1CheckBrand);
+                                // exit;
+
+                                $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -703,7 +724,7 @@ class RunMidnightTask extends Command
                             }       
                         } else if ($dbName == 'dbBBMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string)$rs->PRODUCT) >= 7) {
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => 'select brand, product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
 
@@ -713,6 +734,16 @@ class RunMidnightTask extends Command
                                 $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
+                                $dataProducts1CheckBrand = DB::table('product1s')
+                                ->select('product1s.*')
+                                ->where('product1s.PRODUCT', '=', $rs->PRODUCT)
+                                ->first();
+
+                                // print_r($dataProducts1CheckBrand);
+                                // exit;
+
+                                $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
+                                
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -1103,6 +1134,16 @@ class RunMidnightTask extends Command
                                 $OPT_DATE1_RP = $rs->OPT_DATE1 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE1;
                                 $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
+
+                                $dataProducts1CheckBrand = DB::table('product1s')
+                                ->select('product1s.*')
+                                ->where('product1s.PRODUCT', '=', $rs->PRODUCT)
+                                ->first();
+
+                                // print_r($dataProducts1CheckBrand);
+                                // exit;
+
+                                $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
 
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
@@ -1496,6 +1537,16 @@ class RunMidnightTask extends Command
                                 $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
+                                $dataProducts1CheckBrand = DB::table('product1s')
+                                ->select('product1s.*')
+                                ->where('product1s.PRODUCT', '=', $rs->PRODUCT)
+                                ->first();
+
+                                // print_r($dataProducts1CheckBrand);
+                                // exit;
+
+                                $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -1886,6 +1937,15 @@ class RunMidnightTask extends Command
                                 $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
+                                $dataProducts1CheckBrand = DB::table('product1s')
+                                ->select('product1s.*')
+                                ->where('product1s.PRODUCT', '=', $rs->PRODUCT)
+                                ->first();
+
+                                // print_r($dataProducts1CheckBrand);
+                                // exit;
+
+                                $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -2279,6 +2339,16 @@ class RunMidnightTask extends Command
                                 $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
+                                $dataProducts1CheckBrand = DB::table('product1s')
+                                ->select('product1s.*')
+                                ->where('product1s.PRODUCT', '=', $rs->PRODUCT)
+                                ->first();
+
+                                // print_r($dataProducts1CheckBrand);
+                                // exit;
+
+                                $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
+                                
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',

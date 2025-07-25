@@ -128,8 +128,8 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+    <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" /> -->
 
 @section('content')
     <div class="p-4 bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4 mt-10">
@@ -590,6 +590,15 @@
                                                                         @endforeach
                                                                     </select>
                                                                     <span id="TYPE_G_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">ประเภทสินค้า [บัญชี]</label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="ACC_TYPE" id="ACC_TYPE">
+                                                                        <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($acctypes as $key => $acctype)
+                                                                            <option value="{{ $acctype->ID }}">{{ $acctype->DESCRIPTION }}</option>
+                                                                        @endforeach
+                                                                    </select>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="OPT_TXT1">รหัสสินค้าอ้างอิง</label>

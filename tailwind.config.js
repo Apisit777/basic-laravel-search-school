@@ -17,6 +17,11 @@ module.exports = {
       screens: {
         xs: '320px', // Replace '320px' with your desired breakpoint value
       },
+      fontFamily: {
+        sans: ['Arial', 'sans-serif'], // หรืออะไรก็ได้ที่มีในเครื่อง
+        serif: ['Times New Roman', 'serif'],
+        mono: ['Courier New', 'monospace'],
+      },
     },
     keyframes: {
       'fade-in-left': {

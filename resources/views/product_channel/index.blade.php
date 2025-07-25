@@ -79,38 +79,40 @@
     <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap.css') }}" />
 @section('content')
     <div class="justify-center items-center">
-        <div class="mt-6 mb-4 flex justify-center items-center">
-            <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">@lang('global.content.product_channel_list')</p>
-        </div>
+        <div class="mt-10 bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
+            <div class="flex justify-center items-center">
+                <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">@lang('global.content.product_channel_list')</p>
+            </div>
 
-        <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
-            <div id="containerexample" class="text-gray-900 dark:text-gray-100">
-                <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Brand</th>
-                            <th>Product</th>
-                            <th>Product Name</th>
-                        </tr>
-                        <tr>
-                            <th>
-                                <select class="js-example-basic-single w-full rounded-sm text-xs" id="BRAND_SEARCH" name="" onchange="tentSearch()">
-                                    <option value="" class="text-xs"> --- กรุณาเลือก ---</option>
-                                    @foreach ($allBrands as $key => $allBrand)
-                                        <option value="{{ $allBrand }}">{{ $allBrand }}</option>
-                                    @endforeach
-                                </select>
-                            </th>
-                            <th>
-                            <input type="text" name="" id="searchProduct" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า . . ." value="" onkeyup="searchTable()" />
-                            </th>
-                            <th>
-                                <input type="text" name="" id="searchProductName" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="ชื่อสินค้า . . ." value="" onkeyup="searchTable()" />
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
+            <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
+                <div id="containerexample" class="text-gray-900 dark:text-gray-100">
+                    <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Brand</th>
+                                <th>Product</th>
+                                <th>Product Name</th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="BRAND_SEARCH" name="" onchange="tentSearch()">
+                                        <option value="" class="text-xs"> --- กรุณาเลือก ---</option>
+                                        @foreach ($allBrands as $key => $allBrand)
+                                            <option value="{{ $allBrand }}">{{ $allBrand }}</option>
+                                        @endforeach
+                                    </select>
+                                </th>
+                                <th>
+                                <input type="text" name="" id="searchProduct" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า . . ." value="" onkeyup="searchTable()" />
+                                </th>
+                                <th>
+                                    <input type="text" name="" id="searchProductName" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="ชื่อสินค้า . . ." value="" onkeyup="searchTable()" />
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

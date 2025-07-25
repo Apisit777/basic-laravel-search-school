@@ -112,6 +112,39 @@ class ProductImageController extends Controller
         return view('warehouse.camera');
     }
 
+    public function downloadAll($product)
+    {
+        dd($product);
+
+        // ดึงรายการรูป
+        $images = $product->images;   // (hasMany ProductImage)
+
+        // สร้างไฟล์ ZIP ชั่วคราว
+        $zipName = 'product_'.$product->id.'_'.now()->format('Ymd_His').'.zip';
+        $tmpZip  = storage_path('app/tmp/'.$zipName);
+
+        if (!is_dir(dirname($tmpZip))) {
+            mkdir(dirname($tmpZip), 0755, true);
+        }
+
+        $zip = new \ZipArchive;
+        if ($zip->open($tmpZip, \ZipArchive::CREATE | \ZipArchive::OVERWRITE) !== true) {
+            abort(500, 'Cannot create zip');
+        }
+
+        foreach ($images as $img) {
+            $path = Storage::disk('public')->path($img->path);
+            if (file_exists($path)) {
+                // basename() ทำให้ชื่อใน ZIP สั้นลง
+                $zip->addFile($path, basename($path));
+            }
+        }
+        $zip->close();
+
+        // ส่งไฟล์แล้วลบไฟล์ชั่วคราวหลังส่งเสร็จ
+        return response()->download($tmpZip, $zipName)->deleteFileAfterSend(true);
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

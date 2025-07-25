@@ -86,42 +86,6 @@
         .animate-spin {
             animation: spin 1s linear infinite;
         }
-
-        /* กำหนดขนาดของ div ที่ใช้แสดง toastr */
-        .toastr-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* ปรับแต่ง Toast ให้อยู่ตรงกลางของเซลล์ */
-        .toast {
-            position: absolute !important;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 65% !important;
-            text-align: center;
-        }
-
-        /* ปรับสีเขียว และเพิ่ม ✔ ไอคอน */
-        .toast-success {
-            background-color: #51a351 !important; /* สีเขียว */
-            position: relative;
-            padding-left: 50px !important; /* เว้นที่ให้ไอคอน */
-        }
-
-        /* แสดงไอคอน ✔ ใน toastr */
-        .custom-toastr-icon::before {
-            content: "✔";
-            font-size: 20px;
-            position: absolute;
-            left: 20px;
-            top: 43%;
-            transform: translateY(-50%);
-            color: white;
-            font-weight: bold;
-        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -183,9 +147,9 @@
                                                             <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                                                                 @php
                                                                     $formattedDate = null;
-                                                                    if (!empty($data->active_date)) {
+                                                                    if (!empty($docDate)) {
                                                                         try {
-                                                                            $formattedDate = \Carbon\Carbon::createFromFormat('d/m/Y', $data->active_date)->format('Y-m-d');
+                                                                            $formattedDate = \Carbon\Carbon::createFromFormat('d/m/Y', $docDate)->format('Y-m-d');
                                                                         } catch (\Exception $e) {
                                                                             $formattedDate = null; // หากฟอร์แมตผิด ให้ใช้ค่า null
                                                                         }
@@ -197,12 +161,16 @@
                                                                         class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center"
                                                                         placeholder=""
                                                                         autocomplete="off"
-                                                                        value="{{ $data->active_date }}"
-                                                                        min="2025-02-01" />
+                                                                        value=""
+                                                                        min="{{ $docDate }}" />
                                                                 </div>
-                                                                <div class="md:col-span-2" style="position: relative;">
+                                                                <div class="md:col-span-1" style="position: relative;">
                                                                     <label for="test_cost">ต้นทุน</label>
                                                                     <input type="text" name="test_cost" id="test_cost" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />
+                                                                </div>
+                                                                <div class="md:col-span-1" style="position: relative;">
+                                                                    <label for="">ต้นทุน(ราคาต้นทุน Brand)</label>
+                                                                    <input type="text" name="" id="" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->COST }}" readonly />
                                                                 </div>
                                                             </div>
                                                             <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
@@ -282,11 +250,12 @@
                                     Back
                                 </a>
                                 <a id="btnSerarch" class=" bg-[#3b5998] hover:bg-[#48639d] text-white font-bold py-1.5 px-4 rounded cursor-pointer" onclick="accountSchedule()" disabled>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF" class="-mt-1 w-5 h-5 hidden md:inline-block">
+                                    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF" class="-mt-1 w-5 h-5 hidden md:inline-block">
                                         <path d="M0 0h24v24H0V0z" fill="none"></path>
                                         <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
                                         <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
-                                    </svg>
+                                    </svg> -->
+                                    💾
                                     Save
                                 </a>
                             </div>
@@ -790,11 +759,11 @@
                                             <path fill="#cecece" d="M51 7h1v50h-1z"></path>
                                             <path d="M45 56.2c0 .4-.3.8-.7.8H19.7c-.4 0-.7-.4-.7-.8v-2.4c0-.4.3-.8.7-.8h24.6c.4 0 .7.4.7.8v2.4" fill="#51575b"></path>
                                         </svg>
-                                        รอดำเนินการ
+                                        รอดำเนินการตั้งราคา
                                 `;
                             } else if (row.status == 1) {
                                 scheduleStatus = `
-                                ดำเนินการแล้ว
+                                ✅ ดำเนินการตั้งราคาแล้ว
                                  `;
                             }
                         return scheduleStatus != "" ? scheduleStatus : "-";

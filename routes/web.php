@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductDetail\ProductDetailController;
 use App\Http\Controllers\ProductOther\ProductOtherController;
 use App\Http\Controllers\ProductChannel\ProductChannelController;
 use App\Http\Controllers\Managemenu\ManageMenuController;
+use App\Http\Controllers\ManagePrice\ManagePriceController;
 use App\Http\Controllers\Warehouse\ComProductController;
 use App\Http\Controllers\Tool\ToolController;
 use App\Http\Controllers\PusherController;
@@ -31,11 +32,6 @@ use App\Http\Controllers\ExportExcel\ExportExcelController;
 Route::get('/', function () {
     return view('auth.login');
 });
-
-// Import Excel
-Route::get('users', [UserController::class, 'index']);
-Route::post('users-export', [UserController::class, 'export'])->name('users.export');
-Route::post('users-import', [UserController::class, 'import'])->name('users.import');
 
 // Login
 Route::get('/register', [AuthController::class, 'register']);
@@ -190,8 +186,13 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         Route::get('/pd_detail', [ProductDetailController::class, 'index'])->name('pd_detail_index');
         Route::get('/pd_detail/create', [ProductDetailController::class, 'create'])->name('pd_detail_create');
         Route::post('/list_product_detail', [ProductDetailController::class, 'listProductDetail'])->name('list_product_detail');
+        Route::post('/list_product_detail_manage_export_excel', [ProductDetailController::class, 'listProductDetailManageExportExcel'])->name('list_product_detail_manage_export_excel');
+        Route::post('/pd_detail_manage_export_excel_update/{product_id}', [ProductDetailController::class, 'updateProductDetailManageExportExcel'])->name('pd_detail_manage_export_excel_update');
         Route::get('/pd_detail/edit/{product_id}', [ProductDetailController::class, 'edit'])->name('pd_detail_edit');
         Route::post('/pd_detail_update/{product_id}', [ProductDetailController::class, 'update'])->name('pd_detail_update');
+
+        Route::post('/export_excel_product_detail', [ExportExcelController::class, 'exportExcelProductDetail'])->name('export_excel_product_detail');
+        // Route::post('/pd_detail_update/{product_id}', [ProductDetailController::class, 'exportExcelProductDetail'])->name('pd_detail_update');
 
         // Sub Menu Product Detail2(Product Other)
         Route::get('/pd_other', [ProductOtherController::class, 'index'])->name('pd_other_index');
@@ -297,6 +298,22 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         Route::get('/images', [ProductImageController::class, 'index'])->name('indexImage');
         Route::get('/camera', [ProductImageController::class, 'show'])->name('camera');
     });
+
+    // Import Excel
+    // Route::get('users', [UserController::class, 'index']);
+    // Route::post('users-export', [UserController::class, 'export'])->name('users.export');
+    // Route::post('users-import', [UserController::class, 'import'])->name('users.import');
+
+    // Manage price
+    Route::group(['prefix' => 'manage_price', 'as' => 'manage_price.'], function () {
+        Route::get('/', [ManagePriceController::class, 'index'])->name('index');
+        Route::post('users-import', [ManagePriceController::class, 'import'])->name('users.import');
+        Route::post('update_price', [ManagePriceController::class, 'updatePrice'])->name('update');
+        Route::post('/list_import_excel', [ManagePriceController::class, 'listImportExcel'])->name('list_import_excel');
+        Route::post('/list_price_all', [ManagePriceController::class, 'listPriceAll'])->name('list_price_all');
+    });
+
+    Route::get('/product/{product}/images/download-all',[ProductImageController::class, 'downloadAll'])->name('product.images.download-all');
 
     // Logout
     Route::get('/logout', [AuthController::class, 'apiByPassLogout'])->name('logout');

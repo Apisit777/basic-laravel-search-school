@@ -470,6 +470,41 @@ class ProductController extends Controller
                 ->whereRaw("PRODUCT REGEXP '^[0-9]' AND LENGTH(PRODUCT) >= 7")
                 ->pluck('PRODUCT')
                 ->toArray();
+        } else if ($userpermission == 'BD') {
+
+            $brands = Barcode::select(
+            'BRAND',
+                'STATUS')
+            ->whereIn('STATUS', ['OP', 'CPS', 'KM', 'KTY', 'GNC', 'BB', 'LL', 'FR'])
+            ->pluck('BRAND')
+            ->toArray();
+
+            $dataProductMasterArr = Product1::select(
+            'PRODUCT')
+            ->whereNotIn('BRAND', ['OP', 'CPS', 'KM', 'KTY', 'GNC', 'BB', 'LL'])
+            ->pluck('PRODUCT')
+            ->toArray();
+
+            $data_PRODUCT = Product1::select('PRODUCT')->pluck('PRODUCT')->toArray();
+            $dataProductMaster = Pro_develops::select(
+            'PRODUCT')
+            ->whereIn('BRAND', ['OP', 'CPS', 'KM', 'KTY', 'GNC', 'BB', 'LL'])
+            ->whereNotIn('PRODUCT', $data_PRODUCT)
+            ->get();
+
+            $dataProductMasterConsumablesArr = Product1::select(
+                'PRODUCT')
+                ->where('BRAND', 'FR')
+                ->whereRaw("PRODUCT REGEXP '^[0-9]' AND LENGTH(PRODUCT) >= 7")
+                ->pluck('PRODUCT')
+                ->toArray();
+
+            $getSelect2ProDevelops = Pro_develops::select(
+            'PRODUCT')
+            // ->whereIn('BRAND', ['OP'])
+            ->whereIn('BRAND', ['OP', 'CPS', 'KM', 'KTY', 'GNC', 'BB', 'LL'])
+            ->pluck('PRODUCT')
+            ->toArray();
         }
 
         // dd($dataProductMasterConsumablesArr);
@@ -664,6 +699,7 @@ class ProductController extends Controller
         $brand_ps = Brand_p::all();
         $venders = Vendor::all();
         $type_gs = Type_g::all();
+        $acctypes = Acctype::all();
         $solutions = Solution::all();
         $series = Series::all();
         $categorys = Category::all();
@@ -680,7 +716,7 @@ class ProductController extends Controller
         $defaultBrands = MasterBrand::all();
         $brands = MasterBrand::all();
 
-        // dd($series);
+        // dd($acctypes);
         if ($userpermission == $isSuperAdmin) {
             $brands = MasterBrand::select(
                 'BRAND')
@@ -959,7 +995,7 @@ class ProductController extends Controller
         // $ean14 = $ean13 . $checkDigit;
         // dd($userpermission);
 
-        return view('product.create', compact(  'brands', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions', 'product_groups', 'userpermission'));
+        return view('product.create', compact(  'brands', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'acctypes', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions', 'product_groups', 'userpermission'));
     }
 
     public function createConsumables(Request $request)
@@ -1699,7 +1735,7 @@ class ProductController extends Controller
                 'OPT_TXT2' => $request->input('OPT_TXT2') ?? '',
                 'OPT_NUM1' => $request->input('OPT_NUM1') ?? '',
                 'OPT_NUM2' => $request->input('OPT_NUM2') ?? '',
-                // 'ACC_TYPE' => $request->input('ACC_TYPE') ?? '',
+                'ACC_TYPE' => $request->input('ACC_TYPE') ?? '',
                 'ACC_DT' => $request->input('ACC_DT') ?? '',
                 'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
                 'NON_VAT' => is_null($request->input('NON_VAT')) ? '' : 'Y',
@@ -1821,6 +1857,7 @@ class ProductController extends Controller
         // $status = $company.' - '.$description;
 
         // dd($request);
+        // 95090026
         DB::beginTransaction();
         try {
             $data_product = [
@@ -2065,7 +2102,7 @@ class ProductController extends Controller
         // $unit_ps = Unit_p::all();
         $unit_ps = Unit_p::select('DESCRIPTION AS UNIT', 'BRAND')->get()->toArray();
         $unit_types = Unit_type::select('DESCRIPTION AS UNIT_TYPE', 'BRAND')->get()->toArray();
-        $acctypes = Acctype::select('ID AS ACC_TYPE', 'DESCRIPTION')->get();
+        $acctypes = Acctype::select('ID AS ACC_TYPE', 'DESCRIPTION')->get()->toArray();
         $conditions = Condition::select('ID AS CONDITION_SALE', 'DESCRIPTION')->get()->toArray();
 
         // if (!in_array($data->CONDITION_SALE, array_column($conditions, 'CONDITION_SALE')))
@@ -2181,6 +2218,19 @@ class ProductController extends Controller
                     'REMARK' => $data->BRAND_P,
                 ];
             }
+            // $TYPE_G = Type_g::select('ID AS TYPE_G', 'DESCRIPTION')->get()->toArray();
+            $acctypes = Acctype::select(
+                'ID AS ACC_TYPE',
+                'DESCRIPTION')
+            ->get()->toArray();
+            if (!in_array($data->ACC_TYPE, array_column($acctypes, 'ACC_TYPE')))
+            {
+                $acctypes[] =  [
+                    'ACC_TYPE' => $data->ACC_TYPE,
+                    'DESCRIPTION' => $data->ACC_TYPE,
+                ];
+            }
+            
             $solutions = Solution::select(
                 'ID AS SOLUTION',
                 'DESCRIPTION',
@@ -2318,6 +2368,31 @@ class ProductController extends Controller
                     'REMARK' => $data->BRAND_P,
                 ];
             }
+
+            $TYPE_G = Type_g::select(
+                'ID AS TYPE_G',
+                'DESCRIPTION')
+            ->get()->toArray();
+            if (!in_array($data->TYPE_G, array_column($TYPE_G, 'TYPE_G')))
+            {
+                $TYPE_G[] =  [
+                    'TYPE_G' => $data->TYPE_G,
+                    'DESCRIPTION' => $data->TYPE_G,
+                ];
+            }
+
+            $acctypes = Acctype::select(
+                'ID AS ACC_TYPE',
+                'DESCRIPTION')
+            ->get()->toArray();
+            if (!in_array($data->ACC_TYPE, array_column($acctypes, 'ACC_TYPE')))
+            {
+                $acctypes[] =  [
+                    'ACC_TYPE' => $data->ACC_TYPE,
+                    'DESCRIPTION' => $data->ACC_TYPE,
+                ];
+            }
+
             $solutions = Solution::select(
                 'ID AS SOLUTION',
                 'DESCRIPTION',
@@ -2454,6 +2529,17 @@ class ProductController extends Controller
                 $brand_ps[] =  [
                     'BRAND_P' => $data->BRAND_P,
                     'REMARK' => $data->BRAND_P,
+                ];
+            }
+            $acctypes = Acctype::select(
+                'ID AS ACC_TYPE',
+                'DESCRIPTION')
+            ->get()->toArray();
+            if (!in_array($data->ACC_TYPE, array_column($acctypes, 'ACC_TYPE')))
+            {
+                $acctypes[] =  [
+                    'ACC_TYPE' => $data->ACC_TYPE,
+                    'DESCRIPTION' => $data->ACC_TYPE,
                 ];
             }
             $solutions = Solution::select(
@@ -2630,7 +2716,7 @@ class ProductController extends Controller
                     'OPT_TXT2' => $request->input('OPT_TXT2'),
                     'OPT_NUM1' => $request->input('OPT_NUM1'),
                     'OPT_NUM2' => $request->input('OPT_NUM2'),
-                    // 'ACC_TYPE' => $request->input('ACC_TYPE'),
+                    'ACC_TYPE' => $request->input('ACC_TYPE'),
                     'ACC_DT' => $request->input('ACC_DT'),
                     'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
                     'NON_VAT' => is_null($request->input('NON_VAT')) ? '' : 'Y',
@@ -2641,6 +2727,8 @@ class ProductController extends Controller
                     'EDIT_DT' => date("Y-m-d"),
                     'STATUS_EDIT_DT' => '',
                 ];
+
+                // dd($data_product_upddate);
 
                 if (!is_null($request->sele_channel[0])) {
                     $multiChannels = ProductChannel::select('BRAND')->where('PRODUCT', $data_product_upddate['PRODUCT'])->whereNotIn('BRAND', $request->sele_channel)->delete();
@@ -2833,13 +2921,13 @@ class ProductController extends Controller
                     'NAME_EXP' => $request->input('NAME_EXP'),
                     'NET_WEIGHT' => $request->input('NET_WEIGHT'),
                     'UNIT_TYPE' => $request->input('UNIT_TYPE'),
-                    // 'TYPE_G' => $request->input('TYPE_G'),
+                    'TYPE_G' => $request->input('TYPE_G'),
                     'OPT_DATE1' => $request->input('OPT_DATE1'),
                     'OPT_DATE2' => $request->input('OPT_DATE2'),
                     'OPT_TXT2' => $request->input('OPT_TXT2'),
                     'OPT_NUM1' => $request->input('OPT_NUM1'),
                     'OPT_NUM2' => $request->input('OPT_NUM2'),
-                    // 'ACC_TYPE' => $request->input('ACC_TYPE'),
+                    'ACC_TYPE' => $request->input('ACC_TYPE'),
                     'ACC_DT' => $request->input('ACC_DT'),
                     'RETURN' => is_null($request->input('RETURN')) ? 'N' : 'Y',
                     'NON_VAT' => is_null($request->input('NON_VAT')) ? '' : 'Y',
@@ -2850,6 +2938,8 @@ class ProductController extends Controller
                     'EDIT_DT' => date("Y-m-d"),
                     'STATUS_EDIT_DT' => '',
                 ];
+
+                // dd($data_product_upddate);
 
                 if (!is_null($request->sele_channel[0])) {
                     $multiChannels = ProductChannel::select('BRAND')->where('PRODUCT', $data_product_upddate['PRODUCT'])->whereNotIn('BRAND', $request->sele_channel)->delete();

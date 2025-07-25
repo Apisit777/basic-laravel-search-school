@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+    <!-- Icon favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('media/favicon.png')}}" sizes="42x42">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -27,13 +29,26 @@
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"> -->
 
     <style>
+        /* body {
+            background-image: url('https://www.ssup.co.th/wp-content/uploads/2022/11/shutterstock_2079577573.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        } */
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-    @include('layouts.admin_navbar')
-    @include('layouts.admin_menu_sidenav')
-    <body x-cloak x-data="{darkMode: $persist(false)}" :class="{'dark': darkMode === true }" class="antialiased ">
+    <body x-cloak x-data="{darkMode: $persist(false)}" :class="{'dark': darkMode === true }" class="relative antialiased">
+        <!-- Background Image Layer -->
+        <!-- <div class="fixed inset-0 bg-cover bg-center bg-no-repeat opacity-60"
+            style="z-index: -10; background-image: url('https://www.ssup.co.th/wp-content/uploads/2022/11/shutterstock_2079577573.png')">
+        </div> -->
+
+        @include('layouts.admin_navbar')
+        @include('layouts.admin_menu_sidenav')
+        <body x-cloak x-data="{darkMode: $persist(false)}" :class="{'dark': darkMode === true }" class="antialiased">
+        <!-- <div class="min-h-screen p-2 md:ml-64 bg-white dark:bg-[#202020] duration-500" style="z-index: -10; background-image: url('https://www.ssup.co.th/wp-content/uploads/2022/11/shutterstock_2079577573.png')"> -->
         <div class="min-h-screen p-4 md:ml-64 bg-white dark:bg-[#202020] duration-500">
             <div class="p-2 rounded-sm dark:border-gray-700 mt-4">
                 <div class="max-w-8xl mx-auto">

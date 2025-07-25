@@ -48,6 +48,8 @@ class ToolController extends Controller
             $idSolutions = Solution::select('ID')->where('BRAND', 'OP')->pluck('ID')->toArray();
         } else if ($userpermission == 'CPS') {
             $idSolutions = Solution::select('ID')->where('BRAND', 'CPS')->pluck('ID')->toArray();
+        } else if ($userpermission == 'GNC') {
+            $idSolutions = Solution::select('ID')->where('BRAND', 'GNC')->pluck('ID')->toArray();
         } else {
             $idSolutions = Solution::select('ID')->where('BRAND', $userpermission)->pluck('ID')->toArray();
         }
@@ -377,14 +379,22 @@ class ToolController extends Controller
     public function solutionCheckName(Request $request)
     {
         // dd($request);
+
+        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        $userpermission = Auth::user()->getUserPermission->name_position;
+        $namePosition  = explode('-', $userpermission);
+        $userpermission = trim(end($namePosition));
+
         if ($request->Edit_ProductGroup_ID) {
             $data = Solution::select('ID')
                 ->where('ID', '!=', $request->Edit_ProductGroup_ID)
                 ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->where('BRAND', $userpermission)
                 ->count();
         } else {
             $data = Solution::select('ID')
                 ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->where('BRAND', $userpermission)
                 ->count();
         }
         // dd($data);
@@ -411,14 +421,22 @@ class ToolController extends Controller
     public function seriesCheckName(Request $request)
     {
         // dd($request);
+
+        $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+        $userpermission = Auth::user()->getUserPermission->name_position;
+        $namePosition  = explode('-', $userpermission);
+        $userpermission = trim(end($namePosition));
+
         if ($request->Edit_ProductGroup_ID) {
             $data = Series::select('ID')
                 ->where('ID', '!=', $request->Edit_ProductGroup_ID)
                 ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->where('BRAND', $userpermission)
                 ->count();
         } else {
             $data = Series::select('ID')
                 ->where('DESCRIPTION', $request->DESCRIPTION)
+                ->where('BRAND', $userpermission)
                 ->count();
         }
         // dd($data);
@@ -2016,7 +2034,7 @@ class ToolController extends Controller
                 'DESCRIPTION',
                 'BRAND'
             )
-            ->where('BRAND', 'KTY')
+            ->where('BRAND', 'GNC')
             ->orderBy('DESCRIPTION', 'ASC');
         }
         else if ($userpermission == 'BB') {

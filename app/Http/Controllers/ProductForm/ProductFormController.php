@@ -24,12 +24,15 @@ use App\Models\Acctype;
 use App\Models\Owner;
 use App\Models\Grp_p;
 use App\Models\TestNewBarcode;
+use App\Models\ProductPrice;
+use App\Models\ProductPriceLog;
 use App\Models\ProductPriceSchedule;
 use App\Models\ProductPriceScheduleLog;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use stdClass;
 class ProductFormController extends Controller
 {
@@ -198,7 +201,7 @@ class ProductFormController extends Controller
                 $productCodeNumber =  (int) preg_replace('/[^0-9]/', '', $lastElementBarcode) + 1;
                 $productCodeBarcode = $productCodeNumber;
 
-                dd($data->BRAND, $data->Code, $productCodeBarcode);
+                // dd($data->BRAND, $data->Code, $productCodeBarcode);
                 if ($data->Code >= 20000 && $data->Code <= 28999) {
                     $data_BRAND_Barcode = Barcode::updateOrCreate(
                         ['COMPANY' => $data->BRAND, 'STATUS' => 'OP'],
@@ -556,14 +559,51 @@ class ProductFormController extends Controller
         // dd($productCode);
         return view('account.create');
     }
-    public function showAccount(Request $request)
+    public function showAccount(Request $request, $product)
     {
-        $data = Account::select(
-            // 'id',
-            'accounts.product AS product',
-            'accounts.cost AS cost',
-            'sale_tp',
-            'cost_km',
+        // dd($product);
+        // $data = Account::select(
+        //     // 'id',
+        //     'accounts.product AS product',
+        //     'accounts.cost AS cost',
+        //     'sale_tp',
+        //     'cost_km',
+        //     'perfume_tax',
+        //     'cost_perfume_tax',
+        //     'cost5percent',
+        //     'cost10percent',
+        //     'cost_other',
+        //     'sale_km',
+        //     'sale_km20percent',
+        //     'sale_km_other',
+        //     'price_start_date',
+        //     'note',
+        //     'product1s.BRAND AS BRAND',
+        //     'product1s.NAME_THAI AS NAME_THAI',
+        //     'product1s.NAME_ENG AS NAME_ENG',
+        //     'product1s.SHORT_THAI AS SHORT_THAI',
+        //     'product1s.SHORT_ENG AS SHORT_ENG',
+        //     'type_gs.ID AS TYPE_G',
+        //     'acctypes.ID AS ACC_TYPE',
+        //     'owners.OWNER AS VENDOR',
+        //     'grp_ps.GRP_P AS GRP_P',
+        //     'product1s.PRICE AS PRICE',
+        //     'product1s.REG_DATE AS REG_DATE',
+        //     'product1s.EDIT_DT AS EDIT_DT',
+        // )
+        // ->leftJoin('product1s', 'accounts.product', '=', 'product1s.PRODUCT')
+        // ->leftJoin('owners', 'product1s.VENDOR', '=', 'owners.OWNER')
+        // ->leftJoin('grp_ps', 'product1s.GRP_P', '=', 'grp_ps.GRP_P')
+        // ->leftJoin('type_gs', 'product1s.TYPE_G', '=', 'type_gs.ID')
+        // ->leftJoin('acctypes', 'product1s.ACC_TYPE', '=', 'acctypes.ID')
+        // ->where('accounts.product', $product)
+        // ->first();
+
+        $data = ProductPrice::select(
+            'product_prices.product_id AS product',
+            'product_prices.cost AS cost',
+            // 'sale_tp',
+            // 'cost_km',
             'perfume_tax',
             'cost_perfume_tax',
             'cost5percent',
@@ -572,7 +612,7 @@ class ProductFormController extends Controller
             'sale_km',
             'sale_km20percent',
             'sale_km_other',
-            'price_start_date',
+            // 'price_start_date',
             'note',
             'product1s.BRAND AS BRAND',
             'product1s.NAME_THAI AS NAME_THAI',
@@ -587,16 +627,19 @@ class ProductFormController extends Controller
             'product1s.REG_DATE AS REG_DATE',
             'product1s.EDIT_DT AS EDIT_DT',
         )
-        ->leftJoin('product1s', 'accounts.product', '=', 'product1s.PRODUCT')
+        ->leftJoin('product1s', 'product_prices.product_id', '=', 'product1s.PRODUCT')
         ->leftJoin('owners', 'product1s.VENDOR', '=', 'owners.OWNER')
         ->leftJoin('grp_ps', 'product1s.GRP_P', '=', 'grp_ps.GRP_P')
         ->leftJoin('type_gs', 'product1s.TYPE_G', '=', 'type_gs.ID')
         ->leftJoin('acctypes', 'product1s.ACC_TYPE', '=', 'acctypes.ID')
-        ->where('accounts.product', $request->product)
+        ->where('product_prices.product_id', $product)
         ->first();
 
-        $data->REG_DATE = date('Y-m-d', strtotime($data->REG_DATE));
-        $data->EDIT_DT = date('Y-m-d', strtotime($data->EDIT_DT));
+        if ($data && $data->REG_DATE) {
+            $data->REG_DATE = date('Y-m-d', strtotime($data->REG_DATE));
+            $data->EDIT_DT = date('Y-m-d', strtotime($data->EDIT_DT));
+        }
+
         // dd($data);
 
         $owners = Owner::select('OWNER AS VENDOR', 'REMARK')->get();
@@ -647,28 +690,35 @@ class ProductFormController extends Controller
         // ->where('accounts.product', $request->product)
         // ->first();
         
-        $data = Account::select(
+        // dd($request->product);
+        // $data = Account::select(
+        $data = ProductPrice::select(
             // 'id',
-            'accounts.product AS product',
-            'accounts.cost AS cost_old',
-            'sale_tp',
-            'price_start_date',
+            'product_prices.product_id AS product',
+            'product_prices.cost AS cost_old',
+            // 'sale_tp',
+            // 'price_start_date',
             'product1s.BRAND AS BRAND',
+            'product1s.COST AS COST',
             'product_price_schedules.price AS price',
             'product_price_schedules.active_date AS active_date',
         )
-        ->leftJoin('product1s', 'accounts.product', '=', 'product1s.PRODUCT')
+        ->leftJoin('product1s', 'product_prices.product_id', '=', 'product1s.PRODUCT')
         ->leftJoin('owners', 'product1s.VENDOR', '=', 'owners.OWNER')
         ->leftJoin('grp_ps', 'product1s.GRP_P', '=', 'grp_ps.GRP_P')
         ->leftJoin('type_gs', 'product1s.TYPE_G', '=', 'type_gs.ID')
         ->leftJoin('acctypes', 'product1s.ACC_TYPE', '=', 'acctypes.ID')
-        ->leftJoin('product_price_schedules', 'accounts.product', '=', 'product_price_schedules.product_id')
-        ->where('accounts.product', $request->product)
+        ->leftJoin('product_price_schedules', 'product_prices.product_id', '=', 'product_price_schedules.product_id')
+        ->where('product_prices.product_id', $request->product)
         ->first();
 
-        $data->REG_DATE = date('Y-m-d', strtotime($data->REG_DATE));
-        $data->EDIT_DT = date('Y-m-d', strtotime($data->EDIT_DT));
-        $data->active_date = date('Y-m-d', strtotime($data->active_date));
+        // dd($data);
+
+        if ($data) {
+            $data->REG_DATE = $data->REG_DATE ? \Carbon\Carbon::parse($data->REG_DATE)->format('Y-m-d') : null;
+            $data->EDIT_DT = $data->EDIT_DT ? \Carbon\Carbon::parse($data->EDIT_DT)->format('Y-m-d') : null;
+            $data->active_date = $data->active_date ? \Carbon\Carbon::parse($data->active_date)->format('Y-m-d') : null;
+        }
         // dd($data);
 
         $owners = Owner::select('OWNER AS VENDOR', 'REMARK')->get();
@@ -676,8 +726,16 @@ class ProductFormController extends Controller
         $type_gs = Type_g::select('ID AS TYPE_G', 'DESCRIPTION')->get();
         $acctypes = Acctype::select('ID AS ACC_TYPE', 'DESCRIPTION')->get();
 
-        // dd($data);
-        return view('account.edit', compact('data', 'owners', 'grp_ps', 'type_gs', 'acctypes'));
+        // 🔁 เรียก API ภายนอก
+        $response = Http::get('http://sapkmacc.ssup.co.th/api/gen-bill/last-bill-date');
+
+        $docDate = null;
+        if ($response->ok() && isset($response['doc_dt'])) {
+            $docDate = $response['doc_dt'];
+        }
+
+        // dd($docDate);
+        return view('account.edit', compact('data', 'owners', 'grp_ps', 'type_gs', 'acctypes', 'docDate'));
     }
 
     public function updateAccountSchedule(Request $request)
@@ -835,11 +893,12 @@ class ProductFormController extends Controller
         $BRAND = $request->input('brand_id');
         $searchAll = $request->input('search', '');
 
-        $data = Account::select(
-            'accounts.id as id',
-            'accounts.product AS product',
-            'accounts.cost AS cost',
-            'sale_tp',
+        $data = ProductPrice::select(
+            'product_prices.product_id as product_id',
+            'product_prices.cost AS cost',
+            // 'sale_tp',
+            'product_prices.price AS price',
+            'product_prices.status AS status',
             'perfume_tax',
             'cost_perfume_tax',
             'cost5percent',
@@ -850,17 +909,15 @@ class ProductFormController extends Controller
             'sale_km_other',
             'product1s.BRAND AS BRAND',
             // 'product1s.NAME_THAI AS NAME_THAI',
-            // 'product1s.NAME_ENG AS NAME_ENG',
-            // 'product1s.NAME_ENG AS NAME_ENG',
             'product1s.SHORT_ENG AS SHORT_ENG',
             'acctypes.DESCRIPTION AS ACC_DESCRIPTION',
             'type_gs.DESCRIPTION AS DESCRIPTION',
 
         )
-        ->leftJoin('product1s', 'accounts.product', '=', 'product1s.PRODUCT')
+        ->leftJoin('product1s', 'product_prices.product_id', '=', 'product1s.PRODUCT')
         ->leftJoin('type_gs', 'product1s.TYPE_G', '=', 'type_gs.ID')
         ->leftJoin('acctypes', 'product1s.ACC_TYPE', '=', 'acctypes.ID')
-        ->orderBy('accounts.updated_at', 'DESC');
+        ->orderBy('product_prices.updated_at', 'DESC');
 
         if ($BRAND != null) {
             $data->where('product1s.BRAND', $BRAND);

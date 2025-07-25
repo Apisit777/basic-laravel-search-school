@@ -72,6 +72,7 @@ class ComProductController extends Controller
 
     public function listWarehouse(Request $request)
     {
+        // dd($request);
         $limit = (int) $request->input('length'); // จำนวนต่อหน้า
         $start = (int) $request->input('start', 0);
 
@@ -90,7 +91,11 @@ class ComProductController extends Controller
         // ->orderBy('product_id', 'DESC');
 
         if ($BRAND != null) {
-            $data->where('com_products.company_id', $BRAND);
+            if ($BRAND == 'CPS') {
+                $data->whereIn('com_products.company_id', ['CPS', 'CP']);
+            } else {
+                $data->where('com_products.company_id', $BRAND);
+            }
         }
 
         // กรองข้อมูลถ้ามีคำค้นหา
@@ -175,6 +180,7 @@ class ComProductController extends Controller
             ->get();
         $product_id = $images->first()->product_id ?? null;
 
+        // dd($data);
         // dd($images);
 
         return view('warehouse.edit', compact('data', 'images', 'product_id'));

@@ -7,13 +7,16 @@ use App\Http\Controllers\Controller;
 use App\Models\Barcode;
 use App\Models\Product1;
 use App\Models\ProductDetail;
+use App\Models\ProductDetailExportExcel;
 use App\Models\ProductDetailLog;
 use App\Models\Com_product;
 use App\Models\ComProductLog;
 use App\Models\Countrie;
+use App\Models\user_permission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class ProductDetailController extends Controller
 {
@@ -22,6 +25,12 @@ class ProductDetailController extends Controller
      */
     public function index()
     {
+
+        // ✅ ดึงชื่อ field ทั้งหมดจากตาราง product_detail_export_excel
+        // $fields = Schema::getColumnListing('product_detail_export_excels');
+
+        // dd($fields);
+
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
         $namePosition  = explode('-', $userpermission);
@@ -69,10 +78,15 @@ class ProductDetailController extends Controller
             ->pluck('PRODUCT')
             ->toArray();
 
+            $getSelect2ProDevelops = Product1::select(
+                'PRODUCT')
+                ->whereIn('BRAND', ['CPS'])
+                ->pluck('PRODUCT')
+                ->toArray();    
         }
 
         // dd($dataProductMasterArr);
-        return view('product_detail.index', compact('brands', 'dataProductMasterArr'));
+        return view('product_detail.index', compact('brands', 'dataProductMasterArr', 'getSelect2ProDevelops'));
     }
 
     /**
@@ -119,6 +133,7 @@ class ProductDetailController extends Controller
         $data = ProductDetail::select(
             'product_details.*',
             'com_products.barcode AS barcode',
+            'com_products.ref_barcode_real AS ref_barcode_real',
         )
         ->leftJoin('com_products', 'product_details.product_id', '=', 'com_products.product_id')
         ->firstWhere('product_details.product_id', '=', $id);
@@ -286,5 +301,130 @@ class ProductDetailController extends Controller
             'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
             'aaData' => $records,
         ]);
+    }
+
+    public function listProductDetailManageExportExcel(Request $request)
+    {
+        $limit = (int) $request->input('length'); // จำนวนต่อหน้า
+        $start = (int) $request->input('start', 0);
+
+        // ✅ ดึงชื่อ field ทั้งหมดจากตาราง product_detail_export_excel
+        $fields = Schema::getColumnListing('product_detail_export_excels');
+
+        // เอาเฉพาะ field ที่ใช้แสดงผลจริง (ตัด created_at, updated_at ทิ้ง)
+        $fields = array_filter($fields, fn($field) => !in_array($field, ['id', 'brand', 'position_id', 'created_at', 'updated_at']));
+
+        // $fields = array_diff(
+        // Schema::getColumnListing('product_detail_export_excels'),
+        // ['id', 'position_id', 'brand', 'created_at', 'updated_at'] // field ที่ไม่ใช่ permission
+        // );
+
+        // ✅ เพิ่มบรรทัดนี้ก่อน transform
+        // $fields = ['product', 'barcode', 'status', 'age', 'grp_p', 'supplier'];
+
+        // ✅ เตรียม query หลักเพื่อดึงสิทธิ์ของแต่ละตำแหน่ง
+        $query = user_permission::select(
+                'positions.id',
+                'positions.name_position',
+                'positions.brand',
+                DB::raw('GROUP_CONCAT(users.username) as username'),
+                DB::raw('COUNT(users.id) as total_users')
+            )
+            ->join('users', 'users.id', '=', 'user_permission.user_id')
+            ->join('positions', 'positions.id', '=', 'user_permission.position_id')
+            ->where('positions.brand', 'CPS')
+            ->groupBy('positions.id', 'positions.name_position', 'positions.brand')
+            ->orderBy('positions.id');
+
+        $totalRecords = DB::table(DB::raw("({$query->toSql()}) as sub"))
+            ->mergeBindings($query->getQuery())
+            ->count();
+
+        if ($limit > 0) {
+            $query->limit($limit)->offset($start);
+        }
+
+        $records = $query->get();
+
+        // ✅ ดึงสิทธิ์ export จาก product_detail_export_excel แยกตาม position_id
+        $exportPermissions = ProductDetailExportExcel::all()->keyBy('position_id');
+
+        // เช็กว่า key จริงมีอะไรบ้าง
+        // foreach ($exportPermissions as $key => $val) {
+        //     logger("KEY FOUND: $key");
+        // }
+
+        // แล้วตรงใน transform
+        $records->transform(function ($row) use ($fields, $exportPermissions) {
+            $positionId = $row->id;
+
+            $perm = $exportPermissions[$positionId] ?? null;
+
+            if (!$perm) {
+                // logger("❌ NO permission for position_id = $positionId");
+                $row->exportableFields = [];
+                return $row;
+            }
+
+            // logger("✅ FOUND permission for position_id = $positionId");
+            // logger("PERM DATA = " . json_encode($perm->toArray()));
+            // logger("FIELDS = " . json_encode($fields));
+
+            $row->exportableFields = collect($fields)
+                ->map(function ($field) use ($perm) {
+                    $value = data_get($perm, $field);
+                    // logger("🧪 $field => " . json_encode($value));
+                    return [
+                        'key' => $field,
+                        'label' => $field,
+                        'allowed' => $value == 1,
+                    ];
+                })
+                ->chunk(4)
+                ->toArray();
+
+            return $row;
+        });
+
+        // ✅ ส่งออก JSON
+        return response()->json([
+            'draw' => intval($request->draw),
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalRecords,
+            'data' => $records,
+        ]);
+    }
+
+    public function updateProductDetailManageExportExcel(Request $request, $position_id)
+    {
+        dd($request);
+        DB::beginTransaction();
+        try {
+                $position_id = $request->input('position_id');
+                $exportFields = $request->input('export_fields', []);
+
+                // ลบรายการเก่า
+                ProductDetailExportExcel::where('position_id', $position_id)->delete();
+
+                // Insert รายการใหม่ทั้งหมด
+                foreach ($exportFields as $fieldKey) {
+                    ProductDetailExportExcel::create([
+                        'position_id' => $position_id,
+                        'field_key' => $fieldKey,
+                        'allowed' => true,
+                        'created_at' => now(),
+                        'updated_at' => now()
+                    ]);
+                }
+
+                // dd($upddateProductDetail);
+                DB::commit();
+                $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
+                return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            DB::rollback();
+            $request->session()->flash('status', 'เพิ่มขู้อมูลไม่สำเร็จ!');
+            return response()->json(['success' => false, 'message' => 'Line '.$e->getLine().': '.$e->getMessage()]);
+        }
     }
 }

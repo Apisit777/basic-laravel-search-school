@@ -158,6 +158,8 @@ class AccountSchedule extends Command
                             ]);
                             $this->output->progressAdvance();
                         }
+                        DB::enableQueryLog(); // เปิดเก็บ Log
+
                         // บันทึก Log ลงตารางที่เหมาะสม
                         if (!empty($product1LogData)) {
                             DB::table('product1_logs')->insert($product1LogData);
@@ -168,6 +170,9 @@ class AccountSchedule extends Command
                         if (!empty($productPriceScheduleLogData)) {
                             DB::table('product_price_schedule_logs')->insert($productPriceScheduleLogData);
                         }
+
+                        dd(DB::getQueryLog()); // แสดง query log ทั้งหมดที่รันจนถึงตรงนี้
+                        
                         // อัปเดตเวลาเสร็จสิ้น
                         $taskSuccess->update([
                             'is_completed' => true,

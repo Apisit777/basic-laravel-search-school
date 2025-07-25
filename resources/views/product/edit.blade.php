@@ -337,6 +337,15 @@
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">ประเภทสินค้า [บัญชี]</label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="ACC_TYPE" id="ACC_TYPE">
+                                                                        <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($acctypes as $key => $acctype)
+                                                                            <option value="{{ $acctype['ACC_TYPE'] }}" {{ $acctype['ACC_TYPE'] == $data->ACC_TYPE ? 'selected' : '' }}>{{ $acctype['DESCRIPTION'] }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="OPT_TXT1">รหัสสินค้าอ้างอิง</label>
                                                                     <input type="text" name="OPT_TXT1" id="OPT_TXT1" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->OPT_TXT1 }}" />
@@ -346,7 +355,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="SOLUTION" id="SOLUTION">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($solutions as $key => $solution)
-                                                                        <option value="{{ $solution['SOLUTION'] }}" {{ $solution['SOLUTION'] == $data->SOLUTION ? 'selected' : '' }}>{{ $solution['DESCRIPTION'] }}</option>
+                                                                            <option value="{{ $solution['SOLUTION'] }}" {{ $solution['SOLUTION'] == $data->SOLUTION ? 'selected' : '' }}>{{ $solution['DESCRIPTION'] }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div>
@@ -630,7 +639,7 @@
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="ACC_TYPE" id="ACC_TYPE">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($acctypes as $key => $acctype)
-                                                                            <option value={{ $acctype->ACC_TYPE }} {{ $acctype->ACC_TYPE == $data->ACC_TYPE ? 'selected' : '' }}>{{ $acctype->ACC_TYPE.' - ('.$acctype->DESCRIPTION.')' }}</option>
+                                                                            <option value="{{ $acctype['ACC_TYPE'] }}" {{ $acctype['ACC_TYPE'] == $data->ACC_TYPE ? 'selected' : '' }}>{{ $acctype['DESCRIPTION'] }}</option>
                                                                         @endforeach
                                                                     </select>
                                                                 </div> -->

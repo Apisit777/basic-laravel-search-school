@@ -354,7 +354,8 @@
                                 </div>
                                 <div class="col" style="">
                                     <span style="font-size: 14px;">
-                                        {{ $dataIBSH->DOC_NO }}
+                                        IBH-F155
+                                        <!-- {{ $dataIBSH->DOC_NO }} -->
                                     </span>
                                 </div>
                             </div>
@@ -377,7 +378,8 @@
                                 </div>
                                 <div class="col" style="width: 80px;">
                                     <span style="font-size: 14px;">
-                                        {{ $dataIBSH->DOC_DT }}
+                                         26/01/15
+                                        <!-- {{ $dataIBSH->DOC_DT }} -->
                                     </span>
                                 </div>
                             </div>
@@ -385,7 +387,7 @@
                     </div>
                     <div class="" style="width: 64px; margin-right: 170px;">
                         <div>
-                            <div class="row text-start" style="width: 300px; margin-top: 3px;">
+                            <div class="row text-start" style="width: 280px; margin-top: 3px;">
                                 <div style="width: 250px;">
                                     <span style="font-size: 12px;">
                                         Institute of Beauty and Health Sciences Co.,Ltd.
