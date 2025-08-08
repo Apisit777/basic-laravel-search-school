@@ -348,7 +348,7 @@ class AuthController extends Controller
 
         if ($data->successful()) {
             $response = $data->json();
-            $user = User::select('id')
+            $user = User::select('id', 'username')
                 ->where('username', $request->username)
                 ->first();
 
@@ -358,52 +358,143 @@ class AuthController extends Controller
             //     'Response' => $response['data']['roles']
             // ]);
             
-            if ($user == NULL) {
-                // dd(1);
+            if ($user == NULL) { 
                 $createUser = User::create([
                     'username' => $request->username
                 ]);
+
                 foreach ($response['data']['roles'] as $role) {
                     $namePosition = position::select('id', 'name_position')
                         ->where('name_position', '=', $role)
                         ->first();
-                    if ($namePosition) {
-                        $namePositionStr_3 = substr($role, -3);
-                        if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC' || $namePositionStr_3 == 'ACC') {
-                            $createPosition = position::updateOrCreate(['id' => $namePosition->id],
-                                [
-                                    'name_position' => $role,
-                                    'brand' => $namePositionStr_3
-                                ]);
-                        } else {
-                            $namePositionStr_2 = substr($role, -2);
-                            $createPosition = position::updateOrCreate(['id' => $namePosition->id],
-                                [
-                                    'name_position' => $role,
-                                    'brand' => $namePositionStr_2
-                                ]);
-                        }
-                    } else {
-                        $namePositionStr_3 = substr($role, -3);
-                        if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC' || $namePositionStr_3 == 'ACC') {
-                            $createPosition = position::create([
-                                'name_position' => $role,
-                                'brand' => $namePositionStr_3
-                            ]);
-                        } else {
-                            $namePositionStr_2 = substr($role, -2);
-                            $createPosition = position::create([
-                                'name_position' => $role,
-                                'brand' => $namePositionStr_2
-                            ]);
-                        }
+
+                    $namePositionStr_3 = substr($role, -3);
+                    $namePositionStr_2 = substr($role, -2);
+
+                    // if (substr($role, -2) === 'KM') {
+                    //     $debugSteps = [];
+
+                    //     // 1️⃣ ตัด role เต็ม เช่น AST-Manager-LC-KM
+                    //     $debugSteps['role'] = $role;
+
+                    //     // 2️⃣ ใช้ explode แยกด้วย '-'
+                    //     $parts = explode('-', $role);
+                    //     $debugSteps['explode_parts'] = $parts;
+
+                    //     // 3️⃣ นับจำนวน segment
+                    //     $count = count($parts);
+                    //     $debugSteps['segment_count'] = $count;
+
+                    //     // 4️⃣ department อยู่ก่อน KM (จากท้าย) → คือ segment ลำดับรองสุดท้าย
+                    //     $department = ($count >= 2) ? $parts[$count - 2] : null;
+                    //     $debugSteps['extracted_department'] = $department;
+
+                    //     // 5️⃣ brand = KM แบบ fix
+                    //     $brand = 'KM';
+                    //     $debugSteps['extracted_brand'] = $brand;
+
+                    //     // 6️⃣ สร้าง positionData
+                    //     $positionData = [
+                    //         'name_position' => $role,
+                    //         'brand' => $brand,
+                    //         'department' => $department,
+                    //     ];
+                    //     $debugSteps['final_position_data'] = $positionData;
+
+                    //     // 🐞 Debug ทั้งหมด
+                    //     dd($debugSteps);
+                    // }
+
+                    // เงื่อนไขพิเศษกรณี KM
+                    if ($namePositionStr_2 === 'KM') {
+                        // ดึง LC จากตำแหน่งหลังขีดสุดท้ายก่อน 'KM'
+                        $parts = explode('-', $role);
+                        $count = count($parts);
+                        $department = ($count >= 2) ? $parts[$count - 2] : null;
+
+                        $positionData = [
+                            'name_position' => $role,
+                            'brand' => 'KM',
+                            'department' => $department,
+                        ];
                     }
+                    // ✅ เงื่อนไขแบรนด์ปกติ
+                    else if (in_array($namePositionStr_3, ['CPS', 'KTY', 'GNC', 'ACC'])) {
+                        $positionData = [
+                            'name_position' => $role,
+                            'brand' => $namePositionStr_3
+                        ];
+                    } else {
+                        $positionData = [
+                            'name_position' => $role,
+                            'brand' => $namePositionStr_2
+                        ];
+                    }
+
+                    // UPDATE หรือ CREATE
+                    if ($namePosition) {
+                        $createPosition = position::updateOrCreate(
+                            ['id' => $namePosition->id],
+                            $positionData
+                        );
+                    } else {
+                        $createPosition = position::create($positionData);
+                    }
+
+                    // เพิ่มสิทธิ์
                     $createUserPermission = user_permission::create([
                         'user_id' => $createUser->id,
                         'position_id' => $createPosition->id
                     ]);
                 }
             }
+
+            // if ($user == NULL) {
+            //     // dd(1);
+            //     $createUser = User::create([
+            //         'username' => $request->username
+            //     ]);
+            //     foreach ($response['data']['roles'] as $role) {
+            //         $namePosition = position::select('id', 'name_position')
+            //             ->where('name_position', '=', $role)
+            //             ->first();
+            //         if ($namePosition) {
+            //             $namePositionStr_3 = substr($role, -3);
+            //             if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC' || $namePositionStr_3 == 'ACC') {
+            //                 $createPosition = position::updateOrCreate(['id' => $namePosition->id],
+            //                     [
+            //                         'name_position' => $role,
+            //                         'brand' => $namePositionStr_3
+            //                     ]);
+            //             } else {
+            //                 $namePositionStr_2 = substr($role, -2);
+            //                 $createPosition = position::updateOrCreate(['id' => $namePosition->id],
+            //                     [
+            //                         'name_position' => $role,
+            //                         'brand' => $namePositionStr_2
+            //                     ]);
+            //             }
+            //         } else {
+            //             $namePositionStr_3 = substr($role, -3);
+            //             if ($namePositionStr_3 == 'CPS' || $namePositionStr_3 == 'KTY' || $namePositionStr_3 == 'GNC' || $namePositionStr_3 == 'ACC') {
+            //                 $createPosition = position::create([
+            //                     'name_position' => $role,
+            //                     'brand' => $namePositionStr_3
+            //                 ]);
+            //             } else {
+            //                 $namePositionStr_2 = substr($role, -2);
+            //                 $createPosition = position::create([
+            //                     'name_position' => $role,
+            //                     'brand' => $namePositionStr_2
+            //                 ]);
+            //             }
+            //         }
+            //         $createUserPermission = user_permission::create([
+            //             'user_id' => $createUser->id,
+            //             'position_id' => $createPosition->id
+            //         ]);
+            //     }
+            // }
 
             $userRole = user_permission::select(
                 'positions.name_position as role'
@@ -428,7 +519,26 @@ class AuthController extends Controller
                 // dd(1);
                 $user->save();
                 Auth::login($user, false);
+
+                /// เงื่อนไขพิเศษ: ถ้า defaultRole ลงท้ายด้วย KM → redirect ไปหน้า warehouse/dimension & รหัส user test km(91)
+                if (substr($defaultRole, -2) === 'KM' && Auth::user()->id === 91) {
+                    return response()->json([
+                        'status' => 'success',
+                        'response' => $response,
+                        'default_role' => $defaultRole,
+                        'route' => '/product_master/pd_master'
+                    ]);
+                } else if (substr($defaultRole, -2) === 'KM') {
+                    return response()->json([
+                        'status' => 'success',
+                        'response' => $response,
+                        'default_role' => $defaultRole,
+                        'route' => '/warehouse/dimension'
+                    ]);
+                }
+
                 return response()->json(['status' => 'success', 'response' => $response, 'default_role' => $defaultRole, 'route' => '/product_master/pd_master']);
+
             } else {
                 return response()->json([
                     'status' => 'error',

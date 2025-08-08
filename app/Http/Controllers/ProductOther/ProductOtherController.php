@@ -23,6 +23,7 @@ use App\Models\MasterBrand;
 use App\Models\MasterBrandChannel;
 use App\Models\ProductOther;
 use App\Models\ProductOtherLog;
+use App\Models\ProductChannelBrand;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -375,40 +376,67 @@ class ProductOtherController extends Controller
         $namePosition  = explode('-', $userpermission);
         $userpermission = trim(end($namePosition));
 
-        // Backend Controller (แก้ไขเพื่อความถูกต้อง)
-        $allChannels = MasterBrandChannel::where('CHANNEL_NAME', '!=', 'all')
-        ->pluck('CHANNEL_NAME')->toArray();
+        // // Backend Controller (แก้ไขเพื่อความถูกต้อง)
+        // $allChannels = MasterBrandChannel::where('CHANNEL_NAME', '!=', 'all')
+        // ->pluck('CHANNEL_NAME')->toArray();
+
+        // // $defaultChannel = ProductOther::where('product_id', '=', $id)
+        // //     ->pluck('channel')
+        // //     ->map(function ($item) {
+        // //         return ucfirst(strtolower($item)); // ปรับให้ตัวแรกใหญ่เสมอ ตรงกับฐานข้อมูล
+        // //     })
+        // //     ->toArray();
 
         // $defaultChannel = ProductOther::where('product_id', '=', $id)
         //     ->pluck('channel')
         //     ->map(function ($item) {
-        //         return ucfirst(strtolower($item)); // ปรับให้ตัวแรกใหญ่เสมอ ตรงกับฐานข้อมูล
+        //         // แปลงตัวอักษรทุกตัวให้เป็นตัวเล็กก่อน
+        //         $lowercaseItem = strtolower($item);
+        //         // ตรวจสอบว่าค่ามีแค่ 2 ตัวอักษร (เช่น "MT") หรือไม่
+        //         if (strlen($lowercaseItem) <= 2) {
+        //             return ucfirst($lowercaseItem);
+        //         }
+        //         // ถ้าเป็นคำปกติ ใช้ ucwords() ทำให้ตัวแรกของแต่ละคำเป็นตัวใหญ่
+        //         return ucwords($lowercaseItem);
         //     })
         //     ->toArray();
 
-        $defaultChannel = ProductOther::where('product_id', '=', $id)
-            ->pluck('channel')
+        // // ล้างค่าที่ว่างออกก่อน แล้วตรวจสอบ
+        // $cleanedChannel = array_filter($defaultChannel, function ($value) {
+        //     return trim($value) !== '';
+        // });
+
+        // if (in_array('all', array_map('strtolower', $cleanedChannel))) {
+        //     $defaultAllChannels = ['all'];
+        // // } elseif (empty($cleanedChannel)) {
+        // //     $defaultAllChannels = ['all']; // ✅ ถ้าไม่มีข้อมูลหรือเป็นค่าว่าง ให้ default เป็น all
+        // } else {
+        //     $defaultAllChannels = $cleanedChannel;
+        // }
+
+        // ดึง channel ทั้งหมดที่มีอยู่ (เพื่อ populate select2)
+        $allChannels = MasterBrandChannel::select('CHANNEL_NAME')->where('BRAND', '=', 'CPS')->pluck('CHANNEL_NAME')->toArray();
+
+        // ดึงค่าที่เคยเลือกไว้จาก product_channel_brands
+        $defaultChannel = ProductChannelBrand::where('PRODUCT', '=', $id)
+            ->pluck('CHANNEL')
             ->map(function ($item) {
-                // แปลงตัวอักษรทุกตัวให้เป็นตัวเล็กก่อน
-                $lowercaseItem = strtolower($item);
-                // ตรวจสอบว่าค่ามีแค่ 2 ตัวอักษร (เช่น "MT") หรือไม่
-                if (strlen($lowercaseItem) <= 2) {
-                    return ucfirst($lowercaseItem);
+                $lower = strtolower(trim($item));
+                if (strlen($lower) <= 2) {
+                    return strtoupper($lower); // MT → MT
                 }
-                // ถ้าเป็นคำปกติ ใช้ ucwords() ทำให้ตัวแรกของแต่ละคำเป็นตัวใหญ่
-                return ucwords($lowercaseItem);
+                return ucwords(str_replace('_', ' ', $lower)); // shop_ecom → Shop Ecom
             })
             ->toArray();
 
-        // ล้างค่าที่ว่างออกก่อน แล้วตรวจสอบ
+        // ล้างค่าว่างออก
         $cleanedChannel = array_filter($defaultChannel, function ($value) {
             return trim($value) !== '';
         });
 
+        // ถ้าเจอ all ให้แสดง 'all' อย่างเดียว
         if (in_array('all', array_map('strtolower', $cleanedChannel))) {
             $defaultAllChannels = ['all'];
-        } elseif (empty($cleanedChannel)) {
-            $defaultAllChannels = ['all']; // ✅ ถ้าไม่มีข้อมูลหรือเป็นค่าว่าง ให้ default เป็น all
         } else {
             $defaultAllChannels = $cleanedChannel;
         }
@@ -548,6 +576,7 @@ class ProductOtherController extends Controller
      */
     public function update(Request $request, $id)
     {
+        // $nameBrand = Auth::user()->getUserPermission->brand;
         // dd($request);
         DB::beginTransaction();
         try {
@@ -568,6 +597,7 @@ class ProductOtherController extends Controller
                 }
 
                 $data_product_upddate = [
+                    'company_id' => $request->input('company_id'),
                     'item_name' => $request->input('item_name'),
                     'cat_name' => $request->input('cat_name'),
                     'usage_area' => $request->input('usage_area'),
@@ -585,38 +615,88 @@ class ProductOtherController extends Controller
                     'suppiler_en' => $request->input('suppiler_en'),
                     'color_code' => $request->input('color_code'),
                     'other_detail' => $request->input('other_detail'),
-                    'sls_free' => $request->input('sls_free'),
-                    'natural_alcohol' => $request->input('natural_alcohol'),
-                    'silicone_free' => $request->input('silicone_free'),
-                    'certified_food' => $request->input('certified_food'),
-                    'mineral_free' => $request->input('mineral_free'),
-                    'certified_organic' => $request->input('certified_organic'),
-                    'colorant_free' => $request->input('colorant_free'),
-                    'hypoallergenic' => $request->input('hypoallergenic'),
-                    'phthalate_free' => $request->input('phthalate_free'),
-                    'tested' => $request->input('tested'),
-                    'cruelty_free' => $request->input('cruelty_free'),
-                    'non_comedogenic' => $request->input('non_comedogenic'),
-                    'talc_free' => $request->input('talc_free'),
-                    'synthetic_colorant' => $request->input('synthetic_colorant'),
-                    'oil_free' => $request->input('oil_free'),
-                    'synthetic_fragrance' => $request->input('synthetic_fragrance'),
-                    'triethanolamin_free' => $request->input('triethanolamin_free'),
-                    'ph_balance' => $request->input('ph_balance'),
-                    'petroleum_free' => $request->input('petroleum_free'),
-                    'chil_over_6year' => $request->input('chil_over_6year'),
-                    'petrolatum_free' => $request->input('petrolatum_free'),
-                    'fragrance_free' => $request->input('fragrance_free'),
-                    'alcohol_free' => $request->input('alcohol_free'),
-                    'paraben_free' => $request->input('paraben_free'),
-                    'pregnancy' => $request->input('pregnancy'),
-                    'breastfeed' => $request->input('breastfeed'),
+                    'sls_free' => is_null($request->input('sls_free')) ? 'N' : 'Y',
+                    'natural_alcohol' => is_null($request->input('natural_alcohol')) ? 'N' : 'Y',
+                    'silicone_free' => is_null($request->input('silicone_free')) ? 'N' : 'Y',
+                    'certified_food' => is_null($request->input('certified_food')) ? 'N' : 'Y',
+                    'mineral_free' => is_null($request->input('mineral_free')) ? 'N' : 'Y',
+                    'certified_organic' => is_null($request->input('certified_organic')) ? 'N' : 'Y',
+                    'colorant_free' => is_null($request->input('colorant_free')) ? 'N' : 'Y',
+                    'hypoallergenic' => is_null($request->input('hypoallergenic')) ? 'N' : 'Y',
+                    'phthalate_free' => is_null($request->input('phthalate_free')) ? 'N' : 'Y',
+                    'tested' => is_null($request->input('tested')) ? 'N' : 'Y',
+                    'cruelty_free' => is_null($request->input('cruelty_free')) ? 'N' : 'Y',
+                    'non_comedogenic' => is_null($request->input('non_comedogenic')) ? 'N' : 'Y',
+                    'talc_free' => is_null($request->input('talc_free')) ? 'N' : 'Y',
+                    'synthetic_colorant' => is_null($request->input('synthetic_colorant')) ? 'N' : 'Y',
+                    'oil_free' => is_null($request->input('oil_free')) ? 'N' : 'Y',
+                    'synthetic_fragrance' => is_null($request->input('synthetic_fragrance')) ? 'N' : 'Y',
+                    'triethanolamin_free' => is_null($request->input('triethanolamin_free')) ? 'N' : 'Y',
+                    'ph_balance' => is_null($request->input('ph_balance')) ? 'N' : 'Y',
+                    'petroleum_free' => is_null($request->input('petroleum_free')) ? 'N' : 'Y',
+                    'chil_over_6year' => is_null($request->input('chil_over_6year')) ? 'N' : 'Y',
+                    'petrolatum_free' => is_null($request->input('petrolatum_free')) ? 'N' : 'Y',
+                    'fragrance_free' => is_null($request->input('fragrance_free')) ? 'N' : 'Y',
+                    'alcohol_free' => is_null($request->input('alcohol_free')) ? 'N' : 'Y',
+                    'paraben_free' => is_null($request->input('paraben_free')) ? 'N' : 'Y',
+                    'pregnancy' => is_null($request->input('pregnancy')) ? 'N' : 'Y',
+                    'breastfeed' => is_null($request->input('breastfeed')) ? 'N' : 'Y',
                     'upd_user' => Auth::user()->username,
                     'upd_date' => date("Y/m/d H:i:s")
                 ];
 
                 // อัปเดตข้อมูล
                 $ProductOther = ProductOther::where('product_id', $id)->update($data_product_upddate);
+
+                if (!empty($request->channel_brand)) {
+                    // ใช้ fallback: ถ้า key PRODUCT ไม่มีใน array, ให้ใช้ $id แทน
+                    $productId = $data_product_upddate['PRODUCT'] ?? $id;
+
+                    $user = Auth::user()->username;
+                    $dateTime = now()->format('Y-m-d H:i:s');
+
+                    // ลบรายการเก่าของ PRODUCT นี้ก่อน (optional)
+                    ProductChannelBrand::where('PRODUCT', $productId)->delete();
+
+                    $channelList = ['CP Con', 'Dealer', 'Export', 'MT', 'Shop Ecom'];
+
+                    foreach ($request->channel_brand as $channels) {
+                        $channels = (array) $channels; // ✅ ป้องกัน error ถ้าเป็น string เช่น "all"
+
+                        $brand = $data_product_upddate['company_id'];
+
+                        foreach ($channels as $channel) {
+                            // ตรวจสอบว่าเลือก all หรือไม่ (case-insensitive)
+                            if (strtolower(trim($channel)) === 'all') {
+                                foreach ($channelList as $ch) {
+                                    ProductChannelBrand::updateOrCreate(
+                                        [
+                                            'PRODUCT' => $productId,
+                                            'BRAND' => $brand,
+                                            'CHANNEL' => $ch
+                                        ],
+                                        [
+                                            'UPDATED_BY' => $user,
+                                            'UPDATED_AT' => $dateTime
+                                        ]
+                                    );
+                                }
+                            } else {
+                                ProductChannelBrand::updateOrCreate(
+                                    [
+                                        'PRODUCT' => $productId,
+                                        'BRAND' => $brand,
+                                        'CHANNEL' => $channel
+                                    ],
+                                    [
+                                        'UPDATED_BY' => $user,
+                                        'UPDATED_AT' => $dateTime
+                                    ]
+                                );
+                            }
+                        }
+                    }
+                }
 
                 // ดึงข้อมูลล่าสุดหลังจากอัปเดต
                 $upddateProduct1s = ProductOther::where('product_id', $id)->first();

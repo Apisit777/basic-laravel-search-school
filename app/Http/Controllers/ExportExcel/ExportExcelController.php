@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Pro_develops;
 use App\Models\Product1;
 use App\Models\Account;
+use App\Models\ProductDetailExportExcel;
 use \avadim\FastExcelWriter\Excel;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
@@ -606,436 +607,220 @@ class ExportExcelController extends Controller
         $excel->download($outFileName);
     }
 
+    protected function getFieldNameMapping()
+    {
+        return [
+            // 'Brand',
+            'PRODUCT' => 'Product ID',
+            'BARCODE' => 'Barcode',
+            'STATUS' => 'Status',
+            'AGE' => 'อายุสินค้า',
+            'GRP_P' => 'สินค้าของบริษัท',
+            'SUPPLIER' => 'ผู้ขาย/ผู้ผลิต',
+            'NAME_THAI' => 'ชื่อภาษาไทย',
+            'NAME_ENG' => 'ชื่อภาษาอังกฤษ',
+            'SHORT_THAI' => 'ชื่อย่อไทย',
+            'SHORT_ENG' => 'ชื่อย่ออังกฤษ',
+            'launch' => 'Launch',
+            'country' => 'ผลิตประเทศ',
+            'ingredients' => 'ingredients',
+            'after_open_m' => 'ระยะเก็บรักษา(หลังเปิด)',
+            'description_th' => 'description_th',
+            'description_en' => 'description_en',
+            'usage_direction_th' => 'usage_direction_th',
+            'usage_direction_en' => 'usage_direction_en',
+            'color_code_th' => 'color_code_th',
+            'color_code_en' => 'color_code_en',
+            'case_width' => 'case_width',
+            'case_length' => 'case_length',
+            'case_height' => 'case_height',
+            'case_barcode' => 'case_barcode',
+            'case_weight' => 'case_weight',
+            'case_pack_size' => 'case_pack_size',
+            'inner_width' => 'inner_width',
+            'inner_length' => 'inner_length',
+            'inner_height' => 'inner_height',
+            'inner_barcode' => 'inner_barcode',
+            'inner_pack_size' => 'inner_pack_size',
+            'inner_weight' => 'inner_weight',
+            'unit_barcode' => 'unit_barcode',
+            'unit_weight' => 'unit_weight',
+            'unit_pak_size' => 'unit_pak_size',
+            'fad' => 'FDA',
+            'channel' => 'channel',
+            'item_name' => 'item_name',
+            'cat_name' => 'cat_name',
+            'product_line' => 'product_line',
+            'product_type' => 'product_type',
+            'skin_type' => 'skin_type',
+            'finish' => 'finish',
+            'package' => 'package',
+            'package2' => 'package2',
+            'usage_area' => 'usage_area',
+            'texture' => 'texture',
+            'coverage' => 'coverage',
+            'color_name_th' => 'color_name_th',
+            'color_name_en' => 'color_name_en',
+            'suppiler_th' => 'suppiler_th',
+            'suppiler_en' => 'suppiler_en',
+            'color_code' => 'รหัสสี',
+            'other_detail' => 'อื่นๆ',
+            'sls_free' => 'sls_free',
+            'silicone_free' => 'silicone_free',
+            'mineral_free' => 'mineral_free',
+            'colorant_free' => 'colorant_free',
+            'phthalate_free' => 'phthalate_free',
+            'cruelty_free' => 'cruelty_free',
+            'talc_free' => 'talc_free',
+            'oil_free' => 'oil_free',
+            'triethanolamin_free' => 'triethanolamin_free',
+            'petroleum_free' => 'petroleum_free',
+            'petrolatum_free' => 'petrolatum_free',
+            'natural_alcohol' => 'natural_alcohol',
+            'certified_food' => 'certified_food',
+            'certified_organic' => 'certified_organic',
+            'hypoallergenic' => 'hypoallergenic',
+            'tested' => 'tested',
+            'non_comedogenic' => 'non_comedogenic',
+            'synthetic_colorant' => 'synthetic_colorant',
+            'synthetic_fragrance' => 'synthetic_fragrance',
+            'ph_balance' => 'ph_balance',
+            'chil_over_6year' => 'chil_over_6year',
+            'fragrance_free' => 'fragrance_free',
+            'paraben_free' => 'paraben_free',
+            'alcohol_free' => 'alcohol_free',
+            'price' => 'Retail Price',
+            'cost' => 'Cost',
+            'solution' => 'Solution',
+            'series' => 'Series',
+            'category' => 'Category',
+            'sub_category' => 'Sub Category',
+            'reg_date' => 'REG_DATE',
+            'user_edit' => 'USER_EDIT',
+            'edit_dt' => 'EDIT_DT',
+            // เพิ่มได้ตามต้องการ...
+        ];
+    }
+
     public function exportExcelProductDetail(Request $request)
     {
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
+        $positionId = Auth::user()->getUserPermission->id ?? null;
         $namePosition  = explode('-', $userpermission);
         $userpermission = trim(end($namePosition));
-        // dd($request->all(), $userpermission);
+        // dd($request->all(), $userpermission, $positionId);
 
-        if ($userpermission == 'CPS') {
-            if (!isset($request->start_product) || $request->start_product == null) {
-                $ProDevelops = Product1::select(
-                                        'product1s.BRAND', 
-                                                 'product1s.PRODUCT', 
-                                                 'product1s.BARCODE', 
-                                                 'product1s.STATUS',
-                                                 'product1s.AGE',
-                                                 'product1s.GRP_P',
-                                                 'product1s.SUPPLIER',
-                                                 'product1s.NAME_THAI', 
-                                                 'product1s.NAME_ENG', 
-                                                 'product1s.SHORT_THAI', 
-                                                 'product1s.SHORT_ENG', 
-                                                 'product_details.launch',
-                                                 'product_details.country',
-                                                 'product_details.ingredients',
-                                                 'product_details.after_open_m',
-                                                 'product_details.description_th',
-                                                 'product_details.description_en',
-                                                 'product_details.usage_direction_th',
-                                                 'product_details.usage_direction_en',
-                                                 'product_details.color_code_th',
-                                                 'product_details.color_code_en',
-                                                 'product_details.case_width',
-                                                 'product_details.case_length',
-                                                 'product_details.case_height',
-                                                 'product_details.case_barcode',
-                                                 'product_details.case_weight',
-                                                 'product_details.case_pack_size',
-                                                 'product_details.inner_width',
-                                                 'product_details.inner_length',
-                                                 'product_details.inner_height',
-                                                 'product_details.inner_barcode',
-                                                 'product_details.inner_pack_size',
-                                                 'product_details.inner_weight',
-                                                 'product_details.unit_barcode',
-                                                 'product_details.unit_weight',
-                                                 'product_details.unit_pak_size',
-                                                 'product_details.fad',
-                                                 'product_others.channel',
-                                                 'product_others.item_name',
-                                                 'product_others.cat_name',
-                                                 'product_others.product_line',
-                                                 'product_others.product_type',
-                                                 'product_others.skin_type',
-                                                 'product_others.finish',
-                                                 'product_others.package',
-                                                 'product_others.package2',
-                                                 'product_others.usage_area',
-                                                 'product_others.texture',
-                                                 'product_others.coverage',
-                                                 'product_others.color_name_th',
-                                                 'product_others.color_name_en',
-                                                 'product_others.suppiler_th',
-                                                 'product_others.suppiler_en',
-                                                 'product_others.color_code',
-                                                 'product_others.other_detail',
-                                                 'product_others.sls_free',
-                                                 'product_others.silicone_free',
-                                                 'product_others.mineral_free',
-                                                 'product_others.colorant_free',
-                                                 'product_others.phthalate_free',
-                                                 'product_others.cruelty_free',
-                                                 'product_others.talc_free',
-                                                 'product_others.oil_free',
-                                                 'product_others.triethanolamin_free',
-                                                 'product_others.petroleum_free',
-                                                 'product_others.petrolatum_free',
-                                                 'product_others.natural_alcohol',
-                                                 'product_others.certified_food',
-                                                 'product_others.certified_organic',
-                                                 'product_others.hypoallergenic',
-                                                 'product_others.tested',
-                                                 'product_others.non_comedogenic',
-                                                 'product_others.synthetic_colorant',
-                                                 'product_others.synthetic_fragrance',
-                                                 'product_others.ph_balance',
-                                                 'product_others.chil_over_6year',
-                                                 'product_others.fragrance_free',
-                                                 'product_others.paraben_free',
-                                                 'product_others.alcohol_free',
-                                                 'product1s.PRICE', 
-                                                 'product1s.COST',
-                                                 'solutions.DESCRIPTION AS SOLUTION', 
-                                                 'series.DESCRIPTION AS SERIES', 
-                                                 'categories.DESCRIPTION AS CATEGORY', 
-                                                 'sub_categories.DESCRIPTION AS SUB_CATEGORY',
-                                                 'product1s.REG_DATE',
-                                                 'product1s.USER_EDIT',
-                                                 'product1s.EDIT_DT',
-                                                )
-                                        ->leftJoin('product_details', 'product1s.PRODUCT', '=', 'product_details.product_id')
-                                        ->leftJoin('product_others', 'product1s.PRODUCT', '=', 'product_others.product_id')
-                                        ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
-                                        ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
-                                        ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
-                                        ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
-                                        ->where('product1s.BRAND', 'CPS')
-                                        ->groupBy('product1s.PRODUCT')
-                                        ->orderBy('product1s.PRODUCT', 'asc')
-                                        ->get()
-                                        ->toArray();
-                                        // dd($ProDevelops);
-            } else if (!isset($request->end_product) || $request->end_product == null) {
-                $ProDevelops = Product1::select(
-                                        'product1s.BRAND', 
-                                                 'product1s.PRODUCT', 
-                                                 'product1s.BARCODE', 
-                                                 'product1s.STATUS',
-                                                 'product1s.AGE',
-                                                 'product1s.GRP_P',
-                                                 'product1s.SUPPLIER',
-                                                 'product1s.NAME_THAI', 
-                                                 'product1s.NAME_ENG', 
-                                                 'product1s.SHORT_THAI', 
-                                                 'product1s.SHORT_ENG', 
-                                                 'product_details.launch',
-                                                 'product_details.country',
-                                                 'product_details.ingredients',
-                                                 'product_details.after_open_m',
-                                                 'product_details.description_th',
-                                                 'product_details.description_en',
-                                                 'product_details.usage_direction_th',
-                                                 'product_details.usage_direction_en',
-                                                 'product_details.color_code_th',
-                                                 'product_details.color_code_en',
-                                                 'product_details.case_width',
-                                                 'product_details.case_length',
-                                                 'product_details.case_height',
-                                                 'product_details.case_barcode',
-                                                 'product_details.case_weight',
-                                                 'product_details.case_pack_size',
-                                                 'product_details.inner_width',
-                                                 'product_details.inner_length',
-                                                 'product_details.inner_height',
-                                                 'product_details.inner_barcode',
-                                                 'product_details.inner_pack_size',
-                                                 'product_details.inner_weight',
-                                                 'product_details.unit_barcode',
-                                                 'product_details.unit_weight',
-                                                 'product_details.unit_pak_size',
-                                                 'product_details.fad',
-                                                 'product_others.channel',
-                                                 'product_others.item_name',
-                                                 'product_others.cat_name',
-                                                 'product_others.product_line',
-                                                 'product_others.product_type',
-                                                 'product_others.skin_type',
-                                                 'product_others.finish',
-                                                 'product_others.package',
-                                                 'product_others.package2',
-                                                 'product_others.usage_area',
-                                                 'product_others.texture',
-                                                 'product_others.coverage',
-                                                 'product_others.color_name_th',
-                                                 'product_others.color_name_en',
-                                                 'product_others.suppiler_th',
-                                                 'product_others.suppiler_en',
-                                                 'product_others.color_code',
-                                                 'product_others.other_detail',
-                                                 'product_others.sls_free',
-                                                 'product_others.silicone_free',
-                                                 'product_others.mineral_free',
-                                                 'product_others.colorant_free',
-                                                 'product_others.phthalate_free',
-                                                 'product_others.cruelty_free',
-                                                 'product_others.talc_free',
-                                                 'product_others.oil_free',
-                                                 'product_others.triethanolamin_free',
-                                                 'product_others.petroleum_free',
-                                                 'product_others.petrolatum_free',
-                                                 'product_others.natural_alcohol',
-                                                 'product_others.certified_food',
-                                                 'product_others.certified_organic',
-                                                 'product_others.hypoallergenic',
-                                                 'product_others.tested',
-                                                 'product_others.non_comedogenic',
-                                                 'product_others.synthetic_colorant',
-                                                 'product_others.synthetic_fragrance',
-                                                 'product_others.ph_balance',
-                                                 'product_others.chil_over_6year',
-                                                 'product_others.fragrance_free',
-                                                 'product_others.paraben_free',
-                                                 'product_others.alcohol_free',
-                                                 'product1s.PRICE', 
-                                                 'product1s.COST',
-                                                 'solutions.DESCRIPTION AS SOLUTION', 
-                                                 'series.DESCRIPTION AS SERIES', 
-                                                 'categories.DESCRIPTION AS CATEGORY', 
-                                                 'sub_categories.DESCRIPTION AS SUB_CATEGORY',
-                                                 'product1s.REG_DATE',
-                                                 'product1s.USER_EDIT',
-                                                 'product1s.EDIT_DT',
-                                                )
-                                        ->leftJoin('product_details', 'product1s.PRODUCT', '=', 'product_details.product_id')
-                                        ->leftJoin('product_others', 'product1s.PRODUCT', '=', 'product_others.product_id')
-                                        ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
-                                        ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
-                                        ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
-                                        ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
-                                        ->groupBy('product1s.PRODUCT')
-                                        ->where('product1s.BRAND', 'CPS')
-                                        ->where('PRODUCT', $request->start_product)
-                                        ->get()
-                                        ->toArray();
-                                        // dd($ProDevelops);
-            } else {
-                $ProDevelops = Product1::select(
-                                        'product1s.BRAND', 
-                                                 'product1s.PRODUCT', 
-                                                 'product1s.BARCODE', 
-                                                 'product1s.STATUS',
-                                                 'product1s.AGE',
-                                                 'product1s.GRP_P',
-                                                 'product1s.SUPPLIER',
-                                                 'product1s.NAME_THAI', 
-                                                 'product1s.NAME_ENG', 
-                                                 'product1s.SHORT_THAI', 
-                                                 'product1s.SHORT_ENG', 
-                                                 'product_details.launch',
-                                                 'product_details.country',
-                                                 'product_details.ingredients',
-                                                 'product_details.after_open_m',
-                                                 'product_details.description_th',
-                                                 'product_details.description_en',
-                                                 'product_details.usage_direction_th',
-                                                 'product_details.usage_direction_en',
-                                                 'product_details.color_code_th',
-                                                 'product_details.color_code_en',
-                                                 'product_details.case_width',
-                                                 'product_details.case_length',
-                                                 'product_details.case_height',
-                                                 'product_details.case_barcode',
-                                                 'product_details.case_weight',
-                                                 'product_details.case_pack_size',
-                                                 'product_details.inner_width',
-                                                 'product_details.inner_length',
-                                                 'product_details.inner_height',
-                                                 'product_details.inner_barcode',
-                                                 'product_details.inner_pack_size',
-                                                 'product_details.inner_weight',
-                                                 'product_details.unit_barcode',
-                                                 'product_details.unit_weight',
-                                                 'product_details.unit_pak_size',
-                                                 'product_details.fad',
-                                                 'product_others.channel',
-                                                 'product_others.item_name',
-                                                 'product_others.cat_name',
-                                                 'product_others.product_line',
-                                                 'product_others.product_type',
-                                                 'product_others.skin_type',
-                                                 'product_others.finish',
-                                                 'product_others.package',
-                                                 'product_others.package2',
-                                                 'product_others.usage_area',
-                                                 'product_others.texture',
-                                                 'product_others.coverage',
-                                                 'product_others.color_name_th',
-                                                 'product_others.color_name_en',
-                                                 'product_others.suppiler_th',
-                                                 'product_others.suppiler_en',
-                                                 'product_others.color_code',
-                                                 'product_others.other_detail',
-                                                 'product_others.sls_free',
-                                                 'product_others.silicone_free',
-                                                 'product_others.mineral_free',
-                                                 'product_others.colorant_free',
-                                                 'product_others.phthalate_free',
-                                                 'product_others.cruelty_free',
-                                                 'product_others.talc_free',
-                                                 'product_others.oil_free',
-                                                 'product_others.triethanolamin_free',
-                                                 'product_others.petroleum_free',
-                                                 'product_others.petrolatum_free',
-                                                 'product_others.natural_alcohol',
-                                                 'product_others.certified_food',
-                                                 'product_others.certified_organic',
-                                                 'product_others.hypoallergenic',
-                                                 'product_others.tested',
-                                                 'product_others.non_comedogenic',
-                                                 'product_others.synthetic_colorant',
-                                                 'product_others.synthetic_fragrance',
-                                                 'product_others.ph_balance',
-                                                 'product_others.chil_over_6year',
-                                                 'product_others.fragrance_free',
-                                                 'product_others.paraben_free',
-                                                 'product_others.alcohol_free',
-                                                 'product1s.PRICE',
-                                                 'product1s.COST', 
-                                                 'solutions.DESCRIPTION AS SOLUTION', 
-                                                 'series.DESCRIPTION AS SERIES', 
-                                                 'categories.DESCRIPTION AS CATEGORY', 
-                                                 'sub_categories.DESCRIPTION AS SUB_CATEGORY',
-                                                 'product1s.REG_DATE',
-                                                 'product1s.USER_EDIT',
-                                                 'product1s.EDIT_DT',
-                                                )
-                                        ->leftJoin('product_details', 'product1s.PRODUCT', '=', 'product_details.product_id')
-                                        ->leftJoin('product_others', 'product1s.PRODUCT', '=', 'product_others.product_id')
-                                        ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
-                                        ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
-                                        ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
-                                        ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
-                                        ->where('product1s.BRAND', 'CPS')
-                                        ->whereBetween('product1s.PRODUCT', [$request->start_product, $request->end_product])
-                                        ->groupBy('product1s.PRODUCT')
-                                        ->orderBy('product1s.PRODUCT', 'asc')
-                                        ->get()
-                                        ->toArray();
-                                        // dd($ProDevelops);
-                                        // dd($ProDevelops->toSql(), $ProDevelops->getBindings());
+        // dd($positionId);
+        // ดึงสิทธิ์ field ที่อนุญาต (value == 1)
+        $allowedFields = ProductDetailExportExcel::where('position_id', $positionId)->first();
+        $allowedFields = $allowedFields ? $allowedFields->toArray() : [];
+
+        // กำหนดคอลัมน์ที่ไม่ต้องแสดงผล
+        $exclude = ['id', 'brand', 'position_id', 'created_at', 'updated_at'];
+
+        // คัดเอาเฉพาะ field ที่มีสิทธิ์ (value == 1) และไม่อยู่ใน $exclude
+        $fieldsCanSee = array_keys(array_filter($allowedFields, function ($v, $k) use ($exclude) {
+            return $v == 1 && !in_array($k, $exclude);
+        }, ARRAY_FILTER_USE_BOTH));
+
+        // dd($fieldsCanSee);
+
+        // ฟังก์ชันค้นหา table ที่ field สังกัดอยู่
+        function resolveFieldWithTablePrefix($field) {
+            if (Schema::hasColumn('product1s', strtoupper($field))) {
+                return "product1s." . strtoupper($field);
+            } elseif (Schema::hasColumn('product_details', $field)) {
+                return "product_details." . $field;
+            } elseif (Schema::hasColumn('product_others', $field)) {
+                return "product_others." . $field;
+            }
+            return null; // ไม่เจอ field ใน schema
+        }
+
+        // ดึง field เตรียม select
+        $selectFields = [];
+        foreach ($fieldsCanSee as $field) {
+            $resolved = resolveFieldWithTablePrefix($field);
+            if ($resolved) {
+                $selectFields[] = $resolved;
             }
         }
-        
-        $columns = array(
-            'Brand', 
-            'Product ID', 
-            'Barcode', 
-            'Status', 
-            'อายุสินค้า', 
-            'สินค้าของบริษัท', 
-            'ผู้ขาย/ผู้ผลิต', 
-            'Name Thai', 
-            'Name English',
-            'Short Name Thai', 
-            'Short Name English',
-            'Launch',
-            'ผลิตประเทศ',
-            'ingredients',
-            'ระยะเก็บรักษา(หลังเปิด)',
-            'description_th',
-            'description_en',
-            'usage_direction_th',
-            'usage_direction_en',
-            'color_code_th',
-            'color_code_en',
-            'case_width',
-            'case_length',
-            'case_height',
-            'case_barcode',
-            'case_weight',
-            'case_pack_size',
-            'inner_width',
-            'inner_length',
-            'inner_height',
-            'inner_barcode',
-            'inner_pack_size',
-            'inner_weight',
-            'unit_barcode',
-            'unit_weight',
-            'unit_pak_size',
-            'FDA',
-            'channel',
-            'item_name',
-            'cat_name',
-            'product_line',
-            'product_type',
-            'skin_type',
-            'finish',
-            'package',
-            'package2',
-            'usage_area',
-            'texture',
-            'coverage',
-            'color_name_th',
-            'color_name_en',
-            'suppiler_th',
-            'suppiler_en',
-            'รหัสสี',
-            'อื่นๆ',
-            'sls_free',
-            'silicone_free',
-            'mineral_free',
-            'colorant_free',
-            'phthalate_free',
-            'cruelty_free',
-            'talc_free',
-            'oil_free',
-            'triethanolamin_free',
-            'petroleum_free',
-            'petrolatum_free',
-            'natural_alcohol',
-            'certified_food',
-            'certified_organic',
-            'hypoallergenic',
-            'tested',
-            'non_comedogenic',
-            'synthetic_colorant',
-            'synthetic_fragrance',
-            'ph_balance',
-            'chil_over_6year',
-            'fragrance_free',
-            'paraben_free',
-            'alcohol_free',
-            'Retail Price', 
-            'Cost', 
-            'Solution', 
-            'Series', 
-            'Category', 
-            'Sub Category',
-            'REG_DATE',
-            'USER_EDIT',
-            'EDIT_DT',
-        );
-        
-        // dd($columns);
+        // dd($selectFields);
 
-        // $ProDevelops = $ProDevelops->toArray();
+        // ตรวจสอบ permission ก่อน query
+        if ($userpermission == 'CPS') {
+            if (!isset($request->start_product) || $request->start_product == null) {
 
-        $outFileName = 'Excel - CPS.xlsx';
+                // หากไม่มี field ให้ดูเลย (กรณีไม่มีสิทธิ์)
+                if (empty($selectFields)) {
+                    abort(403, 'You do not have permission to view any fields.');
+                }
 
-        // // Create Excel workbook
+                $ProDevelops = Product1::select($selectFields)
+                    ->leftJoin('product_details', DB::raw('LOWER(product1s.PRODUCT)'), '=', DB::raw('LOWER(product_details.product_id)'))
+                    ->leftJoin('product_others', 'product1s.PRODUCT', '=', 'product_others.product_id')
+                    ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+                    ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+                    ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+                    ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                    ->where('product1s.BRAND', 'CPS')
+                    ->groupBy('product1s.PRODUCT')
+                    ->orderBy('product1s.PRODUCT', 'asc')
+                    ->get()
+                    ->toArray();
+            } else if (!isset($request->end_product) || $request->end_product == null) {
+                $ProDevelops = Product1::select($selectFields)
+                    ->leftJoin('product_details', DB::raw('LOWER(product1s.PRODUCT)'), '=', DB::raw('LOWER(product_details.product_id)'))
+                    ->leftJoin('product_others', 'product1s.PRODUCT', '=', 'product_others.product_id')
+                    ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+                    ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+                    ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+                    ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                    ->groupBy('product1s.PRODUCT')
+                    ->where('product1s.BRAND', 'CPS')
+                    ->where('PRODUCT', $request->start_product)
+                    ->get()
+                    ->toArray();
+            } else {
+                $ProDevelops = Product1::select($selectFields)
+                    ->leftJoin('product_details', DB::raw('LOWER(product1s.PRODUCT)'), '=', DB::raw('LOWER(product_details.product_id)'))
+                    ->leftJoin('product_others', 'product1s.PRODUCT', '=', 'product_others.product_id')
+                    ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+                    ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+                    ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+                    ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                    ->where('product1s.BRAND', 'CPS')
+                    ->whereBetween('product1s.PRODUCT', [$request->start_product, $request->end_product])
+                    ->groupBy('product1s.PRODUCT')
+                    ->orderBy('product1s.PRODUCT', 'asc')
+                    ->get()
+                    ->toArray();
+            }
+        }
+
+        $columns = [];
+        $fieldNameMap = $this->getFieldNameMapping();
+
+        // Create Excel workbook
         $excel = Excel::create();
 
-        // // Get the first sheet;
+        // Get the first sheet;
         $sheet = $excel->getSheet();
 
         // Begin an area for direct write
         $area = $sheet->beginArea();
-        $header = $columns;
 
+        foreach ($selectFields as $field) {
+            $fieldParts = explode('.', $field);
+            $fieldName = end($fieldParts);
+
+            $columns[] = $fieldNameMap[$fieldName] ?? $fieldName;
+        }
+
+        $outFileName = 'Excel - CPS.xlsx';
+
+        $header = $columns;
         $rowOptions = ['font-style' => 'bold'];
 
         $sheet->writeHeader($header, $rowOptions);
@@ -1043,7 +828,7 @@ class ExportExcelController extends Controller
         foreach ($ProDevelops as $row) {
             $sheet->writeRow((array)$row);
         }
-        // Save to XLSX-file
+
         $excel->download($outFileName);
     }
 

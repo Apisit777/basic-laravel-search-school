@@ -69,6 +69,9 @@ class TransferDataOnce extends Command
                 case 'transfer_product_original':
                     $this->transfer_product_original();
                     break;
+                case 'tranfer_to_product_channel_brands':
+                    $this->tranfer_to_product_channel_brands();
+                    break;
                 // case 'full_tranfer':
                 //     $this->tranfer_data();
                 //     $this->tranfer_pro_develops_all();
@@ -850,6 +853,75 @@ class TransferDataOnce extends Command
                     'BRAND' => $rs->BRAND_ORIGINAL,
                     'UPDATED_AT' => date("Y/m/d h:i:s")
                 ]);
+                $this->output->progressAdvance();
+            }
+        } catch (\Exception $e) {
+            Log::error('Error: ' . $e->getMessage());
+        }
+        $this->output->progressFinish();
+    }
+
+    private function tranfer_to_product_channel_brands()
+    {
+        try {
+            $datas = DB::table('product_others')->get();
+            $diff_count = count($datas);
+
+            // dd($datas);
+
+            $this->info("Transferring data from 'product_others' to 'product_channel_brands'");
+            $this->output->progressStart($diff_count);
+
+            // ช่องทางที่ถูกต้อง
+            $channelList = ['CP Con', 'Dealer', 'Export', 'MT', 'Shop Ecom'];
+
+            // Map ค่าที่อาจพิมพ์ผิดให้ตรงกับชื่อที่ใช้จริง
+            $channelMap = [
+                'all' => 'all',
+                'cp con' => 'CP Con',
+                'dealer' => 'Dealer',
+                'export' => 'Export',
+                'mt' => 'MT',
+                'shop ecom' => 'Shop Ecom',
+                'shop_ecom' => 'Shop Ecom',
+            ];
+
+            foreach ($datas as $data) {
+                $rawChannel = strtolower(trim($data->channel));
+
+                // ⛔ ข้ามถ้า channel ว่าง
+                if (empty($rawChannel)) {
+                    $this->warn("Skip PRODUCT {$data->product_id} (empty channel)");
+                    $this->output->progressAdvance();
+                    continue;
+                }
+
+                // ✅ ตรวจสอบว่าเป็น all หรือช่องทางปกติ
+                if ($rawChannel === 'all') {
+                    foreach ($channelList as $channel) {
+                        DB::table('product_channel_brands')->insert([
+                            'PRODUCT' => $data->product_id,
+                            'BRAND' => $data->company_id,
+                            'CHANNEL' => $channel,
+                            'UPDATED_AT' => date("Y-m-d H:i:s")
+                        ]);
+                    }
+                } else {
+                    // ตรวจสอบว่าอยู่ใน mapping หรือไม่
+                    if (isset($channelMap[$rawChannel])) {
+                        $mappedChannel = $channelMap[$rawChannel];
+
+                        DB::table('product_channel_brands')->insert([
+                            'PRODUCT' => $data->product_id,
+                            'BRAND' => $data->company_id,
+                            'CHANNEL' => $mappedChannel,
+                            'UPDATED_AT' => date("Y-m-d H:i:s")
+                        ]);
+                    } else {
+                        $this->warn("Unknown channel '{$data->channel}' for PRODUCT {$data->product_id}, skipping...");
+                    }
+                }
+
                 $this->output->progressAdvance();
             }
         } catch (\Exception $e) {

@@ -617,7 +617,7 @@
                                                                 </div>
                                                             </div> -->
 
-                                                            <div class="p-8">
+                                                            <!-- <div class="p-8">
                                                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                                                     <aside class="">
                                                                             <div class="camera-center">
@@ -670,8 +670,6 @@
                                                                                                     <div class="upload__btn-box w-full">
                                                                                                         <label class="w-full h-10 text-gray-100 bg-[#202020] hover:bg-[#303030] font-bold py-2 px-2 rounded cursor-pointer flex justify-center items-center relative">
                                                                                                             <input type="file" name="images[]" id="images" multiple class="w-full">
-                                                                                                            <!-- <input type="file" name="images[]" id="images" multiple class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                                                                                                            <span>📸 เลือกไฟล์</span> -->
                                                                                                         </label>
                                                                                                     </div>
                                                                                                     <div class="p-3">
@@ -687,14 +685,6 @@
                                                                                                             </svg>
                                                                                                             Upload
                                                                                                         </a>
-                                                                                                        <!-- <button type="button" id="upload-button" class="bg-blue-800 text-white px-4 py-1.5 rounded hover:bg-blue-900">
-                                                                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF" class="-mt-1 size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                                                                                                                <path d="M0 0h24v24H0V0z" fill="none"></path>
-                                                                                                                <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
-                                                                                                                <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
-                                                                                                            </svg>
-                                                                                                            Upload
-                                                                                                        </button> -->
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </form>
@@ -746,9 +736,6 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                            <!-- <div class="p-2 ">
-                                                                <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
                                                             </div> -->
                                                             </div>
                                                         </div>
@@ -838,26 +825,6 @@
                                                     @keyup.left.window="prevImage()"
                                                     @keydown.escape.window="closeGallery()"
                                                     class="select-none">
-
-                                                    <!-- <div x-ref="gallery" class="columns-1 sm:columns-2 md:columns-3 lg:columns-4 gap-4 bg-[#d7d8db] dark:bg-[#404040] p-4 imgSortable" id="img-drop">
-                                                        @foreach($images as $index => $image)
-                                                            <div class="relative group mb-4 break-inside-avoid img-item" data-id="{{ $image->id }}">
-                                                                <img
-                                                                    src="{{ asset($image->path) }}"
-                                                                    class="w-full h-auto cursor-pointer rounded shadow-sm hover:shadow-md hover:shadow-gray-400
-                                                                        dark:hover:shadow-md dark:hover:shadow-gray-400
-                                                                        transition-transform duration-300 ease-in-out hover:scale-105"
-                                                                    @click="openGallery({{ $index }})"
-                                                                    alt="Uploaded Image"
-                                                                />
-                                                                <div class="after_upload_upload__img_close delete-uploaded"
-                                                                    data-id="{{ $image->id }}"
-                                                                    data-path="{{ asset($image->path) }}">
-                                                                    ✖
-                                                                </div>
-                                                            </div>
-                                                        @endforeach
-                                                    </div> -->
 
                                                     <div x-ref="gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 bg-gray-100 dark:bg-[#404040] p-4 imgSortable" id="img-drop" data-product-id="{{ $product_id }}">
                                                         @foreach($images as $index => $image)
@@ -989,20 +956,14 @@
 
     <script>
 
-        // const productData = {
-        //     netWeight: {{ $data->inner_weight ?? 0 }},        // น้ำหนักสุทธิ (Net Weight) ต่อ 1 unit
-        //     grossWeight: {{ $data->weight ?? 0 }},            // น้ำหนักรวม (สินค้า+กล่อง) ต่อ 1 unit
-        //     innerPackSize: {{ $data->inner_pack_size ?? 1 }}  // จำนวน unit ต่อ 1 inner (pack)
-        // };
-
         const productData = {
-            netWeight: @json($data->inner_weight ?? 0),
-            grossWeight: @json($data->weight ?? 0),
-            innerPackSize: @json($data->inner_pack_size ?? 1)
+            netWeight: {{ $data->inner_weight ?? 0 }},        // น้ำหนักสุทธิ (Net Weight) ต่อ 1 unit
+            grossWeight: {{ $data->weight ?? 0 }},            // น้ำหนักรวม (สินค้า+กล่อง) ต่อ 1 unit
+            innerPackSize: {{ $data->inner_pack_size ?? 1 }}  // จำนวน unit ต่อ 1 inner (pack)
         };
 
         // กรณีมีหลาย inner ต่อ 1 case (ดึงจาก database ถ้ามี)
-        const innersPerCase = @json($data->case_pack_size ?? 1) // ถ้ามีข้อมูลจริง เช่น $data->case_pack_size
+        const innersPerCase = {{ $data->case_pack_size ?? 1 }}; // ถ้ามีข้อมูลจริง เช่น $data->case_pack_size
 
         // น้ำหนักรวมต่อ 1 Inner (สินค้า+กล่อง)
         const grossWeightPerInner = productData.grossWeight * productData.innerPackSize;
@@ -1031,204 +992,204 @@
             });
         });
 
-        // reference to the current media stream
-        var mediaStream = null;
-        // Prefer camera resolution nearest to 1280x720.
-        var constraints = {
-        audio: false,
-        video: {
-            width: {ideal: 640},
-            height: {ideal: 480},
-            facingMode: "environment"
-        }
-        };
-        async function getMediaStream(constraints) {
-            try {
-                mediaStream =  await navigator.mediaDevices.getUserMedia(constraints);
-                let video = document.getElementById('cam');
-                video.srcObject = mediaStream;
-                video.onloadedmetadata = (event) => {
-                video.play();
-                };
-            } catch (err)  {
-                console.error(err.message);
-            }
-        };
-        async function switchCamera(cameraMode) {
-            try {
-                // stop the current video stream
-                if (mediaStream != null && mediaStream.active) {
-                    var tracks = mediaStream.getVideoTracks();
-                    tracks.forEach(track => {
-                        track.stop();
-                    })
-                }
-                // set the video source to null
-                document.getElementById('cam').srcObject = null;
-                // change "facingMode"
-                constraints.video.facingMode = cameraMode;
-                // get new media stream
-                await getMediaStream(constraints);
-            } catch (err)  {
-                console.error(err.message);
-                alert(err.message);
-            }
-        }
+        // // reference to the current media stream
+        // var mediaStream = null;
+        // // Prefer camera resolution nearest to 1280x720.
+        // var constraints = {
+        // audio: false,
+        // video: {
+        //     width: {ideal: 640},
+        //     height: {ideal: 480},
+        //     facingMode: "environment"
+        // }
+        // };
+        // async function getMediaStream(constraints) {
+        //     try {
+        //         mediaStream =  await navigator.mediaDevices.getUserMedia(constraints);
+        //         let video = document.getElementById('cam');
+        //         video.srcObject = mediaStream;
+        //         video.onloadedmetadata = (event) => {
+        //         video.play();
+        //         };
+        //     } catch (err)  {
+        //         console.error(err.message);
+        //     }
+        // };
+        // async function switchCamera(cameraMode) {
+        //     try {
+        //         // stop the current video stream
+        //         if (mediaStream != null && mediaStream.active) {
+        //             var tracks = mediaStream.getVideoTracks();
+        //             tracks.forEach(track => {
+        //                 track.stop();
+        //             })
+        //         }
+        //         // set the video source to null
+        //         document.getElementById('cam').srcObject = null;
+        //         // change "facingMode"
+        //         constraints.video.facingMode = cameraMode;
+        //         // get new media stream
+        //         await getMediaStream(constraints);
+        //     } catch (err)  {
+        //         console.error(err.message);
+        //         alert(err.message);
+        //     }
+        // }
 
-        function updatePreviewFromSnap(imageData, isFront, file) {
-            const preview = document.getElementById('preview');
-            // **เก็บค่า isFront ลงในไฟล์เพื่อให้ removeImageFile() ใช้งานได้**
-            file.isFront = isFront;
-            // สร้าง container ของรูป
-            const imgContainer = document.createElement('div');
-            imgContainer.className = 'relative w-full h-32 object-cover rounded-lg shadow-md overflow-hidden';
-            // ใช้ Base64 แสดงรูปใน preview
-            const img = document.createElement('img');
-            img.src = imageData;
-            img.className = 'w-full h-full object-cover rounded-lg';
-            // ปุ่ม ❌ เพื่อลบรูป
-            const closeButton = document.createElement('button');
-            closeButton.innerHTML = '&times;';
-            closeButton.className = 'absolute top-1 right-1 bg-red-500 text-white rounded-full px-2 py-1 text-sm';
-            closeButton.onclick = function () {
-                preview.removeChild(imgContainer);
-                console.log(`❌ กำลังลบรูป Snap ${isFront ? "หน้า" : "หลัง"} - ส่งค่าไป removeImageFile()`);
-                removeImageFile(file, isFront);
-            };
-            // เพิ่มองค์ประกอบเข้าไปใน preview
-            imgContainer.appendChild(img);
-            imgContainer.appendChild(closeButton);
-            preview.appendChild(imgContainer);
-        }
+        // function updatePreviewFromSnap(imageData, isFront, file) {
+        //     const preview = document.getElementById('preview');
+        //     // **เก็บค่า isFront ลงในไฟล์เพื่อให้ removeImageFile() ใช้งานได้**
+        //     file.isFront = isFront;
+        //     // สร้าง container ของรูป
+        //     const imgContainer = document.createElement('div');
+        //     imgContainer.className = 'relative w-full h-32 object-cover rounded-lg shadow-md overflow-hidden';
+        //     // ใช้ Base64 แสดงรูปใน preview
+        //     const img = document.createElement('img');
+        //     img.src = imageData;
+        //     img.className = 'w-full h-full object-cover rounded-lg';
+        //     // ปุ่ม ❌ เพื่อลบรูป
+        //     const closeButton = document.createElement('button');
+        //     closeButton.innerHTML = '&times;';
+        //     closeButton.className = 'absolute top-1 right-1 bg-red-500 text-white rounded-full px-2 py-1 text-sm';
+        //     closeButton.onclick = function () {
+        //         preview.removeChild(imgContainer);
+        //         console.log(`❌ กำลังลบรูป Snap ${isFront ? "หน้า" : "หลัง"} - ส่งค่าไป removeImageFile()`);
+        //         removeImageFile(file, isFront);
+        //     };
+        //     // เพิ่มองค์ประกอบเข้าไปใน preview
+        //     imgContainer.appendChild(img);
+        //     imgContainer.appendChild(closeButton);
+        //     preview.appendChild(imgContainer);
+        // }
 
-        function removeImageFile(index) {
-            console.log(`❌ กำลังลบรูปที่ index ${index} ออกจาก imageFiles`);
-            // ลบรูปจาก imageFiles
-            imageFiles.splice(index, 1);
-            // อัปเดต input#images
-            updateFileInput();
-            // อัปเดต preview
-            updatePreview();
-        }
+        // function removeImageFile(index) {
+        //     console.log(`❌ กำลังลบรูปที่ index ${index} ออกจาก imageFiles`);
+        //     // ลบรูปจาก imageFiles
+        //     imageFiles.splice(index, 1);
+        //     // อัปเดต input#images
+        //     updateFileInput();
+        //     // อัปเดต preview
+        //     updatePreview();
+        // }
 
-        function base64ToUUIDFile(base64Data) {
-            if (!base64Data.startsWith('data:image/')) {
-                console.error("❌ base64ToUUIDFile: ค่า Base64 ไม่ถูกต้อง", base64Data);
-                return null; // ป้องกันการคืนค่าผิดพลาด
-            }
-            // สร้างชื่อไฟล์แบบ UUID
-            let filename = 'img_' + crypto.randomUUID() + '.jpg';
-            // แปลง Base64 เป็นไฟล์
-            let arr = base64Data.split(',');
-            let mime = arr[0].match(/:(.*?);/)[1];
-            let bstr = atob(arr[1]);
-            let n = bstr.length;
-            let u8arr = new Uint8Array(n);
-            while (n--) {
-                u8arr[n] = bstr.charCodeAt(n);
-            }
+        // function base64ToUUIDFile(base64Data) {
+        //     if (!base64Data.startsWith('data:image/')) {
+        //         console.error("❌ base64ToUUIDFile: ค่า Base64 ไม่ถูกต้อง", base64Data);
+        //         return null; // ป้องกันการคืนค่าผิดพลาด
+        //     }
+        //     // สร้างชื่อไฟล์แบบ UUID
+        //     let filename = 'img_' + crypto.randomUUID() + '.jpg';
+        //     // แปลง Base64 เป็นไฟล์
+        //     let arr = base64Data.split(',');
+        //     let mime = arr[0].match(/:(.*?);/)[1];
+        //     let bstr = atob(arr[1]);
+        //     let n = bstr.length;
+        //     let u8arr = new Uint8Array(n);
+        //     while (n--) {
+        //         u8arr[n] = bstr.charCodeAt(n);
+        //     }
 
-            let file = new File([u8arr], filename, { type: mime });
+        //     let file = new File([u8arr], filename, { type: mime });
 
-            console.log("✅ base64ToUUIDFile: ได้ไฟล์", file);
-            return file;
-        }
+        //     console.log("✅ base64ToUUIDFile: ได้ไฟล์", file);
+        //     return file;
+        // }
 
-        function takePictureFont() {
-            let canvas = document.getElementById('canvas');
-            let video = document.getElementById('cam');
-            let photoFont = document.getElementById('photoFont');
-            let context = canvas.getContext('2d');
+        // function takePictureFont() {
+        //     let canvas = document.getElementById('canvas');
+        //     let video = document.getElementById('cam');
+        //     let photoFont = document.getElementById('photoFont');
+        //     let context = canvas.getContext('2d');
 
-            const width = video.videoWidth;
-            const height = video.videoHeight;
+        //     const width = video.videoWidth;
+        //     const height = video.videoHeight;
 
-            if (width && height) {
-                canvas.width = width;
-                canvas.height = height;
-                context.drawImage(video, 0, 0, width, height);
-                let dataUrl = canvas.toDataURL('image/png');
+        //     if (width && height) {
+        //         canvas.width = width;
+        //         canvas.height = height;
+        //         context.drawImage(video, 0, 0, width, height);
+        //         let dataUrl = canvas.toDataURL('image/png');
 
-                // แสดงรูปที่ photoFont และ img-1
-                photoFont.src = dataUrl;
-                document.getElementById("img-1").style.backgroundImage = `url(${dataUrl})`;
+        //         // แสดงรูปที่ photoFont และ img-1
+        //         photoFont.src = dataUrl;
+        //         document.getElementById("img-1").style.backgroundImage = `url(${dataUrl})`;
 
-                // แปลง Base64 เป็นไฟล์ UUID และ Push เข้า `#images`
-                let file = base64ToUUIDFile(dataUrl);
-                if (file) {
-                    file.isFront = true; // **เก็บค่า isFront**
-                    imageFiles.push(file);
-                    updateFileInput();
-                    console.log("📸 Snap หน้า - ส่งค่าไป updatePreviewFromSnap()");
-                    updatePreviewFromSnap(dataUrl, true, file);
-                }
-            }
-        }
+        //         // แปลง Base64 เป็นไฟล์ UUID และ Push เข้า `#images`
+        //         let file = base64ToUUIDFile(dataUrl);
+        //         if (file) {
+        //             file.isFront = true; // **เก็บค่า isFront**
+        //             imageFiles.push(file);
+        //             updateFileInput();
+        //             console.log("📸 Snap หน้า - ส่งค่าไป updatePreviewFromSnap()");
+        //             updatePreviewFromSnap(dataUrl, true, file);
+        //         }
+        //     }
+        // }
 
-        function takePictureBack() {
-            let canvas = document.getElementById('canvas');
-            let video = document.getElementById('cam');
-            let photoBack = document.getElementById('photoBack');
-            let context = canvas.getContext('2d');
+        // function takePictureBack() {
+        //     let canvas = document.getElementById('canvas');
+        //     let video = document.getElementById('cam');
+        //     let photoBack = document.getElementById('photoBack');
+        //     let context = canvas.getContext('2d');
 
-            const width = video.videoWidth;
-            const height = video.videoHeight;
+        //     const width = video.videoWidth;
+        //     const height = video.videoHeight;
 
-            if (width && height) {
-                canvas.width = width;
-                canvas.height = height;
-                context.drawImage(video, 0, 0, width, height);
-                let dataUrl = canvas.toDataURL('image/png');
+        //     if (width && height) {
+        //         canvas.width = width;
+        //         canvas.height = height;
+        //         context.drawImage(video, 0, 0, width, height);
+        //         let dataUrl = canvas.toDataURL('image/png');
 
-                // แสดงรูปที่ photoBack และ img-2
-                photoBack.src = dataUrl;
-                document.getElementById("img-2").style.backgroundImage = `url(${dataUrl})`;
+        //         // แสดงรูปที่ photoBack และ img-2
+        //         photoBack.src = dataUrl;
+        //         document.getElementById("img-2").style.backgroundImage = `url(${dataUrl})`;
 
-                // แปลง Base64 เป็นไฟล์ UUID และ Push เข้า `#images`
-                let file = base64ToUUIDFile(dataUrl);
-                if (file) {
-                    file.isFront = false; // **เก็บค่า isFront**
-                    imageFiles.push(file);
-                    updateFileInput();
-                    console.log("📸 Snap หลัง - ส่งค่าไป updatePreviewFromSnap()");
-                    updatePreviewFromSnap(dataUrl, false, file);
-                }
-            }
-        }
+        //         // แปลง Base64 เป็นไฟล์ UUID และ Push เข้า `#images`
+        //         let file = base64ToUUIDFile(dataUrl);
+        //         if (file) {
+        //             file.isFront = false; // **เก็บค่า isFront**
+        //             imageFiles.push(file);
+        //             updateFileInput();
+        //             console.log("📸 Snap หลัง - ส่งค่าไป updatePreviewFromSnap()");
+        //             updatePreviewFromSnap(dataUrl, false, file);
+        //         }
+        //     }
+        // }
 
-        function clearPhotoFont() {
-            let canvas = document.getElementById('canvas');
-            let photoFont = document.getElementById('photoFont');
-            let context = canvas.getContext('2d');
+        // function clearPhotoFont() {
+        //     let canvas = document.getElementById('canvas');
+        //     let photoFont = document.getElementById('photoFont');
+        //     let context = canvas.getContext('2d');
 
-            context.fillStyle = "#AAA";
-            context.fillRect(0, 0, canvas.width, canvas.height);
-            var data = canvas.toDataURL('image/png');
-            photoFont.setAttribute('src', data);
-        }
-        function clearPhotoBack() {
-            let canvas = document.getElementById('canvas');
-            let photoBack = document.getElementById('photoBack');
-            let context = canvas.getContext('2d');
+        //     context.fillStyle = "#AAA";
+        //     context.fillRect(0, 0, canvas.width, canvas.height);
+        //     var data = canvas.toDataURL('image/png');
+        //     photoFont.setAttribute('src', data);
+        // }
+        // function clearPhotoBack() {
+        //     let canvas = document.getElementById('canvas');
+        //     let photoBack = document.getElementById('photoBack');
+        //     let context = canvas.getContext('2d');
 
-            context.fillStyle = "#AAA";
-            context.fillRect(0, 0, canvas.width, canvas.height);
-            var data = canvas.toDataURL('image/png');
-            photoBack.setAttribute('src', data);
-        }
-        document.getElementById('switchFrontBtn').onclick = (event) => {
-            switchCamera("user");
-        }
-        document.getElementById('snapBtnFont').onclick = (event) => {
-            takePictureFont();
-            event.preventDefault();
-        }
-        document.getElementById('snapBtnBack').onclick = (event) => {
-            takePictureBack();
-            event.preventDefault();
-        }
-        clearPhotoFont();
-        clearPhotoBack();
+        //     context.fillStyle = "#AAA";
+        //     context.fillRect(0, 0, canvas.width, canvas.height);
+        //     var data = canvas.toDataURL('image/png');
+        //     photoBack.setAttribute('src', data);
+        // }
+        // document.getElementById('switchFrontBtn').onclick = (event) => {
+        //     switchCamera("user");
+        // }
+        // document.getElementById('snapBtnFont').onclick = (event) => {
+        //     takePictureFont();
+        //     event.preventDefault();
+        // }
+        // document.getElementById('snapBtnBack').onclick = (event) => {
+        //     takePictureBack();
+        //     event.preventDefault();
+        // }
+        // clearPhotoFont();
+        // clearPhotoBack();
 
         function onOpenhandler(params) {
             document.querySelectorAll('.setpcollep').forEach((element, index) => {

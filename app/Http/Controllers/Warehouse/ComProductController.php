@@ -64,6 +64,15 @@ class ComProductController extends Controller
         return view('warehouse.index', compact('brands', 'roles'));
     }
 
+    public function indexCs()
+    {
+        $brands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
+
+        $roles = [];
+
+        return view('warehouse.index_cs', compact('brands', 'roles'));
+    }
+
     public function import()
     {
         Excel::import(new UserImport, request()->file('file'));
@@ -184,6 +193,42 @@ class ComProductController extends Controller
         // dd($images);
 
         return view('warehouse.edit', compact('data', 'images', 'product_id'));
+    }
+    
+    public function editCs(Request $request, $product_id)
+    {
+        $data = Com_product::select(
+            'com_products.*',
+            'product_details.unit_weight AS unit_weight',
+            'product_details.unit_pak_size AS unit_pak_size',
+
+            'product_details.case_weight AS case_weight',
+            'product_details.case_pack_size AS case_pack_size',
+            'product_details.case_width AS case_width',
+            'product_details.case_length AS case_length',
+            'product_details.case_height AS case_height',
+            'product_details.case_barcode AS case_barcode',
+
+            'product_details.inner_width AS inner_width',
+            'product_details.inner_length AS inner_length',
+            'product_details.inner_height AS inner_height',
+            'product_details.inner_barcode AS inner_barcode',
+            'product_details.inner_weight AS inner_weight',
+            'product_details.inner_pack_size AS inner_pack_size',
+        )
+        ->leftJoin('product_details', 'com_products.product_id', '=', 'product_details.product_id')
+        ->firstWhere('com_products.product_id', '=', $product_id);
+
+        // $images = Food::all();
+        $images = ComProductImage::where('product_id', $product_id)
+            ->orderBy('seq', 'asc')
+            ->get();
+        $product_id = $images->first()->product_id ?? null;
+
+        // dd($data);
+        // dd($images);
+
+        return view('warehouse.edit_cs', compact('data', 'images', 'product_id'));
     }
 
     /**

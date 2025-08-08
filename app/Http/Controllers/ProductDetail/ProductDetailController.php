@@ -35,36 +35,39 @@ class ProductDetailController extends Controller
         $userpermission = Auth::user()->getUserPermission->name_position;
         $namePosition  = explode('-', $userpermission);
         $userpermission = trim(end($namePosition));
-        // dd($data);
+        // dd($userpermission);
 
-        if ($userpermission == $isSuperAdmin) {
-            $brands = Barcode::select(
-            'BRAND')
-            ->pluck('BRAND')
-            ->toArray();
+        $getSelect2ProDevelops = []; // ✅ กันไว้ก่อนเลย
 
-            $dataProductMasterArr = Product1::select(
-            'PRODUCT')
-            ->pluck('PRODUCT')
-            ->toArray();
+        // if ($userpermission == $isSuperAdmin) {
+        //     $brands = Barcode::select(
+        //     'BRAND')
+        //     ->pluck('BRAND')
+        //     ->toArray();
 
-        } else if ($userpermission == 'OP') {
+        //     $dataProductMasterArr = Product1::select(
+        //     'PRODUCT')
+        //     ->pluck('PRODUCT')
+        //     ->toArray();
 
-            $brands = Barcode::select(
-            'BRAND',
-                'STATUS')
-            ->whereIn('STATUS', ['OP', 'RE', 'CM'])
-            ->pluck('BRAND')
-            ->toArray();
+        // } else if ($userpermission == 'OP') {
 
-            $dataProductMasterArr = Product1::select(
-            'PRODUCT')
-            ->whereNotIn('BRAND', ['CPS', 'KM', 'KTY', 'BB', 'LL'])
-            // ->get();
-            ->pluck('PRODUCT')
-            ->toArray();
+        //     $brands = Barcode::select(
+        //     'BRAND',
+        //         'STATUS')
+        //     ->whereIn('STATUS', ['OP', 'RE', 'CM'])
+        //     ->pluck('BRAND')
+        //     ->toArray();
 
-        } else if ($userpermission == 'CPS') {
+        //     $dataProductMasterArr = Product1::select(
+        //     'PRODUCT')
+        //     ->whereNotIn('BRAND', ['CPS', 'KM', 'KTY', 'BB', 'LL'])
+        //     // ->get();
+        //     ->pluck('PRODUCT')
+        //     ->toArray();
+
+        // } else 
+        if ($userpermission == 'CPS') {
             $brands = Barcode::select(
                 'BRAND',
                 'STATUS')
@@ -85,7 +88,7 @@ class ProductDetailController extends Controller
                 ->toArray();    
         }
 
-        // dd($dataProductMasterArr);
+        // dd($getSelect2ProDevelops);
         return view('product_detail.index', compact('brands', 'dataProductMasterArr', 'getSelect2ProDevelops'));
     }
 
@@ -397,25 +400,28 @@ class ProductDetailController extends Controller
 
     public function updateProductDetailManageExportExcel(Request $request, $position_id)
     {
-        dd($request);
+        // dd($request);
         DB::beginTransaction();
         try {
-                $position_id = $request->input('position_id');
-                $exportFields = $request->input('export_fields', []);
+            
+            $position_id = $request->input('position_id');
+            $exportFields = $request->input('export_fields', []);
+            
+                // ดึง field ทั้งหมดจาก schema table
+                $allFieldNames = Schema::getColumnListing('product_detail_export_excels');
+                // dd($allFieldNames);
 
-                // ลบรายการเก่า
-                ProductDetailExportExcel::where('position_id', $position_id)->delete();
+                // ตัด column ที่ไม่ต้องแก้ เช่น id, position_id, timestamps
+                $exclude = ['id', 'brand','position_id', 'created_at', 'updated_at'];
+                $fieldsToReset = array_diff($allFieldNames, $exclude);
 
-                // Insert รายการใหม่ทั้งหมด
-                foreach ($exportFields as $fieldKey) {
-                    ProductDetailExportExcel::create([
-                        'position_id' => $position_id,
-                        'field_key' => $fieldKey,
-                        'allowed' => true,
-                        'created_at' => now(),
-                        'updated_at' => now()
-                    ]);
-                }
+                // 1. เคลียร์ทั้งหมด = 0
+                $resetFields = array_fill_keys($fieldsToReset, 0);
+                ProductDetailExportExcel::where('position_id', $position_id)->update($resetFields);
+
+                // 2. อัปเดตเฉพาะที่เลือก
+                $updateFields = array_fill_keys($exportFields, 1);
+                ProductDetailExportExcel::where('position_id', $position_id)->update($updateFields);
 
                 // dd($upddateProductDetail);
                 DB::commit();

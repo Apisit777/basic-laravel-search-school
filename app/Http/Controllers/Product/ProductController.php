@@ -48,6 +48,7 @@ use App\Models\ProductDetail;
 use App\Models\ProductDetailLog;
 use App\Models\ProductOther;
 use App\Models\ProductOtherLog;
+use App\Models\ComProductPack;
 use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
@@ -1634,6 +1635,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         // dd($request);
+        // dd($request->sele_channel);
         $dataProductBarcode = Pro_develops::select(
             'BRAND',
             'PRODUCT',
@@ -1747,7 +1749,7 @@ class ProductController extends Controller
                 'STATUS_EDIT_DT' => '',
             ];
 
-            // dd($data_product);
+            dd($request->sele_channel, $data_product);
             $productMaster = Product1::create($data_product);
 
             // dd($request);
@@ -1775,8 +1777,38 @@ class ProductController extends Controller
 
                 foreach ($request->sele_channel as $value) {
                     $createSeleChannel = ProductChannel::updateOrCreate(
-            ['PRODUCT' => $data_product['PRODUCT'], 'BRAND' => $value],
+            [
+                            'PRODUCT' => $data_product['PRODUCT'], 
+                            'BRAND' => $value
+                        ],
                 $updateData
+                    );
+                }
+            }
+
+            // Phase 2
+            // วนลูป 4 รอบเพื่อบันทึก barcode และ pack size
+            for ($i = 1; $i <= 4; $i++) {
+                $barcode = $data_product["BAR_PACK{$i}"];
+                $quantity = $data_product["PACK_SIZE{$i}"];
+
+                if (!empty($barcode)) {
+                    ComProductPack::updateOrCreate(
+                        [
+                            'company_id' => $data_product['BRAND'],
+                            'product_id' => $data_product['PRODUCT'],
+                            'barcode'    => $barcode,
+                        ],
+                        [
+                            'quantity'   => $quantity,
+                            'reg_user'   => Auth::user()->username,
+                            'upd_user'   => Auth::user()->username,
+                            'reg_date'   => now()->toDateString(),
+                            'reg_time'   => now()->format('H:i:s'),
+                            'upd_date'   => now()->toDateString(),
+                            'upd_time'   => now()->format('H:i:s'),
+                            'timestamps' => date('Y-m-d H:i:s'),
+                        ]
                     );
                 }
             }
@@ -1789,6 +1821,8 @@ class ProductController extends Controller
                     'fad' => $productMaster->REGISTER,
                     'inner_barcode' => $productMaster->BAR_PACK1,
                     'inner_pack_size' => $productMaster->PACK_SIZE1,
+                    'case_barcode' => $productMaster->BAR_PACK2,
+                    'case_pack_size' => $productMaster->PACK_SIZE2,
                     'upd_user' => Auth::user()->username,
                     'upd_date' => date("Y/m/d H:i:s"),
                 ]);

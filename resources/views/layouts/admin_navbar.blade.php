@@ -74,8 +74,8 @@
                         data-twe-ripple-init
                         data-twe-ripple-color="light">
                         <div id="auth_img" class="mr-1"></div>
-                        <div id="auth_personcode_login" class="flex"></div>
-                        <div id="auth_departmant_login" class="hidden md:inline-block"></div>
+                        <div id="auth_personcode_login" class="flex text-lg font-mono font-bold mt-0.5"></div>
+                        <div id="auth_departmant_login" class="hidden md:inline-block mt-0.5"></div>
                         <span class="font-bold ms-0 w-2 [&>svg]:h-5 [&>svg]:w-5">
                         <svg
                             class="font-bold text-black dark:text-white"
@@ -97,7 +97,7 @@
                                 <div id="profile_img" class="mt-2 mb-1"></div>
                                 <div id="auth_fullname_login" class=""></div>
                                 <div id="auth_department" class=""></div>
-                                <div id="auth_email_login" class="text-gray-900 dark:text-white">
+                                <div id="auth_email_login" class=" text-gray-900 dark:text-white">
                                 <!-- @if (Auth::user()->userRole->pluck('position.name_position')->count() > 1)
                                     <span class="text-gray-900 dark:text-white">Test</span>
                                 @endif

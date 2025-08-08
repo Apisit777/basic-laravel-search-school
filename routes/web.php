@@ -279,6 +279,7 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
     // Km
     Route::group(['prefix' => 'warehouse', 'as' => 'warehouse.'], function () {
         Route::get('/dimension', [ComProductController::class, 'index'])->name('index');
+        Route::get('/cs_dimension', [ComProductController::class, 'indexCs'])->name('index_cs');
         Route::get('/filter-cards', [ComProductController::class, 'filter'])->name('filter.cards');
 
         Route::get('/document', [ComProductController::class, 'indexDocument'])->name('document');
@@ -286,6 +287,9 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         Route::get('/dimension/create', [ComProductController::class, 'create'])->name('create');
         Route::post('/', [ComProductController::class, 'store'])->name('store');
         Route::post('/update_image_sequence/{product_id}', [ComProductController::class, 'updateImageSequence'])->name('update_image_sequence');
+        // CS
+        Route::get('/cs_dimension/cs_edit/{product_id}', [ComProductController::class, 'editCs'])->name('edit_cs');
+
         Route::get('/dimension/edit/{product_id}', [ComProductController::class, 'edit'])->name('edit');
         Route::post('/update_image/{product_id}', [ProductImageController::class, 'updateImage'])->name('update_image');
         Route::delete('/delete_img/{product_id}', [ProductImageController::class, 'deleteImg'])->name('delete_img');

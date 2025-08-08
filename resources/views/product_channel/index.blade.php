@@ -91,7 +91,9 @@
                             <tr>
                                 <th>Brand</th>
                                 <th>Product</th>
-                                <th>Product Name</th>
+                                <th>Product Price</th>
+                                <th>Product Name Thai</th>
+                                <th>Product Name Eng</th>
                             </tr>
                             <tr>
                                 <th>
@@ -106,7 +108,13 @@
                                 <input type="text" name="" id="searchProduct" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า . . ." value="" onkeyup="searchTable()" />
                                 </th>
                                 <th>
-                                    <input type="text" name="" id="searchProductName" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="ชื่อสินค้า . . ." value="" onkeyup="searchTable()" />
+                                <input type="text" name="" id="searchProductPrice" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="ราคาสินค้า . . ." value="" onkeyup="searchTable()" />
+                                </th>
+                                <th>
+                                    <input type="text" name="" id="searchProductNameTH" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="ชื่อสินค้า . . ." value="" onkeyup="searchTable()" />
+                                </th>
+                                <th>
+                                    <input type="text" name="" id="searchProductNameEN" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="ชื่อสินค้า . . ." value="" onkeyup="searchTable()" />
                                 </th>
                             </tr>
                         </thead>
@@ -159,7 +167,8 @@
                     data.BRAND = $('#BRAND_SEARCH').val();
                     data.NAME_THAI = $('#NAME_THAI_SEARCH').val();
                     data.searchProduct = $('#searchProduct').val();
-                    data.searchProductName = $('#searchProductName').val();
+                    data.searchProductNameTH = $('#searchProductNameTH').val();
+                    data.searchProductNameEN = $('#searchProductNameEN').val();
 
                     data._token = $('meta[name="csrf-token"]').attr('content');
                 }
@@ -183,7 +192,21 @@
                     targets: 2,
                     orderable: true,
                     render: function(data, type, row) {
+                        return row.PRICE;
+                    }
+                },
+                {
+                    targets: 3,
+                    orderable: true,
+                    render: function(data, type, row) {
                         return row.NAME_THAI;
+                    }
+                },
+                {
+                    targets: 4,
+                    orderable: true,
+                    render: function(data, type, row) {
+                        return row.NAME_ENG;
                     }
                 }
             ]

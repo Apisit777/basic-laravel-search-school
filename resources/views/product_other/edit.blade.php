@@ -82,13 +82,17 @@
                                                     <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
-                                                                <div class="md:col-span-6">
+                                                                <div class="md:col-span-3">
+                                                                    <label for="company_id">Brand</label>
+                                                                    <input type="text" name="company_id" id="company_id" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->company_id }}" readonly>
+                                                                </div>
+                                                                <div class="md:col-span-3">
                                                                     <label for="product_id">รหัสสินค้า</label>
                                                                     <input type="text" name="product_id" id="product_id" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->product_id }}" readonly>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">Product Channel (Channel of Brand)</label>
-                                                                    <select class="js-example-basic-multiple w-full rounded-sm text-xs select2" id="multiSelect" name="sele_channel[]" multiple="multiple">
+                                                                    <select class="js-example-basic-multiple w-full rounded-sm text-xs select2" id="multiSelect" name="channel_brand[]" multiple="multiple">
                                                                     </select>
                                                                 </div>
                                                                 <div class="md:col-span-3" style="position: relative;">
@@ -652,14 +656,14 @@
                                     </svg>
                                     Back
                                 </a>
-                                <!-- <button id="submitButton" type="button" class="bg-[#3b5998] text-white font-bold py-1.5 px-4 rounded" onclick="updateProductDetail2()">
+                                <button id="submitButton" type="button" class="bg-[#3b5998] text-white font-bold py-1.5 px-4 rounded" onclick="updateProductDetail2()">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF" class="-mt-1 w-5 h-5 hidden md:inline-block">
                                         <path d="M0 0h24v24H0V0z" fill="none"></path>
                                         <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
                                         <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
                                     </svg>
                                     Save
-                                </button> -->
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -743,13 +747,12 @@
             });
 
             // Set default values after a short delay
-            setTimeout(function() {
+            setTimeout(function () {
                 let selectedValues = [];
 
                 if (defaultAllChannel[0] === 'all') {
-                    selectedValues = ['all']; // ✅ เปลี่ยนตรงนี้ เพื่อเลือกแค่ 'all' อย่างเดียว
+                    selectedValues = ['all']; // ✅ เลือกแค่ 'all'
                 } else {
-                    // ตรวจสอบค่าที่ตรงกันใน allChannel
                     selectedValues = defaultChannel.map(c =>
                         allChannel.find(ac => ac.trim().toLowerCase() === c.trim().toLowerCase()) || c
                     ).filter(Boolean);
@@ -757,9 +760,35 @@
 
                 $('#multiSelect').val(selectedValues).trigger("change");
 
-                // Debugging หลังจาก set ค่า
                 console.log("Selected values after setting:", $('#multiSelect').val());
             }, 600);
+
+            // ✅ เพิ่มเงื่อนไขควบคุมการเลือก All หรือรายการย่อย
+            $('#multiSelect').on('select2:select', function (e) {
+                let selected = $(this).val() || [];
+                let selectedValue = e.params.data.id;
+
+                // ถ้าเลือก all → ลบตัวอื่น
+                if (selectedValue === 'all') {
+                    $(this).val(['all']).trigger('change');
+                } else {
+                    // ถ้าเลือกตัวอื่นแล้วมี all อยู่ → เอา all ออก
+                    if (selected.includes('all')) {
+                        const filtered = selected.filter(val => val !== 'all');
+                        $(this).val(filtered).trigger('change');
+                    }
+                }
+            });
+
+            // ✅ รองรับ unselect เพื่อเลือกใหม่เมื่อกดเอา 'all' ออก
+            $('#multiSelect').on('select2:unselect', function (e) {
+                let selected = $(this).val() || [];
+
+                // ถ้าลบ all → clear ทั้งหมดเพื่อให้เลือกใหม่ได้
+                if (e.params.data.id === 'all') {
+                    $(this).val([]).trigger('change');
+                }
+            });
         });
 
         jQuery('#username_loading').hide();

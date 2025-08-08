@@ -149,7 +149,7 @@
             `<span class="text-gray-900 dark:text-white">${dataJson.data.emp_tiger.personcode}</span>`
         );
         $('#auth_departmant_login').append(
-            `<span class="text-gray-900 dark:text-white">(${role})</span>`
+            `<span class="text-lg font-mono font-bold text-gray-900 dark:text-white">(${role})</span>`
         );
         $('#auth_department').append(
             `<span class="text-gray-900 dark:text-white p-2">${role}</span></button>`

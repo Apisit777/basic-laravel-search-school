@@ -95,11 +95,14 @@ class ProductChannelController extends Controller
         // ->orderBy('PRODUCT', 'DESC');
 
         $searchProductAll = $request->input('searchProduct', '');
-        $searchProductNameAll = $request->input('searchProductName', '');
+        $searchProductNameTH = $request->input('searchProductNameTH', '');
+        $searchProductNameEN = $request->input('searchProductNameEN', '');
         $data = Product1::select(
             'product_channels.BRAND AS BRAND',
             'product1s.PRODUCT AS PRODUCT',
-            'product1s.NAME_THAI AS NAME_THAI'
+            'product1s.PRICE AS PRICE',
+            'product1s.NAME_THAI AS NAME_THAI',
+            'product1s.NAME_ENG AS NAME_ENG',
         )
         ->join('product_channels', 'product1s.PRODUCT', '=', 'product_channels.PRODUCT');
 
@@ -117,9 +120,14 @@ class ProductChannelController extends Controller
             });
         }
 
-        if (!empty($searchProductNameAll)) {
-            $data->where(function ($q) use ($searchProductNameAll) {
-                $q->orWhere('product1s.NAME_THAI', 'like', '%' . $searchProductNameAll . '%');
+        if (!empty($searchProductNameTH)) {
+            $data->where(function ($q) use ($searchProductNameTH) {
+                $q->orWhere('product1s.NAME_THAI', 'like', '%' . $searchProductNameTH . '%');
+            });
+        }
+        if (!empty($searchProductNameEN)) {
+            $data->where(function ($q) use ($searchProductNameEN) {
+                $q->orWhere('product1s.NAME_THAI', 'like', '%' . $searchProductNameEN . '%');
             });
         }
         // dd($data->toSql());
