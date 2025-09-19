@@ -51,7 +51,7 @@ class ProductionRunMidnightTask extends Command
     public function production_transfer_data_task()
     {
         $now = now();
-        $start = $now->copy()->setTime(10, 30); // 18:30
+        $start = $now->copy()->setTime(9, 30); // 18:30
         $end = $now->copy()->setTime(20, 00);  // 20:00
 
         if (now()->isWeekday() === true && $now->between($start, $end)) {

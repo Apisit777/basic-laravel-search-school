@@ -39,6 +39,9 @@ Route::get('/production_transfer/{task}', [CommonController::class, 'productionM
 // Command Account Schedule
 Route::get('/account_schedule/{task}', [CommonController::class, 'accountSchedule']);
 
+// Command production transfer Data KM
+Route::get('/production_transfer_data_km/{task}', [CommonController::class, 'KmSchedule']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });

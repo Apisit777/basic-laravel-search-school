@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <!-- Icon favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('media/favicon.png')}}" sizes="42x42">
+    <link rel="icon" type="image/png" href="{{ asset('media/favicon2.png')}}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/select2@4.1.0.min.css') }}" />
@@ -122,13 +122,109 @@
         .select2-container .select2-dropdown .select2-results__options {
             max-height: 360px !important;
         }
+
+        .logo-text-cps {
+            font-size: 30px;
+        }
+
+        @font-face {
+            font-family: 'Bromello';
+        }
+
+        .logo-text-ll {
+            font-family: 'Bromello', cursive;
+            font-size: 22px;
+            color: white;
+        }
+
+        .logo-text-bb {
+            font-size: 22px;
+        }
+
+        img {
+            width: 65px;
+            /* mix-blend-mode: multiply; */
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(-25%);
+                animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+            }
+            50% {
+                transform: translateY(0);
+                animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+            }
+        }
+
+        .animate-bounce {
+            animation: bounce 1s infinite;
+        }
     </style>
 </head>
 
 <body>
+    @php
+        $text0 = "SSUP";
+        $text1 = "cute press";
+        $text2 = "Lalil";
+        $text3 = "BISOUS";
+        $logo = "Product Master";
+    @endphp
+
     <div id="slide" class="loaderslide"></div>
     
-    <div class="min-h-screen p-10" style="background-image: url('https://www.ssup.co.th/wp-content/uploads/2022/11/shutterstock_2079577573.png')">
+    <!-- <div class="min-h-screen p-10" style="background-image: url('https://www.ssup.co.th/wp-content/uploads/2022/11/shutterstock_2079577573.png')"> -->
+    <!-- <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/shutterstock_2079577573 - Copy-min.png')}}')"> -->
+    <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/npd-formenedt__.jpg')}}')">
+        <div class="flex">
+            {{-- Left 60% (ว่างไว้ หรือใส่อะไรเพิ่มทีหลัง) --}}
+            <div class="w-3/5 text-white dark:text-white">
+                <!-- XXXXX -->
+            </div>
+            {{-- Right 40% (ข้อความโลโก้) --}}
+            <div class="w-4/5 flex flex-col justify-center -mt-6 ml-5">
+
+                <!-- <div style="margin-top: -20px; margin-right: 85px; margin-left: -90px;">
+                    <img src="{{URL::asset('media/Logo-company.png')}}">
+                </div> -->
+
+                {{-- Logo Horse + SSUP --}}
+                <div class="relative">
+                    <img src="{{ URL::asset('media/Logo-company.png') }}" class="absolute -top-6 -left-24 z-0 animate-bounce" />
+                    <span class="relative z-10 self-start logo-text-cps font-serif font-semibold whitespace-nowrap text-white dark:text-white -ml-48 animate-fade-in-up">
+                        @foreach(collect(mb_str_split($text0)) as $index => $char)
+                            <span class="opacity-0 animate-slide-in" style="animation-delay: {{ $index * 0.1 }}s">
+                                {!! $char === ' ' ? '&nbsp;' : $char !!}
+                            </span>
+                        @endforeach
+                    </span>
+                </div>
+
+                <span class="self-start logo-text-cps font-serif font-semibold whitespace-nowrap text-white dark:text-white ml-2.5 animate-fade-in-up">
+                    @foreach(collect(mb_str_split($text1)) as $index => $char)
+                        <span class="text-white dark:text-white opacity-0 animate-slide-in" style="animation-delay: {{ $index * 0.1 }}s">
+                            {!! $char === ' ' ? '&nbsp;' : $char !!}
+                        </span>
+                    @endforeach
+                </span>
+                <span class="text-md logo-text-ll font-semibold text-white dark:text-white ml-2.5 animate-fade-in-up">
+                    @foreach(collect(mb_str_split($text2)) as $index => $char)
+                        <span class="text-white dark:text-white opacity-0 animate-slide-in" style="animation-delay: {{ $index * 0.2 }}s">
+                            {!! $char === '' ? '' : $char !!}
+                        </span>
+                    @endforeach
+                </span>
+                <span class="mt-2 text-md logo-text-bb font-serif font-semibold text-white dark:text-white ml-2.5 animate-fade-in-up">
+                    @foreach(collect(mb_str_split($text3)) as $index => $char)
+                        <span class="text-white dark:text-white opacity-0 animate-slide-in" style="animation-delay: {{ $index * 0.2 }}s">
+                            {!! $char === '' ? '' : $char !!}
+                        </span>
+                    @endforeach
+                </span>
+            </div>
+        </div>
+
         <div class="g-2 flex flex-wrap items-center justify-center lg:justify-between">
             <div class="mb-12 grow-0 basis-auto md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12 xl:ml-12">
             </div>
@@ -233,8 +329,19 @@
                             <div class="flex text-center">
                                 <p class="mb-0 me-4 text-lg -mt-2 font-semibold">Sign in with</p>
                             </div>
-                            <!-- Github -->
+                            <!-- SSUP -->
                             <button
+                                type="button"
+                                data-twe-ripple-init
+                                data-twe-ripple-color="light"
+                                class="justify-items-center mr-2 mb-2 inline-block rounded bg-[#333] px-6 py-2 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg">
+                                <span class="[&>svg]:h-5 [&>svg]:w-5 grid justify-items-center">
+                                    <img src="https://www.ssup.co.th/wp-content/uploads/2022/11/site-logo-g.png" width="65px" height="65px">
+                                </span>
+                                <p>Extra SSUP</p>
+                            </button>
+                            <!-- Github -->
+                            <!-- <button
                                 type="button"
                                 data-twe-ripple-init
                                 data-twe-ripple-color="light"
@@ -245,9 +352,9 @@
                                     </svg>
                                 </span>
                                 <p>Github</p>
-                            </button>
+                            </button> -->
                             <!-- Google -->
-                            <button
+                            <!-- <button
                                 type="button"
                                 data-twe-ripple-init
                                 data-twe-ripple-color="light"
@@ -258,12 +365,18 @@
                                     </svg>
                                 </span>
                                 <p>Google</p>
-                            </button>
+                            </button> -->
                         </div>
     
                         <div class="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-black dark:before:border-blue-500 after:mt-0.5 after:flex-1 after:border-t after:border-black dark:after:border-blue-500">
                             <p class="mx-4 mb-0 text-center font-semibold dark:text-white">
-                            Or
+                                <span class="self-start font-serif font-semibold whitespace-nowrap text-white dark:text-white ml-2.5 animate-fade-in-up">
+                                    @foreach(collect(mb_str_split($logo)) as $index => $char)
+                                        <span class="text-black dark:text-white opacity-0 animate-slide-in" style="animation-delay: {{ $index * 0.1 }}s">
+                                            {!! $char === ' ' ? '&nbsp;' : $char !!}
+                                        </span>
+                                    @endforeach
+                                </span>
                             </p>
                         </div>
                         <div class="flex flex-col gap-3">
@@ -392,7 +505,7 @@
                             </a>
                     </p>
                     <span class="mt-4 block font-sans text-xs font-bold text-center">
-                        PRODUCT MASTER (V 1.04.0 © 2024)
+                        PRODUCT MASTER (V 2.04.0 © 2024)
                     </span> 
                 </div>
             </div>

@@ -5,10 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Com_product extends Model
+class TaskKm extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    protected $primaryKey = 'product_id'; // ถ้าคีย์เป็น product_id
     protected $guarded = [];
 }

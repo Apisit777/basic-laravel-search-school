@@ -3,12 +3,10 @@
 <html lang="en">
 <head>
     <!-- Icon favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('media/favicon.png')}}" sizes="42x42">
+    <link rel="icon" type="image/png" href="{{ asset('media/favicon2.png')}}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/select2@4.1.0.min.css') }}" />
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
@@ -109,79 +107,229 @@
             top: 0;
             left: 0;
         }
+
+        .logo-text-cps {
+            font-size: 30px;
+        }
+
+        @font-face {
+            font-family: 'Bromello';
+        }
+
+        .logo-text-ll {
+            font-family: 'Bromello', cursive;
+            font-size: 22px;
+            color: white;
+        }
+
+        .logo-text-bb {
+            font-size: 22px;
+        }
+
+
+        .loaderslide {
+            width: 100%;
+            height: 100%;
+            /* background-color: black; */
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            animation: slide_up 1s linear 0.7s forwards;
+        }
+
+        @keyframes slide_up {
+            0% { height: 100%; }
+            70% { height: 10%; }
+            100% { height: 0%; display: none; }
+        }
+
+        .bg-image {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .slide-up {
+            transform: translateY(-100%);
+        }
+
+        .overlay {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 1rem 2rem;
+            border-radius: 12px;
+        }
+
+        img {
+            width: 65px;
+            /* mix-blend-mode: multiply; */
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(-25%);
+                animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+            }
+            50% {
+                transform: translateY(0);
+                animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+            }
+        }
+
+        .animate-bounce {
+            animation: bounce 1s infinite;
+        }
     </style>
 </head>
 
 <body>
+
+    @php
+        $text0 = "SSUP";
+        $text1 = "cute press";
+        $text2 = "Lalil";
+        $text3 = "BISOUS";
+        $logo = "Product Master";
+    @endphp
+
     <div id="slide" class="loaderslide"></div>
     <!-- <div class="min-h-screen p-10" style="background-image: url('https://www.pixelstalk.net/wp-content/uploads/2016/07/1080p-Full-HD-Images-For-Desktop.jpg')"> -->
     <!-- <div class="min-h-screen p-10" style="background-image: url('https://www.ssup.co.th/wp-content/uploads/2024/04/new-member-april.jpg')"> -->
-        <!-- <div class="min-h-screen p-10" style="background-image: url('https://www.orientalprincess.com/pub/media/wysiwyg/block-img-m2/beneficial/Getthelook-Website-04.jpg')"> -->
-            <!-- <div class="min-h-screen p-10" style="background-image: url('https://www.orientalprincess.com/pub/media/wysiwyg/block-img-m2/beneficial/colors-hero-banner.jpg')"> -->
-        <div class="min-h-screen p-10" style="background-image: url('https://www.ssup.co.th/wp-content/uploads/2022/11/shutterstock_2079577573.png')">
+    <!-- <div class="min-h-screen p-10" style="background-image: url('https://www.orientalprincess.com/pub/media/wysiwyg/block-img-m2/beneficial/Getthelook-Website-04.jpg')"> -->
+    <!-- <div class="min-h-screen p-10" style="background-image: url('https://www.orientalprincess.com/pub/media/wysiwyg/block-img-m2/beneficial/colors-hero-banner.jpg')"> -->
+    <!-- <div class="min-h-screen p-10" style="background-image: url('https://www.ssup.co.th/wp-content/uploads/2022/11/shutterstock_2079577573.png')"> -->
+    <!-- <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/shutterstock_2079577573 - Copy-min.png')}}')"> -->
+        <!-- <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/ChatGPT Image 21 ส.ค. 2568 16_26_32.png')}}')"> -->
+            <!-- <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/redesign_guess_my_age_Content-02.jpg')}}')"> -->
+        <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/npd-formenedt__.jpg')}}')">
+        <div class="flex">
+            {{-- Left 60% (ว่างไว้ หรือใส่อะไรเพิ่มทีหลัง) --}}
+            <div class="w-3/5 text-white dark:text-white">
+                <!-- XXXXX -->
+            </div>
+            {{-- Right 40% (ข้อความโลโก้) --}}
+            <div class="w-4/5 flex flex-col justify-center -mt-6 ml-5">
+
+                <!-- <div style="margin-top: -20px; margin-right: 85px; margin-left: -90px;">
+                    <img src="{{URL::asset('media/Logo-company.png')}}">
+                </div> -->
+
+                {{-- Logo Horse + SSUP --}}
+                <div class="relative">
+                    <img src="{{ URL::asset('media/Logo-company.png') }}" class="absolute -top-6 -left-24 z-0 animate-bounce" />
+                    <span class="relative z-10 self-start logo-text-cps font-serif font-semibold whitespace-nowrap text-white dark:text-white -ml-48 animate-fade-in-up">
+                        @foreach(collect(mb_str_split($text0)) as $index => $char)
+                            <span class="opacity-0 animate-slide-in" style="animation-delay: {{ $index * 0.1 }}s">
+                                {!! $char === ' ' ? '&nbsp;' : $char !!}
+                            </span>
+                        @endforeach
+                    </span>
+                </div>
+
+                <span class="self-start logo-text-cps font-serif font-semibold whitespace-nowrap text-white dark:text-white ml-2.5 animate-fade-in-up">
+                    @foreach(collect(mb_str_split($text1)) as $index => $char)
+                        <span class="text-white dark:text-white opacity-0 animate-slide-in" style="animation-delay: {{ $index * 0.1 }}s">
+                            {!! $char === ' ' ? '&nbsp;' : $char !!}
+                        </span>
+                    @endforeach
+                </span>
+                <span class="text-md logo-text-ll font-semibold text-white dark:text-white ml-2.5 animate-fade-in-up">
+                    @foreach(collect(mb_str_split($text2)) as $index => $char)
+                        <span class="text-white dark:text-white opacity-0 animate-slide-in" style="animation-delay: {{ $index * 0.2 }}s">
+                            {!! $char === '' ? '' : $char !!}
+                        </span>
+                    @endforeach
+                </span>
+                <span class="mt-2 text-md logo-text-bb font-serif font-semibold text-white dark:text-white ml-2.5 animate-fade-in-up">
+                    @foreach(collect(mb_str_split($text3)) as $index => $char)
+                        <span class="text-white dark:text-white opacity-0 animate-slide-in" style="animation-delay: {{ $index * 0.2 }}s">
+                            {!! $char === '' ? '' : $char !!}
+                        </span>
+                    @endforeach
+                </span>
+            </div>
+        </div>
+
         <div class="g-2 flex flex-wrap items-center justify-center lg:justify-between">
-            <div class="mb-12 grow-0 basis-auto md:mb-0 md:w-8/12 lg:w-5/12 xl:w-5/12 xl:ml-12">
-                <!-- <div class="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-4/12">
-                    <form class="group js-validation-signin max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-32" action="javascript:void(0)" method="POST" novalidate>
+            <div class="mb-12 grow-0 basis-auto md:mb-0 md:w-8/12 lg:w-6/12 xl:w-6/12 xl:ml-12">
+                <div class="relative max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-3">
+                    <form id="from_user" class="group js-validation-signin" action="javascript:void(0)" method="POST">
                         <div class="flex flex-row items-center justify-center lg:justify-start">
                             <div class="flex text-center">
-                                <p class="mb-0 me-4 mt-4 text-lg">Sign in with</p>
+                                <p class="mb-0 me-4 text-lg -mt-2 font-semibold">Coming Soon</p>
                             </div>
+                            <!-- SSUP -->
+                            <!-- <button
+                                type="button"
+                                data-twe-ripple-init
+                                data-twe-ripple-color="light"
+                                class="justify-items-center mr-2 mb-2 inline-block rounded bg-[#333] px-6 py-2 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg">
+                                <span class="[&>svg]:h-5 [&>svg]:w-5 grid justify-items-center">
+                                    <img src="https://www.ssup.co.th/wp-content/uploads/2022/11/site-logo-g.png" width="65px" height="65px">
+                                </span>
+                                <p>Extra SSUP</p>
+                            </button> -->
                         </div>
-
+    
                         <div class="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-black dark:before:border-blue-500 after:mt-0.5 after:flex-1 after:border-t after:border-black dark:after:border-blue-500">
                             <p class="mx-4 mb-0 text-center font-semibold dark:text-white">
-                            Or
+                             <span class="self-start font-serif font-semibold whitespace-nowrap text-white dark:text-white ml-2.5 animate-fade-in-up">
+                                @foreach(collect(mb_str_split($logo)) as $index => $char)
+                                    <span class="text-black dark:text-white opacity-0 animate-slide-in" style="animation-delay: {{ $index * 0.1 }}s">
+                                        {!! $char === ' ' ? '&nbsp;' : $char !!}
+                                    </span>
+                                @endforeach
+                            </span>
                             </p>
                         </div>
-                        
-                        <div class="flex flex-col items-start space-y-4">
-                            <h1 class="text-xl font-medium text-gray-800">Log in to your account</h1>
-
-                            <div class="flex w-full flex-col items-start ">
-                                <label for="email" class="block text-sm font-normal text-black dark:text-white">Username</label>
-                                <input type="text" id="username" name="username" class="peer block w-full rounded-sm border-black dark:border-gray-100 p-2.5 text-sm text-gray-900 placeholder:text-xs placeholder:font-light placeholder:text-gray-400 focus:border-none focus:outline-none focus:ring-1 focus:ring-sky-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500" placeholder="Username" required pattern="^([A-Z][A-Za-z ,.'`-]{3,30})$" />
-                                <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">Please enter a valid username </span>
+    
+                        <!-- ✅ ปรับตรงนี้ให้กลางและใหญ่ -->
+                        <div class="flex justify-center items-center w-full h-[300px]">
+                            <div class="text-center">
+                                <h1 class="text-[100px]">🚧</h1>
+                                <p class="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+                                    กำลังอยู่ระหว่างการพัฒนา<br>โปรดรอติดตามเร็ว ๆ นี้
+                                </p>
                             </div>
-
-                            <div class="flex w-full flex-col items-start ">
-                                <label for="password" class="block text-sm font-normal text-black dark:text-white">Password</label>
-                                <input type="password" id="password" name="password" class="peer block w-full rounded-sm border-black dark:border-gray-100 p-2.5 text-sm text-gray-900 placeholder:text-xs placeholder:font-light placeholder:text-gray-400 focus:border-none focus:outline-none focus:ring-1 focus:ring-sky-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500" placeholder="*********" required pattern=".{7,}" />
-                                <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">Please enter a valid password</span>
-                            </div>
-
-                            <div class="flex w-full">
-                                <button 
-                                    onClick="checkLogin()"
-                                    type="submit"
-                                    class="w-full cursor-pointer rounded bg-primary-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-blue-300 group-invalid:pointer-events-none group-invalid:opacity-60">
-                                    Submit
-                                </button>
-                            </div>
-                            <p class="mt-4 block text-center font-sans text-base font-normal leading-relaxed antialiased text-black dark:text-white">
-                                Already have an account?
-                                    <a href="{{ route('register') }}" class="cursor-pointer inline-block space-y-2 border-b border-black dark:border-blue-500">
-                                        Create an account
-                                    </a>
-                            </p>
-                            <span class="mt-4 block font-sans text-xs font-bold text-center text-black dark:text-white">
-                                PRODUCT MASTER (V 1.04.0 © 2024)
-                            </span>
+                        </div>
+                        <div id="loading_form" class="loading_ absolute !hidden bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 animate-spin dark:text-white">
+                                <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
+                                <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
+                            </svg>
                         </div>
                     </form>
-                </div> -->
-                
+                    <p class="mt-4 block text-center font-sans text-base font-normal leading-relaxed antialiased">
+                        IMG Slide For Brand(OP, CPS, RI, BB, LL, GNC)
+                    </p>
+                    <span class="mt-4 block font-sans text-xs font-bold text-center">
+                        PRODUCT MASTER
+                    </span> 
+                    <span class="mt-4 block font-sans text-xs font-bold text-center">
+                        (V 2.04.0 © 2024)
+                    </span> 
+                </div>
             </div>
-
             <div class="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-4/12">
-                <div class="relative max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-24">
+                <div class="relative max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 -mt-12 mr-10 -ml-10">
                     <form id="from_user" class="group js-validation-signin" action="javascript:void(0)" method="POST">
                         <div class="flex flex-row items-center justify-center lg:justify-start">
                             <div class="flex text-center">
                                 <p class="mb-0 me-4 text-lg -mt-2 font-semibold">Sign in with</p>
                             </div>
-                            <!-- Github -->
+                            <!-- SSUP -->
                             <button
+                                type="button"
+                                data-twe-ripple-init
+                                data-twe-ripple-color="light"
+                                class="justify-items-center mr-2 mb-2 inline-block rounded bg-[#333] px-6 py-2 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg">
+                                <span class="[&>svg]:h-5 [&>svg]:w-5 grid justify-items-center">
+                                    <img src="https://www.ssup.co.th/wp-content/uploads/2022/11/site-logo-g.png" width="65px" height="65px">
+                                </span>
+                                <p>Extra SSUP</p>
+                            </button>
+                            <!-- Github -->
+                            <!-- <button
                                 type="button"
                                 data-twe-ripple-init
                                 data-twe-ripple-color="light"
@@ -192,9 +340,9 @@
                                     </svg>
                                 </span>
                                 <p>Github</p>
-                            </button>
+                            </button> -->
                             <!-- Google -->
-                            <button
+                            <!-- <button
                                 type="button"
                                 data-twe-ripple-init
                                 data-twe-ripple-color="light"
@@ -205,15 +353,24 @@
                                     </svg>
                                 </span>
                                 <p>Google</p>
-                            </button>
+                            </button> -->
                         </div>
     
                         <div class="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-black dark:before:border-blue-500 after:mt-0.5 after:flex-1 after:border-t after:border-black dark:after:border-blue-500">
                             <p class="mx-4 mb-0 text-center font-semibold dark:text-white">
-                            Or
+                            <!-- Or -->
+                             <span class="self-start font-serif font-semibold whitespace-nowrap text-white dark:text-white ml-2.5 animate-fade-in-up">
+                                @foreach(collect(mb_str_split($logo)) as $index => $char)
+                                    <span class="text-black dark:text-white opacity-0 animate-slide-in" style="animation-delay: {{ $index * 0.1 }}s">
+                                        {!! $char === ' ' ? '&nbsp;' : $char !!}
+                                    </span>
+                                @endforeach
+                            </span>
                             </p>
                         </div>
                         <div class="flex flex-col gap-3">
+                            <!-- <label for="" class="block text-sm font-normal text-black dark:text-white"><strong>Prodcut Master</strong></label> -->
+                            <label for="" class="block text-sm font-normal text-black dark:text-white">กรอกรหัสพนักงานและรหัสผ่าน(ใช้ข้อมูลเดียวกับระบบ Extra SSUP) เพื่อเข้าใช้</label>
                             <div class="flex w-full flex-col items-start ">
                                 <label for="" class="block text-sm font-normal text-black dark:text-white">Username</label>
                                 <input type="text" id="username" name="username" class="peer block w-full rounded-sm border-black dark:border-gray-100 p-2.5 text-xs text-gray-900  placeholder:text-xs placeholder:font-light placeholder:text-gray-400 focus:border-none focus:outline-none focus:ring-1 focus:ring-sky-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500" placeholder="Username" required pattern="^([A-Z][A-Za-z ,.'`-]{3,30})$" />
@@ -333,12 +490,6 @@
                             </button>
                             <!-- class="w-full cursor-pointer rounded bg-primary-600 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-4 focus:ring-blue-300 group-invalid:pointer-events-none group-invalid:opacity-60"> -->
                         </div>
-                        <!-- <div id="loading_form" class="loading_load absolute loading_form bg-[#e4e4e4e3] dark:bg-[#2a2a2afa]">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 animate-spin dark:text-white">
-                                <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
-                                <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
-                            </svg>
-                        </div> -->
                         <div id="loading_form" class="loading_ absolute !hidden bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 animate-spin dark:text-white">
                                 <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
@@ -348,127 +499,39 @@
                     </form>
                     <p class="mt-4 block text-center font-sans text-base font-normal leading-relaxed antialiased">
                         Already have an account?
-                            <a href="{{ route('register') }}" class="cursor-pointer inline-block space-y-2 border-b border-black dark:border-blue-500 group">
-                                <svg Class="h-5 w-5 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
-                                    <style type="text/css">
-                                    <![CDATA[
-                                        .st0{fill:#000000;}
-                                    ]]>
-                                    </style>
-                                    <g>
-                                        <polygon class="st0" points="219.363,109.356 113.285,237.075 0.003,250.793 85.082,139.59 	"/>
-                                        <polygon class="st0" points="402.644,292.637 274.925,398.715 261.207,511.996 372.41,426.934 	"/>
-                                        <path class="st0" d="M500.785,133.325c18.172-51.828,12.641-99.359-5.047-117.063c-17.703-17.688-65.234-23.219-117.047-5.047
-                                            L500.785,133.325z"/>
-                                        <path class="st0" d="M491.113,156.528L355.472,20.887c-23.219,11.266-46.531,27.469-67.719,49.672
-                                            C227.035,134.153,132.05,258.731,132.05,258.731l110.406,110.391l10.813,10.828c0,0,124.594-94.969,188.172-155.703
-                                            C463.645,203.059,479.848,179.747,491.113,156.528z M287.738,224.262c-21.219-21.219-21.219-55.609,0-76.844
-                                            c21.219-21.219,55.625-21.219,76.844,0c21.219,21.234,21.219,55.625-0.016,76.844C343.363,245.481,308.957,245.481,287.738,224.262
-                                            z"/>
-                                        <path class="st0" d="M190.925,391.2L178.8,379.075c-13.844,51.828-81.734,69.796-81.734,69.796s25.969-31.734,27.422-53.39
-                                            c1.844-27.516-8.656-17.313-21.641-11.547c-14.219,6.313-36.813,6.5-36.813,6.5s10.828-9.375,22.359-32.469
-                                            c7.906-15.813,26.156-24.188,41.844-27.453l-9.438-9.438c-18.406-13.797-47.547,0.078-61.609,24.969
-                                            c-11.328,20.016-31.5,68.156-53.359,69.296c13.813,11.5,33.344,17.234,57.484,6.906c24.141-10.359,29.906,0,10.344,19.531
-                                            c-12.688,12.703-58.625,28.734-59.766,52.875c26.438-5.734,80.078,3.219,118.406-14.938
-                                            C175.972,459.027,197.816,418.793,190.925,391.2z"/>
-                                    </g>
-                                </svg>
-                                Develop
-                            </a>
-                            <!-- <a href="{{ route('register') }}" class="cursor-pointer inline-block space-y-2 border-b border-black dark:border-blue-500">
-                                Create an account
-                            </a> -->
+                        <a href="{{ route('register') }}" class="cursor-pointer inline-block space-y-2 border-b border-black dark:border-blue-500 group">
+                            <svg Class="h-4 w-4 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
+                                <style type="text/css">
+                                <![CDATA[
+                                    .st0{fill:#000000;}
+                                ]]>
+                                </style>
+                                <g>
+                                    <polygon class="st0" points="219.363,109.356 113.285,237.075 0.003,250.793 85.082,139.59 	"/>
+                                    <polygon class="st0" points="402.644,292.637 274.925,398.715 261.207,511.996 372.41,426.934 	"/>
+                                    <path class="st0" d="M500.785,133.325c18.172-51.828,12.641-99.359-5.047-117.063c-17.703-17.688-65.234-23.219-117.047-5.047
+                                        L500.785,133.325z"/>
+                                    <path class="st0" d="M491.113,156.528L355.472,20.887c-23.219,11.266-46.531,27.469-67.719,49.672
+                                        C227.035,134.153,132.05,258.731,132.05,258.731l110.406,110.391l10.813,10.828c0,0,124.594-94.969,188.172-155.703
+                                        C463.645,203.059,479.848,179.747,491.113,156.528z M287.738,224.262c-21.219-21.219-21.219-55.609,0-76.844
+                                        c21.219-21.219,55.625-21.219,76.844,0c21.219,21.234,21.219,55.625-0.016,76.844C343.363,245.481,308.957,245.481,287.738,224.262
+                                        z"/>
+                                    <path class="st0" d="M190.925,391.2L178.8,379.075c-13.844,51.828-81.734,69.796-81.734,69.796s25.969-31.734,27.422-53.39
+                                        c1.844-27.516-8.656-17.313-21.641-11.547c-14.219,6.313-36.813,6.5-36.813,6.5s10.828-9.375,22.359-32.469
+                                        c7.906-15.813,26.156-24.188,41.844-27.453l-9.438-9.438c-18.406-13.797-47.547,0.078-61.609,24.969
+                                        c-11.328,20.016-31.5,68.156-53.359,69.296c13.813,11.5,33.344,17.234,57.484,6.906c24.141-10.359,29.906,0,10.344,19.531
+                                        c-12.688,12.703-58.625,28.734-59.766,52.875c26.438-5.734,80.078,3.219,118.406-14.938
+                                        C175.972,459.027,197.816,418.793,190.925,391.2z"/>
+                                </g>
+                            </svg>
+                            Develop
+                        </a>
                     </p>
                     <span class="mt-4 block font-sans text-xs font-bold text-center">
-                        PRODUCT MASTER (V 1.04.0 © 2024)
+                        PRODUCT MASTER (V 2.04.0 © 2024)
                     </span> 
                 </div>
             </div>
-
-            <!-- <div class="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-4/12">
-                <form id="from_user" class="js-validation-signin max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-32" action="javascript:void(0)" method="POST">
-                    <div class="flex flex-row items-center justify-center lg:justify-start">
-                        <div class="flex text-center">
-                            <p class="mb-0 me-4 mt-4 text-lg">Sign in with</p>
-                             <button class="flex items-center bg-white dark:bg-[#303030] border border-gray-300 rounded-lg shadow-md px-6 py-5 text-sm font-medium text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                <img src="https://www.ssup.co.th/wp-content/uploads/2022/11/site-logo-g.png" width="65px" height="65px">
-                            </button>
-                            <button class="flex items-center mr-2 bg-white dark:bg-[#303030] border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                <img src="https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png" alt="social icon" width="35px" height="35px">
-                                <span>
-                                    Github
-                                </span>
-                            </button>
-                            <button class="flex items-center mr-2 bg-white dark:bg-[#303030] border border-gray-300 rounded-lg shadow-md px-6 py-2 text-sm font-medium text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                                <svg class="h-12 w-6 mr-2" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800px" height="800px" viewBox="-0.5 0 48 48" version="1.1"> <title>Google-color</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Color-" transform="translate(-401.000000, -860.000000)"> <g id="Google" transform="translate(401.000000, 860.000000)"> <path d="M9.82727273,24 C9.82727273,22.4757333 10.0804318,21.0144 10.5322727,19.6437333 L2.62345455,13.6042667 C1.08206818,16.7338667 0.213636364,20.2602667 0.213636364,24 C0.213636364,27.7365333 1.081,31.2608 2.62025,34.3882667 L10.5247955,28.3370667 C10.0772273,26.9728 9.82727273,25.5168 9.82727273,24" id="Fill-1" fill="#FBBC05"> </path> <path d="M23.7136364,10.1333333 C27.025,10.1333333 30.0159091,11.3066667 32.3659091,13.2266667 L39.2022727,6.4 C35.0363636,2.77333333 29.6954545,0.533333333 23.7136364,0.533333333 C14.4268636,0.533333333 6.44540909,5.84426667 2.62345455,13.6042667 L10.5322727,19.6437333 C12.3545909,14.112 17.5491591,10.1333333 23.7136364,10.1333333" id="Fill-2" fill="#EB4335"> </path> <path d="M23.7136364,37.8666667 C17.5491591,37.8666667 12.3545909,33.888 10.5322727,28.3562667 L2.62345455,34.3946667 C6.44540909,42.1557333 14.4268636,47.4666667 23.7136364,47.4666667 C29.4455,47.4666667 34.9177955,45.4314667 39.0249545,41.6181333 L31.5177727,35.8144 C29.3995682,37.1488 26.7323182,37.8666667 23.7136364,37.8666667" id="Fill-3" fill="#34A853"> </path> <path d="M46.1454545,24 C46.1454545,22.6133333 45.9318182,21.12 45.6113636,19.7333333 L23.7136364,19.7333333 L23.7136364,28.8 L36.3181818,28.8 C35.6879545,31.8912 33.9724545,34.2677333 31.5177727,35.8144 L39.0249545,41.6181333 C43.3393409,37.6138667 46.1454545,31.6490667 46.1454545,24" id="Fill-4" fill="#4285F4"> </path> </g> </g> </g> </svg>
-                                <span>
-                                    Google
-                                </span>
-                            </button> 
-                        </div>
-                    </div>
-
-                    <div class="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-black dark:before:border-blue-500 after:mt-0.5 after:flex-1 after:border-t after:border-black dark:after:border-blue-500">
-                        <p class="mx-4 mb-0 text-center font-semibold dark:text-white">
-                        Or
-                        </p>
-                    </div>
-
-                    <div class="flex flex-col gap-6">
-
-                        <div class="relative float-label-input mt-0">
-                            <input type="text" id="username" name="username" placeholder=" " class="block w-full bg-white dark:bg-[#2020] rounded-sm text-xs focus:outline-none focus:shadow-outline border border-black dark:border-gray-100 appearance-none leading-normal focus:border-blue-400">
-                            <label for="name" class="absolute block top-1 left-0 text-md text-black dark:text-white pointer-events-none transition duration-200 ease-in-outbg-white px-2 text-grey-darker">
-                                Username
-                            </label>
-                        </div>
-                        <div class="relative float-label-input -mt-8">
-                            <input type="password" id="password" name="password" placeholder=" " class="block w-full bg-white dark:bg-[#2020] rounded-sm text-xs focus:outline-none focus:shadow-outline border border-black dark:border-gray-100 appearance-none leading-normal focus:border-blue-400">
-                            <label for="" class="absolute block top-1 left-0 text-md text-black dark:text-white pointer-events-none transition duration-200 ease-in-outbg-white px-2 text-grey-darker">
-                                Password
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="inline-flex items-center">
-                        <label
-                            class="relative -ml-2.5 flex cursor-pointer items-center rounded-full p-3"
-                            htmlFor="checkbox"
-                            data-ripple-dark="true"
-                        >
-                        </label>
-                        <label class="mt-px cursor-pointer select-none font-light" htmlFor="checkbox">
-                            <p class="flex items-center font-sans text-sm font-normal leading-normal antialiased">
-                                I agree the
-                                <Link class="font-medium transition-colors hover:text-blue-500" href="#" >
-                                    &nbsp;Terms and Conditions
-                                </Link>
-                            </p>
-                        </label>
-                    </div>
-
-                    <a class="mb-3 flex w-full items-center justify-center rounded bg-primary px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong group"
-                        style="background-color: #3b5998"
-                        onClick="checkLogin()"
-                        type="submit">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                                <path fill-rule="evenodd" d="M7.5 3.75A1.5 1.5 0 0 0 6 5.25v13.5a1.5 1.5 0 0 0 1.5 1.5h6a1.5 1.5 0 0 0 1.5-1.5V15a.75.75 0 0 1 1.5 0v3.75a3 3 0 0 1-3 3h-6a3 3 0 0 1-3-3V5.25a3 3 0 0 1 3-3h6a3 3 0 0 1 3 3V9A.75.75 0 0 1 15 9V5.25a1.5 1.5 0 0 0-1.5-1.5h-6Zm10.72 4.72a.75.75 0 0 1 1.06 0l3 3a.75.75 0 0 1 0 1.06l-3 3a.75.75 0 1 1-1.06-1.06l1.72-1.72H9a.75.75 0 0 1 0-1.5h10.94l-1.72-1.72a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
-                            </svg>
-                            </span>
-                            Login
-                    </a>
-
-                    <p class="mt-4 block text-center font-sans text-base font-normal leading-relaxed antialiased">
-                        Already have an account?
-                            <a href="{{ route('register') }}" class="cursor-pointer inline-block space-y-2 border-b border-black dark:border-blue-500">
-                                Create an account
-                            </a>
-                    </p>
-                    <span class="mt-4 block font-sans text-xs font-bold text-center">
-                        PRODUCT MASTER (V 1.04.0 © 2024)
-                    </span>
-                </form>
-            </div> -->
         </div>
         <!-- <div class="relative w-[350px] overflow-hidden">
             <input type="checkbox" class="peer absolute top-0 inset-x-0 w-full h-12 opacity-0 z-100000 cursor-pointer">
@@ -524,6 +587,45 @@
 <script src="{{ asset('js/sweetalert2@11.min.js') }}"></script>
 
 <script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const images = [
+            "{{ asset('media/Ci-Lab_Sunscreen_-_Product_Details_-_Body_-_03.jpg') }}",
+            "{{ asset('media/npd-formenedt__.jpg') }}"
+        ];
+
+        let current = 0;
+        const bg1 = document.getElementById("bg1");
+        const bg2 = document.getElementById("bg2");
+
+        // Set image เริ่มต้น
+        bg1.style.backgroundImage = `url('${images[0]}')`;
+        bg2.style.backgroundImage = `url('${images[1]}')`;
+
+        // วนลูป slide ขึ้นทุก 3 วิ
+        setInterval(() => {
+            const top = current % 2 === 0 ? bg1 : bg2;
+            const bottom = current % 2 === 0 ? bg2 : bg1;
+
+            top.style.zIndex = 10;
+            bottom.style.zIndex = 0;
+
+            top.classList.add("slide-up");
+
+            // เมื่อภาพบนเลื่อนหาย → reset class และสลับภาพ
+            setTimeout(() => {
+                top.classList.remove("slide-up");
+                top.style.zIndex = 0;
+                bottom.style.zIndex = 10;
+
+                top.style.backgroundImage = `url('${images[(current + 2) % images.length]}')`;
+            }, 1000);
+
+            current = (current + 1) % images.length;
+        }, 3000);
+    });
+
+    
     $(document).ready(function() {
         $('.js-example-basic-single').select2();
     });

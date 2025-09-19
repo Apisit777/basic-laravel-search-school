@@ -750,53 +750,41 @@ class ExportExcelController extends Controller
 
         // ตรวจสอบ permission ก่อน query
         if ($userpermission == 'CPS') {
-            if (!isset($request->start_product) || $request->start_product == null) {
-
-                // หากไม่มี field ให้ดูเลย (กรณีไม่มีสิทธิ์)
-                if (empty($selectFields)) {
-                    abort(403, 'You do not have permission to view any fields.');
-                }
-
-                $ProDevelops = Product1::select($selectFields)
-                    ->leftJoin('product_details', DB::raw('LOWER(product1s.PRODUCT)'), '=', DB::raw('LOWER(product_details.product_id)'))
-                    ->leftJoin('product_others', 'product1s.PRODUCT', '=', 'product_others.product_id')
-                    ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
-                    ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
-                    ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
-                    ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
-                    ->where('product1s.BRAND', 'CPS')
-                    ->groupBy('product1s.PRODUCT')
-                    ->orderBy('product1s.PRODUCT', 'asc')
-                    ->get()
-                    ->toArray();
-            } else if (!isset($request->end_product) || $request->end_product == null) {
-                $ProDevelops = Product1::select($selectFields)
-                    ->leftJoin('product_details', DB::raw('LOWER(product1s.PRODUCT)'), '=', DB::raw('LOWER(product_details.product_id)'))
-                    ->leftJoin('product_others', 'product1s.PRODUCT', '=', 'product_others.product_id')
-                    ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
-                    ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
-                    ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
-                    ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
-                    ->groupBy('product1s.PRODUCT')
-                    ->where('product1s.BRAND', 'CPS')
-                    ->where('PRODUCT', $request->start_product)
-                    ->get()
-                    ->toArray();
-            } else {
-                $ProDevelops = Product1::select($selectFields)
-                    ->leftJoin('product_details', DB::raw('LOWER(product1s.PRODUCT)'), '=', DB::raw('LOWER(product_details.product_id)'))
-                    ->leftJoin('product_others', 'product1s.PRODUCT', '=', 'product_others.product_id')
-                    ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
-                    ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
-                    ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
-                    ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
-                    ->where('product1s.BRAND', 'CPS')
-                    ->whereBetween('product1s.PRODUCT', [$request->start_product, $request->end_product])
-                    ->groupBy('product1s.PRODUCT')
-                    ->orderBy('product1s.PRODUCT', 'asc')
-                    ->get()
-                    ->toArray();
+            // ไม่มีสิทธิ์ดู field ใดเลย
+            if (empty($selectFields)) {
+                abort(403, 'You do not have permission to view any fields.');
             }
+
+            // ✅ สร้าง base query ครั้งเดียว และ “บังคับ” ให้ permission = 'Y'
+            $base = Product1::select($selectFields)
+                ->leftJoin('product_details', DB::raw('LOWER(product1s.PRODUCT)'), '=', DB::raw('LOWER(product_details.product_id)'))
+                ->leftJoin('product_others', 'product1s.PRODUCT', '=', 'product_others.product_id')
+                ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
+                ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
+                ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
+                ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                ->where('product1s.BRAND', 'CPS')
+                // 🔒 เอาเฉพาะที่อนุญาตเท่านั้น
+                ->whereRaw('UPPER(product_details.permission) = "Y"');
+
+            // --- ตัวกรองตามช่วงรหัส (ถ้าอยาก “ไม่สนใจช่วงรหัส” ก็ไม่ต้องใส่เงื่อนไขพวกนี้) ---
+            if (!isset($request->start_product) || $request->start_product == null) {
+                // ไม่กรองรหัส
+                $query = clone $base;
+            } elseif (!isset($request->end_product) || $request->end_product == null) {
+                // กรอง = รหัสเดียว
+                $query = (clone $base)->where('product1s.PRODUCT', $request->start_product);
+            } else {
+                // กรองช่วงรหัส
+                $query = (clone $base)
+                    ->whereBetween('product1s.PRODUCT', [$request->start_product, $request->end_product]);
+            }
+
+            $ProDevelops = $query
+                ->groupBy('product1s.PRODUCT')
+                ->orderBy('product1s.PRODUCT', 'asc')
+                ->get()
+                ->toArray();
         }
 
         $columns = [];

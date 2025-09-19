@@ -42,6 +42,8 @@ use App\Models\ProductChannel;
 use App\Models\ProductGroup;
 use App\Models\Account;
 use App\Models\Com_product;
+use App\Models\ComProductExternal;
+use App\Models\ComProductImage;
 use App\Models\ComProductLog;
 use App\Models\ProductPriceSchedule;
 use App\Models\ProductDetail;
@@ -50,6 +52,7 @@ use App\Models\ProductOther;
 use App\Models\ProductOtherLog;
 use App\Models\ComProductPack;
 use Illuminate\Support\Facades\Log;
+use Carbon\Carbon;
 
 class ProductController extends Controller
 {
@@ -59,6 +62,14 @@ class ProductController extends Controller
     public function index()
     {
 
+        // $mysql = DB::connection('mysql')->select('select database() as db');
+        // $mysql_external = DB::connection('mysql_external')->select('select database() as db');
+
+        // $totalmysql = DB::connection('mysql')->table('com_products')->count();                 
+        // $totalmysql_external = DB::connection('mysql_external')->table('com_products')->count();     
+
+        // dd($mysql, $mysql_external, $totalmysql, $totalmysql_external);
+        
         //     $data = Product1::select(
         // 'product1s.BRAND AS BRAND',
         //         'GRP_P',
@@ -1214,6 +1225,75 @@ class ProductController extends Controller
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
+        } else if ($userpermission == 'KTY') {
+            $defaultBrands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', $userpermission)
+            ->pluck('BRAND')
+            ->toArray();
+            $brands = MasterBrand::select(
+                'BRAND')
+            ->where('BRAND', $userpermission)
+            ->get();
+            $owners = Owner::select(
+                'OWNER',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', $userpermission)
+            ->get();
+            $grp_ps = Grp_p::select(
+                'GRP_P',
+                'REMARK',
+                'BRAND')
+                 ->whereIn('BRAND', ['KTY', 'FR'])
+            ->get();
+            $brand_ps = Brand_p::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', $userpermission)
+            ->get();
+            $solutions = Solution::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', $userpermission)
+            ->get();
+            $series = Series::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', $userpermission)
+            ->get();
+            $categorys = Category::select(
+                'ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', $userpermission)
+            ->get();
+            $sub_categorys = Sub_category::select(
+                'ID',
+                'CATEGORY_ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', $userpermission)
+            ->get();
+            $pdms = Pdm::select(
+                'ID',
+                'REMARK',
+                'BRAND')
+            ->where('BRAND', $userpermission)
+            ->get();
+            $unit_ps = Unit_p::select(
+                'DESCRIPTION AS UNIT',
+                'BRAND')
+            ->where('BRAND', $userpermission)
+            ->get();
+            $unit_types = Unit_type::select(
+                'DESCRIPTION AS UNIT_TYPE',
+                'BRAND')
+            ->where('BRAND', $userpermission)
+            ->get();
         } else {
             $defaultBrands = MasterBrand::select(
                 'BRAND')
@@ -1581,7 +1661,34 @@ class ProductController extends Controller
                     ['PRODUCT' => $data_product['PRODUCT'], 'BRAND' => $data_product['BRAND']],
                         $updateData
                     );
+            }
+
+            // Phase 2
+            // วนลูป 4 รอบเพื่อบันทึก barcode และ pack size
+            for ($i = 1; $i <= 4; $i++) {
+                $barcode = $data_product["BAR_PACK{$i}"];
+                $quantity = $data_product["PACK_SIZE{$i}"];
+
+                if (!empty($barcode)) {
+                    ComProductPack::updateOrCreate(
+                        [
+                            'company_id' => $data_product['BRAND'],
+                            'product_id' => $data_product['PRODUCT'],
+                            'barcode'    => $barcode,
+                        ],
+                        [
+                            'quantity'   => $quantity,
+                            'reg_user'   => Auth::user()->username,
+                            'upd_user'   => Auth::user()->username,
+                            'reg_date'   => now()->toDateString(),
+                            'reg_time'   => now()->format('H:i:s'),
+                            'upd_date'   => now()->toDateString(),
+                            'upd_time'   => now()->format('H:i:s'),
+                            'timestamps' => date('Y-m-d H:i:s'),
+                        ]
+                    );
                 }
+            }
 
             // Phase 2
             if ( $copyProductMaster->BRAND == 'CPS' ) {
@@ -1749,10 +1856,10 @@ class ProductController extends Controller
                 'STATUS_EDIT_DT' => '',
             ];
 
-            dd($request->sele_channel, $data_product);
+            // dd($request->sele_channel, $data_product);
             $productMaster = Product1::create($data_product);
 
-            // dd($request);
+            // dd($productMaster);
             // if(!is_null($request->sele_channel[0])) {
             //     foreach ($request->sele_channel as $key => $value) {
             //         $createSeleChannel = SeleChannel::updateOrCreate(['PRODUCT' => $data_product['PRODUCT']],
@@ -1837,6 +1944,8 @@ class ProductController extends Controller
                 ]);
             }
 
+            // SELECT * FROM com_products WHERE update_dt BETWEEN '2025-09-01' AND CURDATE();
+            // SELECT * FROM com_products WHERE update_dt >= '2025-09-01' AND update_dt < CURDATE() + INTERVAL 1 DAY ORDER BY update_dt DESC;
             $createComProduct = Com_product::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
                 'company_id' => $productMaster->BRAND,
                 'barcode' => $productMaster->BARCODE,
@@ -1845,10 +1954,40 @@ class ProductController extends Controller
                 'name_eng' => $productMaster->NAME_ENG,
                 'short_thai' => $productMaster->SHORT_THAI,
                 'short_eng' => $productMaster->SHORT_ENG,
+                'price' => $productMaster->PRICE,
+                'cost' => $productMaster->COST,
                 'upd_user' => Auth::user()->username,
-                'upd_date' => date("Y/m/d H:i:s"),
+                'update_dt' => date("Y/m/d H:i:s"),
             ]);
 
+            
+            $images = ComProductImage::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+                'brand' => $productMaster->BRAND,
+            ]);
+            
+            // status_delivery
+            // ---------- 2) บันทึก com_products ----------
+            $shippingCostCode = (int) ($productMaster->BARCODE ?? 0);
+
+            $comUpdate = []; // payload ของ com_products (อย่าใส่ UPDATED_BY/UPDATED_AT ถ้าไม่มีคอลัมน์)
+
+            // ธงจัดส่งเฉพาะ com_products
+            
+            if ($shippingCostCode >= 95090001 && $shippingCostCode <= 95090999) {
+                $comUpdate['status_delivery'] = 'Y';   // ใช้ชื่อคอลัมน์จริงใน com_products
+            }
+
+            // อยากอัปเดตฟิลด์อื่น ๆ ใน com_products ด้วยก็ใส่เพิ่มที่นี่ เช่น:
+            // $comUpdate['brand']   = $data_product['BRAND'];
+            // $comUpdate['barcode'] = $data_product['BARCODE'];
+
+            Com_product::updateOrCreate(
+                ['product_id' => $data_product['PRODUCT']],  // key ที่ชนต้องตรง unique key จริง
+                $comUpdate
+            );
+
+            // dd( $createComProduct);
+            // dd( $images);
             // $craeteProductAccount = Account::updateOrCreate(['product' => $data_product['PRODUCT']], [
             //     'COST' => $productMaster->COST,
             //     'status_edit_dt' => '',
@@ -1979,10 +2118,86 @@ class ProductController extends Controller
                 }
             }
 
-            $craeteProductAccount = Account::updateOrCreate(['product' => $productMaster->PRODUCT], [
-                'COST' => $productMaster->COST,
-                'created_at' => date("Y/m/d H:i:s"),
+            // Phase 2
+            if ( $productMaster->BRAND == 'CPS' ) {
+                $createProductDetail = ProductDetail::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+                    'corporation_id' => $productMaster->BRAND,
+                    'company_id' => $productMaster->BRAND,
+                    'fad' => $productMaster->REGISTER,
+                    'inner_barcode' => $productMaster->BAR_PACK1,
+                    'inner_pack_size' => $productMaster->PACK_SIZE1,
+                    'case_barcode' => $productMaster->BAR_PACK2,
+                    'case_pack_size' => $productMaster->PACK_SIZE2,
+                    'upd_user' => Auth::user()->username,
+                    'upd_date' => date("Y/m/d H:i:s"),
+                ]);
+
+                $createProductOther = ProductOther::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+                    'corporation_id' => $productMaster->BRAND,
+                    'company_id' => $productMaster->BRAND,
+                    'item_name' => $productMaster->NAME_ENG,
+                    'cat_name' => $productMaster->CATEGORY,
+                    'upd_user' => Auth::user()->username,
+                    'upd_date' => date("Y/m/d H:i:s"),
+                ]);
+            }
+
+            $createComProduct = Com_product::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+                'company_id' => $productMaster->BRAND,
+                'barcode' => $productMaster->BARCODE,
+                'vendor_id' => $productMaster->VENDOR,
+                'name_thai' => $productMaster->NAME_THAI,
+                'name_eng' => $productMaster->NAME_ENG,
+                'short_thai' => $productMaster->SHORT_THAI,
+                'short_eng' => $productMaster->SHORT_ENG,
+                'price' => $productMaster->PRICE,
+                'cost' => $productMaster->COST,
+                'upd_user' => Auth::user()->username,
+                'update_dt' => date("Y/m/d H:i:s"),
             ]);
+
+            $images = ComProductImage::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
+                'brand' => $productMaster->BRAND,
+            ]);
+
+            // ---------- 2) บันทึก com_products ----------
+            $shippingCostCode = (int) ($productMaster->BARCODE ?? 0);
+
+            $comUpdate = []; // payload ของ com_products (อย่าใส่ UPDATED_BY/UPDATED_AT ถ้าไม่มีคอลัมน์)
+
+            // ธงจัดส่งเฉพาะ com_products
+            if ($shippingCostCode >= 95090001 && $shippingCostCode <= 95090999) {
+                $comUpdate['status_delivery'] = 'Y';   // ใช้ชื่อคอลัมน์จริงใน com_products
+            }
+
+            // อยากอัปเดตฟิลด์อื่น ๆ ใน com_products ด้วยก็ใส่เพิ่มที่นี่ เช่น:
+            // $comUpdate['brand']   = $data_product['BRAND'];
+            // $comUpdate['barcode'] = $data_product['BARCODE'];
+
+            $dataComUpdate = Com_product::updateOrCreate(
+                ['product_id' => $data_product['PRODUCT']],  // key ที่ชนต้องตรง unique key จริง
+                $comUpdate
+            );
+
+            // dd($dataComUpdate);
+
+            // // เพิ่มเงื่อนไข รหัสค่าจัดส่งสินค้า 95090001 - 95099999
+            // $shippingCostCode = (int) $productMaster->BARCODE;
+            // if ($shippingCostCode >= 95090001 && $shippingCostCode <= 95090999) {
+            //     $updateData['status_delivery'] = 'Y';
+            // }
+
+            // Com_product::updateOrCreate(
+            //     ['product_id' => $data_product['PRODUCT']],
+            //     $updateData
+            // );
+
+            // dd($productMaster);
+
+            // $craeteProductAccount = Account::updateOrCreate(['product' => $productMaster->PRODUCT], [
+            //     'COST' => $productMaster->COST,
+            //     'created_at' => date("Y/m/d H:i:s"),
+            // ]);
             // dd($productMaster);
 
             // Phase 2
@@ -2088,20 +2303,9 @@ class ProductController extends Controller
 
         $owners = Owner::select('OWNER AS VENDOR', 'REMARK')->get()->toArray();
         $grp_ps = Grp_p::select('GRP_P AS GRP_P', 'REMARK')->get()->toArray();
-       
-        // dd($owners);
         $brand_ps = Brand_p::select('ID AS BRAND_P', 'REMARK', 'BRAND')->get()->toArray();
 
         $venders = Vendor::select('VEN_ID AS SUPPLIER', 'VEN_NTHAI')->get()->toArray();
-
-        // dd($venders);
-        // if (!in_array($data->SUPPLIER, array_column($venders, 'SUPPLIER')))
-        // {
-        //     $venders[] =  [
-        //         'SUPPLIER' => $data->SUPPLIER,
-        //         'VEN_NTHAI' => $data->SUPPLIER,
-        //     ];
-        // } 
         if ($data && !in_array($data->SUPPLIER, array_column($venders, 'SUPPLIER'))) {
             $venders[] =  [
                 'SUPPLIER' => $data->SUPPLIER,
@@ -2109,13 +2313,79 @@ class ProductController extends Controller
             ];
         }
 
-        // dd($venders);
-        // dd($data->SUPPLIER);
+        // ==== ดึง brand code จาก role แบบกันพลาด ====
+        $role = Auth::user()->getUserPermission->name_position ?? ''; // ex. "… - ACCOUNTING-ACC)"
+        if (preg_match('/([A-Z]{2,3})\)?$/', $role, $m)) {
+            $brandCode = $m[1]; // ex. "ACC" ไม่ติด ")"
+        } else {
+            $brandCode = '';
+        }
+
+        // ==== กำหนดแบรนด์ที่อนุญาต ====
+        $allForACC = ['OP', 'RI', 'CPS', 'LL', 'KTY', 'GNC', 'BB'];   // รายการที่ ACC ควรเห็น
+        $brandFilter = ($brandCode === 'ACC') ? $allForACC : [$brandCode];
+
         $type_gs = Type_g::select('ID AS TYPE_G', 'DESCRIPTION')->get();
-        $solutions = Solution::select('ID AS SOLUTION', 'DESCRIPTION')->get()->toArray();
-        $series = Series::select('ID AS SERIES', 'DESCRIPTION')->get()->toArray();
-        $categorys = Category::select('ID AS CATEGORY', 'DESCRIPTION')->get()->toArray();
-        $sub_categorys = Sub_category::select('ID AS S_CAT', 'DESCRIPTION')->get()->toArray();
+
+        // ==== ดึงรายการหมวดหมู่ตามสิทธิ์ SOLUTION ====
+        $rawSolutions = Solution::select('ID AS SOLUTION', 'DESCRIPTION', 'BRAND')
+            ->whereIn('BRAND', $brandFilter)
+            ->orderBy('ID')
+            ->get()
+            ->toArray();
+        // (ทางเลือก) กันรายการชนกันข้ามแบรนด์: เก็บ SOLUTION ซ้ำไว้แค่แถวแรก
+        $seenSolutions = [];
+        $solutions = array_values(array_filter($rawSolutions, function ($row) use (&$seenSolutions) {
+            if (isset($seenSolutions[$row['SOLUTION']])) return false;
+            $seenSolutions[$row['SOLUTION']] = true;
+            return true;
+        }));
+
+        // ==== ดึงรายการหมวดหมู่ตามสิทธิ์ SERIES ====
+        $rawSeries = Solution::select('ID AS SERIES', 'DESCRIPTION', 'BRAND')
+            ->whereIn('BRAND', $brandFilter)
+            ->orderBy('ID')
+            ->get()
+            ->toArray();
+        // (ทางเลือก) กันรายการชนกันข้ามแบรนด์: เก็บ SERIES ซ้ำไว้แค่แถวแรก
+        $seenSeries = [];
+        $series = array_values(array_filter($rawSeries, function ($row) use (&$seenSeries) {
+            if (isset($seenSeries[$row['SERIES']])) return false;
+            $seenSeries[$row['SERIES']] = true;
+            return true;
+        }));
+
+        // ==== ดึงรายการหมวดหมู่ตามสิทธิ์ CATEGORY ====
+        $rawCategories = Category::select('ID AS CATEGORY', 'DESCRIPTION', 'BRAND')
+            ->whereIn('BRAND', $brandFilter)
+            ->orderBy('ID')
+            ->get()
+            ->toArray();
+
+        // (ทางเลือก) กันรายการชนกันข้ามแบรนด์: เก็บ CATEGORY ซ้ำไว้แค่แถวแรก
+        $seenCategories = [];
+        $categorys = array_values(array_filter($rawCategories, function ($row) use (&$seenCategories) {
+            if (isset($seenCategories[$row['CATEGORY']])) return false;
+            $seenCategories[$row['CATEGORY']] = true;
+            return true;
+        }));
+        // $categorys = Category::select('ID AS CATEGORY', 'DESCRIPTION')->get()->toArray();
+
+         // ==== ดึงรายการหมวดหมู่ตามสิทธิ์ S_CAT ====
+        $rawSubCategorys = Sub_category::select('ID AS S_CAT', 'DESCRIPTION', 'BRAND')
+            ->whereIn('BRAND', $brandFilter)
+            ->orderBy('ID')
+            ->get()
+            ->toArray();
+
+        // (ทางเลือก) กันรายการชนกันข้ามแบรนด์: เก็บ S_CAT ซ้ำไว้แค่แถวแรก
+        $seenSubCategorys = [];
+        $sub_categorys = array_values(array_filter($rawSubCategorys, function ($row) use (&$seenSubCategorys) {
+            if (isset($seenSubCategorys[$row['S_CAT']])) return false;
+            $seenSubCategorys[$row['S_CAT']] = true;
+            return true;
+        }));
+
         $pdms = Pdm::select('ID AS PDM_GROUP', 'REMARK')->get()->toArray();
         $p_statuss = P_status::select('ID AS STATUS', 'DESCRIPTION')->get()->toArray();
 
@@ -2132,20 +2402,11 @@ class ProductController extends Controller
                 'DESCRIPTION' => $data->STATUS,
             ];
         }
-
-        // $unit_ps = Unit_p::all();
         $unit_ps = Unit_p::select('DESCRIPTION AS UNIT', 'BRAND')->get()->toArray();
         $unit_types = Unit_type::select('DESCRIPTION AS UNIT_TYPE', 'BRAND')->get()->toArray();
         $acctypes = Acctype::select('ID AS ACC_TYPE', 'DESCRIPTION')->get()->toArray();
         $conditions = Condition::select('ID AS CONDITION_SALE', 'DESCRIPTION')->get()->toArray();
 
-        // if (!in_array($data->CONDITION_SALE, array_column($conditions, 'CONDITION_SALE')))
-        // {
-        //     $conditions[] =  [
-        //         'CONDITION_SALE' => $data->CONDITION_SALE,
-        //         'DESCRIPTION' => $data->CONDITION_SALE,
-        //     ];
-        // } 
         if ($data && !in_array($data->CONDITION_SALE, array_column($conditions, 'CONDITION_SALE'))) {
             $conditions[] =  [
                 'CONDITION_SALE' => $data->CONDITION_SALE,
@@ -2576,59 +2837,65 @@ class ProductController extends Controller
                     'DESCRIPTION' => $data->ACC_TYPE,
                 ];
             }
-            $solutions = Solution::select(
-                'ID AS SOLUTION',
-                'DESCRIPTION',
-                'BRAND')
-            ->where('BRAND', $userpermission)
-            ->get()->toArray();
-            if ($data && !in_array($data->SOLUTION, array_column($solutions, 'SOLUTION')))
-            {
-                $solutions[] =  [
-                    'SOLUTION' => $data->SOLUTION,
-                    'DESCRIPTION' => $data->SOLUTION,
+
+            // ==== ถ้า SOLUTION ของสินค้าที่เปิดอยู่ ไม่อยู่ในลิสต์ → เติมเข้าไป พร้อมพยายามดึง DESCRIPTION จากทุกแบรนด์ ====
+            if (!in_array($data->SOLUTION, array_column($solutions, 'SOLUTION'))) {
+                $descAnyBrand = Solution::where('ID', $data->SOLUTION)->value('DESCRIPTION');
+
+                $solutions[] = [
+                    'SOLUTION'    => $data->SOLUTION,
+                    'DESCRIPTION' => $descAnyBrand ?? $data->SOLUTION, // ถ้าไม่เจอจริง ๆ ค่อย fallback เป็น ID
+                    'BRAND'       => $brandCode,
                 ];
             }
-            $series = Series::select(
-                'ID AS SERIES',
-                'DESCRIPTION',
-                'BRAND')
-            ->where('BRAND', $userpermission)
-            ->get()->toArray();
-            if (!in_array($data->SERIES, array_column($series, 'SERIES')))
-            {
-                $series[] =  [
-                    'SERIES' => $data->SERIES,
-                    'DESCRIPTION' => $data->SERIES,
+
+            // ==== ถ้า SERIES ของสินค้าที่เปิดอยู่ ไม่อยู่ในลิสต์ → เติมเข้าไป พร้อมพยายามดึง DESCRIPTION จากทุกแบรนด์ ====
+            if (!in_array($data->SERIES, array_column($series, 'SERIES'))) {
+                $descAnyBrand = Series::where('ID', $data->SERIES)->value('DESCRIPTION');
+
+                $series[] = [
+                    'SERIES'    => $data->SERIES,
+                    'DESCRIPTION' => $descAnyBrand ?? $data->SERIES, // ถ้าไม่เจอจริง ๆ ค่อย fallback เป็น ID
+                    'BRAND'       => $brandCode,
                 ];
             }
-            $categorys = Category::select(
-                'ID AS CATEGORY',
-                'DESCRIPTION',
-                'BRAND')
-            ->where('BRAND', $userpermission)
-            ->get()->toArray();
-            if (!in_array($data->CATEGORY, array_column($categorys, 'CATEGORY')))
-            {
-                $categorys[] =  [
-                    'CATEGORY' => $data->CATEGORY,
-                    'DESCRIPTION' => $data->CATEGORY,
+
+            // $categorys = Category::select(
+            //     'ID AS CATEGORY',
+            //     'DESCRIPTION',
+            //     'BRAND')
+            // ->where('BRAND', $userpermission)
+            // ->get()->toArray();
+            // if (!in_array($data->CATEGORY, array_column($categorys, 'CATEGORY')))
+            // {
+            //     $categorys[] =  [
+            //         'CATEGORY' => $data->CATEGORY,
+            //         'DESCRIPTION' => $data->CATEGORY,
+            //     ];
+            // }
+
+            // ==== ถ้า CATEGORY ของสินค้าที่เปิดอยู่ ไม่อยู่ในลิสต์ → เติมเข้าไป พร้อมพยายามดึง DESCRIPTION จากทุกแบรนด์ ====
+            if (!in_array($data->CATEGORY, array_column($categorys, 'CATEGORY'))) {
+                $descAnyBrand = Category::where('ID', $data->CATEGORY)->value('DESCRIPTION');
+
+                $categorys[] = [
+                    'CATEGORY'    => $data->CATEGORY,
+                    'DESCRIPTION' => $descAnyBrand ?? $data->CATEGORY, // ถ้าไม่เจอจริง ๆ ค่อย fallback เป็น ID
+                    'BRAND'       => $brandCode,
                 ];
             }
-            $sub_categorys = Sub_category::select(
-                'ID AS S_CAT',
-                'CATEGORY_ID',
-                'DESCRIPTION',
-                'BRAND')
-            ->where('BRAND', $userpermission)
-            ->get()->toArray();
-            if (!in_array($data->S_CAT, array_column($sub_categorys, 'S_CAT')))
-            {
-                $sub_categorys[] =  [
-                    'S_CAT' => $data->S_CAT,
-                    'DESCRIPTION' => $data->S_CAT,
+
+            // ==== ถ้า S_CAT ของสินค้าที่เปิดอยู่ ไม่อยู่ในลิสต์ → เติมเข้าไป พร้อมพยายามดึง DESCRIPTION จากทุกแบรนด์ ====
+            if (!in_array($data->S_CAT, array_column($sub_categorys, 'S_CAT'))) {
+                $descAnyBrand = Sub_category::where('ID', $data->S_CAT)->value('DESCRIPTION');
+
+                $sub_categorys[] = [
+                    'S_CAT'    => $data->S_CAT,
+                    'DESCRIPTION' => $descAnyBrand ?? $data->S_CAT, // ถ้าไม่เจอจริง ๆ ค่อย fallback เป็น ID
+                    'BRAND'       => $brandCode,
                 ];
             }
+
             $pdms = Pdm::select(
                 'ID AS PDM_GROUP',
                 'REMARK',
@@ -2666,6 +2933,7 @@ class ProductController extends Controller
             }
         }
 
+        // dd($categorys);
         // dd($solutions);
         return view('product.edit', compact('data', 'multiChannels', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
     }
@@ -2677,9 +2945,17 @@ class ProductController extends Controller
     {
         // dd($request);
         // dd(strlen($PRODUCT));
+
+        $now = Carbon::now(); // ใช้ภายในเมธอดพอ
+
         DB::beginTransaction();
         try {
             if (strlen($PRODUCT) > 5) {
+
+                $isSuperAdmin = (Auth::user()->id === 26);
+                $userPermissionFull = Auth::user()->getUserPermission->name_position ?? '';
+                $namePositionParts = explode('-', $userPermissionFull);
+                $userpermission = trim(end($namePositionParts)); // brand/suffix
 
                 $data_consumables_old = Product1::select(
                     'product1s.*',
@@ -2695,7 +2971,6 @@ class ProductController extends Controller
                     ];
 
                     $data_consumables_old_arr = array_merge($data_consumables_old_arr, $log);
-                    // dd($data_consumables_old_arr);
                     $logProductUpddate = Product1Log::create($data_consumables_old_arr);
                 }
 
@@ -2789,6 +3064,7 @@ class ProductController extends Controller
                 // ดึงข้อมูลล่าสุดหลังจากอัปเดต
                 $productUpddateConsumables = Product1::where('PRODUCT', $PRODUCT)->first();
 
+                // dd($productUpddateConsumables);
                 // Phase 2
                 // ตรวจสอบว่าพบข้อมูลหรือไม่ ก่อนใช้งานตัวแปร
                 if ($productUpddateConsumables && $productUpddateConsumables->BRAND == 'CPS') {
@@ -2841,42 +3117,170 @@ class ProductController extends Controller
                     ProductOther::updateOrCreate(['product_id' => $PRODUCT],
                         [
                             'corporation_id' => $productUpddateConsumables->BRAND,
-                            'item_name' => $productUpddateConsumables->NAME_ENG,
-                            'cat_name' => $productUpddateConsumables->CATEGORY,
+                            'item_name' => $productUpddateConsumables->NAME_ENG ?? '',
+                            'cat_name' => $productUpddateConsumables->CATEGORY ?? '',
                             'upd_user' => Auth::user()->username,
                             'upd_date' => date("Y/m/d H:i:s"),
                         ]
                     );
                     // ค้นหาข้อมูลเดิมจาก ComProduct
-                    $data_consumables_old_com_product = Com_product::where('product_id', $PRODUCT)->first();
-
-                    // ตรวจสอบว่าเจอข้อมูลหรือไม่
-                    if ($data_consumables_old_com_product) {
-                        $data_com_product_consumables_old_arr = $data_consumables_old_com_product->toArray();
-
-                        // เพิ่ม Log ถ้ามีค่าที่ต้องการอัปเดต
-                        $log = [
-                            'update_dt' => date("Y/m/d H:i:s"),
+                    // --- Log ของ com_products (แหล่ง) ---
+                    if ($old = Com_product::where('product_id', $PRODUCT)->first()) {
+                        ComProductLog::create(array_merge($old->toArray(), [
+                            'update_dt'   => $now->format('Y-m-d H:i:s'),
                             'user_update' => Auth::user()->username,
-                        ];
-
-                        $data_com_product_consumables_old_arr = array_merge($data_com_product_consumables_old_arr, $log);
-                        ComProductLog::create($data_com_product_consumables_old_arr);
+                        ]));
                     }
-                    // อัปเดตหรือสร้างข้อมูลใหม่
-                    Com_product::updateOrCreate(['product_id' => $PRODUCT],
+
+                    // --- อัปเดตแหล่ง (mysql) ---
+                    $updateComProduct = Com_product::updateOrCreate(
+                        ['product_id' => $PRODUCT],
                         [
                             'company_id' => $productUpddateConsumables->BRAND,
-                            'barcode' => $productUpddateConsumables->BARCODE,
-                            'vendor_id' => $productUpddateConsumables->VENDOR,
-                            'name_thai' => $productUpddateConsumables->NAME_THAI,
-                            'name_eng' => $productUpddateConsumables->NAME_ENG,
-                            'short_thai' => $productUpddateConsumables->SHORT_THAI,
-                            'short_eng' => $productUpddateConsumables->SHORT_ENG,
-                            'upd_user' => Auth::user()->username,
-                            'upd_date' => date("Y/m/d H:i:s"),
+                            'barcode'    => $productUpddateConsumables->BARCODE,
+                            'vendor_id'  => $productUpddateConsumables->VENDOR ?? '',
+                            'name_thai'  => $productUpddateConsumables->NAME_THAI ?? '',
+                            'name_eng'   => $productUpddateConsumables->NAME_ENG ?? '',
+                            'short_thai' => $productUpddateConsumables->SHORT_THAI ?? '',
+                            'short_eng'  => $productUpddateConsumables->SHORT_ENG ?? '',
+                            'price'      => $productUpddateConsumables->PRICE ?? '',
+                            'cost'       => $productUpddateConsumables->COST ?? '',
+                            'upd_user'   => Auth::user()->username . '(' . $userpermission . ')',
+                            'status_tranfer_km' => '',
+                            'update_dt'  => $now->format('Y-m-d H:i:s'),
                         ]
                     );
+
+                    // --- เตรียม payload เฉพาะคอลัมน์ที่ปลายทางมีจริง ---
+                    $payloadExternal = [
+                        'product_id' => $PRODUCT,
+                        'company_id' => $productUpddateConsumables->BRAND,
+                        'barcode'    => $productUpddateConsumables->BARCODE,
+                        'vendor_id'  => $productUpddateConsumables->VENDOR ?? '',
+                        'name_thai'  => $productUpddateConsumables->NAME_THAI ?? '',
+                        'name_eng'   => $productUpddateConsumables->NAME_ENG ?? '',
+                        'short_thai' => $productUpddateConsumables->SHORT_THAI ?? '',
+                        'short_eng'  => $productUpddateConsumables->SHORT_ENG ?? '',
+                        'price'      => $productUpddateConsumables->PRICE ?? '',
+                        'cost'       => $productUpddateConsumables->COST ?? '',
+                        'upd_user'   => Auth::user()->username . '(' . $userpermission . ')',
+                        'status_tranfer_km' => '',
+                        'update_dt'  => $now->format('Y-m-d H:i:s'),
+                    ];
+
+                    // --- เขียนปลายทาง (mysql_external) แบบ transaction ---
+                    DB::connection('mysql_external')->transaction(function () use ($payloadExternal) {
+                        ComProductExternal::updateOrCreate(
+                            ['product_id' => $payloadExternal['product_id']],
+                            $payloadExternal
+                        );
+                    });
+
+                    $images = ComProductImage::updateOrCreate(['product_id' => $PRODUCT], [
+                        'brand' => $productUpddateConsumables->BRAND,
+                    ]);
+
+                    // ---------- 2) บันทึก com_products ----------
+                    $shippingCostCode = (int) ($productUpddateConsumables->BARCODE ?? 0);
+
+                    $comUpdate = []; // payload ของ com_products (อย่าใส่ UPDATED_BY/UPDATED_AT ถ้าไม่มีคอลัมน์)
+
+                    // ธงจัดส่งเฉพาะ com_products
+                    if ($shippingCostCode >= 95090001 && $shippingCostCode <= 95090999) {
+                        $comUpdate['status_delivery'] = 'Y';   // ใช้ชื่อคอลัมน์จริงใน com_products
+                    }
+
+                    // อยากอัปเดตฟิลด์อื่น ๆ ใน com_products ด้วยก็ใส่เพิ่มที่นี่ เช่น:
+                    // $comUpdate['brand']   = $data_product['BRAND'];
+                    // $comUpdate['barcode'] = $data_product['BARCODE'];
+
+                    $dataComUpdate = Com_product::updateOrCreate(
+                        ['product_id' => ['product_id' => $PRODUCT]],  // key ที่ชนต้องตรง unique key จริง
+                        $comUpdate
+                    );
+
+                } else {
+
+                    $productUpddateConsumables = Product1::where('PRODUCT', $PRODUCT)->first();
+
+                    // ค้นหาข้อมูลเดิมจาก ComProduct
+                    // --- Log ของ com_products (แหล่ง) ---
+                    if ($old = Com_product::where('product_id', $PRODUCT)->first()) {
+                        ComProductLog::create(array_merge($old->toArray(), [
+                            'update_dt'   => $now->format('Y-m-d H:i:s'),
+                            'user_update' => Auth::user()->username,
+                        ]));
+                    }
+
+                    // --- อัปเดตแหล่ง (mysql) ---
+                    $updateComProduct = Com_product::updateOrCreate(
+                        ['product_id' => $PRODUCT],
+                        [
+                            'company_id' => $productUpddateConsumables->BRAND,
+                            'barcode'    => $productUpddateConsumables->BARCODE,
+                            'vendor_id'  => $productUpddateConsumables->VENDOR ?? '',
+                            'name_thai'  => $productUpddateConsumables->NAME_THAI ?? '',
+                            'name_eng'   => $productUpddateConsumables->NAME_ENG ?? '',
+                            'short_thai' => $productUpddateConsumables->SHORT_THAI ?? '',
+                            'short_eng'  => $productUpddateConsumables->SHORT_ENG ?? '',
+                            'price'      => $productUpddateConsumables->PRICE ?? '',
+                            'cost'       => $productUpddateConsumables->COST ?? '',
+                            'upd_user'   => Auth::user()->username . '(' . $userpermission . ')',
+                            'status_tranfer_km' => '',
+                            'update_dt'  => $now->format('Y-m-d H:i:s'),
+                        ]
+                    );
+
+                    // --- เตรียม payload เฉพาะคอลัมน์ที่ปลายทางมีจริง ---
+                    $payloadExternal = [
+                        'product_id' => $PRODUCT,
+                        'company_id' => $productUpddateConsumables->BRAND,
+                        'barcode'    => $productUpddateConsumables->BARCODE,
+                        'vendor_id'  => $productUpddateConsumables->VENDOR ?? '',
+                        'name_thai'  => $productUpddateConsumables->NAME_THAI ?? '',
+                        'name_eng'   => $productUpddateConsumables->NAME_ENG ?? '',
+                        'short_thai' => $productUpddateConsumables->SHORT_THAI ?? '',
+                        'short_eng'  => $productUpddateConsumables->SHORT_ENG ?? '',
+                        'price'      => $productUpddateConsumables->PRICE ?? '',
+                        'cost'       => $productUpddateConsumables->COST ?? '',
+                        'upd_user'   => Auth::user()->username . '(' . $userpermission . ')',
+                        'status_tranfer_km' => '',
+                        'update_dt'  => $now->format('Y-m-d H:i:s'),
+                    ];
+
+                    // dd($payloadExternal);
+
+                    // --- เขียนปลายทาง (mysql_external) แบบ transaction ---
+                    DB::connection('mysql_external')->transaction(function () use ($payloadExternal) {
+                        ComProductExternal::updateOrCreate(
+                            ['product_id' => $payloadExternal['product_id']],
+                            $payloadExternal
+                        );
+                    });
+
+                    $images = ComProductImage::updateOrCreate(['product_id' => $PRODUCT], [
+                        'brand' => $productUpddateConsumables->BRAND,
+                    ]);
+                    
+                    // ---------- 2) บันทึก com_products ----------
+                    $shippingCostCode = (int) ($productUpddateConsumables->BARCODE ?? 0);
+
+                    $comUpdate = []; // payload ของ com_products (อย่าใส่ UPDATED_BY/UPDATED_AT ถ้าไม่มีคอลัมน์)
+
+                    // ธงจัดส่งเฉพาะ com_products
+                    if ($shippingCostCode >= 95090001 && $shippingCostCode <= 95090999) {
+                        $comUpdate['status_delivery'] = 'Y';   // ใช้ชื่อคอลัมน์จริงใน com_products
+                    }
+
+                    // อยากอัปเดตฟิลด์อื่น ๆ ใน com_products ด้วยก็ใส่เพิ่มที่นี่ เช่น:
+                    // $comUpdate['brand']   = $data_product['BRAND'];
+                    // $comUpdate['barcode'] = $data_product['BARCODE'];
+
+                    $dataComUpdate = Com_product::updateOrCreate(
+                        ['product_id' => ['product_id' => $PRODUCT]],  // key ที่ชนต้องตรง unique key จริง
+                        $comUpdate
+                    );
+                    // dd($dataComUpdate);
                 }
     
                 //     $craeteProductAccountSchedule = ProductPriceSchedule::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
@@ -2892,6 +3296,11 @@ class ProductController extends Controller
                 $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
                 return response()->json(['success' => true]);
             } else {
+
+                $isSuperAdmin = (Auth::user()->id === 26);
+                $userPermissionFull = Auth::user()->getUserPermission->name_position ?? '';
+                $namePositionParts = explode('-', $userPermissionFull);
+                $userpermission = trim(end($namePositionParts)); // brand/suffix
 
                 // ค้นหาข้อมูลเดิมจาก Product1
                 $data_old = Product1::where('PRODUCT', $PRODUCT)->first();
@@ -2999,6 +3408,7 @@ class ProductController extends Controller
                 // ดึงข้อมูลล่าสุดหลังจากอัปเดต
                 $productUpddate = Product1::where('PRODUCT', $PRODUCT)->first();
 
+                // dd($productUpddate);
                 // Phase 2
                 // ตรวจสอบว่าพบข้อมูลหรือไม่ ก่อนใช้งานตัวแปร
                 if ($productUpddate && $productUpddate->BRAND == 'CPS') {
@@ -3026,6 +3436,8 @@ class ProductController extends Controller
                             'fad' => $productUpddate->REGISTER ?? '',
                             'inner_barcode' => $productUpddate->BAR_PACK1 ?? '',
                             'inner_pack_size' => $productUpddate->PACK_SIZE1 ?? '',
+                            'case_barcode' => $productUpddate->BAR_PACK2 ?? '',
+                            'case_pack_size' => $productUpddate->PACK_SIZE2 ?? '',
                             'upd_user' => Auth::user()->username,
                             'upd_date' => date("Y/m/d H:i:s"),
                         ]
@@ -3051,42 +3463,130 @@ class ProductController extends Controller
                     $updateProductOther = ProductOther::updateOrCreate(['product_id' => $PRODUCT],
                         [
                             'corporation_id' => $productUpddate->BRAND,
-                            'item_name' => $productUpddate->NAME_ENG,
-                            'cat_name' => $productUpddate->CATEGORY,
+                            'item_name' => $productUpddate->NAME_ENG ?? '',
+                            'cat_name' => $productUpddate->CATEGORY ?? '',
                             'upd_user' => Auth::user()->username,
                             'upd_date' => date("Y/m/d H:i:s"),
                         ]
                     );
                     // ค้นหาข้อมูลเดิมจาก ComProduct
-                    $data_old_com_product = Com_product::where('product_id', $PRODUCT)->first();
-
-                    // ตรวจสอบว่าเจอข้อมูลหรือไม่
-                    if ($data_old_com_product) {
-                        $data_com_product_old_arr = $data_old_com_product->toArray();
-
-                        // เพิ่ม Log ถ้ามีค่าที่ต้องการอัปเดต
-                        $log = [
-                            'update_dt' => date("Y/m/d H:i:s"),
+                    // --- Log ของ com_products (แหล่ง) ---
+                    if ($old = Com_product::where('product_id', $PRODUCT)->first()) {
+                        ComProductLog::create(array_merge($old->toArray(), [
+                            'update_dt'   => $now->format('Y-m-d H:i:s'),
                             'user_update' => Auth::user()->username,
-                        ];
-
-                        $data_com_product_old_arr = array_merge($data_com_product_old_arr, $log);
-                        ComProductLog::create($data_com_product_old_arr);
+                        ]));
                     }
-                    // อัปเดตหรือสร้างข้อมูลใหม่
-                    $updateComProduct = Com_product::updateOrCreate(['product_id' => $PRODUCT],
+
+                    // --- อัปเดตแหล่ง (mysql) ---
+                    $updateComProduct = Com_product::updateOrCreate(
+                        ['product_id' => $PRODUCT],
                         [
                             'company_id' => $productUpddate->BRAND,
-                            'barcode' => $productUpddate->BARCODE,
-                            'vendor_id' => $productUpddate->VENDOR,
-                            'name_thai' => $productUpddate->NAME_THAI,
-                            'name_eng' => $productUpddate->NAME_ENG,
-                            'short_thai' => $productUpddate->SHORT_THAI,
-                            'short_eng' => $productUpddate->SHORT_ENG,
-                            'upd_user' => Auth::user()->username,
-                            'upd_date' => date("Y/m/d H:i:s"),
+                            'barcode'    => $productUpddate->BARCODE,
+                            'vendor_id'  => $productUpddate->VENDOR ?? '',
+                            'name_thai'  => $productUpddate->NAME_THAI ?? '',
+                            'name_eng'   => $productUpddate->NAME_ENG ?? '',
+                            'short_thai' => $productUpddate->SHORT_THAI ?? '',
+                            'short_eng'  => $productUpddate->SHORT_ENG ?? '',
+                            'price'      => $productUpddate->PRICE ?? '',
+                            'cost'       => $productUpddate->COST ?? '',
+                            'upd_user'   => Auth::user()->username . '(' . $userpermission . ')',
+                            'status_tranfer_km' => '',
+                            'update_dt'  => $now->format('Y-m-d H:i:s'),
                         ]
                     );
+
+                    // --- เตรียม payload เฉพาะคอลัมน์ที่ปลายทางมีจริง ---
+                    $payloadExternal = [
+                        'product_id' => $PRODUCT,
+                        'company_id' => $productUpddate->BRAND,
+                        'barcode'    => $productUpddate->BARCODE,
+                        'vendor_id'  => $productUpddate->VENDOR ?? '',
+                        'name_thai'  => $productUpddate->NAME_THAI ?? '',
+                        'name_eng'   => $productUpddate->NAME_ENG ?? '',
+                        'short_thai' => $productUpddate->SHORT_THAI ?? '',
+                        'short_eng'  => $productUpddate->SHORT_ENG ?? '',
+                        'price'      => $productUpddate->PRICE ?? '',
+                        'cost'       => $productUpddate->COST ?? '',
+                        'upd_user'   => Auth::user()->username . '(' . $userpermission . ')',
+                        'status_tranfer_km' => '',
+                        'update_dt'  => $now->format('Y-m-d H:i:s'),
+                    ];
+
+                    dd($payloadExternal);
+
+                    // --- เขียนปลายทาง (mysql_external) แบบ transaction ---
+                    DB::connection('mysql_external')->transaction(function () use ($payloadExternal) {
+                        ComProductExternal::updateOrCreate(
+                            ['product_id' => $payloadExternal['product_id']],
+                            $payloadExternal
+                        );
+                    });
+
+                    $images = ComProductImage::updateOrCreate(['product_id' => $PRODUCT], [
+                        'brand' => $productUpddate->BRAND,
+                    ]);
+
+                } else {
+
+                    // ค้นหาข้อมูลเดิมจาก ComProduct
+                    // --- Log ของ com_products (แหล่ง) ---
+                    if ($old = Com_product::where('product_id', $PRODUCT)->first()) {
+                        ComProductLog::create(array_merge($old->toArray(), [
+                            'update_dt'   => $now->format('Y-m-d H:i:s'),
+                            'user_update' => Auth::user()->username,
+                        ]));
+                    }
+
+                    // dd($productUpddate->PRICE);
+                    // --- อัปเดตแหล่ง (mysql) ---
+                    $updateComProduct = Com_product::updateOrCreate(
+                        ['product_id' => $PRODUCT],
+                        [
+                            'company_id' => $productUpddate->BRAND,
+                            'barcode'    => $productUpddate->BARCODE,
+                            'vendor_id'  => $productUpddate->VENDOR ?? '',
+                            'name_thai'  => $productUpddate->NAME_THAI ?? '',
+                            'name_eng'   => $productUpddate->NAME_ENG ?? '',
+                            'short_thai' => $productUpddate->SHORT_THAI ?? '',
+                            'short_eng'  => $productUpddate->SHORT_ENG ?? '',
+                            'price'      => $productUpddate->PRICE ?? '',
+                            'cost'       => $productUpddate->COST ?? '',
+                            'upd_user'   => Auth::user()->username . '(' . $userpermission . ')',
+                            'status_tranfer_km' => '',
+                            'update_dt'  => $now->format('Y-m-d H:i:s'),
+                        ]
+                    );
+
+                    // --- เตรียม payload เฉพาะคอลัมน์ที่ปลายทางมีจริง ---
+                    $payloadExternal = [
+                        'product_id' => $PRODUCT,
+                        'company_id' => $productUpddate->BRAND,
+                        'barcode'    => $productUpddate->BARCODE,
+                        'vendor_id'  => $productUpddate->VENDOR ?? '',
+                        'name_thai'  => $productUpddate->NAME_THAI ?? '',
+                        'name_eng'   => $productUpddate->NAME_ENG ?? '',
+                        'short_thai' => $productUpddate->SHORT_THAI ?? '',
+                        'short_eng'  => $productUpddate->SHORT_ENG ?? '',
+                        'price'      => $productUpddate->PRICE ?? '',
+                        'cost'       => $productUpddate->COST ?? '',
+                        'upd_user'   => Auth::user()->username . '(' . $userpermission . ')',
+                        'status_tranfer_km' => '',
+                        'update_dt'  => $now->format('Y-m-d H:i:s'),
+                    ];
+
+                    // --- เขียนปลายทาง (mysql_external) แบบ transaction ---
+                    DB::connection('mysql_external')->transaction(function () use ($payloadExternal) {
+                        ComProductExternal::updateOrCreate(
+                            ['product_id' => $payloadExternal['product_id']],
+                            $payloadExternal
+                        );
+                    });
+
+                    $images = ComProductImage::updateOrCreate(['product_id' => $PRODUCT], [
+                        'brand' => $productUpddate->BRAND,
+                    ]);
                 }
     
                 //     $craeteProductAccountSchedule = ProductPriceSchedule::updateOrCreate(['product_id' => $data_product['PRODUCT']], [

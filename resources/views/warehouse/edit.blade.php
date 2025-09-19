@@ -354,12 +354,59 @@
             max-width: 85%!important;
             height: auto!important;
         }
+
+        .zoom-preview {
+            position: fixed;
+            top: 90%; left: 90%;
+            width: 420px; height: 320px;
+            background: #fff;
+            border-radius: 20px;
+            transform: translate(0,0) scale(.1);
+            clip-path: ellipse(50% 50% at 50% 50%);
+            opacity: 0;
+            transition: transform .8s cubic-bezier(.25,1,.5,1),
+                        opacity .6s ease, top .8s ease, left .8s ease, clip-path .8s ease;
+            transition-delay: .05s;
+            box-shadow: 0 10px 50px rgba(0,0,0,.3);
+            z-index: 9999;      /* เพิ่มให้สูงจากทุกอย่าง */
+            pointer-events: none;
+        }
+        .zoom-preview.show {
+            top: 50%; left: 50%;
+            transform: translate(-50%,-50%) scale(1);
+            opacity: 1;
+            clip-path: ellipse(100% 100% at 50% 50%);
+            transition-delay: 0s;
+        }
+        .dark .zoom-preview { background:#2f2f2f; }
+
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/select2@4.1.0.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap.css') }}" />
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    @php
+        $placeholder = 'https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg';
+
+        // เลือกรูปแรกของแต่ละ seq
+        $unit  = collect($images ?? [])->firstWhere('seq', 2);
+        $inner = collect($images ?? [])->firstWhere('seq', 3);
+        $case  = collect($images ?? [])->firstWhere('seq', 4);
+
+        $unitSrc  = $unit?->path ? asset($unit->path) : $placeholder;
+        $innerSrc = $inner?->path ? asset($inner->path) : $placeholder;
+        $caseSrc  = $case?->path ? asset($case->path) : $placeholder;
+
+        $labels = [
+            'รูป Show',
+            'รูป Unit',
+            'รูป Inner',
+            'รูป Case',
+            'รูป การเรียงสินค้าใน case',
+        ];
+    @endphp
 
 @section('content')
     <div class="p-4 bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4 mt-10">
@@ -377,7 +424,7 @@
                             </div>
                             <div class="md:col-span-2" >
                                 <label for="NUMBER">ชื่อสินค้า</label>
-                                <input type="text" name="product_id" id="product_id" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->name_thai }}" readonly>
+                                <input type="text" name="name_thai" id="name_thai" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->name_thai }}" readonly>
                             </div>
                             <div class="md:col-span-2">
                                 <label for="barcode">Barcode</label>
@@ -445,144 +492,315 @@
                                                 <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
                                                     <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                         <div class="lg:col-span-4">
-                                                            <div class="p-2 ">
-                                                                <p class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 text-xl font-bold text-gray-900 dark:text-gray-100">Unit(สินค้า + กล่อง)</p>
-                                                            </div>
-                                                            <div class="p-2 grid mt-5 gap-2 gap-y-4 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
-                                                                <div class="lg:col-span-4">
-                                                                    <div class="grid gap-0 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
+                                                            {{-- WRAPPER ทำเป็นตำแหน่งอ้างอิง --}}
+                                                            <div class="relative">
 
-                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">กว้าง</label>
-                                                                        <input value="{{ $data->width }}" id="width" name="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Net Weight, น้ำหนักสินค้า)</label>
-                                                                        <input value="{{ $data->unit_weight }}" id="unit_weight" name="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ml.</label>
-
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ยาว</label>
-                                                                        <input value="{{ $data->long }}" id="long" name="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Gross Weight, สินค้า+กล่อง)</label>
-                                                                        <input value="{{ $data->weight }}" id="" name="" type="text" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ml.</label>
-
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">สูง</label>
-                                                                        <input value="{{ $data->height }}" id="height" name="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">Barcode จริง</label>
-                                                                        <input value="{{ $data->ref_barcode_real }}" id="ref_barcode_real" name="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
-
-                                                                        <!-- Invisible(ล่องหน) -->
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
-                                                                        <input value="{{ $data->inner_weight }}" id="inner_weight" name="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500 invisible " />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
-
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">pack size</label>
-                                                                        <input value="{{ $data->unit_pak_size }}" id="unit_pak_size" name="unit_pak_size" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
-
-                                                                        <!-- <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก</label>
-                                                                        <input value="{{ $data->unit_weight }}" id="unit_weight" name="unit_weight" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">pack size</label>
-                                                                        <input value="{{ $data->unit_pak_size }}" id="unit_pak_size" name="unit_pak_size" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
-
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">กว้าง</label>
-                                                                        <input value="{{ $data->width }}" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ยาว</label>
-                                                                        <input value="{{ $data->long }}" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">สูง</label>
-                                                                        <input value="{{ $data->height }}" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">Barcode จริง</label>
-                                                                        <input value="{{ $data->ref_barcode_real }}" id="unit_pak_size" name="unit_pak_size" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label> -->
+                                                                <!-- <div class="relative pl-14 pr-14">
+                                                                    <div class="hidden md:block absolute left-2 top-0 bottom-0 w-8">
+                                                                        <svg viewBox="0 0 60 240" class="h-full w-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                                                                        <rect x="22" y="0" width="16" height="100%" rx="2" fill="#1E90FF" stroke="#0b4a8f" stroke-width="1.2"/>
+                                                                        <g fill="white" stroke="#1b1b1b" stroke-width="0.6">
+                                                                            <defs><rect id="slot" x="27.5" y="0" width="5" height="10" rx="2"/></defs>
+                                                                            <use href="#slot" y="20"/><use href="#slot" y="41"/><use href="#slot" y="62"/>
+                                                                            <use href="#slot" y="83"/><use href="#slot" y="104"/><use href="#slot" y="125"/>
+                                                                            <use href="#slot" y="146"/><use href="#slot" y="167"/><use href="#slot" y="188"/>
+                                                                            <use href="#slot" y="209"/>
+                                                                        </g>
+                                                                        <g fill="#111">
+                                                                            <rect x="17" y="24"  width="12" height="24" rx="3"/><rect x="31" y="24"  width="12" height="24" rx="3"/>
+                                                                            <rect x="17" y="114" width="12" height="24" rx="3"/><rect x="31" y="114" width="12" height="24" rx="3"/>
+                                                                            <rect x="17" y="204" width="12" height="24" rx="3"/><rect x="31" y="204" width="12" height="24" rx="3"/>
+                                                                        </g>
+                                                                        </svg>
                                                                     </div>
+
+                                                                    <div class="hidden md:block absolute right-2 top-0 bottom-0 w-8">
+                                                                        <svg viewBox="0 0 60 240" class="h-full w-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                                                                        <rect x="22" y="0" width="16" height="100%" rx="2" fill="#1E90FF" stroke="#0b4a8f" stroke-width="1.2"/>
+                                                                        <g fill="white" stroke="#1b1b1b" stroke-width="0.6">
+                                                                            <defs><rect id="slot" x="27.5" y="0" width="5" height="10" rx="2"/></defs>
+                                                                            <use href="#slot" y="20"/><use href="#slot" y="41"/><use href="#slot" y="62"/>
+                                                                            <use href="#slot" y="83"/><use href="#slot" y="104"/><use href="#slot" y="125"/>
+                                                                            <use href="#slot" y="146"/><use href="#slot" y="167"/><use href="#slot" y="188"/>
+                                                                            <use href="#slot" y="209"/>
+                                                                        </g>
+                                                                        <g fill="#111">
+                                                                            <rect x="17" y="24"  width="12" height="24" rx="3"/><rect x="31" y="24"  width="12" height="24" rx="3"/>
+                                                                            <rect x="17" y="114" width="12" height="24" rx="3"/><rect x="31" y="114" width="12" height="24" rx="3"/>
+                                                                            <rect x="17" y="204" width="12" height="24" rx="3"/><rect x="31" y="204" width="12" height="24" rx="3"/>
+                                                                        </g>
+                                                                        </svg>
+                                                                    </div> -->
+
+                                                                <div class="p-2 ">
+                                                                    <p class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 text-xl font-bold text-gray-900 dark:text-gray-100">Unit(สินค้า + กล่อง)</p>
                                                                 </div>
-                                                            </div>
-                                                            <div class="p-2 ">
-                                                                <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
-                                                                <p class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 text-xl font-bold text-gray-900 dark:text-gray-100">Inner(หลายๆ Unit ต่อ 1 กล่อง)</p>
-                                                            </div>
-                                                            <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
-                                                                <div class="lg:col-span-6">
-                                                                    <div class="grid gap-0 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
+                                                                <div class="p-2 md:pr-[1rem]"> {{-- ปรับ [1rem] ตามความกว้างรูปจริง --}}
+
+                                                                    <div class="grid gap-0 gap-y-2 text-sm grid-cols-1 md:grid-cols-8">
                                                                         <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">กว้าง</label>
-                                                                        <input value="{{ $data->inner_width }}" id="inner_width" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Net Weight, น้ำหนักสินค้า)</label>
-                                                                        <input value="{{ $data->inner_weight }}" id="inner_weight" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ml.</label>
+                                                                        <input value="{{ $data->width }}" id="" name="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
+                                                                        <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Net Weight, น้ำหนักสินค้า)</label>
+                                                                        <input value="{{ $data->unit_net_weight }}" id="unit_net_weight" name="unit_net_weight" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; g</label>
 
+                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
                                                                         <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ยาว</label>
-                                                                        <input value="{{ $data->inner_length }}" id="inner_length" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Gross Weight, สินค้า+กล่อง)</label>
-                                                                        <input value="" id="gross_weight_inner" type="text" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ml.</label>
+                                                                        <input value="{{ $data->long }}" id="" name="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
+                                                                        <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Gross Weight, สินค้า+กล่อง)</label>
+                                                                        <input value="{{ $data->weight }}" id="" name="weight" type="text" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; g</label>
 
+                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
                                                                         <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">สูง</label>
-                                                                        <input value="{{ $data->inner_height }}" id="inner_height" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">barcode</label>
-                                                                        <input value="{{ $data->inner_barcode }}" id="inner_barcode" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                        <input value="{{ $data->height }}" id="" name="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
+                                                                        <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">Barcode สินค้าจริง</label>
+                                                                        <input value="{{ $data->ref_barcode_real }}" id="ref_barcode_real" name="ref_barcode_real" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
                                                                         <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
 
-                                                                        <!-- Invisible(ล่องหน) -->
                                                                         <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
-                                                                        <input value="{{ $data->inner_weight }}" id="inner_weight" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500 invisible " />
+                                                                        <input value="{{ $data->inner_weight }}" id="inner_weight" name="inner_weight" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500 invisible " />
                                                                         <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
 
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">pack size (pack size1)</label>
-                                                                        <input value="{{ $data->inner_pack_size }}" id="inner_pack_size" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+                                                                        <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">pack size</label>
+                                                                        <input value="{{ $data->unit_pak_size }}" id="unit_pak_size" name="unit_pak_size" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
                                                                         <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
                                                                     </div>
                                                                 </div>
+
+                                                                {{-- Unit = seq 2 --}}
+                                                                <img src="{{ $unitSrc }}" 
+                                                                    class="hidden md:block absolute right-20 top-2 w-44 rounded shadow cursor-zoom-in"
+                                                                    onmouseenter="showZoomById('zoomPreview-2','zoomImage-2', this.src)"
+                                                                    onmouseleave="hideZoomById('zoomPreview-2')">
+
+                                                                <div id="zoomPreview-2" class="zoom-preview">
+                                                                    <img id="zoomImage-2">
+                                                                </div>
+
+                                                                {{-- มือถือ: แสดงรูปแบบปกติด้านล่าง (ไม่ absolute) --}}
+                                                                <div class="md:hidden p-2">
+                                                                    <div class="p-4 rounded shadow-sm">
+                                                                        <img src="{{ $unitSrc }}" alt="Unit image (seq 2)" class="w-full h-auto object-contain rounded">
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <div class="p-2 ">
-                                                                <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
-                                                                <p class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 text-xl font-bold text-gray-900 dark:text-gray-100">Case(หลายๆ Inner ต่อ 1 ลัง)</p>
+
+                                                            {{-- WRAPPER ทำเป็นตำแหน่งอ้างอิง --}}
+                                                            <div class="relative">
+
+                                                                <!-- <div class="relative pl-14 pr-14">
+                                                                    <div class="hidden md:block absolute left-2 top-0 bottom-0 w-8">
+                                                                        <svg viewBox="0 0 60 240" class="h-full w-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                                                                        <rect x="22" y="0" width="16" height="100%" rx="2" fill="#1E90FF" stroke="#0b4a8f" stroke-width="1.2"/>
+                                                                        <g fill="white" stroke="#1b1b1b" stroke-width="0.6">
+                                                                            <defs><rect id="slot" x="27.5" y="0" width="5" height="10" rx="2"/></defs>
+                                                                            <use href="#slot" y="20"/><use href="#slot" y="41"/><use href="#slot" y="62"/>
+                                                                            <use href="#slot" y="83"/><use href="#slot" y="104"/><use href="#slot" y="125"/>
+                                                                            <use href="#slot" y="146"/><use href="#slot" y="167"/><use href="#slot" y="188"/>
+                                                                            <use href="#slot" y="209"/>
+                                                                        </g>
+                                                                        <g fill="#111">
+                                                                            <rect x="17" y="24"  width="12" height="24" rx="3"/><rect x="31" y="24"  width="12" height="24" rx="3"/>
+                                                                            <rect x="17" y="114" width="12" height="24" rx="3"/><rect x="31" y="114" width="12" height="24" rx="3"/>
+                                                                            <rect x="17" y="204" width="12" height="24" rx="3"/><rect x="31" y="204" width="12" height="24" rx="3"/>
+                                                                        </g>
+                                                                        </svg>
+                                                                    </div>
+
+                                                                    <div class="hidden md:block absolute right-2 top-0 bottom-0 w-8">
+                                                                        <svg viewBox="0 0 60 240" class="h-full w-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                                                                        <rect x="22" y="0" width="16" height="100%" rx="2" fill="#1E90FF" stroke="#0b4a8f" stroke-width="1.2"/>
+                                                                        <g fill="white" stroke="#1b1b1b" stroke-width="0.6">
+                                                                            <defs><rect id="slot" x="27.5" y="0" width="5" height="10" rx="2"/></defs>
+                                                                            <use href="#slot" y="20"/><use href="#slot" y="41"/><use href="#slot" y="62"/>
+                                                                            <use href="#slot" y="83"/><use href="#slot" y="104"/><use href="#slot" y="125"/>
+                                                                            <use href="#slot" y="146"/><use href="#slot" y="167"/><use href="#slot" y="188"/>
+                                                                            <use href="#slot" y="209"/>
+                                                                        </g>
+                                                                        <g fill="#111">
+                                                                            <rect x="17" y="24"  width="12" height="24" rx="3"/><rect x="31" y="24"  width="12" height="24" rx="3"/>
+                                                                            <rect x="17" y="114" width="12" height="24" rx="3"/><rect x="31" y="114" width="12" height="24" rx="3"/>
+                                                                            <rect x="17" y="204" width="12" height="24" rx="3"/><rect x="31" y="204" width="12" height="24" rx="3"/>
+                                                                        </g>
+                                                                        </svg>
+                                                                    </div> -->
+
+                                                                 <div class="p-2 ">
+                                                                    <ul class="pt-2.5 mt-8 mb-4 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
+                                                                    <p class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 text-xl font-bold text-gray-900 dark:text-gray-100">Inner(หลายๆ Unit ต่อ 1 กล่อง)</p>
+                                                                </div>
+                                                                <div class="p-2 md:pr-[1rem]"> {{-- ปรับ [1rem] ตามความกว้างรูปจริง --}}
+                                                                    <div class="grid gap-0 gap-y-2 text-sm grid-cols-1 md:grid-cols-8">
+
+                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">กว้าง</label>
+                                                                        <input value="{{ $data->km_inner_width }}" id="km_inner_width" name="km_inner_width" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
+                                                                        <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Net Weight, น้ำหนักสินค้า)</label>
+                                                                        <input value="{{ $data->inner_net_weight }}" id="inner_net_weight" name="inner_net_weight" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; g</label>
+
+                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ยาว</label>
+                                                                        <input value="{{ $data->km_inner_long }}" id="km_inner_long" name="km_inner_long" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
+                                                                        <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Gross Weight, สินค้า+กล่อง)</label>
+                                                                        <input value="{{ $data->inner_gross_weight }}" id="inner_gross_weight" name="inner_gross_weight" type="text" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; g</label>
+
+                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">สูง</label>
+                                                                        <input value="{{ $data->km_inner_height }}" id="km_inner_height" name="km_inner_height" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
+                                                                        <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">barcode</label>
+
+                                                                        <!-- BAR_PACK1 -->
+                                                                        @if ($data->product_id > 29999)
+                                                                            <input value="{{ $data->inner_barcode }}" id="inner_barcode" name="inner_barcode" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                        @else
+                                                                            <input value="{{ $data->BAR_PACK1 }}" id="inner_barcode" name="inner_barcode" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                        @endif
+                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
+
+                                                                        <!-- Invisible(ล่องหน) -->
+                                                                        <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+                                                                        <input value="" id="" name="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500 invisible " />
+
+                                                                        <!-- PACK_SIZE1 -->
+                                                                        <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">pack size (pack size1)</label>
+                                                                        @if ($data->product_id > 29999)
+                                                                            <input value="{{ $data->inner_pack_size }}" id="inner_pack_size" name="inner_pack_size" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                        @else
+                                                                            <input value="{{ $data->PACK_SIZE1 }}" id="PACK_SIZE1" name="PACK_SIZE1" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                        @endif
+                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
+                                                                    </div>
+                                                                </div>
+
+                                                                {{-- Inner = seq 3 --}}
+                                                                <img src="{{ $innerSrc }}" 
+                                                                    class="hidden md:block absolute right-20 top-12 w-44 rounded shadow cursor-zoom-in"
+                                                                    onmouseenter="showZoomById('zoomPreview-3','zoomImage-3', this.src)"
+                                                                    onmouseleave="hideZoomById('zoomPreview-3')">
+
+                                                                <div id="zoomPreview-3" class="zoom-preview">
+                                                                    <img id="zoomImage-3">
+                                                                </div>
+
+                                                                {{-- มือถือ: แสดงรูปแบบปกติด้านล่าง (ไม่ absolute) --}}
+                                                                <div class="md:hidden p-2">
+                                                                    <div class="p-4 rounded shadow-sm">
+                                                                    <img src="{{ $innerSrc }}" alt="Unit image (seq 3)"
+                                                                        class="w-full h-auto object-contain rounded">
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
-                                                                <div class="lg:col-span-6">
-                                                                    <div class="grid gap-0 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
+
+
+                                                            {{-- WRAPPER ทำเป็นตำแหน่งอ้างอิง --}}
+                                                            <div class="relative">
+
+                                                                <!-- <div class="relative pl-14 pr-14">
+                                                                    <div class="hidden md:block absolute left-2 top-0 bottom-0 w-8">
+                                                                        <svg viewBox="0 0 60 240" class="h-full w-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                                                                        <rect x="22" y="0" width="16" height="100%" rx="2" fill="#1E90FF" stroke="#0b4a8f" stroke-width="1.2"/>
+                                                                        <g fill="white" stroke="#1b1b1b" stroke-width="0.6">
+                                                                            <defs><rect id="slot" x="27.5" y="0" width="5" height="10" rx="2"/></defs>
+                                                                            <use href="#slot" y="20"/><use href="#slot" y="41"/><use href="#slot" y="62"/>
+                                                                            <use href="#slot" y="83"/><use href="#slot" y="104"/><use href="#slot" y="125"/>
+                                                                            <use href="#slot" y="146"/><use href="#slot" y="167"/><use href="#slot" y="188"/>
+                                                                            <use href="#slot" y="209"/>
+                                                                        </g>
+                                                                        <g fill="#111">
+                                                                            <rect x="17" y="24"  width="12" height="24" rx="3"/><rect x="31" y="24"  width="12" height="24" rx="3"/>
+                                                                            <rect x="17" y="114" width="12" height="24" rx="3"/><rect x="31" y="114" width="12" height="24" rx="3"/>
+                                                                            <rect x="17" y="204" width="12" height="24" rx="3"/><rect x="31" y="204" width="12" height="24" rx="3"/>
+                                                                        </g>
+                                                                        </svg>
+                                                                    </div>
+
+                                                                    <div class="hidden md:block absolute right-2 top-0 bottom-0 w-8">
+                                                                        <svg viewBox="0 0 60 240" class="h-full w-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+                                                                        <rect x="22" y="0" width="16" height="100%" rx="2" fill="#1E90FF" stroke="#0b4a8f" stroke-width="1.2"/>
+                                                                        <g fill="white" stroke="#1b1b1b" stroke-width="0.6">
+                                                                            <defs><rect id="slot" x="27.5" y="0" width="5" height="10" rx="2"/></defs>
+                                                                            <use href="#slot" y="20"/><use href="#slot" y="41"/><use href="#slot" y="62"/>
+                                                                            <use href="#slot" y="83"/><use href="#slot" y="104"/><use href="#slot" y="125"/>
+                                                                            <use href="#slot" y="146"/><use href="#slot" y="167"/><use href="#slot" y="188"/>
+                                                                            <use href="#slot" y="209"/>
+                                                                        </g>
+                                                                        <g fill="#111">
+                                                                            <rect x="17" y="24"  width="12" height="24" rx="3"/><rect x="31" y="24"  width="12" height="24" rx="3"/>
+                                                                            <rect x="17" y="114" width="12" height="24" rx="3"/><rect x="31" y="114" width="12" height="24" rx="3"/>
+                                                                            <rect x="17" y="204" width="12" height="24" rx="3"/><rect x="31" y="204" width="12" height="24" rx="3"/>
+                                                                        </g>
+                                                                        </svg>
+                                                                    </div> -->
+
+                                                                 <div class="p-2 ">
+                                                                    <ul class="pt-2.5 mt-8 mb-4 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
+                                                                    <p class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 text-xl font-bold text-gray-900 dark:text-gray-100">Case(หลายๆ Inner ต่อ 1 ลัง)</p>
+                                                                </div>
+                                                                <div class="p-2 md:pr-[1rem]"> {{-- ปรับ [1rem] ตามความกว้างรูปจริง --}}
+                                                                    <div class="grid gap-0 gap-y-2 text-sm grid-cols-1 md:grid-cols-8">
                                                                         <!-- case_width -->
                                                                         <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">กว้าง</label>
-                                                                        <input value="{{ $data->case_width }}" id="case_width" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Net Weight, น้ำหนักสินค้า)</label>
-                                                                        <input value="{{ $data->case_weight }}" id="case_weight" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ml.</label>
+                                                                        <input value="{{ $data->km_case_width }}" id="km_case_width" name="km_case_width" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
+                                                                        <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Net Weight, น้ำหนักสินค้า)</label>
+                                                                        <input value="{{ $data->case_net_weight }}" id="case_net_weight" name="case_net_weight" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; g</label>
 
+                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
                                                                         <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ยาว</label>
-                                                                        <input value="{{ $data->case_length }}" id="case_length" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Gross Weight, สินค้า+กล่อง)</label>
-                                                                        <input value="" id="gross_weight_case" type="text" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ml.</label>
+                                                                        <input value="{{ $data->km_case_long }}" id="km_case_long" name="km_case_long" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
+                                                                        <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Gross Weight, สินค้า+กล่อง)</label>
+                                                                        <input value="{{ $data->case_gross_weight }}" id="case_gross_weight" name="case_gross_weight" type="text" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; g</label>
 
+                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
                                                                         <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">สูง</label>
-                                                                        <input value="{{ $data->case_height }}" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">barcode</label>
-                                                                        <input value="{{ $data->case_barcode }}" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                        <input value="{{ $data->km_case_height }}" id="km_case_height" name="km_case_height" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
+                                                                        <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">barcode</label>
+                                                                        <input value="{{ $data->case_barcode }}" id="" name="case_barcode" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
                                                                         <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
 
                                                                         <!-- Invisible(ล่องหน) -->
                                                                         <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
-                                                                        <input value="{{ $data->case_weight }}" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500 invisible " />
+                                                                        <input value="" id="" name="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500 invisible " />
                                                                         <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
 
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">pack size (pack size2)</label>
-                                                                        <input value="{{ $data->case_pack_size }}" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+                                                                        <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">pack size (pack size2)</label>
+                                                                        <input value="{{ $data->case_pack_size }}" id="case_pack_size" name="case_pack_size" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    </div>
+                                                                </div>
+                                                                {{-- Case = seq 4 --}}
+                                                                <img src="{{ $caseSrc }}" 
+                                                                    class="hidden md:block absolute right-20 top-12 w-44 rounded shadow cursor-zoom-in"
+                                                                    onmouseenter="showZoomById('zoomPreview-4','zoomImage-4', this.src)"
+                                                                    onmouseleave="hideZoomById('zoomPreview-4')">
+
+                                                                <div id="zoomPreview-4" class="zoom-preview">
+                                                                    <img id="zoomImage-4">
+                                                                </div>
+
+                                                                {{-- มือถือ: แสดงรูปแบบปกติด้านล่าง (ไม่ absolute) --}}
+                                                                <div class="md:hidden p-2">
+                                                                    <div class="p-4 rounded shadow-sm">
+                                                                    <img src="{{ $caseSrc }}" alt="Unit image (seq 3)"
+                                                                        class="w-full h-auto object-contain rounded">
                                                                     </div>
                                                                 </div>
                                                             </div>
+                                                            
+
                                                             <div class="p-2 ">
                                                                 <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
                                                                 <!-- <p class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 text-xl font-bold text-gray-900 dark:text-gray-100">รายละเอียดสินค้า(Case KM)</p> -->
@@ -721,17 +939,17 @@
                                                                         </div>
                                                                         <div class="grid gap-4 gap-y-10 text-sm grid-cols-1 md:grid-cols-3">
                                                                             <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">กว้าง</label>
-                                                                            <input value="{{ $data->width }}" id="width" name="width" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                            <input value="{{ $data->width ?? ''}}" id="width" name="width" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
                                                                             <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
                                                                             <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ยาว</label>
-                                                                            <input value="{{ $data->long }}" id="long" name="long" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                            <input value="{{ $data->long ?? ''}}" id="long" name="long" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
                                                                             <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
 
                                                                             <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">สูง</label>
-                                                                            <input value="{{ $data->height }}" id="height" name="height" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                            <input value="{{ $data->height ?? ''}}" id="height" name="height" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
                                                                             <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
                                                                             <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">พื้นที่(ก * ย * ส)</label>
-                                                                            <input value="{{ number_format($data->area, 2) }}" id="area" name="area" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                            <input value="{{ isset($data->area) ? number_format($data->area,2,'.','') : '' }}" id="area" name="area" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
                                                                             <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ลูกบาศก์เซนติเมตร</label>
 
                                                                             <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ชิ้นต่อลัง</label>
@@ -869,11 +1087,19 @@
                                                                     @if($image->path) @click="openGallery({{ $index }})" @endif
                                                                     alt="Uploaded Image"
                                                                 >
+                                                                
                                                                 @if($image->path)
                                                                     <div class="after_upload_upload__img_close delete-uploaded"
                                                                         data-id="{{ $image->id }}"
                                                                         data-path="{{ asset($image->path) }}">
                                                                         ✖
+                                                                    </div>
+                                                                @endif
+
+                                                                {{-- ✅ เพิ่ม label ใต้รูปสำหรับ seq1-4 --}}
+                                                                @if($index >= 0 && $index < count($labels))
+                                                                    <div class="mt-2 text-center text-sm font-medium text-gray-700 dark:text-gray-300">
+                                                                        {{ $labels[$index] }}
                                                                     </div>
                                                                 @endif
                                                             </div>
@@ -989,47 +1215,134 @@
 
     <script>
 
+        document.addEventListener('DOMContentLoaded', () => {
+            // รวบรวม element ตาม id ที่ใช้
+            const el = {
+                width:            document.getElementById('width'),
+                long:             document.getElementById('long'),
+                height:           document.getElementById('height'),
+                area:             document.getElementById('area'),
+                
+                unit_net_weight:  document.getElementById('unit_net_weight'),
+                inner_pack_size:  document.getElementById('inner_pack_size') || document.getElementById('PACK_SIZE1'),
+                inner_net_weight: document.getElementById('inner_net_weight'),
+
+                // inner_net_weight: document.getElementById('inner_net_weight'),
+                case_pack_size: document.getElementById('case_pack_size'),
+                case_net_weight: document.getElementById('case_net_weight'),
+            };
+
+            // แปลงสตริงเป็นตัวเลข (รับค่าจาก null/undefined ได้)
+            const num = v => {
+                if (v == null) return 0;
+                const n = parseFloat(String(v).replace(/,/g, '').trim());
+                return Number.isFinite(n) ? n : 0;
+            };
+
+            const calc = () => {
+                // ชุดปริมาตร (มีเมื่อมี width/long/height/area เท่านั้น)
+                const w = num(el.width?.value);
+                const l = num(el.long?.value);
+                const h = num(el.height?.value);
+                const vol = w * l * h;               // cm³
+                if (el.area) el.area.value = vol ? vol.toFixed(2) : '';
+                console.log("🚀 ~ calc ~ el.area:", vol)
+
+                // ชุดน้ำหนักรวม inner = unit_net_weight * inner_pack_size
+                const unitNet = num(el.unit_net_weight?.value);
+                const pack    = num(el.inner_pack_size?.value);
+
+                console.log("unitNet:", el.unit_net_weight?.value);
+                console.log("pack:", el.inner_pack_size?.value);
+
+                const total   = unitNet * pack;
+                if (el.inner_net_weight) el.inner_net_weight.value = total ? total.toFixed(2) : '';
+                console.log("🚀 ~ calc ~ total:", total)
+
+                // ชุดน้ำหนักรวม inner = inner_net_weight * case_pack_size
+                const innerNet = num(el.inner_net_weight?.value);
+                const casePack    = num(el.case_pack_size?.value);
+
+                console.log("innerNet:", el.inner_net_weight?.value);
+                console.log("casePack:", el.case_pack_size?.value);
+
+                let caseTotal = 0;
+
+                if (!innerNet) { 
+                caseTotal = unitNet * casePack;
+                } else {
+                caseTotal = innerNet * casePack;
+                }
+
+                if (el.case_net_weight) el.case_net_weight.value = caseTotal ? caseTotal.toFixed(2) : '';
+                console.log("🚀 ~ calc ~ caseTotal:", caseTotal)
+
+            };
+
+            // ผูกอีเวนต์เฉพาะ element ที่มีจริง
+            const bindIds = ['width','long','height','unit_net_weight','inner_pack_size'];
+            bindIds.forEach(id => {
+                const e = el[id];
+                if (!e) return; // ข้ามตัวที่ไม่มี
+                ['input','change','keyup'].forEach(ev => e.addEventListener(ev, calc, {passive:true}));
+            });
+
+            // คำนวณครั้งแรก
+            calc();
+        });
+
+
+        function showZoomById(boxId, imgId, url){
+            const box = document.getElementById(boxId);
+            const img = document.getElementById(imgId);
+            img.src = url;
+            box.classList.add('show');
+        }
+        function hideZoomById(boxId){
+            document.getElementById(boxId).classList.remove('show');
+        }
+
         // const productData = {
         //     netWeight: {{ $data->inner_weight ?? 0 }},        // น้ำหนักสุทธิ (Net Weight) ต่อ 1 unit
         //     grossWeight: {{ $data->weight ?? 0 }},            // น้ำหนักรวม (สินค้า+กล่อง) ต่อ 1 unit
         //     innerPackSize: {{ $data->inner_pack_size ?? 1 }}  // จำนวน unit ต่อ 1 inner (pack)
         // };
 
-        const productData = {
-            netWeight: @json($data->inner_weight ?? 0),
-            grossWeight: @json($data->weight ?? 0),
-            innerPackSize: @json($data->inner_pack_size ?? 1)
-        };
+        // const productData = {
+        //     netWeight: @json($data->inner_weight ?? 0),
+        //     grossWeight: @json($data->weight ?? 0),
+        //     innerPackSize: @json($data->inner_pack_size ?? 1)
+        // };
 
-        // กรณีมีหลาย inner ต่อ 1 case (ดึงจาก database ถ้ามี)
-        const innersPerCase = @json($data->case_pack_size ?? 1) // ถ้ามีข้อมูลจริง เช่น $data->case_pack_size
+        // // กรณีมีหลาย inner ต่อ 1 case (ดึงจาก database ถ้ามี)
+        // const innersPerCase = @json($data->case_pack_size ?? 1) // ถ้ามีข้อมูลจริง เช่น $data->case_pack_size
 
-        // น้ำหนักรวมต่อ 1 Inner (สินค้า+กล่อง)
-        const grossWeightPerInner = productData.grossWeight * productData.innerPackSize;
+        // // น้ำหนักรวมต่อ 1 Inner (สินค้า+กล่อง)
+        // const grossWeightPerInner = productData.grossWeight * productData.innerPackSize;
 
-        // น้ำหนักรวมต่อ 1 Case
-        const grossWeightPerCase = grossWeightPerInner * innersPerCase;
+        // // น้ำหนักรวมต่อ 1 Case
+        // const grossWeightPerCase = grossWeightPerInner * innersPerCase;
 
-        // แสดงผล
-        console.log("Net Weight (สินค้าล้วน):", productData.netWeight, "kg");
-        console.log("Gross Weight ต่อ Unit:", productData.grossWeight, "kg");
-        console.log("จำนวน Unit ต่อ 1 Inner:", productData.innerPackSize);
-        console.log("จำนวน Inner ต่อ 1 Case:", innersPerCase);
-        console.log("➡️ Gross Weight ต่อ Inner:", grossWeightPerInner.toFixed(2), "kg");
-        console.log("➡️ Gross Weight ต่อ Case:", grossWeightPerCase.toFixed(2), "kg");
+        // // แสดงผล
+        // console.log("Net Weight (สินค้าล้วน):", productData.netWeight, "kg");
+        // console.log("Gross Weight ต่อ Unit:", productData.grossWeight, "kg");
+        // console.log("จำนวน Unit ต่อ 1 Inner:", productData.innerPackSize);
+        // console.log("จำนวน Inner ต่อ 1 Case:", innersPerCase);
+        // console.log("➡️ Gross Weight ต่อ Inner:", grossWeightPerInner.toFixed(2), "kg");
+        // console.log("➡️ Gross Weight ต่อ Case:", grossWeightPerCase.toFixed(2), "kg");
 
-        // 👇 ใส่ค่าที่คำนวณแล้วลงใน input
-        document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("gross_weight_inner").value = grossWeightPerInner.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
+        // // 👇 ใส่ค่าที่คำนวณแล้วลงใน input
+        // document.addEventListener("DOMContentLoaded", function () {
+        //     document.getElementById("gross_weight_inner").value = grossWeightPerInner.toLocaleString('en-US', {
+        //         minimumFractionDigits: 2,
+        //         maximumFractionDigits: 2
+        //     });
 
-            document.getElementById("gross_weight_case").value = grossWeightPerCase.toLocaleString('en-US', {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2
-            });
-        });
+        //     document.getElementById("gross_weight_case").value = grossWeightPerCase.toLocaleString('en-US', {
+        //         minimumFractionDigits: 2,
+        //         maximumFractionDigits: 2
+        //     });
+        // });
 
         // reference to the current media stream
         var mediaStream = null;
@@ -1346,37 +1659,83 @@
         const dlayMessage = 300;
 
         document.getElementById("submitButton").addEventListener("click", function() {
-        // function createProductMaster() {
             jQuery.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+            const formData = $("#create_warehouse_dimension").serialize();
+            const productId = $("#product_id").val();   // ดึงจาก input product_id
+
+            // 1) save ไป Laravel ก่อน
             $.ajax({
                 method: "POST",
                 url: "{{ route('warehouse.update', $data->product_id) }}",
-                data: $("#create_warehouse_dimension").serialize(),
+                data: formData,
                 beforeSend: function () {
-                    $('#loaderForm').removeClass('hidden')
+                    $('#loaderForm').removeClass('hidden');
                 },
-                success: function(res){
-                    if(res.success == true) {
-                        window.location = "/warehouse/dimension";
+                success: function(res) {
+                    if (res.success) {
+                        // 2) ยิงต่อไป external API sync
+                        $.ajax({
+                            method: "GET",
+                            url: "https://pdmaster.ssup.co.th/api/sync_products.php",
+                            data: {
+                                mode: "by_product_id",
+                                product_id: productId
+                            },
+                            success: function(syncRes) {
+                                console.log("Sync OK", syncRes);
+                                window.location = "/warehouse/dimension";
+                            },
+                            error: function() {
+                                toastr.warning("Local saved แล้ว แต่ sync ภายนอกไม่สำเร็จ");
+                                window.location = "/warehouse/dimension";
+                            }
+                        });
                     } else {
                         toastr.error("Can't Create Product!");
                     }
-                    return false;
                 },
-                error: function (params) {
-                    setTimeout(function() {
-                        errorMessage("Can't Create Username!");
-                    },dlayMessage)
-                    setTimeout(function() {
-                        toastr.error("Can't Create Username!");
-                    },dlayMessage)
+                error: function () {
+                    toastr.error("Save ไม่สำเร็จ");
                 }
             });
         });
+
+        // document.getElementById("submitButton").addEventListener("click", function() {
+        //     jQuery.ajaxSetup({
+        //         headers: {
+        //             'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+        //         }
+        //     });
+        //     $.ajax({
+        //         method: "POST",
+        //         url: "{{ route('warehouse.update', $data->product_id) }}",
+        //         data: $("#create_warehouse_dimension").serialize(),
+        //         beforeSend: function () {
+        //             $('#loaderForm').removeClass('hidden')
+        //         },
+        //         success: function(res){
+        //             if(res.success == true) {
+        //                 window.location = "/warehouse/dimension";
+        //             } else {
+        //                 toastr.error("Can't Create Product!");
+        //             }
+        //             return false;
+        //         },
+        //         error: function (params) {
+        //             setTimeout(function() {
+        //                 errorMessage("Can't Create Username!");
+        //             },dlayMessage)
+        //             setTimeout(function() {
+        //                 toastr.error("Can't Create Username!");
+        //             },dlayMessage)
+        //         }
+        //     });
+        // });
 
         function successMessage(text) {
             $('#loaderForm').addClass('hidden');
@@ -1578,6 +1937,7 @@
                                     "hideMethod": "fadeOut"
                                 }
                                 toastr.error("เกิดข้อผิดพลาดในการอัปโหลด!");
+                                $('#loader').addClass('hidden')
                             },dlayMessage)
                         }
                     },
@@ -1767,6 +2127,12 @@
                                 "hideMethod": "fadeOut"
                             }
                             toastr.success("อัปเดตข้อมูลสำเร็จ");
+
+                            // 🚀 reload หน้า หลังจากแสดง toastr แล้ว
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1000);
+
                         },dlayMessage)
                     });
                 }

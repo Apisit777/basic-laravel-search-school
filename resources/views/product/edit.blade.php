@@ -47,7 +47,11 @@
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> -->
+
+    @php
+        $packSizes = [3, 4, 6, 8, 9, 12, 24, 30, 36, 48, 72, 144, 180];
+    @endphp
 
 @section('content')
     <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4 mt-10">
@@ -506,9 +510,6 @@
                                                                     <label for="PACK_SIZE1">รหัส Packsize1</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE1" id="PACK_SIZE1" onchange="packSize1Change(this, 'PACK_SIZE1')">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @php
-                                                                            $packSizes = [3, 4, 6, 8, 9, 12, 24, 30, 36, 48, 144];
-                                                                        @endphp
                                                                         @foreach ($packSizes as $size)
                                                                             <option value="{{ $size }}" {{ (int)$data->PACK_SIZE1 === $size ? 'selected' : '' }}>
                                                                                 {{ $size }} ชิ้น
@@ -525,9 +526,6 @@
                                                                     <label for="PACK_SIZE2">รหัส Packsize2</label>
                                                                     <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE2" id="PACK_SIZE2" onchange="packSize2Change(this, 'PACK_SIZE2')">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
-                                                                        @php
-                                                                            $packSizes = [3, 4, 6, 8, 9, 12, 24, 30, 36, 48, 144];
-                                                                        @endphp
                                                                         @foreach ($packSizes as $size)
                                                                             <option value="{{ $size }}" {{ (int)$data->PACK_SIZE2 === $size ? 'selected' : '' }}>
                                                                                 {{ $size }} ชิ้น
@@ -959,7 +957,6 @@
             if (packSize.length > 1) {
                 packSize = packSize.substring(0, 1);
             }
-            console.log("🚀 ~ packSize1Change ~ substring:", packSize)
             
             if (!BARCODE || packSize === "") {
                 jQuery("#BAR_PACK1").val('');

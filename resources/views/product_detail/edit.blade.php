@@ -30,9 +30,56 @@
         .animate-spin {
             animation: spin 1s linear infinite;
         }
+
+        .zoom-preview {
+            position: fixed;
+            top: 90%; left: 90%;
+            width: 420px; height: 320px;
+            background: #fff;
+            border-radius: 20px;
+            transform: translate(0,0) scale(.1);
+            clip-path: ellipse(50% 50% at 50% 50%);
+            opacity: 0;
+            transition: transform .8s cubic-bezier(.25,1,.5,1),
+                        opacity .6s ease, top .8s ease, left .8s ease, clip-path .8s ease;
+            transition-delay: .05s;
+            box-shadow: 0 10px 50px rgba(0,0,0,.3);
+            z-index: 9999;      /* เพิ่มให้สูงจากทุกอย่าง */
+            pointer-events: none;
+        }
+        .zoom-preview.show {
+            top: 50%; left: 50%;
+            transform: translate(-50%,-50%) scale(1);
+            opacity: 1;
+            clip-path: ellipse(100% 100% at 50% 50%);
+            transition-delay: 0s;
+        }
+        .dark .zoom-preview { background:#2f2f2f; }
+
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/select2@4.1.0.min.css') }}" />
+
+    @php
+        $placeholder = 'https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg';
+
+        // เลือกรูปแรกของแต่ละ seq
+        $unit  = collect($images ?? [])->firstWhere('seq', 2);
+        $inner = collect($images ?? [])->firstWhere('seq', 3);
+        $case  = collect($images ?? [])->firstWhere('seq', 4);
+
+        $unitSrc  = $unit?->path ? asset($unit->path) : $placeholder;
+        $innerSrc = $inner?->path ? asset($inner->path) : $placeholder;
+        $caseSrc  = $case?->path ? asset($case->path) : $placeholder;
+
+        $labels = [
+            'รูป Show',
+            'รูป Unit',
+            'รูป Inner',
+            'รูป Case',
+            'รูป การเรียงสินค้าใน case',
+        ];
+    @endphp
 
 @section('content')
     <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4 mt-10">
@@ -83,7 +130,7 @@
                                                                         <input type="radio" id="premission_y" name="premission" value="Y"
                                                                             {{ $data->permission == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">สาธารณะ</label>
-                                                                        <input type="radio" id="premission_n" name="contact" value="N"
+                                                                        <input type="radio" id="premission_n" name="premission" value="N"
                                                                             {{ $data->permission == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ปิดกั้น</label>
                                                                     </div>
@@ -135,7 +182,7 @@
 
                                                                 <div class="md:col-span-3">
                                                                     <label for="BRAND" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">ผลิตประเทศ</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="company_id">
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="country">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($countriesDatas as $key => $countriesData)
                                                                         <option value="{{ $countriesData['name_country'] }}" {{ $countriesData['name_country'] == $data->country ? 'selected' : '' }}>
@@ -297,34 +344,57 @@
                                                     </div>
                                                     <div class="p-2 grid mt-5 gap-2 gap-y-4 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                         <div class="lg:col-span-4">
-                                                            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                                                                <!-- <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก</label>
-                                                                <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-stretch">pack size</label>
-                                                                <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label> -->
+                                                            <div class="relative">
+                                                                <div class="grid gap-0 gap-y-2 text-sm grid-cols-1 md:grid-cols-8">
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">กว้าง</label>
+                                                                    <input value="{{ $dataComProduct->width }}" id="" name="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
+                                                                    <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Net Weight, น้ำหนักสินค้า)</label>
+                                                                    <input value="{{ $dataComProduct->unit_net_weight }}" id="unit_net_weight" name="unit_net_weight" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; g</label>
 
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก</label>
-                                                                <!-- class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly -->
-                                                                <input value="{{ $data->unit_weight }}" id="" name="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">กรัม</label>
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">pack size</label>
-                                                                <input value="{{ $data->unit_pak_size }}" id="" name="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly value=""/>
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ยาว</label>
+                                                                    <input value="{{ $dataComProduct->long }}" id="" name="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
+                                                                    <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Gross Weight, สินค้า+กล่อง)</label>
+                                                                    <input value="{{ $dataComProduct->weight }}" id="" name="weight" type="text" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; g</label>
 
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">กว้าง</label>
-                                                                <input value="{{ $dataComProduct->width }}" id="" name="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ยาว</label>
-                                                                <input value="{{ $dataComProduct->long }}" id="" name="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">สูง</label>
+                                                                    <input value="{{ $dataComProduct->height }}" id="" name="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
+                                                                    <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">Barcode สินค้าจริง</label>
+                                                                    <input value="{{ $dataComProduct->ref_barcode_real }}" id="ref_barcode_real" name="ref_barcode_real" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
 
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">สูง</label>
-                                                                <input value="{{ $dataComProduct->height }}" id="" name="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">Barcode จริง</label>
-                                                                <input value="{{ $data->ref_barcode_real }}" id="unit_pak_size" name="unit_pak_size" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+                                                                    <input value="{{ $dataComProduct->inner_weight }}" id="inner_weight" name="inner_weight" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500 invisible " />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+                                                                    <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">pack size</label>
+                                                                    <input value="{{ $dataComProduct->unit_pak_size }}" id="unit_pak_size" name="unit_pak_size" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
+                                                                </div>
+
+                                                                {{-- Unit = seq 2 --}}
+                                                                <img src="{{ $unitSrc }}" 
+                                                                    class="hidden md:block absolute right-20 top-2 w-44 rounded shadow cursor-zoom-in"
+                                                                    onmouseenter="showZoomById('zoomPreview-2','zoomImage-2', this.src)"
+                                                                    onmouseleave="hideZoomById('zoomPreview-2')">
+
+                                                                <div id="zoomPreview-2" class="zoom-preview">
+                                                                    <img id="zoomImage-2">
+                                                                </div>
+
+                                                                {{-- มือถือ: แสดงรูปแบบปกติด้านล่าง (ไม่ absolute) --}}
+                                                                <div class="md:hidden p-2">
+                                                                    <div class="p-4 rounded shadow-sm">
+                                                                        <img src="{{ $unitSrc }}" alt="Unit image (seq 2)" class="w-full h-auto object-contain rounded">
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -334,36 +404,68 @@
                                                     </div>
                                                     <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                         <div class="lg:col-span-6">
-                                                            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">กว้าง</label>
-                                                                <input value="{{ $data->inner_width }}" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Net Weight)</label>
-                                                                <input value="{{ $data->inner_weight }}" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ยาว</label>
-                                                                <input value="{{ $data->inner_length }}" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Gross Weight)</label>
-                                                                <input value="{{ $data->inner_barcode }}" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
-
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">สูง</label>
-                                                                <input value="{{ $data->inner_height }}" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">barcode</label>
-                                                                <input value="{{ $data->inner_barcode }}" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
-
-                                                                <!-- Invisible(ล่องหน) -->
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
-                                                                <input value="{{ $data->inner_weight }}" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 invisible " readonly />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
-
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">pack size (pack size1)</label>
-                                                                <input value="{{ $data->inner_pack_size }}" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
+                                                            <div class="relative">
+                                                                <div class="grid gap-0 gap-y-2 text-sm grid-cols-1 md:grid-cols-8">
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">กว้าง</label>
+                                                                    <input value="{{ $dataComProduct->km_inner_width }}" id="km_inner_width" name="km_inner_width" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
+                                                                    <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Net Weight, น้ำหนักสินค้า)</label>
+                                                                    <input value="{{ $dataComProduct->inner_net_weight }}" id="inner_net_weight" name="inner_net_weight" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; g</label>
+    
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ยาว</label>
+                                                                    <input value="{{ $dataComProduct->km_inner_long }}" id="km_inner_long" name="km_inner_long" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
+                                                                    <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Gross Weight, สินค้า+กล่อง)</label>
+                                                                    <input value="{{ $dataComProduct->inner_gross_weight }}" id="inner_gross_weight" name="inner_gross_weight" type="text" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; g</label>
+    
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">สูง</label>
+                                                                    <input value="{{ $dataComProduct->km_inner_height }}" id="km_inner_height" name="km_inner_height" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
+                                                                    <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">barcode</label>
+    
+                                                                    <!-- BAR_PACK1 -->
+                                                                    @if ($dataComProduct->product_id > 29999)
+                                                                        <input value="{{ $dataComProduct->inner_barcode }}" id="inner_barcode" name="inner_barcode" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    @else
+                                                                        <input value="{{ $dataComProduct->BAR_PACK1 }}" id="inner_barcode" name="inner_barcode" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    @endif
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
+    
+                                                                    <!-- Invisible(ล่องหน) -->
+                                                                    <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+                                                                    <input value="" id="" name="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500 invisible " />
+    
+                                                                    <!-- PACK_SIZE1 -->
+                                                                    <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">pack size (pack size1)</label>
+                                                                    @if ($dataComProduct->product_id > 29999)
+                                                                        <input value="{{ $dataComProduct->inner_pack_size }}" id="inner_pack_size" name="inner_pack_size" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    @else
+                                                                        <input value="{{ $dataComProduct->PACK_SIZE1 }}" id="PACK_SIZE1" name="PACK_SIZE1" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    @endif
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
+                                                                </div>
+    
+                                                                {{-- Inner = seq 3 --}}
+                                                                <img src="{{ $innerSrc }}" 
+                                                                    class="hidden md:block absolute right-20 -top-10 w-44 rounded shadow cursor-zoom-in"
+                                                                    onmouseenter="showZoomById('zoomPreview-3','zoomImage-3', this.src)"
+                                                                    onmouseleave="hideZoomById('zoomPreview-3')">
+    
+                                                                <div id="zoomPreview-3" class="zoom-preview">
+                                                                    <img id="zoomImage-3">
+                                                                </div>
+    
+                                                                {{-- มือถือ: แสดงรูปแบบปกติด้านล่าง (ไม่ absolute) --}}
+                                                                <div class="md:hidden p-2">
+                                                                    <div class="p-4 rounded shadow-sm">
+                                                                    <img src="{{ $innerSrc }}" alt="Unit image (seq 3)"
+                                                                        class="w-full h-auto object-contain rounded">
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -373,28 +475,58 @@
                                                     </div>
                                                     <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                         <div class="lg:col-span-6">
-                                                            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
+                                                            <div class="relative">
+                                                                <div class="grid gap-0 gap-y-2 text-sm grid-cols-1 md:grid-cols-8">
+                                                                    <!-- case_width -->
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">กว้าง</label>
+                                                                    <input value="{{ $dataComProduct->km_case_width }}" id="km_case_width" name="km_case_width" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
+                                                                    <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Net Weight, น้ำหนักสินค้า)</label>
+                                                                    <input value="{{ $dataComProduct->case_net_weight }}" id="case_net_weight" name="case_net_weight" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; g</label>
 
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">กว้าง</label>
-                                                                <input value="{{ $data->case_width }}" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ยาว</label>
-                                                                <input value="{{  $data->case_length }}" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ยาว</label>
+                                                                    <input value="{{ $dataComProduct->km_case_long }}" id="km_case_long" name="km_case_long" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
+                                                                    <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Gross Weight, สินค้า+กล่อง)</label>
+                                                                    <input value="{{ $dataComProduct->case_gross_weight }}" id="case_gross_weight" name="case_gross_weight" type="text" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; g</label>
 
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">สูง</label>
-                                                                <input value="{{ $data->case_height }}" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">barcode</label>
-                                                                <input value="{{ $data->case_barcode }}" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">สูง</label>
+                                                                    <input value="{{ $dataComProduct->km_case_height }}" id="km_case_height" name="km_case_height" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
+                                                                    <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">barcode</label>
+                                                                    <input value="{{ $dataComProduct->case_barcode }}" id="" name="case_barcode" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
 
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก</label>
-                                                                <input value="{{ $data->case_weight }}" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">กรัม</label>
-                                                                <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">pack size</label>
-                                                                <input value="{{ $data->case_pack_size }}" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
+                                                                    <!-- Invisible(ล่องหน) -->
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+                                                                    <input value="" id="" name="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500 invisible " />
+                                                                    <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+
+                                                                    <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+                                                                    <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">pack size (pack size2)</label>
+                                                                    <input value="{{ $dataComProduct->case_pack_size }}" id="case_pack_size" name="case_pack_size" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                </div>
+                                                                {{-- Case = seq 4 --}}
+                                                                <img src="{{ $caseSrc }}" 
+                                                                    class="hidden md:block absolute right-20 -top-10 w-44 rounded shadow cursor-zoom-in"
+                                                                    onmouseenter="showZoomById('zoomPreview-4','zoomImage-4', this.src)"
+                                                                    onmouseleave="hideZoomById('zoomPreview-4')">
+
+                                                                <div id="zoomPreview-4" class="zoom-preview">
+                                                                    <img id="zoomImage-4">
+                                                                </div>
+
+                                                                {{-- มือถือ: แสดงรูปแบบปกติด้านล่าง (ไม่ absolute) --}}
+                                                                <div class="md:hidden p-2">
+                                                                    <div class="p-4 rounded shadow-sm">
+                                                                    <img src="{{ $caseSrc }}" alt="Unit image (seq 3)"
+                                                                        class="w-full h-auto object-contain rounded">
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -410,28 +542,28 @@
                                                         <div class="lg:col-span-6">
                                                             <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                                                                 <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ความกว้าง</label>
-                                                                <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                <input value="" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
                                                                 <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
                                                                 <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ความยาว</label>
-                                                                <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                <input value="" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
                                                                 <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
 
                                                                 <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ความสูง</label>
-                                                                <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                <input value="" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
                                                                 <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ซม.</label>
                                                                 <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">พื้นที่</label>
-                                                                <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                <input value="" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
                                                                 <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
 
                                                                 <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ชิ้น/ลัง</label>
-                                                                <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                <input value="" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
                                                                 <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
                                                                 <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ลัง/พาเลท</label>
-                                                                <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                <input value="" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
                                                                 <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
                                                                 <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก</label>
-                                                                <input value="" id="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
-                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">g</label>
+                                                                <input value="" id="" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"> g</label>
                                                             </div>
                                                         </div>
                                                     </div> -->
@@ -474,14 +606,14 @@
                                     </svg>
                                     Back
                                 </a>
-                                <!-- <button id="submitButton" type="button" class="bg-[#3b5998] text-white font-bold py-1.5 px-4 rounded" onclick="editProductDetail()">
+                                <button id="submitButton" type="button" class="bg-[#3b5998] text-white font-bold py-1.5 px-4 rounded" onclick="editProductDetail()">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF" class="-mt-1 w-5 h-5 hidden md:inline-block">
                                         <path d="M0 0h24v24H0V0z" fill="none"></path>
                                         <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
                                         <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
                                     </svg>
                                     Save
-                                </button> -->
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -495,6 +627,52 @@
     <script src="{{ asset('js/toastr.min.js') }}"></script>
     <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
     <script>
+
+        function showZoomById(boxId, imgId, url){
+            const box = document.getElementById(boxId);
+            const img = document.getElementById(imgId);
+            img.src = url;
+            box.classList.add('show');
+        }
+        function hideZoomById(boxId){
+            document.getElementById(boxId).classList.remove('show');
+        }
+
+        const productData = {
+            netWeight: @json($dataComProduct->inner_weight ?? 0),
+            grossWeight: @json($dataComProduct->weight ?? 0),
+            innerPackSize: @json($dataComProduct->inner_pack_size ?? 1)
+        };
+
+        // กรณีมีหลาย inner ต่อ 1 case (ดึงจาก database ถ้ามี)
+        const innersPerCase = @json($dataComProduct->case_pack_size ?? 1) // ถ้ามีข้อมูลจริง เช่น $dataComProduct->case_pack_size
+
+        // น้ำหนักรวมต่อ 1 Inner (สินค้า+กล่อง)
+        const grossWeightPerInner = productData.grossWeight * productData.innerPackSize;
+
+        // น้ำหนักรวมต่อ 1 Case
+        const grossWeightPerCase = grossWeightPerInner * innersPerCase;
+
+        // แสดงผล
+        console.log("Net Weight (สินค้าล้วน):", productData.netWeight, "kg");
+        console.log("Gross Weight ต่อ Unit:", productData.grossWeight, "kg");
+        console.log("จำนวน Unit ต่อ 1 Inner:", productData.innerPackSize);
+        console.log("จำนวน Inner ต่อ 1 Case:", innersPerCase);
+        console.log("➡️ Gross Weight ต่อ Inner:", grossWeightPerInner.toFixed(2), "kg");
+        console.log("➡️ Gross Weight ต่อ Case:", grossWeightPerCase.toFixed(2), "kg");
+
+        // 👇 ใส่ค่าที่คำนวณแล้วลงใน input
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("gross_weight_inner").value = grossWeightPerInner.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+            document.getElementById("gross_weight_case").value = grossWeightPerCase.toLocaleString('en-US', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        });
 
         function onOpenhandler(params) {
             document.querySelectorAll('.setpcollep').forEach((element, index) => {

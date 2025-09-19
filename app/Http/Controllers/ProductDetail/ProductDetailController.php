@@ -6,10 +6,12 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Barcode;
 use App\Models\Product1;
+use App\Models\Product1Log;
 use App\Models\ProductDetail;
 use App\Models\ProductDetailExportExcel;
 use App\Models\ProductDetailLog;
 use App\Models\Com_product;
+use App\Models\ComProductImage;
 use App\Models\ComProductLog;
 use App\Models\Countrie;
 use App\Models\user_permission;
@@ -147,10 +149,10 @@ class ProductDetailController extends Controller
             $data->launch = date('Y-m', strtotime($data->launch));
         }
 
-        $dataComProduct = Com_product::select(
-            'com_products.*',
-        )
-        ->firstWhere('product_id', '=', $id);
+        // $dataComProduct = Com_product::select(
+        //     'com_products.*',
+        // )
+        // ->firstWhere('product_id', '=', $id);
 
         // ✅ เรียก API ข้อมูลประเทศ
         // $endpoint = "https://restcountries.com/v3.1/all?fields=name";
@@ -170,12 +172,82 @@ class ProductDetailController extends Controller
                 ];
             }
 
+        $dataComProduct = Com_product::select(
+            'com_products.product_id as product_id',
+            'com_products.name_thai as name_thai',
+            'com_products.barcode as barcode',
+            'com_products.ref_barcode_real as ref_barcode_real',
+            
+            'com_products.unit_net_weight as unit_net_weight',
+            'com_products.unit_gross_weight as unit_gross_weight',
+            'com_products.inner_net_weight as inner_net_weight',
+            'com_products.inner_gross_weight as inner_gross_weight',
+            'com_products.case_net_weight as case_net_weight',
+            'com_products.case_gross_weight as case_gross_weight',
+
+            'com_products.km_inner_width as km_inner_width',
+            'com_products.km_inner_long as km_inner_long',
+            'com_products.km_inner_height as km_inner_height',
+            'com_products.km_case_width as km_case_width',
+            'com_products.km_case_long as km_case_long',
+            'com_products.km_case_height as km_case_height',
+
+            'com_products.width as width',
+            'com_products.long as long',
+            'com_products.height as height',
+            'com_products.area as area',
+            'com_products.box_qty as box_qty',
+            'com_products.pallet_qty as pallet_qty',
+            'com_products.weight as weight',
+            
+            'product_details.unit_weight AS unit_weight',
+            'product_details.unit_pak_size AS unit_pak_size',
+            'product_details.case_weight AS case_weight',
+            'product_details.case_pack_size AS case_pack_size',
+            'product_details.case_width AS case_width',
+            'product_details.case_length AS case_length',
+            'product_details.case_height AS case_height',
+            'product_details.case_barcode AS case_barcode',
+            'product_details.inner_width AS inner_width',
+            'product_details.inner_length AS inner_length',
+            'product_details.inner_height AS inner_height',
+            'product_details.inner_barcode AS inner_barcode',
+            'product_details.inner_weight AS inner_weight',
+            'product_details.inner_pack_size AS inner_pack_size',
+            'product1s.PACK_SIZE1 AS PACK_SIZE1',
+            'product1s.BAR_PACK1 AS BAR_PACK1',
+        )
+        ->leftJoin('product_details', 'com_products.product_id', '=', 'product_details.product_id')
+        ->leftJoin('product1s', 'com_products.product_id', '=', 'product1s.PRODUCT')
+        ->firstWhere('com_products.product_id', '=', $id);
+
+        $scheme = request()->getScheme(); // http หรือ https
+        $host   = request()->getHost();   // localhost หรือ pdmaster.ssup.co.th
+        $images = ComProductImage::select(
+            'id', 
+            'product_id', 
+            'seq', 
+            DB::raw("CASE
+                        WHEN com_product_images.path LIKE 'https%' 
+                        THEN com_product_images.path
+                        ELSE com_product_images.path
+                    END 
+                    AS path"
+            ),
+        )
+        ->where('product_id', $id)
+            ->orderBy('seq', 'asc')
+            ->get();
+
+        $product_id = $images->first()->product_id ?? null;
+
         // dd($dataComProduct);
         // $errorText = collect($dataComProduct);
         // dd(response()->json([
         //     'errorMessage' => $errorText,
         // ]));
-        return view('product_detail.edit', compact('data', 'countriesDatas', 'dataComProduct'));
+
+        return view('product_detail.edit', compact('data', 'countriesDatas', 'dataComProduct', 'images', 'product_id'));
     }
 
     /**
@@ -208,6 +280,7 @@ class ProductDetailController extends Controller
                     'launch' => $request->input('launch'),
                     'country' => $request->input('country'),
                     'fad' => $request->input('fad'),
+                    'ingredients' => $request->input('ingredients'),
                     'after_open_m' => $request->input('after_open_m'),
                     'description_th' => $request->input('description_th'),
                     'description_en' => $request->input('description_en'),
@@ -215,6 +288,9 @@ class ProductDetailController extends Controller
                     'usage_direction_en' => $request->input('usage_direction_en'),
                     'color_code_th' => $request->input('color_code_th'),
                     'color_code_en' => $request->input('color_code_en'),
+                    'desc_other' => $request->input('desc_other'),
+                    'permission' => $request->input('permission', 'N'),
+
                     // 'case_width' => $request->input('case_width'),
                     // 'case_length' => $request->input('case_length'),
                     // 'case_height' => $request->input('case_height'),
@@ -238,6 +314,43 @@ class ProductDetailController extends Controller
 
                 // อัปเดตข้อมูล
                 $upddateProductDetail = ProductDetail::where('product_id', $id)->update($data_product_upddate);
+
+                $data_consumables_old = Product1::select(
+                    'product1s.*',
+                )
+                ->firstWhere('product1s.PRODUCT', '=', $id);
+
+                $data_consumables_old_arr = $data_consumables_old->toArray();
+
+                if ($request) {
+                    $log = [
+                        'UPDATE_DT' => date("Y/m/d H:i:s"),
+                        'USER_UPDATE' => Auth::user()->username
+                    ];
+
+                    $data_consumables_old_arr = array_merge($data_consumables_old_arr, $log);
+                    $logProductUpddate = Product1Log::create($data_consumables_old_arr);
+                }
+
+                $upddateProduct1s = Product1::updateOrCreate(
+                    ['PRODUCT' => $id],
+                    [
+                        'BAR_PACK1' => $request->input('inner_barcode') ?? '',
+                        'BAR_PACK2' => $request->input('inner_pack_size') ?? '',
+                        'PACK_SIZE1' => $request->input('case_barcode') ?? '',
+                        'PACK_SIZE2' => $request->input('case_pack_size') ?? '',
+
+                        // 'fad' => $productUpddate->REGISTER ?? '',
+                        // 'inner_barcode' => $productUpddate->BAR_PACK1 ?? '',
+                        // 'inner_pack_size' => $productUpddate->PACK_SIZE1 ?? '',
+                        // 'case_barcode' => $productUpddate->BAR_PACK2 ?? '',
+                        // 'case_pack_size' => $productUpddate->PACK_SIZE2 ?? '',
+
+                        'USER_EDIT' => Auth::user()->username,
+                        'EDIT_DT' => date("Y-m-d"),
+                        'STATUS_EDIT_DT' => '',
+                    ]
+                );
 
                 // dd($upddateProductDetail);
                 DB::commit();

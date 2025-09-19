@@ -71,4 +71,17 @@ class CommonController extends Controller
             echo 'no task';
         }
     }
+
+    public function KmSchedule($task)
+    {
+        // dd($task);  
+        if (!empty($task)) {          
+            $output = Artisan::call('app:production-run-midnight-task-km ' . $task);
+            $output = Artisan::output();
+            echo '<pre>';
+            print($output);
+        } else {
+            echo 'no task';
+        }
+    }
 }

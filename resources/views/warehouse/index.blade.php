@@ -199,6 +199,145 @@
         .toggle-btn.active {
             background-color: #05395D;
         }
+
+
+        /* .dock-icon {
+            width: 64px;
+            cursor: pointer;
+        }
+
+        .window {
+            position: fixed;
+            top: 90%;
+            left: 50%;
+            width: 300px;
+            height: 200px;
+            background: #fff;
+            border-radius: 20px;
+            transform: translate(-50%, -50%) scale(0.1);
+            clip-path: ellipse(50% 50% at 50% 50%);
+            opacity: 0;
+            transition: all 0.5s ease-in-out;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+            z-index: 999;
+        }
+
+        .window.show {
+            top: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            clip-path: ellipse(100% 100% at 50% 50%);
+        } */
+
+
+
+        .dock-icon {
+            width: 64px;
+            cursor: pointer;
+        }
+
+        .zoom-preview {
+            position: fixed;
+            top: 90%;
+            left: 90%;
+            width: 420px;
+            height: 320px;
+            background: #fff;
+            border-radius: 20px;
+            transform: translate(0%, 0%) scale(0.1);
+            clip-path: ellipse(50% 50% at 50% 50%);
+            opacity: 0;
+            transition: 
+                transform 0.8s cubic-bezier(0.25, 1, 0.5, 1),
+                opacity 0.6s ease,
+                top 0.8s ease,
+                left 0.8s ease,
+                clip-path 0.8s ease;
+            transition-delay: 0.05s; /* เพิ่มดีเลย์ตอนเริ่ม */
+            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+            z-index: 999;
+            pointer-events: none;
+        }
+
+        .zoom-preview.show {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+            clip-path: ellipse(100% 100% at 50% 50%);
+            transition-delay: 0s; /* ไม่มีดีเลย์ตอนโชว์ */
+        }
+
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+
+        /* กล่องโหลด */
+        .loader{
+            position: relative;
+            margin: auto;
+            width: 350px;          /* 7 ช่อง ช่องละ 50 */
+            height: 100px;
+            color: #fff;
+            /* font-family: "Lucida Console", "Courier New", monospace; */
+            font-size: 250%;
+            background: linear-gradient(180deg, #222 0, #444 100%);
+            box-shadow: inset 0 5px 20px #000;
+            text-shadow: 5px 5px 5px rgba(0,0,0,.3);
+            display: flex;         /* ใช้ flex จัดกึ่งกลาง */
+        }
+
+        /* ช่องตัวอักษร 7 ช่อง */
+        .loader > i{
+            flex: 0 0 calc(350px / 7);  /* = 50px */
+            height: 100%;
+            display: flex;
+            align-items: center;        /* แนวตั้งกึ่งกลาง */
+            justify-content: center;    /* แนวนอนกึ่งกลาง */
+            font-style: normal;         /* ปิด italic */
+            border-left: 1px solid #444;
+            border-right: 1px solid #222;
+            padding-top: 10%;
+        }
+
+        /* แผ่นปิดที่เลื่อนขึ้น */
+        .loader .covers{
+            position: absolute;
+            inset: 0;                   /* top/right/bottom/left: 0 */
+            display: flex;
+        }
+
+        .loader .covers > i{
+            flex: 0 0 calc(350px / 7);
+            height: 100%;
+            background: linear-gradient(180deg, #fff 0, #ddd 100%);
+            animation: up 2s infinite;
+        }
+
+        /* timing แต่ละแผ่น */
+        .loader .covers > i:nth-child(2){ animation-delay:.142857s; }
+        .loader .covers > i:nth-child(3){ animation-delay:.285714s; }
+        .loader .covers > i:nth-child(4){ animation-delay:.428571s; }
+        .loader .covers > i:nth-child(5){ animation-delay:.571428s; }
+        .loader .covers > i:nth-child(6){ animation-delay:.714285s; }
+        .loader .covers > i:nth-child(7){ animation-delay:.857142s; }
+
+        @keyframes up{
+            0%   { margin-bottom:0; }
+            16%  { margin-bottom:100%; height:20px; }
+            50%  { margin-bottom:0; }
+            100% { margin-bottom:0; }
+        }
+
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -254,6 +393,17 @@
                 </div>
             </div>
         </div>
+
+        <!-- <img class="dock-icon" src="https://via.placeholder.com/64" onclick="showWindow()" />
+
+        <div class="window" id="popup">
+        <h2 style="text-align:center;margin-top:30px;">เปิดแล้ว!</h2>
+        </div> -->
+
+        <div id="zoomPreview" class="zoom-preview">
+            <img src="" id="zoomImage" style="width:100%; height:100%; object-fit:cover; border-radius:20px;" />
+        </div>
+
         <ul class="pt-2.5 mt-2 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-700 relative"></ul>
         <!-- <div class="flex right-12 z-10 absolute mt-3">
             <div class="relative" data-twe-dropdown-position="dropstart">
@@ -350,6 +500,26 @@
             </div>
         </div> -->
 
+        <!-- <div class="loader">
+  <i>L</i>
+  <i>O</i>
+  <i>A</i>
+  <i>D</i>
+  <i>I</i>
+  <i>N</i>
+  <i>G</i>
+  
+  <div class="covers">
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+  </div>
+</div> -->
+
         <div id="list-view" class="view-section bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
             <div id="containerexample" class="text-gray-900 dark:text-gray-100">
                 <table id="table_dimension" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
@@ -407,6 +577,18 @@
         </script>
     @endif
     <script>
+
+    function showZoomPreview(url) {
+    const zoomBox = document.getElementById('zoomPreview');
+    const zoomImage = document.getElementById('zoomImage');
+    zoomImage.src = url;
+    zoomBox.classList.add('show');
+}
+
+function hideZoomPreview() {
+    const zoomBox = document.getElementById('zoomPreview');
+    zoomBox.classList.remove('show');
+}
 
         // $(document).ready(function () {
         //     $('#fetchDataBtn').click(function () {
@@ -785,9 +967,46 @@
             console.log("🚀 ~ getParmeterLogin ~ dataJson:", dataJson)
         }
 
+        function showCustomLoading() {
+            const $tbody = $('#table_dimension tbody');
+
+            // ความสูงของโซนตารางที่เลื่อน (ให้โหลดอยู่กึ่งกลางแนวตั้งพอดี)
+            const h = $('#table_dimension')
+                .closest('.dataTables_wrapper')
+                .find('.dataTables_scrollBody')
+                .height() || 560; // fallback เผื่อยังไม่ถูกสร้าง
+
+            $tbody.html(`
+                <tr>
+                    <td colspan="7" class="p-0">
+                        <div class="flex items-center justify-center w-full" style="height:${h}px;">
+                            <div class="loader font-serif font-semibold">
+                                <i>L</i>
+                                <i>O</i>
+                                <i>A</i>
+                                <i>D</i>
+                                <i>I</i>
+                                <i>N</i>
+                                <i>G</i>
+                                <div class="covers">
+                                    <i></i>
+                                    <i></i>
+                                    <i></i>
+                                    <i></i>
+                                    <i></i>
+                                    <i></i>
+                                    <i></i>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            `);
+        }
+
         const mytableDatatable = $('#table_dimension').DataTable({
-            'searching': false,
-            "serverSide": true,
+            processing: false,
+            serverSide: true,
             searching: false,
             scrollX: true,
             orderCellsTop: true,
@@ -795,83 +1014,76 @@
             deferRender: true,
             scroller: true,
             scrollY: "580px",
-            "order": [[1, "desc"]],
-            "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
-            "pageLength": 20, // ค่าเริ่มต้นคือ "20"
-            "ajax": {
-                "headers": {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            order: [[1, "desc"]],
+            lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "All"]],
+            pageLength: 20,
+
+            ajax: function (dtParams, callback) {
+                // 👉 เรียก custom loading row
+                showCustomLoading();
+                $.ajax({
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                url: "{{ route('warehouse.list_warehouse') }}",
+                type: "POST",
+                // ⬇️ รวมพารามิเตอร์ของ DataTables (draw/start/length/search…)
+                data: $.extend({}, dtParams, {
+                    brand_id: $('#brand_id').val(),
+                    search:   $('#search').val()
+                }),
+                success: function (json) {
+                    // หน่วง 2 วินาที (เอาออกได้ถ้าไม่อยากดีเลย์)
+                    setTimeout(() => callback(json), 1000);
                 },
-
-                "url": "{{ route('warehouse.list_warehouse') }}",
-                "type": "POST",
-                'data': function(data) {
-                    // Read values
-                    data.brand_id = $('#brand_id').val();
-                    // data.BARCODE = $('#BARCODE').val();
-                    data.search = $('#search').val();
-
-                    data._token = $('meta[name="csrf-token"]').attr('content');
+                error: function () {
+                    // ป้องกันค้าง
+                    callback({ draw: dtParams.draw || 0, recordsTotal: 0, recordsFiltered: 0, data: [] });
                 }
+                });
             },
-            orderable: true,
-            columnDefs: [{
+
+            columnDefs: [
+                {
                     targets: 0,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.company_id;
-                    }
+                    render: (_, __, row) => row.company_id ?? ''
                 },
                 {
                     targets: 1,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.product_id;
-                    }
+                    render: (_, __, row) => row.product_id ?? ''
                 },
                 {
                     targets: 2,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.barcode;
-                    }
+                    render: (_, __, row) => row.barcode ?? ''
                 },
                 {
                     targets: 3,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.vendor_id;
-                    }
+                    render: (_, __, row) => row.vendor_id ?? ''
                 },
                 {
                     targets: 4,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.name_thai;
-                    }
+                    render: (_, __, row) => row.name_thai ?? ''
                 },
                 {
-                    targets: 5,
-                    orderable: true,
+                targets: 5,
                     className: 'text-center',
-                    render: function(data, type, row) {
-                        // ถ้า img_url เป็นค่าว่าง หรือ null ให้ใช้รูป default
-                        let imageUrl = row.img_url && row.img_url.trim() !== "" ? row.img_url : "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg";
-                        
+                    render: (_, __, row) => {
+                        const img = (row.img_url && row.img_url.trim() !== '')
+                        ? row.img_url
+                        : "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg";
                         return `
-                            <div class="flex justify-center items-center">
-                                <img src="${imageUrl}" class="w-20 h-16 object-cover rounded-sm shadow-md border border-gray-300 cursor-pointer transition-transform duration-300 ease-in-out hover:scale-125 hover:shadow-md hover:shadow-gray-400 dark:hover:shadow-md dark:hover:shadow-gray-400" alt="Product Image">
-                            </div>
+                        <div class="flex justify-center items-center">
+                            <img src="${img}"
+                                class="w-20 h-16 object-cover rounded-sm shadow-md border border-gray-300 cursor-pointer"
+                                alt="Product Image"
+                                onmouseenter="showZoomPreview('${img}')"
+                                onmouseleave="hideZoomPreview()" />
+                        </div>
                         `;
                     }
                 },
                 {
-                    targets: 6,
-                    orderable: true,
+                targets: 6,
                     className: 'text-center',
-                    render: function(data, type, row) {
-                        let disabledRoute = "{{route('warehouse.update', 0)}}".replace('/0', "/" + row.product_id)
-                        let text = "#"
+                    render: (_, __, row) => {
                         return `<div class="inline-flex flex items-center rounded-md shadow-sm">
                                     <a href="{{route('warehouse.edit', 0)}}"
                                         type="button" class="px-2 py-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white py-1 px-1 rounded group">
@@ -884,7 +1096,6 @@
                                     </a>
                                 </div>
                             `.replaceAll('/0', "/" + row.product_id);
-
                     }
                 }
             ]
@@ -914,5 +1125,66 @@
             mytableDatatable.draw();
         }
 
+        // Loading ============================================================================= Custom =================================================================
+
+        // function showCustomLoading() {
+        //     const $tbody = $('#table_dimension tbody');
+
+        //     const h = $('#table_dimension')
+        //         .closest('.dataTables_wrapper')
+        //         .find('.dataTables_scrollBody')
+        //         .height() || 560;
+
+        //     $tbody.html(`
+        //         <tr>
+        //         <td colspan="7" class="p-0">
+        //             <div class="flex items-center justify-center w-full gap-3" style="height:${h}px;">
+        //                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 animate-spin dark:text-white">
+        //                     <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
+        //                     <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
+        //                 </svg>
+        //                 <span class="text-gray-700 dark:text-gray-200">กำลังโหลดข้อมูล...</span>
+        //             </div>
+        //         </td>
+        //         </tr>
+        //     `);
+        // }
+
+
+        // function showCustomLoading() {
+        //     const $tbody = $('#table_dimension tbody');
+
+        //     const h = $('#table_dimension')
+        //         .closest('.dataTables_wrapper')
+        //         .find('.dataTables_scrollBody')
+        //         .height() || 560;
+
+        //     $tbody.html(`
+        //         <tr>
+        //             <td colspan="7" class="p-0">
+        //                 <div class="flex items-center justify-center w-full" style="height:${h}px;">
+        //                     <div class="loader">
+        //                         <i>L</i>
+        //                         <i>O</i>
+        //                         <i>A</i>
+        //                         <i>D</i>
+        //                         <i>I</i>
+        //                         <i>N</i>
+        //                         <i>G</i>
+        //                         <div class="covers">
+        //                             <i></i>
+        //                             <i></i>
+        //                             <i></i>
+        //                             <i></i>
+        //                             <i></i>
+        //                             <i></i>
+        //                             <i></i>
+        //                         </div>
+        //                     </div>
+        //                 </div>
+        //             </td>
+        //         </tr>
+        //     `);
+        // }
     </script>
 @endsection
