@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Barcode;
 use App\Models\Product1;
 use App\Models\Product1Log;
+use App\Models\ProductChannel;
 use App\Models\ProductDetail;
 use App\Models\ProductDetailExportExcel;
 use App\Models\ProductDetailLog;
@@ -19,6 +20,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use DateTime; // ✅ เพิ่มบรรทัดนี้
 
 class ProductDetailController extends Controller
 {
@@ -83,9 +85,16 @@ class ProductDetailController extends Controller
             ->pluck('PRODUCT')
             ->toArray();
 
-            $getSelect2ProDevelops = Product1::select(
-                'PRODUCT')
+            // ดึง PRODUCT ทั้งหมดที่มีอยู่ใน product1s ก่อน
+            $validProducts = DB::table('product1s')
+                ->pluck('PRODUCT')
+                ->toArray();
+
+            // จากนั้นดึงข้อมูลจาก ProductChannel ที่ brand = 'CPS' และมี PRODUCT อยู่ใน product1s.PRODUCT
+            $getSelect2ProDevelops = ProductChannel::select('PRODUCT')
                 ->whereIn('BRAND', ['CPS'])
+                ->whereIn('PRODUCT', $validProducts)
+                ->orderBy('PRODUCT', 'asc')
                 ->pluck('PRODUCT')
                 ->toArray();    
         }
@@ -143,11 +152,21 @@ class ProductDetailController extends Controller
         ->leftJoin('com_products', 'product_details.product_id', '=', 'com_products.product_id')
         ->firstWhere('product_details.product_id', '=', $id);
 
-        // dd($data);
         // แปลงวันที่เฉพาะตอนที่มีค่า
-        if ($data && $data->launch) {
-            $data->launch = date('Y-m', strtotime($data->launch));
+        if (!empty($data) && !empty($data->launch)) {
+            $raw = trim($data->launch);
+
+            // รองรับทั้ง m-Y และ Y-m
+            $dt = DateTime::createFromFormat('m-Y', $raw) ?: DateTime::createFromFormat('Y-m', $raw);
+
+            if ($dt instanceof DateTime) {
+                $data->launch = $dt->format('Y-m');   // ได้ 2019-09
+            } else {
+                // ถ้า parse ไม่ได้: เลือกจัดการตามต้องการ
+                $data->launch = null; // หรือคงค่าเดิม $data->launch = $raw;
+            }
         }
+        // dd($data);
 
         // $dataComProduct = Com_product::select(
         //     'com_products.*',
@@ -163,7 +182,7 @@ class ProductDetailController extends Controller
         // $countriesData = collect($apiResponse->json());
         // $countriesDatas = $countriesData->pluck('name.common')->toArray();
 
-        $countriesDatas = Countrie::select('id AS country', 'name_country')->get()->toArray();
+        $countriesDatas = Countrie::select('id AS country', 'name_country')->orderBy('name_country', 'ASC')->get()->toArray();
         if (!in_array($data->country, array_column($countriesDatas, 'country')))
             {
                 $countriesDatas[] =  [
@@ -274,6 +293,12 @@ class ProductDetailController extends Controller
                     ProductDetailLog::create($data_old_arr);
                 }
 
+                $after_open_m_raw = $request->input('after_open_m');
+                $after_open_m = preg_replace('/\D/', '', $after_open_m_raw); // จะได้ "12"
+
+                // $after_open_m_raw = $request->input('after_open_m');
+                // $after_open_m = explode(' ', trim($after_open_m_raw))[0]; // จะได้ "12"
+
                 $data_product_upddate = [
                     'corporation_id' => $request->input('corporation_id'),
                     'product_id' => $request->input('product_id'),
@@ -281,7 +306,7 @@ class ProductDetailController extends Controller
                     'country' => $request->input('country'),
                     'fad' => $request->input('fad'),
                     'ingredients' => $request->input('ingredients'),
-                    'after_open_m' => $request->input('after_open_m'),
+                    'after_open_m' => $after_open_m,
                     'description_th' => $request->input('description_th'),
                     'description_en' => $request->input('description_en'),
                     'usage_direction_th' => $request->input('usage_direction_th'),
@@ -336,8 +361,8 @@ class ProductDetailController extends Controller
                     ['PRODUCT' => $id],
                     [
                         'BAR_PACK1' => $request->input('inner_barcode') ?? '',
-                        'BAR_PACK2' => $request->input('inner_pack_size') ?? '',
-                        'PACK_SIZE1' => $request->input('case_barcode') ?? '',
+                        'BAR_PACK2' => $request->input('case_barcode') ?? '',
+                        'PACK_SIZE1' => $request->input('inner_pack_size') ?? '',
                         'PACK_SIZE2' => $request->input('case_pack_size') ?? '',
 
                         // 'fad' => $productUpddate->REGISTER ?? '',
@@ -427,8 +452,25 @@ class ProductDetailController extends Controller
         // ✅ ดึงชื่อ field ทั้งหมดจากตาราง product_detail_export_excel
         $fields = Schema::getColumnListing('product_detail_export_excels');
 
-        // เอาเฉพาะ field ที่ใช้แสดงผลจริง (ตัด created_at, updated_at ทิ้ง)
-        $fields = array_filter($fields, fn($field) => !in_array($field, ['id', 'brand', 'position_id', 'created_at', 'updated_at']));
+        // กำหนดกลุ่มที่สามารถเห็น 'cost'
+        $canCostUsers = [
+            32, 95, 86, 87, 26, 85, 100, 99,
+            102, 103, 104, 105, 136, 106, 138,
+            120, 179, 125, 139, 140, 141, 142,
+            143, 144, 145, 148, 121
+        ];
+
+        // ตรวจสอบว่าผู้ใช้มีสิทธิ์ดู 'cost' หรือไม่
+        if (in_array(Auth::user()->id, $canCostUsers)) {
+            // หากผู้ใช้อยู่ใน $canCostUsers ให้แสดงฟิลด์ 'cost'
+            $fields = array_filter($fields, fn($field) => !in_array($field, ['id', 'brand', 'position_id', 'created_at', 'updated_at']));
+        } else {
+            // หากผู้ใช้ไม่ได้อยู่ใน $canCostUsers ให้กรอง 'cost' ออก
+            $fields = array_filter($fields, fn($field) => !in_array($field, ['id', 'brand', 'position_id', 'cost', 'created_at', 'updated_at']));
+        }
+
+        // ตรวจสอบว่า `fields` ถูกกรองถูกต้อง
+        // dd(Auth::user()->id, $fields);  // ดูว่า `cost` ถูกกรองออกหรือไม่
 
         // $fields = array_diff(
         // Schema::getColumnListing('product_detail_export_excels'),
@@ -438,29 +480,61 @@ class ProductDetailController extends Controller
         // ✅ เพิ่มบรรทัดนี้ก่อน transform
         // $fields = ['product', 'barcode', 'status', 'age', 'grp_p', 'supplier'];
 
-        // ✅ เตรียม query หลักเพื่อดึงสิทธิ์ของแต่ละตำแหน่ง
-        $query = user_permission::select(
-                'positions.id',
-                'positions.name_position',
-                'positions.brand',
-                DB::raw('GROUP_CONCAT(users.username) as username'),
-                DB::raw('COUNT(users.id) as total_users')
-            )
-            ->join('users', 'users.id', '=', 'user_permission.user_id')
-            ->join('positions', 'positions.id', '=', 'user_permission.position_id')
-            ->where('positions.brand', 'CPS')
-            ->groupBy('positions.id', 'positions.name_position', 'positions.brand')
-            ->orderBy('positions.id');
+        // ตำแหน่งของ user ปัจจุบัน
+        $currentPosition = Auth::user()->getUserPermission->name_position;
 
-        $totalRecords = DB::table(DB::raw("({$query->toSql()}) as sub"))
-            ->mergeBindings($query->getQuery())
-            ->count();
+        // if (Auth::user()->id === 32 || Auth::user()->id === 95) {
+        if (Auth::user()->id === 32) {
+            // ✅ เตรียม query หลักเพื่อดึงสิทธิ์ของแต่ละตำแหน่ง
+            $query = user_permission::select(
+                    'positions.id',
+                    'positions.name_position',
+                    'positions.brand',
+                    DB::raw('GROUP_CONCAT(users.username) as username'),
+                    DB::raw('COUNT(users.id) as total_users')
+                )
+                ->join('users', 'users.id', '=', 'user_permission.user_id')
+                ->join('positions', 'positions.id', '=', 'user_permission.position_id')
+                ->where('positions.brand', 'CPS')
+                // ->where('positions.name_position', $currentPosition)
+                ->groupBy('positions.id', 'positions.name_position', 'positions.brand')
+                ->orderBy('positions.id');
 
-        if ($limit > 0) {
-            $query->limit($limit)->offset($start);
+            $totalRecords = DB::table(DB::raw("({$query->toSql()}) as sub"))
+                ->mergeBindings($query->getQuery())
+                ->count();
+
+            if ($limit > 0) {
+                $query->limit($limit)->offset($start);
+            }
+
+            $records = $query->get();
+        } else {
+            // ✅ เตรียม query หลักเพื่อดึงสิทธิ์ของแต่ละตำแหน่ง
+            $query = user_permission::select(
+                    'positions.id',
+                    'positions.name_position',
+                    'positions.brand',
+                    DB::raw('GROUP_CONCAT(users.username) as username'),
+                    DB::raw('COUNT(users.id) as total_users')
+                )
+                ->join('users', 'users.id', '=', 'user_permission.user_id')
+                ->join('positions', 'positions.id', '=', 'user_permission.position_id')
+                ->where('positions.brand', 'CPS')
+                ->where('positions.name_position', $currentPosition)
+                ->groupBy('positions.id', 'positions.name_position', 'positions.brand')
+                ->orderBy('positions.id');
+
+            $totalRecords = DB::table(DB::raw("({$query->toSql()}) as sub"))
+                ->mergeBindings($query->getQuery())
+                ->count();
+
+            if ($limit > 0) {
+                $query->limit($limit)->offset($start);
+            }
+
+            $records = $query->get();
         }
-
-        $records = $query->get();
 
         // ✅ ดึงสิทธิ์ export จาก product_detail_export_excel แยกตาม position_id
         $exportPermissions = ProductDetailExportExcel::all()->keyBy('position_id');
@@ -471,37 +545,59 @@ class ProductDetailController extends Controller
         // }
 
         // แล้วตรงใน transform
-        $records->transform(function ($row) use ($fields, $exportPermissions) {
+        // แล้วตรงใน transform
+        $records->transform(function ($row) use ($fields, $exportPermissions, $canCostUsers) {
             $positionId = $row->id;
-
             $perm = $exportPermissions[$positionId] ?? null;
 
             if (!$perm) {
-                // logger("❌ NO permission for position_id = $positionId");
                 $row->exportableFields = [];
+                $row->selected = [];
                 return $row;
             }
 
-            // logger("✅ FOUND permission for position_id = $positionId");
-            // logger("PERM DATA = " . json_encode($perm->toArray()));
-            // logger("FIELDS = " . json_encode($fields));
+            // กรองฟิลด์ที่ไม่สามารถให้แสดงได้ (กรอง 'cost' ถ้า user ไม่มีสิทธิ์)
+            $filteredFields = collect($fields)->filter(function ($field) use ($canCostUsers) {
+                // ถ้า user ไม่อยู่ในกลุ่มที่สามารถเห็น 'cost', ให้กรอง 'cost' ออก
+                if (!in_array(Auth::user()->id, $canCostUsers) && $field === 'cost') {
+                    return false;  // กรอง 'cost' ออก
+                }
+                return true;  // ส่งฟิลด์อื่น ๆ กลับมา
+            });
 
-            $row->exportableFields = collect($fields)
+            // ตรวจสอบข้อมูลหลังการกรอง
+            // dd(Auth::user()->id, $filteredFields);
+
+            // แปลงฟิลด์เพื่อแสดงผล (mapping) พร้อมการเลือกฟิลด์
+            $row->exportableFields = $filteredFields
                 ->map(function ($field) use ($perm) {
                     $value = data_get($perm, $field);
-                    // logger("🧪 $field => " . json_encode($value));
                     return [
-                        'key' => $field,
-                        'label' => $field,
-                        'allowed' => $value == 1,
+                        'key'     => $field,
+                        'label'   => $field,
+                        'allowed' => $value == 1,  // ถ้าเป็น 1 หมายถึงมีสิทธิ์
+                        'selected'=> (int)$value === 1,
                     ];
                 })
                 ->chunk(4)
                 ->toArray();
 
+            // flat array ของ key ที่ถูกเลือก
+            $row->selected = collect($filteredFields)
+                ->filter(fn($f) => (int) data_get($perm, $f) === 1)
+                ->values()
+                ->all();
+
+            // ตรวจสอบว่า 'cost' ถูกเพิ่มเข้าไปใน selected หรือไม่
+            if (in_array('cost', $filteredFields->toArray()) && in_array(Auth::user()->id, $canCostUsers)) {
+                // เพิ่ม 'cost' ใน selected ถ้าผู้ใช้มีสิทธิ์
+                $row->selected = array_unique(array_merge($row->selected, ['cost']));
+            }
+
+            // dd($row);  // ตรวจสอบข้อมูลหลังการแปลง
             return $row;
         });
-
+            
         // ✅ ส่งออก JSON
         return response()->json([
             'draw' => intval($request->draw),

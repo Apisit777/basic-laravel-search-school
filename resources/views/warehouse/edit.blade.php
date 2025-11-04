@@ -36,18 +36,32 @@
         .select2-container--open {
             z-index: 99999999999999;
         }
-        .select2-container .select2-dropdown .select2-results__options {
-            max-height: 360px !important;
+        .select2-container--default .select2-selection--single .select2-selection__clear {
+            float: right;
+            cursor: pointer;
+            --tw-text-opacity: 1;
+            color: rgb(200 30 30 / var(--tw-text-opacity));
+            margin-right: 24px!important;
+            margin-top: -1px!important;
+            font-size: 20px!important;
         }
-        .select2 {
-            width: 100%!important; /* force fluid responsive */
+        .select2-container {
+            margin-bottom: 0rem!important;
         }
-        select.select2:required + .select2-container .select2-selection--single {
-            border-color: #FF0000;
+        .select2-container--default .select2-selection--single {
+            height: 2rem!important;
+            border-width: 1px;
+            padding: 0.1rem!important;
         }
-
-        select.select2:required:valid + .select2-container .select2-selection--single {
-            border-color: black;
+        .select2-container--default .select2-selection--single .select2-selection__arrow b {
+            position: absolute;
+            margin-top: -5px!important;
+        }
+        .h-10 {
+            height: 2rem!important;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            font-size: small!important;
         }
 
         .panel {
@@ -408,6 +422,13 @@
         ];
     @endphp
 
+    @php
+        $packSizes = [1, 3, 4, 6, 8, 9, 12, 24, 30, 36, 48, 50, 72, 80, 144, 180];
+        $unitSize = (int) $data->unit_pak_size;
+        // ✅ ถ้าไม่มีค่า, เป็น 0, หรือเป็น 3 ให้ default = 1
+        $selectedSize = ($unitSize > 0 && $unitSize !== 3) ? $unitSize : 1;
+    @endphp
+
 @section('content')
     <div class="p-4 bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4 mt-10">
         <div class="justify-center items-center">
@@ -428,7 +449,7 @@
                             </div>
                             <div class="md:col-span-2">
                                 <label for="barcode">Barcode</label>
-                                <input type="text" name="barcode" id="barcode" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->barcode }}" readonly>
+                                <input type="text" name="barcode" id="BARCODE" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->barcode }}" readonly>
                             </div>
                             
                             <div class="col-auto" style="position: absolute; right: 5.5%; top: 23.2%;">
@@ -567,7 +588,17 @@
 
                                                                         <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
                                                                         <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">pack size</label>
-                                                                        <input value="{{ $data->unit_pak_size }}" id="unit_pak_size" name="unit_pak_size" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                        <!-- <input value="{{ $data->unit_pak_size }}" id="unit_pak_size" name="unit_pak_size" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly /> -->
+
+                                                                        <select class="js-example-basic-single w-full rounded-sm text-xs" name="unit_pak_size" id="unit_pak_size">
+                                                                            <option value=""> --- กรุณาเลือก ---</option>
+                                                                            @foreach ($packSizes as $size)
+                                                                                <option value="{{ $size }}" {{ $selectedSize === $size ? 'selected' : '' }}>
+                                                                                    {{ $size }} ชิ้น
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+
                                                                         <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
                                                                     </div>
                                                                 </div>
@@ -659,11 +690,13 @@
                                                                         <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">barcode</label>
 
                                                                         <!-- BAR_PACK1 -->
-                                                                        @if ($data->product_id > 29999)
+                                                                        <!-- @if ($data->product_id > 29999)
                                                                             <input value="{{ $data->inner_barcode }}" id="inner_barcode" name="inner_barcode" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
                                                                         @else
-                                                                            <input value="{{ $data->BAR_PACK1 }}" id="inner_barcode" name="inner_barcode" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                        @endif
+                                                                        @endif -->
+                                                                        <!-- <input value="{{ $data->BAR_PACK1 }}" id="inner_barcode" name="inner_barcode" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly /> -->
+
+                                                                        <input type="text" name="inner_barcode" id="BAR_PACK1" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->BAR_PACK1 }}" readonly>
                                                                         <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
 
                                                                         <!-- Invisible(ล่องหน) -->
@@ -672,11 +705,20 @@
 
                                                                         <!-- PACK_SIZE1 -->
                                                                         <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">pack size (pack size1)</label>
-                                                                        @if ($data->product_id > 29999)
+                                                                        <!-- @if ($data->product_id > 29999)
                                                                             <input value="{{ $data->inner_pack_size }}" id="inner_pack_size" name="inner_pack_size" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
                                                                         @else
-                                                                            <input value="{{ $data->PACK_SIZE1 }}" id="PACK_SIZE1" name="PACK_SIZE1" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
-                                                                        @endif
+                                                                        @endif -->
+                                                                        <!-- <input value="{{ $data->PACK_SIZE1 }}" id="PACK_SIZE1" name="PACK_SIZE1" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly /> -->
+
+                                                                        <select class="js-example-basic-single w-full rounded-sm text-xs" name="inner_pack_size" id="PACK_SIZE1" onchange="packSize1Change(this, 'PACK_SIZE1')">
+                                                                            <option value=""> --- กรุณาเลือก ---</option>
+                                                                            @foreach ($packSizes as $size)
+                                                                                <option value="{{ $size }}" {{ (int)$data->PACK_SIZE1 === $size ? 'selected' : '' }}>
+                                                                                    {{ $size }} ชิ้น
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
                                                                         <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
                                                                     </div>
                                                                 </div>
@@ -768,17 +810,36 @@
                                                                         <input value="{{ $data->km_case_height }}" id="km_case_height" name="km_case_height" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
                                                                         <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
                                                                         <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">barcode</label>
-                                                                        <input value="{{ $data->case_barcode }}" id="" name="case_barcode" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+
+                                                                        <!-- BAR_PACK2 -->
+                                                                        <!-- @if ($data->product_id > 29999)
+                                                                            <input value="{{ $data->case_barcode }}" id="case_barcode" name="case_barcode" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                        @else
+                                                                        @endif -->
+
+                                                                        <input type="text" name="case_barcode" id="BAR_PACK2" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->BAR_PACK2 }}" readonly>
                                                                         <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start"></label>
 
                                                                         <!-- Invisible(ล่องหน) -->
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+                                                                        <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
                                                                         <input value="" id="" name="" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500 invisible " />
-                                                                        <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
 
-                                                                        <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
+                                                                        <!-- PACK_SIZE2 -->
                                                                         <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">pack size (pack size2)</label>
-                                                                        <input value="{{ $data->case_pack_size }}" id="case_pack_size" name="case_pack_size" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                        <!-- @if ($data->product_id > 29999)
+                                                                            <input value="{{ $data->case_pack_size }}" id="case_pack_size" name="case_pack_size" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
+                                                                        @else
+                                                                        @endif -->
+
+                                                                        <select class="js-example-basic-single w-full rounded-sm text-xs" name="case_pack_size" id="PACK_SIZE2" onchange="packSize2Change(this, 'PACK_SIZE2')">
+                                                                            <option value=""> --- กรุณาเลือก ---</option>
+                                                                            @foreach ($packSizes as $size)
+                                                                                <option value="{{ $size }}" {{ (int)$data->PACK_SIZE2 === $size ? 'selected' : '' }}>
+                                                                                    {{ $size }} ชิ้น
+                                                                                </option>
+                                                                            @endforeach
+                                                                        </select>
+                                                                        <!-- <input value="{{ $data->PACK_SIZE2 }}" id="PACK_SIZE2" name="PACK_SIZE2" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly /> -->
                                                                     </div>
                                                                 </div>
                                                                 {{-- Case = seq 4 --}}
@@ -1184,6 +1245,8 @@
     <script src="{{ asset('js/webcamjs.min.js') }}"></script>
     <script src="{{ asset('js/Sortable.min.js') }}"></script>
 
+    <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
+
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.min.js"></script> -->
 
     <!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script> -->
@@ -1227,8 +1290,12 @@
                 inner_pack_size:  document.getElementById('inner_pack_size') || document.getElementById('PACK_SIZE1'),
                 inner_net_weight: document.getElementById('inner_net_weight'),
 
+                // case_pack_size
+                // PACK_SIZE2
+
                 // inner_net_weight: document.getElementById('inner_net_weight'),
-                case_pack_size: document.getElementById('case_pack_size'),
+                // case_pack_size: document.getElementById('case_pack_size'),
+                case_pack_size: document.getElementById('case_pack_size') || document.getElementById('PACK_SIZE2'),
                 case_net_weight: document.getElementById('case_net_weight'),
             };
 
@@ -1271,7 +1338,8 @@
                 if (!innerNet) { 
                 caseTotal = unitNet * casePack;
                 } else {
-                caseTotal = innerNet * casePack;
+                caseTotal = unitNet * casePack;
+                // caseTotal = innerNet * casePack;
                 }
 
                 if (el.case_net_weight) el.case_net_weight.value = caseTotal ? caseTotal.toFixed(2) : '';
@@ -1565,7 +1633,7 @@
         }
 
         $(document).ready(function() {
-            // $('.js-example-basic-single').select2();
+            $('.js-example-basic-single').select2();
             onOpenhandler()
             document.querySelectorAll('.setcheckbox')[0].checked = true
             document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
@@ -2205,5 +2273,94 @@
             });
         }
 
+
+        function packSize1Change(e) {
+            let BARCODE = jQuery("#BARCODE").val();
+            let packSize = e.value;
+            console.log("🚀 ~ packSize1Change ~ packSize:", packSize)
+
+            if (packSize.length > 1) {
+                packSize = packSize.substring(0, 1);
+            }
+            
+            if (!BARCODE || packSize === "") {
+                jQuery("#BAR_PACK1").val('');
+                return;
+            }
+
+            let ean13 = packSize + BARCODE.substring(0, BARCODE.length - 1);
+            console.log("🚀 ~ packSize1Change ~ ean13:", ean13)
+
+            if (ean13) {
+                if (ean13.length == 13) {
+                    url = '{{ route('product_master.calculate_ean14_check_digit', ':ean13') }}'.replace(':ean13', ean13);
+                } else {
+                    url = '';
+                }
+            }
+
+            jQuery.ajax({
+                method: "GET",
+                url: url,
+                dataType: 'json',
+                success: function (response) {
+                    console.log("✅ Response:", response);
+                    if (response.checkDigit) {
+                        jQuery("#BAR_PACK1").val(response.checkDigit);
+                    } else {
+                        jQuery("#BAR_PACK1").val('');
+                    }
+                },
+                error: function (xhr) {
+                    console.error("❌ AJAX Error:", xhr);
+                    alert("เกิดข้อผิดพลาด: " + xhr.responseText);
+                }
+            });
+        }
+
+        function packSize2Change(e) {
+            let BARCODE = jQuery("#BARCODE").val();
+            let packSize = e.value;
+            console.log("🚀 ~ packSize1Change ~ packSize:", packSize)
+
+            if (packSize.length > 1) {
+                packSize = packSize.substring(0, 1);
+            }
+            console.log("🚀 ~ packSize1Change ~ substring:", packSize)
+            
+            if (!BARCODE || packSize === "") {
+                jQuery("#BAR_PACK2").val('');
+                return;
+            }
+
+            let ean13 = packSize + BARCODE.substring(0, BARCODE.length - 1);
+            console.log("🚀 ~ packSize1Change ~ ean13:", ean13)
+
+            if (ean13) {
+                if (ean13.length == 13) {
+                    url = '{{ route('product_master.calculate_ean14_check_digit', ':ean13') }}'.replace(':ean13', ean13);
+                } else {
+                    url = '';
+                }
+            }
+
+            jQuery.ajax({
+                method: "GET",
+                url: url,
+                dataType: 'json',
+                success: function (response) {
+                    console.log("✅ Response:", response);
+                    if (response.checkDigit) {
+                        jQuery("#BAR_PACK2").val(response.checkDigit);
+                    } else {
+                        jQuery("#BAR_PACK2").val('');
+                    }
+                },
+                error: function (xhr) {
+                    console.error("❌ AJAX Error:", xhr);
+                    alert("เกิดข้อผิดพลาด: " + xhr.responseText);
+                }
+            });
+        }
     </script>
 @endsection

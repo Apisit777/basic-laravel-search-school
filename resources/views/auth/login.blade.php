@@ -201,7 +201,8 @@
     <!-- <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/shutterstock_2079577573 - Copy-min.png')}}')"> -->
         <!-- <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/ChatGPT Image 21 ส.ค. 2568 16_26_32.png')}}')"> -->
             <!-- <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/redesign_guess_my_age_Content-02.jpg')}}')"> -->
-        <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/npd-formenedt__.jpg')}}')">
+        <!-- <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/npd-formenedt__.jpg')}}')"> -->
+        <div class="min-h-screen p-10">
         <div class="flex">
             {{-- Left 60% (ว่างไว้ หรือใส่อะไรเพิ่มทีหลัง) --}}
             <div class="w-3/5 text-white dark:text-white">
@@ -252,23 +253,12 @@
 
         <div class="g-2 flex flex-wrap items-center justify-center lg:justify-between">
             <div class="mb-12 grow-0 basis-auto md:mb-0 md:w-8/12 lg:w-6/12 xl:w-6/12 xl:ml-12">
-                <div class="relative max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-3">
+                <!-- <div class="relative max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-3">
                     <form id="from_user" class="group js-validation-signin" action="javascript:void(0)" method="POST">
                         <div class="flex flex-row items-center justify-center lg:justify-start">
                             <div class="flex text-center">
                                 <p class="mb-0 me-4 text-lg -mt-2 font-semibold">Coming Soon</p>
                             </div>
-                            <!-- SSUP -->
-                            <!-- <button
-                                type="button"
-                                data-twe-ripple-init
-                                data-twe-ripple-color="light"
-                                class="justify-items-center mr-2 mb-2 inline-block rounded bg-[#333] px-6 py-2 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg">
-                                <span class="[&>svg]:h-5 [&>svg]:w-5 grid justify-items-center">
-                                    <img src="https://www.ssup.co.th/wp-content/uploads/2022/11/site-logo-g.png" width="65px" height="65px">
-                                </span>
-                                <p>Extra SSUP</p>
-                            </button> -->
                         </div>
     
                         <div class="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-black dark:before:border-blue-500 after:mt-0.5 after:flex-1 after:border-t after:border-black dark:after:border-blue-500">
@@ -282,8 +272,6 @@
                             </span>
                             </p>
                         </div>
-    
-                        <!-- ✅ ปรับตรงนี้ให้กลางและใหญ่ -->
                         <div class="flex justify-center items-center w-full h-[300px]">
                             <div class="text-center">
                                 <h1 class="text-[100px]">🚧</h1>
@@ -308,7 +296,7 @@
                     <span class="mt-4 block font-sans text-xs font-bold text-center">
                         (V 2.04.0 © 2024)
                     </span> 
-                </div>
+                </div> -->
             </div>
             <div class="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-4/12">
                 <div class="relative max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 -mt-12 mr-10 -ml-10">

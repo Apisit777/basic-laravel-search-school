@@ -92,7 +92,7 @@
                     <input type="text" name="corporation_id" id="corporation_id" class="" hidden value="{{ $data->corporation_id }}">
                     <div class="p-2">
                         <ul class="relative m-0 w-full list-none overflow-hidden p-0 transition-[height] duration-200 ease-in-out" data-twe-stepper-init="" data-twe-stepper-type="vertical">
-                            <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
+                            <li data-twe-stepper-step-ref="" class="mb-12 relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
                                 <div data-twe-stepper-head-ref="" class="setpcollep flex cursor-pointer items-center p-1 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
                                     <span data-twe-stepper-head-icon-ref="" class="bg_step_color me-3 flex h-[1.938rem] w-[1.938rem] items-center justify-center rounded-full text-sm !bg-primary-100 !text-primary-700 dark:!bg-slate-900 dark:!text-primary-500">
                                         1
@@ -127,10 +127,10 @@
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">การมองเห็นข้อมูล<span class="text-danger"> *</span></label>
                                                                     <div class="md:col-span-4 mt-5" style="position: relative;">
-                                                                        <input type="radio" id="premission_y" name="premission" value="Y"
+                                                                        <input type="radio" id="permission_y" name="permission" value="Y"
                                                                             {{ $data->permission == 'Y' ? 'checked' : '' }}>
                                                                         <label for="" class="mr-5">สาธารณะ</label>
-                                                                        <input type="radio" id="premission_n" name="premission" value="N"
+                                                                        <input type="radio" id="permission_n" name="permission" value="N"
                                                                             {{ $data->permission == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ปิดกั้น</label>
                                                                     </div>
@@ -240,8 +240,8 @@
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="after_open_m">ระยะเวลาหลังเปิดใช้<span class="text-danger"> *</span></label>
                                                                     <!-- <input type="text" name="after_open_m" id="after_open_m" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->after_open_m }}" เดือน/> -->
-                                                                    <input type="text" name="after_open_m_display" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ isset($data->after_open_m) ? $data->after_open_m . ' เดือน' : '' }}">
-                                                                    <input type="hidden" name="after_open_m" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->after_open_m }}">
+                                                                    <input type="text" name="after_open_m" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ isset($data->after_open_m) ? $data->after_open_m . ' เดือน' : '' }}">
+                                                                    <!-- <input type="hidden" name="after_open_m" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->after_open_m }}"> -->
                                                                 </div>
                                                             </div>
                                                         </div>

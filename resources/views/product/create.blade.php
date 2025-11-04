@@ -132,7 +132,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" /> -->
 
     @php
-        $packSizes = [3, 4, 6, 8, 9, 12, 24, 30, 36, 48, 72, 144, 180];
+        $packSizes = [3, 4, 6, 8, 9, 12, 24, 30, 36, 48, 50, 72, 80, 144, 180];
     @endphp
 
 @section('content')

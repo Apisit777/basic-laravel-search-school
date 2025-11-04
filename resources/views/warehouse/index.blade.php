@@ -338,6 +338,17 @@
             100% { margin-bottom:0; }
         }
 
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* background-color: #7f7f7fe3; */
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -345,7 +356,8 @@
     <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap.css') }}" />
 
 @section('content')
-    <div class="justify-center items-center">
+
+    <div class="relative justify-center items-center">
         <div class="mt-6 mb-2 flex justify-center items-center">
             <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-base font-bold text-gray-900 dark:text-gray-100">List Dimension</p>
         </div>
@@ -392,6 +404,15 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="flex xs:right-3 sm:right-3 md:right-3 lg:right-3 xl:right-3 z-10 absolute mt-12">
+            <button  id="submitButton" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-1 px-2 mr-2 rounded group cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 8 8" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                <path d="M6 0v1h-6v1h6v1l2-1.5-2-1.5zm-4 4l-2 1.5 2 1.5v-1h6v-1h-6v-1z"/>
+            </svg>
+                Sync Data
+            </button>
         </div>
 
         <!-- <img class="dock-icon" src="https://via.placeholder.com/64" onclick="showWindow()" />
@@ -472,7 +493,7 @@
             </form>
         </div> -->
 
-        <!-- <div class="flex right-10 z-10 absolute">
+        <div class="flex right-8 -m-3 z-10 absolute">
             <div class="view-toggle">
                 <button id="btn-list" class="toggle-btn active">
                     📋 ตาราง
@@ -489,7 +510,7 @@
                 <div id="cards-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
             </div>
     
-            <div id="pagination-controls" class="mt-8 flex flex-wrap justify-center space-x-2">
+            <div id="pagination-controls" class="mt-7 flex flex-wrap justify-center space-x-2">
                 <svg id="prev-btn" fill="currentColor" class="size-9 mt-0.5 ml-0.5 text-[#303030] dark:text-[#EAEAEA] cursor-pointer" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="m4.431 12.822 13 9A1 1 0 0 0 19 21V3a1 1 0 0 0-1.569-.823l-13 9a1.003 1.003 0 0 0 0 1.645z"/>
                 </svg>
@@ -498,27 +519,27 @@
                     <path d="M5.536 21.886a1.004 1.004 0 0 0 1.033-.064l13-9a1 1 0 0 0 0-1.644l-13-9A1 1 0 0 0 5 3v18a1 1 0 0 0 .536.886z"/>
                 </svg>
             </div>
-        </div> -->
+        </div>
 
         <!-- <div class="loader">
-  <i>L</i>
-  <i>O</i>
-  <i>A</i>
-  <i>D</i>
-  <i>I</i>
-  <i>N</i>
-  <i>G</i>
-  
-  <div class="covers">
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-    <i></i>
-  </div>
-</div> -->
+            <i>L</i>
+            <i>O</i>
+            <i>A</i>
+            <i>D</i>
+            <i>I</i>
+            <i>N</i>
+            <i>G</i>
+            
+            <div class="covers">
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+                <i></i>
+            </div>
+        </div> -->
 
         <div id="list-view" class="view-section bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
             <div id="containerexample" class="text-gray-900 dark:text-gray-100">
@@ -540,6 +561,24 @@
             </div>
         </div>
     </div>
+
+    <!-- <div id="loaderForm" class="loading absolute hidden bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]"> -->
+    <div id="loaderTransfer7" class="loading absolute hidden bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5] flex-col items-center justify-center space-y-4">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-20 h-20 animate-spin dark:text-white">
+            <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
+            <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
+        </svg>
+         <pre class="text-gray-900 dark:text-gray-100" style="text-align: center; white-space: pre-line;">กำลังอัปเดต...</pre>
+    </div>
+
+    <!-- <div class="flex flex-col items-center justify-center space-y-4">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-20 h-20 animate-spin dark:text-black">
+            <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
+            <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
+        </svg>
+        <pre style="text-align: center; white-space: pre-line; color:#000000;">กำลังอัปเดต...</pre>
+    </div> -->
+    <!-- p-0 m-0 flex items-center justify-center rounded-none shadow-none w-screen h-screen -->
 
     <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
     <script src="{{ asset('js/flowbite-2.3.0.min.js') }}"></script>
@@ -578,17 +617,45 @@
     @endif
     <script>
 
-    function showZoomPreview(url) {
-    const zoomBox = document.getElementById('zoomPreview');
-    const zoomImage = document.getElementById('zoomImage');
-    zoomImage.src = url;
-    zoomBox.classList.add('show');
-}
+        document.getElementById("submitButton").addEventListener("click", function() {
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            // 1) ยิงต่อไป external API sync
+            $.ajax({
+                method: "GET",
+                url: "https://pdmaster.ssup.co.th/api/sync_products.php",
+                data: {
+                    mode: "by_updated",
+                    days: 7
+                },
+                beforeSend: function () {
+                    $('#loaderTransfer7').removeClass('hidden');
+                },
+                success: function(syncRes) {
+                    console.log("Sync OK", syncRes);
+                    window.location = "/warehouse/dimension";
+                },
+                error: function() {
+                    toastr.warning("Local saved แล้ว แต่ sync ภายนอกไม่สำเร็จ");
+                    window.location = "/warehouse/dimension";
+                }
+            });
+        });
 
-function hideZoomPreview() {
-    const zoomBox = document.getElementById('zoomPreview');
-    zoomBox.classList.remove('show');
-}
+        function showZoomPreview(url) {
+            const zoomBox = document.getElementById('zoomPreview');
+            const zoomImage = document.getElementById('zoomImage');
+            zoomImage.src = url;
+            zoomBox.classList.add('show');
+        }
+
+        function hideZoomPreview() {
+            const zoomBox = document.getElementById('zoomPreview');
+            zoomBox.classList.remove('show');
+        }
 
         // $(document).ready(function () {
         //     $('#fetchDataBtn').click(function () {
@@ -739,184 +806,221 @@ function hideZoomPreview() {
         // });
 
         // Start ตัวที่ใช้งาน API Test filter-cards(Code อยู่ที่ public/conn.php(Route ต้องเปิด comment(Route::get('/filter-cards')))
-        // $(document).ready(function () {
-        //     let currentPage = 1;
-        //     const cardsPerPage = 8;
-        //     let allData = [];
-        //     const cardContainer = $('#cards-container');
+        $(document).ready(function () {
 
-        //     // Fetch data and initialize cards
-        //     function fetchData(type = '') {
-        //         const apiUrl = type
-        //             ? '{{ route('warehouse.filter.cards') }}' // Backend API with filter
-        //             : 'https://ins.schicher.com/api/users'; // Default API
+            // // Fetch data and initialize cards
+            // function fetchData(type = '') {
+            //     const apiUrl = type
+            //         ? '{{ route('warehouse.filter.cards') }}' // Backend API with filter
+            //         : 'https://ins.schicher.com/api/users'; // Default API
 
-        //         const requestOptions = type
-        //             ? {
-        //                 method: 'GET',
-        //                 data: { type },
-        //             }
-        //             : {
-        //                 method: 'GET',
-        //                 headers: {
-        //                     'X-RapidAPI-Key': '7115427d56mshfff5805283a13cep190338jsn4bc3f4689eb8',
-        //                     'X-RapidAPI-Host': 'ott-details.p.rapidapi.com',
-        //                 },
-        //             };
+            //     const requestOptions = type
+            //         ? {
+            //             method: 'GET',
+            //             data: { type },
+            //         }
+            //         : {
+            //             method: 'GET',
+            //             headers: {
+            //                 'X-RapidAPI-Key': '7115427d56mshfff5805283a13cep190338jsn4bc3f4689eb8',
+            //                 'X-RapidAPI-Host': 'ott-details.p.rapidapi.com',
+            //             },
+            //         };
 
-        //         $.ajax(apiUrl, requestOptions)
-        //             .done((data) => {
-        //                 // console.log("🚀 ~ fetchData ~ requestOptions:", requestOptions)
-        //                 allData = data;
-        //                 renderCards(currentPage);
-        //                 renderPagination();
-        //             })
-        //             .fail(() => alert('Error fetching data'));
-        //     }
+            //     $.ajax(apiUrl, requestOptions)
+            //         .done((data) => {
+            //             // console.log("🚀 ~ fetchData ~ requestOptions:", requestOptions)
+            //             allData = data;
+            //             renderCards(currentPage);
+            //             renderPagination();
+            //         })
+            //         .fail(() => alert('Error fetching data'));
+            // }
 
-        //     // Render cards for the current page
-        //     function renderCards(page) {
-        //         // console.log("🚀 Rendering cards with data:", allData);
-        //         // cardContainer.empty();
-        //         $('#cards-container').empty();
-        //         const start = (page - 1) * cardsPerPage;
-        //         const end = start + cardsPerPage;
-        //         const pageData = allData.slice(start, end);
+             // ให้ Laravel เติม base URL ของ endpoint ให้ถูกพอร์ตเอง
+            const ENDPOINTS = {
+                local:      "{{ url('/api/warehouse') }}",   // หรือ '/api/werehouse' ก็ได้ แต่ให้ใช้ให้เหมือนกับ prod
+                production: "http://pdmaster.ssup.co.th/api/warehouse"
+            };
 
-        //         pageData.forEach((item) => {
-        //             // console.log("Item:", item); // Debugging to see item structure
-        //             const name = item.name || 'Unknown Name';
-        //             const role = item.role || 'Unknown Role';
-        //             const imageUrl = item.imageurl || item.image || 'default-image-url.jpg'; // Replace with a fallback image if needed
-        //             // ตัดชื่อไม่ให้เกิน 30 ตัวอักษร + ...
-        //             const truncatedName = name.length > 30 ? name.substring(0, 29) + '…' : name;
-        //             const card = `
-        //                 <div class="max-w-sm p-1 bg-[#eaeaea] dark:bg-[#292929] object-cover rounded-sm shadow-md border-gray-300 cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-md hover:shadow-gray-400 dark:hover:shadow-md dark:hover:shadow-gray-400">
-        //                     <img src="${imageUrl}" alt="${name}" class="w-full h-32 object-cover">
-        //                     <div class="p-4">
-        //                         <h2 class="text-lg font-semibold mb-1 text-gray-900 dark:text-gray-100">${truncatedName}</h2>
-        //                         <p class="text-sm text-gray-400 dark:text-gray-400 uppercase">${role}</p>
-        //                     </div>
-        //                     <div class="px-4 pb-4 flex items-center space-x-4 text-gray-500 dark:text-gray-300 base:text-xl sm:text-sm">
-        //                         <div class="flex items-center space-x-1">
-        //                             <span>🔒</span>
-        //                             <span>CORS</span>
-        //                         </div>
-        //                         <div class="flex items-center space-x-1">
-        //                             <span>🔒</span>
-        //                             <span>HTTPS</span>
-        //                         </div>
-        //                     </div>
-        //                 </div>
-        //             `;
-        //             cardContainer.append(card);
-        //         });
+            function getApiBase() {
+                const isLocal = (location.hostname === 'localhost' || location.hostname === '127.0.0.1');
+                return isLocal ? ENDPOINTS.local : ENDPOINTS.production;
+            }
 
-        //         updatePaginationControls();
-        //     }
+            let currentPage = 1;
+            const cardsPerPage = 8;
+            let allData = [];
+            const cardContainer = $('#cards-container');
 
-        //     // Render pagination
-        //     function renderPagination() {
-        //         $('#pagination-numbers').empty();
-        //         const totalPages = Math.ceil(allData.length / cardsPerPage);
-        //         const maxVisiblePages = 5; // You can adjust this value
+            function fetchData(type = '') {
+                const apiUrl = type
+                ? `{{ route('warehouse.filter.cards') }}`   // ถ้ามี filter → ไป backend ของคุณ
+                : getApiBase();                              // ไม่งั้นไป endpoint ตาม env
 
-        //         function addPageButton(page, isActive = false) {
-        //             const pageButton = `<button class="px-4 py-1 mb-2 sm:mb-0 ${isActive ? 'bg-[#303030] text-white' : 'bg-white text-gray-800 border border-gray-300'} rounded hover:bg-[#505050]" data-page="${page}">${page}</button>`;
-        //             $('#pagination-numbers').append(pageButton);
-        //         }
+                const options = {
+                url: apiUrl,
+                method: 'GET',
+                data: type ? { type } : undefined,
+                // อย่าอัด header แปลก ๆ จะลดปัญหา CORS
+                };
 
-        //         if (totalPages <= maxVisiblePages) {
-        //             // If total pages are less than max visible pages, show all
-        //             for (let i = 1; i <= totalPages; i++) {
-        //                 addPageButton(i, i === currentPage);
-        //             }
-        //         } else {
-        //             // Show first page
-        //             addPageButton(1, currentPage === 1);
+                $.ajax(options)
+                .done((data) => {
+                    const payload = Array.isArray(data) ? data : (data.data ?? data);
+                    allData = payload || [];
+                    renderCards(currentPage);
+                    renderPagination();
+                })
+                .fail((xhr) => {
+                    console.error('Fetch error:', xhr?.status, xhr?.responseText);
+                    alert('Error fetching data: ' + xhr?.status);
+                });
+            }
 
-        //             // Show an ellipsis if currentPage is far from the first page
-        //             if (currentPage > 3) {
-        //                 $('#pagination-numbers').append('<span class="px-2 text-black dark:text-white">...</span>');
-        //             }
+            // Render cards for the current page
+            function renderCards(page) {
+                // console.log("🚀 Rendering cards with data:", allData);
+                // cardContainer.empty();
+                $('#cards-container').empty();
+                const start = (page - 1) * cardsPerPage;
+                const end = start + cardsPerPage;
+                const pageData = allData.slice(start, end);
 
-        //             // Show pages around the current page
-        //             let startPage = Math.max(2, currentPage - 1);
-        //             let endPage = Math.min(currentPage + 1, totalPages - 1);
+                pageData.forEach((item) => {
+                    // console.log("Item:", item); // Debugging to see item structure
+                    const name = item.name_thai || 'Unknown Name';
+                    const role = item.company_id || 'Unknown Role';
+                    const imageUrl = item.path || item.path || 'default-image-url.jpg'; // Replace with a fallback image if needed
+                    // ตัดชื่อไม่ให้เกิน 30 ตัวอักษร + ...
+                    const truncatedName = name.length > 30 ? name.substring(0, 29) + '…' : name;
+                    const card = `
+                        <div class="max-w-sm p-1 bg-[#eaeaea] dark:bg-[#292929] object-cover rounded-sm shadow-md border-gray-300 cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 hover:shadow-md hover:shadow-gray-400 dark:hover:shadow-md dark:hover:shadow-gray-400">
+                            <img src="${imageUrl}" alt="${name}" class="w-full h-32 object-cover">
+                            <div class="p-4">
+                                <h2 class="text-lg font-semibold mb-1 text-gray-900 dark:text-gray-100">${truncatedName}</h2>
+                                <p class="text-sm text-gray-400 dark:text-gray-400 uppercase">${role}</p>
+                            </div>
+                            <div class="px-4 pb-4 flex items-center space-x-4 text-gray-500 dark:text-gray-300 base:text-xl sm:text-sm">
+                                <div class="flex items-center space-x-1">
+                                    <span>🔒</span>
+                                    <span>CORS</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <span>🔒</span>
+                                    <span>HTTPS</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    cardContainer.append(card);
+                });
 
-        //             for (let i = startPage; i <= endPage; i++) {
-        //                 addPageButton(i, i === currentPage);
-        //             }
+                updatePaginationControls();
+            }
 
-        //             // Show an ellipsis if currentPage is far from the last page
-        //             if (currentPage < totalPages - 2) {
-        //                 $('#pagination-numbers').append('<span class="px-2 text-black dark:text-white">...</span>');
-        //             }
+            // Render pagination
+            function renderPagination() {
+                $('#pagination-numbers').empty();
+                const totalPages = Math.ceil(allData.length / cardsPerPage);
+                const maxVisiblePages = 5; // You can adjust this value
 
-        //             // Show last page
-        //             addPageButton(totalPages, currentPage === totalPages);
-        //         }
+                function addPageButton(page, isActive = false) {
+                    const pageButton = `<button class="px-4 py-1 mb-2 sm:mb-0 ${isActive ? 'bg-[#303030] text-white' : 'bg-white text-gray-800 border border-gray-300'} rounded hover:bg-[#505050]" data-page="${page}">${page}</button>`;
+                    $('#pagination-numbers').append(pageButton);
+                }
 
-        //         // Add event listeners to page buttons
-        //         $('#pagination-numbers button').click(function () {
-        //             const page = $(this).data('page');
-        //             currentPage = page;
-        //             renderCards(currentPage);
-        //             renderPagination();
-        //         });
-        //     }
+                if (totalPages <= maxVisiblePages) {
+                    // If total pages are less than max visible pages, show all
+                    for (let i = 1; i <= totalPages; i++) {
+                        addPageButton(i, i === currentPage);
+                    }
+                } else {
+                    // Show first page
+                    addPageButton(1, currentPage === 1);
 
-        //     // Update pagination controls
-        //     function updatePaginationControls() {
-        //         const totalPages = Math.ceil(allData.length / cardsPerPage);
-        //         $('#prev-btn').prop('disabled', currentPage === 1);
-        //         $('#next-btn').prop('disabled', currentPage === totalPages);
-        //     }
+                    // Show an ellipsis if currentPage is far from the first page
+                    if (currentPage > 3) {
+                        $('#pagination-numbers').append('<span class="px-2 text-black dark:text-white">...</span>');
+                    }
 
-        //     // Pagination navigation buttons
-        //     $('#prev-btn').click(function () {
-        //         if (currentPage > 1) {
-        //             currentPage--;
-        //             renderCards(currentPage);
-        //             renderPagination();
-        //         }
-        //     });
+                    // Show pages around the current page
+                    let startPage = Math.max(2, currentPage - 1);
+                    let endPage = Math.min(currentPage + 1, totalPages - 1);
 
-        //     $('#next-btn').click(function () {
-        //         const totalPages = Math.ceil(allData.length / cardsPerPage);
-        //         if (currentPage < totalPages) {
-        //             currentPage++;
-        //             renderCards(currentPage);
-        //             renderPagination();
-        //         }
-        //     });
+                    for (let i = startPage; i <= endPage; i++) {
+                        addPageButton(i, i === currentPage);
+                    }
 
-        //     // Filter cards by type
-        //     $('#filter-select').on('change', function () {
-        //         const type = $(this).val();
-        //         fetchData(type);
-        //     });
+                    // Show an ellipsis if currentPage is far from the last page
+                    if (currentPage < totalPages - 2) {
+                        $('#pagination-numbers').append('<span class="px-2 text-black dark:text-white">...</span>');
+                    }
 
-        //     // Initial fetch
-        //     fetchData();
-        // });
+                    // Show last page
+                    addPageButton(totalPages, currentPage === totalPages);
+                }
+
+                // Add event listeners to page buttons
+                $('#pagination-numbers button').click(function () {
+                    const page = $(this).data('page');
+                    currentPage = page;
+                    renderCards(currentPage);
+                    renderPagination();
+                });
+            }
+
+            // Update pagination controls
+            function updatePaginationControls() {
+                const totalPages = Math.ceil(allData.length / cardsPerPage);
+                $('#prev-btn').prop('disabled', currentPage === 1);
+                $('#next-btn').prop('disabled', currentPage === totalPages);
+            }
+
+            // Pagination navigation buttons
+            $('#prev-btn').click(function () {
+                if (currentPage > 1) {
+                    currentPage--;
+                    renderCards(currentPage);
+                    renderPagination();
+                }
+            });
+
+            $('#next-btn').click(function () {
+                const totalPages = Math.ceil(allData.length / cardsPerPage);
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    renderCards(currentPage);
+                    renderPagination();
+                }
+            });
+
+            // Filter cards by type
+            $('#filter-select').on('change', function () {
+                const type = $(this).val();
+                fetchData(type);
+            });
+
+            // Initial fetch
+            fetchData();
+        });
         // // End ตัวที่ใช้งาน
 
-        // $(function() {
-        //     $('#btn-list').click(function() {
-        //         $('#grid-view').hide();
-        //         $('#list-view').show();
-        //         $('.toggle-btn').removeClass('active');
-        //         $(this).addClass('active');
-        //     });
+        $(function() {
+            $('#btn-list').click(function() {
+                $('#grid-view').hide();
+                $('#list-view').show();
+                $('.toggle-btn').removeClass('active');
+                $(this).addClass('active');
+            });
 
-        //     $('#btn-grid').click(function() {
-        //         $('#list-view').hide();
-        //         $('#grid-view').show();
-        //         $('.toggle-btn').removeClass('active');
-        //         $(this).addClass('active');
-        //     });
-        // });
+            $('#btn-grid').click(function() {
+                $('#list-view').hide();
+                $('#grid-view').show();
+                $('.toggle-btn').removeClass('active');
+                $(this).addClass('active');
+            });
+        });
 
         $(document).ready(function() {
             // $('.js-example-basic-single').select2();

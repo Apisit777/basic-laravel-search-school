@@ -21,7 +21,8 @@ class UserImport implements ToModel, WithHeadingRow
         return new ManagePrice([
             'brand'     => $row['brand'],
             'product'    => $row['product'],
-            'price'    => $row['price'],
+            // 'price'    => $row['price'],
+            'cost'    => $row['cost'],
             'start_date' => Carbon::createFromFormat('d/m/Y', $row['start_date'])->format('Y-m-d H:i:s'),
             'created_at' => now(),
             'updated_at' => now(),

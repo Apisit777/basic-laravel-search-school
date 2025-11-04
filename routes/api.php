@@ -20,6 +20,9 @@ Route::post('/apiLogin', [AuthController::class, 'apiLogin'])->name('apiLogin');
 Route::get('/api_apps_login', [AuthController::class, 'apiAppsLogin'])->name('api_apps_login');
 Route::get('/users', [AuthController::class, 'list_user']);
 
+// Wherehouse
+Route::get('/warehouse',  [AuthController::class, 'apiWhereHouse'])->name('api.warehouse');
+
 // API ProductMaster
 Route::get('/products', [ProductMasterController::class, 'listProducts']);
 

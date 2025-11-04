@@ -132,15 +132,29 @@ class ProductFormController extends Controller
                 ->toArray();
         }
 
-        $products = Product1::select(
-            'PRODUCT')
+        // ดึง PRODUCT + BARCODE (ปรับชื่อฟิลด์ barcode ตามจริง)
+        $productsQ = Product1::select('PRODUCT', 'BARCODE')
         ->whereRaw('LENGTH(PRODUCT) = 5')
-        ->pluck('PRODUCT')
-        ->toArray();
+        ->whereRaw("PRODUCT NOT LIKE '0%' AND PRODUCT NOT LIKE '1%'")
+        ->orderBy('PRODUCT')
+        ->get();
 
-        // dd($products);
+        // แยกเป็นสองก้อนสำหรับ view
+        $productList      = $productsQ->pluck('PRODUCT')->toArray();                 // สำหรับ <option>
+        $productBarcodes  = $productsQ->pluck('BARCODE', 'PRODUCT');        // map: PRODUCT => BARCODE
 
-        return view('new_product_develop.index', compact('user', 'productCodeArr', 'brands', 'getSelect2ProDevelops', 'products'));
+        // dd($productBarcodes);
+
+        return view(
+        'new_product_develop.index',
+        array_merge(
+            compact('user', 'productCodeArr', 'brands', 'getSelect2ProDevelops'),
+                [
+                    'products'        => $productList,       // ใช้ populate select
+                    'productBarcodes' => $productBarcodes,   // ใช้ lookup barcode ใน JS/Blade
+                ]
+            )
+        );
     }
 
     public function duplicateNpdRequest(Request $request, $id_barcode)
@@ -1289,13 +1303,13 @@ class ProductFormController extends Controller
             $product_co_ordimators = Npd_cos::select(
                 'ID AS NPD',
                 'DESCRIPTION')
-            ->where('BRAND', 'OP')
+            ->where('BRAND', 'KTY')
             ->get();
 
             $marketing_managers = Npd_pdms::select(
                 'ID AS PDM',
                 'DESCRIPTION')
-            ->where('BRAND', 'OP')
+            ->where('BRAND', 'KTY')
             ->get();
         } else {
             $brands = Barcode::select(

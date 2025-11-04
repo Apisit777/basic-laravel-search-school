@@ -439,6 +439,12 @@ class ProductionRunMidnightTaskKm extends Command
         // HAVING COUNT(*) > 1
         // ORDER BY product_id ASC;
 
+        // SELECT p.id, p.company_id, p.product_id, p.img_url, p.ref_barcode_real
+        // FROM com_products p
+        // LEFT JOIN com_product_images pi ON p.product_id = pi.product_id COLLATE utf8mb4_unicode_ci
+        // WHERE pi.product_id IS NULL AND LENGTH(p.product_id) = 5 AND p.product_id REGEXP '^[2-9]'
+        // ORDER BY p.product_id ASC;
+
         // *************************
         // width = 0 AND `long` = 0 AND height = 0 หาย = 0
         // SELECT * FROM com_products WHERE width = 0 AND `long` = 0 AND height = 0 AND LENGTH(product_id) = 5 AND product_id REGEXP '^[1-9]' AND update_dt BETWEEN '2025-09-01' AND '2025-09-12' ORDER BY `com_products`.`product_id` ASC;
@@ -466,6 +472,50 @@ class ProductionRunMidnightTaskKm extends Command
 
         // SELECT a.product_id as product_a,b.PRODUCT as product_b FROM com_products as a left join product1s as b on trim(a.product_id) = trim(b.PRODUCT) where b.PRODUCT is null;
         
+        // SELECT 
+        //     p.PRODUCT, p.VENDOR AS p_vendor, c.vendor_id AS c_vendor, p.PRICE AS p_price, c.price AS c_price,  p.COST AS p_cost, c.cost AS c_cost 
+        // FROM product1s p 
+        // JOIN com_products c 
+        //     ON TRIM(p.PRODUCT) = TRIM(c.product_id) 
+        // WHERE LENGTH(p.PRODUCT) = 5 
+        //     AND p.PRODUCT REGEXP '^2' 
+        //     AND (p.VENDOR <> c.vendor_id 
+        //         OR p.PRICE <> c.price 
+        //         OR p.COST <> c.cost)
+        // ORDER BY p.PRODUCT ASC;
+
+
+
+        // SELECT 
+        //     p.PRODUCT, 
+        //     p.VENDOR AS p_vendor, 
+        //     c.vendor_id AS c_vendor, 
+        //     p.PRICE AS p_price, 
+        //     c.price AS c_price, 
+        //     p.COST AS p_cost, 
+        //     c.cost AS c_cost 
+        // FROM product1s p 
+        // JOIN com_products c 
+        //     ON TRIM(p.PRODUCT) = TRIM(c.product_id) 
+        // WHERE LENGTH(p.PRODUCT) = 5 
+        //     AND p.PRODUCT REGEXP '^7' 
+        //     AND (p.VENDOR <> c.vendor_id 
+        //         OR p.PRICE <> c.price 
+        //         OR p.COST <> c.cost)
+        // ORDER BY p.PRODUCT ASC;
+
+
+
+
+        // SELECT p.PRODUCT, p.VENDOR AS p_vendor, c.vendor_id AS c_vendor, p.PRICE AS p_price, c.price AS c_price, p.COST AS p_cost, c.cost AS c_cost FROM product1s p 
+        // JOIN com_products c ON TRIM(p.PRODUCT) = TRIM(c.product_id) WHERE LENGTH(p.PRODUCT) >= 5 
+        // AND p.PRODUCT REGEXP '^8' 
+        // AND (p.VENDOR <> c.vendor_id OR p.PRICE <> c.price OR p.COST <> c.cost) 
+        // ORDER BY p.PRODUCT ASC;
+
+
+        
+
         // UPDATE com_product_temp
         // SET update_dt = now()
         
@@ -488,6 +538,22 @@ class ProductionRunMidnightTaskKm extends Command
         // ข้อมูลไม่ครบ 76049
         // 75834 = pack 12
 
+        // 81101393 price, cost ไม่เท่ากัน
+
+        // 9000132 - 9000146 มีแค่ต้นทุนไม่มีราคาขาย
+
+        
+
+        // SELECT id, product_id, company_id, vendor_id, price, cost, unit_id, capacity, non_vat, status, gp, `return`, acc_type, `group` 
+        // FROM `com_products` 
+        // WHERE `product_id` IN ('76183', '75176', '75659', '75660', '75661', '76013', '76015', '76016', '76183', '76243', '76307') 
+        // ORDER BY `com_products`.`return` ASC;
+
+        // SELECT * FROM product1s WHERE EDIT_DT BETWEEN '2025-09-15' AND CURDATE() AND BRAND = 'CPS' AND PRODUCT REGEXP '^7' ORDER BY `product1s`.`PRODUCT` ASC
+
+
+
+        
         try {
             // เลือกเฉพาะ BRAND = 'CPS' และยังไม่อยู่ใน details/others (เทียบแบบ normalize)
             $sql = "

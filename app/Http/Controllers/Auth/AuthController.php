@@ -726,7 +726,20 @@ class AuthController extends Controller
                 $user->save();
                 Auth::login($user, false);
 
-                /// เงื่อนไขพิเศษ: ถ้า defaultRole ลงท้ายด้วย KM → redirect ไปหน้า warehouse/dimension & รหัส user test km(91)
+                // เงื่อนไขพิเศษ: ถ้า defaultRole เป็น Modern Trade ตอน login จะไม่สามารถเห็น cost ได้
+                $modernTrade = [
+                    'MT1' => 'Assistant Manager - Modern Trade-CPS',
+                    'MT2' => 'Division Manager-Modern Trade Channel-CPS',
+                    'MT3' => 'Key Account Manager-Modern Trade-CPS',
+                    'MT4' => 'Administrator-Modern Trade-CPS',
+                ];
+
+                $currentPosition = Auth::user()->getUserPermission->name_position;
+
+                $pos = Str::lower(trim((string) $currentPosition));
+                $modernTradeValues = array_map(fn ($v) => Str::lower(trim($v)), array_values($modernTrade));
+
+                // เงื่อนไขพิเศษ: ถ้า defaultRole ลงท้ายด้วย KM → redirect ไปหน้า warehouse/dimension & รหัส user test km(91)
                 if (substr($defaultRole, -2) === 'KM' && Auth::user()->id === 91) {
                     return response()->json([
                         'status' => 'success',
@@ -740,6 +753,13 @@ class AuthController extends Controller
                         'response' => $response,
                         'default_role' => $defaultRole,
                         'route' => '/warehouse/dimension'
+                    ]);
+                } elseif (in_array($pos, $modernTradeValues, true)) {    // ✅ เปรียบเทียบกับ values
+                    return response()->json([
+                        'status' => 'success',
+                        'response' => $response,
+                        'default_role' => $defaultRole,
+                        'route' => '/product_detail/pd_detail',           // ✅ เส้นทางที่ต้องการ
                     ]);
                 }
 

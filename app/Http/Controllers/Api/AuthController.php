@@ -10,6 +10,7 @@ use App\Models\Solution;
 use App\Models\Category;
 use App\Models\Sub_category;
 use App\Models\Product1;
+use App\Models\Com_product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -130,6 +131,40 @@ class AuthController extends Controller
             return response()->json(['error' => $error], 401);
         } else {
             return response()->json(['error' => 'Unexpected response status', 'response' => $data->status()]);
+        }
+    }
+
+    public function apiWhereHouse(Request $request)
+    {
+        try {
+            $data = Com_product::query()
+                ->select([
+                    'com_products.company_id',
+                    'com_products.product_id',
+                    'com_products.name_thai',
+                    'com_products.barcode',
+                    'i.path as path',
+                ])
+                ->leftJoin('com_product_images as i', function ($join) {
+                    $join->on(
+                        DB::raw("com_products.product_id COLLATE utf8mb4_unicode_ci"),
+                        '=',
+                        DB::raw("i.product_id COLLATE utf8mb4_unicode_ci")
+                    )->where('i.seq', 1);
+                })
+                ->get();
+            // ✅ คืนข้อมูลในรูปแบบ JSON พร้อมสถานะ
+            return response()->json([
+                'status'  => 'success',
+                'count'   => $data->count(),
+                'data'    => $data,
+            ], 200);
+        } catch (\Throwable $e) {
+            // ✅ กรณี error
+            return response()->json([
+                'status'  => 'error',
+                'message' => $e->getMessage(),
+            ], 500);
         }
     }
 }

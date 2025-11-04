@@ -275,6 +275,8 @@ class ProductImageController extends Controller
             return response()->json(['message' => 'Image not found in database.'], 404);
         }
 
+        // https://pdmaster.ssup.co.th/uploads/upload_old/2024121811110313.jpg
+
         $fullpath = public_path($data->path);
 
         // เช็คว่าไฟล์มีอยู่จริงหรือไม่

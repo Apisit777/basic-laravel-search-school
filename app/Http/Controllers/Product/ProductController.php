@@ -1786,6 +1786,11 @@ class ProductController extends Controller
             //     ]);
             // }
 
+            $isSuperAdmin = (Auth::user()->id === 26);
+            $userPermissionFull = Auth::user()->getUserPermission->name_position ?? '';
+            $namePositionParts = explode('-', $userPermissionFull);
+            $userpermission = trim(end($namePositionParts)); // brand/suffix
+
             $data_product = [
                 'BRAND' => $request->input('BRAND') ?? '',
                 // 'BRAND' => $request->input('BRAND') ?? '',
@@ -1946,17 +1951,32 @@ class ProductController extends Controller
 
             // SELECT * FROM com_products WHERE update_dt BETWEEN '2025-09-01' AND CURDATE();
             // SELECT * FROM com_products WHERE update_dt >= '2025-09-01' AND update_dt < CURDATE() + INTERVAL 1 DAY ORDER BY update_dt DESC;
-            $createComProduct = Com_product::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
-                'company_id' => $productMaster->BRAND,
-                'barcode' => $productMaster->BARCODE,
-                'vendor_id' => $productMaster->VENDOR,
-                'name_thai' => $productMaster->NAME_THAI,
-                'name_eng' => $productMaster->NAME_ENG,
-                'short_thai' => $productMaster->SHORT_THAI,
-                'short_eng' => $productMaster->SHORT_ENG,
-                'price' => $productMaster->PRICE,
-                'cost' => $productMaster->COST,
-                'upd_user' => Auth::user()->username,
+            $createComProduct = Com_product::updateOrCreate(
+                ['product_id' => $data_product['PRODUCT']], 
+                [
+                'company_id' => $productMaster->BRAND ?? '',
+                'barcode' => $productMaster->BARCODE ?? '',
+                'vendor_id' => $productMaster->VENDOR ?? '',
+                'name_thai' => $productMaster->NAME_THAI ?? '',
+                'name_eng' => $productMaster->NAME_ENG ?? '',
+                'short_thai' => $productMaster->SHORT_THAI ?? '',
+                'short_eng' => $productMaster->SHORT_ENG ?? '',
+                'price' => $productMaster->PRICE ?? '',
+                'cost' => $productMaster->COST ?? '',
+                'unit_id'       => $productMaster->UNIT ?? '',
+                'capacity'       => $productMaster->UNIT_Q ?? '',
+                'non_vat'       => $productMaster->NON_VAT ?? '',
+                'status'       => $productMaster->STATUS ?? '',
+                'gp'       => $productMaster->GP ?? '',
+                'return'       => $productMaster->RETURN ?? '',
+                'o_product'       => $productMaster->O_PRODUCT ?? '',
+                'acc_type'       => $productMaster->ACC_TYPE ?? '',
+                'group2'       => $productMaster->TYPE_G ?? '',
+                'series'       => $productMaster->SERIES ?? '',
+                'solution'       => $productMaster->SOLUTION ?? '',
+                'category'       => $productMaster->CATEGORY ?? '',
+                'upd_user' =>Auth::user()->username . '(' . $userpermission . ')',
+                'status_tranfer_km' => '',
                 'update_dt' => date("Y/m/d H:i:s"),
             ]);
 
@@ -2033,6 +2053,12 @@ class ProductController extends Controller
         // 95090026
         DB::beginTransaction();
         try {
+
+            $isSuperAdmin = (Auth::user()->id === 26);
+            $userPermissionFull = Auth::user()->getUserPermission->name_position ?? '';
+            $namePositionParts = explode('-', $userPermissionFull);
+            $userpermission = trim(end($namePositionParts)); // brand/suffix
+            
             $data_product = [
                 'BRAND' => $request->input('BRAND') ?? '',
                 // 'BRAND' => $description,
@@ -2142,17 +2168,32 @@ class ProductController extends Controller
                 ]);
             }
 
-            $createComProduct = Com_product::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
-                'company_id' => $productMaster->BRAND,
-                'barcode' => $productMaster->BARCODE,
-                'vendor_id' => $productMaster->VENDOR,
-                'name_thai' => $productMaster->NAME_THAI,
-                'name_eng' => $productMaster->NAME_ENG,
-                'short_thai' => $productMaster->SHORT_THAI,
-                'short_eng' => $productMaster->SHORT_ENG,
-                'price' => $productMaster->PRICE,
-                'cost' => $productMaster->COST,
-                'upd_user' => Auth::user()->username,
+            $createComProduct = Com_product::updateOrCreate(
+                ['product_id' => $data_product['PRODUCT']], 
+                [
+                'company_id' => $productMaster->BRAND ?? '',
+                'barcode' => $productMaster->BARCODE ?? '',
+                'vendor_id' => $productMaster->VENDOR ?? '',
+                'name_thai' => $productMaster->NAME_THAI ?? '',
+                'name_eng' => $productMaster->NAME_ENG ?? '',
+                'short_thai' => $productMaster->SHORT_THAI ?? '',
+                'short_eng' => $productMaster->SHORT_ENG ?? '',
+                'price' => $productMaster->PRICE ?? '',
+                'cost' => $productMaster->COST ?? '',
+                'unit_id'       => $productMaster->UNIT ?? '',
+                'capacity'       => $productMaster->UNIT_Q ?? '',
+                'non_vat'       => $productMaster->NON_VAT ?? '',
+                'status'       => $productMaster->STATUS ?? '',
+                'gp'       => $productMaster->GP ?? '',
+                'return'       => $productMaster->RETURN ?? '',
+                'o_product'       => $productMaster->O_PRODUCT ?? '',
+                'acc_type'       => $productMaster->ACC_TYPE ?? '',
+                'group2'       => $productMaster->TYPE_G ?? '',
+                'series'       => $productMaster->SERIES ?? '',
+                'solution'       => $productMaster->SOLUTION ?? '',
+                'category'       => $productMaster->CATEGORY ?? '',
+                'upd_user' =>Auth::user()->username . '(' . $userpermission . ')',
+                'status_tranfer_km' => '',
                 'update_dt' => date("Y/m/d H:i:s"),
             ]);
 
@@ -3145,6 +3186,18 @@ class ProductController extends Controller
                             'short_eng'  => $productUpddateConsumables->SHORT_ENG ?? '',
                             'price'      => $productUpddateConsumables->PRICE ?? '',
                             'cost'       => $productUpddateConsumables->COST ?? '',
+                            'unit_id'       => $productUpddateConsumables->UNIT ?? '',
+                            'capacity'       => $productUpddateConsumables->UNIT_Q ?? '',
+                            'non_vat'       => $productUpddateConsumables->NON_VAT ?? '',
+                            'status'       => $productUpddateConsumables->STATUS ?? '',
+                            'gp'       => $productUpddateConsumables->GP ?? '',
+                            'return'       => $productUpddateConsumables->RETURN ?? '',
+                            'o_product'       => $productUpddateConsumables->O_PRODUCT ?? '',
+                            'acc_type'       => $productUpddateConsumables->ACC_TYPE ?? '',
+                            'group2'       => $productUpddateConsumables->TYPE_G ?? '',
+                            'series'       => $productUpddateConsumables->SERIES ?? '',
+                            'solution'       => $productUpddateConsumables->SOLUTION ?? '',
+                            'category'       => $productUpddateConsumables->CATEGORY ?? '',
                             'upd_user'   => Auth::user()->username . '(' . $userpermission . ')',
                             'status_tranfer_km' => '',
                             'update_dt'  => $now->format('Y-m-d H:i:s'),
@@ -3163,6 +3216,18 @@ class ProductController extends Controller
                         'short_eng'  => $productUpddateConsumables->SHORT_ENG ?? '',
                         'price'      => $productUpddateConsumables->PRICE ?? '',
                         'cost'       => $productUpddateConsumables->COST ?? '',
+                        'unit_id'       => $productUpddateConsumables->UNIT ?? '',
+                        'capacity'       => $productUpddateConsumables->UNIT_Q ?? '',
+                        'non_vat'       => $productUpddateConsumables->NON_VAT ?? '',
+                        'status'       => $productUpddateConsumables->STATUS ?? '',
+                        'gp'       => $productUpddateConsumables->GP ?? '',
+                        'return'       => $productUpddateConsumables->RETURN ?? '',
+                        'o_product'       => $productUpddateConsumables->O_PRODUCT ?? '',
+                        'acc_type'       => $productUpddateConsumables->ACC_TYPE ?? '',
+                        'group2'       => $productUpddateConsumables->TYPE_G ?? '',
+                        'series'       => $productUpddateConsumables->SERIES ?? '',
+                        'solution'       => $productUpddateConsumables->SOLUTION ?? '',
+                        'category'       => $productUpddateConsumables->CATEGORY ?? '',
                         'upd_user'   => Auth::user()->username . '(' . $userpermission . ')',
                         'status_tranfer_km' => '',
                         'update_dt'  => $now->format('Y-m-d H:i:s'),
@@ -3225,11 +3290,25 @@ class ProductController extends Controller
                             'short_eng'  => $productUpddateConsumables->SHORT_ENG ?? '',
                             'price'      => $productUpddateConsumables->PRICE ?? '',
                             'cost'       => $productUpddateConsumables->COST ?? '',
+                            'unit_id'       => $productUpddateConsumables->UNIT ?? '',
+                            'capacity'       => $productUpddateConsumables->UNIT_Q ?? '',
+                            'non_vat'       => $productUpddateConsumables->NON_VAT ?? '',
+                            'status'       => $productUpddateConsumables->STATUS ?? '',
+                            'gp'       => $productUpddateConsumables->GP ?? '',
+                            'return'       => $productUpddateConsumables->RETURN ?? '',
+                            'o_product'       => $productUpddateConsumables->O_PRODUCT ?? '',
+                            'acc_type'       => $productUpddateConsumables->ACC_TYPE ?? '',
+                            'group2'       => $productUpddateConsumables->TYPE_G ?? '',
+                            'series'       => $productUpddateConsumables->SERIES ?? '',
+                            'solution'       => $productUpddateConsumables->SOLUTION ?? '',
+                            'category'       => $productUpddateConsumables->CATEGORY ?? '',
                             'upd_user'   => Auth::user()->username . '(' . $userpermission . ')',
                             'status_tranfer_km' => '',
                             'update_dt'  => $now->format('Y-m-d H:i:s'),
                         ]
                     );
+
+                    // dd($updateComProduct);
 
                     // --- เตรียม payload เฉพาะคอลัมน์ที่ปลายทางมีจริง ---
                     $payloadExternal = [
@@ -3243,6 +3322,18 @@ class ProductController extends Controller
                         'short_eng'  => $productUpddateConsumables->SHORT_ENG ?? '',
                         'price'      => $productUpddateConsumables->PRICE ?? '',
                         'cost'       => $productUpddateConsumables->COST ?? '',
+                        'unit_id'       => $productUpddateConsumables->UNIT ?? '',
+                        'capacity'       => $productUpddateConsumables->UNIT_Q ?? '',
+                        'non_vat'       => $productUpddateConsumables->NON_VAT ?? '',
+                        'status'       => $productUpddateConsumables->STATUS ?? '',
+                        'gp'       => $productUpddateConsumables->GP ?? '',
+                        'return'       => $productUpddateConsumables->RETURN ?? '',
+                        'o_product'       => $productUpddateConsumables->O_PRODUCT ?? '',
+                        'acc_type'       => $productUpddateConsumables->ACC_TYPE ?? '',
+                        'group2'       => $productUpddateConsumables->TYPE_G ?? '',
+                        'series'       => $productUpddateConsumables->SERIES ?? '',
+                        'solution'       => $productUpddateConsumables->SOLUTION ?? '',
+                        'category'       => $productUpddateConsumables->CATEGORY ?? '',
                         'upd_user'   => Auth::user()->username . '(' . $userpermission . ')',
                         'status_tranfer_km' => '',
                         'update_dt'  => $now->format('Y-m-d H:i:s'),
@@ -3402,6 +3493,7 @@ class ProductController extends Controller
                     }
                 }
 
+                // dd($data_product_upddate);
                 // อัปเดตข้อมูล
                 Product1::where('PRODUCT', $PRODUCT)->update($data_product_upddate);
 
@@ -3463,10 +3555,10 @@ class ProductController extends Controller
                     $updateProductOther = ProductOther::updateOrCreate(['product_id' => $PRODUCT],
                         [
                             'corporation_id' => $productUpddate->BRAND,
-                            'item_name' => $productUpddate->NAME_ENG ?? '',
-                            'cat_name' => $productUpddate->CATEGORY ?? '',
-                            'upd_user' => Auth::user()->username,
-                            'upd_date' => date("Y/m/d H:i:s"),
+                            'item_name'      => $productUpddate->NAME_ENG ?? '',
+                            'cat_name'       => $productUpddate->CATEGORY ?? '',
+                            'upd_user'       => Auth::user()->username,
+                            'upd_date'       => date("Y/m/d H:i:s"),
                         ]
                     );
                     // ค้นหาข้อมูลเดิมจาก ComProduct
@@ -3482,39 +3574,67 @@ class ProductController extends Controller
                     $updateComProduct = Com_product::updateOrCreate(
                         ['product_id' => $PRODUCT],
                         [
-                            'company_id' => $productUpddate->BRAND,
-                            'barcode'    => $productUpddate->BARCODE,
-                            'vendor_id'  => $productUpddate->VENDOR ?? '',
-                            'name_thai'  => $productUpddate->NAME_THAI ?? '',
-                            'name_eng'   => $productUpddate->NAME_ENG ?? '',
-                            'short_thai' => $productUpddate->SHORT_THAI ?? '',
-                            'short_eng'  => $productUpddate->SHORT_ENG ?? '',
-                            'price'      => $productUpddate->PRICE ?? '',
-                            'cost'       => $productUpddate->COST ?? '',
-                            'upd_user'   => Auth::user()->username . '(' . $userpermission . ')',
+                            'company_id'        => $productUpddate->BRAND,
+                            'barcode'           => $productUpddate->BARCODE,
+                            'vendor_id'         => $productUpddate->VENDOR ?? '',
+                            'name_thai'         => $productUpddate->NAME_THAI ?? '',
+                            'name_eng'          => $productUpddate->NAME_ENG ?? '',
+                            'short_thai'        => $productUpddate->SHORT_THAI ?? '',
+                            'short_eng'         => $productUpddate->SHORT_ENG ?? '',
+                            'price'             => $productUpddate->PRICE ?? '',
+                            'cost'              => $productUpddate->COST ?? '',
+                            'unit_id'       => $productUpddate->UNIT ?? '',
+                            'capacity'       => $productUpddate->UNIT_Q ?? '',
+                            'non_vat'       => $productUpddate->NON_VAT ?? '',
+                            'status'       => $productUpddate->STATUS ?? '',
+                            'gp'       => $productUpddate->GP ?? '',
+                            'return'       => $productUpddate->RETURN ?? '',
+                            'o_product'       => $productUpddate->O_PRODUCT ?? '',
+                            // 'shelf_life'       => $productUpddate->AGE ?? '',
+                            'acc_type'       => $productUpddate->ACC_TYPE ?? '',
+                            'group2'       => $productUpddate->TYPE_G ?? '',
+                            'series'       => $productUpddate->SERIES ?? '',
+                            'solution'       => $productUpddate->SOLUTION ?? '',
+                            'category'       => $productUpddate->CATEGORY ?? '',
+                            'upd_user'          => Auth::user()->username . '(' . $userpermission . ')',
                             'status_tranfer_km' => '',
-                            'update_dt'  => $now->format('Y-m-d H:i:s'),
+                            'update_dt'         => $now->format('Y-m-d H:i:s'),
                         ]
                     );
 
+                    // dd($updateComProduct);
+
                     // --- เตรียม payload เฉพาะคอลัมน์ที่ปลายทางมีจริง ---
                     $payloadExternal = [
-                        'product_id' => $PRODUCT,
-                        'company_id' => $productUpddate->BRAND,
-                        'barcode'    => $productUpddate->BARCODE,
-                        'vendor_id'  => $productUpddate->VENDOR ?? '',
-                        'name_thai'  => $productUpddate->NAME_THAI ?? '',
-                        'name_eng'   => $productUpddate->NAME_ENG ?? '',
-                        'short_thai' => $productUpddate->SHORT_THAI ?? '',
-                        'short_eng'  => $productUpddate->SHORT_ENG ?? '',
-                        'price'      => $productUpddate->PRICE ?? '',
-                        'cost'       => $productUpddate->COST ?? '',
-                        'upd_user'   => Auth::user()->username . '(' . $userpermission . ')',
+                        'product_id'        => $PRODUCT,
+                        'company_id'        => $productUpddate->BRAND,
+                        'barcode'           => $productUpddate->BARCODE,
+                        'vendor_id'         => $productUpddate->VENDOR ?? '',
+                        'name_thai'         => $productUpddate->NAME_THAI ?? '',
+                        'name_eng'          => $productUpddate->NAME_ENG ?? '',
+                        'short_thai'        => $productUpddate->SHORT_THAI ?? '',
+                        'short_eng'         => $productUpddate->SHORT_ENG ?? '',
+                        'price'             => $productUpddate->PRICE ?? '',
+                        'cost'              => $productUpddate->COST ?? '',
+                        'unit_id'       => $productUpddate->UNIT ?? '',
+                        'capacity'       => $productUpddate->UNIT_Q ?? '',
+                        'non_vat'       => $productUpddate->NON_VAT ?? '',
+                        'status'       => $productUpddate->STATUS ?? '',
+                        'gp'       => $productUpddate->GP ?? '',
+                        'return'       => $productUpddate->RETURN ?? '',
+                        'o_product'       => $productUpddate->O_PRODUCT ?? '',
+                        // 'shelf_life'       => $productUpddate->AGE ?? '',
+                        'acc_type'       => $productUpddate->ACC_TYPE ?? '',
+                        'group2'       => $productUpddate->TYPE_G ?? '',
+                        'series'       => $productUpddate->SERIES ?? '',
+                        'solution'       => $productUpddate->SOLUTION ?? '',
+                        'category'       => $productUpddate->CATEGORY ?? '',
+                        'upd_user'          => Auth::user()->username . '(' . $userpermission . ')',
                         'status_tranfer_km' => '',
-                        'update_dt'  => $now->format('Y-m-d H:i:s'),
+                        'update_dt'         => $now->format('Y-m-d H:i:s'),
                     ];
 
-                    dd($payloadExternal);
+                    // dd($payloadExternal);
 
                     // --- เขียนปลายทาง (mysql_external) แบบ transaction ---
                     DB::connection('mysql_external')->transaction(function () use ($payloadExternal) {
@@ -3553,6 +3673,19 @@ class ProductController extends Controller
                             'short_eng'  => $productUpddate->SHORT_ENG ?? '',
                             'price'      => $productUpddate->PRICE ?? '',
                             'cost'       => $productUpddate->COST ?? '',
+                            'unit_id'       => $productUpddate->UNIT ?? '',
+                            'capacity'       => $productUpddate->UNIT_Q ?? '',
+                            'non_vat'       => $productUpddate->NON_VAT ?? '',
+                            'status'       => $productUpddate->STATUS ?? '',
+                            'gp'       => $productUpddate->GP ?? '',
+                            'return'       => $productUpddate->RETURN ?? '',
+                            'o_product'       => $productUpddate->O_PRODUCT ?? '',
+                            // 'shelf_life'       => $productUpddate->AGE ?? '',
+                            'acc_type'       => $productUpddate->ACC_TYPE ?? '',
+                            'group2'       => $productUpddate->TYPE_G ?? '',
+                            'series'       => $productUpddate->SERIES ?? '',
+                            'solution'       => $productUpddate->SOLUTION ?? '',
+                            'category'       => $productUpddate->CATEGORY ?? '',
                             'upd_user'   => Auth::user()->username . '(' . $userpermission . ')',
                             'status_tranfer_km' => '',
                             'update_dt'  => $now->format('Y-m-d H:i:s'),
@@ -3571,6 +3704,19 @@ class ProductController extends Controller
                         'short_eng'  => $productUpddate->SHORT_ENG ?? '',
                         'price'      => $productUpddate->PRICE ?? '',
                         'cost'       => $productUpddate->COST ?? '',
+                        'unit_id'       => $productUpddate->UNIT ?? '',
+                        'capacity'       => $productUpddate->UNIT_Q ?? '',
+                        'non_vat'       => $productUpddate->NON_VAT ?? '',
+                        'status'       => $productUpddate->STATUS ?? '',
+                        'gp'       => $productUpddate->GP ?? '',
+                        'return'       => $productUpddate->RETURN ?? '',
+                        'o_product'       => $productUpddate->O_PRODUCT ?? '',
+                        // 'shelf_life'       => $productUpddate->AGE ?? '',
+                        'acc_type'       => $productUpddate->ACC_TYPE ?? '',
+                        'group2'       => $productUpddate->TYPE_G ?? '',
+                        'series'       => $productUpddate->SERIES ?? '',
+                        'solution'       => $productUpddate->SOLUTION ?? '',
+                        'category'       => $productUpddate->CATEGORY ?? '',
                         'upd_user'   => Auth::user()->username . '(' . $userpermission . ')',
                         'status_tranfer_km' => '',
                         'update_dt'  => $now->format('Y-m-d H:i:s'),
@@ -3607,6 +3753,7 @@ class ProductController extends Controller
                 //     // 'craeteProductAccountSchedule' => $craeteProductAccountSchedule->toArray(),
                 // ]);
 
+                // dd(1);
                 DB::commit();
                 $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
                 return response()->json(['success' => true]);

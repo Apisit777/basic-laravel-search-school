@@ -17,6 +17,8 @@ use App\Models\MasterBrand;
 use App\Models\Brand_p;
 use App\Models\Food;
 use App\Models\ComProductImage;
+use App\Models\Product1;
+use App\Models\Product1Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use App\Imports\UserImport;
@@ -64,6 +66,37 @@ class ComProductController extends Controller
         //         'status' => $response->status(),
         //         'body' => $response->body(),
         //     ]);
+        // }
+
+        // $scheme = request()->getScheme(); // http หรือ https
+        // $host   = request()->getHost();   // localhost หรือ pdmaster.ssup.co.th
+        // $images = ComProductImage::select(
+        //     'id', 
+        //     'product_id', 
+        //     'seq', 
+        //     DB::raw("CASE
+        //                 WHEN com_product_images.path LIKE 'https%' 
+        //                 THEN com_product_images.path
+        //                 ELSE com_product_images.path
+        //             END 
+        //             AS path"
+        //     ),
+        // )
+        // ->where('product_id', $product_id)
+        //     ->orderBy('seq', 'asc')
+        //     ->get();
+
+        // if ($images->isEmpty()) {
+        //     // fallback ไปที่ com_products (ใช้ img_url แทน path และไม่มี seq)
+        //     $images = ComProduct::select(
+        //             'id',
+        //             'product_id',
+        //             // DB::raw('0 as seq'),
+        //             DB::raw("img_url as path")
+        //         )
+        //         ->where('product_id', $product_id)
+        //         ->orderBy('id', 'asc')   // หรือจะตัดบรรทัดนี้ออกก็ได้
+        //         ->get();
         // }
 
         return view('warehouse.index', compact('brands', 'roles'));
@@ -247,6 +280,8 @@ class ComProductController extends Controller
             'product_details.inner_pack_size AS inner_pack_size',
             'product1s.PACK_SIZE1 AS PACK_SIZE1',
             'product1s.BAR_PACK1 AS BAR_PACK1',
+            'product1s.PACK_SIZE2 AS PACK_SIZE2',
+            'product1s.BAR_PACK2 AS BAR_PACK2',
         )
         ->leftJoin('product_details', 'com_products.product_id', '=', 'product_details.product_id')
         ->leftJoin('product1s', 'com_products.product_id', '=', 'product1s.PRODUCT')
@@ -272,6 +307,19 @@ class ComProductController extends Controller
         ->where('product_id', $product_id)
             ->orderBy('seq', 'asc')
             ->get();
+
+        if ($images->isEmpty()) {
+            // fallback ไปที่ com_products (ใช้ img_url แทน path และไม่มี seq)
+            $images = ComProduct::select(
+                    'id',
+                    'product_id',
+                    // DB::raw('0 as seq'),
+                    DB::raw("img_url as path")
+                )
+                ->where('product_id', $product_id)
+                ->orderBy('id', 'asc')   // หรือจะตัดบรรทัดนี้ออกก็ได้
+                ->get();
+        }
 
         $product_id = $images->first()->product_id ?? null;
 
@@ -326,10 +374,10 @@ class ComProductController extends Controller
         $dateTime = Carbon::now(); // ใช้ Carbon เพื่อให้ใช้ format() ได้
         DB::beginTransaction();
         try {
-                // $isSuperAdmin = (Auth::user()->id === 26);
-                // $userPermissionFull = Auth::user()->getUserPermission->name_position ?? '';
-                // $namePositionParts = explode('-', $userPermissionFull);
-                // $userpermission = trim(end($namePositionParts)); // brand/suffix
+                $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+                $userpermission = Auth::user()->getUserPermission->name_position;
+                $namePosition  = explode('-', $userpermission);
+                $userpermission = trim(end($namePosition));
 
                 // … ก่อนอัปเดต
                 $user = Auth::user();
@@ -352,6 +400,23 @@ class ComProductController extends Controller
                 // 5) เวลาให้ใช้ Carbon ตาม timezone ของแอป
                 $now = Carbon::now()->format('Y-m-d H:i:s');
                 
+                $data_consumables_old = Product1::select(
+                    'product1s.*',
+                )
+                ->firstWhere('product1s.PRODUCT', '=', $id);
+
+                $data_consumables_old_arr = $data_consumables_old->toArray();
+
+                if ($request) {
+                    $log = [
+                        'UPDATE_DT' => date("Y/m/d H:i:s"),
+                        'USER_UPDATE' => Auth::user()->username
+                    ];
+
+                    $data_consumables_old_arr = array_merge($data_consumables_old_arr, $log);
+                    $logProductUpddate = Product1Log::create($data_consumables_old_arr);
+                }
+
                 // ค้นหาข้อมูลเดิมจาก ProductDetail
                 $data_old = ProductDetail::where('product_id', $id)->first();
 
@@ -384,15 +449,31 @@ class ComProductController extends Controller
                     'inner_weight'   => $request->input('inner_weight') ?? '',
                     'inner_pack_size'=> $request->input('inner_pack_size') ?? '',
                     'upd_user'       => Auth::user()->username,
-                    'upd_date'       => $now
+                    // 'upd_date'       => $now
                 ];
 
                 // dd($data_product_upddate);
                 // อัปเดตข้อมูล
-                ProductDetail::where('product_id', $id)->update($data_product_upddate);
+                if ($userpermission == 'CPS') {
 
-                // ดึงข้อมูลล่าสุดหลังจากอัปเดต
-                $comProductUpddate = ProductDetail::where('product_id', $id)->first();
+                    ProductDetail::where('product_id', $id)->update($data_product_upddate);
+    
+                    // ดึงข้อมูลล่าสุดหลังจากอัปเดต
+                    $comProductUpddate = ProductDetail::where('product_id', $id)->first();
+                }
+
+                // อัปเดตหรือสร้างข้อมูลใหม่
+                Product1::updateOrCreate(['PRODUCT' => $id],
+                    [
+                        'BAR_PACK1' => $request->input('inner_barcode') ?? '',
+                        'BAR_PACK2' => $request->input('case_barcode') ?? '',
+                        'PACK_SIZE1' => $request->input('inner_pack_size') ?? '',
+                        'PACK_SIZE2' => $request->input('case_pack_size') ?? '',
+                        'USER_EDIT' => Auth::user()->username,
+                        'EDIT_DT' => date("Y-m-d"),
+                        'STATUS_EDIT_DT' => '',
+                    ]
+                );
 
                 $data_old_com_product = Com_product::where('product_id', $id)->first();
 
@@ -477,7 +558,7 @@ class ComProductController extends Controller
                         'case_gross_weight'           => $request->input('case_gross_weight') ?? '',
 
                         'upd_user'         => $updUser,
-                        'upd_date'         => $dateTime->format('Y-m-d H:i:s'), // ใช้ format() ได้แล้ว
+                        // 'upd_date'         => $dateTime->format('Y-m-d H:i:s'), // ใช้ format() ได้แล้ว
                         'status_tranfer_km'=> '',
                         'update_dt'        => $dateTime->format('Y-m-d H:i:s') // ใช้ format() ได้แล้ว
                     ]
@@ -495,7 +576,7 @@ class ComProductController extends Controller
                     'pallet_qty'       => $request->input('pallet_qty') ?? '',
                     'weight'           => $request->input('weight') ?? '',
                     'upd_user'         => $updUser,
-                    'upd_date'         => $dateTime->format('Y-m-d H:i:s'), // ใช้ format() ได้แล้ว
+                    // 'upd_date'         => $dateTime->format('Y-m-d H:i:s'), // ใช้ format() ได้แล้ว
                     'status_tranfer_km'=> '',
                     'update_dt'        => $dateTime->format('Y-m-d H:i:s') // ใช้ format() ได้แล้ว
                 ];
@@ -702,25 +783,67 @@ class ComProductController extends Controller
 
     public function filter(Request $request)
     {
-        $endpoint = "https://ins.schicher.com/api/users";
-        $response = Http::asForm()->get($endpoint);
+        // $endpoint = "https://ins.schicher.com/api/users";
+        // $response = Http::asForm()->get($endpoint);
+
+        // if ($response->successful()) {
+        //     $data = collect($response->json()); // Convert data to a collection
+
+        //     $type = $request->get('type'); // Retrieve the 'type' parameter from the request
+
+        //     if ($type) {
+        //         $filteredData = $data->filter(fn($item) => $item['role'] === $type);
+        //     } else {
+        //         $filteredData = $data;
+        //     }
+        //     return response()->json($filteredData->values());
+        // } else {
+        //     return response()->json([
+        //         'error' => 'Request failed',
+        //         'status' => $response->status(),
+        //         'body' => $response->body(),
+        //     ], $response->status());
+        // }
+
+        // 🔹 เลือก endpoint ตาม environment
+        if (app()->environment('local')) {
+            // local environment
+            $endpoint = url('/werehouse'); // => http://localhost:8000/werehouse
+        } else {
+            // production
+            $endpoint = 'http://pdmaster.ssup.co.th/api/warehouse';
+        }
+
+        // 🔹 เรียก API ภายใน
+        $response = Http::get($endpoint);
 
         if ($response->successful()) {
-            $data = collect($response->json()); // Convert data to a collection
+            $data = collect($response->json()['data'] ?? []); // เผื่อโครงสร้างมี data ซ้อน
 
-            $type = $request->get('type'); // Retrieve the 'type' parameter from the request
+            // 🔹 map company_id → role
+            $data = $data->map(function ($item) {
+                $item['role'] = $item['company_id']; // ใช้ชื่อ role เดิมที่หน้าบ้านคาดไว้
+                return $item;
+            });
 
+            // 🔹 กรองตาม type ถ้ามีส่งมา
+            $type = $request->get('type');
             if ($type) {
-                $filteredData = $data->filter(fn($item) => $item['role'] === $type);
-            } else {
-                $filteredData = $data;
+                $data = $data->filter(fn($item) => $item['role'] === $type);
             }
-            return response()->json($filteredData->values());
+
+            return response()->json([
+                'status' => 'success',
+                'count'  => $data->count(),
+                'data'   => $data->values(),
+            ], 200);
+
         } else {
             return response()->json([
-                'error' => 'Request failed',
-                'status' => $response->status(),
-                'body' => $response->body(),
+                'status'  => 'error',
+                'message' => 'Request failed',
+                'code'    => $response->status(),
+                'body'    => $response->body(),
             ], $response->status());
         }
     }

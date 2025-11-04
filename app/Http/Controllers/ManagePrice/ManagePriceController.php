@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Models\MasterBrand;
 use App\Models\Brand_p;
 use App\Models\Product1;
+use App\Models\Com_product;
 use App\Models\Product1Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -86,20 +87,30 @@ class ManagePriceController extends Controller
                         Product1Log::create($data_log);
                     }
 
-                    // อัปเดต product1s
-                    $affected = Product1::where('BRAND', $brand)
-                        ->where('PRODUCT', $productCode)
+                    // 1) อัปเดต product1s
+                    $affectedP1 = Product1::where('BRAND',$brand)
+                        ->where('PRODUCT',$productCode)
                         ->update([
-                            'PRICE' => $priceData->price,
-                            'EDIT_DT' => now()->toDateString(),
-                            'STATUS_EDIT_DT' => '',
+                            'COST'            => $priceData->cost,
+                            'EDIT_DT'         => now()->format('Y-m-d H:i:s'),
+                            'STATUS_EDIT_DT'  => '',
+                        ]);
+
+                    // 2) อัปเดต com_products
+                    $affectedCom = Com_product::where('company_id', $brand)
+                        ->where('product_id', $productCode)
+                        ->update([
+                            'cost'               => $priceData->cost,
+                            'update_dt'          => now()->format('Y-m-d H:i:s'),
+                            'status_tranfer_km'  => '',
                         ]);
 
                     $updatedItems[] = [
-                        'brand' => $brand,
-                        'product' => $productCode,
-                        'price' => $priceData->price,
-                        'updated' => $affected > 0,
+                        'brand'        => $brand,
+                        'product'      => $productCode,
+                        'cost'         => $priceData->cost,
+                        'updated_p1'   => $affectedP1 > 0,
+                        'updated_com'  => $affectedCom > 0,
                     ];
                 }
             }

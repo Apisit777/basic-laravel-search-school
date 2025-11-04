@@ -94,7 +94,7 @@
     <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap.css') }}" />
 
     @php
-        $packSizes = [3, 4, 6, 8, 9, 12, 24, 30, 36, 48, 72, 144, 180];
+        $packSizes = [3, 4, 6, 8, 9, 12, 24, 30, 36, 48, 72, 80, 144, 180];
     @endphp
 
     <div class="justify-center items-center">
@@ -126,7 +126,7 @@
                             </div> -->
                             <div class="md:col-span-3" >
                                 <label for="" class="font-medium">@lang('global.content.search')</label>
-                                <input type="text" name="search" id="search" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" onkeyup="searchTable()" />
+                                <input type="text" name="search" id="search" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-2 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า, Barcode ..." value="" onkeyup="searchTable()" />
                             </div>
                             <div class="md:col-span-6 text-center">
                                 <div class="inline-flex items-center">
@@ -236,48 +236,52 @@
             </div>
         </div>
 
-        <div class="flex xs:right-12 sm:right-12 md:right-14 lg:right-14 xl:right-14 z-10 absolute mt-3">  
-        <a
-            type="button"
-            data-twe-toggle="modal"
-            data-twe-target="#exampleModal"
-            data-twe-ripple-init
-            data-twe-ripple-color="light"
-            class="xs:mt-0 sm:mt-0 md:mt-2 lg:mt-2 xl:mt-2 mr-16 px-1.5 py-1.5 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded cursor-pointer group" name="" id=""
-        >
-            <svg viewBox="-4 0 64 64" xmlns="http://www.w3.org/2000/svg" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                <path d="M5.112.006c-2.802 0-5.073 2.273-5.073 5.074v53.841c0 2.803 2.271 5.074 5.073 5.074h45.774c2.801 0 5.074-2.271 5.074-5.074v-38.605l-18.902-20.31h-31.946z" fill-rule="evenodd" clip-rule="evenodd" fill="#45B058"/><path d="M19.429 53.938c-.216 0-.415-.09-.54-.27l-3.728-4.97-3.745 4.97c-.126.18-.324.27-.54.27-.396 0-.72-.306-.72-.72 0-.144.035-.306.144-.432l3.89-5.131-3.619-4.826c-.09-.126-.145-.27-.145-.414 0-.342.288-.72.721-.72.216 0 .432.108.576.288l3.438 4.628 3.438-4.646c.127-.18.324-.27.541-.27.378 0 .738.306.738.72 0 .144-.036.288-.127.414l-3.619 4.808 3.891 5.149c.09.126.125.27.125.414 0 .396-.324.738-.719.738zm9.989-.126h-5.455c-.595 0-1.081-.486-1.081-1.08v-10.317c0-.396.324-.72.774-.72.396 0 .721.324.721.72v10.065h5.041c.359 0 .648.288.648.648 0 .396-.289.684-.648.684zm6.982.216c-1.782 0-3.188-.594-4.213-1.495-.162-.144-.234-.342-.234-.54 0-.36.27-.756.702-.756.144 0 .306.036.433.144.828.738 1.98 1.314 3.367 1.314 2.143 0 2.826-1.152 2.826-2.071 0-3.097-7.111-1.386-7.111-5.672 0-1.98 1.764-3.331 4.123-3.331 1.548 0 2.881.468 3.853 1.278.162.144.253.342.253.54 0 .36-.307.72-.703.72-.145 0-.307-.054-.432-.162-.883-.72-1.98-1.044-3.079-1.044-1.44 0-2.467.774-2.467 1.909 0 2.701 7.112 1.152 7.112 5.636 0 1.748-1.188 3.53-4.43 3.53z" fill="#ffffff"/>
-                <path d="M55.953 20.352v1h-12.801s-6.312-1.26-6.127-6.707c0 0 .207 5.707 6.002 5.707h12.926z" fill-rule="evenodd" clip-rule="evenodd" fill="#349C42"/>
-                <path d="M37.049 0v14.561c0 1.656 1.104 5.791 6.104 5.791h12.801l-18.905-20.352z" opacity=".5" fill-rule="evenodd" clip-rule="evenodd" fill="#ffffff"/>
-            </svg>
-
-            <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
-            </svg> -->
-                Export Excel
-            </a>
-        </div>
-        <div class="flex xs:right-12 sm:right-12 md:right-14 lg:right-14 xl:right-14 z-10 absolute mt-3">  
-            <a 
-                href="{{ route('new_product_develop.create') }}" type="button" 
-                class="xs:mt-0 sm:mt-0 md:mt-2 lg:mt-2 xl:mt-2 -mr-4 px-1.5 py-1.5 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded cursor-pointer group" name="add" id="add">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                    <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+        @if (Auth::user()->getUserPermission->brand == 'KM')
+            <div class="flex xs:right-10 sm:right-10 md:right-10 lg:right-10 xl:right-10 z-10 absolute mt-3">
+                <button
+                    type="button"
+                    class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                    data-twe-toggle="modal"
+                    data-twe-target="#exampleModalXl"
+                    data-twe-ripple-init
+                    data-twe-ripple-color="light"
+                >
+                    สร้าง Barcode EAN 14
+                </button>
+            </div>
+        @else
+            <div class="flex xs:right-12 sm:right-12 md:right-14 lg:right-14 xl:right-14 z-10 absolute mt-3">  
+                <a
+                    type="button"
+                    data-twe-toggle="modal"
+                    data-twe-target="#exampleModal"
+                    data-twe-ripple-init
+                    data-twe-ripple-color="light"
+                    class="xs:mt-0 sm:mt-0 md:mt-2 lg:mt-2 xl:mt-2 mr-16 px-1.5 py-1.5 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded cursor-pointer group" name="" id=""
+                >
+                <svg viewBox="-4 0 64 64" xmlns="http://www.w3.org/2000/svg" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                    <path d="M5.112.006c-2.802 0-5.073 2.273-5.073 5.074v53.841c0 2.803 2.271 5.074 5.073 5.074h45.774c2.801 0 5.074-2.271 5.074-5.074v-38.605l-18.902-20.31h-31.946z" fill-rule="evenodd" clip-rule="evenodd" fill="#45B058"/><path d="M19.429 53.938c-.216 0-.415-.09-.54-.27l-3.728-4.97-3.745 4.97c-.126.18-.324.27-.54.27-.396 0-.72-.306-.72-.72 0-.144.035-.306.144-.432l3.89-5.131-3.619-4.826c-.09-.126-.145-.27-.145-.414 0-.342.288-.72.721-.72.216 0 .432.108.576.288l3.438 4.628 3.438-4.646c.127-.18.324-.27.541-.27.378 0 .738.306.738.72 0 .144-.036.288-.127.414l-3.619 4.808 3.891 5.149c.09.126.125.27.125.414 0 .396-.324.738-.719.738zm9.989-.126h-5.455c-.595 0-1.081-.486-1.081-1.08v-10.317c0-.396.324-.72.774-.72.396 0 .721.324.721.72v10.065h5.041c.359 0 .648.288.648.648 0 .396-.289.684-.648.684zm6.982.216c-1.782 0-3.188-.594-4.213-1.495-.162-.144-.234-.342-.234-.54 0-.36.27-.756.702-.756.144 0 .306.036.433.144.828.738 1.98 1.314 3.367 1.314 2.143 0 2.826-1.152 2.826-2.071 0-3.097-7.111-1.386-7.111-5.672 0-1.98 1.764-3.331 4.123-3.331 1.548 0 2.881.468 3.853 1.278.162.144.253.342.253.54 0 .36-.307.72-.703.72-.145 0-.307-.054-.432-.162-.883-.72-1.98-1.044-3.079-1.044-1.44 0-2.467.774-2.467 1.909 0 2.701 7.112 1.152 7.112 5.636 0 1.748-1.188 3.53-4.43 3.53z" fill="#ffffff"/>
+                    <path d="M55.953 20.352v1h-12.801s-6.312-1.26-6.127-6.707c0 0 .207 5.707 6.002 5.707h12.926z" fill-rule="evenodd" clip-rule="evenodd" fill="#349C42"/>
+                    <path d="M37.049 0v14.561c0 1.656 1.104 5.791 6.104 5.791h12.801l-18.905-20.352z" opacity=".5" fill-rule="evenodd" clip-rule="evenodd" fill="#ffffff"/>
                 </svg>
-                Add
-            </a>
-        </div>
 
-        <button
-            type="button"
-            class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-            data-twe-toggle="modal"
-            data-twe-target="#exampleModalXl"
-            data-twe-ripple-init
-            data-twe-ripple-color="light"
-        >
-            สร้าง Barcode EAN 14
-        </button>
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                    <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                </svg> -->
+                    Export Excel
+                </a>
+            </div>
+            <div class="flex xs:right-12 sm:right-12 md:right-14 lg:right-14 xl:right-14 z-10 absolute mt-3">  
+                <a 
+                    href="{{ route('new_product_develop.create') }}" type="button" 
+                    class="xs:mt-0 sm:mt-0 md:mt-2 lg:mt-2 xl:mt-2 -mr-4 px-1.5 py-1.5 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded cursor-pointer group" name="add" id="add">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                        <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                    </svg>
+                    Add
+                </a>
+            </div>
+        @endif
 
         <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
             <div id="containerexample" class="text-gray-900 dark:text-gray-100">
@@ -295,83 +299,6 @@
                     </tbody>
                 </table>
             </div>
-        </div>
-        
-        <div class="fixed flex bottom-4 right-5 z-10">
-            <a
-                type="button"
-                class="bg-[#303030] hover:bg-[#404040] text-white font-bold cursor-pointer py-2 px-2 mr-2 mt-20 rounded-full group btn-rotate"
-                data-twe-toggle="modal"
-                data-twe-target="#exampleModalLg"
-                data-twe-ripple-init
-                data-twe-ripple-color="light"
-            >
-                <svg class="size-7 rotate" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                    viewBox="0 0 502 502" xml:space="preserve">
-                    <g>
-                        <g>
-                            <path style="fill:#50A5DC;" d="M492,276.648v-51.295c0-13.06-10.587-23.648-23.648-23.648h-43.924
-                                c-3.841-13.538-9.234-26.421-15.958-38.46l31.079-31.079c9.235-9.235,9.235-24.208,0-33.443l-36.271-36.271
-                                c-9.235-9.235-24.208-9.235-33.443,0l-31.08,31.078c-12.039-6.724-24.922-12.117-38.46-15.958V33.648
-                                c0-13.06-10.587-23.648-23.648-23.648h-51.295c-13.06,0-23.648,10.587-23.648,23.648v43.924
-                                c-13.538,3.841-26.421,9.234-38.46,15.958l-31.079-31.079c-9.235-9.235-24.208-9.235-33.443,0l-36.27,36.272
-                                c-9.235,9.235-9.235,24.208,0,33.443l31.079,31.079c-6.724,12.039-12.117,24.922-15.958,38.46H33.649
-                                c-13.06,0-23.648,10.587-23.648,23.648v51.295c0,13.06,10.587,23.648,23.648,23.648h43.924
-                                c3.841,13.538,9.234,26.421,15.958,38.46l-31.079,31.079c-9.235,9.235-9.235,24.208,0,33.443l36.271,36.271
-                                c9.235,9.235,24.208,9.235,33.443,0l31.079-31.079c12.039,6.724,24.922,12.117,38.46,15.958v43.924
-                                c0,13.06,10.587,23.648,23.648,23.648h51.295c13.06,0,23.648-10.587,23.648-23.648v-43.924
-                                c13.538-3.841,26.421-9.234,38.46-15.958l31.079,31.079c9.235,9.235,24.208,9.235,33.443,0l36.271-36.271
-                                c9.235-9.235,9.235-24.208,0-33.443l-31.079-31.079c6.724-12.039,12.117-24.922,15.958-38.46h43.924
-                                C481.414,300.295,492,289.708,492,276.648z M251.001,344.612c-51.7,0-93.612-41.911-93.612-93.612s41.912-93.612,93.612-93.612
-                                S344.612,199.3,344.612,251S302.701,344.612,251.001,344.612z"/>
-                            <path d="M276.648,502h-51.295c-18.554,0-33.648-15.094-33.648-33.648v-36.527c-9.116-2.992-18.026-6.689-26.623-11.049
-                                l-25.844,25.844c-13.119,13.119-34.467,13.119-47.586,0l-36.271-36.272c-13.118-13.119-13.118-34.465,0-47.585l25.845-25.845
-                                c-4.359-8.596-8.058-17.506-11.049-26.623H33.648c-18.553,0-33.647-15.094-33.647-33.647v-51.296
-                                c0-18.553,15.094-33.647,33.647-33.647h36.528c2.991-9.117,6.689-18.027,11.049-26.623l-25.844-25.845
-                                c-13.118-13.12-13.118-34.466,0-47.585L91.652,55.38c13.119-13.118,34.467-13.118,47.586,0l25.844,25.844
-                                c8.597-4.36,17.507-8.058,26.623-11.049V33.648C191.704,15.094,206.799,0,225.354,0h51.295c18.554,0,33.648,15.094,33.648,33.648
-                                v36.527c9.116,2.992,18.026,6.689,26.623,11.049l25.844-25.844c13.119-13.119,34.467-13.119,47.586,0l36.271,36.271
-                                c13.118,13.119,13.118,34.465,0,47.585l-25.845,25.845c4.359,8.596,8.058,17.506,11.049,26.623h36.528
-                                c18.554,0,33.647,15.094,33.647,33.647v51.296c0,18.553-15.094,33.647-33.647,33.647h-36.528
-                                c-2.991,9.117-6.689,18.027-11.049,26.623l25.845,25.844c13.118,13.12,13.118,34.466,0,47.585l-36.271,36.272
-                                c-13.119,13.118-34.467,13.118-47.586,0l-25.844-25.844c-8.597,4.36-17.507,8.058-26.623,11.049v36.527
-                                C310.297,486.906,295.201,502,276.648,502z M163.247,398.469c1.666,0,3.344,0.416,4.873,1.27
-                                c11.511,6.429,23.729,11.499,36.313,15.068c4.303,1.221,7.271,5.149,7.271,9.621v43.924c0,7.525,6.123,13.648,13.648,13.648
-                                h51.295c7.525,0,13.648-6.123,13.648-13.648v-43.924c0-4.472,2.969-8.4,7.271-9.621c12.584-3.57,24.802-8.639,36.313-15.068
-                                c3.904-2.18,8.784-1.504,11.947,1.66l31.078,31.079c5.32,5.32,13.98,5.322,19.301,0l36.271-36.271
-                                c5.321-5.321,5.321-13.979,0-19.301l-31.079-31.078c-3.163-3.163-3.841-8.042-1.659-11.947
-                                c6.428-11.51,11.498-23.728,15.068-36.313c1.221-4.302,5.148-7.271,9.62-7.271h43.925c7.525,0,13.647-6.122,13.647-13.647v-51.296
-                                c0-7.525-6.122-13.647-13.647-13.647h-43.925c-4.472,0-8.399-2.969-9.62-7.271c-3.57-12.585-8.641-24.803-15.068-36.313
-                                c-2.182-3.905-1.504-8.784,1.659-11.947l31.079-31.079c5.321-5.321,5.321-13.979,0-19.301l-36.271-36.271
-                                c-5.32-5.32-13.98-5.322-19.301,0l-31.078,31.078c-3.162,3.164-8.04,3.84-11.947,1.66c-11.511-6.429-23.729-11.499-36.313-15.068
-                                c-4.303-1.221-7.271-5.149-7.271-9.621V33.648c0-7.525-6.123-13.648-13.648-13.648h-51.295c-7.525,0-13.648,6.123-13.648,13.648
-                                v43.924c0,4.472-2.969,8.4-7.271,9.621c-12.584,3.57-24.802,8.639-36.313,15.068c-3.904,2.181-8.784,1.503-11.947-1.66
-                                l-31.078-31.079c-5.32-5.32-13.98-5.322-19.301,0l-36.271,36.271c-5.321,5.321-5.321,13.979,0,19.301l31.079,31.078
-                                c3.163,3.163,3.841,8.042,1.659,11.947c-6.428,11.51-11.498,23.728-15.068,36.313c-1.221,4.302-5.148,7.271-9.62,7.271H33.648
-                                c-7.525,0-13.647,6.122-13.647,13.647v51.296c0,7.525,6.122,13.647,13.647,13.647h43.925c4.472,0,8.399,2.969,9.62,7.271
-                                c3.57,12.585,8.641,24.803,15.068,36.313c2.182,3.905,1.504,8.784-1.659,11.947l-31.079,31.079
-                                c-5.321,5.321-5.321,13.979,0,19.301l36.271,36.271c5.32,5.32,13.98,5.322,19.301,0l31.078-31.078
-                                C158.099,399.474,160.659,398.469,163.247,398.469z M251.001,354.611c-57.132,0-103.611-46.48-103.611-103.611
-                                s46.479-103.611,103.611-103.611S354.612,193.869,354.612,251S308.133,354.611,251.001,354.611z M251.001,167.389
-                                c-46.104,0-83.611,37.508-83.611,83.611s37.508,83.611,83.611,83.611s83.611-37.508,83.611-83.611
-                                S297.104,167.389,251.001,167.389z"/>
-                        </g>
-                        <g>
-                            <path d="M121.001,261c-5.522,0-10-4.477-10-10c0-27.143,7.779-53.472,22.498-76.142c14.331-22.074,34.479-39.62,58.267-50.743
-                                c5.002-2.341,10.954-0.18,13.294,4.823c2.34,5.003,0.18,10.955-4.823,13.294c-42.059,19.667-69.236,62.361-69.236,108.768
-                                C131.001,256.523,126.523,261,121.001,261z"/>
-                        </g>
-                        <g>
-                            <path d="M302.995,141.819c-1.337,0-2.695-0.27-3.999-0.839c-15.157-6.622-31.306-9.98-47.995-9.98c-5.522,0-10-4.477-10-10
-                                s4.478-10,10-10c19.463,0,38.305,3.92,56.003,11.653c5.061,2.211,7.371,8.106,5.16,13.167
-                                C310.521,139.578,306.849,141.819,302.995,141.819z"/>
-                        </g>
-                    </g>
-                </svg>
-                <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-7">
-                    <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
-                </svg> -->
-            </a>
         </div>
 
         <div
@@ -435,8 +362,32 @@
                 <div class="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-clip-padding text-current shadow-4 outline-none bg-gray-100 dark:bg-[#202020]">
                 <div class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 p-4 dark:border-white/10">
                     <!-- Modal title -->
-                    <h5 class="text-xl font-medium leading-normal text-surface dark:text-white" id="exampleModalXlLabel">
+                    <h5 class="flex text-xl font-medium leading-normal text-surface dark:text-white" id="exampleModalXlLabel">
                         Barcode 14 หลัก
+
+                        <div class="md:col-span-1 -mt-2 -mr-5" style="position: relative;">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 256 512"
+                                aria-hidden="true"
+                                transform="scale(1.5,1)"
+                                class="h-12 w-32 text-gray-900 dark:text-gray-100"
+                            >
+                                <g fill="currentColor">
+                                    <rect y="94.103" width="48.569" height="323.795"/>
+                                    <rect x="72.854" y="94.103" width="24.284" height="323.795"/>
+                                    <polygon points="121.423,94.103 121.423,417.897 145.708,417.897 169.992,417.897 169.992,94.103 145.708,94.103"/>
+                                    <polygon points="194.277,94.103 194.277,417.897 218.561,417.897 242.846,417.897 242.846,94.103 218.561,94.103"/>
+                                    <rect x="267.13" y="94.103" width="24.285" height="323.795"/>
+                                    <polygon points="339.984,94.103 315.7,94.103 315.7,417.897 339.984,417.897 364.269,417.897 388.554,417.897 388.554,94.103 364.269,94.103"/>
+                                    <polygon points="412.838,94.103 412.838,417.897 437.122,417.897 462.083,417.897 462.083,94.103 437.122,94.103"/>
+                                    <rect x="487.044" y="94.103" width="24.956" height="323.795"/>
+                                </g>
+                            </svg>
+                            <span class="absolute -mt-2.5 ml-9 text-xs">
+                                88500800000000
+                            </span>
+                        </div>
                     </h5>
                     <!-- Close button -->
                     <button
@@ -465,72 +416,73 @@
                     <input class="" type="hidden" id="edit_id" name="edit_id" value="">
                     <div class="p-4 text-gray-900 dark:text-gray-100">
                         <div class="grid gap-6 gap-y-1 text-sm grid-cols-1 md:grid-cols-12 barcode-row" id="formBarcode">
-                            <div class="md:col-span-2" style="position: relative;">
-                                <label for="BRAND" class="text-sm font-medium text-gray-900 dark:text-white">รหัสสินค้า</label>
-                                <select class="js-example-basic-single w-full rounded-sm text-xs" id="products" name="products">
-                                    <option value=""> -- กรุณาเลือก --</option>
-                                    @foreach ($products as $key => $product)
-                                        <option value={{ $product }}>{{ $product }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="md:col-span-2" style="position: relative;">
-                                <label for="PACK_SIZE1">รหัส Packsize1</label>
-                                <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE1" id="PACK_SIZE1" onchange="packSize1Change(this, 'PACK_SIZE1')">
-                                    <option value=""> --- กรุณาเลือก ---</option>
-                                    @foreach ($packSizes as $size)
-                                        <option value="{{ $size }}">
-                                            {{ $size }} ชิ้น
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="md:col-span-2" style="position: relative;">
-                                <label for="">Barpack 1 (Inner)</label>
-                                <input type="text" name="menu_url" id="url_id" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="" readonly>
-                            </div>
 
-                            <div class="md:col-span-2" style="position: relative;">
-                                <label for="PACK_SIZE2">รหัส Packsize2</label>
-                                <select class="js-example-basic-single w-full rounded-sm text-xs" name="PACK_SIZE2" id="PACK_SIZE2" onchange="packSize2Change(this, 'PACK_SIZE2')">
-                                    <option value=""> --- กรุณาเลือก ---</option>
-                                    @foreach ($packSizes as $size)
-                                        <option value="{{ $size }}">
-                                            {{ $size }} ชิ้น
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="md:col-span-2" style="position: relative;">
-                                <label for="">Barpack 2 (Case)</label>
-                                <input type="text" name="menu_url" id="url_id" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="" readonly>
-                            </div>
-                            <div class="md:col-span-1 mt-5 mr-10" style="position: relative;">
-                                <!-- Barcode Icon (ใช้ currentColor) -->
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 256 512"
-                                    aria-hidden="true"
-                                    transform="scale(1.5,1)"
-                                    class="h-12 w-32 text-gray-900 dark:text-gray-100"
-                                >
-                                    <g fill="currentColor">
-                                        <rect y="94.103" width="48.569" height="323.795"/>
-                                        <rect x="72.854" y="94.103" width="24.284" height="323.795"/>
-                                        <polygon points="121.423,94.103 121.423,417.897 145.708,417.897 169.992,417.897 169.992,94.103 145.708,94.103"/>
-                                        <polygon points="194.277,94.103 194.277,417.897 218.561,417.897 242.846,417.897 242.846,94.103 218.561,94.103"/>
-                                        <rect x="267.13" y="94.103" width="24.285" height="323.795"/>
-                                        <polygon points="339.984,94.103 315.7,94.103 315.7,417.897 339.984,417.897 364.269,417.897 388.554,417.897 388.554,94.103 364.269,94.103"/>
-                                        <polygon points="412.838,94.103 412.838,417.897 437.122,417.897 462.083,417.897 462.083,94.103 437.122,94.103"/>
-                                        <rect x="487.044" y="94.103" width="24.956" height="323.795"/>
-                                    </g>
-                                </svg>
-                                <!-- <label class="-mt-4 ml-10">88500000000</label> -->
-                                <!-- Barcode number -->
-                                <span class="absolute -mt-2.5 ml-9 text-xs">
-                                    88500000000000
-                                </span>
+                            <div class="barcode-item contents" data-row="1">
+                                <div class="md:col-span-2" style="position: relative;">
+                                    <label for="BRAND" class="text-sm font-medium text-gray-900 dark:text-white">รหัสสินค้า</label>
+                                    <select id="products_1" name="products[]" class="product-select js-example-basic-single w-full rounded-sm text-xs">
+                                        <option value=""> -- กรุณาเลือก --</option>
+                                        @foreach ($productBarcodes as $product => $barcode)
+                                            <option value="{{ $product }}" data-barcode="{{ $barcode }}">{{ $product }}</option>
+                                        @endforeach
+                                    </select>
+    
+                                </div>
+                                <div class="md:col-span-2" style="position: relative;">
+                                    <label for="PACK_SIZE1">รหัส Packsize1</label>
+                                    <select class="pack-size-1 js-example-basic-single w-full rounded-sm text-xs" id="PACK_SIZE_1_1" name="PACK_SIZE1[]">
+                                        <option value=""> --- กรุณาเลือก ---</option>
+                                        @foreach ($packSizes as $size)
+                                            <option value="{{ $size }}">
+                                                {{ $size }} ชิ้น
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="md:col-span-2" style="position: relative;">
+                                    <label for="">Barpack 1 (Inner)</label>
+                                    <input type="text" name="barpack1[]" class="barpack1 h-10 rounded-sm px-2 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-1 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="" readonly>
+                                </div>
+    
+                                <div class="md:col-span-2" style="position: relative;">
+                                    <label for="PACK_SIZE2">รหัส Packsize2</label>
+                                    <select class="pack-size-2 js-example-basic-single w-full rounded-sm text-xs" id="PACK_SIZE_2_1" name="PACK_SIZE2[]">
+                                        <option value=""> --- กรุณาเลือก ---</option>
+                                        @foreach ($packSizes as $size)
+                                            <option value="{{ $size }}">
+                                                {{ $size }} ชิ้น
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+    
+                                <div class="md:col-span-2" style="position: relative;">
+                                    <label for="">Barpack 2 (Case)</label>
+                                    <input type="text" name="barpack2[]" class="barpack2 h-10 rounded-sm px-2 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-1 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="" readonly>
+                                </div>
+                                <!-- <div class="md:col-span-1 mt-5 mr-10" style="position: relative;">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 256 512"
+                                        aria-hidden="true"
+                                        transform="scale(1.5,1)"
+                                        class="h-12 w-32 text-gray-900 dark:text-gray-100"
+                                    >
+                                        <g fill="currentColor">
+                                            <rect y="94.103" width="48.569" height="323.795"/>
+                                            <rect x="72.854" y="94.103" width="24.284" height="323.795"/>
+                                            <polygon points="121.423,94.103 121.423,417.897 145.708,417.897 169.992,417.897 169.992,94.103 145.708,94.103"/>
+                                            <polygon points="194.277,94.103 194.277,417.897 218.561,417.897 242.846,417.897 242.846,94.103 218.561,94.103"/>
+                                            <rect x="267.13" y="94.103" width="24.285" height="323.795"/>
+                                            <polygon points="339.984,94.103 315.7,94.103 315.7,417.897 339.984,417.897 364.269,417.897 388.554,417.897 388.554,94.103 364.269,94.103"/>
+                                            <polygon points="412.838,94.103 412.838,417.897 437.122,417.897 462.083,417.897 462.083,94.103 437.122,94.103"/>
+                                            <rect x="487.044" y="94.103" width="24.956" height="323.795"/>
+                                        </g>
+                                    </svg>
+                                    <span class="absolute -mt-2.5 ml-9 text-xs">
+                                        88500000000000
+                                    </span>
+                                </div> -->
                             </div>
                             <div class="md:col-span-1" style="position: relative;">
                                 <button type="button" class="mt-7 px-2 py-1 ml-10 font-medium tracking-wide bg-[#303030] hover:bg-[#303030] text-white rounded group" name="addBarcode" id="addBarcode">
@@ -540,19 +492,17 @@
                                 </button>
                             </div>
                         </div>
-                        
                     </div>
                     <div class="p-2 ">
                         <ul class="space-y-2 font-large border-t border-gray-200 dark:border-gray-500"></ul>
                     </div>
                     <div class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md p-2">
-                        <a data-twe-modal-dismiss class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-2 px-4 rounded cursor-pointer group" onclick="createMenu()">
-                            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#FFFFFF" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                                <path d="M0 0h24v24H0V0z" fill="none"></path>
-                                <path d="M5 5v14h14V7.83L16.17 5H5zm7 13c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-8H6V6h9v4z" opacity=".3"></path>
-                                <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm2 16H5V5h11.17L19 7.83V19zm-7-7c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zM6 6h9v4H6z"></path>
+                        <a id="btnClear" class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-1 px-2 rounded cursor-pointer group">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="800px" height="800px" viewBox="0 0 24 24" fill="#FFFFFF" class="size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                <path d="M8 8L16 16" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M16 8L8 16" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            Save
+                            Clear
                         </a>
                     </div>
                 </form>
@@ -602,129 +552,182 @@
     @endif
     <script>
 
+        $(document).on('click', '#btnClear', function () {
+            // ลบค่าใน select2 ทั้งหมด
+            $('.product-select, .pack-size-1, .pack-size-2').val(null).trigger('change');
 
-        let i = 0;
-        $('#addBarcode').on('click', () => {
-            ++i;
-            $('#formBarcode').append(`
-                <div class="barcode-item contents">  <!-- ตัวห่อของหนึ่งแถว -->
-                    <div class="md:col-span-2" style="position: relative;">
-                        <label for="BRAND" class="text-sm font-medium text-gray-900 dark:text-white">Products</label>
-                        <select class="js-example-basic-single w-full rounded-sm text-xs" id="products_${i}" name="products[]">
-                            <option value=""> --- กรุณาเลือก ---</option>
-                            @foreach ($products as $key => $product)
-                                <option value={{ $product }}>{{ $product }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+            // ลบค่าใน input text เช่น barpack1, barpack2
+            $('.barpack1, .barpack2').val('');
 
-                    <div class="md:col-span-2" style="position: relative;">
-                        <label for="PACK_SIZE1">รหัส Packsize1</label>
-                        <select class="js-example-basic-single w-full rounded-sm text-xs" id="PACK_SIZE_1_${i}" name="PACK_SIZE_1_[]">
-                            <option value=""> --- กรุณาเลือก ---</option>
-                            @foreach ($packSizes as $size)
-                                <option value="{{ $size }}">
-                                    {{ $size }} ชิ้น
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="md:col-span-2" style="position: relative;">
-                        <label>Barpack 1 (Inner)</label>
-                        <input type="text" name="barpack1[]" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="" readonly>
-                    </div>
-                    <div class="md:col-span-2" style="position: relative;">
-                        <label for="PACK_SIZE2">รหัส Packsize2</label>
-                        <select class="js-example-basic-single w-full rounded-sm text-xs" id="PACK_SIZE_2_${i}" name="PACK_SIZE_1_[]">
-                            <option value=""> --- กรุณาเลือก ---</option>
-                            @foreach ($packSizes as $size)
-                                <option value="{{ $size }}">
-                                    {{ $size }} ชิ้น
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="md:col-span-2" style="position: relative;">
-                        <label>Barpack 2 (Case)</label>
-                        <input type="text" name="barpack2[]" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="" readonly>
-                    </div>
-                    <div class="md:col-span-1" style="position: relative;">
-                        <button type="button" class="remove-table-row mt-8 px-2 py-1 ml-10 font-medium tracking-wide bg-[#c72121] hover:bg-[#c23737e3] text-white rounded">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                                <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            `);
-
-             // log id ที่สร้างขึ้น
-            console.log("สร้าง products id:", `products_${i}`);
-            console.log("สร้าง PACK_SIZE id:", `PACK_SIZE_1_${i}`);
-            console.log("สร้าง PACK_SIZE id:", `PACK_SIZE_2_${i}`);
-
-            // init select2 ให้ตัวใหม่ด้วย
-            $(`#products_${i}`).select2({
-                width: '100%'
+            // ลบ data-barcode ที่ cache ไว้
+            $('.barcode-item').each(function(){
+                $(this).removeData('barcode');
             });
-            $(`#PACK_SIZE_1_${i}`).select2({
-                width: '100%'
-            });
-            $(`#PACK_SIZE_2_${i}`).select2({
-                width: '100%'
-            });
+
+            console.log('[BAR14] Clear all fields done.');
         });
 
-        // ใช้ event delegation และลบทั้งชุดที่ห่อด้วย .barcode-item
+        let i = 1;
+
+        // init select2 ให้แถวตั้งต้น
+        $('#products_1').select2({ width: '100%' });
+        $('#PACK_SIZE_1_1').select2({ width: '100%' });
+        $('#PACK_SIZE_2_1').select2({ width: '100%' });
+
+        // เพิ่มแถวใหม่
+        $(document).on('click', '#addBarcode', function () {
+        i++;
+
+        const row = `
+            <div class="barcode-item contents" data-row="${i}">
+                <div class="md:col-span-2" style="position: relative;">
+                    <label for="BRAND" class="text-sm font-medium text-gray-900 dark:text-white">รหัสสินค้า</label>
+                    <select class="product-select js-example-basic-single w-full rounded-sm text-xs" id="products_${i}" name="products[]">
+                        <option value=""> --- กรุณาเลือก ---</option>
+                        @foreach ($products as $key => $product)
+                            <option value="{{ $product }}" data-barcode="{{ $barcode }}">{{ $product }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="md:col-span-2" style="position: relative;">
+                    <label for="PACK_SIZE1">รหัส Packsize1</label>
+                    <select class="pack-size-1 js-example-basic-single w-full rounded-sm text-xs" id="PACK_SIZE_1_${i}" name="PACK_SIZE1[]">
+                        <option value=""> --- กรุณาเลือก ---</option>
+                        @foreach ($packSizes as $size)
+                            <option value="{{ $size }}">
+                                {{ $size }} ชิ้น
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="md:col-span-2" style="position: relative;">
+                    <label>Barpack 1 (Inner)</label>
+                    <input type="text" name="barpack1[]" class="barpack1 h-10 rounded-sm px-2 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-1 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="" readonly>
+                </div>
+                <div class="md:col-span-2" style="position: relative;">
+                    <label for="PACK_SIZE2">รหัส Packsize2</label>
+                    <select class="pack-size-2 js-example-basic-single w-full rounded-sm text-xs" id="PACK_SIZE_2_${i}" name="PACK_SIZE2[]">
+                        <option value=""> --- กรุณาเลือก ---</option>
+                        @foreach ($packSizes as $size)
+                            <option value="{{ $size }}">
+                                {{ $size }} ชิ้น
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="md:col-span-2" style="position: relative;">
+                    <label>Barpack 2 (Case)</label>
+                    <input type="text" name="barpack2[]" class="barpack2 h-10 rounded-sm px-2 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-1 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="" readonly>
+                </div>
+                <div class="md:col-span-1" style="position: relative;">
+                    <button type="button" class="remove-table-row mt-8 px-2 py-1 ml-10 font-medium tracking-wide bg-[#c72121] hover:bg-[#c23737e3] text-white rounded">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                            <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        `;
+
+        const $row = $(row).appendTo('#formBarcode');
+
+        // init select2 เฉพาะในแถวที่เพิ่งเพิ่ม (ปลอดภัยสุด)
+        $row.find('#products_'     + i).select2({ width: '100%' });
+        $row.find('#PACK_SIZE_1_'  + i).select2({ width: '100%' });
+        $row.find('#PACK_SIZE_2_'  + i).select2({ width: '100%' });
+
+        // log เพื่อตรวจ id
+        console.log('สร้าง products id:', `products_${i}`);
+        console.log('สร้าง PACK_SIZE1 id:', `PACK_SIZE_1_${i}`);
+        console.log('สร้าง PACK_SIZE2 id:', `PACK_SIZE_2_${i}`);
+        });
+
+        // ลบแถว
         $(document).on('click', '.remove-table-row', function () {
             $(this).closest('.barcode-item').remove();
         });
 
-        function packSize1Change(e) {
-            let BARCODE = jQuery("#BARCODE").val();
-            let packSize = e.value;
-            console.log("🚀 ~ packSize1Change ~ packSize:", packSize)
+        /***** DEBUG SWITCH *****/
+        let DEBUG = false;                    // ปิด log เป็นค่าเริ่มต้น
+        const setDebug = v => { DEBUG = !!v; };
+        const DBG = (...args) => { if (DEBUG) console.log('[BAR14]', ...args); };
+        const DBG_GROUP = (title, obj) => {
+            if (!DEBUG) return;
+            console.groupCollapsed('[BAR14]', title);
+            if (obj !== undefined) console.log(obj);
+            console.groupEnd();
+        };
 
-            if (packSize.length > 1) {
-                packSize = packSize.substring(0, 1);
-            }
-            console.log("🚀 ~ packSize1Change ~ substring:", packSize)
-            
-            if (!BARCODE || packSize === "") {
-                jQuery("#BAR_PACK1").val('');
-                return;
-            }
-
-            let ean13 = packSize + BARCODE.substring(0, BARCODE.length - 1);
-            console.log("🚀 ~ packSize1Change ~ ean13:", ean13)
-
-            if (ean13) {
-                if (ean13.length == 13) {
-                    url = '{{ route('product_master.calculate_ean14_check_digit', ':ean13') }}'.replace(':ean13', ean13);
-                } else {
-                    url = '';
-                }
-            }
-
-            jQuery.ajax({
-                method: "GET",
-                url: url,
-                dataType: 'json',
-                success: function (response) {
-                    console.log("✅ Response:", response);
-                    if (response.checkDigit) {
-                        jQuery("#BAR_PACK1").val(response.checkDigit);
-                    } else {
-                        jQuery("#BAR_PACK1").val('');
-                    }
-                },
-                error: function (xhr) {
-                    console.error("❌ AJAX Error:", xhr);
-                    alert("เกิดข้อผิดพลาด: " + xhr.responseText);
-                }
-            });
+        /***** helper: ขอ ean14 จาก server ตาม ean13 *****/
+        function requestEan14(ean13, onDone) {
+            if (!ean13 || ean13.length !== 13) return onDone('');
+            const url = `{{ route('product_master.calculate_ean14_check_digit', ':ean13') }}`.replace(':ean13', ean13);
+            DBG('GET', url);
+            $.getJSON(url)
+                .done(resp => onDone(resp?.checkDigit || ''))
+                .fail(() => onDone(''));
         }
+
+        /***** init select2 สำหรับของที่มีอยู่แล้ว *****/
+        $(function () {
+            try {
+                $('.product-select, .pack-size-1, .pack-size-2').select2({ width: '100%' });
+                DBG('select2 inited:',
+                { products: $('.product-select').length, p1: $('.pack-size-1').length, p2: $('.pack-size-2').length });
+            } catch (e) { DBG('select2 init error', e); }
+        });
+
+        /***** เมื่อเลือก “รหัสสินค้า” → cache barcode ไว้ในแถว *****/
+        $(document).on('change select2:select', '.product-select', function (e) {
+            const $sel = $(this);
+            const $row = $sel.closest('.barcode-item').length ? $sel.closest('.barcode-item') : $('#formBarcode');
+            const product = ($sel.val() ?? '') || (e?.params?.data?.id ?? '');
+            // 1) option[data-barcode]  2) selectedOptions dataset  3) dict JS (ถ้ามี)
+            let barcode = $sel.find('option:selected').attr('data-barcode') || '';
+            if (!barcode) barcode = $sel.get(0)?.selectedOptions?.[0]?.dataset?.barcode || '';
+            if (!barcode && window.PRODUCT_BARCODES) barcode = window.PRODUCT_BARCODES[product] || '';
+
+            DBG_GROUP('product-select changed', { row: $row.data('row'), product, barcode });
+            $row.data('barcode', String(barcode));
+
+            // ถ้ามีค่า packsize อยู่แล้ว ให้คำนวณใหม่
+            $row.find('.pack-size-1').trigger('change');
+            $row.find('.pack-size-2').trigger('change');
+        });
+
+        /***** PACK_SIZE1 → คำนวณ Barpack1 ของแถวนั้น *****/
+        $(document).on('change select2:select', '.pack-size-1', function () {
+            const $sel = $(this);
+            const $row = $sel.closest('.barcode-item').length ? $sel.closest('.barcode-item') : $('#formBarcode');
+            const packSize = String($sel.val() || '');
+            const barcode  = String($row.data('barcode') || '');
+            if (!barcode || !packSize) { $row.find('.barpack1').val(''); return; }
+
+            const ean13 = packSize.substring(0,1) + barcode.substring(0, Math.max(0, barcode.length - 1));
+            DBG('pack-size-1 → ean13', { row: $row.data('row'), ean13 });
+
+            requestEan14(ean13, (ean14) => $row.find('.barpack1').val(ean14));
+        });
+
+        /***** PACK_SIZE2 → คำนวณ Barpack2 ของแถวนั้น *****/
+        $(document).on('change select2:select', '.pack-size-2', function () {
+            const $sel = $(this);
+            const $row = $sel.closest('.barcode-item').length ? $sel.closest('.barcode-item') : $('#formBarcode');
+            const packSize = String($sel.val() || '');
+            const barcode  = String($row.data('barcode') || '');
+            if (!barcode || !packSize) { $row.find('.barpack2').val(''); return; }
+
+            const ean13 = packSize.substring(0,1) + barcode.substring(0, Math.max(0, barcode.length - 1));
+            DBG('pack-size-2 → ean13', { row: $row.data('row'), ean13 });
+
+            requestEan14(ean13, (ean14) => $row.find('.barpack2').val(ean14));
+        });
+
+        /***** เปิด/ปิดดีบักผ่าน console ได้ *****/
+        // setDebug(true)  // เปิด log
+        // setDebug(false) // ปิด log
         
         $(document).ready(function () {
             // Initialize Select2 on page load

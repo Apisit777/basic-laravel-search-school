@@ -451,7 +451,7 @@
                         <tr>
                             <th>brand</th>
                             <th>product</th>
-                            <th>price</th>
+                            <th>cost</th>
                             <th>start_date</th>
                         </tr>
                     </thead>
@@ -635,9 +635,16 @@
                     targets: 2,
                     orderable: true,
                     render: function(data, type, row) {
-                        return row.price;
+                        return row.cost;
                     }
                 },
+                // {
+                //     targets: 3,
+                //     orderable: true,
+                //     render: function(data, type, row) {
+                //         return row.price;
+                //     }
+                // },
                 {
                     targets: 3,
                     orderable: true,
