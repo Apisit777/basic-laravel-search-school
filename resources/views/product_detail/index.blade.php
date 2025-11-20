@@ -704,6 +704,10 @@ function onOpenhandler(params) {
             barcode: 'Barcode',
             ref_barcode_real: 'Barcode สินค้าจริง',
             status: 'Status',
+            unit_q: 'ปริมาณการบรรจุ',
+            width: 'กว้าง',
+            wide: 'ยาว',
+            height: 'สูง',
             age: 'อายุสินค้า',
             name_thai: 'ชื่อภาษาไทย',
             name_eng: 'ชื่อภาษาอังกฤษ',
@@ -794,6 +798,8 @@ function onOpenhandler(params) {
             fragrance_free: 'fragrance_free',
             paraben_free: 'paraben_free',
             alcohol_free: 'alcohol_free',
+            pregnancy: 'pregnancy',
+            breastfeed: 'breastfeed',
         };
 
         const group_6 = {

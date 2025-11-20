@@ -487,7 +487,7 @@
                     </form>
                     <p class="mt-4 block text-center font-sans text-base font-normal leading-relaxed antialiased">
                         Already have an account?
-                        <a href="{{ route('register') }}" class="cursor-pointer inline-block space-y-2 border-b border-black dark:border-blue-500 group">
+                        <!-- <a href="{{ route('register') }}" class="cursor-pointer space-y-2 border-black dark:border-blue-500 group">
                             <svg Class="h-4 w-4 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
                                 <style type="text/css">
                                 <![CDATA[
@@ -512,11 +512,15 @@
                                         C175.972,459.027,197.816,418.793,190.925,391.2z"/>
                                 </g>
                             </svg>
-                            Develop
-                        </a>
+                                Develop
+                        </a> -->
                     </p>
                     <span class="mt-4 block font-sans text-xs font-bold text-center">
-                        PRODUCT MASTER (V 2.04.0 © 2024)
+                        PRODUCT MASTER
+                        <a href="{{ route('register') }}" class="cursor-pointer space-y-2 border-black dark:border-blue-500 group">
+                            DEV
+                        </a>
+                        (V 2.04.0 © 2024)
                     </span> 
                 </div>
             </div>

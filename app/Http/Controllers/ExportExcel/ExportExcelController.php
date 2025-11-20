@@ -631,7 +631,11 @@ class ExportExcelController extends Controller
                 'barcode' => 'Barcode',
                 'ref_barcode_real' => 'Barcode สินค้าจริง',
                 'status' => 'Status',
-                'AGE' => 'อายุสินค้า',
+                'unit_q' => 'ปริมาณการบรรจุ',
+                'width' => 'กว้าง',
+                'wide'            => 'ยาว',
+                'height'          => 'สูง',
+                'age'             => 'อายุสินค้า',
                 'name_thai' => 'ชื่อภาษาไทย',
                 'name_eng' => 'ชื่อภาษาอังกฤษ',
                 'short_thai' => 'ชื่อย่อไทย',
@@ -668,8 +672,8 @@ class ExportExcelController extends Controller
                 // 'GRP_P' => 'สินค้าของบริษัท',
                 // 'SUPPLIER' => 'ผู้ขาย/ผู้ผลิต',
 
-                'GRP_P' => 'สินค้าของบริษัท',
-                'SUPPLIER' => 'ผู้ขาย/ผู้ผลิต',
+                'grp_p' => 'สินค้าของบริษัท',
+                'supplier' => 'ผู้ขาย/ผู้ผลิต',
                 'country' => 'ผลิตประเทศ',
                 'suppiler_th' => 'suppiler_th',
                 'suppiler_en' => 'suppiler_en',
@@ -713,6 +717,10 @@ class ExportExcelController extends Controller
                 'fragrance_free' => 'fragrance_free',
                 'paraben_free' => 'paraben_free',
                 'alcohol_free' => 'alcohol_free',
+
+                'pregnancy' => 'คนท้องใช้ได้หรือไม่',                        // ใหม่
+                'breastfeed' => 'ให้นมบุตรใช้ได้หรือไม่',                     // ใหม่
+                
                 'solution' => 'Solution',
                 // 'sub_category' => 'Sub Category',
                 'reg_date' => 'REG_DATE',
@@ -728,9 +736,13 @@ class ExportExcelController extends Controller
                 'barcode' => 'Barcode',
                 'ref_barcode_real' => 'Barcode สินค้าจริง',
                 'status' => 'Status',
-                'AGE' => 'อายุสินค้า',
-                'GRP_P' => 'สินค้าของบริษัท',
-                'SUPPLIER' => 'ผู้ขาย/ผู้ผลิต',
+                'unit_q' => 'ปริมาณการบรรจุ',
+                'width' => 'กว้าง',
+                'wide'            => 'ยาว',
+                'height'          => 'สูง',
+                'age'             => 'อายุสินค้า',
+                'grp_p'           => 'สินค้าของบริษัท',
+                'supplier'        => 'ผู้ขาย/ผู้ผลิต',
                 'name_thai' => 'ชื่อภาษาไทย',
                 'name_eng' => 'ชื่อภาษาอังกฤษ',
                 'short_thai' => 'ชื่อย่อไทย',
@@ -1089,6 +1101,7 @@ class ExportExcelController extends Controller
             $sheet->writeRow($line);
         }
 
+        // dd($ProDevelops);
         // ✅ กำหนดชื่อไฟล์แล้วค่อยดาวน์โหลด
         $outFileName = 'Excel - CPS.xlsx';
         $excel->download($outFileName);

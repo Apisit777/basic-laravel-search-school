@@ -51,7 +51,7 @@ class ProductionRunMidnightTask extends Command
     public function production_transfer_data_task()
     {
         $now = now();
-        $start = $now->copy()->setTime(9, 30); // 18:30
+        $start = $now->copy()->setTime(8, 30); // 18:30
         $end = $now->copy()->setTime(20, 00);  // 20:00
 
         if (now()->isWeekday() === true && $now->between($start, $end)) {
@@ -222,7 +222,7 @@ class ProductionRunMidnightTask extends Command
                                         '" . $rs->GRP_P . "',
                                         '" . $rs->SUPPLIER . "',
                                         N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
                                         N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
                                         N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
                                         '" . $rs->VENDOR . "',

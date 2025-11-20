@@ -383,12 +383,14 @@
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">ประเภทสินค้า<span class="text-danger"> *</span></label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs select2" name="TYPE_G" id="TYPE_G">
+                                                                    <!-- <select class="js-example-basic-single w-full rounded-sm text-xs select2" name="TYPE_G" id="TYPE_G"> -->
+                                                                        <select required class="js-example-basic-single w-full rounded-sm text-xs select2" name="TYPE_G" id="TYPE_G" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($type_gs as $key => $type_g)
                                                                             <option value={{ $type_g->ID }}>{{ $type_g->DESCRIPTION }}</option>
                                                                         @endforeach
                                                                     </select>
+                                                                    <span id="TYPE_G_textalert" class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">กรุณาเลือกข้อมูล</span>
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">ประเภทสินค้า [บัญชี]</label>
@@ -754,6 +756,8 @@
                                     </svg>
                                     Back
                                 </a>
+                                <!-- <div class="cursor-not-allowed bg-teal-400 text-center w-64 py-4 m-2">Not Allowed</div> -->
+
                                 <button id="submitButton_consumables" type="button" class="bg-[#3b5998] text-white font-bold py-1.5 px-4 rounded cursor-not-allowed opacity-50" onclick="createProductMaster()" disabled>
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FFFFFF" class="-mt-1 w-5 h-5 hidden md:inline-block">
                                         <path d="M0 0h24v24H0V0z" fill="none"></path>
@@ -900,46 +904,37 @@
                         jQuery("#correct_username_consumables").hide();
                         jQuery("#username_alert_consumables").hide();
                     },
-                    success: function (checknamebrand) {
-                        codeConsumables = checknamebrand
+
+                    success: function (checkCode) {
+                        codeConsumables = checkCode
                         jQuery('#username_loading_consumables').hide();
                         jQuery("#correct_username_consumables").hide();
                         let checkvalue = checkValueSelect2();
-                        // if (BRAND == '') {
-                        //     jQuery("#submitButton_consumables").attr("disabled", true);
-                        //     jQuery("#submitButton_consumables").addClass('cursor-not-allowed opacity-50');
-                        // } else 
                         if (PRODUCT == '') {
                             jQuery("#submitButton_consumables").attr("disabled", true);
                             jQuery("#submitButton_consumables").addClass('cursor-not-allowed opacity-50');
                             jQuery("#correct_username_consumables").hide();
-                            jQuery("#username_alert_consumables").hide();
-                            jQuery("#ID_PRODUCT").removeClass("is-invalid");
-                        } else if (!checknamebrand) {
-                            // console.log("🚀 ~ 1 ~ 1:", 1)
+                            jQuery("#username_alert").hide();
+                            jQuery("#NUMBER").removeClass("is-invalid");
+                        } else if (!checkCode) {
                             jQuery("#submitButton_consumables").attr("disabled", true);
                             jQuery("#submitButton_consumables").addClass('cursor-not-allowed opacity-50');
                             jQuery("#correct_username_consumables").hide();
-                            jQuery("#username_alert_consumables").show();
-                            jQuery("#ID_PRODUCT").removeClass("is-invalid");
-                        } else if (BRAND == '') {
-                            jQuery("#submitButton_consumables").attr("disabled", true);
-                            jQuery("#submitButton_consumables").addClass('cursor-not-allowed opacity-50');
-                            jQuery("#correct_username_consumables").show();
+                            jQuery("#username_alert").show();
+                            jQuery("#NUMBER").removeClass("is-invalid");
                         } else {
-                            // console.log("🚀 ~ 2 ~ :", 2)
                             jQuery("#submitButton_consumables").attr("disabled", false);
                             jQuery("#submitButton_consumables").removeClass('cursor-not-allowed opacity-50');
-                            jQuery("#username_alert_consumables").hide();
+                            jQuery("#username_alert").hide();
                             jQuery("#correct_username_consumables").show();
                         }
-                        // if (!checkvalue) {
-                        //     jQuery("#submitButton_consumables").attr("disabled", true);
-                        //     jQuery("#submitButton_consumables").addClass('cursor-not-allowed opacity-50');
-                        // } else {
-                        //     jQuery("#submitButton_consumables").attr("disabled", false);
-                        //     jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
-                        // }
+                        if (!checkvalue) {
+                            jQuery("#submitButton_consumables").attr("disabled", true);
+                            jQuery("#submitButton_consumables").addClass('cursor-not-allowed opacity-50');
+                        } else {
+                            jQuery("#submitButton_consumables").attr("disabled", false);
+                            jQuery("#submitButton_consumables").removeClass('cursor-not-allowed opacity-50');
+                        }
                     },
                     error: function (params) {
                     }
@@ -960,7 +955,7 @@
             // const GRP_P = jQuery('#GRP_P').val();
             // const BRAND_P = jQuery('#BRAND_P').val();
             // const SUPPLIER = jQuery('#SUPPLIER').val();
-            // const TYPE_G = jQuery('#TYPE_G').val();
+            const TYPE_G = jQuery('#TYPE_G').val();
             // const SOLUTION = jQuery('#SOLUTION').val();
             // const SERIES = jQuery('#SERIES').val();
             // const CATEGORY = jQuery('#CATEGORY').val();
@@ -998,11 +993,11 @@
             // } else {
             //     jQuery('#SUPPLIER_textalert').removeClass('hidden');
             // }
-            // if (TYPE_G) {
-            //     jQuery('#TYPE_G_textalert').addClass('hidden');
-            // } else {
-            //     jQuery('#TYPE_G_textalert').removeClass('hidden');
-            // }
+            if (TYPE_G) {
+                jQuery('#TYPE_G_textalert').addClass('hidden');
+            } else {
+                jQuery('#TYPE_G_textalert').removeClass('hidden');
+            }
             // if (SOLUTION) {
             //     jQuery('#SOLUTION_textalert').addClass('hidden');
             // } else {
@@ -1054,7 +1049,7 @@
             //     jQuery('#CONDITION_SALE_textalert').removeClass('hidden');
             // }
 
-            return !!BRAND
+            return !!BRAND && !!TYPE_G
             // return !!VENDOR && !!SUPPLIER && !!STATUS && !!CONDITION_SALE
             // return !!VENDOR && !!GRP_P && !!SUPPLIER && !!TYPE_G && !!SOLUTION && !!SERIES && !!CATEGORY && !!S_CAT && !!PDM_GROUP && !!STATUS && !!UNIT && !!UNIT_TYPE && !!ACC_TYPE && !!CONDITION_SALE
         }

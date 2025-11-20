@@ -797,6 +797,18 @@ class ProductController extends Controller
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
+
+            $venders = Vendor::select(
+                'VEN_ID',
+                'VEN_NTHAI',
+                'BRAND'
+            )
+            ->where(function ($q) {
+                $q->where('BRAND', 'OP')
+                ->orWhere('BRAND', '');
+            })
+            ->get();
+
             $brand_ps = Brand_p::select(
                 'ID',
                 'REMARK',
@@ -872,6 +884,17 @@ class ProductController extends Controller
                 'BRAND')
                 ->where('BRAND', 'CPS')
             ->get();
+
+            $venders = Vendor::select(
+                'VEN_ID',
+                'VEN_NTHAI',
+                'BRAND')
+            ->where(function ($q) {
+                $q->where('BRAND', 'CPS')
+                ->orWhere('BRAND', '');
+            })
+            ->get();
+
             $brand_ps = Brand_p::select(
                 'ID',
                 'REMARK',
@@ -941,6 +964,17 @@ class ProductController extends Controller
                 'BRAND')
             ->where('BRAND', $userpermission)
             ->get();
+
+            $venders = Vendor::select(
+                'VEN_ID',
+                'VEN_NTHAI',
+                'BRAND')
+            ->where(function ($q) {
+                $q->where('BRAND', 'CPS')
+                ->orWhere('BRAND', '');
+            })
+            ->get();
+
             $brand_ps = Brand_p::select(
                 'ID',
                 'REMARK',
@@ -1005,7 +1039,7 @@ class ProductController extends Controller
         // $ean13 = "3885008021578"; // เปลี่ยนเป็นเลขที่ต้องการ
         // $checkDigit = $this->calculateEAN14CheckDigit($ean13);
         // $ean14 = $ean13 . $checkDigit;
-        // dd($userpermission);
+        // dd($venders);
 
         return view('product.create', compact(  'brands', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'acctypes', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions', 'product_groups', 'userpermission'));
     }
@@ -1109,6 +1143,17 @@ class ProductController extends Controller
                 'BRAND')
             ->where('BRAND', 'OP')
             ->get();
+
+            $venders = Vendor::select(
+                'VEN_ID',
+                'VEN_NTHAI',
+                'BRAND')
+            ->where(function ($q) {
+                $q->where('BRAND', 'OP')
+                ->orWhere('BRAND', '');
+            })
+            ->get();
+
             $brand_ps = Brand_p::select(
                 'ID',
                 'REMARK',
@@ -1178,6 +1223,17 @@ class ProductController extends Controller
                 'BRAND')
                 ->whereIn('BRAND', ['CPS', 'KM'])
             ->get();
+
+            $venders = Vendor::select(
+                'VEN_ID',
+                'VEN_NTHAI',
+                'BRAND')
+            ->where(function ($q) {
+                $q->where('BRAND', 'CPS')
+                ->orWhere('BRAND', '');
+            })
+            ->get();
+
             $brand_ps = Brand_p::select(
                 'ID',
                 'REMARK',
@@ -1247,6 +1303,17 @@ class ProductController extends Controller
                 'BRAND')
                  ->whereIn('BRAND', ['KTY', 'FR'])
             ->get();
+
+            $venders = Vendor::select(
+                'VEN_ID',
+                'VEN_NTHAI',
+                'BRAND')
+            ->where(function ($q) {
+                $q->where('BRAND', 'CPS')
+                ->orWhere('BRAND', '');
+            })
+            ->get();
+
             $brand_ps = Brand_p::select(
                 'ID',
                 'REMARK',
@@ -1316,6 +1383,17 @@ class ProductController extends Controller
                 'BRAND')
                 ->where('BRAND', $userpermission)
             ->get();
+
+            $venders = Vendor::select(
+                'VEN_ID',
+                'VEN_NTHAI',
+                'BRAND')
+            ->where(function ($q) {
+                $q->where('BRAND', 'CPS')
+                ->orWhere('BRAND', '');
+            })
+            ->get();
+
             $brand_ps = Brand_p::select(
                 'ID',
                 'REMARK',
@@ -2347,12 +2425,13 @@ class ProductController extends Controller
         $brand_ps = Brand_p::select('ID AS BRAND_P', 'REMARK', 'BRAND')->get()->toArray();
 
         $venders = Vendor::select('VEN_ID AS SUPPLIER', 'VEN_NTHAI')->get()->toArray();
-        if ($data && !in_array($data->SUPPLIER, array_column($venders, 'SUPPLIER'))) {
-            $venders[] =  [
-                'SUPPLIER' => $data->SUPPLIER,
-                'VEN_NTHAI' => $data->SUPPLIER,
-            ];
-        }
+
+        // if ($data && !in_array($data->SUPPLIER, array_column($venders, 'SUPPLIER'))) {
+        //     $venders[] =  [
+        //         'SUPPLIER' => $data->SUPPLIER,
+        //         'VEN_NTHAI' => $data->SUPPLIER,
+        //     ];
+        // }
 
         // ==== ดึง brand code จาก role แบบกันพลาด ====
         $role = Auth::user()->getUserPermission->name_position ?? ''; // ex. "… - ACCOUNTING-ACC)"
@@ -2541,6 +2620,21 @@ class ProductController extends Controller
                     'REMARK' => $data->GRP_P,
                 ];
             }
+
+            $venders = Vendor::select(
+                'VEN_ID AS SUPPLIER',
+                'VEN_NTHAI',
+                'BRAND')
+            ->where('BRAND', 'OP')
+            ->get()->toArray();
+
+            if (!in_array($data->SUPPLIER, array_column($venders, 'SUPPLIER'))) {
+                $venders[] =  [
+                    'SUPPLIER' => $data->SUPPLIER,
+                    'VEN_NTHAI' => $data->SUPPLIER,
+                ];
+            }
+
             $brand_ps = Brand_p::select(
                 'ID AS BRAND_P',
                 'REMARK',
@@ -2691,6 +2785,26 @@ class ProductController extends Controller
                     'REMARK' => $data->GRP_P,
                 ];
             } 
+
+            $venders = Vendor::select(
+                'VEN_ID AS SUPPLIER',
+                'VEN_NTHAI',
+                'BRAND'
+            )
+            ->where(function ($q) {
+                $q->where('BRAND', 'CPS')
+                ->orWhere('BRAND', '');
+            })
+            ->get()
+            ->toArray();
+
+            if (!in_array($data->SUPPLIER, array_column($venders, 'SUPPLIER'))) {
+                $venders[] =  [
+                    'SUPPLIER' => $data->SUPPLIER,
+                    'VEN_NTHAI' => $data->SUPPLIER,
+                ];
+            }
+            
             $brand_ps = Brand_p::select(
                 'ID AS BRAND_P',
                 'REMARK',
@@ -2854,6 +2968,26 @@ class ProductController extends Controller
                     'REMARK' => $data->GRP_P,
                 ];
             }
+
+            $venders = Vendor::select(
+                'VEN_ID AS SUPPLIER',
+                'VEN_NTHAI',
+                'BRAND'
+            )
+            ->where(function ($q) {
+                $q->where('BRAND', 'CPS')
+                ->orWhere('BRAND', '');
+            })
+            ->get()
+            ->toArray();
+
+            if (!in_array($data->SUPPLIER, array_column($venders, 'SUPPLIER'))) {
+                $venders[] =  [
+                    'SUPPLIER' => $data->SUPPLIER,
+                    'VEN_NTHAI' => $data->SUPPLIER,
+                ];
+            }
+
             $brand_ps = Brand_p::select(
                 'ID AS BRAND_P',
                 'REMARK',
@@ -2879,6 +3013,13 @@ class ProductController extends Controller
                 ];
             }
 
+             $solutions = Solution::select(
+                'ID AS SOLUTION',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', $userpermission)
+            ->get()->toArray();
+
             // ==== ถ้า SOLUTION ของสินค้าที่เปิดอยู่ ไม่อยู่ในลิสต์ → เติมเข้าไป พร้อมพยายามดึง DESCRIPTION จากทุกแบรนด์ ====
             if (!in_array($data->SOLUTION, array_column($solutions, 'SOLUTION'))) {
                 $descAnyBrand = Solution::where('ID', $data->SOLUTION)->value('DESCRIPTION');
@@ -2889,6 +3030,13 @@ class ProductController extends Controller
                     'BRAND'       => $brandCode,
                 ];
             }
+
+            $series = Series::select(
+                'ID AS SERIES',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', $userpermission)
+            ->get()->toArray();
 
             // ==== ถ้า SERIES ของสินค้าที่เปิดอยู่ ไม่อยู่ในลิสต์ → เติมเข้าไป พร้อมพยายามดึง DESCRIPTION จากทุกแบรนด์ ====
             if (!in_array($data->SERIES, array_column($series, 'SERIES'))) {
@@ -2915,6 +3063,12 @@ class ProductController extends Controller
             //     ];
             // }
 
+            $categorys = Category::select(
+                'ID AS CATEGORY',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', $userpermission)
+            ->get()->toArray();
             // ==== ถ้า CATEGORY ของสินค้าที่เปิดอยู่ ไม่อยู่ในลิสต์ → เติมเข้าไป พร้อมพยายามดึง DESCRIPTION จากทุกแบรนด์ ====
             if (!in_array($data->CATEGORY, array_column($categorys, 'CATEGORY'))) {
                 $descAnyBrand = Category::where('ID', $data->CATEGORY)->value('DESCRIPTION');
@@ -2926,6 +3080,13 @@ class ProductController extends Controller
                 ];
             }
 
+            $sub_categorys = Sub_category::select(
+                'ID AS S_CAT',
+                'CATEGORY_ID',
+                'DESCRIPTION',
+                'BRAND')
+            ->where('BRAND', $userpermission)
+            ->get()->toArray();
             // ==== ถ้า S_CAT ของสินค้าที่เปิดอยู่ ไม่อยู่ในลิสต์ → เติมเข้าไป พร้อมพยายามดึง DESCRIPTION จากทุกแบรนด์ ====
             if (!in_array($data->S_CAT, array_column($sub_categorys, 'S_CAT'))) {
                 $descAnyBrand = Sub_category::where('ID', $data->S_CAT)->value('DESCRIPTION');
