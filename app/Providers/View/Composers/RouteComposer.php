@@ -6,6 +6,7 @@ use Illuminate\View\View;
 use App\Models\menu;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Product1; // 👈 เพิ่มบรรทัดนี้
 
 class RouteComposer
 {
@@ -75,6 +76,17 @@ class RouteComposer
                 $query->where('menu_relations.position_id', $authPosition);
             })
             ->get();
+
+            // ✅ ไม่ดึงจาก DB แล้ว ให้ default = 0
+            $initialBadge = 0;
+
+            $routeName = $routeName->map(function ($menu) use ($initialBadge) {
+                if ($menu->menu_name === 'Account') {
+                    $menu->badge = $initialBadge;
+                }
+                return $menu;
+            });
+
         }
 
         // dd($routeName);

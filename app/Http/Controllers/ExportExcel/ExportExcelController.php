@@ -540,8 +540,9 @@ class ExportExcelController extends Controller
             }
         } else if ($userpermission == 'BD') {
             if (!isset($request->start_product) || $request->start_product == null) {
-                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'product1s.COST', 'p_statuses.DESCRIPTION AS STATUS', 'product_details.ingredients')
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'com_products.unit_net_weight', 'com_products.weight', 'product1s.UNIT_TYPE', 'product1s.PRICE', 'product1s.COST', 'p_statuses.DESCRIPTION AS STATUS', 'product_details.ingredients')
                                         ->leftJoin('product_details', 'product1s.PRODUCT', '=', 'product_details.product_id')
+                                        ->leftJoin('com_products', 'product1s.PRODUCT', '=', 'com_products.product_id')
                                         ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
                                         ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
                                         ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
@@ -554,8 +555,9 @@ class ExportExcelController extends Controller
                                         ->toArray();
                                         // dd($ProDevelops);
             } else if (!isset($request->end_product) || $request->end_product == null) {
-                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'product1s.COST', 'p_statuses.DESCRIPTION AS STATUS', 'product_details.ingredients')
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'com_products.unit_net_weight', 'com_products.weight', 'product1s.UNIT_TYPE', 'product1s.PRICE', 'product1s.COST', 'p_statuses.DESCRIPTION AS STATUS', 'product_details.ingredients')
                                         ->leftJoin('product_details', 'product1s.PRODUCT', '=', 'product_details.product_id')
+                                        ->leftJoin('com_products', 'product1s.PRODUCT', '=', 'com_products.product_id')
                                         ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
                                         ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
                                         ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
@@ -568,8 +570,9 @@ class ExportExcelController extends Controller
                                         ->toArray();
                                         // dd($ProDevelops);
             } else {
-                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'product1s.COST', 'p_statuses.DESCRIPTION AS STATUS', 'product_details.ingredients')
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'com_products.unit_net_weight', 'com_products.weight', 'product1s.UNIT_TYPE', 'product1s.PRICE', 'product1s.COST', 'p_statuses.DESCRIPTION AS STATUS', 'product_details.ingredients')
                                         ->leftJoin('product_details', 'product1s.PRODUCT', '=', 'product_details.product_id')
+                                        ->leftJoin('com_products', 'product1s.PRODUCT', '=', 'com_products.product_id')
                                         ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
                                         ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
                                         ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
@@ -590,7 +593,7 @@ class ExportExcelController extends Controller
         $columns = [];
 
         if ($userpermission == 'GNC' || $userpermission == 'BD') {
-            $columns = array('Brand', 'Product ID', 'Barcode', 'Name Thai', 'Name English', 'Short Name Thai', 'Short Name English', 'Retail Price', 'Cost', 'Product Status', 'ingredients');
+            $columns = array('Brand', 'Product ID', 'Barcode', 'Name Thai', 'Name English', 'Short Name Thai', 'Short Name English', 'น้ำหนัก(Net Weight, น้ำหนักสินค้า)', 'น้ำหนัก(Gross Weight, สินค้า+กล่อง)', 'Unit', 'Retail Price', 'Cost', 'Product Status', 'ingredients');
         } else {
             $columns = array('Brand', 'Product ID', 'Barcode', 'Name Thai', 'Name English', 'Short Name Thai', 'Short Name English', 'Retail Price', 'Solution', 'Series', 'Category', 'Sub Category');
         }
@@ -663,7 +666,8 @@ class ExportExcelController extends Controller
                 // 'AGE' => 'อายุสินค้า',
                 'after_open_m' => 'ระยะเก็บรักษา(หลังเปิด)',
                 'launch' => 'Launch',
-                'channel' => 'channel',
+                // 'channel' => 'channel',
+                'channels' => 'Channel',
                 'ingredients' => 'ingredients',
                 'description_th' => 'description_th',
                 'description_en' => 'description_en',
@@ -773,7 +777,8 @@ class ExportExcelController extends Controller
                 'unit_weight' => 'unit_weight',
                 'unit_pak_size' => 'unit_pak_size',
                 'fad' => 'FDA',
-                'channel' => 'channel',
+                // 'channel' => 'channel',
+                'channels' => 'Channel',
                 'item_name' => 'item_name',
                 'cat_name' => 'cat_name',
                 'product_line' => 'product_line',
@@ -934,6 +939,7 @@ class ExportExcelController extends Controller
                 ['table' => 'com_products',    'alias' => 'cp'],
                 // สุดท้าย product_channels (pc) เฉพาะบางฟิลด์ที่รู้ว่ามี
                 ['table' => 'product_channels','alias' => 'pc'],
+                ['table' => 'product_channel_brands','alias' => 'pcb'],
             ];
 
             foreach ($candidates as $c) {
@@ -955,9 +961,17 @@ class ExportExcelController extends Controller
         // ดึง field เตรียม select
         $selectFields = [];
         foreach ($fieldsCanSee as $field) {
+            // ข้าม channel จาก product_others เพราะจะใช้ channels จาก product_channel_brands แทน
+            if (strtolower($field) === 'channel') {
+                continue;
+            }
             $resolved = resolveFieldWithTablePrefix($field);
             if ($resolved) {
                 $selectFields[] = $resolved;
+            }
+            // แทรก channels หลัง fad
+            if (strtolower($field) === 'fad') {
+                $selectFields[] = DB::raw('GROUP_CONCAT(DISTINCT pcb.CHANNEL ORDER BY pcb.CHANNEL SEPARATOR ", ") as channels');
             }
         }
         // dd($selectFields);
@@ -1014,6 +1028,11 @@ class ExportExcelController extends Controller
                 ->leftJoin('series', 'p1.SERIES', '=', 'series.ID')
                 ->leftJoin('categories', 'p1.CATEGORY', '=', 'categories.ID')
                 ->leftJoin('sub_categories', 'p1.S_CAT', '=', 'sub_categories.ID')
+                // join product_channel_brands เพื่อดึง Channel
+                ->leftJoin('product_channel_brands as pcb', function($join) {
+                    $join->on('pc.PRODUCT', '=', 'pcb.PRODUCT')
+                         ->on('pc.BRAND', '=', 'pcb.BRAND');
+                })
 
                 // 1) ช่องทางขายต้องเป็น CPS
                 ->where('pc.BRAND', 'CPS')

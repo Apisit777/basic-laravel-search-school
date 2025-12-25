@@ -202,7 +202,7 @@
         <!-- <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/ChatGPT Image 21 ส.ค. 2568 16_26_32.png')}}')"> -->
             <!-- <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/redesign_guess_my_age_Content-02.jpg')}}')"> -->
         <!-- <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/npd-formenedt__.jpg')}}')"> -->
-        <div class="min-h-screen p-10">
+    <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/Research-6.svg')}}')">
         <div class="flex">
             {{-- Left 60% (ว่างไว้ หรือใส่อะไรเพิ่มทีหลัง) --}}
             <div class="w-3/5 text-white dark:text-white">
@@ -218,16 +218,16 @@
                 {{-- Logo Horse + SSUP --}}
                 <div class="relative">
                     <img src="{{ URL::asset('media/Logo-company.png') }}" class="absolute -top-6 -left-24 z-0 animate-bounce" />
-                    <span class="relative z-10 self-start logo-text-cps font-serif font-semibold whitespace-nowrap text-white dark:text-white -ml-48 animate-fade-in-up">
+                    <!-- <span class="relative z-10 self-start logo-text-cps font-serif font-semibold whitespace-nowrap text-white dark:text-white -ml-48 animate-fade-in-up">
                         @foreach(collect(mb_str_split($text0)) as $index => $char)
                             <span class="opacity-0 animate-slide-in" style="animation-delay: {{ $index * 0.1 }}s">
                                 {!! $char === ' ' ? '&nbsp;' : $char !!}
                             </span>
                         @endforeach
-                    </span>
+                    </span> -->
                 </div>
 
-                <span class="self-start logo-text-cps font-serif font-semibold whitespace-nowrap text-white dark:text-white ml-2.5 animate-fade-in-up">
+                <!-- <span class="self-start logo-text-cps font-serif font-semibold whitespace-nowrap text-white dark:text-white ml-2.5 animate-fade-in-up">
                     @foreach(collect(mb_str_split($text1)) as $index => $char)
                         <span class="text-white dark:text-white opacity-0 animate-slide-in" style="animation-delay: {{ $index * 0.1 }}s">
                             {!! $char === ' ' ? '&nbsp;' : $char !!}
@@ -247,7 +247,7 @@
                             {!! $char === '' ? '' : $char !!}
                         </span>
                     @endforeach
-                </span>
+                </span> -->
             </div>
         </div>
 
@@ -298,8 +298,9 @@
                     </span> 
                 </div> -->
             </div>
-            <div class="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-4/12">
-                <div class="relative max-w-7xl rounded-md p-10 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 -mt-12 mr-10 -ml-10">
+            <!-- <div class="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-4/12"> -->
+            <div class="mb-12 md:mb-0 md:w-5/12 lg:w-5/12 xl:w-3/12">
+                <div class="relative max-w-7xl rounded-md p-5 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-16 mr-10 -ml-1">
                     <form id="from_user" class="group js-validation-signin" action="javascript:void(0)" method="POST">
                         <div class="flex flex-row items-center justify-center lg:justify-start">
                             <div class="flex text-center">
@@ -557,11 +558,9 @@
                  <!-- <img src="https://mir-s3-cdn-cf.behance.net/project_modules/fs/02b374101705095.5f24d5db1096f.gif" alt="" style="width: 100%;">  -->
             </div>
         </div>
-
         <!-- @php
-                    session('role', 'default');
-                 @endphp -->
-
+        session('role', 'default');
+        @endphp -->
     </div>
 </body>
 

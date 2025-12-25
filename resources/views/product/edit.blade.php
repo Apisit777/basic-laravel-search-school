@@ -50,7 +50,7 @@
     <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> -->
 
     @php
-        $packSizes = [3, 4, 6, 8, 9, 12, 24, 30, 36, 48, 50, 72, 80, 144, 180];
+        $packSizes = [3, 4, 6, 8, 9, 12, 24, 30, 36, 48, 50, 72, 80, 100, 144, 180, 2000];
     @endphp
 
 @section('content')
@@ -334,7 +334,7 @@
                                                                 </div>
                                                                 <div class="md:col-span-3">
                                                                     <label for="name">ประเภทสินค้า</label>
-                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="TYPE_G" id="TYPE_G">
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="TYPE_G" id="TYPE_G" onchange="onchangeValueSelect2()">
                                                                         <option value=""> --- กรุณาเลือก ---</option>
                                                                         @foreach ($type_gs as $key => $type_g)
                                                                             <option value={{ $type_g->TYPE_G }} {{ $type_g->TYPE_G == $data->TYPE_G ? 'selected' : '' }}>{{ $type_g->DESCRIPTION }}</option>
@@ -800,6 +800,65 @@
                 })
             });
         }
+            
+        function bindAccTypeReadonly() {
+            const $acc = $('#ACC_TYPE');
+
+            // ถ้ายังไม่ได้ init select2 ให้รอแล้วลองใหม่
+            if (!$acc.length) {
+                console.log('[ACC_TYPE] select not found, retry');
+                setTimeout(bindAccTypeReadonly, 200);
+                return;
+            }
+
+            // ถ้า select2 ยังไม่ถูกผูก (บางโปรเจกต์ init ทีหลัง)
+            if (!$acc.data('select2')) {
+                console.log('[ACC_TYPE] select2 not ready, retry');
+                setTimeout(bindAccTypeReadonly, 200);
+                return;
+            }
+
+            // ป้องกันการเปิด dropdown / เลือก / เคลียร์ ตลอดเวลา
+            $acc.on('select2:opening select2:unselecting select2:clear', function (e) {
+                console.log('[ACC_TYPE] block event:', e.type);
+                e.preventDefault();
+            });
+
+            // ใส่ class ให้ดูเหมือน readonly
+            $acc.next('.select2-container').addClass('readonly-select');
+
+            console.log('[ACC_TYPE] readonly bound');
+        }
+
+        $(document).ready(function () {
+            bindAccTypeReadonly();   // ล็อกตั้งแต่เข้าหน้า
+            // onchangeValueSelect2();  // sync ค่าในหน้า edit ถ้ามีค่าเดิม
+        });
+
+        function onchangeValueSelect2() {
+
+            const typeId = $('#TYPE_G').val();   // ID จาก type_gs
+            const $acc   = $('#ACC_TYPE');
+            const $accContainer = $acc.next('.select2-container');
+
+            console.log('[onchangeValueSelect2] TYPE_G id =', typeId);
+            console.log('[onchangeValueSelect2] ACC_TYPE container length =', $accContainer.length);
+
+            // ล็อกทุกครั้ง กัน re-render
+            $accContainer.addClass('readonly-select');
+
+            // --- เงื่อนไขประเภทสินค้า ---
+            if (typeId === '07' || typeId == 7) {
+                // น้ำหอม acctypes = ID 80004
+                $acc.val('80004').trigger('change');
+                console.log('[onchangeValueSelect2] set ACC_TYPE = 80004 (น้ำหอม)');
+            } else {
+                // ❌ ไม่ต้องเคลียร์ค่าเดิมแล้ว
+                // แค่ปล่อยไว้เฉย ๆ
+                console.log('[onchangeValueSelect2] keep ACC_TYPE (not perfume)');
+            }
+        }
+
 
         $(document).ready(function() {
             let obj = <?php echo json_encode($defaultBrands); ?>;
@@ -840,6 +899,7 @@
             document.querySelectorAll('.setcheckbox')[0].checked = true
             document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
             document.querySelectorAll('.bg_step_color')[0].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+
         });
 
         let i = 0;

@@ -41,7 +41,6 @@ use App\Models\SeleChannel;
 use App\Models\ProductChannel;
 use App\Models\ProductGroup;
 use App\Models\Account;
-use App\Models\ProductPrice;
 use App\Models\Com_product;
 use App\Models\ComProductExternal;
 use App\Models\ComProductImage;
@@ -56,7 +55,7 @@ use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use App\Events\AccountApprovalRequested;
 
-class ProductController extends Controller
+class ProductControllerCopy extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -2055,7 +2054,7 @@ class ProductController extends Controller
                 'series'       => $productMaster->SERIES ?? '',
                 'solution'       => $productMaster->SOLUTION ?? '',
                 'category'       => $productMaster->CATEGORY ?? '',
-                'upd_user' => Auth::user()->username . '(' . $userpermission . ')',
+                'upd_user' =>Auth::user()->username . '(' . $userpermission . ')',
                 'status_tranfer_km' => '',
                 'update_dt' => date("Y/m/d H:i:s"),
             ]);
@@ -2088,15 +2087,11 @@ class ProductController extends Controller
 
             // dd( $createComProduct);
             // dd( $images);
-            // $craeteProductPrice = Account::updateOrCreate(['product' => $data_product['PRODUCT']], [
-            $craeteProductPrice = ProductPrice::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
-                'cost' => $productMaster->COST,
-                'status_edit_dt' => '',
-                'created_at' => date("Y/m/d H:i:s"),
-                'created_by' => Auth::user()->username . '(' . $userpermission . ')',
-                // 'updated_at' => date("Y/m/d H:i:s"),
-                // 'updated_by' => Auth::user()->username . '(' . $userpermission . ')',
-            ]);
+            // $craeteProductAccount = Account::updateOrCreate(['product' => $data_product['PRODUCT']], [
+            //     'COST' => $productMaster->COST,
+            //     'status_edit_dt' => '',
+            //     'created_at' => date("Y/m/d H:i:s"),
+            // ]);
             
             //     $craeteProductAccountSchedule = ProductPriceSchedule::updateOrCreate(['product_id' => $data_product['PRODUCT']], [
             //         // 'price' => $productMaster->COST,
@@ -2108,16 +2103,14 @@ class ProductController extends Controller
             //     ]);
 
             // dd($attributes = [
-            //     // 'productMaster' => $productMaster->toArray(),
-            //     'craeteProductPrice' => $craeteProductPrice->toArray(),
-            //     // 'createProductDetail' => $createProductDetail->toArray(),
-            //     // 'createProductOther' => $createProductOther->toArray(),
-            //     // 'createComProduct' => $createComProduct->toArray(),
+            //     'productMaster' => $productMaster->toArray(),
+            //     // 'craeteProductAccount' => $craeteProductAccount->toArray(),
+            //     'createProductDetail' => $createProductDetail->toArray(),
+            //     'createProductOther' => $createProductOther->toArray(),
+            //     'createComProduct' => $createComProduct->toArray(),
             //     // 'craeteProductAccountSchedule' => $craeteProductAccountSchedule->toArray(),
             // ]);
             
-            // dd( $createComProduct);
-
             // 🔴 ตรงนี้: ยิง event "เพิ่ม noti" ทุกครั้งที่สร้าง product สำเร็จ
             // log ฝั่ง server
             Log::info('🔥 FIRE EVENT AccountApprovalRequested', [

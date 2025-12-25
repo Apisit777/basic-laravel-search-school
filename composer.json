@@ -9,6 +9,7 @@
         "avadim/fast-excel-laravel": "^2.8",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.0",
+        "laravel/reverb": "^1.6",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
         "maatwebsite/excel": "^3.1",

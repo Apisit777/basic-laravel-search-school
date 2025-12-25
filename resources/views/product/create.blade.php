@@ -132,7 +132,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" /> -->
 
     @php
-        $packSizes = [3, 4, 6, 8, 9, 12, 24, 30, 36, 48, 50, 72, 80, 144, 180];
+        $packSizes = [3, 4, 6, 8, 9, 12, 24, 30, 36, 48, 50, 72, 80, 100, 144, 180, 2000];
     @endphp
 
 @section('content')
@@ -1083,6 +1083,7 @@
             });
         }
 
+        
         let newBarcodeValue = '';
         console.log("🚀 ~ newBarcodeValue:", newBarcodeValue)
         $(document).ready(function() {
@@ -1218,6 +1219,9 @@
                 //     // }
                 // });
             });
+
+            // ล็อก ACC_TYPE ตั้งแต่เปิดหน้าเว็บ
+            $('#ACC_TYPE').next('.select2-container').addClass('readonly-select');
         });
 
         let datass = {}
@@ -1305,7 +1309,7 @@
 
         let barcode = ''
         let codeConsumables = ''
-        function onSelect(BARCODE, params) {
+        // function onSelect(BARCODE, params) {
             // let curData = datass.find(f => f.BARCODE === BARCODE.value) || {}
             // console.log("🚀 ~ onSelect ~ curData:", curData)
             // if (curData.BARCODE) {
@@ -1343,21 +1347,58 @@
             //     $('#BARCODE').val('');
             // }
 
-            let obj = <?php echo json_encode($grp_ps); ?>;
-            console.log("🚀 ~ onSelect ~ obj:", obj)
-            let GRP_P = $("select[name=GRP_P]");
+            // let obj = <?php echo json_encode($grp_ps); ?>;
+            // console.log("🚀 ~ onSelect ~ obj:", obj)
+            // let GRP_P = $("select[name=GRP_P]");
 
-            if (BARCODE.value >= 20000 && BARCODE.value <= 28999) {
-                jQuery("#GRP_P").val('OP').change();
-                // $("#GRP_P").select2({disabled:'readonly'});
-                $("#GRP_P").next('.select2-container').addClass('readonly-select');
-                $("#GRP_P").removeClass("select2");
-            } else if (BARCODE.value >= 29000 && BARCODE.value <= 29699) {
-                jQuery("#GRP_P").val('RE').change();
-            } else if (BARCODE.value >= 29700 && BARCODE.value <= 29999) {
-                jQuery("#GRP_P").val('CM').change();
+            // if (BARCODE.value >= 20000 && BARCODE.value <= 28999) {
+            //     jQuery("#GRP_P").val('OP').change();
+            //     $("#GRP_P").next('.select2-container').addClass('readonly-select');
+            //     $("#GRP_P").removeClass("select2");
+            // } else if (BARCODE.value >= 29000 && BARCODE.value <= 29699) {
+            //     jQuery("#GRP_P").val('RE').change();
+            // } else if (BARCODE.value >= 29700 && BARCODE.value <= 29999) {
+            //     jQuery("#GRP_P").val('CM').change();
+            // }
+
+
+        function onSelect(BARCODE, params) {
+            // ================= เงื่อนไขใหม่ฝั่งหน้าเว็บ =================
+            const numberVal    = $('#NUMBER').val();      // รหัสที่ต้องการ
+            const $grp         = $('#GRP_P');             // select2 สินค้าของบริษัท
+            const $grpContainer = $grp.next('.select2-container');
+
+            // ถ้ายังไม่ได้เลือก (--- กรุณาเลือก ---)
+            if (!numberVal) {
+                // เคลียร์ barcode ใน input
+                $('#BARCODE').val('');   // <-- ให้ input มี id="BARCODE"
+
+                // ปลดล็อก select2 + เคลียร์ค่า
+                $grp.val('').trigger('change');
+                $grpContainer.removeClass('readonly-select');
+            } else {
+                const code = parseInt(numberVal, 10);
+
+                // default: ปลดล็อกก่อน
+                $grpContainer.removeClass('readonly-select');
+
+                if (!isNaN(code) && code >= 20000 && code <= 28999) {
+                    $grp.val('OP').trigger('change');   // ไม่เช็คหลังบ้าน
+                    $grpContainer.addClass('readonly-select');
+                } else if (!isNaN(code) && code >= 29000 && code <= 29699) {
+                    $grp.val('RE').trigger('change');
+                    $grpContainer.addClass('readonly-select');
+                } else if (!isNaN(code) && code >= 29700 && code <= 29999) {
+                    $grp.val('CM').trigger('change');
+                    $grpContainer.addClass('readonly-select');
+                } else {
+                    // นอกช่วงทั้งสาม → ให้เลือก GRP_P เอง
+                    $grp.val('').trigger('change');
+                    $grpContainer.removeClass('readonly-select');
+                }
             }
 
+            // ================== โค้ดเดิมของคุณ (ไม่แตะ) ==================
             let PRODUCT = BARCODE.value;
             if (params === 'BARCODE') {
                 url = '{{ route('product_master.get_barcode') }}?BARCODE=' + BARCODE.value;
@@ -1367,11 +1408,18 @@
                 url,
                 dataType: 'json',
                 success: function (data) {
-                    barcode = data.productCodes.BARCODE
-                    // console.log("🚀 ~ onSelect ~ barcode:", barcode)
-                    if (BARCODE.value) {
-                        jQuery("#BARCODE").val(data.productCodes.BARCODE);
+                    console.log('get_barcode response:', data);
+
+                    // ป้องกันกรณี productCodes เป็น null หรือไม่มี BARCODE
+                    var barcode = (data.productCodes && data.productCodes.BARCODE)
+                        ? data.productCodes.BARCODE
+                        : '';
+
+                    if (barcode) {
+                        // มี barcode จากหลังบ้าน → ใส่ลง input
+                        jQuery("#BARCODE").val(barcode);
                     } else {
+                        // ไม่เจอ / ค่าว่าง → เคลียร์ input
                         jQuery("#BARCODE").val('');
                     }
                 },
@@ -1379,6 +1427,13 @@
                     console.log('ajax error ::', params);
                 }
             });
+
+
+            // ===== AJAX checkproduct เดิม ใช้ PRODUCT เหมือนเดิม =====
+            let type_g = <?php echo json_encode($type_gs); ?>;
+            console.log("🚀 ~ onSelect ~ type_g:", type_g)
+            let TYPE_G = $("select[name=TYPE_G]");
+
             if (PRODUCT != '') {
                 jQuery.ajax({
                     method: "GET",
@@ -1564,36 +1619,36 @@
         }
 
         function checkDuplicate(PRODUCT, url, callback) {
-    console.log("🚀 Checking duplicate for PRODUCT:", PRODUCT);
-    
-    jQuery.ajax({
-        method: "POST",
-        url: url,
-        data: { PRODUCT },
-        dataType: 'json',
-        beforeSend: function () {
-            jQuery("#submitButton").attr("disabled", true);
-            jQuery("#username_loading_gnc").show();
-        },
-        success: function (response) {
-            console.log("🚀 Response from Backend:", response);
+            console.log("🚀 Checking duplicate for PRODUCT:", PRODUCT);
+            
+            jQuery.ajax({
+                method: "POST",
+                url: url,
+                data: { PRODUCT },
+                dataType: 'json',
+                beforeSend: function () {
+                    jQuery("#submitButton").attr("disabled", true);
+                    jQuery("#username_loading_gnc").show();
+                },
+                success: function (response) {
+                    console.log("🚀 Response from Backend:", response);
 
-            // ✅ ตรวจสอบว่าค่า isDuplicate ถูกต้องหรือไม่
-            let isDuplicate = (response.isDuplicate === true);
-            console.log("🚀 isDuplicate (processed):", isDuplicate);
+                    // ✅ ตรวจสอบว่าค่า isDuplicate ถูกต้องหรือไม่
+                    let isDuplicate = (response.isDuplicate === true);
+                    console.log("🚀 isDuplicate (processed):", isDuplicate);
 
-            if (callback) callback(isDuplicate); // ✅ ส่งค่าที่ถูกต้องกลับไป
-        },
-        error: function (params) {
-            console.error("🚀 AJAX Error:", params);
-            if (callback) callback(true); // ❌ ถ้าเกิด Error ให้ถือว่าซ้ำ (ป้องกันปัญหา)
-        },
-        complete: function () {
-            jQuery("#username_loading_gnc").hide();
-            jQuery("#submitButton").attr("disabled", false);
+                    if (callback) callback(isDuplicate); // ✅ ส่งค่าที่ถูกต้องกลับไป
+                },
+                error: function (params) {
+                    console.error("🚀 AJAX Error:", params);
+                    if (callback) callback(true); // ❌ ถ้าเกิด Error ให้ถือว่าซ้ำ (ป้องกันปัญหา)
+                },
+                complete: function () {
+                    jQuery("#username_loading_gnc").hide();
+                    jQuery("#submitButton").attr("disabled", false);
+                }
+            });
         }
-    });
-}
 
         // ✅ ฟังก์ชัน generate Barcode และ update ค่าไปยัง #ID_BARCODE
         function generateBarcode(newBarcodeValue) {
@@ -1911,6 +1966,28 @@
                 jQuery("#submitButton").attr("disabled", true);
                 jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
             }
+
+            const typeId = $('#TYPE_G').val();   // ID จาก type_gs
+            const $acc   = $('#ACC_TYPE');
+            const $accContainer = $acc.next('.select2-container'); // select2 UI จริง
+
+            console.log('TYPE_G selected id =', typeId);
+
+            // --- ล็อก select2 ทุกกรณี (ตลอดเวลา) ---
+            $accContainer.addClass('readonly-select');
+            
+
+            // --- เงื่อนไขประเภทสินค้า ---
+            if (typeId === '07' || typeId == 7) {
+
+                // น้ำหอม acctypes = ID 80004
+                $acc.val('80004').trigger('change');
+                console.log('ACC_TYPE = 80004 (น้ำหอม)');
+
+            } else {
+                // ถ้าไม่ใช่น้ำหอม → เคลียร์ค่า
+                $acc.val('').trigger('change');
+            }
         }
 
         function checkPacksize() {
@@ -2048,6 +2125,45 @@
                         },
                         success: function(res){
                             if(res.success == true) {
+
+                                // ✅ ใหม่ – อัปเดตทั้ง badge + account_noti_products
+                                // if (window.addAccountNotification) {
+                                //     // code = รหัสสินค้า เช่น 72659
+                                //     console.log('🟢 LOCAL addAccountNotification from create page', code);
+                                //     window.addAccountNotification(String(code));
+                                // } else if (window.updateAccountBadge) {
+                                //     // fallback เผื่อ realtime.ts ยังไม่โหลด
+                                //     console.log('🟢 fallback LOCAL +1 from create page');
+                                //     window.updateAccountBadge(+1);
+                                // }
+                                // BRAND
+
+                                if (window.addAccountNotification) {
+                                    console.log('🟢 LOCAL addAccountNotification from create page', code);
+
+                                    // ✅ ดึงชื่อ brand จาก option ที่เลือกอยู่
+                                    var brand =
+                                        ($('#BRAND option:selected').text().trim() ||   // เช่น "CPS"
+                                        $('#BRAND').val() ||                           // fallback เป็น value
+                                        '-');
+
+                                    var msg =
+                                        'แจ้งเตือนมีการเพิ่ม Product ใหม่!\n' +
+                                        '- Brand ' + brand + '\n' +
+                                        '- รหัสสินค้า ' + (code || '-');
+
+                                    try {
+                                        localStorage.setItem('account_last_noti_message', msg);
+                                    } catch (e) {
+                                        console.warn('[Create] cannot save account_last_noti_message', e);
+                                    }
+
+                                    window.addAccountNotification(String(code));
+                                } else if (window.updateAccountBadge) {
+                                    console.log('🟢 fallback LOCAL +1 from create page');
+                                    window.updateAccountBadge(+1);
+                                }
+
                                 window.location = "/product_master/pd_master";
                             } else {
                                 setTimeout(function() {

@@ -9,6 +9,8 @@ import {
     initTWE,
   } from "tw-elements";
 
+import './app.ts'; // 👈 ให้ Vite โหลด Echo + Reverb เข้า bundle เดียวกัน
+
 initTWE({ Modal, Ripple, Tooltip, Dropdown });
 
 window.Alpine = Alpine

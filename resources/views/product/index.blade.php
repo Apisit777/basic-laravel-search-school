@@ -98,6 +98,17 @@
             left: 0;
         }
 
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 99999;
+        }
+
         *{margin: 0;padding:0px}
 
         .header{
@@ -210,6 +221,31 @@
         .animate-spin {
             animation: spin 1s linear infinite;
         }
+
+        /* สไตล์ปุ่ม (แล้วแต่ของเดิม) */
+        .toggle-btn {
+            background: #404040;
+            color: #fff;
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+        .toggle-btn:hover { background: #3b3b3b; }
+        .toggle-btn.active { background: #05395D; }
+
+        /* ✅ เงื่อนไข: จอเล็ก (กว้าง < 768px และสูง < 919px) */
+        @media (max-width: 767px) and (max-height: 919px) {
+            .buttons-panel {
+                position: relative !important;  /* จาก absolute → มาอยู่ใน flow ปกติ */
+                inset: auto !important;
+                width: 100%;
+                margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
+
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+        }
     </style>
 
     <!-- Icon favicon -->
@@ -222,7 +258,7 @@
 
 @section('content')
     <div class="justify-center items-center">
-        <div class="mt-9 bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-2">
+        <div class="mt-4 bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-1">
             <div class="flex justify-center items-center">
                 <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">@lang('global.content.product_master_list')</p>
             </div>
@@ -252,7 +288,7 @@
                                     ค้นหา
                                 </a> -->
                                 <button  id="" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-1 px-2 mr-2 rounded group cursor-pointer btn-rotate" type="reset">
-                                    <svg class="hidden h-5 w-5 md:inline-block rotate"
+                                    <svg class="hidden h-4 w-4 md:inline-block rotate"
                                         viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
                                         <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 93,62 C 83,82 65,96 48,96 32,96 19,89 15,79 L 5,90 5,53 40,53 29,63 c 0,0 5,14 26,14 16,0 38,-15 38,-15 z"/>
                                         <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 5,38 C 11,18 32,4 49,4 65,4 78,11 85,21 L 95,10 95,47 57,47 68,37 C 68,37 63,23 42,23 26,23 5,38 5,38 z"/>
@@ -393,149 +429,160 @@
             </div>
         </div>
 
-        <div class="flex xs:right-40 sm:right-40 md:right-40 lg:right-40 xl:right-40 z-10 absolute mt-3">  
-        <a
-            type="button"
-            data-twe-toggle="modal"
-            data-twe-target="#exampleModalExcel"
-            data-twe-ripple-init
-            data-twe-ripple-color="light"
-            class="xs:mt-0 sm:mt-0 md:mt-0 lg:mt-0 xl:mt-0 mr-16 px-1.5 py-1 font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded cursor-pointer group" name="" id=""
-        >
-            <svg viewBox="-4 0 64 64" xmlns="http://www.w3.org/2000/svg" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                <path d="M5.112.006c-2.802 0-5.073 2.273-5.073 5.074v53.841c0 2.803 2.271 5.074 5.073 5.074h45.774c2.801 0 5.074-2.271 5.074-5.074v-38.605l-18.902-20.31h-31.946z" fill-rule="evenodd" clip-rule="evenodd" fill="#45B058"/><path d="M19.429 53.938c-.216 0-.415-.09-.54-.27l-3.728-4.97-3.745 4.97c-.126.18-.324.27-.54.27-.396 0-.72-.306-.72-.72 0-.144.035-.306.144-.432l3.89-5.131-3.619-4.826c-.09-.126-.145-.27-.145-.414 0-.342.288-.72.721-.72.216 0 .432.108.576.288l3.438 4.628 3.438-4.646c.127-.18.324-.27.541-.27.378 0 .738.306.738.72 0 .144-.036.288-.127.414l-3.619 4.808 3.891 5.149c.09.126.125.27.125.414 0 .396-.324.738-.719.738zm9.989-.126h-5.455c-.595 0-1.081-.486-1.081-1.08v-10.317c0-.396.324-.72.774-.72.396 0 .721.324.721.72v10.065h5.041c.359 0 .648.288.648.648 0 .396-.289.684-.648.684zm6.982.216c-1.782 0-3.188-.594-4.213-1.495-.162-.144-.234-.342-.234-.54 0-.36.27-.756.702-.756.144 0 .306.036.433.144.828.738 1.98 1.314 3.367 1.314 2.143 0 2.826-1.152 2.826-2.071 0-3.097-7.111-1.386-7.111-5.672 0-1.98 1.764-3.331 4.123-3.331 1.548 0 2.881.468 3.853 1.278.162.144.253.342.253.54 0 .36-.307.72-.703.72-.145 0-.307-.054-.432-.162-.883-.72-1.98-1.044-3.079-1.044-1.44 0-2.467.774-2.467 1.909 0 2.701 7.112 1.152 7.112 5.636 0 1.748-1.188 3.53-4.43 3.53z" fill="#ffffff"/>
-                <path d="M55.953 20.352v1h-12.801s-6.312-1.26-6.127-6.707c0 0 .207 5.707 6.002 5.707h12.926z" fill-rule="evenodd" clip-rule="evenodd" fill="#349C42"/>
-                <path d="M37.049 0v14.561c0 1.656 1.104 5.791 6.104 5.791h12.801l-18.905-20.352z" opacity=".5" fill-rule="evenodd" clip-rule="evenodd" fill="#ffffff"/>
-            </svg>
-                Export Excel
-            </a>
-        </div>
+        <div class="buttons-wrapper relative">
+            <div class="buttons-panel absolute inset-x-0 top-4 z-20 flex items-center justify-between space-x-2">
 
-        @if (Auth::user()->getUserPermission->brand != "BD")
-            <div class="flex right-12 z-10 absolute mt-3">
-                <div class="relative" data-twe-dropdown-position="dropstart">
-                    <button
-                        class="flex items-center rounded bg-[#303030] hover:bg-[#404040] px-4 pb-[5px] pt-[6px] text-sm font-bold uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out focus:outline-none focus:ring-0 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                <!-- ซ้าย: 3 ปุ่ม filter -->
+                <div class="flex items-center space-x-2">
+                </div>
+
+                <div class="flex items-center space-x-2">
+                    <!-- <div class="flex xs:right-40 sm:right-40 md:right-40 lg:right-40 xl:right-40 z-10 absolute mt-3">   -->
+                    <a
                         type="button"
-                        id="dropdownMenuButton1s"
-                        data-twe-dropdown-toggle-ref
-                        aria-expanded="false"
+                        data-twe-toggle="modal"
+                        data-twe-target="#exampleModalExcel"
                         data-twe-ripple-init
-                        data-twe-ripple-color="light">
-                        <span class="me-2 [&>svg]:h-5 [&>svg]:w-5">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 20 20"
-                            fill="currentColor">
-                            <path
-                            fill-rule="evenodd"
-                            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                            clip-rule="evenodd" />
+                        data-twe-ripple-color="light"
+                        class="xs:mt-0 sm:mt-0 md:mt-0 lg:mt-0 xl:mt-0 px-1.5 py-1 font-bold text-sm tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded cursor-pointer group" name="" id=""
+                    >
+                        <svg viewBox="-4 0 64 64" xmlns="http://www.w3.org/2000/svg" class="hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                            <path d="M5.112.006c-2.802 0-5.073 2.273-5.073 5.074v53.841c0 2.803 2.271 5.074 5.073 5.074h45.774c2.801 0 5.074-2.271 5.074-5.074v-38.605l-18.902-20.31h-31.946z" fill-rule="evenodd" clip-rule="evenodd" fill="#45B058"/><path d="M19.429 53.938c-.216 0-.415-.09-.54-.27l-3.728-4.97-3.745 4.97c-.126.18-.324.27-.54.27-.396 0-.72-.306-.72-.72 0-.144.035-.306.144-.432l3.89-5.131-3.619-4.826c-.09-.126-.145-.27-.145-.414 0-.342.288-.72.721-.72.216 0 .432.108.576.288l3.438 4.628 3.438-4.646c.127-.18.324-.27.541-.27.378 0 .738.306.738.72 0 .144-.036.288-.127.414l-3.619 4.808 3.891 5.149c.09.126.125.27.125.414 0 .396-.324.738-.719.738zm9.989-.126h-5.455c-.595 0-1.081-.486-1.081-1.08v-10.317c0-.396.324-.72.774-.72.396 0 .721.324.721.72v10.065h5.041c.359 0 .648.288.648.648 0 .396-.289.684-.648.684zm6.982.216c-1.782 0-3.188-.594-4.213-1.495-.162-.144-.234-.342-.234-.54 0-.36.27-.756.702-.756.144 0 .306.036.433.144.828.738 1.98 1.314 3.367 1.314 2.143 0 2.826-1.152 2.826-2.071 0-3.097-7.111-1.386-7.111-5.672 0-1.98 1.764-3.331 4.123-3.331 1.548 0 2.881.468 3.853 1.278.162.144.253.342.253.54 0 .36-.307.72-.703.72-.145 0-.307-.054-.432-.162-.883-.72-1.98-1.044-3.079-1.044-1.44 0-2.467.774-2.467 1.909 0 2.701 7.112 1.152 7.112 5.636 0 1.748-1.188 3.53-4.43 3.53z" fill="#ffffff"/>
+                            <path d="M55.953 20.352v1h-12.801s-6.312-1.26-6.127-6.707c0 0 .207 5.707 6.002 5.707h12.926z" fill-rule="evenodd" clip-rule="evenodd" fill="#349C42"/>
+                            <path d="M37.049 0v14.561c0 1.656 1.104 5.791 6.104 5.791h12.801l-18.905-20.352z" opacity=".5" fill-rule="evenodd" clip-rule="evenodd" fill="#ffffff"/>
                         </svg>
-                        </span>
-                            เพิ่มข้อมูลสินค้า
-                    </button>
-                    <ul style="z-index: 999999999;" class="absolute divide-y divide-gray-600 rounded-sm w-48 md:w-52 dark:divide-gray-600 float-left m-0 hidden min-w-max list-none overflow-hidden border-none bg-white bg-clip-padding text-base shadow-lg data-[twe-dropdown-show]:block dark:bg-surface-dark"
-                        aria-labelledby="dropdownMenuButton1s"
-                        data-twe-dropdown-menu-ref>
-                        <li>
-                            <a href="{{ route('product_master.create') }}" class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group">
-                                <svg class="h-5 w-5 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                    fill="currentColor" viewBox="0 0 512 512"  xml:space="preserve">
-                                    <g>
-                                        <path class="st0" d="M504.262,66.75L445.226,7.706c-10.291-10.284-26.938-10.267-37.222,0l-38.278,38.278l96.282,96.266
-                                            l38.254-38.295C514.537,93.672,514.554,77.017,504.262,66.75z"/>
-                                        <path class="st0" d="M32.815,382.921L0.025,512l129.055-32.83l319.398-319.431l-96.249-96.265L32.815,382.921z M93.179,404.792
-                                            l-21.871-21.871l278.289-278.289l21.887,21.887L93.179,404.792z"/>
-                                    </g>
-                                </svg>
-                                <span class="ml-2.5">
-                                    เพิ่มข้อมูลสินค้า
-                                </span>
-                            </a>
-                        </li>
-                        @if ($userPermission != 'Retail Operation - GNC')
-                            <li>
-                                <a
+                            Export Excel
+                        </a>
+                    <!-- </div> -->
+            
+                    @if (Auth::user()->getUserPermission->brand != "BD")
+                        <!-- <div class="flex right-6 z-10 absolute mt-3">
+                            <div class="relative" data-twe-dropdown-position="dropstart"> -->
+                                <button
+                                    class="flex items-center rounded bg-[#303030] hover:bg-[#404040] px-4 pb-[5px] pt-[6px] text-sm font-bold uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out focus:outline-none focus:ring-0 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
                                     type="button"
-                                    class="cursor-pointer block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group"
-                                    data-twe-toggle="modal"
-                                    data-twe-target="#exampleModal"
+                                    id="dropdownMenuButton1s"
+                                    data-twe-dropdown-toggle-ref
+                                    aria-expanded="false"
                                     data-twe-ripple-init
-                                    data-twe-ripple-color="light"
-                                    onclick="modelCopy()"
-                                >
-                                    <svg class="-ml-1 h-8 w-8 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" viewBox="0 0 1024 1024" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M589.3 260.9v30H371.4v-30H268.9v513h117.2v-304l109.7-99.1h202.1V260.9z" fill="#E1F0FF" />
-                                        <path d="M516.1 371.1l-122.9 99.8v346.8h370.4V371.1z" fill="#E1F0FF" />
-                                        <path d="M752.7 370.8h21.8v435.8h-21.8z" fill="#446EB1" />
-                                        <path d="M495.8 370.8h277.3v21.8H495.8z" fill="#446EB1" />
-                                        <path d="M495.8 370.8h21.8v124.3h-21.8z" fill="#446EB1" />
-                                        <path d="M397.7 488.7l-15.4-15.4 113.5-102.5 15.4 15.4z" fill="#446EB1" />
-                                        <path d="M382.3 473.3h135.3v21.8H382.3z" fill="#446EB1" />
-                                        <path d="M382.3 479.7h21.8v348.6h-21.8zM404.1 806.6h370.4v21.8H404.1z" fill="#446EB1" />
-                                        <path d="M447.7 545.1h261.5v21.8H447.7zM447.7 610.5h261.5v21.8H447.7zM447.7 675.8h261.5v21.8H447.7z" fill="#6D9EE8" />
-                                        <path d="M251.6 763h130.7v21.8H251.6z" fill="#446EB1" /><path d="M251.6 240.1h21.8v544.7h-21.8zM687.3 240.1h21.8v130.7h-21.8zM273.4 240.1h108.9v21.8H273.4z" fill="#446EB1" />
-                                        <path d="M578.4 240.1h130.7v21.8H578.4zM360.5 196.5h21.8v108.9h-21.8zM382.3 283.7h196.1v21.8H382.3zM534.8 196.5h65.4v21.8h-65.4z" fill="#446EB1" />
-                                        <path d="M360.5 196.5h65.4v21.8h-65.4zM404.1 174.7h152.5v21.8H404.1zM578.4 196.5h21.8v108.9h-21.8z" fill="#446EB1" />
+                                    data-twe-ripple-color="light">
+                                    <span class="me-2 [&>svg]:h-5 [&>svg]:w-5">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20"
+                                        fill="currentColor">
+                                        <path
+                                        fill-rule="evenodd"
+                                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                                        clip-rule="evenodd" />
                                     </svg>
-                                    <span class="text-black dark:text-white">
-                                        Copy ข้อมูลสินค้า
                                     </span>
-                                </a>
-                            </li>
-                        @endif
-                        <li>
-                            <a href="{{ route('product_master.create_consumables') }}" class="block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group">
-                                <svg class="h-5 w-5 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                    fill="currentColor" viewBox="0 0 512 512"  xml:space="preserve">
-                                    <g>
-                                        <path class="st0" d="M504.262,66.75L445.226,7.706c-10.291-10.284-26.938-10.267-37.222,0l-38.278,38.278l96.282,96.266
-                                            l38.254-38.295C514.537,93.672,514.554,77.017,504.262,66.75z"/>
-                                        <path class="st0" d="M32.815,382.921L0.025,512l129.055-32.83l319.398-319.431l-96.249-96.265L32.815,382.921z M93.179,404.792
-                                            l-21.871-21.871l278.289-278.289l21.887,21.887L93.179,404.792z"/>
-                                    </g>
-                                </svg>
-                                <span class="ml-2.5">
-                                    เพิ่มวัสดุสิ้นเปลือง
-                                </span>
-                            </a>
-                        </li>
-                        @if ($userPermission != 'Retail Operation - GNC')
-                            <li>
-                                <a
-                                    type="button"
-                                    class="cursor-pointer block w-full whitespace-nowrap bg-white px-4 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group"
-                                    data-twe-toggle="modal"
-                                    data-twe-target="#exampleModalCopy"
-                                    data-twe-ripple-init
-                                    data-twe-ripple-color="light"
-                                    onclick="modelCopyConsumables()"
-                                >
-                                    <svg class="-ml-1 h-8 w-8 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" viewBox="0 0 1024 1024" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M589.3 260.9v30H371.4v-30H268.9v513h117.2v-304l109.7-99.1h202.1V260.9z" fill="#E1F0FF" />
-                                        <path d="M516.1 371.1l-122.9 99.8v346.8h370.4V371.1z" fill="#E1F0FF" />
-                                        <path d="M752.7 370.8h21.8v435.8h-21.8z" fill="#446EB1" />
-                                        <path d="M495.8 370.8h277.3v21.8H495.8z" fill="#446EB1" />
-                                        <path d="M495.8 370.8h21.8v124.3h-21.8z" fill="#446EB1" />
-                                        <path d="M397.7 488.7l-15.4-15.4 113.5-102.5 15.4 15.4z" fill="#446EB1" />
-                                        <path d="M382.3 473.3h135.3v21.8H382.3z" fill="#446EB1" />
-                                        <path d="M382.3 479.7h21.8v348.6h-21.8zM404.1 806.6h370.4v21.8H404.1z" fill="#446EB1" />
-                                        <path d="M447.7 545.1h261.5v21.8H447.7zM447.7 610.5h261.5v21.8H447.7zM447.7 675.8h261.5v21.8H447.7z" fill="#6D9EE8" />
-                                        <path d="M251.6 763h130.7v21.8H251.6z" fill="#446EB1" /><path d="M251.6 240.1h21.8v544.7h-21.8zM687.3 240.1h21.8v130.7h-21.8zM273.4 240.1h108.9v21.8H273.4z" fill="#446EB1" />
-                                        <path d="M578.4 240.1h130.7v21.8H578.4zM360.5 196.5h21.8v108.9h-21.8zM382.3 283.7h196.1v21.8H382.3zM534.8 196.5h65.4v21.8h-65.4z" fill="#446EB1" />
-                                        <path d="M360.5 196.5h65.4v21.8h-65.4zM404.1 174.7h152.5v21.8H404.1zM578.4 196.5h21.8v108.9h-21.8z" fill="#446EB1" />
-                                    </svg>
-                                    <span class="text-black dark:text-white">
-                                        Copy วัสดุสิ้นเปลือง
-                                    </span>
-                                </a>
-                            </li>
-                        @endif
-                    </ul>
+                                        เพิ่มข้อมูลสินค้า
+                                </button>
+                                <ul style="z-index: 999999999;" class="absolute divide-y divide-gray-600 rounded-sm w-36 md:w-48 dark:divide-gray-600 float-left m-0 hidden min-w-max list-none overflow-hidden border-none bg-white bg-clip-padding text-base shadow-lg data-[twe-dropdown-show]:block dark:bg-surface-dark"
+                                    aria-labelledby="dropdownMenuButton1s"
+                                    data-twe-dropdown-menu-ref>
+                                    <li>
+                                        <a href="{{ route('product_master.create') }}" class="block w-full whitespace-nowrap bg-white px-2 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group">
+                                            <svg class="h-5 w-5 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                fill="currentColor" viewBox="0 0 512 512"  xml:space="preserve">
+                                                <g>
+                                                    <path class="st0" d="M504.262,66.75L445.226,7.706c-10.291-10.284-26.938-10.267-37.222,0l-38.278,38.278l96.282,96.266
+                                                        l38.254-38.295C514.537,93.672,514.554,77.017,504.262,66.75z"/>
+                                                    <path class="st0" d="M32.815,382.921L0.025,512l129.055-32.83l319.398-319.431l-96.249-96.265L32.815,382.921z M93.179,404.792
+                                                        l-21.871-21.871l278.289-278.289l21.887,21.887L93.179,404.792z"/>
+                                                </g>
+                                            </svg>
+                                            <span class="ml-2.5">
+                                                เพิ่มข้อมูลสินค้า
+                                            </span>
+                                        </a>
+                                    </li>
+                                    @if ($userPermission != 'Retail Operation - GNC')
+                                        <li>
+                                            <a
+                                                type="button"
+                                                class="cursor-pointer block w-full whitespace-nowrap bg-white px-2 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group"
+                                                data-twe-toggle="modal"
+                                                data-twe-target="#exampleModal"
+                                                data-twe-ripple-init
+                                                data-twe-ripple-color="light"
+                                                onclick="modelCopy()"
+                                            >
+                                                <svg class="-ml-1 h-8 w-8 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" viewBox="0 0 1024 1024" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M589.3 260.9v30H371.4v-30H268.9v513h117.2v-304l109.7-99.1h202.1V260.9z" fill="#E1F0FF" />
+                                                    <path d="M516.1 371.1l-122.9 99.8v346.8h370.4V371.1z" fill="#E1F0FF" />
+                                                    <path d="M752.7 370.8h21.8v435.8h-21.8z" fill="#446EB1" />
+                                                    <path d="M495.8 370.8h277.3v21.8H495.8z" fill="#446EB1" />
+                                                    <path d="M495.8 370.8h21.8v124.3h-21.8z" fill="#446EB1" />
+                                                    <path d="M397.7 488.7l-15.4-15.4 113.5-102.5 15.4 15.4z" fill="#446EB1" />
+                                                    <path d="M382.3 473.3h135.3v21.8H382.3z" fill="#446EB1" />
+                                                    <path d="M382.3 479.7h21.8v348.6h-21.8zM404.1 806.6h370.4v21.8H404.1z" fill="#446EB1" />
+                                                    <path d="M447.7 545.1h261.5v21.8H447.7zM447.7 610.5h261.5v21.8H447.7zM447.7 675.8h261.5v21.8H447.7z" fill="#6D9EE8" />
+                                                    <path d="M251.6 763h130.7v21.8H251.6z" fill="#446EB1" /><path d="M251.6 240.1h21.8v544.7h-21.8zM687.3 240.1h21.8v130.7h-21.8zM273.4 240.1h108.9v21.8H273.4z" fill="#446EB1" />
+                                                    <path d="M578.4 240.1h130.7v21.8H578.4zM360.5 196.5h21.8v108.9h-21.8zM382.3 283.7h196.1v21.8H382.3zM534.8 196.5h65.4v21.8h-65.4z" fill="#446EB1" />
+                                                    <path d="M360.5 196.5h65.4v21.8h-65.4zM404.1 174.7h152.5v21.8H404.1zM578.4 196.5h21.8v108.9h-21.8z" fill="#446EB1" />
+                                                </svg>
+                                                <span class="text-black dark:text-white">
+                                                    Copy ข้อมูลสินค้า
+                                                </span>
+                                            </a>
+                                        </li>
+                                    @endif
+                                    <li>
+                                        <a href="{{ route('product_master.create_consumables') }}" class="block w-full whitespace-nowrap bg-white px-2 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group">
+                                            <svg class="h-5 w-5 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                fill="currentColor" viewBox="0 0 512 512"  xml:space="preserve">
+                                                <g>
+                                                    <path class="st0" d="M504.262,66.75L445.226,7.706c-10.291-10.284-26.938-10.267-37.222,0l-38.278,38.278l96.282,96.266
+                                                        l38.254-38.295C514.537,93.672,514.554,77.017,504.262,66.75z"/>
+                                                    <path class="st0" d="M32.815,382.921L0.025,512l129.055-32.83l319.398-319.431l-96.249-96.265L32.815,382.921z M93.179,404.792
+                                                        l-21.871-21.871l278.289-278.289l21.887,21.887L93.179,404.792z"/>
+                                                </g>
+                                            </svg>
+                                            <span class="ml-2.5">
+                                                เพิ่มวัสดุสิ้นเปลือง
+                                            </span>
+                                        </a>
+                                    </li>
+                                    @if ($userPermission != 'Retail Operation - GNC')
+                                        <li>
+                                            <a
+                                                type="button"
+                                                class="cursor-pointer block w-full whitespace-nowrap bg-white px-2 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group"
+                                                data-twe-toggle="modal"
+                                                data-twe-target="#exampleModalCopy"
+                                                data-twe-ripple-init
+                                                data-twe-ripple-color="light"
+                                                onclick="modelCopyConsumables()"
+                                            >
+                                                <svg class="-ml-1 h-8 w-8 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" viewBox="0 0 1024 1024" class="icon"  version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M589.3 260.9v30H371.4v-30H268.9v513h117.2v-304l109.7-99.1h202.1V260.9z" fill="#E1F0FF" />
+                                                    <path d="M516.1 371.1l-122.9 99.8v346.8h370.4V371.1z" fill="#E1F0FF" />
+                                                    <path d="M752.7 370.8h21.8v435.8h-21.8z" fill="#446EB1" />
+                                                    <path d="M495.8 370.8h277.3v21.8H495.8z" fill="#446EB1" />
+                                                    <path d="M495.8 370.8h21.8v124.3h-21.8z" fill="#446EB1" />
+                                                    <path d="M397.7 488.7l-15.4-15.4 113.5-102.5 15.4 15.4z" fill="#446EB1" />
+                                                    <path d="M382.3 473.3h135.3v21.8H382.3z" fill="#446EB1" />
+                                                    <path d="M382.3 479.7h21.8v348.6h-21.8zM404.1 806.6h370.4v21.8H404.1z" fill="#446EB1" />
+                                                    <path d="M447.7 545.1h261.5v21.8H447.7zM447.7 610.5h261.5v21.8H447.7zM447.7 675.8h261.5v21.8H447.7z" fill="#6D9EE8" />
+                                                    <path d="M251.6 763h130.7v21.8H251.6z" fill="#446EB1" /><path d="M251.6 240.1h21.8v544.7h-21.8zM687.3 240.1h21.8v130.7h-21.8zM273.4 240.1h108.9v21.8H273.4z" fill="#446EB1" />
+                                                    <path d="M578.4 240.1h130.7v21.8H578.4zM360.5 196.5h21.8v108.9h-21.8zM382.3 283.7h196.1v21.8H382.3zM534.8 196.5h65.4v21.8h-65.4z" fill="#446EB1" />
+                                                    <path d="M360.5 196.5h65.4v21.8h-65.4zM404.1 174.7h152.5v21.8H404.1zM578.4 196.5h21.8v108.9h-21.8z" fill="#446EB1" />
+                                                </svg>
+                                                <span class="text-black dark:text-white">
+                                                    Copy วัสดุสิ้นเปลือง
+                                                </span>
+                                            </a>
+                                        </li>
+                                    @endif
+                                </ul>
+                            <!-- </div>
+                        </div> -->
+                    @endif
                 </div>
             </div>
-        @endif
+        </div>
 
         <!-- Modal -->
         <div
@@ -1036,24 +1083,34 @@
                 Copy
             </a>
         </div> -->
-        <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
-            <div id="containerexample" class="text-gray-900 dark:text-gray-100">
-                <table id="product_master_table" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>แบรนด์</th>
-                            <th>สินค้าของบริษัท</th>
-                            <th>รหัสสินค้า</th>
-                            <th>ชื่อสินค้า</th>
-                            <th>Barcode</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+        <div id="account-wrapper" class="relative">
+            <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500">
+                <div id="containerexample" class="text-gray-900 dark:text-gray-100">
+                    <table id="product_master_table" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>แบรนด์</th>
+                                <th>สินค้าของบริษัท</th>
+                                <th>รหัสสินค้า</th>
+                                <th>ชื่อสินค้า</th>
+                                <th>Barcode</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="loader" class="loading absolute hidden bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12 animate-spin dark:text-white">
+                    <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
+                    <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
+                </svg>
             </div>
         </div>
+
+        
     </div>
 
     <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
@@ -1327,6 +1384,16 @@
             $("#slide").remove();
         }
 
+        function showLoader() {
+            $("#loader").removeClass("hidden").fadeIn(100);
+        }
+
+        function hideLoader() {
+            $("#loader").fadeOut(200, function () {
+                $(this).addClass("hidden");
+            });
+        }
+
         const mytableDatatable = $('#product_master_table').DataTable({
             'searching': false,
             "serverSide": true,
@@ -1358,7 +1425,13 @@
                 "error": function(xhr, error, thrown) {
                     console.log("AJAX Error: ", error, thrown);
                     console.log(xhr.responseText); // Debug error
-                }
+                },
+                beforeSend: function () { 
+                    showLoader(); 
+                },
+                complete: function () { 
+                    hideLoader(); 
+                },
             },
             orderable: true,
             columnDefs: [{
@@ -1429,11 +1502,13 @@
         // Function สำหรับเรียกใช้ DataTable เมื่อมีการพิมพ์
         function searchTable() {
             console.log("Search: ", $('#search').val());
+            $("#loader").removeClass("hidden").fadeIn(100);
             // บังคับให้ DataTables รีโหลดข้อมูลใหม่
             mytableDatatable.ajax.reload(null, false); 
         }
 
         function brandSearch() {
+            $("#loader").removeClass("hidden").fadeIn(100);
             mytableDatatable.draw();
         }
 

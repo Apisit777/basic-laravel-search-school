@@ -80,6 +80,7 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
     Route::group(['prefix' => 'account', 'as' => 'account.'], function () {
         Route::get('', [ProductFormController::class, 'indexAccount'])->name('index');
         Route::post('/list_ajax_account', [ProductFormController::class, 'listAjaxAccount'])->name('list_ajax_account');
+        Route::post('/list_ajax_account_noti', [ProductFormController::class, 'listAjaxAccountNoti'])->name('list_ajax_account_noti');
         Route::get('/create', [ProductFormController::class, 'createAccount'])->name('create');
         Route::get('/show/{product}', [ProductFormController::class, 'showAccount'])->name('show');
         Route::get('/edit/{product}', [ProductFormController::class, 'editAccount'])->name('edit');
@@ -188,6 +189,7 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         Route::post('/list_product_detail', [ProductDetailController::class, 'listProductDetail'])->name('list_product_detail');
         Route::post('/list_product_detail_manage_export_excel', [ProductDetailController::class, 'listProductDetailManageExportExcel'])->name('list_product_detail_manage_export_excel');
         Route::post('/pd_detail_manage_export_excel_update/{product_id}', [ProductDetailController::class, 'updateProductDetailManageExportExcel'])->name('pd_detail_manage_export_excel_update');
+        Route::get('/pd_detail/show/{product_id}', [ProductDetailController::class, 'show'])->name('pd_detail_show');
         Route::get('/pd_detail/edit/{product_id}', [ProductDetailController::class, 'edit'])->name('pd_detail_edit');
         Route::post('/pd_detail_update/{product_id}', [ProductDetailController::class, 'update'])->name('pd_detail_update');
 

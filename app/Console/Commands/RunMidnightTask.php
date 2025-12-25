@@ -33,6 +33,28 @@ class RunMidnightTask extends Command
     {
         $task = $this->argument('task');
 
+       \DB::listen(function ($q) {
+    $sql = strtolower($q->sql);
+
+    if (strpos($sql, 'insert into') !== false && strpos($sql, 'tasks') !== false) {
+
+        $trace = collect(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 80))
+            ->map(function ($t) {
+                return ($t['file'] ?? 'n/a') . ':' . ($t['line'] ?? 'n/a') . ' ' . ($t['function'] ?? 'n/a');
+            })
+            // เอาแต่ไฟล์โปรเจกต์ ลองกัน vendor ออกจะเห็นชัดมาก
+            ->reject(fn($s) => str_contains($s, '\\vendor\\'))
+            ->values()
+            ->all();
+
+        logger()->debug('TASK INSERT DETECTED', [
+            'sql' => $q->sql,
+            'bindings' => $q->bindings,
+            'trace' => $trace,
+        ]);
+    }
+});
+
         try {
             switch ($task) {
                 case 'transfer_data_task':
@@ -50,50 +72,52 @@ class RunMidnightTask extends Command
     // public function handle()
     public function transfer_data_task()
     {
-        
+
+
         $now = now();
-        $start = $now->copy()->setTime(9, 00); // 18:30
-        $end = $now->copy()->setTime(20, 0);  // 20:00
+        $start = $now->copy()->setTime(8, 30); // 18:30
+        $end = $now->copy()->setTime(20, 00);  // 20:00
 
         if (now()->isWeekday() === true && $now->between($start, $end)) {
 
-            $incompleteTasks = Task::where('is_completed', false)
+            $incompleteTasks = Task::where('is_completed', true)
                 ->whereDate('scheduled_date', Carbon::today()) // Only today's tasks
                 ->get();
-
-                // print_r($incompleteTasks);
-                // exit;
 
             if ($incompleteTasks->isEmpty()) {
 
                 info('RunMidnightTask');
                 set_time_limit(0);
+                ini_set('memory_limit', '512M');
                 $url_dot_30 = config('app.dot_30');
                 $endpoint = $url_dot_30 . "/ims/dealer_transfer_service/dl_mid_query_dot1.php";
 
                 $test_database = [
-                    // 'dbBBMAS|BB|8|9|6' => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES'],
-                    'dbCPMAS|CPS|8|9|7' => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES'],
-                    // 'dbGNCMAS|GNC|8|9' => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES'],
-                    // 'dbKSHOPMAS|KTY|8|9|1' => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES'],
-                    // 'dbLLMAS|LL|8|9|3' => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES'],
-                    // 'dbOPMAS|OP|8|9|2' => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES']
+                    
+                    // 'dbBBMAS|BB|8|9|6'      => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES'],
+                    // 'dbCPMAS|CPS|8|9|7'     => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES'],
+                    // 'dbGNCMAS|GNC|8|9'      => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES'],
+                    // 'dbKSHOPMAS|KTY|8|9|1'  => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES'],
+                    // 'dbFRMAS|FR|8|9|17'        => ['PRODUCT1', 'PRODUCT2', 'PRODUCT1_DES'],
+                    'dbKDMAS|KD|8|9|1'        => ['PRODUCT1', 'PRODUCT2', 'PRODUCT1_DES'],
+                    // 'dbLLMAS|LL|8|9|3'      => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES'],
+                    // 'dbOPMAS|OP|8|9|2'      => ['NEW_PRODUCT1', 'NEW_PRODUCT2', 'NEW_PRODUCT1_DES']
                 ];
 
                 $dataProducts1 = DB::table('product_channels')
                     ->select('product1s.*', 'product_channels.BRAND', 'product_channels.PRODUCT')
                     ->leftJoin('product1s', 'product_channels.PRODUCT', '=', 'product1s.PRODUCT')
-                    ->where('product_channels.PRODUCT', '=', '95090026')
-                    // ->whereRaw('product_channels.PRODUCT NOT REGEXP "^[A-Z]"')
+                    ->whereRaw('product_channels.PRODUCT NOT REGEXP "^[A-Z]"')
+                    // ->where('product_channels.PRODUCT', '=', '11001')
+                    ->where('product1s.STATUS_EDIT_DT', '=', '')
                     ->get();
+
+                // dd($dataProducts1);
 
                 $diff_count = count($dataProducts1);
                 $this->info("Transferring product_channels data back to dot1");
                 $this->output->progressStart($diff_count);
 
-                // dd($dataProducts1);
-                // print_r($dataProducts1);
-                // exit;
                 foreach ($test_database as $key => $value) {
                     $exploded_key = explode('|', $key);
                     $dbName = $exploded_key[0];
@@ -105,7 +129,6 @@ class RunMidnightTask extends Command
                     $brand_value = $brand;
                     foreach ($dataProducts1 as $rs) {
 
-                        // dd($brand_value);
                         if ($dbName == 'dbCPMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
                             $brand_value = 'KM';
                             if ($rs->PRODUCT[0] == $key_parts_number_3 || ($rs->PRODUCT[0] == 1 && strlen((string)$rs->PRODUCT) == 7) || ($rs->PRODUCT[0] == 2 && strlen((string)$rs->PRODUCT) == 7)) {
@@ -117,11 +140,14 @@ class RunMidnightTask extends Command
                             }
                         
                             // dd($brand_value);
-                            // print_r($brand_value);
-                            // exit;
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
+
+                            // $query = "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'";
+                            // print_r($query);
+                            // exit;
+
                             $origin_data_product = json_decode($origin_data_product, true);
                             if ($rs->STATUS_EDIT_DT == '' && !empty($origin_data_product) == true) {
                                 $REG_DATE_RP = $rs->REG_DATE === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->REG_DATE;
@@ -168,7 +194,7 @@ class RunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -195,6 +221,8 @@ class RunMidnightTask extends Command
                                 Http::asForm()->withHeaders([])->post($endpoint, [
                                     'statement' => $sql_update
                                 ]);
+                                // print_r( $sql_update . "\n" );
+                                // exit;
                                 $this->output->progressAdvance();
                         
                                 $product1_STATUS_EDIT_DT = DB::table('product1s')->where('PRODUCT', $rs->PRODUCT)->update([
@@ -210,7 +238,7 @@ class RunMidnightTask extends Command
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
                         
                                 $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                    'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                    'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                 ]);
                                 $origin_data_product = json_decode($origin_data_product, true);
                         
@@ -224,7 +252,7 @@ class RunMidnightTask extends Command
                                         '" . $rs->GRP_P . "',
                                         '" . $rs->SUPPLIER . "',
                                         N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
                                         N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
                                         N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
                                         '" . $rs->VENDOR . "',
@@ -254,7 +282,7 @@ class RunMidnightTask extends Command
                                         '" . $rs->PACK_SIZE3 . "',
                                         '" . $rs->PACK_SIZE4 . "',
                                         '" . $REG_DATE_RP . "',
-                                        '" . $rs->AGE . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                         '" . $rs->WIDTH . "',
                                         '" . $rs->HEIGHT . "',
                                         '" . $rs->WIDE . "',
@@ -281,10 +309,13 @@ class RunMidnightTask extends Command
                                     Http::asForm()->withHeaders([])->post($endpoint, [
                                         'statement' => $sql_insert
                                     ]);
+
+                                //     print_r( $sql_insert . "\n" );
+                                // exit;
                                     $this->output->progressAdvance();
                                 }
                         
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT2] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT2] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $brand_value . "',
                                     '" . $rs->PRODUCT . "'
@@ -294,7 +325,7 @@ class RunMidnightTask extends Command
                                     'statement' => $sql_insert
                                 ]);
                         
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT1_DES] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT1_DES] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $brand_value . "',
                                     '" . $rs->PRODUCT . "'
@@ -316,7 +347,7 @@ class RunMidnightTask extends Command
                         if ($dbName == 'dbCPMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string) $rs->PRODUCT) >= 7) {
                             // dd ($brand);
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
                             if ($rs->STATUS_EDIT_DT == '' && !empty($origin_data_product) == true) {
@@ -375,7 +406,7 @@ class RunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -402,6 +433,9 @@ class RunMidnightTask extends Command
                                 Http::asForm()->withHeaders([])->post($endpoint, [
                                     'statement' => $sql_update
                                 ]);
+
+                                // print_r( $sql_update . "\n" );
+                                // exit;
                                 $this->output->progressAdvance();
                         
                                 $product1_STATUS_EDIT_DT = DB::table('product1s')->where('PRODUCT', $rs->PRODUCT)->update([
@@ -421,7 +455,7 @@ class RunMidnightTask extends Command
                                     $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
                             
                                     $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                        'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                        'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                     ]);
                                     $origin_data_product = json_decode($origin_data_product, true);
                             
@@ -465,7 +499,7 @@ class RunMidnightTask extends Command
                                             '" . $rs->PACK_SIZE3 . "',
                                             '" . $rs->PACK_SIZE4 . "',
                                             '" . $REG_DATE_RP . "',
-                                            '" . $rs->AGE . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                             '" . $rs->WIDTH . "',
                                             '" . $rs->HEIGHT . "',
                                             '" . $rs->WIDE . "',
@@ -492,10 +526,12 @@ class RunMidnightTask extends Command
                                         Http::asForm()->withHeaders([])->post($endpoint, [
                                             'statement' => $sql_insert
                                         ]);
+                                        // print_r( $sql_insert . "\n" );
+                                        // exit;
                                         $this->output->progressAdvance();
                                     }
                                 }
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT2] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT2] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $dataproduct->BRAND . "',
                                     '" . $rs->PRODUCT . "'
@@ -505,7 +541,7 @@ class RunMidnightTask extends Command
                                     'statement' => $sql_insert
                                 ]);
                             
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT1_DES] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT1_DES] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $dataproduct->BRAND . "',
                                     '" . $rs->PRODUCT . "'
@@ -521,12 +557,6 @@ class RunMidnightTask extends Command
                                 ]);
                             }
                         }
-                            // if ($dbName == 'dbCPMAS' && $rs->BRAND == $brand && $rs->PRODUCT[0] >= 8 && strlen((string) $rs->PRODUCT) >= 7) {
-                            // if ($dbName == 'dbCPMAS' && $rs->PRODUCT[0] >= 8 && strlen((string) $rs->PRODUCT) >= 7) {
-                            // print_r($rs->BRAND);
-                            // exit;
-                            // dd ($brand);
-                            // dd ($rs->PRODUCT);
 
                         if ($dbName == 'dbBBMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
                             $brand_value = 'KM';
@@ -535,7 +565,7 @@ class RunMidnightTask extends Command
                             }
 
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
 
@@ -584,7 +614,7 @@ class RunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -624,7 +654,7 @@ class RunMidnightTask extends Command
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                 $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                    'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                    'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                 ]);
                                 $origin_data_product = json_decode($origin_data_product, true);
 
@@ -668,7 +698,7 @@ class RunMidnightTask extends Command
                                         '" . $rs->PACK_SIZE3 . "',
                                         '" . $rs->PACK_SIZE4 . "',
                                         '" . $REG_DATE_RP . "',
-                                        '" . $rs->AGE . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                         '" . $rs->WIDTH . "',
                                         '" . $rs->HEIGHT . "',
                                         '" . $rs->WIDE . "',
@@ -697,7 +727,7 @@ class RunMidnightTask extends Command
                                     $this->output->progressAdvance();
                                 }
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT2] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT2] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $brand_value . "',
                                     '" . $rs->PRODUCT . "'
@@ -707,7 +737,7 @@ class RunMidnightTask extends Command
                                     'statement' => $sql_insert
                                 ]);
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT1_DES] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT1_DES] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $brand_value . "',
                                     '" . $rs->PRODUCT . "'
@@ -724,7 +754,7 @@ class RunMidnightTask extends Command
                             }       
                         } else if ($dbName == 'dbBBMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string)$rs->PRODUCT) >= 7) {
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select brand, product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
 
@@ -743,7 +773,7 @@ class RunMidnightTask extends Command
                                 // exit;
 
                                 $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
-                                
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -783,7 +813,7 @@ class RunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -828,7 +858,7 @@ class RunMidnightTask extends Command
                                     $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                     $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                        'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                        'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                     ]);
                                     $origin_data_product = json_decode($origin_data_product, true);
             
@@ -872,7 +902,7 @@ class RunMidnightTask extends Command
                                             '" . $rs->PACK_SIZE3 . "',
                                             '" . $rs->PACK_SIZE4 . "',
                                             '" . $REG_DATE_RP . "',
-                                            '" . $rs->AGE . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                             '" . $rs->WIDTH . "',
                                             '" . $rs->HEIGHT . "',
                                             '" . $rs->WIDE . "',
@@ -902,7 +932,7 @@ class RunMidnightTask extends Command
                                     }
                                 }
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT2] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT2] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $dataproduct->BRAND . "',
                                     '" . $rs->PRODUCT . "'
@@ -912,7 +942,7 @@ class RunMidnightTask extends Command
                                     'statement' => $sql_insert
                                 ]);
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT1_DES] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT1_DES] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $dataproduct->BRAND . "',
                                     '" . $rs->PRODUCT . "'
@@ -929,14 +959,24 @@ class RunMidnightTask extends Command
                             }  
                         }
 
-                        if ($dbName == 'dbGNCMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
+                        // if ($dbName == 'dbGNCMAS' && $brand == $rs->BRAND && (strlen($rs->PRODUCT) != 7)) {
+                        //     $brand_value = 'KM';
+                        //     if ((strlen($rs->PRODUCT) === 6 && $rs->PRODUCT[0] <= 9) || (strlen($rs->PRODUCT) === 10 && $rs->PRODUCT[0] <= 9)  ) {
+                        //         $brand_value = $brand;
+                        //     } else {
+                        //         $brand_value = 'KM';
+                        //     }
+
+                        if ($dbName == 'dbGNCMAS' && $brand == $rs->BRAND && (strlen($rs->PRODUCT) != 7)) {
                             $brand_value = 'KM';
-                            if ($rs->PRODUCT[0] == $key_parts_number_3) {
+                            if ((strlen($rs->PRODUCT) === 6 && $rs->PRODUCT[0] <= 9) || (strlen($rs->PRODUCT) === 10 && $rs->PRODUCT[0] <= 9)  ) {
                                 $brand_value = $brand;
+                            } else {
+                                $brand_value = 'KM';
                             }
                             
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
 
@@ -985,7 +1025,7 @@ class RunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -1025,7 +1065,7 @@ class RunMidnightTask extends Command
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                 $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                    'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                    'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                 ]);
                                 $origin_data_product = json_decode($origin_data_product, true);
 
@@ -1069,7 +1109,7 @@ class RunMidnightTask extends Command
                                         '" . $rs->PACK_SIZE3 . "',
                                         '" . $rs->PACK_SIZE4 . "',
                                         '" . $REG_DATE_RP . "',
-                                        '" . $rs->AGE . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                         '" . $rs->WIDTH . "',
                                         '" . $rs->HEIGHT . "',
                                         '" . $rs->WIDE . "',
@@ -1098,7 +1138,7 @@ class RunMidnightTask extends Command
                                     $this->output->progressAdvance();
                                 }
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT2] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT2] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $brand_value . "',
                                     '" . $rs->PRODUCT . "'
@@ -1108,7 +1148,7 @@ class RunMidnightTask extends Command
                                     'statement' => $sql_insert
                                 ]);
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT1_DES] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT1_DES] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $brand_value . "',
                                     '" . $rs->PRODUCT . "'
@@ -1123,9 +1163,11 @@ class RunMidnightTask extends Command
                                     'STATUS_EDIT_DT' => $rs->EDIT_DT
                                 ]);
                             }       
-                        } else if ($dbName == 'dbGNCMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string)$rs->PRODUCT) >= 7) {
+
+                            // if ($dbName == 'dbGNCMAS' && (strlen($rs->PRODUCT) === 7 && $rs->PRODUCT[0] >= 8) && $brand == $rs->BRAND) {
+                        } else if ($dbName == 'dbGNCMAS' && (strlen($rs->PRODUCT) === 7 && $rs->PRODUCT[0] >= 8) && $brand == $rs->BRAND) {
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
 
@@ -1184,7 +1226,7 @@ class RunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -1217,7 +1259,7 @@ class RunMidnightTask extends Command
                                     'EDIT_DT' => $rs->EDIT_DT,
                                     'STATUS_EDIT_DT' => $rs->EDIT_DT
                                 ]);
-                            } else if ($dbName == 'dbGNCMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string)$rs->PRODUCT) >= 7) {
+                            } else if ($dbName == 'dbGNCMAS' && (strlen($rs->PRODUCT) === 7 && $rs->PRODUCT[0] >= 8) && $brand == $rs->BRAND) {
                                 $dataproduct = DB::table('product1s')
                                     ->select('*')     
                                     ->where('PRODUCT', '=', $rs->PRODUCT)  
@@ -1229,7 +1271,7 @@ class RunMidnightTask extends Command
                                     $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                     $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                        'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                        'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                     ]);
                                     $origin_data_product = json_decode($origin_data_product, true);
             
@@ -1273,7 +1315,7 @@ class RunMidnightTask extends Command
                                             '" . $rs->PACK_SIZE3 . "',
                                             '" . $rs->PACK_SIZE4 . "',
                                             '" . $REG_DATE_RP . "',
-                                            '" . $rs->AGE . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                             '" . $rs->WIDTH . "',
                                             '" . $rs->HEIGHT . "',
                                             '" . $rs->WIDE . "',
@@ -1303,7 +1345,7 @@ class RunMidnightTask extends Command
                                     }
                                 }
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT2] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT2] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $dataproduct->BRAND . "',
                                     '" . $rs->PRODUCT . "'
@@ -1313,7 +1355,7 @@ class RunMidnightTask extends Command
                                     'statement' => $sql_insert
                                 ]);
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT1_DES] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT1_DES] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $dataproduct->BRAND . "',
                                     '" . $rs->PRODUCT . "'
@@ -1329,6 +1371,7 @@ class RunMidnightTask extends Command
                                 ]);
                             }  
                         }
+
                         if ($dbName == 'dbKSHOPMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
                             $brand_value = 'KM';
                             if ($rs->PRODUCT[0] == $key_parts_number_3 && strlen($rs->PRODUCT) === 5) {
@@ -1338,7 +1381,7 @@ class RunMidnightTask extends Command
                             }
 
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
 
@@ -1387,7 +1430,7 @@ class RunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -1427,7 +1470,7 @@ class RunMidnightTask extends Command
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                 $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                    'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                    'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                 ]);
                                 $origin_data_product = json_decode($origin_data_product, true);
 
@@ -1471,7 +1514,7 @@ class RunMidnightTask extends Command
                                         '" . $rs->PACK_SIZE3 . "',
                                         '" . $rs->PACK_SIZE4 . "',
                                         '" . $REG_DATE_RP . "',
-                                        '" . $rs->AGE . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                         '" . $rs->WIDTH . "',
                                         '" . $rs->HEIGHT . "',
                                         '" . $rs->WIDE . "',
@@ -1500,7 +1543,7 @@ class RunMidnightTask extends Command
                                     $this->output->progressAdvance();
                                 }
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT2] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT2] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $brand_value . "',
                                     '" . $rs->PRODUCT . "'
@@ -1510,7 +1553,7 @@ class RunMidnightTask extends Command
                                     'statement' => $sql_insert
                                 ]);
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT1_DES] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT1_DES] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $brand_value . "',
                                     '" . $rs->PRODUCT . "'
@@ -1527,7 +1570,7 @@ class RunMidnightTask extends Command
                             }       
                         } else if ($dbName == 'dbKSHOPMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string)$rs->PRODUCT) >= 7) {
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
 
@@ -1586,7 +1629,7 @@ class RunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -1631,7 +1674,7 @@ class RunMidnightTask extends Command
                                     $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                     $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                        'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                        'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                     ]);
                                     $origin_data_product = json_decode($origin_data_product, true);
             
@@ -1675,7 +1718,7 @@ class RunMidnightTask extends Command
                                             '" . $rs->PACK_SIZE3 . "',
                                             '" . $rs->PACK_SIZE4 . "',
                                             '" . $REG_DATE_RP . "',
-                                            '" . $rs->AGE . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                             '" . $rs->WIDTH . "',
                                             '" . $rs->HEIGHT . "',
                                             '" . $rs->WIDE . "',
@@ -1705,7 +1748,7 @@ class RunMidnightTask extends Command
                                     }
                                 }
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT2] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT2] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $dataproduct->BRAND . "',
                                     '" . $rs->PRODUCT . "'
@@ -1715,7 +1758,7 @@ class RunMidnightTask extends Command
                                     'statement' => $sql_insert
                                 ]);
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT1_DES] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT1_DES] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $dataproduct->BRAND . "',
                                     '" . $rs->PRODUCT . "'
@@ -1731,16 +1774,20 @@ class RunMidnightTask extends Command
                                 ]);
                             }  
                         }
-                        if ($dbName == 'dbLLMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
+                        if ($dbName == 'dbFRMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
                             $brand_value = 'KM';
-                            if ($rs->PRODUCT[0] == $key_parts_number_3) {
+                            if ($rs->PRODUCT[0] == $key_parts_number_3 && strlen($rs->PRODUCT) === 5) {
                                 $brand_value = $brand;
+                            } else if ($rs->PRODUCT[0] == 1 && strlen($rs->PRODUCT) === 5) {
+                                $brand_value = 'KM';
                             }
 
-                            $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                            $response  = Http::asForm()->withHeaders([])->post($endpoint, [
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
-                            $origin_data_product = json_decode($origin_data_product, true);
+
+                            $origin_data_product = json_decode($response->body(), true);
+                            // dd($origin_data_product, 'A1');
 
                             if ($rs->STATUS_EDIT_DT == '' && !empty($origin_data_product) == true) {
                                 $REG_DATE_RP = $rs->REG_DATE === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->REG_DATE;
@@ -1787,7 +1834,7 @@ class RunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -1827,7 +1874,7 @@ class RunMidnightTask extends Command
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                 $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                    'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                    'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                 ]);
                                 $origin_data_product = json_decode($origin_data_product, true);
 
@@ -1871,7 +1918,7 @@ class RunMidnightTask extends Command
                                         '" . $rs->PACK_SIZE3 . "',
                                         '" . $rs->PACK_SIZE4 . "',
                                         '" . $REG_DATE_RP . "',
-                                        '" . $rs->AGE . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                         '" . $rs->WIDTH . "',
                                         '" . $rs->HEIGHT . "',
                                         '" . $rs->WIDE . "',
@@ -1900,7 +1947,7 @@ class RunMidnightTask extends Command
                                     $this->output->progressAdvance();
                                 }
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT2] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT2] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $brand_value . "',
                                     '" . $rs->PRODUCT . "'
@@ -1910,7 +1957,7 @@ class RunMidnightTask extends Command
                                     'statement' => $sql_insert
                                 ]);
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT1_DES] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT1_DES] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $brand_value . "',
                                     '" . $rs->PRODUCT . "'
@@ -1925,11 +1972,14 @@ class RunMidnightTask extends Command
                                     'STATUS_EDIT_DT' => $rs->EDIT_DT
                                 ]);
                             }       
-                        } else if ($dbName == 'dbLLMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string)$rs->PRODUCT) >= 7) {
-                            $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                        } else if ($dbName == 'dbFRMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string)$rs->PRODUCT) >= 7) {
+
+                            $response  = Http::asForm()->withHeaders([])->post($endpoint, [
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
-                            $origin_data_product = json_decode($origin_data_product, true);
+
+                            $origin_data_product = json_decode($response->body(), true);
+                            // dd($origin_data_product, 'A2');
 
                             if ($rs->STATUS_EDIT_DT == '' && !empty($origin_data_product) == true) {
                                 $REG_DATE_RP = $rs->REG_DATE === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->REG_DATE;
@@ -1946,6 +1996,7 @@ class RunMidnightTask extends Command
                                 // exit;
 
                                 $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -1985,7 +2036,824 @@ class RunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                    [WIDTH] = '{$rs->WIDTH}',
+                                    [HEIGHT] = '{$rs->HEIGHT}',
+                                    [WIDE] = '{$rs->WIDE}',
+                                    [NAME_EXP] = '{$rs->NAME_EXP}',
+                                    [NET_WEIGHT] = '{$rs->NET_WEIGHT}',
+                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                    [TYPE_G] = '{$rs->TYPE_G}',
+                                    [OPT_DATE1] = '{$OPT_DATE1_RP}',
+                                    [OPT_DATE2] =  '{$OPT_DATE2_RP}',
+                                    [OPT_TXT2] = '{$rs->OPT_TXT2}',
+                                    [OPT_NUM1] = '{$rs->OPT_NUM1}',
+                                    [OPT_NUM2] = '{$rs->OPT_NUM2}',
+                                    [ACC_TYPE] = '{$rs->ACC_TYPE}',
+                                    [ACC_DT] = '{$ACC_DT_RP}',
+                                    [RETURN] = '{$rs->RETURN}',
+                                    [NON_VAT] = '{$rs->NON_VAT}',
+                                    [STORAGE_TEMP] = '{$rs->STORAGE_TEMP}',
+                                    [CONTROL_STK] = '{$rs->CONTROL_STK}',
+                                    [TESTER] = '{$rs->TESTER}',
+                                    [USER_EDIT] = '{$rs->USER_EDIT}',
+                                    [EDIT_DT] = '{$rs->EDIT_DT}'
+                                    WHERE [PRODUCT] = '{$rs->PRODUCT}';
+                                ";
+                                Http::asForm()->withHeaders([])->post($endpoint, [
+                                    'statement' => $sql_update
+                                ]);
+                                $this->output->progressAdvance();
+
+                                $product1_STATUS_EDIT_DT = DB::table('product1s')->where('PRODUCT', $rs->PRODUCT)->update([
+                                    'EDIT_DT' => $rs->EDIT_DT,
+                                    'STATUS_EDIT_DT' => $rs->EDIT_DT
+                                ]);
+                            } else if ($dbName == 'dbFRMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string)$rs->PRODUCT) >= 7) {
+                                $dataproduct = DB::table('product1s')
+                                    ->select('*')     
+                                    ->where('PRODUCT', '=', $rs->PRODUCT)  
+                                    ->first();
+                                if($dataproduct) {
+                                    $REG_DATE_RP = $rs->REG_DATE === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->REG_DATE;
+                                    $OPT_DATE1_RP = $rs->OPT_DATE1 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE1;
+                                    $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
+                                    $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
+
+                                    $response  = Http::asForm()->withHeaders([])->post($endpoint, [
+                                        'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
+                                    ]);
+
+                                    $origin_data_product = json_decode($response->body(), true);
+                                    // dd($origin_data_product, 'A3');
+            
+                                    if ($rs->STATUS_EDIT_DT == '' && empty($origin_data_product) == true) {
+                                        $sql_insert = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
+                                        $sql_insert .= "[BRAND], [PRODUCT], [BARCODE], [COLOR], [GRP_P], [SUPPLIER], [NAME_THAI], [NAME_ENG], [SHORT_THAI], [SHORT_ENG], [VENDOR], [PRICE], [COST], [UNIT], [UNIT_Q], [SOLUTION], [SERIES], [CATEGORY], [STATUS], [S_CAT], [PDM_GROUP], [BRAND_P], [REGISTER], [OPT_TXT1], [CONDITION_SALE], [WHOLE_SALE], [GP], [O_PRODUCT], [BAR_PACK1], [BAR_PACK2], [BAR_PACK3], [BAR_PACK4], [PACK_SIZE1], [PACK_SIZE2], [PACK_SIZE3], [PACK_SIZE4], [REG_DATE], [AGE], [WIDTH], [HEIGHT], [WIDE], [NAME_EXP], [NET_WEIGHT], [UNIT_TYPE], [TYPE_G], [OPT_DATE1], [OPT_DATE2], [OPT_TXT2], [OPT_NUM1], [OPT_NUM2], [ACC_TYPE], [ACC_DT], [RETURN], [NON_VAT], [STORAGE_TEMP], [CONTROL_STK], [TESTER], [USER_EDIT], [EDIT_DT]) VALUES (";
+                                        $sql_insert .= "'" . $dataproduct->BRAND . "',
+                                            '" . $rs->PRODUCT . "',
+                                            '" . $rs->BARCODE . "',
+                                            '" . $rs->COLOR . "',
+                                            '" . $rs->GRP_P . "',
+                                            '" . $rs->SUPPLIER . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                            '" . $rs->VENDOR . "',
+                                            '" . $rs->PRICE . "',
+                                            '" . $rs->COST . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                            '" . $rs->UNIT_Q . "',
+                                            '" . $rs->SOLUTION . "',
+                                            '" . $rs->SERIES . "',
+                                            '" . $rs->CATEGORY . "',
+                                            '" . $rs->STATUS . "',
+                                            '" . $rs->S_CAT . "',
+                                            '" . $rs->PDM_GROUP . "',
+                                            '" . $rs->BRAND_P . "',
+                                            '" . $rs->REGISTER . "',
+                                            '" . $rs->OPT_TXT1 . "',
+                                            '" . $rs->CONDITION_SALE . "',
+                                            '" . $rs->WHOLE_SALE . "',
+                                            '" . $rs->GP . "',
+                                            '" . $rs->O_PRODUCT . "',
+                                            '" . $rs->BAR_PACK1 . "',
+                                            '" . $rs->BAR_PACK2 . "',
+                                            '" . $rs->BAR_PACK3 . "',
+                                            '" . $rs->BAR_PACK4 . "',
+                                            '" . $rs->PACK_SIZE1 . "',
+                                            '" . $rs->PACK_SIZE2 . "',
+                                            '" . $rs->PACK_SIZE3 . "',
+                                            '" . $rs->PACK_SIZE4 . "',
+                                            '" . $REG_DATE_RP . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                            '" . $rs->WIDTH . "',
+                                            '" . $rs->HEIGHT . "',
+                                            '" . $rs->WIDE . "',
+                                            '" . $rs->NAME_EXP . "',
+                                            '" . $rs->NET_WEIGHT . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                            '" . $rs->TYPE_G . "',
+                                            '" . $OPT_DATE1_RP . "',
+                                            '" . $OPT_DATE2_RP . "',
+                                            '" . $rs->OPT_TXT2 . "',
+                                            '" . $rs->OPT_NUM1 . "',
+                                            '" . $rs->OPT_NUM2 . "',
+                                            '" . $rs->ACC_TYPE . "',
+                                            '" . $ACC_DT_RP . "',
+                                            '" . $rs->RETURN . "',
+                                            '" . $rs->NON_VAT . "',
+                                            '" . $rs->STORAGE_TEMP . "',
+                                            '" . $rs->CONTROL_STK . "',
+                                            '" . $rs->TESTER . "',
+                                            '" . $rs->USER_EDIT . "',
+                                            '" . $rs->EDIT_DT . "'
+                                        )";
+                                        Http::asForm()->withHeaders([])->post($endpoint, [
+                                            'statement' => $sql_insert
+                                        ]);
+                                        $this->output->progressAdvance();
+                                    }
+                                }
+
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT2] (";
+                                $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
+                                $sql_insert .= "'" . $dataproduct->BRAND . "',
+                                    '" . $rs->PRODUCT . "'
+                                )";
+
+                                Http::asForm()->withHeaders([])->post($endpoint, [
+                                    'statement' => $sql_insert
+                                ]);
+
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT1_DES] (";
+                                $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
+                                $sql_insert .= "'" . $dataproduct->BRAND . "',
+                                    '" . $rs->PRODUCT . "'
+                                )";
+
+                                Http::asForm()->withHeaders([])->post($endpoint, [
+                                    'statement' => $sql_insert
+                                ]);
+
+                                $product1_STATUS_EDIT_DT = DB::table('product1s')->where('PRODUCT', $rs->PRODUCT)->update([
+                                    'EDIT_DT' => $rs->EDIT_DT,
+                                    'STATUS_EDIT_DT' => $rs->EDIT_DT
+                                ]);
+                            }  
+                        }
+
+
+                        if ($dbName == 'dbKDMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
+                            $brand_value = 'KM';
+                            if ($rs->PRODUCT[0] == $key_parts_number_2 && strlen($rs->PRODUCT) === 5) {
+                                $brand_value = $brand;
+                            } else if ($rs->PRODUCT[0] == 1 && strlen($rs->PRODUCT) === 5) {
+                                $brand_value = 'KM';
+                            }
+
+                            // dd($brand_value, 'A1');
+                            $response  = Http::asForm()->withHeaders([])->post($endpoint, [
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
+                            ]);
+
+                            $origin_data_product = json_decode($response->body(), true);
+                            // dd($origin_data_product, 'A1');
+
+                            if ($rs->STATUS_EDIT_DT == '' && !empty($origin_data_product) == true) {
+                                $REG_DATE_RP = $rs->REG_DATE === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->REG_DATE;
+                                $OPT_DATE1_RP = $rs->OPT_DATE1 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE1;
+                                $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
+                                $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
+
+                                $sql_update = "
+                                    UPDATE [$dbName].[dbo].[$value[0]] SET
+                                    [BRAND] = '{$brand_value}',
+                                    [PRODUCT] = '{$rs->PRODUCT}',
+                                    [BARCODE] = '{$rs->BARCODE}',
+                                    [COLOR] = '{$rs->COLOR}',
+                                    [GRP_P] = '{$rs->GRP_P}',
+                                    [SUPPLIER] = '{$rs->SUPPLIER}',
+                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
+                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
+                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
+                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                    [VENDOR] = '{$rs->VENDOR}',
+                                    [PRICE] = '{$rs->PRICE}',
+                                    [COST] = '{$rs->COST}',
+                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                    [UNIT_Q] = '{$rs->UNIT_Q}',
+                                    [SOLUTION] = '{$rs->SOLUTION}',
+                                    [SERIES] = '{$rs->SERIES}',
+                                    [CATEGORY] = '{$rs->CATEGORY}',
+                                    [STATUS] = '{$rs->STATUS}',
+                                    [S_CAT] = '{$rs->S_CAT}',
+                                    [PDM_GROUP] = '{$rs->PDM_GROUP}',
+                                    [BRAND_P] = '{$rs->BRAND_P}',
+                                    [REGISTER] = '{$rs->REGISTER}',
+                                    [OPT_TXT1] = '{$rs->OPT_TXT1}',
+                                    [CONDITION_SALE] = '{$rs->CONDITION_SALE}',
+                                    [WHOLE_SALE] = '{$rs->WHOLE_SALE}',
+                                    [GP] = '{$rs->GP}',
+                                    [O_PRODUCT] = '{$rs->O_PRODUCT}',
+                                    [BAR_PACK1] = '{$rs->BAR_PACK1}',
+                                    [BAR_PACK2] = '{$rs->BAR_PACK2}',
+                                    [BAR_PACK3] = '{$rs->BAR_PACK3}',
+                                    [BAR_PACK4] = '{$rs->BAR_PACK4}',
+                                    [PACK_SIZE1] = '{$rs->PACK_SIZE1}',
+                                    [PACK_SIZE2] = '{$rs->PACK_SIZE2}',
+                                    [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
+                                    [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
+                                    [REG_DATE] = '{$REG_DATE_RP}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                    [WIDTH] = '{$rs->WIDTH}',
+                                    [HEIGHT] = '{$rs->HEIGHT}',
+                                    [WIDE] = '{$rs->WIDE}',
+                                    [NAME_EXP] = '{$rs->NAME_EXP}',
+                                    [NET_WEIGHT] = '{$rs->NET_WEIGHT}',
+                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                    [TYPE_G] = '{$rs->TYPE_G}',
+                                    [OPT_DATE1] = '{$OPT_DATE1_RP}',
+                                    [OPT_DATE2] =  '{$OPT_DATE2_RP}',
+                                    [OPT_TXT2] = '{$rs->OPT_TXT2}',
+                                    [OPT_NUM1] = '{$rs->OPT_NUM1}',
+                                    [OPT_NUM2] = '{$rs->OPT_NUM2}',
+                                    [ACC_TYPE] = '{$rs->ACC_TYPE}',
+                                    [ACC_DT] = '{$ACC_DT_RP}',
+                                    [RETURN] = '{$rs->RETURN}',
+                                    [NON_VAT] = '{$rs->NON_VAT}',
+                                    [STORAGE_TEMP] = '{$rs->STORAGE_TEMP}',
+                                    [CONTROL_STK] = '{$rs->CONTROL_STK}',
+                                    [TESTER] = '{$rs->TESTER}',
+                                    [USER_EDIT] = '{$rs->USER_EDIT}',
+                                    [EDIT_DT] = '{$rs->EDIT_DT}'
+                                    WHERE [PRODUCT] = '{$rs->PRODUCT}';
+                                ";
+                                Http::asForm()->withHeaders([])->post($endpoint, [
+                                    'statement' => $sql_update
+                                ]);
+                                $this->output->progressAdvance();
+
+                                $product1_STATUS_EDIT_DT = DB::table('product1s')->where('PRODUCT', $rs->PRODUCT)->update([
+                                    'EDIT_DT' => $rs->EDIT_DT,
+                                    'STATUS_EDIT_DT' => $rs->EDIT_DT
+                                ]);
+                            } else {
+                                $REG_DATE_RP = $rs->REG_DATE === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->REG_DATE;
+                                $OPT_DATE1_RP = $rs->OPT_DATE1 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE1;
+                                $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
+                                $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
+
+                                $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
+                                    'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
+                                ]);
+                                $origin_data_product = json_decode($origin_data_product, true);
+
+                                // dd($brand_value, 'A1');
+
+                                if ($rs->STATUS_EDIT_DT == '' && empty($origin_data_product) == true) {
+                                    $sql_insert = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
+                                    $sql_insert .= "[BRAND], [PRODUCT], [BARCODE], [COLOR], [GRP_P], [SUPPLIER], [NAME_THAI], [NAME_ENG], [SHORT_THAI], [SHORT_ENG], [VENDOR], [PRICE], [COST], [UNIT], [UNIT_Q], [SOLUTION], [SERIES], [CATEGORY], [STATUS], [S_CAT], [PDM_GROUP], [BRAND_P], [REGISTER], [OPT_TXT1], [CONDITION_SALE], [WHOLE_SALE], [GP], [O_PRODUCT], [BAR_PACK1], [BAR_PACK2], [BAR_PACK3], [BAR_PACK4], [PACK_SIZE1], [PACK_SIZE2], [PACK_SIZE3], [PACK_SIZE4], [REG_DATE], [AGE], [WIDTH], [HEIGHT], [WIDE], [NAME_EXP], [NET_WEIGHT], [UNIT_TYPE], [TYPE_G], [OPT_DATE1], [OPT_DATE2], [OPT_TXT2], [OPT_NUM1], [OPT_NUM2], [ACC_TYPE], [ACC_DT], [RETURN], [NON_VAT], [STORAGE_TEMP], [CONTROL_STK], [TESTER], [USER_EDIT], [EDIT_DT]) VALUES (";
+                                    $sql_insert .= "'" . $brand_value . "',
+                                        '" . $rs->PRODUCT . "',
+                                        '" . $rs->BARCODE . "',
+                                        '" . $rs->COLOR . "',
+                                        '" . $rs->GRP_P . "',
+                                        '" . $rs->SUPPLIER . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                        '" . $rs->VENDOR . "',
+                                        '" . $rs->PRICE . "',
+                                        '" . $rs->COST . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                        '" . $rs->UNIT_Q . "',
+                                        '" . $rs->SOLUTION . "',
+                                        '" . $rs->SERIES . "',
+                                        '" . $rs->CATEGORY . "',
+                                        '" . $rs->STATUS . "',
+                                        '" . $rs->S_CAT . "',
+                                        '" . $rs->PDM_GROUP . "',
+                                        '" . $rs->BRAND_P . "',
+                                        '" . $rs->REGISTER . "',
+                                        '" . $rs->OPT_TXT1 . "',
+                                        '" . $rs->CONDITION_SALE . "',
+                                        '" . $rs->WHOLE_SALE . "',
+                                        '" . $rs->GP . "',
+                                        '" . $rs->O_PRODUCT . "',
+                                        '" . $rs->BAR_PACK1 . "',
+                                        '" . $rs->BAR_PACK2 . "',
+                                        '" . $rs->BAR_PACK3 . "',
+                                        '" . $rs->BAR_PACK4 . "',
+                                        '" . $rs->PACK_SIZE1 . "',
+                                        '" . $rs->PACK_SIZE2 . "',
+                                        '" . $rs->PACK_SIZE3 . "',
+                                        '" . $rs->PACK_SIZE4 . "',
+                                        '" . $REG_DATE_RP . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                        '" . $rs->WIDTH . "',
+                                        '" . $rs->HEIGHT . "',
+                                        '" . $rs->WIDE . "',
+                                        '" . $rs->NAME_EXP . "',
+                                        '" . $rs->NET_WEIGHT . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                        '" . $rs->TYPE_G . "',
+                                        '" . $OPT_DATE1_RP . "',
+                                        '" . $OPT_DATE2_RP . "',
+                                        '" . $rs->OPT_TXT2 . "',
+                                        '" . $rs->OPT_NUM1 . "',
+                                        '" . $rs->OPT_NUM2 . "',
+                                        '" . $rs->ACC_TYPE . "',
+                                        '" . $ACC_DT_RP . "',
+                                        '" . $rs->RETURN . "',
+                                        '" . $rs->NON_VAT . "',
+                                        '" . $rs->STORAGE_TEMP . "',
+                                        '" . $rs->CONTROL_STK . "',
+                                        '" . $rs->TESTER . "',
+                                        '" . $rs->USER_EDIT . "',
+                                        '" . $rs->EDIT_DT . "'
+                                    )";
+                                    Http::asForm()->withHeaders([])->post($endpoint, [
+                                        'statement' => $sql_insert
+                                    ]);
+                                    $this->output->progressAdvance();
+                                }
+
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT2] (";
+                                $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
+                                $sql_insert .= "'" . $brand_value . "',
+                                    '" . $rs->PRODUCT . "'
+                                )";
+
+                                Http::asForm()->withHeaders([])->post($endpoint, [
+                                    'statement' => $sql_insert
+                                ]);
+
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT1_DES] (";
+                                $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
+                                $sql_insert .= "'" . $brand_value . "',
+                                    '" . $rs->PRODUCT . "'
+                                )";
+
+                                Http::asForm()->withHeaders([])->post($endpoint, [
+                                    'statement' => $sql_insert
+                                ]);
+
+                                $product1_STATUS_EDIT_DT = DB::table('product1s')->where('PRODUCT', $rs->PRODUCT)->update([
+                                    'EDIT_DT' => $rs->EDIT_DT,
+                                    'STATUS_EDIT_DT' => $rs->EDIT_DT
+                                ]);
+                            }       
+                        } else if ($dbName == 'dbKDMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string)$rs->PRODUCT) >= 7) {
+
+                            $response  = Http::asForm()->withHeaders([])->post($endpoint, [
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
+                            ]);
+
+                            $origin_data_product = json_decode($response->body(), true);
+                            // dd($origin_data_product, 'A3');
+
+                            if ($rs->STATUS_EDIT_DT == '' && !empty($origin_data_product) == true) {
+                                $REG_DATE_RP = $rs->REG_DATE === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->REG_DATE;
+                                $OPT_DATE1_RP = $rs->OPT_DATE1 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE1;
+                                $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
+                                $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
+
+                                $dataProducts1CheckBrand = DB::table('product1s')
+                                ->select('product1s.*')
+                                ->where('product1s.PRODUCT', '=', $rs->PRODUCT)
+                                ->first();
+
+                                // print_r($dataProducts1CheckBrand);
+                                // exit;
+
+                                $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
+
+                                $sql_update = "
+                                    UPDATE [$dbName].[dbo].[$value[0]] SET
+                                    [BRAND] = '{$brand_value}',
+                                    [PRODUCT] = '{$rs->PRODUCT}',
+                                    [BARCODE] = '{$rs->BARCODE}',
+                                    [COLOR] = '{$rs->COLOR}',
+                                    [GRP_P] = '{$rs->GRP_P}',
+                                    [SUPPLIER] = '{$rs->SUPPLIER}',
+                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
+                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
+                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
+                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                    [VENDOR] = '{$rs->VENDOR}',
+                                    [PRICE] = '{$rs->PRICE}',
+                                    [COST] = '{$rs->COST}',
+                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                    [UNIT_Q] = '{$rs->UNIT_Q}',
+                                    [SOLUTION] = '{$rs->SOLUTION}',
+                                    [SERIES] = '{$rs->SERIES}',
+                                    [CATEGORY] = '{$rs->CATEGORY}',
+                                    [STATUS] = '{$rs->STATUS}',
+                                    [S_CAT] = '{$rs->S_CAT}',
+                                    [PDM_GROUP] = '{$rs->PDM_GROUP}',
+                                    [BRAND_P] = '{$rs->BRAND_P}',
+                                    [REGISTER] = '{$rs->REGISTER}',
+                                    [OPT_TXT1] = '{$rs->OPT_TXT1}',
+                                    [CONDITION_SALE] = '{$rs->CONDITION_SALE}',
+                                    [WHOLE_SALE] = '{$rs->WHOLE_SALE}',
+                                    [GP] = '{$rs->GP}',
+                                    [O_PRODUCT] = '{$rs->O_PRODUCT}',
+                                    [BAR_PACK1] = '{$rs->BAR_PACK1}',
+                                    [BAR_PACK2] = '{$rs->BAR_PACK2}',
+                                    [BAR_PACK3] = '{$rs->BAR_PACK3}',
+                                    [BAR_PACK4] = '{$rs->BAR_PACK4}',
+                                    [PACK_SIZE1] = '{$rs->PACK_SIZE1}',
+                                    [PACK_SIZE2] = '{$rs->PACK_SIZE2}',
+                                    [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
+                                    [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
+                                    [REG_DATE] = '{$REG_DATE_RP}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                    [WIDTH] = '{$rs->WIDTH}',
+                                    [HEIGHT] = '{$rs->HEIGHT}',
+                                    [WIDE] = '{$rs->WIDE}',
+                                    [NAME_EXP] = '{$rs->NAME_EXP}',
+                                    [NET_WEIGHT] = '{$rs->NET_WEIGHT}',
+                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                    [TYPE_G] = '{$rs->TYPE_G}',
+                                    [OPT_DATE1] = '{$OPT_DATE1_RP}',
+                                    [OPT_DATE2] =  '{$OPT_DATE2_RP}',
+                                    [OPT_TXT2] = '{$rs->OPT_TXT2}',
+                                    [OPT_NUM1] = '{$rs->OPT_NUM1}',
+                                    [OPT_NUM2] = '{$rs->OPT_NUM2}',
+                                    [ACC_TYPE] = '{$rs->ACC_TYPE}',
+                                    [ACC_DT] = '{$ACC_DT_RP}',
+                                    [RETURN] = '{$rs->RETURN}',
+                                    [NON_VAT] = '{$rs->NON_VAT}',
+                                    [STORAGE_TEMP] = '{$rs->STORAGE_TEMP}',
+                                    [CONTROL_STK] = '{$rs->CONTROL_STK}',
+                                    [TESTER] = '{$rs->TESTER}',
+                                    [USER_EDIT] = '{$rs->USER_EDIT}',
+                                    [EDIT_DT] = '{$rs->EDIT_DT}'
+                                    WHERE [PRODUCT] = '{$rs->PRODUCT}';
+                                ";
+                                Http::asForm()->withHeaders([])->post($endpoint, [
+                                    'statement' => $sql_update
+                                ]);
+                                $this->output->progressAdvance();
+
+                                $product1_STATUS_EDIT_DT = DB::table('product1s')->where('PRODUCT', $rs->PRODUCT)->update([
+                                    'EDIT_DT' => $rs->EDIT_DT,
+                                    'STATUS_EDIT_DT' => $rs->EDIT_DT
+                                ]);
+                            } else if ($dbName == 'dbKDMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string)$rs->PRODUCT) >= 7) {
+                                $dataproduct = DB::table('product1s')
+                                    ->select('*')     
+                                    ->where('PRODUCT', '=', $rs->PRODUCT)  
+                                    ->first();
+                                if($dataproduct) {
+                                    $REG_DATE_RP = $rs->REG_DATE === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->REG_DATE;
+                                    $OPT_DATE1_RP = $rs->OPT_DATE1 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE1;
+                                    $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
+                                    $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
+
+                                    $response  = Http::asForm()->withHeaders([])->post($endpoint, [
+                                        'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
+                                    ]);
+
+                                    $origin_data_product = json_decode($response->body(), true);
+                                    // dd($origin_data_product, 'A4');
+            
+                                    if ($rs->STATUS_EDIT_DT == '' && empty($origin_data_product) == true) {
+                                        $sql_insert = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
+                                        $sql_insert .= "[BRAND], [PRODUCT], [BARCODE], [COLOR], [GRP_P], [SUPPLIER], [NAME_THAI], [NAME_ENG], [SHORT_THAI], [SHORT_ENG], [VENDOR], [PRICE], [COST], [UNIT], [UNIT_Q], [SOLUTION], [SERIES], [CATEGORY], [STATUS], [S_CAT], [PDM_GROUP], [BRAND_P], [REGISTER], [OPT_TXT1], [CONDITION_SALE], [WHOLE_SALE], [GP], [O_PRODUCT], [BAR_PACK1], [BAR_PACK2], [BAR_PACK3], [BAR_PACK4], [PACK_SIZE1], [PACK_SIZE2], [PACK_SIZE3], [PACK_SIZE4], [REG_DATE], [AGE], [WIDTH], [HEIGHT], [WIDE], [NAME_EXP], [NET_WEIGHT], [UNIT_TYPE], [TYPE_G], [OPT_DATE1], [OPT_DATE2], [OPT_TXT2], [OPT_NUM1], [OPT_NUM2], [ACC_TYPE], [ACC_DT], [RETURN], [NON_VAT], [STORAGE_TEMP], [CONTROL_STK], [TESTER], [USER_EDIT], [EDIT_DT]) VALUES (";
+                                        $sql_insert .= "'" . $dataproduct->BRAND . "',
+                                            '" . $rs->PRODUCT . "',
+                                            '" . $rs->BARCODE . "',
+                                            '" . $rs->COLOR . "',
+                                            '" . $rs->GRP_P . "',
+                                            '" . $rs->SUPPLIER . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                            '" . $rs->VENDOR . "',
+                                            '" . $rs->PRICE . "',
+                                            '" . $rs->COST . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                            '" . $rs->UNIT_Q . "',
+                                            '" . $rs->SOLUTION . "',
+                                            '" . $rs->SERIES . "',
+                                            '" . $rs->CATEGORY . "',
+                                            '" . $rs->STATUS . "',
+                                            '" . $rs->S_CAT . "',
+                                            '" . $rs->PDM_GROUP . "',
+                                            '" . $rs->BRAND_P . "',
+                                            '" . $rs->REGISTER . "',
+                                            '" . $rs->OPT_TXT1 . "',
+                                            '" . $rs->CONDITION_SALE . "',
+                                            '" . $rs->WHOLE_SALE . "',
+                                            '" . $rs->GP . "',
+                                            '" . $rs->O_PRODUCT . "',
+                                            '" . $rs->BAR_PACK1 . "',
+                                            '" . $rs->BAR_PACK2 . "',
+                                            '" . $rs->BAR_PACK3 . "',
+                                            '" . $rs->BAR_PACK4 . "',
+                                            '" . $rs->PACK_SIZE1 . "',
+                                            '" . $rs->PACK_SIZE2 . "',
+                                            '" . $rs->PACK_SIZE3 . "',
+                                            '" . $rs->PACK_SIZE4 . "',
+                                            '" . $REG_DATE_RP . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                            '" . $rs->WIDTH . "',
+                                            '" . $rs->HEIGHT . "',
+                                            '" . $rs->WIDE . "',
+                                            '" . $rs->NAME_EXP . "',
+                                            '" . $rs->NET_WEIGHT . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                            '" . $rs->TYPE_G . "',
+                                            '" . $OPT_DATE1_RP . "',
+                                            '" . $OPT_DATE2_RP . "',
+                                            '" . $rs->OPT_TXT2 . "',
+                                            '" . $rs->OPT_NUM1 . "',
+                                            '" . $rs->OPT_NUM2 . "',
+                                            '" . $rs->ACC_TYPE . "',
+                                            '" . $ACC_DT_RP . "',
+                                            '" . $rs->RETURN . "',
+                                            '" . $rs->NON_VAT . "',
+                                            '" . $rs->STORAGE_TEMP . "',
+                                            '" . $rs->CONTROL_STK . "',
+                                            '" . $rs->TESTER . "',
+                                            '" . $rs->USER_EDIT . "',
+                                            '" . $rs->EDIT_DT . "'
+                                        )";
+                                        Http::asForm()->withHeaders([])->post($endpoint, [
+                                            'statement' => $sql_insert
+                                        ]);
+                                        $this->output->progressAdvance();
+                                    }
+                                }
+
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT2] (";
+                                $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
+                                $sql_insert .= "'" . $dataproduct->BRAND . "',
+                                    '" . $rs->PRODUCT . "'
+                                )";
+
+                                Http::asForm()->withHeaders([])->post($endpoint, [
+                                    'statement' => $sql_insert
+                                ]);
+
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT1_DES] (";
+                                $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
+                                $sql_insert .= "'" . $dataproduct->BRAND . "',
+                                    '" . $rs->PRODUCT . "'
+                                )";
+
+                                Http::asForm()->withHeaders([])->post($endpoint, [
+                                    'statement' => $sql_insert
+                                ]);
+
+                                $product1_STATUS_EDIT_DT = DB::table('product1s')->where('PRODUCT', $rs->PRODUCT)->update([
+                                    'EDIT_DT' => $rs->EDIT_DT,
+                                    'STATUS_EDIT_DT' => $rs->EDIT_DT
+                                ]);
+                            }  
+                        }
+
+                        if ($dbName == 'dbLLMAS' && $brand == $rs->BRAND && $rs->PRODUCT[0] != $key_parts_number_1 && $rs->PRODUCT[0] != $key_parts_number_2) {
+                            $brand_value = 'KM';
+                            if ($rs->PRODUCT[0] == $key_parts_number_3) {
+                                $brand_value = $brand;
+                            }
+
+                            $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
+                            ]);
+                            $origin_data_product = json_decode($origin_data_product, true);
+
+                            if ($rs->STATUS_EDIT_DT == '' && !empty($origin_data_product) == true) {
+                                $REG_DATE_RP = $rs->REG_DATE === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->REG_DATE;
+                                $OPT_DATE1_RP = $rs->OPT_DATE1 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE1;
+                                $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
+                                $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
+
+                                $sql_update = "
+                                    UPDATE [$dbName].[dbo].[$value[0]] SET
+                                    [BRAND] = '{$brand_value}',
+                                    [PRODUCT] = '{$rs->PRODUCT}',
+                                    [BARCODE] = '{$rs->BARCODE}',
+                                    [COLOR] = '{$rs->COLOR}',
+                                    [GRP_P] = '{$rs->GRP_P}',
+                                    [SUPPLIER] = '{$rs->SUPPLIER}',
+                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
+                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
+                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
+                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                    [VENDOR] = '{$rs->VENDOR}',
+                                    [PRICE] = '{$rs->PRICE}',
+                                    [COST] = '{$rs->COST}',
+                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                    [UNIT_Q] = '{$rs->UNIT_Q}',
+                                    [SOLUTION] = '{$rs->SOLUTION}',
+                                    [SERIES] = '{$rs->SERIES}',
+                                    [CATEGORY] = '{$rs->CATEGORY}',
+                                    [STATUS] = '{$rs->STATUS}',
+                                    [S_CAT] = '{$rs->S_CAT}',
+                                    [PDM_GROUP] = '{$rs->PDM_GROUP}',
+                                    [BRAND_P] = '{$rs->BRAND_P}',
+                                    [REGISTER] = '{$rs->REGISTER}',
+                                    [OPT_TXT1] = '{$rs->OPT_TXT1}',
+                                    [CONDITION_SALE] = '{$rs->CONDITION_SALE}',
+                                    [WHOLE_SALE] = '{$rs->WHOLE_SALE}',
+                                    [GP] = '{$rs->GP}',
+                                    [O_PRODUCT] = '{$rs->O_PRODUCT}',
+                                    [BAR_PACK1] = '{$rs->BAR_PACK1}',
+                                    [BAR_PACK2] = '{$rs->BAR_PACK2}',
+                                    [BAR_PACK3] = '{$rs->BAR_PACK3}',
+                                    [BAR_PACK4] = '{$rs->BAR_PACK4}',
+                                    [PACK_SIZE1] = '{$rs->PACK_SIZE1}',
+                                    [PACK_SIZE2] = '{$rs->PACK_SIZE2}',
+                                    [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
+                                    [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
+                                    [REG_DATE] = '{$REG_DATE_RP}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                    [WIDTH] = '{$rs->WIDTH}',
+                                    [HEIGHT] = '{$rs->HEIGHT}',
+                                    [WIDE] = '{$rs->WIDE}',
+                                    [NAME_EXP] = '{$rs->NAME_EXP}',
+                                    [NET_WEIGHT] = '{$rs->NET_WEIGHT}',
+                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                    [TYPE_G] = '{$rs->TYPE_G}',
+                                    [OPT_DATE1] = '{$OPT_DATE1_RP}',
+                                    [OPT_DATE2] =  '{$OPT_DATE2_RP}',
+                                    [OPT_TXT2] = '{$rs->OPT_TXT2}',
+                                    [OPT_NUM1] = '{$rs->OPT_NUM1}',
+                                    [OPT_NUM2] = '{$rs->OPT_NUM2}',
+                                    [ACC_TYPE] = '{$rs->ACC_TYPE}',
+                                    [ACC_DT] = '{$ACC_DT_RP}',
+                                    [RETURN] = '{$rs->RETURN}',
+                                    [NON_VAT] = '{$rs->NON_VAT}',
+                                    [STORAGE_TEMP] = '{$rs->STORAGE_TEMP}',
+                                    [CONTROL_STK] = '{$rs->CONTROL_STK}',
+                                    [TESTER] = '{$rs->TESTER}',
+                                    [USER_EDIT] = '{$rs->USER_EDIT}',
+                                    [EDIT_DT] = '{$rs->EDIT_DT}'
+                                    WHERE [PRODUCT] = '{$rs->PRODUCT}';
+                                ";
+                                Http::asForm()->withHeaders([])->post($endpoint, [
+                                    'statement' => $sql_update
+                                ]);
+                                $this->output->progressAdvance();
+
+                                $product1_STATUS_EDIT_DT = DB::table('product1s')->where('PRODUCT', $rs->PRODUCT)->update([
+                                    'EDIT_DT' => $rs->EDIT_DT,
+                                    'STATUS_EDIT_DT' => $rs->EDIT_DT
+                                ]);
+                            } else {
+                                $REG_DATE_RP = $rs->REG_DATE === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->REG_DATE;
+                                $OPT_DATE1_RP = $rs->OPT_DATE1 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE1;
+                                $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
+                                $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
+
+                                $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
+                                    'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
+                                ]);
+                                $origin_data_product = json_decode($origin_data_product, true);
+
+                                if ($rs->STATUS_EDIT_DT == '' && empty($origin_data_product) == true) {
+                                    $sql_insert = "INSERT INTO [$dbName].[dbo].[$value[0]] (";
+                                    $sql_insert .= "[BRAND], [PRODUCT], [BARCODE], [COLOR], [GRP_P], [SUPPLIER], [NAME_THAI], [NAME_ENG], [SHORT_THAI], [SHORT_ENG], [VENDOR], [PRICE], [COST], [UNIT], [UNIT_Q], [SOLUTION], [SERIES], [CATEGORY], [STATUS], [S_CAT], [PDM_GROUP], [BRAND_P], [REGISTER], [OPT_TXT1], [CONDITION_SALE], [WHOLE_SALE], [GP], [O_PRODUCT], [BAR_PACK1], [BAR_PACK2], [BAR_PACK3], [BAR_PACK4], [PACK_SIZE1], [PACK_SIZE2], [PACK_SIZE3], [PACK_SIZE4], [REG_DATE], [AGE], [WIDTH], [HEIGHT], [WIDE], [NAME_EXP], [NET_WEIGHT], [UNIT_TYPE], [TYPE_G], [OPT_DATE1], [OPT_DATE2], [OPT_TXT2], [OPT_NUM1], [OPT_NUM2], [ACC_TYPE], [ACC_DT], [RETURN], [NON_VAT], [STORAGE_TEMP], [CONTROL_STK], [TESTER], [USER_EDIT], [EDIT_DT]) VALUES (";
+                                    $sql_insert .= "'" . $brand_value . "',
+                                        '" . $rs->PRODUCT . "',
+                                        '" . $rs->BARCODE . "',
+                                        '" . $rs->COLOR . "',
+                                        '" . $rs->GRP_P . "',
+                                        '" . $rs->SUPPLIER . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                        '" . $rs->VENDOR . "',
+                                        '" . $rs->PRICE . "',
+                                        '" . $rs->COST . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                        '" . $rs->UNIT_Q . "',
+                                        '" . $rs->SOLUTION . "',
+                                        '" . $rs->SERIES . "',
+                                        '" . $rs->CATEGORY . "',
+                                        '" . $rs->STATUS . "',
+                                        '" . $rs->S_CAT . "',
+                                        '" . $rs->PDM_GROUP . "',
+                                        '" . $rs->BRAND_P . "',
+                                        '" . $rs->REGISTER . "',
+                                        '" . $rs->OPT_TXT1 . "',
+                                        '" . $rs->CONDITION_SALE . "',
+                                        '" . $rs->WHOLE_SALE . "',
+                                        '" . $rs->GP . "',
+                                        '" . $rs->O_PRODUCT . "',
+                                        '" . $rs->BAR_PACK1 . "',
+                                        '" . $rs->BAR_PACK2 . "',
+                                        '" . $rs->BAR_PACK3 . "',
+                                        '" . $rs->BAR_PACK4 . "',
+                                        '" . $rs->PACK_SIZE1 . "',
+                                        '" . $rs->PACK_SIZE2 . "',
+                                        '" . $rs->PACK_SIZE3 . "',
+                                        '" . $rs->PACK_SIZE4 . "',
+                                        '" . $REG_DATE_RP . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                        '" . $rs->WIDTH . "',
+                                        '" . $rs->HEIGHT . "',
+                                        '" . $rs->WIDE . "',
+                                        '" . $rs->NAME_EXP . "',
+                                        '" . $rs->NET_WEIGHT . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                        '" . $rs->TYPE_G . "',
+                                        '" . $OPT_DATE1_RP . "',
+                                        '" . $OPT_DATE2_RP . "',
+                                        '" . $rs->OPT_TXT2 . "',
+                                        '" . $rs->OPT_NUM1 . "',
+                                        '" . $rs->OPT_NUM2 . "',
+                                        '" . $rs->ACC_TYPE . "',
+                                        '" . $ACC_DT_RP . "',
+                                        '" . $rs->RETURN . "',
+                                        '" . $rs->NON_VAT . "',
+                                        '" . $rs->STORAGE_TEMP . "',
+                                        '" . $rs->CONTROL_STK . "',
+                                        '" . $rs->TESTER . "',
+                                        '" . $rs->USER_EDIT . "',
+                                        '" . $rs->EDIT_DT . "'
+                                    )";
+                                    Http::asForm()->withHeaders([])->post($endpoint, [
+                                        'statement' => $sql_insert
+                                    ]);
+                                    $this->output->progressAdvance();
+                                }
+
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT2] (";
+                                $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
+                                $sql_insert .= "'" . $brand_value . "',
+                                    '" . $rs->PRODUCT . "'
+                                )";
+
+                                Http::asForm()->withHeaders([])->post($endpoint, [
+                                    'statement' => $sql_insert
+                                ]);
+
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT1_DES] (";
+                                $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
+                                $sql_insert .= "'" . $brand_value . "',
+                                    '" . $rs->PRODUCT . "'
+                                )";
+
+                                Http::asForm()->withHeaders([])->post($endpoint, [
+                                    'statement' => $sql_insert
+                                ]);
+
+                                $product1_STATUS_EDIT_DT = DB::table('product1s')->where('PRODUCT', $rs->PRODUCT)->update([
+                                    'EDIT_DT' => $rs->EDIT_DT,
+                                    'STATUS_EDIT_DT' => $rs->EDIT_DT
+                                ]);
+                            }       
+                        } else if ($dbName == 'dbLLMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string)$rs->PRODUCT) >= 7) {
+                            $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
+                            ]);
+                            $origin_data_product = json_decode($origin_data_product, true);
+
+                            if ($rs->STATUS_EDIT_DT == '' && !empty($origin_data_product) == true) {
+                                $REG_DATE_RP = $rs->REG_DATE === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->REG_DATE;
+                                $OPT_DATE1_RP = $rs->OPT_DATE1 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE1;
+                                $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
+                                $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
+
+                                $dataProducts1CheckBrand = DB::table('product1s')
+                                ->select('product1s.*')
+                                ->where('product1s.PRODUCT', '=', $rs->PRODUCT)
+                                ->first();
+
+                                // print_r($dataProducts1CheckBrand);
+                                // exit;
+
+                                $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
+
+                                $sql_update = "
+                                    UPDATE [$dbName].[dbo].[$value[0]] SET
+                                    [BRAND] = '{$brand_value}',
+                                    [PRODUCT] = '{$rs->PRODUCT}',
+                                    [BARCODE] = '{$rs->BARCODE}',
+                                    [COLOR] = '{$rs->COLOR}',
+                                    [GRP_P] = '{$rs->GRP_P}',
+                                    [SUPPLIER] = '{$rs->SUPPLIER}',
+                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
+                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
+                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
+                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                    [VENDOR] = '{$rs->VENDOR}',
+                                    [PRICE] = '{$rs->PRICE}',
+                                    [COST] = '{$rs->COST}',
+                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                    [UNIT_Q] = '{$rs->UNIT_Q}',
+                                    [SOLUTION] = '{$rs->SOLUTION}',
+                                    [SERIES] = '{$rs->SERIES}',
+                                    [CATEGORY] = '{$rs->CATEGORY}',
+                                    [STATUS] = '{$rs->STATUS}',
+                                    [S_CAT] = '{$rs->S_CAT}',
+                                    [PDM_GROUP] = '{$rs->PDM_GROUP}',
+                                    [BRAND_P] = '{$rs->BRAND_P}',
+                                    [REGISTER] = '{$rs->REGISTER}',
+                                    [OPT_TXT1] = '{$rs->OPT_TXT1}',
+                                    [CONDITION_SALE] = '{$rs->CONDITION_SALE}',
+                                    [WHOLE_SALE] = '{$rs->WHOLE_SALE}',
+                                    [GP] = '{$rs->GP}',
+                                    [O_PRODUCT] = '{$rs->O_PRODUCT}',
+                                    [BAR_PACK1] = '{$rs->BAR_PACK1}',
+                                    [BAR_PACK2] = '{$rs->BAR_PACK2}',
+                                    [BAR_PACK3] = '{$rs->BAR_PACK3}',
+                                    [BAR_PACK4] = '{$rs->BAR_PACK4}',
+                                    [PACK_SIZE1] = '{$rs->PACK_SIZE1}',
+                                    [PACK_SIZE2] = '{$rs->PACK_SIZE2}',
+                                    [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
+                                    [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
+                                    [REG_DATE] = '{$REG_DATE_RP}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -2030,7 +2898,7 @@ class RunMidnightTask extends Command
                                     $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                     $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                        'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                        'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                     ]);
                                     $origin_data_product = json_decode($origin_data_product, true);
             
@@ -2074,7 +2942,7 @@ class RunMidnightTask extends Command
                                             '" . $rs->PACK_SIZE3 . "',
                                             '" . $rs->PACK_SIZE4 . "',
                                             '" . $REG_DATE_RP . "',
-                                            '" . $rs->AGE . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                             '" . $rs->WIDTH . "',
                                             '" . $rs->HEIGHT . "',
                                             '" . $rs->WIDE . "',
@@ -2104,7 +2972,7 @@ class RunMidnightTask extends Command
                                     }
                                 }
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT2] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT2] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $dataproduct->BRAND . "',
                                     '" . $rs->PRODUCT . "'
@@ -2114,7 +2982,7 @@ class RunMidnightTask extends Command
                                     'statement' => $sql_insert
                                 ]);
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT1_DES] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT1_DES] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $dataproduct->BRAND . "',
                                     '" . $rs->PRODUCT . "'
@@ -2137,10 +3005,11 @@ class RunMidnightTask extends Command
                             }
 
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
 
+                            dd($brand_value);
                             // dd($rs->BRAND);
                             if ($rs->STATUS_EDIT_DT == '' && !empty($origin_data_product) == true) {
                                 $REG_DATE_RP = $rs->REG_DATE === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->REG_DATE;
@@ -2187,7 +3056,7 @@ class RunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -2220,7 +3089,6 @@ class RunMidnightTask extends Command
                                     'EDIT_DT' => $rs->EDIT_DT,
                                     'STATUS_EDIT_DT' => $rs->EDIT_DT
                                 ]);
-
                             } else {
                                 $REG_DATE_RP = $rs->REG_DATE === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->REG_DATE;
                                 $OPT_DATE1_RP = $rs->OPT_DATE1 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE1;
@@ -2228,7 +3096,7 @@ class RunMidnightTask extends Command
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                 $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                    'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                    'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                 ]);
                                 $origin_data_product = json_decode($origin_data_product, true);
 
@@ -2272,7 +3140,7 @@ class RunMidnightTask extends Command
                                         '" . $rs->PACK_SIZE3 . "',
                                         '" . $rs->PACK_SIZE4 . "',
                                         '" . $REG_DATE_RP . "',
-                                        '" . $rs->AGE . "',
+                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                         '" . $rs->WIDTH . "',
                                         '" . $rs->HEIGHT . "',
                                         '" . $rs->WIDE . "',
@@ -2301,7 +3169,7 @@ class RunMidnightTask extends Command
                                     $this->output->progressAdvance();
                                 }
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT2] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT2] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $brand_value . "',
                                     '" . $rs->PRODUCT . "'
@@ -2311,7 +3179,7 @@ class RunMidnightTask extends Command
                                     'statement' => $sql_insert
                                 ]);
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT1_DES] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT1_DES] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $brand_value . "',
                                     '" . $rs->PRODUCT . "'
@@ -2328,7 +3196,7 @@ class RunMidnightTask extends Command
                             }       
                         } else if ($dbName == 'dbOPMAS' && $rs->PRODUCT[0] >= 8 && $brand == $rs->BRAND && strlen((string)$rs->PRODUCT) >= 7) {
                             $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                             ]);
                             $origin_data_product = json_decode($origin_data_product, true);
 
@@ -2348,7 +3216,7 @@ class RunMidnightTask extends Command
                                 // exit;
 
                                 $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
-                                
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -2388,7 +3256,7 @@ class RunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = '{$rs->AGE}',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
@@ -2433,7 +3301,7 @@ class RunMidnightTask extends Command
                                     $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
                                     $origin_data_product = Http::asForm()->withHeaders([])->post($endpoint, [
-                                        'statement' => 'select product from [' . $dbName . '].[dbo].[' . $value[0] . '] where product = ' . $rs->PRODUCT
+                                        'statement' => "select product from [$dbName].[dbo].[$value[0]] where product = '$rs->PRODUCT'"
                                     ]);
                                     $origin_data_product = json_decode($origin_data_product, true);
             
@@ -2477,7 +3345,7 @@ class RunMidnightTask extends Command
                                             '" . $rs->PACK_SIZE3 . "',
                                             '" . $rs->PACK_SIZE4 . "',
                                             '" . $REG_DATE_RP . "',
-                                            '" . $rs->AGE . "',
+                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
                                             '" . $rs->WIDTH . "',
                                             '" . $rs->HEIGHT . "',
                                             '" . $rs->WIDE . "',
@@ -2508,7 +3376,7 @@ class RunMidnightTask extends Command
                                     }
                                 }
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT2] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT2] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $dataproduct->BRAND . "',
                                     '" . $rs->PRODUCT . "'
@@ -2518,7 +3386,7 @@ class RunMidnightTask extends Command
                                     'statement' => $sql_insert
                                 ]);
 
-                                $sql_insert = "INSERT INTO [$dbName].[dbo].[NEW_PRODUCT1_DES] (";
+                                $sql_insert = "INSERT INTO [$dbName].[dbo].[PRODUCT1_DES] (";
                                 $sql_insert .= "[BRAND], [PRODUCT]) VALUES (";
                                 $sql_insert .= "'" . $dataproduct->BRAND . "',
                                     '" . $rs->PRODUCT . "'
@@ -2536,22 +3404,25 @@ class RunMidnightTask extends Command
                         }
                     }
                 }
-                $Task = Task::create([
-                    'task_name' => __FUNCTION__,
-                    'is_completed' => true,
-                    'scheduled_date' => Carbon::now(),
-                    'completed_at' => Carbon::now()
-                ]);
+                $taskSuccess = Task::updateOrCreate(
+        ['task_name' => __FUNCTION__, 'scheduled_date' => date('Y-m-d')],
+                    [
+                        'is_completed' => true,
+                        'scheduled_date' => date('Y-m-d'),
+                        'completed_at' => date('Y-m-d')
+                    ]);
                 $this->output->progressFinish();
             }
         } else {
-            $task = Task::create([
-                'task_name' => __METHOD__,
-                'is_completed' => false,
-                'scheduled_date' => Carbon::now(),
-                'completed_at' => null, // Task ยังไม่เสร็จ
-            ]);
-            \Log::info('No incomplete tasks for today. Created Task ID: ' . $task->id);
+            $taskError = Task::updateOrCreate(
+    ['task_name' => __FUNCTION__, 'scheduled_date' => date('Y-m-d')],
+        [
+                    'is_completed' => false,
+                    'scheduled_date' => date('Y-m-d'),
+                    'completed_at' => null, // Task ยังไม่เสร็จ
+                ]
+            );
+            \Log::info('No incomplete tasks for today. Created Task ID: ' . $taskError->id);
         }
     }
 }

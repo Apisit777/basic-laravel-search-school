@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Models\AccountScheduleTask; 
 use App\Models\Account; 
+use App\Models\ProductPrice; 
+use App\Models\ProductPriceSchedule; 
 use App\Models\AccountLog; 
 use Carbon\Carbon;
 
@@ -52,7 +54,7 @@ class AccountSchedule extends Command
     public function account_schedule()
     {
         $now = now();
-        $start = $now->copy()->setTime(12, 30);
+        $start = $now->copy()->setTime(8, 30);
         $end = $now->copy()->setTime(20, 0);
 
         if ($now->isWeekday() && $now->between($start, $end)) {
@@ -61,22 +63,30 @@ class AccountSchedule extends Command
                 ->whereDate('scheduled_date', Carbon::today())
                 ->exists();
 
+            // dd($incompleteTasks);
+
             if (!$incompleteTasks) {
                 // ตรวจสอบว่ามีบัญชีที่ยังไม่มีการแก้ไข (status_edit_dt เป็น NULL)
-                $dataaccounts = DB::table('accounts')->whereNull('status_edit_dt')->exists();
+                // $dataaccounts = DB::table('accounts')->whereNull('status_edit_dt')->exists();
+                $dataaccounts = DB::table('product_prices')->whereNull('status_edit_dt')->exists();
 
+                
                 // ตรวจสอบว่ามี product_price_schedules ที่ active_date เป็นวันนี้
                 $dataSchedules = DB::table('product_price_schedules')
                     ->whereNull('status_edit_dt')
                     ->whereDate('active_date', Carbon::today())
                     ->exists();
+                
+                // dd($dataaccounts);
 
                 // ถ้ามีข้อมูลตรงตามเงื่อนไข ให้เริ่มการอัปเดต
-                if (!$dataaccounts && $dataSchedules) {
+                if ($dataaccounts && $dataSchedules) {
                     $dataProducts = DB::table('product_price_schedules')
                         ->whereNull('status_edit_dt')
                         ->whereDate('active_date', Carbon::today())
                         ->get();
+
+                    dd($dataProducts);
 
                     $diff_count = $dataProducts->count();
                     $this->info("Updating cost data from 'product_price_schedules' to 'accounts'");
@@ -95,14 +105,16 @@ class AccountSchedule extends Command
                         );
                         // เก็บ log ข้อมูลเก่าก่อนอัปเดต
                         $product1LogData = [];
-                        $accountLogData = [];
+                        $productPriceLog = [];
                         $productPriceScheduleLogData = [];
 
                         foreach ($dataProducts as $rs) {
                             // ดึงข้อมูลที่เกี่ยวข้องก่อนอัปเดต
                             $product1Data = DB::table('product1s')->where('PRODUCT', $rs->PRODUCT)->get();
-                            $accountData = DB::table('accounts')->where('product', $rs->PRODUCT)->get();
-                            $productPriceScheduleData = DB::table('product_price_schedules')->where('product_id', $rs->PRODUCT)->get();
+                            // $accountData = DB::table('accounts')->where('product', $rs->PRODUCT)->get();
+                            $accountData = DB::table('product_prices')->where('product_id', $rs->PRODUCT)->get();
+                            // $productPriceScheduleData = DB::table('product_price_schedules')->where('product_id', $rs->PRODUCT)->get();
+                            $productPriceScheduleData = DB::table('product_prices')->where('product_id', $rs->PRODUCT)->get();
 
                             // แปลงข้อมูลเพื่อใช้เก็บ Log
                             $product1LogData = array_merge(
@@ -110,9 +122,9 @@ class AccountSchedule extends Command
                                 $product1Data->map(fn($p) => (array) $p)->toArray()
                             );
 
-                            $accountLogData = array_merge(
-                                $accountLogData,
-                                $accountData->map(fn($a) => (array) $a)->toArray()
+                            $productPriceLog = array_merge(
+                                $productPriceLog,
+                                $accountData->map(fn($pp) => (array) $pp)->toArray()
                             );
 
                             $productPriceScheduleLogData = array_merge(
@@ -120,14 +132,24 @@ class AccountSchedule extends Command
                                 $productPriceScheduleData->map(fn($pps) => (array) $pps)->toArray()
                             );
 
+                            $editDt = null;
+
+                            if (!empty($rs->active_date)) {
+                                $editDt = !empty($rs->active_date)
+                                    ? Carbon::parse($rs->active_date)->startOfDay() // จะได้ 2025-12-11 00:00:00
+                                    : null;
+                            }
+
                             // ทำการอัปเดตข้อมูลใหม่
                             DB::table('product1s')
                                 ->where('PRODUCT', $rs->PRODUCT)
                                 ->update([
                                     'COST' => $rs->cost ?? '',
-                                    'STATUS_EDIT_DT' => $rs->active_date ?? '',
+                                    'EDIT_DT'       => $editDt,   // ส่งเป็น datetime ที่ปลอดภัย
+                                    'STATUS_EDIT_DT' => '',
                             ]);
-                            Account::updateOrCreate(
+                            // Account::updateOrCreate(
+                            ProductPrice::updateOrCreate(
                                 ['PRODUCT' => $rs->PRODUCT],
                                 [
                                     'cost' => $rs->cost ?? '',
@@ -138,8 +160,8 @@ class AccountSchedule extends Command
                                     'sale_km20percent' => $rs->sale_km20percent ?? '',
                                     'note' => $rs->note ?? '',
                                     'status_edit_dt' => $rs->active_date,
+                                    'updated_at' => $rs->active_date,
                                     'updated_by' => Auth::user()->username,
-                                    'updated_at' => $rs->active_date
 
                                     // 'sale_tp' => $rs->sale_tp ?? '',
                                     // 'cost_km' => $rs->cost_km ?? '',
@@ -154,24 +176,26 @@ class AccountSchedule extends Command
                                 ->update([
                                     'status' => 1,
                                     'status_edit_dt' => $rs->active_date,
-                                    'updated_at' => $rs->active_date
+                                    'updated_at' => $rs->active_date,
+                                    'updated_by' => Auth::user()->username,
                             ]);
                             $this->output->progressAdvance();
                         }
                         DB::enableQueryLog(); // เปิดเก็บ Log
 
+                        dd(DB::getQueryLog()); // แสดง query log ทั้งหมดที่รันจนถึงตรงนี้
+                        
                         // บันทึก Log ลงตารางที่เหมาะสม
                         if (!empty($product1LogData)) {
                             DB::table('product1_logs')->insert($product1LogData);
                         }
-                        if (!empty($accountLogData)) {
-                            DB::table('account_logs')->insert($accountLogData);
+                        if (!empty($productPriceLog)) {
+                            // DB::table('account_logs')->insert($productPriceLog);
+                            DB::table('product_price_logs')->insert($productPriceLog);
                         }
                         if (!empty($productPriceScheduleLogData)) {
                             DB::table('product_price_schedule_logs')->insert($productPriceScheduleLogData);
                         }
-
-                        dd(DB::getQueryLog()); // แสดง query log ทั้งหมดที่รันจนถึงตรงนี้
                         
                         // อัปเดตเวลาเสร็จสิ้น
                         $taskSuccess->update([

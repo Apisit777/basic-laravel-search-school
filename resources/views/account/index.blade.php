@@ -88,21 +88,99 @@
         /* .mt-2, .my-2 {
             margin-top: 0rem !important;
         } */
+
+        .view-toggle {
+            display: flex;
+            border: 1px solid #666;
+            border-radius: 5px;
+            overflow: hidden;
+            width: fit-content;
+        }
+        .toggle-btn {
+            padding: 4px 5px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            color: white;
+            background-color: #2a2a2a;
+            transition: background 0.3s;
+        }
+        .toggle-btn.active {
+            background-color: #05395D;
+        }
+        
+        /* สไตล์ปุ่ม (แล้วแต่ของเดิม) */
+        .toggle-btn {
+            background: #404040;
+            color: #fff;
+            border-radius: 4px;
+            transition: 0.2s;
+        }
+        .toggle-btn:hover { background: #3b3b3b; }
+        .toggle-btn.active { background: #05395D; }
+
+        /* ✅ เงื่อนไข: จอเล็ก (กว้าง < 768px และสูง < 919px) */
+        @media (max-width: 767px) and (max-height: 919px) {
+            .buttons-panel {
+                position: relative !important;  /* จาก absolute → มาอยู่ใน flow ปกติ */
+                inset: auto !important;
+                width: 100%;
+                margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
+
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 99999;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+        
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
     <!-- <link rel="stylesheet" href="{{ asset('css/select2@4.1.0.min.css') }}" /> -->
     <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap.css') }}" />
 
+    
+    @php
+        $accountStatus = [
+            1 => 'สินค้าใหม่',
+            2 => 'รอดำเนินการ',
+            3 => 'ตั้งราคาแล้ว',
+        ];
+    @endphp
+
     <div class="justify-center items-center">
-        <div class="mt-9 bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-2">
+        <div class="mt-4 bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-1">
             <div class="flex justify-center items-center">
                 <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">@lang('global.content.product_account_list')</p>
             </div>
             <div class="grid gap-4 gap-y-2 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-2 xl:grid-cols-4">
                 <div class="lg:col-span-4 xl:grid-cols-4">
                     <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
-                        <div class="md:col-span-3">
+                        <div class="md:col-span-2">
                             <label for="BRAND" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">Brand Product</label>
                             <select class="js-example-basic-single w-full rounded-sm text-xs" id="brand_id" name="BRAND" onchange="brandSearch()">
                                 <option value=""> --- กรุณาเลือก ---</option>
@@ -111,7 +189,18 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="md:col-span-3" >
+                        <div class="md:col-span-2">
+                            <label for="BRAND" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">สถานะตั้งราคา</label>
+                            <select class="js-example-basic-single w-full rounded-sm text-xs" id="statusSearch" name="statusSearch" onchange="brandSearch()">
+                                <option value=""> --- กรุณาเลือก ---</option>
+                                 @foreach ($accountStatus as $key => $label)
+                                    <option value="{{ $key }}">
+                                        {{ $label }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="md:col-span-2" >
                             <label for="">Search</label>
                             <input type="text" name="search" id="search" class="h-10 border-[#303030] dark:border focus:border-blue-500 mt-1 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" placeholder="รหัสสินค้า, ชื่อสินค้า ..." value="" onkeyup="searchTable()"/>
                         </div>
@@ -125,7 +214,7 @@
                                 </a>
                             </div> -->
                             <button  id="" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-1 px-2 mr-2 rounded group cursor-pointer btn-rotate" type="reset">
-                                <svg class="hidden h-5 w-5 md:inline-block rotate"
+                                <svg class="hidden h-4 w-4 md:inline-block rotate"
                                     viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" version="1.1">
                                     <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 93,62 C 83,82 65,96 48,96 32,96 19,89 15,79 L 5,90 5,53 40,53 29,63 c 0,0 5,14 26,14 16,0 38,-15 38,-15 z"/>
                                     <path style="fill:#6597BB;stroke:#041E31;stroke-width:3;" d="M 5,38 C 11,18 32,4 49,4 65,4 78,11 85,21 L 95,10 95,47 57,47 68,37 C 68,37 63,23 42,23 26,23 5,38 5,38 z"/>
@@ -139,90 +228,6 @@
         </div>
 
         <ul class="pt-1 mt-1 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-700 relative"></ul>
-
-        <!-- Modal -->
-        <div
-            data-twe-modal-init
-            class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
-            id="exampleModal"
-            data-twe-backdrop="static"
-            data-twe-keyboard="false"
-            tabindex="-1"
-            aria-labelledby="exampleModalLabel"
-            aria-hidden="true"
-            onclick="modelCopyConsumables()"
-        >
-            <div data-twe-modal-dialog-ref class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px]">
-                <div class="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-clip-padding text-current shadow-4 outline-none bg-gray-100 dark:bg-[#202020]">
-                    <div class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 p-4 dark:border-white/10">
-                        <h5 class="text-xl font-medium leading-normal text-surface dark:text-white" id="exampleModalLabel">
-                            รหัสที่ต้องการ
-                        </h5>
-                        <!-- Close button -->
-                        <button
-                            type="button"
-                            class="box-content rounded-none border-none text-neutral-500 hover:text-neutral-800 hover:no-underline focus:text-neutral-800 focus:opacity-100 focus:shadow-none focus:outline-none dark:text-neutral-400 dark:hover:text-neutral-300 dark:focus:text-neutral-300"
-                            data-twe-modal-dismiss
-                            aria-label="Close"
-                        >
-                            <span class="[&>svg]:h-6 [&>svg]:w-6">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="2"
-                                    stroke="currentColor">
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    />
-                                </svg>
-                            </span>
-                        </button>
-                    </div>
-                    <form id="form_cop" action="{{ route('new_product_develop.export_excel_account') }}" method="POST">
-                        @csrf
-                        <div class="p-8 lg:col-span-4 text-gray-900 dark:text-gray-100">
-                            <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
-                                <div class="md:col-span-3" >
-                                    <label for="countries" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">รหัสเริ่มต้น</label>
-                                    <select class="js-example-basic-single w-full rounded-sm text-xs text-center" id="start_product" name="start_product">
-                                        <option class="" value=""> --- กรุณาเลือก ---</option>
-                                        @foreach ($getSelect2ProDevelops as $product)
-                                            <option value="{{ $product }}">{{ $product }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="md:col-span-3" style="position: relative;">
-                                    <label for="NUMBER" class="mt-1 mb- text-sm font-medium text-gray-900 dark:text-white">รหัสสิ้นสุด</span></label>
-                                    <select class="js-example-basic-single w-full rounded-sm text-xs" id="end_product" name="end_product">
-                                        <option value=""> --- กรุณาเลือก ---</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-2 ">
-                            <ul class="space-y-2 font-large border-t-2 border-[#E5E5E5] dark:border-[#373737]"></ul>
-                        </div>
-                        <div class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md p-2">
-                            <button data-twe-modal-dismiss id="submitButton" type="submit" class="text-white bg-[#303030] hover:bg-[#404040] font-bold py-1.5 px-4 rounded cursor-not-allowed opacity-50 group" disabled>
-                                <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-cloud-arrow-down-fill hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                                    <path d="M8 2a5.53 5.53 0 0 0-3.594 1.342c-.766.66-1.321 1.52-1.464 2.383C1.266 6.095 0 7.555 0 9.318 0 11.366 1.708 13 3.781 13h8.906C14.502 13 16 11.57 16 9.773c0-1.636-1.242-2.969-2.834-3.194C12.923 3.999 10.69 2 8 2zm2.354 6.854-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5a.5.5 0 0 1 1 0v3.793l1.146-1.147a.5.5 0 0 1 .708.708z"/>
-                                </svg>
-                                Download
-                            </button>
-                        </div>
-                    </form>
-                    <div id="loader_create_menu" class="loading_create_menu absolute hidden bg-[#e4e4e4e3] dark:bg-[#2a2a2afa] z-auto">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 animate-spin dark:text-white">
-                            <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
-                            <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
-                        </svg>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- <div class="flex xs:right-12 sm:right-12 md:right-14 lg:right-14 xl:right-14 z-10 absolute mt-3">   
             <a
@@ -250,35 +255,154 @@
             </a>
         </div> -->
         
-        <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4">
-            <div id="containerexample" class="text-gray-900 dark:text-gray-100">
-                <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
-                    <thead>
-                        <tr>
-                            <!-- <th>ID</th> -->
-                            <th>Action</th>
-                            <th>Brand Product</th>
-                            <th>รหัสสินค้า</th>
-                            <!-- <th>ภาษีน้ำหอม</th>
-                            <th>ต้นทุน + ภาษีน้ำหอม</th>
-                            <th>ต้นทุน+5%</th>
-                            <th>ต้นทุน+10%</th>
-                            <th>ต้นทุน+อื่นๆ</th> -->
-                            <!-- <th>ชื่อสินค้าภาษาไทย</th></th> -->
-                            <th>ชื่อย่อภาษาอังกฤษ</th>
-                            <th>สถานะตั้งราคา</th>
-                            <th>ราคาขายบัญชี TP</th>
-                            <th>ประเภทสินค้า</th>
-                            <th>ประเภทสินค้า[บัญชี]</th>
-                            <!-- <th>ราคาขาย KM + 20%</th>
-                            <th>ราคาขาย KM+อื่นๆ</th> -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+        <!-- <div class="flex right-48 m-3 z-10 absolute">
+            <div class="view-toggle flex items-center space-x-2">
+                <button id="btn-grid" class="toggle-btn flex items-center space-x-1 px-3 py-1">
+                    <span class="text-sm">รายการทั้งหมด</span>
+                </button>
+
             </div>
         </div>
+        <div class="flex right-48 m-3 z-10 absolute">
+            <div class="view-toggle flex items-center space-x-2">
+                <button id="btn-grid" class="toggle-btn flex items-center space-x-1 px-3 py-1">
+                    <span class="text-sm">ตั้งราคาแล้ว</span>
+                </button>
+
+            </div>
+        </div>
+        <div class="flex right-48 m-3 z-10 absolute">
+            <div class="view-toggle flex items-center space-x-2">
+                <button id="btn-grid" class="toggle-btn flex items-center space-x-1 px-3 py-1">
+                    <span class="text-sm">รอดำเนินาร</span>
+                </button>
+
+            </div>
+        </div>
+
+        <div class="flex right-2 m-3 z-10 absolute">
+            <div class="view-toggle flex items-center space-x-2">
+                <button id="btn-list" class="toggle-btn active">
+                    📋 ตาราง
+                </button>
+                <button id="btn-grid" class="toggle-btn flex items-center space-x-1 px-3 py-1">
+                    <span class="text-sm">☰ รายการแจ้งเตือน</span>
+                    <span id="account-badge-top"
+                        class="absolute -top-3 -right-1 inline-flex items-center justify-center 
+                            rounded-full bg-red-600 text-white text-[10px] 
+                            min-w-[18px] h-[18px] px-1 shadow-md">
+                    </span>
+                </button>
+            </div>
+        </div> -->
+
+        <div class="buttons-wrapper relative">
+            <div class="buttons-panel absolute inset-x-0 top-4 z-20 flex items-center justify-between space-x-2">
+                <!-- ซ้าย: 3 ปุ่ม filter -->
+                <div class="flex items-center space-x-2">
+                    <!-- <button class="toggle-btn px-3 py-1">รายการทั้งหมด</button> -->
+                </div>
+
+                <!-- ขวา: ปุ่มสลับ table (ต้องอยู่คู่กัน) -->
+                <div class="flex items-center space-x-2">
+
+                    <a
+                        onclick="fetchAllProducts()"
+                        type="button"
+                        data-twe-toggle="modal"
+                        data-twe-target="#exampleModalExcel"
+                        data-twe-ripple-init
+                        data-twe-ripple-color="light"
+                        class="xs:mt-0 sm:mt-0 md:mt-0 lg:mt-0 xl:mt-0 px-1.5 py-1 text-sm font-bold tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded cursor-pointer group" name="" id=""
+                    >
+                        <svg fill="currentColor" class="-mt-1 bi bi-file-earmark-excel-fill hidden h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-30 rtl:group-hover:-translate-x-1 md:inline-block" viewBox="0 0 16 16">
+                            <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M5.884 6.68 8 9.219l2.116-2.54a.5.5 0 1 1 .768.641L8.651 10l2.233 2.68a.5.5 0 0 1-.768.64L8 10.781l-2.116 2.54a.5.5 0 0 1-.768-.641L7.349 10 5.116 7.32a.5.5 0 1 1 .768-.64"/>
+                        </svg>
+                            Export Excel
+                    </a>
+
+                    <button id="btn-list"
+                            class="toggle-btn active px-3 py-1 text-sm">
+                        📋 ตาราง
+                    </button>
+                    <!-- <button class="toggle-btn px-3 py-1 text-sm">📌 สินค้าใหม่</button>
+                    <button class="toggle-btn px-3 py-1 text-sm">✅ ตั้งราคาแล้ว</button>
+                    <button class="toggle-btn px-3 py-1 text-sm">⌛ รอดำเนินการ</button> -->
+
+                    <div class="relative">
+                        <button id="btn-grid" class="toggle-btn flex items-center space-x-1 px-3 py-1"> <!-- <span class="text-sm">☰ รายการแจ้งเตือน</span> -->
+                            <span class="text-sm">📋 รายการแจ้งเตือน</span>
+                            <span id="account-badge-top" class="absolute -top-3 -right-1 inline-flex items-center justify-center
+                                        rounded-full bg-red-600 text-white text-[10px]
+                                        min-w-[18px] h-[18px] px-1 shadow-md">
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div id="list-view" class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4"> -->
+
+        <div id="account-wrapper" class="relative">
+            <div id="list-view" class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 relative">
+                <div id="containerexample" class="text-gray-900 dark:text-gray-100">
+                    <table id="example" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
+                        <thead>
+                            <tr>
+                                <!-- <th>ID</th> -->
+                                <th>Action</th>
+                                <th>Brand Product</th>
+                                <th>รหัสสินค้า</th>
+                                <!-- <th>ภาษีน้ำหอม</th>
+                                <th>ต้นทุน + ภาษีน้ำหอม</th>
+                                <th>ต้นทุน+5%</th>
+                                <th>ต้นทุน+10%</th>
+                                <th>ต้นทุน+อื่นๆ</th> -->
+                                <!-- <th>ชื่อสินค้าภาษาไทย</th></th> -->
+                                <th>ชื่อย่อภาษาอังกฤษ</th>
+                                <th>สถานะตั้งราคา</th>
+                                <th>ราคาขายบัญชี TP</th>
+                                <th>ประเภทสินค้า</th>
+                                <th>ประเภทสินค้า[บัญชี]</th>
+                                <!-- <th>ราคาขาย KM + 20%</th>
+                                <th>ราคาขาย KM+อื่นๆ</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="grid-view" class="view-section bg-white rounded shadow-lg dark:bg-[#232323] duration-500" style="display:none;">
+                <div id="containerexample" class="text-gray-900 dark:text-gray-100">
+                    <table id="tableAccountNoti" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Brand Product</th>
+                                <th>รหัสสินค้า</th>
+                                <!-- <th>ชื่อย่อภาษาอังกฤษ</th>
+                                <th>สถานะตั้งราคา</th>
+                                <th>ราคาขายบัญชี TP</th>
+                                <th>ประเภทสินค้า</th>
+                                <th>ประเภทสินค้า[บัญชี]</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="loader" class="loading absolute hidden bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-12 h-12 animate-spin dark:text-white">
+                    <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
+                    <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
+                </svg>
+            </div>
+        </div>
+
+
     </div>
 
     <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
@@ -321,6 +445,73 @@
     @endif
     <script>
 
+        function brandBadge(brand){
+        // map สีตาม brand (แก้ตามต้องการ)
+        const map = {
+            BB:  'border-black/20 bg-black/15',
+            // CPS: 'border-[#ffc107]/30 bg-[#ffc107]/15',
+            CPS: 'border-[#6f42c1]/30 bg-[#6f42c1]/15',
+            FR:  'border-[#0d6efd]/30 bg-[#0d6efd]/15',
+            GNC: 'border-[#dc3545]/30 bg-[#dc3545]/15',
+            KM:  'border-[rgba(108,117,125,0.4)] bg-[rgba(108,117,125,0.4)]',
+            OP:  'border-[#198754]/30 bg-[#198754]/15',
+            KTY: 'border-[#8b5a2b]/30 bg-[#8b5a2b]/15',  // น้ำตาล
+            LL:  'border-[#fd7e14]/30 bg-[#fd7e14]/15'   // ส้ม
+        };
+        const cls = map[brand] || 'border bg-black/15 border-white/20';
+
+        return `
+            <span class="inline-flex items-center  min-w-[220px] rounded-2xl border px-2 py-0 text-xs font-semibold text-slate-950 dark:text-white ${cls}">
+            ${brand}
+            </span>
+        `;
+        }
+
+        function statusBadge(label, key){
+            // key อาจเป็น "1","2","3" หรือ int
+            const k = String(key || '').trim();
+
+            const map = {
+                "1": "border-[#0d6efd]/30 bg-[#0d6efd]/15",   // สินค้าใหม่
+                "2": "border-[#ffc107]/30 bg-[#ffc107]/15",   // รอดำเนินการตั้งราคา
+                "3": "border-emerald-400/30 bg-emerald-400/15"// ตั้งราคาแล้ว
+            };
+
+            const icon = {
+                "1": "📌",
+                "2": "⌛",
+                "3": `<svg viewBox="0 0 24 24" class="h-4 w-4 text-white/95" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"> 
+                        <path d="M20 6L9 17l-5-5" /> 
+                    </svg>`
+            };
+
+            const cls = map[k] || "border-white/20 bg-black/15";
+            const ic  = icon[k] || "•";
+
+            return `
+                <span class="inline-flex min-w-[220px] items-center justify-start gap-1 whitespace-nowrap
+                            rounded-full border px-2 py-0 text-xs font-semibold text-slate-950 dark:text-white ${cls}">
+                ${ic} ${label}
+                </span>
+            `;
+        }
+
+        $(function() {
+            $('#btn-list').click(function() {
+                $('#grid-view').hide();
+                $('#list-view').show();
+                $('.toggle-btn').removeClass('active');
+                $(this).addClass('active');
+            });
+
+            $('#btn-grid').click(function() {
+                $('#list-view').hide();
+                $('#grid-view').show();
+                $('.toggle-btn').removeClass('active');
+                $(this).addClass('active');
+            });
+        });
+
         getParmeterLogin()
         function getParmeterLogin() {
             let dataLogin = sessionStorage.getItem("credetail");
@@ -330,48 +521,46 @@
 
         $(document).ready(function() {
             $('.js-example-basic-single').select2();
-            $('#start_product').select2();
-            $('#end_product').select2();
 
             // กำหนด event เมื่อกดปุ่ม "ล้างข้อมูล"
             $('button[type="reset"]').click(function() {
                 $('#brand_id').val(null).trigger('change'); // Clear ค่า select2
+                $('#statusSearch').val(null).trigger('change'); // Clear ค่า select2
                 $('#search').val('').trigger('keyup'); // เคลียร์ค่า input ค้นหา
             });
-        });
 
-        $('#start_product').on('change', function () {
-            const selectedId = $(this).val();
-            if (!selectedId) {
-                $('#end_product').html('<option value="">--- กรุณาเลือก ---</option>');
-                jQuery("#submitButton").addClass('cursor-not-allowed opacity-50');
-                return;
-            }
-            $.ajax({
-                url: "{{ route('new_product_develop.pro_develops_get_select2') }}",
-                type: "GET",
-                data: {
-                    id: selectedId, 
-                },
-                success: function (response) {
-                    // console.log("🚀 ~ response:", response)
-                    $('#end_product').html('<option value="">--- กรุณาเลือก ---</option>');
-                    jQuery("#submitButton").removeClass('cursor-not-allowed opacity-50');
-                    jQuery("#submitButton").attr("disabled", false);
-                    response.forEach(function (item) {
-                        $('#end_product').append(`<option value="${item}">${item}</option>`);
-                    });
-                },
-                error: function (error) {
-                    console.log(error);
-                    alert('เกิดข้อผิดพลาด ไม่สามารถโหลดข้อมูลได้');
-                },
+            $('#brand_id').select2({
+            width: '100%',
+            templateResult: function (state) {
+                if (!state.id) return state.text; // placeholder
+                return $(brandBadge(state.text));
+            },
+            templateSelection: function (state) {
+                if (!state.id) return state.text;
+                return $(brandBadge(state.text));
+            },
+            escapeMarkup: function (m) { return m; } // สำคัญ: ให้ render HTML ได้
             });
+
+            $('#statusSearch').select2({
+                width: '100%',
+                templateResult: function (state) {
+                if (!state.id) return state.text; // placeholder
+                return $(statusBadge(state.text, state.id));
+                },
+                templateSelection: function (state) {
+                if (!state.id) return state.text;
+                return $(statusBadge(state.text, state.id));
+                },
+                escapeMarkup: function (m) { return m; }
+            });
+
         });
 
         const mytableDatatable = $('#example').DataTable({
             'searching': false,
             "serverSide": true,
+            // processing: true,
             searching: false,
             scrollX: true,
             orderCellsTop: true,
@@ -393,8 +582,18 @@
                     // Read values
                     data.brand_id = $('#brand_id').val();
                     data.search = $('#search').val();
+                    data.statusSearch = $('#statusSearch').val();
 
                     data._token = $('meta[name="csrf-token"]').attr('content');
+                },
+                // 🔥 ใช้ custom loader
+                beforeSend: function() {
+                    $("#loader").removeClass("hidden").fadeIn(100);
+                },
+                complete: function() {
+                    $("#loader").fadeOut(200, function() {
+                        $(this).addClass("hidden");
+                    });
                 }
             },
             orderable: true,
@@ -462,25 +661,56 @@
                     }
                 },
                 {
-                    targets: 4,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        let scheduleStatus = '';
-                            if(row.status == 1) {
-                                scheduleStatus = `
-                                📌 สินค้าใหม่
-                                `;
-                            } else if (row.status == 2) {
-                                scheduleStatus = `
-                                🔁 รอดำเนินการตั้งราคา
-                                 `;
-                            } else if (row.status == 3) {
-                                scheduleStatus = `
-                                ✅ ตั้งราคาแล้ว
-                                 `;
-                            }
-                        return scheduleStatus != "" ? scheduleStatus : "-";
+                targets: 4,
+                orderable: true,
+                render: function (data, type, row) {
+
+                    // sort / filter ใช้ข้อความล้วน
+                    if (type === 'sort' || type === 'filter') {
+                    if (row.status == 1) return 'สินค้าใหม่';
+                    if (row.status == 2) return 'รอดำเนินการตั้งราคา';
+                    if (row.status == 3) return 'ตั้งราคาแล้ว';
+                    return '';
                     }
+
+                    // display
+                    if (row.status == 1) {
+                    return `
+                                <span class="inline-flex min-w-[150px] items-center justify-start gap-1 whitespace-nowrap
+                                        rounded-full border border-[#0d6efd]/30 bg-[#0d6efd]/15
+                                        px-2 py-0.5 text-xs font-semibold text-slate-950 dark:text-white">
+                                📌 สินค้าใหม่
+                                </span>
+                            `;
+                    }
+
+                    if (row.status == 2) {
+                    return `
+                                <span class="inline-flex min-w-[150px] items-center justify-start gap-1 whitespace-nowrap
+                                    rounded-full border border-[#ffc107]/30 bg-[#ffc107]/15
+                                    px-2 py-0.5 text-xs font-semibold text-slate-950 dark:text-white">
+                                ⌛ รอดำเนินการตั้งราคา
+                                </span>
+                            `;
+                    }
+
+                    if (row.status == 3) {
+                    return `
+                                <span class="inline-flex min-w-[150px] items-center justify-start gap-1 whitespace-nowrap
+                                    rounded-full border border-emerald-400/30 bg-emerald-400/15
+                                    px-2 py-0.5 text-xs font-semibold text-slate-950 dark:text-white">
+                                <svg viewBox="0 0 24 24" class="h-4 w-4 text-white/95"
+                                    fill="none" stroke="currentColor" stroke-width="3"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 6L9 17l-5-5" />
+                                </svg>
+                                    ตั้งราคาแล้ว
+                                </span>
+                            `;
+                    }
+
+                    return '-';
+                }
                 },
                 // {
                 //     targets: 3,
@@ -522,13 +752,239 @@
         // Function สำหรับเรียกใช้ DataTable เมื่อมีการพิมพ์
         function searchTable() {
             console.log("Search: ", $('#search').val());
+            $("#loader").removeClass("hidden").fadeIn(100);
             // บังคับให้ DataTables รีโหลดข้อมูลใหม่
             mytableDatatable.ajax.reload(null, false); 
         }
 
         function brandSearch() {
+            $("#loader").removeClass("hidden").fadeIn(100);
             mytableDatatable.draw();
         }
+
+        function showLoader() {
+            $("#loader").removeClass("hidden").fadeIn(100);
+        }
+
+        function hideLoader() {
+            $("#loader").fadeOut(200, function () {
+                $(this).addClass("hidden");
+            });
+        }
+
+        $('#btn-grid').on('click', function () {
+            showLoader();
+            $('#grid-view').show();
+            $('#list-view').hide();
+
+            tableAccountNoti.ajax.reload(null, false);
+            // ไม่ต้อง hideLoader ตรงนี้ เพราะ complete ของ ajax จะจัดการให้แล้ว
+        });
+
+        // ① helper อ่าน noti products จาก localStorage
+        function getNotiProductsFromStorage() {
+            try {
+                const raw = localStorage.getItem('account_noti_products');
+                if (!raw) return [];
+                const parsed = JSON.parse(raw);
+                return Array.isArray(parsed) ? parsed.map(v => String(v)) : [];
+            } catch (e) {
+                console.warn('[AccountNoti] getNotiProductsFromStorage error', e);
+                return [];
+            }
+        }
+
+        let accountNotiProducts = getNotiProductsFromStorage();
+        console.log('[AccountNoti] init list from storage =', accountNotiProducts);
+
+        let tableAccountNoti = null;
+
+        $(function () {
+            if (!$.fn.DataTable.isDataTable('#tableAccountNoti')) {
+                tableAccountNoti = $('#tableAccountNoti').DataTable({
+                    // processing: true,
+                    serverSide: true,
+                    searching: false,
+                    scrollX: true,
+                    deferRender: true,
+                    scroller: true,
+                    scrollY: "580px",
+                    order: [[1, "desc"]],
+                    lengthMenu: [[20, 50, 100, -1], [20, 50, 100, "All"]],
+                    pageLength: 20,
+                    ajax: {
+                        url: "{{ route('account.list_ajax_account_noti') }}",
+                        type: "POST",
+                        data: function (d) {
+                            d._token   = "{{ csrf_token() }}";
+                            // ✅ อ่านค่าจาก localStorage สด ๆ ทุกครั้ง
+                            d.account_badge_count = Number(
+                                localStorage.getItem('account_badge_count') || '0'
+                            );
+                            // ✅ ส่ง list รหัสสินค้าไปให้ controller ด้วย
+                            d.account_noti_products = localStorage.getItem('account_noti_products') || '[]';
+                            // (ส่งเป็น string json ไป เดี๋ยวไป decode ที่ controller)
+                        },
+                        beforeSend: function () { 
+                            showLoader(); 
+                            
+                        },
+                        complete: function () { 
+                            hideLoader(); 
+                            
+                        }
+                    },
+                    columnDefs: [
+                        {
+                            targets: 0,
+                            orderable: true,
+                            className: 'text-center',
+                            render: function (data, type, row) {
+                                // ดึง list ล่าสุดจาก localStorage ทุกครั้งที่ render
+                                const productCode = String(row.PRODUCT || '');
+                                const isNew      = productCode && accountNotiProducts.includes(productCode);
+
+                                // console.log('[AccountNoti] row PRODUCT =', productCode, {
+                                //     accountNotiProducts,
+                                //     isNew,
+                                // });
+
+                                const scheduleBadge = isNew
+                                    ? `<span class="ml-1 inline-flex items-center justify-center rounded-full 
+                                            bg-red-600 text-white text-[9px] min-w-[16px] h-[16px] px-1">
+                                        !
+                                    </span>`
+                                    : '';
+                                // ปุ่ม Show เดิม
+                                let showButton = `<a href="{{ route('account.show', 0) }}"
+                                    type="button"
+                                    class="px-1 py-0.5 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white mr-0.5 rounded group">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" fill="currentColor"
+                                        class="mb-0.5 hidden h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                        <path d="M110.4 923.2c-56.8 0-102.4-48-102.4-106.4V285.6c0-58.4 45.6-106.4 102.4-106.4h800.8c56.8 0 102.4 48 102.4 106.4V816c0 58.4-45.6 106.4-102.4 106.4H110.4z m0-701.6c-34.4 0-61.6 28.8-61.6 64V816c0 35.2 28 64 61.6 64h800.8c34.4 0 61.6-28.8 61.6-64V285.6c0-35.2-28-64-61.6-64H110.4z" />
+                                        <path d="M541.6 392c-12.8 0-23.2-10.4-23.2-24s10.4-24 23.2-24h328c12.8 0 23.2 10.4 23.2 24s-10.4 24-23.2 24h-328zM541.6 511.2c-12.8 0-23.2-10.4-23.2-24s10.4-24 23.2-24h328c12.8 0 23.2 10.4 23.2 24s-10.4 24-23.2 24h-328zM541.6 638.4c-12.8 0-23.2-10.4-23.2-24s10.4-24 23.2-24h276.8c12.8 0 23.2 10.4 23.2 24s-10.4 24-23.2 24H541.6zM58.4 886.4c-2.4 0-4.8 0-7.2-0.8-12.8-4-20-18.4-16-32 23.2-78.4 77.6-142.4 148-176l16-8-13.6-12c-40-34.4-63.2-85.6-63.2-139.2 0-100 78.4-180.8 173.6-180.8 96 0 173.6 80.8 173.6 180.8 0 53.6-23.2 104.8-63.2 139.2l-13.6 12 16 8c68 32 132.8 112 157.6 194.4 16 52.8-16.8 36-1.6 16-3.2 4.8-16.8-5.6-32-5.6-12.8 0-19.2 24.8-19.2 22.4-31.2-104-120.8-203.2-217.6-203.2-99.2 0-186.4 67.2-216 166.4-1.6 11.2-11.2 18.4-21.6 18.4z m239.2-498.4c-69.6 0-126.4 58.4-126.4 130.4s56.8 130.4 126.4 130.4c69.6 0 126.4-58.4 126.4-130.4-0.8-72-56.8-130.4-126.4-130.4z" />
+                                    </svg>
+                                    Show
+                                </a>`;
+
+                                let scheduleButton = `
+                                <div ${row.price < 2 ? 'title="กรุณาใส่ราคา Brand" class="cursor-not-allowed"' : ''}>
+                                    <a href="{{ route('account.edit', 0) }}"
+                                        type="button"
+                                        ${row.price < 2
+                                            ? 'class="opacity-50 pointer-events-none px-1 py-0.5 font-medium tracking-wide bg-[#303030] text-white rounded group"'
+                                            : 'class="px-1 py-0.5 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group"'}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                            class="mb-0.5 hidden h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                                            <path fill-rule="evenodd"
+                                                d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        Schedule
+                                        ${scheduleBadge}
+                                    </a>
+                                </div>`;
+
+                                return `<div class="inline-flex items-center rounded-md shadow-sm">
+                                    ${showButton}
+                                    ${scheduleButton}
+                                </div>`.replaceAll('/0', '/' + productCode);
+                            }
+                        },
+                        { 
+                            targets: 1, 
+                            className: 'text-center', 
+                            render: (data, type, row) => 
+                            row.BRAND 
+                        },
+                        { 
+                            targets: 2,
+                            className: 'text-center', 
+                            render: (data, type, row) => 
+                            row.PRODUCT 
+                        },
+                        // { targets: 3, render: (data, type, row) => row.SHORT_ENG },
+                        // {
+                        //     targets: 4,
+                        //     render: (data, type, row) => {
+                        //         if (row.status == 1) return '📌 สินค้าใหม่';
+                        //         if (row.status == 2) return '🔁 รอดำเนินการตั้งราคา';
+                        //         if (row.status == 3) return '✅ ตั้งราคาแล้ว';
+                        //         return '-';
+                        //     }
+                        // },
+                        // {
+                        //     targets: 5,
+                        //     render: (data, type, row) =>
+                        //         new Intl.NumberFormat('en-US', {
+                        //             minimumFractionDigits: 2,
+                        //             maximumFractionDigits: 2
+                        //         }).format(row.price)
+                        // },
+                        // { targets: 6, render: (data, type, row) => row.DESCRIPTION },
+                    ]
+                });
+            } else {
+                tableAccountNoti.columns.adjust().draw(false);
+            }
+        });
+
+        // ให้ realtime เรียก
+        window.refreshAccountTable = function () {
+            accountNotiProducts = getNotiProductsFromStorage();
+            console.log('[AccountNoti] refreshAccountTable →', accountNotiProducts);
+
+            if (tableAccountNoti) {
+                showLoader();
+                tableAccountNoti.ajax.reload(null, false);
+                // complete ของ ajax จะ hideLoader ให้เอง
+            }
+        };
+
+        function fetchAllProducts() {
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            Swal.fire({
+                text: 'Coming Soon',
+                title: '🚧',
+                width: 650,
+                icon: 'warning',
+                showConfirmButton: false,
+                showCancelButton: true,
+                cancelButtonColor: '#e13636',
+                cancelButtonText: `
+                    Cancel
+                `,
+                color: "#ffffff",
+                background: "#202020",
+
+            }).then(result => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        method: "POST",
+                        data: $("#create_NPDRequest").serialize(),
+                        beforeSend: function () {
+                            $('#loader').removeClass('hidden')
+                        },
+                        success: function(res){
+                            return false;
+                        },
+                        error: function (params) {
+                            setTimeout(function() {
+                                errorMessage("เพิ่มขู้อมูลไม่สำเร็จ!");
+                            },dlayMessage)
+                            setTimeout(function() {
+                                toastr.error("เพิ่มขู้อมูลไม่สำเร็จ!");
+                            },dlayMessage)
+                        }
+                    });
+                }
+            });
+        }
+
 
         // function disableAppointment(url,e,id) {
         //     const mytableDatatable = $('#example').DataTable();

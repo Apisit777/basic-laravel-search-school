@@ -29,13 +29,14 @@ $menuPpermissions = ManageMenuController::menus_data();
 {{-- <aside id="logo-sidebar" class="sidebar fixed top-12 left-0 z-40 w-64 h-screen -translate-x-full border-r border-gray-200 md:translate-x-0 dark:border-gray-700 transition-all duration-500" aria-label="Sidebar"> --}}
 <aside id="logo-sidebar" class="sidebar fixed top-12 left-0 z-40 w-64 h-screen -translate-x-full border-r border-gray-200 md:translate-x-0 dark:border-gray-700 transition-all duration-500 animate-fade-in-left"
     aria-label="Sidebar">
-    <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-[#202020] duration-500 mt">
+    <div class="h-full px-1 pb-4 overflow-y-auto bg-white dark:bg-[#202020] duration-500 mt">
         @if (!empty($routeName))
             @foreach($routeName as $menu)
                 <!-- <ul class="space-y-2 font-small"> -->
                 <ul class="space-y-2 text-sm font-medium">
                     @if (!empty($menu['getPermissionSubmenus'][0]))
-                        <li class="relative w-[232px] overflow-hidden group mt-2">
+                        <!-- <li class="relative w-[232px] overflow-hidden group mt-2"> -->
+                        <li class="relative w-[246px] overflow-hidden group mt-2">
                             <input type="checkbox" class="peer absolute top-0 inset-x-0 w-full h-10 opacity-0 z-10 cursor-pointer"  {{ Request::is($menu['url'].'*') ? 'checked duration-500': '' }}>
 
                             @if ($menu['menu_name'] == 'Manage Menu' || $menu['menu_name'] == 'Product Master' || $menu['menu_name'] == 'Product Detail')
@@ -63,7 +64,7 @@ $menuPpermissions = ManageMenuController::menus_data();
                                 </div>
                             @endif
 
-                            <div class="absolute top-2 right-2 transition-tranform duration-500 rotate-0 peer-checked:rotate-180">
+                            <div class="absolute top-2 right-0 transition-tranform duration-500 rotate-0 peer-checked:rotate-180">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 dark:text-white {{ Request::is($menu['url'].'*') ? 'rounded-sm text-white': 'duration-500' }}" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
                                 </svg>
@@ -106,6 +107,28 @@ $menuPpermissions = ManageMenuController::menus_data();
                                     <h1 class="flex-1 ms-3 whitespace-nowrap text-md text-black dark:text-white {{ Request::is($menu['url'].'*') ? 'rounded-sm text-white': 'duration-500' }}">
                                         {{$menu['menu_name']}}
                                     </h1>
+
+                                    {{-- ⭐⭐ Badge เฉพาะเมนู Account --}}
+                                    @if($menu['menu_name'] === 'Account')
+                                        @php $count = $menu['badge'] ?? 0; @endphp
+                                        <span
+                                            id="account-badge"
+                                            data-count="{{ $count }}"
+                                            class="ml-2 inline-flex items-center justify-center rounded-full bg-red-600 text-white text-[10px] min-w-[18px] h-[18px] px-1 {{ $count > 0 ? '' : 'hidden' }}">
+                                            {{ $count > 99 ? '99+' : $count }}
+                                        </span>
+                                    @endif
+
+                                    <!-- @if($menu['menu_name'] === 'Account')
+                                        @php $count = 5; @endphp  
+                                        <span
+                                            id="account-badge"
+                                            data-count="{{ $count }}"
+                                            class="ml-2 inline-flex items-center justify-center rounded-full bg-red-600 text-white text-[10px] min-w-[18px] h-[18px] px-1">
+                                            {{ $count > 99 ? '99+' : $count }}
+                                        </span>
+                                    @endif -->
+
                                 </a>
                             </li>
                         @endif

@@ -34,6 +34,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use stdClass;
+use App\Events\AccountApprovalRequested;
+
 class ProductFormController extends Controller
 {
     /**
@@ -549,6 +551,40 @@ class ProductFormController extends Controller
 
     public function indexAccount()
     {
+
+    //     $data = ProductPriceSchedule::select(
+    //         // 'accounts.cost AS cost_old',
+    //         // 'product_price_schedules.id AS id',
+    //         'product_id',
+    //         'price',
+    //         'price_old',
+    //         'active_date',
+    //         'status',
+    //         'status_edit_dt',
+    //         // 'cost',
+    //         // 'perfume_tax',  
+    //         // 'cost_perfume_tax', 
+    //         // 'cost5percent',
+    //         // 'cost10percent',
+    //         // 'cost_other',
+    //         // 'sale_km',
+    //         // 'sale_km20percent',
+    //         // 'sale_km_other',
+    //         // 'note',
+    //         // 'status_edit_dt'
+    //     )
+    //     // ->join('accounts', 'accounts.product', '=', 'product_price_schedules.product_id')
+    //     // ->where('product_price_schedules.product_id', $request->product_id)
+    //     ->where('product_price_schedules.product_id', '28415')
+    // ->where(function ($q) {
+    //     $q->whereNull('product_price_schedules.status_edit_dt')
+    //       ->orWhere('product_price_schedules.status_edit_dt', '')
+    //       ->orWhere('product_price_schedules.status_edit_dt', '0000-00-00'); // เผื่อกรณีนี้
+    // })
+    // ->get();
+
+    // dd($data);
+
         $brands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
 
         $data = Pro_develops::select(
@@ -623,6 +659,7 @@ class ProductFormController extends Controller
 
         $data = ProductPrice::select(
             'product_prices.product_id AS product',
+            'product_prices.price AS price',
             'product_prices.cost AS cost',
             // 'sale_tp',
             // 'cost_km',
@@ -718,6 +755,7 @@ class ProductFormController extends Controller
             // 'id',
             'product_prices.product_id AS product',
             'product_prices.cost AS cost_old',
+            'product_prices.status AS status',
             // 'sale_tp',
             // 'price_start_date',
             'product1s.BRAND AS BRAND',
@@ -766,24 +804,42 @@ class ProductFormController extends Controller
         DB::beginTransaction();
         try {
             // dd($request);
-            $data_product_account_upddate = [
-                'price' => $request->price,
-                'active_date' => $request->active_date,
 
-                // 'NAME_THAI' => $request->NAME_THAI,
-                // 'SHORT_THAI' => $request->SHORT_THAI,
-                // 'NAME_ENG' => $request->NAME_ENG,
-                // 'SHORT_ENG' => $request->SHORT_ENG,
-                // 'TYPE_G' => $request->TYPE_G,
-                // 'ACC_TYPE' => $request->ACC_TYPE,
+            $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
+            $userpermission = Auth::user()->getUserPermission->name_position;
+            $namePosition  = explode('-', $userpermission);
+            $userpermission = trim(end($namePosition));
+
+            $data_product_account_upddate = [
+
+                // 'price' => $request->price,
+                // 'active_date' => $request->active_date,
+
+                'active_date' => $request->active_date,
+                'price' => $request->price,
+                'cost' => $request->cost,
+                // 'cost_km' => $request->cost_km,
+                'cost5percent' => $request->cost5percent,
+                'cost10percent' => $request->cost10percent,
+                'cost_other' => $request->cost_other,
+                'sale_km' => $request->sale_km,
+                'sale_km20percent' => $request->sale_km20percent,
+                'sale_km_other' => $request->sale_km_other,
+                'perfume_tax' => $request->perfume_tax,
+                // 'PRICE' => $request->active_date,
+                // 'cost_perfume_tax' => $request->active_date,
             ];
 
-            $data_old = ProductPriceSchedule::select(
-                'product_price_schedules.*',
+            $data_old = ProductPrice::select(
+                'product_prices.*',
             )
-            ->firstWhere('product_price_schedules.product_id', '=', $request->Code);
+            ->firstWhere('product_prices.product_id', '=', $request->Code);
 
-            $data_old_arr = $data_old->toArray();
+            $data_old_arr = collect($data_old->toArray())
+                ->except(['id', 'price_old', 'status'])
+                ->toArray();
+
+            // dd($data_old_arr);
 
             if ($request) {
                 $log = [
@@ -796,34 +852,61 @@ class ProductFormController extends Controller
             }
 
             // dd($data_product_account_upddate);
-            $updateAccountSchedule = ProductPriceSchedule::updateOrCreate(['product_id' => $request->product], [
-                'price' => $data_product_account_upddate['price'],
-                // 'price_old',
-
-                'active_date' => $data_product_account_upddate['active_date'],
-                'status' => 0,
-                // 'cost' => $data_product_account_upddate['cost'],
-
-                // 'perfume_tax',
-                // 'cost_perfume_tax',
-                // 'cost5percent',
-                // 'cost10percent',
-                // 'cost_other',
-                // 'sale_km',
-                // 'sale_km20percent',
-                // 'sale_km_other',
-                // 'note',
-                // 'status_edit_dt',
-                // 'note' => $request->note,
-                // 'status_edit_dt' => '',
-                // 'updated_by' => Auth::user()->username,
-                // 'updated_at' => date("Y/m/d H:i:s")
+            $updateProductPrice = ProductPrice::updateOrCreate(['product_id' => $request->Code], [
+                'status' => 2,
+                'status_edit_dt' => '',
+                'updated_by' => Auth::user()->username . '(' . $userpermission . ')',
+                'updated_at' => date("Y/m/d H:i:s")
             ]);
 
-            // dd($updateAccountSchedule);
+            $updateAccountSchedule = ProductPriceSchedule::updateOrCreate(['product_id' => $request->Code], [
+                'price' => $data_product_account_upddate['price'],
+                'active_date' => $data_product_account_upddate['active_date'],
+                'cost' => $data_product_account_upddate['cost'],
+                'status' => 0,
+                // 'cost_km' => $data_product_account_upddate['cost_km'],
+                'cost5percent' =>$data_product_account_upddate['cost5percent'],
+                'cost10percent' => $data_product_account_upddate['cost10percent'],
+                'cost_other' => $data_product_account_upddate['cost_other'],
+                'sale_km' => $data_product_account_upddate['sale_km'],
+                'sale_km20percent' => $data_product_account_upddate['sale_km20percent'],
+                'sale_km_other' => $data_product_account_upddate['sale_km_other'],
+                'perfume_tax' => $data_product_account_upddate['perfume_tax'],
+                'status_edit_dt' => '',
+                'updated_by' => Auth::user()->username . '(' . $userpermission . ')',
+                'updated_at' => date("Y/m/d H:i:s")
+                
+                // 'note',
+            ]);
+
+            $data = Product1::select(
+                'BRAND',
+                'PRODUCT',
+            )
+            ->where('PRODUCT', $request->Code)
+            ->first();
+
+            // dd($data);
             DB::commit();
+            // $request->session()->flash('status', 'อัปเดตข้อมูลสำเร็จ');
+            // return response()->json(['success' => true]);
+
+            // ✅ ยิง Reverb (แบบ broadcast สั้น ๆ) — แนะนำทำเป็น Event class จะสวยกว่า
+
+            // ✅ broadcast reverb event
+            event(new AccountApprovalRequested(
+                (string) $data->BRAND,
+                (string) $updateProductPrice->product_id,
+                (string) Auth::user()->username
+            ));
             $request->session()->flash('status', 'อัปเดตข้อมูลสำเร็จ');
-            return response()->json(['success' => true]);
+
+            return response()->json([
+                'success' => true,
+                'product' => (string) $updateProductPrice->product_id,
+                'status'  => (int) $updateProductPrice->status, // ส่งกลับให้ JS ใช้ render ได้ทันที
+            ]);
+
         } catch (\Exception $e) {
             DB::rollback();
             $request->session()->flash('status', 'อัปเดตข้อมูลไม่สำเร็จ!');
@@ -837,20 +920,20 @@ class ProductFormController extends Controller
         try {
 
             $data_account_old = Account::select(
-            'product',
-            'cost',
-            'sale_tp',
-            'cost_km',
-            'perfume_tax',
-            'cost_perfume_tax',
-            'cost5percent',
-            'cost10percent',
-            'cost_other',
-            'sale_km',
-            'sale_km20percent',
-            'sale_km_other',
-            'price_start_date',
-            'note',
+                'product',
+                'cost',
+                'sale_tp',
+                'cost_km',
+                'perfume_tax',
+                'cost_perfume_tax',
+                'cost5percent',
+                'cost10percent',
+                'cost_other',
+                'sale_km',
+                'sale_km20percent',
+                'sale_km_other',
+                'price_start_date',
+                'note',
             )
             ->firstWhere('product', '=', $request->product);
 
@@ -914,6 +997,7 @@ class ProductFormController extends Controller
 
         $BRAND = $request->input('brand_id');
         $searchAll = $request->input('search', '');
+        $statusSearch = $request->input('statusSearch');
 
         $data = ProductPrice::select(
             'product_prices.product_id as product_id',
@@ -944,6 +1028,9 @@ class ProductFormController extends Controller
         if ($BRAND != null) {
             $data->where('product1s.BRAND', $BRAND);
         }
+        if ($statusSearch != null) {
+            $data->where('product_prices.status', $statusSearch);
+        }
 
         // กรองข้อมูลถ้ามีคำค้นหา
         if (!empty($searchAll)) {
@@ -970,52 +1057,100 @@ class ProductFormController extends Controller
         ]);
     }
 
-    public function listAccountSchedule(Request $request)
+    public function listAjaxAccountNoti(Request $request)
     {
-        $limit = (int) $request->input('length'); // จำนวนต่อหน้า
+        $limit = (int) $request->input('length', 10);
         $start = (int) $request->input('start', 0);
+        $brandFilter = $request->input('brand_id');
 
-        $data = ProductPriceSchedule::select(
-            'accounts.cost AS cost_old',
-            'product_price_schedules.id AS id',
-            'product_id',
-            'price',
-            'price_old',
-            'active_date',
-            'status',
-            // 'cost',
-            // 'perfume_tax',  
-            // 'cost_perfume_tax', 
-            // 'cost5percent',
-            // 'cost10percent',
-            // 'cost_other',
-            // 'sale_km',
-            // 'sale_km20percent',
-            // 'sale_km_other',
-            // 'note',
-            // 'status_edit_dt'
-        )
-        ->join('accounts', 'accounts.product', '=', 'product_price_schedules.product_id') 
-        ->orderBy('id', 'DESC');
+        // 👇 ดึง list code จาก request
+        $codesRaw = $request->input('account_noti_products', '[]');
+        $codes    = [];
 
-        // dd($data);
-        // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`
-        $totalRecords = $data->count();
-        if ($limit > 0) {
-            $data->limit($limit)->offset($start);
+        if (is_string($codesRaw)) {
+            $decoded = json_decode($codesRaw, true);
+            if (is_array($decoded)) {
+                $codes = $decoded;
+            }
+        } elseif (is_array($codesRaw)) {
+            $codes = $codesRaw;
         }
-        $records = $data->get();
 
-        $records = $records->map(function($item){
-            $item->active_date = date('d-m-Y', strtotime($item->active_date));
-            return $item;
-        });
+        // ถ้าไม่มี code เลย → return ว่างให้ DataTable
+        if (empty($codes)) {
+            return response()->json([
+                'draw' => (int) $request->input('draw'),
+                'iTotalRecords' => 0,
+                'iTotalDisplayRecords' => 0,
+                'data' => [],
+            ]);
+        }
+
+        $query = Product1::query();
+
+        if (!empty($brandFilter)) {
+            $query->where('BRAND', $brandFilter);
+        }
+
+        // ✅ ดึงเฉพาะ PRODUCT ที่อยู่ใน list noti
+        $query->whereIn('PRODUCT', $codes);
+
+        // ถ้าอยากจัดลำดับให้เหมือนใน localStorage (ตัวใหม่อยู่บน)
+        // สมมติ PRODUCT เป็นตัวเลขล้วน
+        $orderField = implode(',', array_map('intval', $codes));
+        $query->orderByRaw("FIELD(PRODUCT, {$orderField})");
+
+        $totalRecords = $query->count();
+
+        if ($limit > 0) {
+            $query->skip($start)->take($limit);
+        }
+
+        $records = $query->get();
 
         return response()->json([
-            'draw' => intval($request->draw),
-            'iTotalRecords' => $totalRecords, // จำนวนทั้งหมด (ก่อน limit)
-            'iTotalDisplayRecords' => $totalRecords, // ควรตรงกับ iTotalRecords
-            'aaData' => $records,
+            'draw' => (int) $request->input('draw'),
+            'iTotalRecords' => $totalRecords,
+            'iTotalDisplayRecords' => $totalRecords,
+            'data' => $records,
+        ]);
+    }
+
+    public function listAccountSchedule(Request $request)
+    {
+        $limit = (int) $request->input('length', 20);
+        $start = (int) $request->input('start', 0);
+
+        $query = ProductPriceSchedule::query()
+            ->select('product_id','price','price_old','active_date','status','status_edit_dt')
+            ->where('product_price_schedules.product_id', $request->product_id)
+            ->where(function ($q) {
+                $q->whereNull('product_price_schedules.status_edit_dt')
+                ->orWhere('product_price_schedules.status_edit_dt', '')
+                ->orWhere('product_price_schedules.status_edit_dt', '0000-00-00');
+            });
+
+        $totalRecords = (clone $query)->count();
+
+        $records = (clone $query)
+            ->orderBy('id', 'DESC')
+            ->limit($limit)
+            ->offset($start)
+            ->get()
+            ->map(function($item){
+                if (!empty($item->active_date) && $item->active_date !== '0000-00-00') {
+                    $item->active_date = date('d-m-Y', strtotime($item->active_date));
+                } else {
+                    $item->active_date = '';
+                }
+                return $item;
+            });
+
+        return response()->json([
+            'draw' => (int) $request->input('draw'),
+            'recordsTotal' => $totalRecords,
+            'recordsFiltered' => $totalRecords,
+            'data' => $records,
         ]);
     }
 
@@ -1025,13 +1160,14 @@ class ProductFormController extends Controller
         $start = (int) $request->input('start', 0);
 
         $data = ProductPriceScheduleLog::select(
-            'accounts.cost AS cost_old',
+            // 'accounts.cost AS cost_old',
             'product_price_schedule_logs.id AS id',
-            'product_price_schedules.price AS price_schedule',
+            // 'product_price_schedules.price AS price_schedule',
             'product_price_schedule_logs.product_id AS product_id',
             'product_price_schedule_logs.price AS price_log',
             'product_price_schedule_logs.price_old AS price_old',
             'product_price_schedule_logs.active_date AS active_date',
+            'product_price_schedule_logs.note',
             'product_price_schedule_logs.status',
             'update_dt',
             'user_update',
@@ -1047,8 +1183,8 @@ class ProductFormController extends Controller
             // 'note',
             // 'status_edit_dt'
         )
-        ->join('accounts', 'accounts.product', '=', 'product_price_schedule_logs.product_id') 
-        ->join('product_price_schedules', 'product_price_schedules.product_id', '=', 'product_price_schedule_logs.product_id') 
+        // ->join('accounts', 'accounts.product', '=', 'product_price_schedule_logs.product_id') 
+        // ->join('product_price_schedules', 'product_price_schedules.product_id', '=', 'product_price_schedule_logs.product_id') 
         // ->where('product_price_schedule_logs.active_date', '<', now())
         ->orderBy('product_price_schedule_logs.active_date', 'DESC');
 
@@ -1355,6 +1491,7 @@ class ProductFormController extends Controller
         // dd((int) $request->code);
         DB::beginTransaction();
         try {
+
             $digits_barcode = $this->ean13_check_digit();
             $digits_code = substr($digits_barcode, 7, 5);
             // dd($digits_code);

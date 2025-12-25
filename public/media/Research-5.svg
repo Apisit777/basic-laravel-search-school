@@ -1,0 +1,300 @@
+<!--?xml version="1.0" encoding="UTF-8"?-->
+<svg width="1920" height="1200" viewBox="0 0 1920 1200" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <!-- BG -->
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#303030"></stop>
+      <stop offset="55%" stop-color="#262626"></stop>
+      <stop offset="100%" stop-color="#202020"></stop>
+    </linearGradient>
+
+    <!-- เส้นวิ่ง -->
+    <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#9df3ff" stop-opacity="0.1"></stop>
+      <stop offset="40%" stop-color="#9df3ff" stop-opacity="1"></stop>
+      <stop offset="100%" stop-color="#9df3ff" stop-opacity="0.1"></stop>
+    </linearGradient>
+
+    <filter id="lineGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="3" result="blur"></feGaussianBlur>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.6
+                             0 0 0 0 0.95
+                             0 0 0 0 1
+                             0 0 0 0.9 0"></feColorMatrix>
+    </filter>
+
+    <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6" result="b"></feGaussianBlur>
+      <feColorMatrix in="b" type="matrix" values="0 0 0 0 0.55
+                             0 0 0 0 0.85
+                             0 0 0 0 1
+                             0 0 0 0.5 0"></feColorMatrix>
+    </filter>
+
+    <style>
+      .running-line {
+        stroke: url(#lineGrad);
+        stroke-width: 3;
+        stroke-linecap: round;
+        fill: none;
+        stroke-dasharray: 160 260;
+        animation: dashMove 4s linear infinite;
+      }
+      .running-line.slow {
+        animation-duration: 7s;
+      }
+
+      @keyframes dashMove {
+        0%   { stroke-dashoffset: 0; }
+        100% { stroke-dashoffset: -420; }
+      }
+
+      .title-text {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        font-weight: 600;
+        letter-spacing: 0.35em;
+        font-size: 40px;
+      }
+
+      .subtitle-text {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        font-size: 15px;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+      }
+
+      .card-title {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        font-size: 18px;
+        font-weight: 600;
+        fill: #ffffff;
+      }
+      .card-text {
+        font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+        font-size: 14px;
+        fill: #d0d7dd;
+      }
+
+      .grid-lines {
+        stroke: #505050;
+        stroke-width: 1;
+        stroke-linecap: round;
+      }
+
+      .dot {
+        fill: #9df3ff;
+      }
+
+      .lab-stroke {
+        stroke: #9fd8ff;
+        stroke-width: 1.8;
+        fill: rgba(159,216,255,0.04);
+      }
+      .lab-light {
+        stroke: #c8e9ff;
+        stroke-width: 1.1;
+        fill: none;
+        opacity: 0.95;
+      }
+      .lab-back {
+        stroke: #6f8aa0;
+        stroke-width: 1.2;
+        fill: rgba(120,150,180,0.06);
+        opacity: 0.7;
+      }
+    </style>
+  </defs>
+
+  <!-- BG -->
+  <rect x="0" y="0" width="1920" height="1200" fill="url(#bgGrad)"></rect>
+  <rect x="1180" y="0" width="740" height="1200" fill="#000000" opacity="0.02"></rect>
+
+  <!-- HEADER: Product Master -->
+  <g transform="translate(120,120)">
+    <!-- เส้นดำเฉพาะด้านซ้าย -->
+    <line x1="0" y1="0" x2="260" y2="0" stroke="#000000" stroke-width="2" stroke-linecap="round"></line>
+
+    <!-- ข้อความ -->
+    <text class="title-text" x="280" y="5" fill="#ffffff">
+      <tspan>P r o d u c t</tspan>
+      <tspan dx="70">M a s t e r</tspan>
+    </text>
+
+    <!-- เส้นวิ่งหน้าคำ Product -->
+    <g filter="url(#lineGlow)">
+      <path class="running-line" d="M 0 8 L 260 8"></path>
+    </g>
+
+    <text class="subtitle-text" x="4" y="40" fill="#c0cbd0">
+      LAB RESEARCH • FORMULATION • STABILITY • PRODUCT ACCOUNTING
+    </text>
+  </g>
+
+  <!-- เส้นหลักแบบตรง + มุมฉาก ฝั่งซ้าย -->
+  <g filter="url(#lineGlow)">
+    <path class="running-line" d="M 80 260 L 420 260 L 420 300 L 860 300"></path>
+    <path class="running-line slow" d="M 80 300 L 320 300 L 320 340 L 760 340"></path>
+    <path class="running-line" d="M 80 340 L 260 340 L 260 380 L 700 380"></path>
+    <path class="running-line slow" d="M 260 340 L 260 420 L 520 420"></path>
+  </g>
+
+  <!-- grid เสริม -->
+  <g opacity="0.35" class="grid-lines">
+    <path d="M 60 430 L 1100 430"></path>
+    <path d="M 60 470 L 1100 470"></path>
+    <path d="M 60 510 L 1020 510"></path>
+    <path d="M 240 220 L 240 780"></path>
+    <path d="M 420 220 L 420 820"></path>
+    <path d="M 600 230 L 600 820"></path>
+  </g>
+
+  <!-- จุดเล็กๆ -->
+  <g opacity="0.9">
+    <circle class="dot" cx="260" cy="260" r="3"></circle>
+    <circle class="dot" cx="420" cy="260" r="3"></circle>
+    <circle class="dot" cx="320" cy="300" r="3"></circle>
+    <circle class="dot" cx="260" cy="340" r="3"></circle>
+    <circle class="dot" cx="420" cy="420" r="3"></circle>
+  </g>
+
+  <!-- กล่องข้อความ 3 กล่อง + เส้นเชื่อม -->
+  <g transform="translate(120,420)">
+    <rect x="0" y="0" width="420" height="90" rx="8" fill="#262b30" stroke="#4a555e" stroke-width="1.2"></rect>
+    <text class="card-title" x="24" y="30">
+      1. Lab Research &amp; Formulation
+    </text>
+    <text class="card-text" x="24" y="52">
+      • พัฒนาสูตรทดลอง, เลือกวัตถุดิบ, ทดลองหลาย batch เพื่อหา texture และประสิทธิภาพที่ดีที่สุด
+    </text>
+    <text class="card-text" x="24" y="72">
+      • บันทึกข้อมูลทุกขั้นตอนลง Product Master เพื่อให้ทีม R&amp;D, QA, Accounting ใช้ร่วมกันได้
+    </text>
+
+    <rect x="520" y="-80" width="420" height="90" rx="8" fill="#252830" stroke="#4a555e" stroke-width="1.2"></rect>
+    <text class="card-title" x="544" y="-50">
+      2. Stability &amp; Safety Evaluation
+    </text>
+    <text class="card-text" x="544" y="-28">
+      • ทดสอบความคงตัว, pH, สี, กลิ่น ภายใต้สภาวะเร่ง (accelerated condition)
+    </text>
+    <text class="card-text" x="544" y="-8">
+      • บันทึกผล test, criteria ผ่าน/ไม่ผ่าน เพื่อใช้ประกอบการตัดสินใจขึ้นทะเบียนสินค้า
+    </text>
+
+    <rect x="520" y="120" width="420" height="90" rx="8" fill="#242730" stroke="#4a555e" stroke-width="1.2"></rect>
+    <text class="card-title" x="544" y="150">
+      3. Costing, Compliance &amp; Launch
+    </text>
+    <text class="card-text" x="544" y="172">
+      • คำนวณต้นทุนต่อหน่วย, กำไรขั้นต้น และผูกข้อมูลเข้ากับรหัสบัญชีสินค้า (TP / KM / Channel)
+    </text>
+    <text class="card-text" x="544" y="192">
+      • ตรวจสอบข้อกำกับ, เอกสารรองรับ และ sync ข้อมูลไปยังระบบขาย/บัญชีหน้าบ้าน
+    </text>
+
+    <path d="M 420 45 L 470 45 L 470 -35 L 520 -35" stroke="#7fa6c0" stroke-width="1.4" fill="none"></path>
+    <path d="M 420 55 L 470 55 L 470 165 L 520 165" stroke="#7fa6c0" stroke-width="1.4" fill="none"></path>
+  </g>
+
+  <!-- บรรยากาศห้องแล็บด้านซ้ายล่าง: เพิ่มรายละเอียดให้แน่นขึ้น -->
+  <g transform="translate(200,720)">
+
+    <!-- แสงฟ้าเบา ๆ ด้านหลัง (bokeh / glow) -->
+    <ellipse cx="160" cy="80" rx="200" ry="90" fill="#7fd8ff" opacity="0.18" filter="url(#softGlow)"></ellipse>
+
+    <!-- แถวขวดด้านหลัง (silhouette) -->
+    <g class="lab-back" transform="translate(-10,-40)">
+      <!-- ขวดทรงกรวยใหญ่ -->
+      <polygon points="20,150 50,40 100,40 130,150"></polygon>
+      <!-- ขวดกลม -->
+      <circle cx="175" cy="95" r="35"></circle>
+      <rect x="160" y="35" width="30" height="25" rx="4"></rect>
+      <!-- หลอดทดลองเป็น rack -->
+      <rect x="230" y="40" width="120" height="100" rx="6"></rect>
+      <line x1="244" y1="48" x2="244" y2="132"></line>
+      <line x1="268" y1="48" x2="268" y2="132"></line>
+      <line x1="292" y1="48" x2="292" y2="132"></line>
+      <line x1="316" y1="48" x2="316" y2="132"></line>
+    </g>
+
+    <!-- ชั้นหนังสือ/แท่นรอง 2 ชั้น -->
+    <g>
+      <rect x="0" y="126" width="280" height="24" fill="rgba(0,0,0,0.7)" stroke="#6f7c82" stroke-width="1.5"></rect>
+      <rect x="12" y="110" width="256" height="14" fill="rgba(0,0,0,0.9)" stroke="#9eaab0" stroke-width="1"></rect>
+      <rect x="32" y="100" width="216" height="8" fill="rgba(255,255,255,0.03)" stroke="#4b5b66" stroke-width="0.8"></rect>
+    </g>
+
+    <!-- ขวดแถวหน้า + นักวิจัย (layer หน้า) -->
+    <!-- ขวดกรวย -->
+    <g class="lab-stroke">
+      <polygon points="26,104 52,16 112,16 138,104"></polygon>
+      <line x1="44" y1="66" x2="126" y2="66"></line>
+      <!-- เม็ดกลมในขวด -->
+      <circle cx="62" cy="80" r="5"></circle>
+      <circle cx="84" cy="73" r="4"></circle>
+      <circle cx="106" cy="88" r="4.5"></circle>
+    </g>
+
+    <!-- ขวดทรงกลมกลาง -->
+    <g class="lab-stroke" transform="translate(90,10)">
+      <circle cx="76" cy="74" r="32"></circle>
+      <rect x="64" y="24" width="24" height="22" rx="4"></rect>
+      <circle cx="66" cy="72" r="4"></circle>
+      <circle cx="88" cy="64" r="4"></circle>
+      <circle cx="82" cy="84" r="4"></circle>
+    </g>
+
+    <!-- ขวดสูง + หลอดทดลองด้านขวา -->
+    <g class="lab-stroke" transform="translate(200,-4)">
+      <!-- ขวดสูง -->
+      <rect x="0" y="32" width="42" height="92" rx="10"></rect>
+      <rect x="6" y="6" width="30" height="26" rx="5"></rect>
+      <line x1="6" y1="50" x2="36" y2="50"></line>
+      <line x1="6" y1="70" x2="36" y2="70"></line>
+      <line x1="6" y1="90" x2="36" y2="90"></line>
+
+      <!-- Rack หลอดทดลอง 3 หลอด -->
+      <rect x="60" y="32" width="8" height="70" rx="4"></rect>
+      <rect x="84" y="32" width="8" height="70" rx="4"></rect>
+      <rect x="108" y="32" width="8" height="70" rx="4"></rect>
+      <rect x="54" y="104" width="68" height="10" rx="3"></rect>
+    </g>
+
+    <!-- นักวิจัยยืนถือ clipboard -->
+    <g class="lab-light" transform="translate(120,0)">
+      <!-- ลำตัวเสื้อกาวน์ -->
+      <path d="M 40 120
+               L 32 78
+               C 30 66 34 56 44 50
+               L 60 40
+               C 70 36 78 38 84 46
+               L 94 62
+               L 104 120 Z" fill="rgba(159,216,255,0.08)"></path>
+      <!-- หัว -->
+      <circle cx="68" cy="34" r="9"></circle>
+      <!-- clipboard -->
+      <rect x="92" y="70" width="40" height="20" rx="3" stroke="#9fd8ff" fill="rgba(0,0,0,0.7)"></rect>
+      <line x1="96" y1="78" x2="128" y2="78"></line>
+      <line x1="96" y1="86" x2="126" y2="86"></line>
+      <!-- ขา -->
+      <line x1="54" y1="120" x2="48" y2="146"></line>
+      <line x1="82" y1="120" x2="88" y2="146"></line>
+
+      <!-- เส้นปะเชื่อมขึ้นไปยังกล่อง Research card -->
+      <path d="M 114 82
+               L 178 44
+               L 248 44
+               L 248 -132" stroke="#9df3ff" stroke-width="2" stroke-dasharray="6 6" fill="none" opacity="0.95"></path>
+    </g>
+
+    <!-- เส้นบาง ๆ บนพื้นให้เหมือน reflection -->
+    <g stroke="#8fb5cc" stroke-width="0.8" opacity="0.35">
+      <line x1="-10" y1="144" x2="300" y2="144"></line>
+      <line x1="20" y1="152" x2="280" y2="152"></line>
+    </g>
+  </g>
+
+  <!-- noise บาง ๆ -->
+  <rect x="0" y="0" width="1920" height="1200" fill="#000000" opacity="0.03"></rect>
+</svg>

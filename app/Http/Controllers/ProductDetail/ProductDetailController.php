@@ -133,9 +133,26 @@ class ProductDetailController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Request $request)
+    // public function show(Request $request)
+    // {
+    //     //
+    // }
+
+    public function show(Request $request, $product_id)
     {
-        //
+        $data = ProductDetail::select(
+            'product_details.corporation_id as corporation_id',
+            'product_details.product_id as product_id',
+            'product_others.*'
+        )
+        ->leftJoin('product_others', 'product_details.product_id', '=', 'product_others.product_id')
+        ->orderBy('product_details.product_id', 'ASC')
+        ->firstWhere('product_details.product_id', '=', $product_id);
+
+        // $data->sls_free
+
+        // dd($data);
+        return view('product_detail.show', compact('data'));
     }
 
     /**
