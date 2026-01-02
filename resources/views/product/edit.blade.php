@@ -1009,19 +1009,34 @@
             $('#name').val('')
         }
 
+        function getUniquePackSizeDigit(packSizeValue, usedDigits) {
+            // แปลง packSize เป็น string และดึงตัวเลขทั้งหมด
+            let packSizeStr = String(packSizeValue);
+
+            // ลองใช้ตัวเลขแต่ละตัวตามลำดับ (ตัวที่ 1, 2, 3, ...)
+            for (let i = 0; i < packSizeStr.length; i++) {
+                let digit = packSizeStr.substring(i, i + 1);
+                if (!usedDigits.includes(digit)) {
+                    return digit;
+                }
+            }
+
+            // ถ้าทุกตัวซ้ำหมด ให้ใช้ตัวแรก (fallback)
+            return packSizeStr.substring(0, 1);
+        }
+
         function packSize1Change(e) {
             let BARCODE = jQuery("#BARCODE").val();
-            let packSize = e.value;
-            console.log("🚀 ~ packSize1Change ~ packSize:", packSize)
+            let packSize1Value = e.value;
+            console.log("🚀 ~ packSize1Change ~ packSize:", packSize1Value)
 
-            if (packSize.length > 1) {
-                packSize = packSize.substring(0, 1);
-            }
-            
-            if (!BARCODE || packSize === "") {
+            if (!BARCODE || packSize1Value === "") {
                 jQuery("#BAR_PACK1").val('');
                 return;
             }
+
+            // ใช้ตัวแรกสำหรับ packSize1
+            let packSize = String(packSize1Value).substring(0, 1);
 
             let ean13 = packSize + BARCODE.substring(0, BARCODE.length - 1);
             console.log("🚀 ~ packSize1Change ~ ean13:", ean13)
@@ -1045,6 +1060,12 @@
                     } else {
                         jQuery("#BAR_PACK1").val('');
                     }
+
+                    // หลังจาก update packSize1 แล้ว ให้ re-calculate packSize2 ถ้ามีค่า
+                    let packSize2Value = jQuery("#PACK_SIZE2").val();
+                    if (packSize2Value && packSize2Value !== "") {
+                        packSize2Change(document.getElementById("PACK_SIZE2"));
+                    }
                 },
                 error: function (xhr) {
                     console.error("❌ AJAX Error:", xhr);
@@ -1055,21 +1076,29 @@
 
         function packSize2Change(e) {
             let BARCODE = jQuery("#BARCODE").val();
-            let packSize = e.value;
-            console.log("🚀 ~ packSize1Change ~ packSize:", packSize)
+            let packSize2Value = e.value;
+            console.log("🚀 ~ packSize2Change ~ packSize:", packSize2Value)
 
-            if (packSize.length > 1) {
-                packSize = packSize.substring(0, 1);
-            }
-            console.log("🚀 ~ packSize1Change ~ substring:", packSize)
-            
-            if (!BARCODE || packSize === "") {
+            if (!BARCODE || packSize2Value === "") {
                 jQuery("#BAR_PACK2").val('');
                 return;
             }
 
+            // ดึงเลขหน้าสุดของ packSize1 ที่ใช้ไปแล้ว
+            let packSize1Value = jQuery("#PACK_SIZE1").val();
+            let usedDigits = [];
+
+            if (packSize1Value && packSize1Value !== "") {
+                // packSize1 ใช้ตัวแรกเสมอ
+                usedDigits.push(String(packSize1Value).substring(0, 1));
+            }
+
+            // หาเลขที่ไม่ซ้ำสำหรับ packSize2
+            let packSize = getUniquePackSizeDigit(packSize2Value, usedDigits);
+            console.log("🚀 ~ packSize2Change ~ uniqueDigit:", packSize)
+
             let ean13 = packSize + BARCODE.substring(0, BARCODE.length - 1);
-            console.log("🚀 ~ packSize1Change ~ ean13:", ean13)
+            console.log("🚀 ~ packSize2Change ~ ean13:", ean13)
 
             if (ean13) {
                 if (ean13.length == 13) {

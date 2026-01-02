@@ -3994,30 +3994,8 @@ class ProductController extends Controller
             'BARCODE',
             'NAME_THAI'
         )
-        ->orderBy('PRODUCT', 'DESC');
-
-        // if ($request->order[0]) {
-        //     switch  ($request->order[0]['column']) {
-        //         case 0:
-        //             $data->orderBy('BRAND', $request->order[0]['dir']);
-        //             break;
-        //         case 1:
-        //             $data->orderBy('GRP_P', $request->order[0]['dir']);
-        //             break;
-        //         case 2:
-        //             $data->orderBy('PRODUCT', $request->order[0]['dir']);
-        //             break;
-        //         case 3:
-        //             $data->orderBy('BARCODE', $request->order[0]['dir']);
-        //             break;
-        //         case 4:
-        //             $data->orderBy('NAME_THAI', $request->order[0]['dir']);
-        //             break;
-        //         default:
-        //             // code...
-        //             break;
-        //     }
-        // }
+        // ->orderBy('PRODUCT', 'DESC');
+        ->orderBy('EDIT_DT', 'DESC');
 
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
@@ -4032,7 +4010,7 @@ class ProductController extends Controller
                 'BARCODE',
                 'NAME_THAI'
             )
-            ->orderBy('BARCODE', 'DESC');
+            ->orderBy('EDIT_DT', 'DESC');
         } else if ($userpermission == 'OP') {
             $data = Product1::select(
                 'BRAND',
@@ -4048,7 +4026,7 @@ class ProductController extends Controller
             //             $q->whereIn('BRAND', ['OP']); // Check the relation productChannel
             //         });
             // })
-            ->orderBy('BARCODE', 'DESC');
+            ->orderBy('EDIT_DT', 'DESC');
 
         } else if ($userpermission == 'CPS') {
             $data = Product1::select(
@@ -4059,7 +4037,7 @@ class ProductController extends Controller
                 'NAME_THAI'
             )
             ->where('BRAND', 'CPS')
-            ->orderBy('BARCODE', 'DESC');
+            ->orderBy('EDIT_DT', 'DESC');
         } else if ($userpermission == 'ACC') {
             $data = Product1::select(
                 'BRAND',
@@ -4069,7 +4047,7 @@ class ProductController extends Controller
                 'NAME_THAI'
             )
             ->whereIn('BRAND', ['OP', 'CPS', 'KTY', 'GNC', 'BB', 'LL', 'KM'])
-            ->orderBy('BARCODE', 'DESC');
+            ->orderBy('EDIT_DT', 'DESC');
         } else {
             $data = Product1::select(
                 'BRAND',
@@ -4079,7 +4057,7 @@ class ProductController extends Controller
                 'NAME_THAI'
             )
             ->where('BRAND', $userpermission)
-            ->orderBy('BARCODE', 'DESC');
+            ->orderBy('EDIT_DT', 'DESC');
         }
 
         if ($userpermission == 'OP') {
@@ -4101,6 +4079,24 @@ class ProductController extends Controller
                 ->orWhere('NAME_THAI', 'like', '%' . $searchAll . '%')
                 ->orWhere('BARCODE', 'like', '%' . $searchAll . '%');
             });
+        }
+
+        // Sorting - Mapping column index to database column name
+        $sortableColumns = [
+            // 0 => 'BRAND',
+            // 1 => 'GRP_P',
+            2 => 'PRODUCT',
+            // 3 => 'NAME_THAI',
+            // 4 => 'BARCODE',
+        ];
+
+        if (isset($request->order[0])) {
+            $columnIndex = $request->order[0]['column'];
+            $sortDirection = $request->order[0]['dir'];
+
+            if (isset($sortableColumns[$columnIndex])) {
+                $data->reorder($sortableColumns[$columnIndex], $sortDirection);
+            }
         }
 
         // 🔹 นับจำนวนรายการทั้งหมดก่อน `LIMIT`

@@ -164,6 +164,9 @@
                                                                     <label for="barcodeTest">Barcode<span class="text-danger"> *</span></label>
                                                                     <input type="text" name="barcodeTest" id="barcodeTest" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" aria-label="disabled input" value="" readonly>
                                                                 </div>
+
+                                                                <!-- Job Ref. No. = CSCP-68022 -->
+                                                                <!-- SELECT * FROM `pro_develops` WHERE `JOB_REFNO` != '' AND BRAND = 'CPS' ORDER BY `pro_develops`.`PRODUCT` DESC -->
                                                                 <div class="md:col-span-3" style="position: relative;">
                                                                     <label for="JOB_REFNO">Job Ref. No.</label>
                                                                     <input type="text" name="JOB_REFNO" id="JOB_REFNO" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="" />

@@ -43,12 +43,12 @@
 
         /* Header ที่จะแสดงทุกหน้า */
         .page-header {
-            margin-bottom: 5mm;
+            /* margin-bottom: 5mm; */
         }
 
         /* Section styles */
         .content-section {
-            margin-bottom: 15px;
+            /* margin-bottom: 15px; */
             page-break-inside: avoid;
         }
 
@@ -73,12 +73,13 @@
         }
 
         .field-separator {
-            width: 20px;
+            width: 5px;
             text-align: center;
         }
 
         .field-value {
-            color: #F72B2B;
+            /* color: #F72B2B; */
+            color: #000000;
             flex: 1;
         }
 
@@ -86,7 +87,7 @@
         .checkbox-row {
             display: flex;
             align-items: center;
-            margin: 10px 0;
+            /* margin: 10px 0; */
         }
 
         .checkbox-group {
@@ -133,7 +134,7 @@
         /* Dotted line separator */
         .dotted-separator {
             border-bottom: 2px dotted #000000;
-            margin: 15px 0;
+            margin: 5px 0;
         }
 
         /* Hide original content after pagination */
@@ -215,6 +216,32 @@
         .list-content {
             flex: 1;
         }
+
+        /* ******************************************************************* */
+        
+        .si-grid{
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+
+            /* ✅ เอา max-width ออก หรือเพิ่มให้กว้างขึ้น */
+            /* max-width: 520px; */   /* ลบทิ้ง */
+            width: 100%;
+        }
+
+        .si-img{
+            width: 75%;
+            height: 130px;        /* ✅ เพิ่มจาก 120 -> 200 (ปรับได้ 180/220/240) */
+            object-fit: cover;
+            display: block;
+            border-radius: 8px;
+            cursor: pointer;
+
+            box-shadow: none !important;
+            transform: none !important;
+            transition: none !important;
+        }
     </style>
 
 @section('content')
@@ -288,7 +315,7 @@
                         <div style="text-align:left; font-size: 14px; color: #F72B2B;">รหัสเอกสารของ IB</div>
 
                         <div style="text-align:right; font-weight:600; font-size: 14px;">DATE OF ISSUE :</div>
-                        <div style="text-align:left; font-size: 14px; color: #F72B2B;">วันที่ออกเอกสาร</div>
+                        <div style="text-align:left; font-size: 14px;"><?php echo date('Y-m-d'); ?></div>
 
                     </div>
                 </div>
@@ -303,12 +330,14 @@
                     <div class="field-row">
                         <span class="field-label">JOB REFFERENCE NO</span>
                         <span class="field-separator">:</span>
-                        <span class="field-value">เลขทะเบียนงานวิจัย เช่น CSCP-68022</span>
+                        <!-- 73847 <span class="field-value">เลขทะเบียนงานวิจัย เช่น CSCP-68022</span> -->
+                        <span class="field-value">{{ $data->JOB_REFNO }}</span>
                     </div>
                     <div class="field-row">
                         <span class="field-label">PRODUCT NAME</span>
                         <span class="field-separator">:</span>
-                        <span class="field-value">ชื่อสินค้าที่แบรนด์สรุปแจ้งนักวิจัยเมื่อ confirm สูตร</span>
+                        <!-- <span class="field-value">ชื่อสินค้าที่แบรนด์สรุปแจ้งนักวิจัยเมื่อ confirm สูตร</span> -->
+                        <span class="field-value">{{ $data->NAME_THAI }}</span>
                     </div>
                     <div class="field-row">
                         <span class="field-label">APPEARANCE</span>
@@ -323,7 +352,7 @@
                     <div class="field-row">
                         <span class="field-label">SHELF-LIFE (Months)</span>
                         <span class="field-separator">:</span>
-                        <span class="field-value"></span>
+                        <span class="field-value">{{ $data->AGE }}</span>
                     </div>
                 </div>
 
@@ -331,7 +360,7 @@
 
                 <!-- FDA Notification Section -->
                 <div class="content-item content-section">
-                    <div style="font-weight: bold; font-size: 14px; margin-bottom: 15px; text-decoration: underline;">
+                    <div style="font-weight: bold; font-size: 14px; text-decoration: underline;">
                         FDA notification is required :
                     </div>
                     <div class="checkbox-row" style="margin-left: 100px;">
@@ -348,7 +377,7 @@
 
                 <!-- ต้องแสดงคำเตือนบนฉลาก Section -->
                 <div class="content-item content-section">
-                    <div style="font-weight: bold; font-size: 14px; margin-bottom: 15px;">
+                    <div style="font-weight: bold; font-size: 14px;">
                         ต้องแสดงคำเตือนบนฉลาก
                     </div>
                     <div class="checkbox-row" style="margin-left: 100px;">
@@ -389,9 +418,24 @@
                     <div style="font-weight: bold; font-size: 14px; margin-bottom: 10px; text-decoration: underline;">
                         Special Ingredients
                     </div>
+
                     <div style="margin-left: 20px; font-size: 12px; color: #F72B2B;">
                         <div style="margin: 5px 0;">ส่วนผสม บรรยายสรรพคุณ พร้อมรูปภาพ เช่น สารสกัด วิตามิน เทคโนโลยี (ใส่ effective dose หรือ just claimed) ต้องการให้</div>
                         <div style="margin: 5px 0;">สามารถแนบไฟล์ได้ทั้ง word, excel, pdf</div>
+
+                        <!-- ✅ GRID 3 คอลัมน์ -->
+                        <div class="si-grid">
+                            @foreach($images as $index => $image)
+                                <div class="img-item" data-id="{{ $image->id }}">
+                                <img
+                                    src="{{ $image->path ? asset($image->path) : 'https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg' }}"
+                                    class="si-img"
+                                    @if($image->path) @click="openGallery({{ $index }})" @endif
+                                    alt="Uploaded Image"
+                                >
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
 
@@ -412,9 +456,42 @@
                     </div>
                     <div style="margin-left: 20px; font-size: 12px; color: #F72B2B;">
                         <div style="margin: 5px 0;">บางผลิตภัณฑ์ไม่ต้องแสดงข้อมูลนี้ได้ การแสดงข้อมูลมีบรรยายแนวกลิ่น และรูป Triangle น้ำหอม หรืออาจขอแนบเป็นไฟล์ pdf</div>
+
+                        <!-- ✅ GRID 3 คอลัมน์ -->
+                        <div class="si-grid">
+                            @foreach($images as $index => $image)
+                                <div class="img-item" data-id="{{ $image->id }}">
+                                <img
+                                    src="{{ $image->path ? asset($image->path) : 'https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg' }}"
+                                    class="si-img"
+                                    @if($image->path) @click="openGallery({{ $index }})" @endif
+                                    alt="Uploaded Image"
+                                >
+                                </div>
+                            @endforeach
+                        </div>
+
                     </div>
                 </div>
 
+                <!-- ===== How To Use ===== -->
+                <div class="content-item content-section" style="margin-top: 20px;">
+                    <div style="font-weight: bold; font-size: 14px; margin-bottom: 10px; text-decoration: underline;">
+                        How To Use 
+                    </div>
+                    <div style="margin-left: 20px; font-size: 12px; color: #F72B2B;">
+                        <div style="margin: 5px 0;">ข้อแนะนำวิธีการใช</div>
+                    </div>
+                </div>
+                <!-- ===== How To Use ===== -->
+                <div class="content-item content-section" style="margin-top: 20px;">
+                    <div style="font-weight: bold; font-size: 14px; margin-bottom: 10px; text-decoration: underline;">
+                        How To Use 
+                    </div>
+                    <div style="margin-left: 20px; font-size: 12px; color: #F72B2B;">
+                        <div style="margin: 5px 0;">ข้อแนะนำวิธีการใช</div>
+                    </div>
+                </div>
                 <!-- ===== How To Use ===== -->
                 <div class="content-item content-section" style="margin-top: 20px;">
                     <div style="font-weight: bold; font-size: 14px; margin-bottom: 10px; text-decoration: underline;">
@@ -1007,7 +1084,7 @@
             // Max content height per page
             // Page 1 มี header (~120px) จึงใส่เนื้อหาได้น้อยกว่า
             // Page 2+ ไม่มี header จึงใส่เนื้อหาได้มากกว่า
-            const MAX_CONTENT_HEIGHT_PAGE1 = 850; // pixels - หน้าแรกมี header
+            const MAX_CONTENT_HEIGHT_PAGE1 = 1200; // pixels - หน้าแรกมี header
             const MAX_CONTENT_HEIGHT_OTHER = 1000; // pixels - หน้าอื่นไม่มี header
 
             // Get header HTML template (เฉพาะหน้าแรก)
@@ -1036,7 +1113,7 @@
                                 <div style="font-size: 13px; margin-top: 5px;">Tel : 02-3151074 Ext : 301 Fax : 02-7051573</div>
                             </div>
                         </div>
-                        <div style="border-top: 2px solid #000; margin-top: 10px;"></div>
+                        <div style="border-top: 2px solid #000; margin-top: 0px;"></div>
                     </div>
                 `;
             }

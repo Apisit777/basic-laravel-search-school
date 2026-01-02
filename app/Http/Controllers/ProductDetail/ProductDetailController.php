@@ -143,16 +143,37 @@ class ProductDetailController extends Controller
         $data = ProductDetail::select(
             'product_details.corporation_id as corporation_id',
             'product_details.product_id as product_id',
-            'product_others.*'
+            'product_others.*',
+            'pro_develops.JOB_REFNO as JOB_REFNO',
+            'product1s.NAME_THAI as NAME_THAI',
+            'product1s.AGE as AGE',
         )
+        ->leftJoin('product1s', 'product_details.product_id', '=', 'product1s.PRODUCT')
+        ->leftJoin('pro_develops', 'product_details.product_id', '=', 'pro_develops.PRODUCT')
         ->leftJoin('product_others', 'product_details.product_id', '=', 'product_others.product_id')
         ->orderBy('product_details.product_id', 'ASC')
         ->firstWhere('product_details.product_id', '=', $product_id);
 
         // $data->sls_free
 
+        $images = ComProductImage::select(
+            'id', 
+            'product_id', 
+            'seq', 
+            DB::raw("CASE
+                        WHEN com_product_images.path LIKE 'https%' 
+                        THEN com_product_images.path
+                        ELSE com_product_images.path
+                    END 
+                    AS path"
+            ),
+        )
+        ->where('product_id', $product_id)
+        ->orderBy('seq', 'asc')
+        ->get();
+
         // dd($data);
-        return view('product_detail.show', compact('data'));
+        return view('product_detail.show', compact('data', 'images'));
     }
 
     /**
@@ -427,9 +448,11 @@ class ProductDetailController extends Controller
             'inner_barcode',
             'product1s.NAME_THAI AS NAME_THAI',
             'product1s.BARCODE AS BARCODE',
+            'pro_develops.JOB_REFNO as JOB_REFNO'
         )
         ->leftJoin('product1s', 'product_details.product_id', '=', 'product1s.PRODUCT')
-        ->orderBy('product_id', 'DESC');
+        ->leftJoin('pro_develops', 'product_details.product_id', '=', 'pro_develops.PRODUCT')
+        ->orderBy('product_details.upd_date', 'DESC');
 
         // dd($data->toSql());
         if ($BRAND != null) {

@@ -1229,19 +1229,44 @@ function onOpenhandler(params) {
                     data._token = $('meta[name="csrf-token"]').attr('content');
                 }
             },
+            // JOB_REFNO
             orderable: true,
             columnDefs: [{
                     targets: 0,
                     orderable: true,
                     render: function(data, type, row) {
                         return row.corporation_id;
+
+                    
+
                     }
                 },
                 {
                     targets: 1,
                     orderable: true,
-                    render: function(data, type, row) {
-                        return row.product_id;
+                    render: function (data, type, row) {
+                        const pid = (row.product_id ?? '').toString();        // กัน null/number
+                        const job = (row.JOB_REFNO == null) ? '-' : row.JOB_REFNO; // null/undefined => '-'
+
+                        if (pid.length === 5) {
+                            return `
+                                <span class="inline-flex min-w-[150px] items-center justify-start gap-1 whitespace-nowrap
+                                rounded-full border border-emerald-400/30 bg-emerald-400/15
+                                px-2 py-0.5 text-xs font-semibold text-slate-950 dark:text-white">
+                                    ${pid} (${job})
+                                </span>
+                            `;
+                        }
+                        if (pid.length > 5) {
+                            return `
+                                <span class="inline-flex min-w-[150px] items-center justify-start gap-1 whitespace-nowrap
+                                rounded-full border border-[#dc3545]/30 bg-black/15
+                                px-2 py-0.5 text-xs font-semibold text-slate-950 dark:text-white">
+                                    ${pid} (${job})
+                                </span>
+                            `;
+                        }
+                        return `${pid} (${job})`;
                     }
                 },
                 {

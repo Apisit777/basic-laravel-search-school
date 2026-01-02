@@ -103,10 +103,14 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            height: 100%;
-            top: 0;
+            height: calc(100% - 50px);
+            top: 50px;
             left: 0;
             z-index: 99999;
+        }
+
+        .loading.hidden {
+            display: none !important;
         }
 
         *{margin: 0;padding:0px}
@@ -246,6 +250,7 @@
                 gap: 6px;
             }
         }
+
     </style>
 
     <!-- Icon favicon -->
@@ -253,6 +258,56 @@
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/select2@4.1.0.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/dataTables.bootstrap.css') }}" />
+
+    <style>
+        /* DataTable Scroll wrapper ไม่ให้ทับ header */
+        .dataTables_scroll {
+            overflow: visible !important;
+        }
+
+        .dataTables_scrollHead {
+            overflow: visible !important;
+        }
+
+        .dataTables_scrollBody {
+            overflow-x: auto !important;
+            overflow-y: auto !important;
+        }
+
+        /* DataTable Sorting Styles */
+        table.dataTable thead th.sorting,
+        table.dataTable thead th.sorting_asc,
+        table.dataTable thead th.sorting_desc {
+            cursor: pointer !important;
+            background-image: none !important;
+        }
+
+        /* ซ่อน icon เดิมของ DataTables */
+        table.dataTable thead .sorting::before,
+        table.dataTable thead .sorting::after,
+        table.dataTable thead .sorting_asc::before,
+        table.dataTable thead .sorting_asc::after,
+        table.dataTable thead .sorting_desc::before,
+        table.dataTable thead .sorting_desc::after {
+            display: none !important;
+        }
+
+        /* Sort icon style */
+        .sort-icon {
+            margin-left: 5px;
+            opacity: 0.5;
+        }
+
+        th.sorting_asc .sort-icon,
+        th.sorting_desc .sort-icon {
+            opacity: 1;
+            color: #3b82f6;
+        }
+
+        table.dataTable thead th:hover {
+            background-color: rgba(59, 130, 246, 0.1) !important;
+        }
+    </style>
 
     <div id="slide" class="loaderslide"></div>
 
@@ -1091,7 +1146,7 @@
                             <tr>
                                 <th>แบรนด์</th>
                                 <th>สินค้าของบริษัท</th>
-                                <th>รหัสสินค้า</th>
+                                <th><span class="sort-icon">↕</span>รหัสสินค้า</th>
                                 <th>ชื่อสินค้า</th>
                                 <th>Barcode</th>
                                 <th>Action</th>
@@ -1400,10 +1455,11 @@
             searching: false,
             scrollX: true,
             orderCellsTop: true,
-            ordering: false,
+            ordering: true,
             deferRender: true,
-            scroller: true,
+            scroller: false,
             scrollY: "580px",
+            scrollCollapse: true,
             "order": [[1, "desc"]],
             "lengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]], // เพิ่ม "All"
             "pageLength": 20, // ค่าเริ่มต้นคือ "20"
@@ -1452,7 +1508,27 @@
                     targets: 2,
                     orderable: true,
                     render: function(data, type, row) {
+
+                        if (row.PRODUCT.length === 5) {
+                            return `
+                                <span class="mt-1 inline-flex min-w-[150px] items-center justify-start gap-1 whitespace-nowrap
+                                rounded-full border border-[#0d6efd]/30 bg-[#0d6efd]/15
+                                px-2 py-0.5 text-xs font-semibold text-slate-950 dark:text-white">
+                                    ${row.PRODUCT}
+                                </span>
+                            `;
+                        }
+                        if (row.PRODUCT.length > 5) {
+                            return `
+                                <span class="mt-1 inline-flex min-w-[150px] items-center justify-start gap-1 whitespace-nowrap
+                                rounded-full border border-[#dc3545]/30 bg-black/15
+                                px-2 py-0.5 text-xs font-semibold text-slate-950 dark:text-white">
+                                    ${row.PRODUCT}
+                                </span>
+                            `;
+                        }
                         return row.PRODUCT;
+
                     }
                 },
                 {
@@ -1471,7 +1547,7 @@
                 },
                 {
                     targets: 5,
-                    orderable: true,
+                    orderable: false,
                     className: 'text-center',
                     render: function(data, type, row) {
                         let disabledRoute = "{{route('product_master.update', 0)}}".replace('/0', "/" + row.PRODUCT)
@@ -1492,6 +1568,29 @@
                     }
                 }
             ]
+        });
+
+        // Update sort icons เมื่อ sort เปลี่ยน
+        function updateSortIcons() {
+            $('.dataTables_scrollHead th, #product_master_table thead th').each(function() {
+                let $th = $(this);
+                let $icon = $th.find('.sort-icon');
+
+                if ($icon.length === 0) return;
+
+                if ($th.hasClass('sorting_asc')) {
+                    $icon.text('↑').css({'opacity': '1', 'color': '#3b82f6'});
+                } else if ($th.hasClass('sorting_desc')) {
+                    $icon.text('↓').css({'opacity': '1', 'color': '#3b82f6'});
+                } else {
+                    $icon.text('↕').css({'opacity': '0.5', 'color': ''});
+                }
+            });
+        }
+
+        // เรียกทุกครั้งที่ sort/draw
+        mytableDatatable.on('draw.dt order.dt', function() {
+            setTimeout(updateSortIcons, 50);
         });
 
         // $('#btnSerarch').click(function() {
