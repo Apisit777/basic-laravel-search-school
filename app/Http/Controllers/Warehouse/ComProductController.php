@@ -27,6 +27,7 @@ use App\Models\User;
 use Illuminate\Support\Arr;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Cache;
 
 
 class ComProductController extends Controller
@@ -98,6 +99,77 @@ class ComProductController extends Controller
         //         ->orderBy('id', 'asc')   // หรือจะตัดบรรทัดนี้ออกก็ได้
         //         ->get();
         // }
+
+        // ฐานคิวรี (ยังไม่ใส่ search) — ใช้กับ recordsTotal
+        // $baseQuery = Com_product::query()
+        //     ->select([
+        //         'com_products.company_id',
+        //         'com_products.product_id AS product_id',
+        //         'com_products.barcode    AS barcode',
+        //         'com_products.vendor_id  AS vendor_id',
+        //         'com_products.name_thai  AS name_thai',
+        //         DB::raw("
+        //             CASE
+        //                 WHEN com_products.img_url IS NULL OR TRIM(com_products.img_url) = '' THEN ''
+        //                 WHEN com_products.img_url LIKE 'http%' THEN com_products.img_url
+        //                 ELSE com_products.img_url
+        //             END AS img_url
+        //         "),
+        //     ])
+        //     ->join('product1s', 'com_products.product_id', '=', 'product1s.PRODUCT');
+
+    //     $baseQuery = ComProduct::query()
+    //         ->select([
+    //             'com_products.company_id',
+    //             'com_products.product_id AS product_id',
+    //             'com_products.barcode    AS barcode',
+    //             'com_products.vendor_id  AS vendor_id',
+    //             'com_products.name_thai  AS name_thai',
+    //             DB::raw("
+    //                 CASE
+    //                     WHEN com_products.img_url IS NULL OR TRIM(com_products.img_url) = '' THEN ''
+    //                     WHEN com_products.img_url LIKE 'http%' THEN com_products.img_url
+    //                     ELSE com_products.img_url
+    //                 END AS img_url
+    //             "),
+    //         ])
+    //     ->join('product1s', 'com_products.product_id', '=', 'product1s.PRODUCT');
+
+    //     // กรอง BRAND
+    //     if (!empty($brand)) {
+    //         if ($brand === 'CPS') {
+    //             $baseQuery->whereIn('com_products.company_id', ['CPS', 'CP']);
+    //         } else {
+    //             $baseQuery->where('com_products.company_id', $brand);
+    //         }
+    //     }
+
+    //     // ดึงข้อมูลหน้า
+    //     $rows = $baseQuery->get();
+
+    //     // ดึงรูปจาก API Oriental Princess มา map ด้วย sku = product_id
+    //     $opImages = Cache::remember('op_product_images', 60 * 60, function () {
+    //         try {
+    //             $response = Http::timeout(10)->get('https://orientalprincess.com/api/getProductImage.php');
+    //             if ($response->successful()) {
+    //                 return collect($response->json())->whereNotNull('image')->pluck('image', 'sku')->toArray();
+    //             }
+    //         } catch (\Exception $e) {
+    //             \Log::warning('OP API getProductImage failed: ' . $e->getMessage());
+    //         }
+    //         return [];
+    //     });
+
+    //     if (!empty($opImages)) {
+    //         $rows->transform(function ($row) use ($opImages) {
+    //             if (empty($row->img_url) && isset($opImages[$row->product_id])) {
+    //                 $row->img_url = $opImages[$row->product_id];
+    //             }
+    //             return $row;
+    //         });
+    //     }
+
+    // dd($opImages);
 
         return view('warehouse.index', compact('brands', 'roles'));
     }
@@ -191,6 +263,28 @@ class ComProductController extends Controller
 
         // ดึงข้อมูลหน้า
         $rows = $baseQuery->get();
+
+        // ดึงรูปจาก API Oriental Princess มา map ด้วย sku = product_id
+        $opImages = Cache::remember('op_product_images', 60 * 60, function () {
+            try {
+                $response = Http::timeout(10)->get('https://orientalprincess.com/api/getProductImage.php');
+                if ($response->successful()) {
+                    return collect($response->json())->whereNotNull('image')->pluck('image', 'sku')->toArray();
+                }
+            } catch (\Exception $e) {
+                \Log::warning('OP API getProductImage failed: ' . $e->getMessage());
+            }
+            return [];
+        });
+
+        if (!empty($opImages)) {
+            $rows->transform(function ($row) use ($opImages) {
+                if (isset($opImages[$row->product_id])) {
+                    $row->img_url = $opImages[$row->product_id];
+                }
+                return $row;
+            });
+        }
 
         return response()->json([
             'draw'            => $draw,            // ต้องส่งกลับ
@@ -323,10 +417,24 @@ class ComProductController extends Controller
 
         $product_id = $images->first()->product_id ?? null;
 
-        // dd($data);
-        // dd($images);
+        // ดึงรูปจาก API Oriental Princess (ใช้ cache เดียวกับ listWarehouse)
+        $opApiImage = null;
+        $opImages = Cache::remember('op_product_images', 60 * 60, function () {
+            try {
+                $response = Http::timeout(10)->get('https://orientalprincess.com/api/getProductImage.php');
+                if ($response->successful()) {
+                    return collect($response->json())->whereNotNull('image')->pluck('image', 'sku')->toArray();
+                }
+            } catch (\Exception $e) {
+                \Log::warning('OP API getProductImage failed: ' . $e->getMessage());
+            }
+            return [];
+        });
+        if (isset($opImages[$product_id])) {
+            $opApiImage = $opImages[$product_id];
+        }
 
-        return view('warehouse.edit', compact('data', 'images', 'product_id'));
+        return view('warehouse.edit', compact('data', 'images', 'product_id', 'opApiImage'));
     }
     
     public function editCs(Request $request, $product_id)
@@ -436,9 +544,15 @@ class ComProductController extends Controller
                 $data_product_upddate = [
                     'unit_weight'    => $request->input('unit_weight') ?? '',
                     'unit_pak_size'  => $request->input('unit_pak_size') ?? '',
-                    'case_width'     => $request->input('case_width') ?? '',
-                    'case_length'    => $request->input('case_length') ?? '',
-                    'case_height'    => $request->input('case_height') ?? '',
+                    'case_width'     => ($request->input('case_width') !== null && $request->input('case_width') !== '')
+                                        ? $request->input('case_width')
+                                        : ($request->input('km_case_width') ?? ''),
+                    'case_length'    => ($request->input('case_length') !== null && $request->input('case_length') !== '')
+                                        ? $request->input('case_length')
+                                        : ($request->input('km_case_long') ?? ''),
+                    'case_height'    => ($request->input('case_height') !== null && $request->input('case_height') !== '')
+                                        ? $request->input('case_height')
+                                        : ($request->input('km_case_height') ?? ''),
                     'case_barcode'   => $request->input('case_barcode') ?? '',
                     'case_weight'    => $request->input('case_weight') ?? '',
                     'case_pack_size' => $request->input('case_pack_size') ?? '',

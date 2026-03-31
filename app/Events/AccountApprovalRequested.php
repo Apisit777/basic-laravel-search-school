@@ -19,13 +19,15 @@ class AccountApprovalRequested implements ShouldBroadcastNow
     public string $product;
     public string $createdBy;
     public string $createdAt;
+    public string $activeDate;
 
-    public function __construct(string $brand, string $product, string $createdBy)
+    public function __construct(string $brand, string $product, string $createdBy, string $activeDate = '')
     {
-        $this->brand     = $brand;
-        $this->product   = $product;   // 👈 ต้องมีบรรทัดนี้
-        $this->createdBy = $createdBy;
-        $this->createdAt = now()->toDateTimeString();
+        $this->brand      = $brand;
+        $this->product    = $product;   // 👈 ต้องมีบรรทัดนี้
+        $this->createdBy  = $createdBy;
+        $this->createdAt  = now()->toDateTimeString();
+        $this->activeDate = $activeDate;
 
         \Log::info('✅ AccountApprovalRequested::__construct', [
             'brand'   => $this->brand,
@@ -57,10 +59,11 @@ class AccountApprovalRequested implements ShouldBroadcastNow
         ]);
 
         return [
-            'brand'      => $this->brand,
-            'product'    => $this->product,
-            'created_by' => $this->createdBy,
-            'created_at' => $this->createdAt,
+            'brand'       => $this->brand,
+            'product'     => $this->product,
+            'created_by'  => $this->createdBy,
+            'created_at'  => $this->createdAt,
+            'active_date' => $this->activeDate,
         ];
     }
 

@@ -51,6 +51,14 @@ class User extends Authenticatable
             ->leftJoin('positions', 'positions.id', '=', 'user_permission.position_id')
             ->where('positions.name_position', '=', session('role'));
     }
+
+    public function getUserDepartment()
+    {
+        return $this->hasOne(user_permission::class, 'user_id', 'id')
+            ->leftJoin('positions', 'positions.id', '=', 'user_permission.position_id')
+            ->where('positions.name_position', '=', session('role'));
+    }
+    
     // public function userRole()
     // {
     //     $userPermission = $this->getUserPermission()->first();

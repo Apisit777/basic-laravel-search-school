@@ -36,7 +36,15 @@ class HomeController extends Controller
     {
 
         session(['role' => $request->name_position]);
-        return response()->json(['status' => 'success', 'route' => '/product_master/pd_master']);
+
+        if (Auth::user()->getUserDepartment->department === 'IBSH') {
+            return response()->json([
+                'status' => 'success',
+                'route' => '/ibsh/product_detail',
+            ]);
+        } else {
+            return response()->json(['status' => 'success', 'route' => '/product_master/pd_master']);
+        }
 
         // dd($request);
         // $dataForm = $request['dataRole'];

@@ -393,6 +393,13 @@
         }
         .dark .zoom-preview { background:#2f2f2f; }
 
+
+        /* ************************************************************************************************ */
+        .select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+            cursor: default;
+            padding-left: 12px !important; 
+            padding-right: 5px;
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/select2@4.1.0.min.css') }}" />
@@ -461,7 +468,7 @@
                                                                     <label for="product_id">รหัสสินค้า</label>
                                                                     <input type="text" name="product_id" id="product_id" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->product_id }}" readonly>
                                                                 </div>
-                                                                <div class="md:col-span-3">
+                                                                <div class="md:col-span-3 relative">
                                                                     <label for="name">การมองเห็นข้อมูล<span class="text-danger"> *</span></label>
                                                                     <div class="md:col-span-4 mt-5" style="position: relative;">
                                                                         <input type="radio" id="permission_y" name="permission" value="Y"
@@ -470,6 +477,11 @@
                                                                         <input type="radio" id="permission_n" name="permission" value="N"
                                                                             {{ $data->permission == 'N' ? 'checked' : '' }}>
                                                                         <label for="">ปิดกั้น</label>
+                                                                    </div>
+                                                                    <!-- Glass overlay disable -->
+                                                                    <div class="absolute inset-0 z-10 rounded-md cursor-not-allowed
+                                                                        bg-white/50 border border-gray-300/50
+                                                                        dark:bg-white/10 dark:border-white/30">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -553,7 +565,7 @@
                                 </div>
                                 <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[1.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
                                     <div class="grid grid-cols-5 gap-10">
-                                                <div class="form col-span-5">
+                                        <div class="form col-span-5">
                                             <div class="relative w-full overflow-hidden">
                                                 <input type="checkbox" class="setcheckbox peer absolute top-0 inset-x-0 w-full h-12 opacity-0 z-100000 cursor-pointer">
                                                 <div class="bg-[#d7d8db] dark:bg-[#303030] text-white h-12 w-full pl-5 flex items-center">
@@ -569,6 +581,22 @@
                                                 <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
                                                     <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                         <div class="lg:col-span-4">
+
+                                                            <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9 mb-2">
+                                                                <div class="md:col-span-3">
+                                                                    <label for="natural_active_ingredients">%Natural claimed<span class="text-danger"> *</span></label>
+                                                                    <input type="text" name="natural_active_ingredients" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ isset($data->natural_active_ingredients) ? $data->natural_active_ingredients . ' %' : '' }}">
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="ingredient_from_natural_origin"><span class="text-danger"> *</span></label>
+                                                                    <input type="text" name="ingredient_from_natural_origin" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ isset($data->ingredient_from_natural_origin) ? $data->ingredient_from_natural_origin . ' %' : '' }}">
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="ingredient_from_natural_ref_isO16128"><span class="text-danger"> *</span></label>
+                                                                    <input type="text" name="ingredient_from_natural_ref_isO16128" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ isset($data->ingredient_from_natural_ref_isO16128) ? $data->ingredient_from_natural_ref_isO16128 . ' %' : '' }}">
+                                                                </div>
+                                                            </div>
+
                                                             <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                                                                 <div class="md:col-span-3">
                                                                     <label for="message" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ส่วนประกอบหลังกล่อง</label>
@@ -579,6 +607,11 @@
                                                                     <!-- <input type="text" name="after_open_m" id="after_open_m" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->after_open_m }}" เดือน/> -->
                                                                     <input type="text" name="after_open_m" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ isset($data->after_open_m) ? $data->after_open_m . ' เดือน' : '' }}">
                                                                     <!-- <input type="hidden" name="after_open_m" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->after_open_m }}"> -->
+                                                                    <!-- Glass overlay disable -->
+                                                                    <div class="absolute inset-0 z-10 rounded-md cursor-not-allowed
+                                                                        bg-white/50 border border-gray-300/50
+                                                                        dark:bg-white/10 dark:border-white/30">
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -958,7 +991,803 @@
                                     </div>
                                 </div>
                             </li>
+
+                            <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
+                                <div data-twe-stepper-head-ref="" class="setpcollep flex cursor-pointer items-center p-1 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
+                                    <span data-twe-stepper-head-icon-ref="" class="bg_step_color me-3 flex h-[1.938rem] w-[1.938rem] items-center justify-center rounded-full text-sm !bg-primary-100 !text-primary-700 dark:!bg-slate-900 dark:!text-primary-500">
+                                        5
+                                    </span>
+                                    <span data-twe-stepper-head-text-ref="" class="after:absolute after:flex after:text-[0.8rem] text-black/50 dark:text-white/50 font-medium !text-black/50 dark:!text-white/50">
+                                        รายละเอียด1
+                                    </span>
+                                </div>
+                                <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden ps-[1.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
+                                    <div class="grid grid-cols-5 gap-10">
+                                        <div class="form col-span-5">
+                                            <div class="relative w-full overflow-hidden peer-checked:hidden">
+                                                <input type="checkbox" class="setcheckbox peer absolute top-0 inset-x-0 w-full h-12 opacity-0 z-100000 cursor-pointer">
+                                                <div class="bg-[#d7d8db] dark:bg-[#303030] text-white h-12 w-full pl-5 flex items-center">
+                                                    <h1 class="text-gray-900 dark:text-white text-lg">
+                                                        จัดการข้อมูลรายละเอียดสินค้า เพิ่มเติม
+                                                    </h1>
+                                                </div>
+                                                <div class="absolute top-3 right-3 text-white transition-tranform duration-500 rotate-180 peer-checked:rotate-0">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900 dark:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
+                                                    </svg>
+                                                </div>
+                                                <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
+                                                    <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
+                                                        <div class="lg:col-span-4">
+                                                            <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
+                                                                <div class="md:col-span-3">
+                                                                    <label for="company_id">Brand</label>
+                                                                    <input type="text" name="company_id" id="company_id" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $dataProductDetail->company_id }}" readonly>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="product_id">รหัสสินค้า</label>
+                                                                    <input type="text" name="product_id" id="product_id" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $dataProductDetail->product_id }}" readonly>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Product Channel (Channel of Brand)</label>
+                                                                    <select class="js-example-basic-multiple w-full rounded-sm text-xs select2" id="multiSelect" name="channel_brand[]" multiple="multiple">
+                                                                    </select>
+                                                                </div>
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="item_name">Item Name</label>
+                                                                    <input type="text" name="item_name" id="item_name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $dataProductDetail->item_name }}" />
+                                                                </div>
+
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Category Name</label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="cat_name" id="CATEGORY_ID" onchange="getajaxLine(this)">
+                                                                        <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($categorys as $category)
+                                                                            <option value="{{ $category->ID }}" {{ $category->ID == $dataProductDetail->category_id ? 'selected' : '' }}>{{ $category->DESCRIPTION }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Usage Area</label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="usage_area" id="usage_area">
+                                                                        <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($usageAreas as $usageArea)
+                                                                            <option value="{{ $usageArea->ID }}" {{ $usageArea->ID == $dataProductDetail->usage_area_id ? 'selected' : '' }}>{{ $usageArea->DESCRIPTION }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Product Line</label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="product_line" id="LINE_ID" onchange="getajaxType(this)">
+                                                                        <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($product_lines as $product_line)
+                                                                            <option value="{{ $product_line->ID }}" {{ $product_line->ID == $dataProductDetail->product_line_id ? 'selected' : '' }}>{{ $product_line->DESCRIPTION }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Texture/Formula</label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="texture" id="texture">
+                                                                        <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($textureFormulas as $textureFormula)
+                                                                            <option value="{{ $textureFormula->ID }}" {{ $textureFormula->ID == $dataProductDetail->texture_id ? 'selected' : '' }}>{{ $textureFormula->DESCRIPTION }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Product Type</label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="product_type" id="TYPE_ID">
+                                                                        <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($product_types as $product_type)
+                                                                            <option value="{{ $product_type->ID }}" {{ $product_type->ID == $dataProductDetail->product_type_id ? 'selected' : '' }}>{{ $product_type->DESCRIPTION }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Finish</label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="finish" id="finish">
+                                                                        <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($finishs as $finish)
+                                                                            <option value="{{ $finish->ID }}" {{ $finish->ID == $dataProductDetail->finish_id ? 'selected' : '' }}>{{ $finish->DESCRIPTION }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Skin Type</label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="skin_type" id="skin_type">
+                                                                        <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($skinTypes as $skinType)
+                                                                            <option value="{{ $skinType->ID }}" {{ $skinType->ID == $dataProductDetail->skin_type_id ? 'selected' : '' }}>{{ $skinType->DESCRIPTION }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Package Type1</label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="package" id="package">
+                                                                        <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($packageType1s as $packageType1)
+                                                                            <option value="{{ $packageType1->ID }}" {{ $packageType1->ID == $dataProductDetail->package_type1_id ? 'selected' : '' }}>{{ $packageType1->DESCRIPTION }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Coverage/Benefit</label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="coverage" id="coverage">
+                                                                        <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($coverageBenefits as $coverageBenefit)
+                                                                            <option value="{{ $coverageBenefit->ID }}" {{ $coverageBenefit->ID == $dataProductDetail->coverage_id ? 'selected' : '' }}>{{ $coverageBenefit->DESCRIPTION }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Package Type2</label>
+                                                                    <select class="js-example-basic-single w-full rounded-sm text-xs" name="package2" id="package2">
+                                                                        <option value=""> --- กรุณาเลือก ---</option>
+                                                                        @foreach ($packageType2s as $packageType2)
+                                                                            <option value="{{ $packageType2->ID }}" {{ $packageType2->ID == $dataProductDetail->package_type2_id ? 'selected' : '' }}>{{ $packageType2->DESCRIPTION }}</option>
+                                                                        @endforeach
+                                                                    </select>
+                                                                </div>
+
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="color_name_th">ชื่อสีภาษาไทย</label>
+                                                                    <input required type="text" name="color_name_th" id="color_name_th" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="{{ $dataProductDetail->color_name_th }}" />
+                                                                </div>
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="color_name_en">ชื่อสีภาษาอังกฤษ</label>
+                                                                    <input required type="text" name="color_name_en" id="color_name_en" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="{{ $dataProductDetail->color_name_en }}" />
+                                                                </div>
+
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="suppiler_th">Suppiler name(ไทย)</label>
+                                                                    <input required type="text" name="suppiler_th" id="suppiler_th" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="{{ $dataProductDetail->suppiler_th }}" />
+                                                                </div>
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="suppiler_en">Suppiler name(อังกฤษ)</label>
+                                                                    <input required type="text" name="suppiler_en" id="suppiler_en" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="{{ $dataProductDetail->suppiler_en }}" />
+                                                                </div>
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="color_code">รหัสสี</label>
+                                                                    <input required type="text" name="color_code" id="color_code" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="" />
+                                                                </div>
+                                                                <div class="md:col-span-3" style="position: relative;">
+                                                                    <label for="other_detail">อื่นๆ</label>
+                                                                    <input required type="text" name="other_detail" id="other_detail" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center checkinputvalidate select2" value="{{ $dataProductDetail->other_detail }}" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li data-twe-stepper-step-ref="" class="relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
+                                <div data-twe-stepper-head-ref="" class="setpcollep flex cursor-pointer items-center p-1 leading-[1.3rem] no-underline after:bg-neutral-200 after:content-[''] hover:bg-stone-50 dark:after:bg-white/10 dark:hover:bg-white/[.025]" tabindex="0">
+                                    <span data-twe-stepper-head-icon-ref="" class="bg_step_color me-3 flex h-[1.938rem] w-[1.938rem] items-center justify-center rounded-full text-sm  !bg-primary-100 !text-primary-700 dark:!bg-slate-900 dark:!text-primary-500">
+                                        6
+                                    </span>
+                                    <span data-twe-stepper-head-text-ref="" class="after:absolute after:flex after:text-[0.8rem] text-black/50 dark:text-white/50 font-medium !text-black/50 dark:!text-white/50">
+                                        Free Form
+                                    </span>
+                                </div>
+                                <div data-twe-stepper-content-ref="" class="transition-[height, margin-bottom, padding-top, padding-bottom] left-0 overflow-hidden  ps-[1.75rem] duration-100 ease-in-out text-gray-900 dark:text-white" >
+                                    <div class="grid grid-cols-5 gap-10">
+                                        <div class="form col-span-5">
+                                            <div class="relative w-full overflow-hidden peer-checked:hidden">
+                                                <input type="checkbox" class="setcheckbox peer absolute top-0 inset-x-0 w-full h-12 opacity-0 cursor-pointer">
+                                                <div class="bg-[#d7d8db] dark:bg-[#303030] text-white h-12 w-full pl-5 flex items-center">
+                                                    <h1 class="text-gray-900 dark:text-white text-lg">
+                                                        Free Form
+                                                    </h1>
+                                                </div>
+                                                <div class="absolute top-3 right-3 text-white transition-tranform duration-500 rotate-180 peer-checked:rotate-0">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-900 dark:text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
+                                                    </svg>
+                                                </div>
+                                                <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
+                                                    <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
+                                                        <div class="lg:col-span-4">
+                                                            <div class="duplicate_free_form grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-9">
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">SL S/SLES - free</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="sls_free_y" name="sls_free" value="Y"
+                                                                            {{ $dataFreeForm->sls_free == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="sls_free_n" name="sls_free" value="N"
+                                                                            {{ $dataFreeForm->sls_free == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Natural alcohol</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="natural_alcohol_y" name="natural_alcohol" value="Y"
+                                                                            {{ $dataFreeForm->natural_alcohol == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="natural_alcohol_n" name="natural_alcohol" value="N"
+                                                                            {{ $dataFreeForm->natural_alcohol == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Silicone - free</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="silicone_free_y" name="silicone_free" value="Y"
+                                                                            {{ $dataFreeForm->silicone_free == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="silicone_free_n" name="silicone_free" value="N"
+                                                                            {{ $dataFreeForm->silicone_free == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-9">
+                                                                    <ul class="width-full pt-2.5 mt-2 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Certified food grade flavors</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="certified_food_y" name="certified_food" value="Y"
+                                                                            {{ $dataFreeForm->certified_food == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="certified_food_n" name="certified_food" value="N"
+                                                                            {{ $dataFreeForm->certified_food == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Mineral oil free</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="mineral_free_y" name="mineral_free" value="Y"
+                                                                            {{ $dataFreeForm->mineral_free == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="mineral_free_n" name="mineral_free" value="N"
+                                                                            {{ $dataFreeForm->mineral_free == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Made with certified organic</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="certified_organic_y" name="certified_organic" value="Y"
+                                                                            {{ $dataFreeForm->certified_organic == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="certified_organic_n" name="certified_organic" value="N"
+                                                                            {{ $dataFreeForm->certified_organic == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-9">
+                                                                    <ul class="width-full pt-2.5 mt-2 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
+                                                                </div>
+                                                                <!-- <div class="md:col-span-6">
+                                                                    <ul class="width-full pt-2.5 mt-2 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
+                                                                </div> -->
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Colorant - free</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="colorant_free_y" name="colorant_free" value="Y"
+                                                                            {{ $dataFreeForm->colorant_free == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="colorant_free_n" name="colorant_free" value="N"
+                                                                            {{ $dataFreeForm->colorant_free == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Hypoallergenic</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="hypoallergenic_y" name="hypoallergenic" value="Y"
+                                                                            {{ $dataFreeForm->hypoallergenic == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="hypoallergenic_n" name="hypoallergenic" value="N"
+                                                                            {{ $dataFreeForm->hypoallergenic == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Phthalate - free</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="phthalate_free_y" name="phthalate_free" value="Y"
+                                                                            {{ $dataFreeForm->phthalate_free == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="phthalate_free_n" name="phthalate_free" value="N"
+                                                                            {{ $dataFreeForm->phthalate_free == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-9">
+                                                                    <ul class="width-full pt-2.5 mt-2 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Irritation tested</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="tested_y" name="tested" value="Y"
+                                                                            {{ $dataFreeForm->tested == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="tested_n" name="tested" value="N"
+                                                                            {{ $dataFreeForm->tested == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Cruelty - free</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="cruelty_free_y" name="cruelty_free" value="Y"
+                                                                            {{ $dataFreeForm->cruelty_free == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="cruelty_free_n" name="cruelty_free" value="N"
+                                                                            {{ $dataFreeForm->cruelty_free == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Non - comedogenic (ingrsdients)</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="non_comedogenic_y" name="non_comedogenic" value="Y"
+                                                                            {{ $dataFreeForm->non_comedogenic == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="non_comedogenic_n" name="non_comedogenic" value="N"
+                                                                            {{ $dataFreeForm->non_comedogenic == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- <div class="md:col-span-6">
+                                                                    <ul class="width-full pt-2.5 mt-2 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
+                                                                </div> -->
+                                                                <div class="md:col-span-9">
+                                                                    <ul class="width-full pt-2.5 mt-2 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Talc - free</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="talc_free_y" name="talc_free" value="Y"
+                                                                            {{ $dataFreeForm->talc_free == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="talc_free_n" name="talc_free" value="N"
+                                                                            {{ $dataFreeForm->talc_free == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">No synthetic colorant</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="synthetic_colorant_y" name="synthetic_colorant" value="Y"
+                                                                            {{ $dataFreeForm->synthetic_colorant == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="synthetic_colorant_n" name="synthetic_colorant" value="N"
+                                                                            {{ $dataFreeForm->synthetic_colorant == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Oil - free</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="oil_free_y" name="oil_free" value="Y" 
+                                                                            {{ $dataFreeForm->oil_free == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="oil_free_n" name="oil_free" value="N"
+                                                                            {{ $dataFreeForm->oil_free == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-9">
+                                                                    <ul class="width-full pt-2.5 mt-2 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">No synthetic fragrance</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="synthetic_fragrance_y" name="synthetic_fragrance" value="Y"
+                                                                            {{ $dataFreeForm->synthetic_fragrance == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="synthetic_fragrance_n" name="synthetic_fragrance" value="N"
+                                                                            {{ $dataFreeForm->synthetic_fragrance == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Triethanolamin - free</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="triethanolamin_free_y" name="triethanolamin_free" value="Y"
+                                                                            {{ $dataFreeForm->triethanolamin_free == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="triethanolamin_free_n" name="triethanolamin_free" value="N"
+                                                                            {{ $dataFreeForm->triethanolamin_free == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">pH balance (5.0-5.5)</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="ph_balance_y" name="ph_balance" value="Y"
+                                                                            {{ $dataFreeForm->ph_balance == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="ph_balance_n" name="ph_balance" value="N"
+                                                                            {{ $dataFreeForm->ph_balance == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-9">
+                                                                    <ul class="width-full pt-2.5 mt-2 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
+                                                                </div>
+                                                                <!-- <div class="md:col-span-6">
+                                                                    <ul class="width-full pt-2.5 mt-2 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
+                                                                </div> -->
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Petroleum - free</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="petroleum_free_y" name="petroleum_free" value="Y"
+                                                                            {{ $dataFreeForm->petroleum_free == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="petroleum_free_n" name="petroleum_free" value="N"
+                                                                            {{ $dataFreeForm->petroleum_free == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Children over 6 year old</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="chil_over_6year_y" name="chil_over_6year" value="Y"
+                                                                            {{ $dataFreeForm->chil_over_6year == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="chil_over_6year_n" name="chil_over_6year" value="N"
+                                                                            {{ $dataFreeForm->chil_over_6year == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Petrolatum - free</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="petrolatum_free_y" name="petrolatum_free" value="Y"
+                                                                            {{ $dataFreeForm->petrolatum_free == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="petrolatum_free_n" name="petrolatum_free" value="N"
+                                                                            {{ $dataFreeForm->petrolatum_free == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-9">
+                                                                    <ul class="width-full pt-2.5 mt-2 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">Fragrance - free</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="fragrance_free_y" name="fragrance_free" value="Y"
+                                                                            {{ $dataFreeForm->fragrance_free == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="fragrance_free_n" name="fragrance_free" value="N"
+                                                                            {{ $dataFreeForm->fragrance_free == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">alcohol - free</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="alcohol_free_y" name="alcohol_free" value="Y"
+                                                                            {{ $dataFreeForm->alcohol_free == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="alcohol_free_n" name="alcohol_free" value="N"
+                                                                            {{ $dataFreeForm->alcohol_free == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">paraben - free</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="paraben_free_y" name="paraben_free" value="Y"
+                                                                            {{ $dataFreeForm->paraben_free == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="paraben_free_n" name="paraben_free" value="N"
+                                                                            {{ $dataFreeForm->paraben_free == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-9">
+                                                                    <ul class="width-full pt-2.5 mt-2 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
+                                                                </div>
+                                                                <!-- <div class="md:col-span-6">
+                                                                    <ul class="width-full pt-2.5 mt-2 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
+                                                                </div> -->
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">คนท้องใช้ได้ ใช่หรือไม่</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="pregnancy_y" name="pregnancy" value="Y"
+                                                                            {{ $dataFreeForm->pregnancy == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="pregnancy_n" name="pregnancy" value="N"
+                                                                            {{ $dataFreeForm->pregnancy == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <label for="name">ให้นมบุตรใช้ได้ ใช่หรือไม่</label>
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="breastfeed_y" name="breastfeed" value="Y"
+                                                                            {{ $dataFreeForm->breastfeed == 'Y' ? 'checked' : '' }}>
+                                                                        <label for="" class="mr-5">ใช่</label>
+                                                                        <input type="radio" id="breastfeed_n" name="breastfeed" value="N"
+                                                                            {{ $dataFreeForm->breastfeed == 'N' ? 'checked' : '' }}>
+                                                                        <label for="">ไม่ใช่</label>
+                                                                    </div>
+                                                                </div>
+
+                                                                <!-- ─── Custom Free Form (JSON array) ─── -->
+                                                                <div class="md:col-span-9">
+                                                                    <div class="flex items-center justify-between mb-2">
+                                                                        <span class="text-sm font-medium">Custom Free Form</span>
+                                                                        <button type="button" id="btnAddFreeForm"
+                                                                            class="inline-flex items-center gap-1 px-3 py-1 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded transition">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                                                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
+                                                                            </svg>
+                                                                            Free Form
+                                                                        </button>
+                                                                    </div>
+                                                                    <input type="hidden" name="custom_free_forms" id="customFreeFormsJson" value="{{ $dataFreeForm->custom_free_forms ?? '[]' }}">
+                                                                    <div id="customFreeFormList" class="space-y-2"></div>
+                                                                </div>
+
+                                                                <div class="md:col-span-9">
+                                                                    <ul class="width-full pt-2.5 mt-2 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
+                                                                </div>
+
+                                                                <div class="md:col-span-3">
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="" name="contact28" value="Y" />
+                                                                        <label for="" class="mr-5">อ้างอิงตามคำแนะนำแพทย์</label>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="md:col-span-3">
+                                                                    <div class="md:col-span-4 mt-2" style="position: relative;">
+                                                                        <input type="radio" id="" name="contact29" value="Y" />
+                                                                        <label for="" class="mr-5">อ้างอิงตามคำแนะนำแพทย์</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
                         </ul>
+
+                        <!-- ─── Dropzone Upload ─── -->
+                <div class="mt-6 px-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                        <!-- Left: Dropzone Panel -->
+                        <div class="bg-white dark:bg-[#2a2a2a] border border-gray-300 dark:border-gray-600 rounded-lg p-4">
+                            <div class="flex items-center gap-2 mb-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M2 6a2 2 0 012-2h5l2 2h5a2 2 0 012 2v6a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"/>
+                                </svg>
+                                <span class="font-bold text-gray-800 dark:text-white">Dropzone</span>
+                            </div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-3">Drag files in, validate, queue, and export metadata - all frontend.</p>
+
+                            <!-- Controls Row -->
+                            <div class="grid grid-cols-2 gap-3 mb-3">
+                                <div>
+                                    <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">File Type</label>
+                                    <select id="dz-mode" class="w-full text-sm border border-gray-300 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-[#404040] text-gray-900 dark:text-white">
+                                        <option value="images">Images</option>
+                                        <option value="documents">Documents</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Max files</label>
+                                    <input id="dz-maxfiles" type="number" value="5" min="1" max="5"
+                                        class="w-full text-sm border border-gray-300 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-[#404040] text-gray-900 dark:text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Max size per file (MB)</label>
+                                    <input id="dz-maxsize" type="number" value="10" min="0.1" max="10" step="0.1"
+                                        class="w-full text-sm border border-gray-300 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-[#404040] text-gray-900 dark:text-white">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Allowed extensions</label>
+                                    <input id="dz-exts" type="text" value=".png, .jpg, .jpeg, .webp" readonly
+                                        class="w-full text-sm border border-gray-300 dark:border-gray-600 rounded px-2 py-1 bg-gray-100 dark:bg-[#333] text-gray-700 dark:text-gray-300">
+                                </div>
+                                <div>
+                                    <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">Form Type</label>
+                                    <select id="dz-form-type" name="dz_form_type" class="w-full text-sm border border-gray-300 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-[#404040] text-gray-900 dark:text-white">
+                                        <option value="special_ingredients">Special Ingredients</option>
+                                        <option value="characteristic">Characteristic</option>
+                                    </select>
+                                </div>
+                                <!-- <div>
+                                    <label class="block text-xs text-gray-500 dark:text-gray-400 mb-1">File Type</label>
+                                    <select id="dz-file-type" name="dz_file_type" class="w-full text-sm border border-gray-300 dark:border-gray-600 rounded px-2 py-1 bg-white dark:bg-[#404040] text-gray-900 dark:text-white">
+                                        <option value="image">Image</option>
+                                        <option value="document">Document</option>
+                                    </select>
+                                </div> -->
+                            </div>
+
+                            <!-- Drop Area -->
+                            <div id="dz-drop-area"
+                                class="border-2 border-dashed border-gray-400 dark:border-gray-500 rounded-lg p-6 text-center cursor-pointer hover:border-blue-400 dark:hover:border-blue-500 transition-colors"
+                                onclick="document.getElementById('dz-file-input').click()">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mx-auto mb-2 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm3 2h6v4h2l-4 4-4-4h2V5z"/>
+                                </svg>
+                                <p class="text-sm font-medium text-gray-700 dark:text-gray-200">Drop files here</p>
+                                <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">or click to browse. Paste also works.</p>
+                                <input id="dz-file-input" type="file" multiple class="hidden">
+                            </div>
+
+                            <!-- Mode Badge -->
+                            <div class="flex gap-2 mt-2 flex-wrap">
+                                <span id="dz-badge-mode" class="text-xs bg-gray-800 text-white px-2 py-0.5 rounded">Mode: Images</span>
+                                <span id="dz-badge-limits" class="text-xs bg-blue-600 text-white px-2 py-0.5 rounded">Limits: 5 files, 10 MB each</span>
+                                <span id="dz-badge-types" class="text-xs bg-gray-600 text-white px-2 py-0.5 rounded">Types: .png, .jpg, .jpeg, .webp</span>
+                            </div>
+
+                            <!-- Rejected -->
+                            <p id="dz-rejected-msg" class="text-xs text-red-500 mt-2 hidden"></p>
+                        </div>
+
+                        <!-- Right: Queue Panel -->
+                        <div class="bg-white dark:bg-[#2a2a2a] border border-gray-300 dark:border-gray-600 rounded-lg p-4 flex flex-col">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                                    </svg>
+                                    <span class="font-bold text-gray-800 dark:text-white mb-1">รายละเอียดไฟล์</span>
+                                    <span id="dz-queue-count" class="text-xs text-gray-400">0 file(s)</span>
+                                </div>
+                                <button type="button" id="dz-clear-queue"
+                                    class="text-xs px-2 py-1 border border-gray-300 dark:border-gray-600 rounded text-gray-600 dark:text-gray-300 hover:bg-red-50 dark:hover:bg-red-900/20 hover:border-red-400 hover:text-red-500 transition-colors">
+                                    Clear queue
+                                </button>
+                            </div>
+                            <div id="dz-queue-list" class="space-y-2 flex-1 overflow-y-auto max-h-64">
+                                <p class="text-xs text-gray-400 dark:text-gray-500 text-center py-4">Nothing uploads anywhere. This is a UI component demo.</p>
+                            </div>
+                            <input type="hidden" name="dz_files_json" id="dz-files-json">
+                        </div>
+
+                    </div>
+                </div>
+                <!-- ─── End Dropzone ─── -->
+
+                <!-- ─── Preview IBSH Files ─── -->
+                <div class="mt-6 px-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                        <!-- Special Ingredients -->
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="text-sm font-bold text-gray-800 dark:text-white flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Special Ingredients
+                                    <span class="text-xs font-normal text-gray-400">({{ $ibshSpecial->count() }})</span>
+                                </h4>
+                                @if($ibshSpecial->count() > 0)
+                                <div class="flex items-center gap-2">
+                                    <label class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 cursor-pointer select-none mt-2">
+                                        <input type="checkbox" class="ibsh-select-all rounded border-gray-300 dark:border-gray-600 text-green-500 focus:ring-green-400" data-group="special">
+                                        Select All
+                                    </label>
+                                    <button type="button" class="ibsh-download-btn inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded border border-green-500 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed" data-group="special" disabled>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                        </svg>
+                                        Download
+                                    </button>
+                                </div>
+                                @endif
+                            </div>
+                            @if($ibshSpecial->count() > 0)
+                            <div class="columns-2 sm:columns-3 gap-2 space-y-2">
+                                @foreach($ibshSpecial as $ibsh)
+                                    @php
+                                        $ext = strtolower(pathinfo($ibsh->path, PATHINFO_EXTENSION));
+                                        $isImage = in_array($ext, ['png','jpg','jpeg','webp','gif']);
+                                    @endphp
+                                    <div class="break-inside-avoid rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600 bg-white dark:bg-[#2a2a2a] relative group">
+                                        <label class="absolute top-1.5 left-1.5 z-10 cursor-pointer">
+                                            <input type="checkbox" class="ibsh-file-cb rounded border-gray-300 dark:border-gray-600 text-green-500 focus:ring-green-400" data-group="special" data-url="{{ asset($ibsh->path) }}" data-name="{{ basename($ibsh->path) }}">
+                                        </label>
+                                        @if($isImage)
+                                            <img src="{{ asset($ibsh->path) }}" alt="special_ingredients" class="w-full h-auto object-cover" loading="lazy">
+                                        @else
+                                            <a href="{{ asset($ibsh->path) }}" target="_blank" class="flex flex-col items-center justify-center p-4 gap-2 hover:bg-gray-50 dark:hover:bg-[#333] transition-colors">
+                                                @if($ext === 'pdf')
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500" viewBox="0 0 24 24" fill="currentColor">
+                                                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 2l5 5h-5V4zm-2.5 9.5a1.5 1.5 0 010 3H9v1.5H7.5v-6H10.5a1.5 1.5 0 010 0zm0 1.5H9v1h1.5a.5.5 0 000-1zm5-1.5h-2v6h2a2.5 2.5 0 000-5zm0 1.5a1 1 0 010 2h-.5v-2h.5zm4-1.5h-2.5v6H18v-2h1.5v-1.5H18v-1h1.5V13.5z"/>
+                                                    </svg>
+                                                @else
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" viewBox="0 0 24 24" fill="currentColor">
+                                                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm1 9h-2v4.5a1.5 1.5 0 01-3 0V11H8V9h7v2zm-2-4V4l5 5h-5z"/>
+                                                    </svg>
+                                                @endif
+                                                <span class="text-xs text-gray-500 dark:text-gray-400 truncate max-w-full">{{ basename($ibsh->path) }}</span>
+                                            </a>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                            @else
+                                <p class="text-xs text-gray-400 dark:text-gray-500 italic">No files</p>
+                            @endif
+                        </div>
+
+                        <!-- Characteristic -->
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="text-sm font-bold text-gray-800 dark:text-white flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-500" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                    </svg>
+                                    Characteristic
+                                    <span class="text-xs font-normal text-gray-400">({{ $ibshCharacteristic->count() }})</span>
+                                </h4>
+                                @if($ibshCharacteristic->count() > 0)
+                                <div class="flex items-center gap-2">
+                                    <label class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 cursor-pointer select-none mt-2">
+                                        <input type="checkbox" class="ibsh-select-all rounded border-gray-300 dark:border-gray-600 text-blue-500 focus:ring-blue-400" data-group="characteristic">
+                                        Select All
+                                    </label>
+                                    <button type="button" class="ibsh-download-btn inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded border border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed" data-group="characteristic" disabled>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                        </svg>
+                                        Download
+                                    </button>
+                                </div>
+                                @endif
+                            </div>
+                            @if($ibshCharacteristic->count() > 0)
+                            <div class="columns-2 sm:columns-3 gap-2 space-y-2">
+                                @foreach($ibshCharacteristic as $ibsh)
+                                    @php
+                                        $ext = strtolower(pathinfo($ibsh->path, PATHINFO_EXTENSION));
+                                        $isImage = in_array($ext, ['png','jpg','jpeg','webp','gif']);
+                                    @endphp
+                                    <div class="break-inside-avoid rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600 bg-white dark:bg-[#2a2a2a] relative group">
+                                        <label class="absolute top-1.5 left-1.5 z-10 cursor-pointer">
+                                            <input type="checkbox" class="ibsh-file-cb rounded border-gray-300 dark:border-gray-600 text-blue-500 focus:ring-blue-400" data-group="characteristic" data-url="{{ asset($ibsh->path) }}" data-name="{{ basename($ibsh->path) }}">
+                                        </label>
+                                        @if($isImage)
+                                            <img src="{{ asset($ibsh->path) }}" alt="characteristic" class="w-full h-auto object-cover" loading="lazy">
+                                        @else
+                                            <a href="{{ asset($ibsh->path) }}" target="_blank" class="flex flex-col items-center justify-center p-4 gap-2 hover:bg-gray-50 dark:hover:bg-[#333] transition-colors">
+                                                @if($ext === 'pdf')
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500" viewBox="0 0 24 24" fill="currentColor">
+                                                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 2l5 5h-5V4zm-2.5 9.5a1.5 1.5 0 010 3H9v1.5H7.5v-6H10.5a1.5 1.5 0 010 0zm0 1.5H9v1h1.5a.5.5 0 000-1zm5-1.5h-2v6h2a2.5 2.5 0 000-5zm0 1.5a1 1 0 010 2h-.5v-2h.5zm4-1.5h-2.5v6H18v-2h1.5v-1.5H18v-1h1.5V13.5z"/>
+                                                    </svg>
+                                                @else
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" viewBox="0 0 24 24" fill="currentColor">
+                                                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm1 9h-2v4.5a1.5 1.5 0 01-3 0V11H8V9h7v2zm-2-4V4l5 5h-5z"/>
+                                                    </svg>
+                                                @endif
+                                                <span class="text-xs text-gray-500 dark:text-gray-400 truncate max-w-full">{{ basename($ibsh->path) }}</span>
+                                            </a>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
+                            @else
+                                <p class="text-xs text-gray-400 dark:text-gray-500 italic">No files</p>
+                            @endif
+                        </div>
+
+                    </div>
+                </div>
+                <!-- ─── End Preview IBSH Files ─── -->
 
                         <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
                         <div id="loader" class="loading absolute hidden bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]">
@@ -1167,6 +1996,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- </div> -->
 
             </div>
@@ -1226,49 +2056,131 @@
         // });
 
         function onOpenhandler(params) {
-            document.querySelectorAll('.setpcollep').forEach((element, index) => {
-                element.addEventListener('click', function (params) {
-                    document.querySelectorAll('.setcheckbox').forEach(ee => {
-                        ee.checked = false
-                    });
-                    document.querySelectorAll('.bg_step_color').forEach(ee => {
-                        ee.classList.remove('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
-                        ee.classList.add('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
-                    });
-                    let el = document.querySelectorAll('.setcheckbox')[index]
-                    let el_colr = document.querySelectorAll('.bg_step_color')[index]
-                    el.checked = !el.checked
-                    if( el.checked){
-                        el_colr.classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
-                        el_colr.classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
-                    }
-                })
-            });
-            document.querySelectorAll('.setcheckbox').forEach((element, index) => {
-                element.addEventListener('click', function (params) {
-                    let el = document.querySelectorAll('.setcheckbox')[index]
-                    let el_colr = document.querySelectorAll('.bg_step_color')[index]
-                    console.log("🚀 ~ el.checked:", el.checked)
-                    if( el.checked){
-                        el_colr.classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
-                        el_colr.classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
-                    } else {
-                        el_colr.classList.remove('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
-                        el_colr.classList.add('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
-                    }
-                })
-            });
+            // document.querySelectorAll('.setpcollep').forEach((element, index) => {
+            //     element.addEventListener('click', function (params) {
+            //         document.querySelectorAll('.setcheckbox').forEach(ee => {
+            //             ee.checked = false
+            //         });
+            //         document.querySelectorAll('.bg_step_color').forEach(ee => {
+            //             ee.classList.remove('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+            //             ee.classList.add('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+            //         });
+            //         let el = document.querySelectorAll('.setcheckbox')[index]
+            //         let el_colr = document.querySelectorAll('.bg_step_color')[index]
+            //         el.checked = !el.checked
+            //         if( el.checked){
+            //             el_colr.classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+            //             el_colr.classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+            //         }
+            //     })
+            // });
+            // document.querySelectorAll('.setcheckbox').forEach((element, index) => {
+            //     element.addEventListener('click', function (params) {
+            //         let el = document.querySelectorAll('.setcheckbox')[index]
+            //         let el_colr = document.querySelectorAll('.bg_step_color')[index]
+            //         console.log("🚀 ~ el.checked:", el.checked)
+            //         if( el.checked){
+            //             el_colr.classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+            //             el_colr.classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+            //         } else {
+            //             el_colr.classList.remove('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+            //             el_colr.classList.add('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+            //         }
+            //     })
+            // });
         }
 
         $(document).ready(function() {
+            // onOpenhandler()
+            // document.querySelectorAll('.setcheckbox')[0].checked = true
+            // document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+            // document.querySelectorAll('.bg_step_color')[0].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+            // document.querySelectorAll('.setcheckbox')[4].checked = true
+            // document.querySelectorAll('.bg_step_color')[4].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
+            // document.querySelectorAll('.bg_step_color')[4].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+
+            // เปิดทุก tab
+            document.querySelectorAll('.setcheckbox').forEach(function(el) { el.checked = true; });
+
+            // Convert PHP arrays to JavaScript objects
+            let allChannel = <?php echo json_encode($allChannels); ?>;
+            let defaultAllChannel = <?php echo json_encode($defaultAllChannels); ?>;
+            let defaultChannel = <?php echo json_encode($defaultChannel); ?>;
+
+            console.log('allChannel:', allChannel);
+            console.log('defaultAllChannel:', defaultAllChannel);
+            console.log('defaultChannel:', defaultChannel);
+
+            // ถ้า allChannel ยังไม่มี 'all' ให้เพิ่มเข้าไป
+            if (!allChannel.includes('all')) {
+                allChannel.unshift('all');
+            }
+            
             $('.js-example-basic-single').select2();
-            onOpenhandler()
-            document.querySelectorAll('.setcheckbox')[0].checked = true
-            document.querySelectorAll('.bg_step_color')[0].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
-            document.querySelectorAll('.bg_step_color')[0].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
-            document.querySelectorAll('.setcheckbox')[4].checked = true
-            document.querySelectorAll('.bg_step_color')[4].classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
-            document.querySelectorAll('.bg_step_color')[4].classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
+            $('#multiSelect').select2({
+                placeholder: "--- กรุณาเลือก ---",
+                closeOnSelect: false,
+            });
+
+            $('#multiSelect').empty();
+
+            // Populate all options first
+            allChannel.forEach(function(channel) {
+                let option = new Option(channel, channel, false, false);
+                $('#multiSelect').append(option);
+            });
+
+            // Set default values after a short delay
+            setTimeout(function () {
+                let selectedValues = [];
+
+                if (defaultAllChannel[0] === 'all') {
+                    selectedValues = ['all']; // ✅ เลือกแค่ 'all'
+                } else {
+                    selectedValues = defaultChannel.map(c =>
+                        allChannel.find(ac => ac.trim().toLowerCase() === c.trim().toLowerCase()) || c
+                    ).filter(Boolean);
+                }
+
+                $('#multiSelect').val(selectedValues).trigger("change");
+
+                console.log("Selected values after setting:", $('#multiSelect').val());
+            }, 600);
+
+            // ✅ เพิ่มเงื่อนไขควบคุมการเลือก All หรือรายการย่อย
+            $('#multiSelect').on('select2:select', function (e) {
+                let selected = $(this).val() || [];
+                let selectedValue = e.params.data.id;
+
+                // ถ้าเลือก all → ลบตัวอื่น
+                if (selectedValue === 'all') {
+                    $(this).val(['all']).trigger('change');
+                } else {
+                    // ถ้าเลือกตัวอื่นแล้วมี all อยู่ → เอา all ออก
+                    if (selected.includes('all')) {
+                        const filtered = selected.filter(val => val !== 'all');
+                        $(this).val(filtered).trigger('change');
+                    }
+                }
+            });
+
+            // ✅ รองรับ unselect เพื่อเลือกใหม่เมื่อกดเอา 'all' ออก
+            $('#multiSelect').on('select2:unselect', function (e) {
+                let selected = $(this).val() || [];
+
+                // ถ้าลบ all → clear ทั้งหมดเพื่อให้เลือกใหม่ได้
+                if (e.params.data.id === 'all') {
+                    $(this).val([]).trigger('change');
+                }
+            });
+
+            // โหลด Product Line และ Product Type ตามค่าที่เลือกไว้ตอนเปิดหน้า
+            const selectedCategoryId = $('#CATEGORY_ID').val();
+            if (selectedCategoryId) {
+                // โหลด Line ตาม Category และรักษาค่าเดิมไว้
+                getajaxLine({value: selectedCategoryId}, true);
+            }
+
         });
 
         let i = 0;
@@ -1344,16 +2256,31 @@
                     'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
                 }
             });
+
+            var formData = new FormData(document.getElementById('update_product_detail'));
+            formData.append('_method', 'POST');
+
+            // Append Dropzone files
+            if (window.getDzFiles) {
+                window.getDzFiles().forEach(function(file) {
+                    formData.append('dz_files[]', file);
+                });
+                formData.append('dz_form_type', window.getDzFormType ? window.getDzFormType() : '');
+                formData.append('dz_file_type', window.getDzFileType ? window.getDzFileType() : '');
+            }
+
             $.ajax({
                 method: "POST",
                 url: "{{ route('product_detail.pd_detail_update', $data->product_id) }}",
-                data: $("#update_product_detail").serialize(),
+                data: formData,
+                processData: false,
+                contentType: false,
                 beforeSend: function () {
                     $('#loader').removeClass('hidden')
                 },
                 success: function(res){
                     if(res.success == true) {
-                        window.location = "/product_detail/pd_detail";
+                        window.location = "/ibhs/product_description";
                     } else {
                         toastr.error("Can't Create Product!");
                     }
@@ -1361,10 +2288,10 @@
                 },
                 error: function (params) {
                     setTimeout(function() {
-                        errorMessage("Can't Create Username!");
+                        errorMessage("Can't Update!");
                     },dlayMessage)
                     setTimeout(function() {
-                        toastr.error("Can't Create Username!");
+                        toastr.error("Can't Update!");
                     },dlayMessage)
                 }
             });
@@ -1382,6 +2309,312 @@
 
 
 
+
+        // ========== Custom Free Form (dynamic rows → JSON) ==========
+        (function() {
+            var list = $('#customFreeFormList');
+            var hiddenInput = $('#customFreeFormsJson');
+            var items = [];
+
+            // โหลดข้อมูลเดิมจาก hidden input
+            try {
+                items = JSON.parse(hiddenInput.val() || '[]');
+            } catch(e) {
+                items = [];
+            }
+
+            function render() {
+                list.empty();
+                items.forEach(function(item, i) {
+                    var hasNote = item.note && item.note.trim() !== '';
+                    var row = $(
+                        '<div class="cff-row" data-idx="' + i + '">' +
+                            '<div class="flex items-center gap-3 p-2 bg-gray-50 dark:bg-[#333] rounded">' +
+                                '<button type="button" class="cff-toggle-note flex-shrink-0 w-6 h-6 flex items-center justify-center rounded-full text-white font-bold text-sm leading-none ' + (hasNote ? 'bg-green-500 hover:bg-green-600' : 'bg-red-400 hover:bg-red-500') + '" data-idx="' + i + '" title="เพิ่มหมายเหตุ">+</button>' +
+                                '<input type="text" class="flex-1 px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-[#404040] text-gray-900 dark:text-white" ' +
+                                    'value="' + escHtml(item.name) + '" data-idx="' + i + '" placeholder="ชื่อ Free Form">' +
+                                '<label class="flex items-center gap-1 text-sm">' +
+                                    '<input type="radio" name="cff_' + i + '" value="Y" ' + (item.value === 'Y' ? 'checked' : '') + ' data-idx="' + i + '" class="cff-radio"> ใช่' +
+                                '</label>' +
+                                '<label class="flex items-center gap-1 text-sm">' +
+                                    '<input type="radio" name="cff_' + i + '" value="N" ' + (item.value === 'N' ? 'checked' : '') + ' data-idx="' + i + '" class="cff-radio"> ไม่ใช่' +
+                                '</label>' +
+                                '<button type="button" class="cff-remove text-red-500 hover:text-red-700 font-bold text-lg px-1" data-idx="' + i + '">&times;</button>' +
+                            '</div>' +
+                            '<div class="cff-note-area mt-1 ml-9 ' + (hasNote ? '' : 'hidden') + '">' +
+                                '<textarea class="cff-note w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-[#404040] text-gray-900 dark:text-white" ' +
+                                    'data-idx="' + i + '" rows="2" placeholder="หมายเหตุ...">' + escHtml(item.note || '') + '</textarea>' +
+                            '</div>' +
+                        '</div>'
+                    );
+                    list.append(row);
+                });
+                syncJson();
+            }
+
+            function syncJson() {
+                hiddenInput.val(JSON.stringify(items));
+            }
+
+            function escHtml(str) {
+                return $('<div>').text(str || '').html();
+            }
+
+            // เพิ่ม row ใหม่
+            $('#btnAddFreeForm').on('click', function() {
+                items.push({ name: '', value: 'N', note: '' });
+                render();
+                // focus input ตัวสุดท้าย
+                list.find('input[type="text"]').last().focus();
+            });
+
+            // ลบ row
+            list.on('click', '.cff-remove', function() {
+                var idx = $(this).data('idx');
+                items.splice(idx, 1);
+                render();
+            });
+
+            // toggle หมายเหตุ
+            list.on('click', '.cff-toggle-note', function() {
+                var row = $(this).closest('.cff-row');
+                var noteArea = row.find('.cff-note-area');
+                noteArea.toggleClass('hidden');
+                if (!noteArea.hasClass('hidden')) {
+                    noteArea.find('textarea').focus();
+                }
+            });
+
+            // อัพเดตหมายเหตุ
+            list.on('input', '.cff-note', function() {
+                var idx = $(this).data('idx');
+                items[idx].note = $(this).val();
+                syncJson();
+                // เปลี่ยนสีปุ่ม + ตามว่ามีหมายเหตุหรือไม่
+                var btn = $(this).closest('.cff-row').find('.cff-toggle-note');
+                if ($(this).val().trim()) {
+                    btn.removeClass('bg-red-400 hover:bg-red-500').addClass('bg-green-500 hover:bg-green-600');
+                } else {
+                    btn.removeClass('bg-green-500 hover:bg-green-600').addClass('bg-red-400 hover:bg-red-500');
+                }
+            });
+
+            // อัพเดตชื่อ
+            list.on('input', 'input[type="text"]', function() {
+                var idx = $(this).data('idx');
+                items[idx].name = $(this).val();
+                syncJson();
+            });
+
+            // อัพเดต radio
+            list.on('change', '.cff-radio', function() {
+                var idx = $(this).data('idx');
+                items[idx].value = $(this).val();
+                syncJson();
+            });
+
+            // render ครั้งแรก
+            render();
+        })();
+
+        // ========== Dropzone Logic ==========
+        (function() {
+            var modeConfigs = {
+                images:    { exts: ['.png','.jpg','.jpeg','.webp'], label: 'Images' },
+                documents: { exts: ['.pdf','.xls','.xlsx','.csv'],  label: 'Documents' }
+            };
+            var queue = [];
+
+            function getMode()     { return $('#dz-mode').val(); }
+            function getMaxFiles() { return Math.min(parseInt($('#dz-maxfiles').val()) || 5, 5); }
+            function getMaxSize()  { return Math.min(parseFloat($('#dz-maxsize').val()) || 10, 10); }
+            function getAllowedExts() { return modeConfigs[getMode()].exts; }
+
+            function updateBadges() {
+                var mode = getMode();
+                var exts = modeConfigs[mode].exts.join(', ');
+                $('#dz-badge-mode').text('Mode: ' + modeConfigs[mode].label);
+                $('#dz-badge-limits').text('Limits: ' + getMaxFiles() + ' files, ' + getMaxSize() + ' MB each');
+                $('#dz-badge-types').text('Types: ' + exts);
+                $('#dz-exts').val(exts);
+            }
+
+            function formatSize(bytes) {
+                if (bytes < 1024) return bytes + ' B';
+                if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+                return (bytes/(1024*1024)).toFixed(1) + ' MB';
+            }
+
+            function getFileIcon(ext) {
+                if (['.pdf'].includes(ext)) return '📄';
+                if (['.xls','.xlsx','.csv'].includes(ext)) return '📊';
+                return '🖼️';
+            }
+
+            function renderQueue() {
+                var list = $('#dz-queue-list');
+                list.empty();
+                if (queue.length === 0) {
+                    list.html('<p class="text-xs text-gray-400 dark:text-gray-500 text-center py-4">Nothing uploads anywhere. This is a UI component demo.</p>');
+                    $('#dz-queue-count').text('0 file(s)');
+                    return;
+                }
+                var totalSize = queue.reduce(function(s,f){ return s + f.size; }, 0);
+                $('#dz-queue-count').text(queue.length + ' file(s) - ' + formatSize(totalSize));
+                queue.forEach(function(f, i) {
+                    var ext = f.name.substring(f.name.lastIndexOf('.')).toLowerCase();
+                    var row = $(
+                        '<div class="flex items-center gap-2 p-2 bg-gray-50 dark:bg-[#333] rounded text-sm">' +
+                            '<span class="text-lg">' + getFileIcon(ext) + '</span>' +
+                            '<div class="flex-1 min-w-0">' +
+                                '<p class="truncate text-gray-800 dark:text-white font-medium">' + $('<div>').text(f.name).html() + '</p>' +
+                                '<div class="flex gap-2 text-xs text-gray-400 mt-0.5">' +
+                                    '<span>📦 ' + formatSize(f.size) + '</span>' +
+                                    '<span>📎 ' + ext + '</span>' +
+                                '</div>' +
+                            '</div>' +
+                            '<button type="button" class="dz-remove-item text-gray-400 hover:text-red-500 text-lg px-1" data-idx="' + i + '">×</button>' +
+                        '</div>'
+                    );
+                    list.append(row);
+                });
+                $('#dz-files-json').val(JSON.stringify(queue.map(function(f){ return {name:f.name, size:f.size, type:f.type}; })));
+            }
+
+            function processFiles(files) {
+                var exts = getAllowedExts();
+                var maxFiles = getMaxFiles();
+                var maxSizeMB = getMaxSize();
+                var rejected = 0;
+                $.each(files, function(_, file) {
+                    var ext = file.name.substring(file.name.lastIndexOf('.')).toLowerCase();
+                    if (!exts.includes(ext)) { rejected++; return; }
+                    if (file.size > maxSizeMB * 1024 * 1024) { rejected++; return; }
+                    if (queue.length >= maxFiles) { rejected++; return; }
+                    // prevent duplicate
+                    var dup = queue.some(function(f){ return f.name === file.name && f.size === file.size; });
+                    if (!dup) queue.push(file);
+                });
+                if (rejected > 0) {
+                    $('#dz-rejected-msg').text('Rejected ' + rejected + ' file(s). Check limits and types.').removeClass('hidden');
+                } else {
+                    $('#dz-rejected-msg').addClass('hidden');
+                }
+                renderQueue();
+            }
+
+            // Mode change
+            $('#dz-mode, #dz-maxfiles, #dz-maxsize').on('change input', function() {
+                updateBadges();
+                queue = [];
+                renderQueue();
+            });
+
+            // File input
+            $('#dz-file-input').on('change', function() {
+                processFiles(this.files);
+                this.value = '';
+            });
+
+            // Drag & Drop
+            var dropArea = document.getElementById('dz-drop-area');
+            ['dragenter','dragover'].forEach(function(e) {
+                dropArea.addEventListener(e, function(ev) {
+                    ev.preventDefault();
+                    dropArea.classList.add('border-blue-400','bg-blue-50','dark:bg-blue-900/10');
+                });
+            });
+            ['dragleave','drop'].forEach(function(e) {
+                dropArea.addEventListener(e, function(ev) {
+                    ev.preventDefault();
+                    dropArea.classList.remove('border-blue-400','bg-blue-50','dark:bg-blue-900/10');
+                    if (e === 'drop') processFiles(ev.dataTransfer.files);
+                });
+            });
+
+            // Paste
+            document.addEventListener('paste', function(ev) {
+                if (ev.clipboardData && ev.clipboardData.files.length) {
+                    processFiles(ev.clipboardData.files);
+                }
+            });
+
+            // Remove item
+            $('#dz-queue-list').on('click', '.dz-remove-item', function() {
+                var idx = parseInt($(this).data('idx'));
+                queue.splice(idx, 1);
+                renderQueue();
+            });
+
+            // Clear queue
+            $('#dz-clear-queue').on('click', function() {
+                queue = [];
+                $('#dz-rejected-msg').addClass('hidden');
+                renderQueue();
+            });
+
+            // Init
+            updateBadges();
+            renderQueue();
+
+            // Expose files for form submission
+            window.getDzFiles    = function() { return queue; };
+            window.getDzFormType = function() { return $('#dz-form-type').val(); };
+            window.getDzFileType = function() { return $('#dz-file-type').val(); };
+        })();
+        // ========== End Dropzone ==========
+
+        // ========== IBSH Preview: Select & Download ==========
+        (function() {
+            function updateDownloadBtn(group) {
+                var checked = $('.ibsh-file-cb[data-group="' + group + '"]:checked').length;
+                var btn = $('.ibsh-download-btn[data-group="' + group + '"]');
+                btn.prop('disabled', checked === 0);
+                btn.find('.ibsh-dl-count').remove();
+                if (checked > 0) {
+                    btn.append('<span class="ibsh-dl-count">(' + checked + ')</span>');
+                }
+            }
+
+            // Select All
+            $('.ibsh-select-all').on('change', function() {
+                var group = $(this).data('group');
+                var isChecked = $(this).is(':checked');
+                $('.ibsh-file-cb[data-group="' + group + '"]').prop('checked', isChecked);
+                updateDownloadBtn(group);
+            });
+
+            // Individual checkbox
+            $(document).on('change', '.ibsh-file-cb', function() {
+                var group = $(this).data('group');
+                var total = $('.ibsh-file-cb[data-group="' + group + '"]').length;
+                var checked = $('.ibsh-file-cb[data-group="' + group + '"]:checked').length;
+                $('.ibsh-select-all[data-group="' + group + '"]').prop('checked', total === checked);
+                updateDownloadBtn(group);
+            });
+
+            // Download selected
+            $('.ibsh-download-btn').on('click', function() {
+                var group = $(this).data('group');
+                var items = $('.ibsh-file-cb[data-group="' + group + '"]:checked');
+                if (items.length === 0) return;
+
+                items.each(function(i) {
+                    var url = $(this).data('url');
+                    var name = $(this).data('name');
+                    setTimeout(function() {
+                        var a = document.createElement('a');
+                        a.href = url;
+                        a.download = name;
+                        a.style.display = 'none';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    }, i * 300);
+                });
+            });
+        })();
+        // ========== End IBSH Preview ==========
 
         function gallery() {
             return {

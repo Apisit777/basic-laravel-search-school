@@ -11,7 +11,7 @@
         /* Page container styles - ขนาด A4 */
         .page {
             width: 210mm;
-            min-height: 297mm;
+            height: 297mm;
             padding: 10mm 15mm;
             margin: 10px auto;
             background: white;
@@ -37,7 +37,6 @@
 
         /* Content area */
         .page-content {
-            max-height: 260mm;
             overflow: hidden;
         }
 
@@ -51,7 +50,6 @@
             /* margin-bottom: 15px; */
             page-break-inside: avoid;
         }
-
         .section-title {
             font-weight: bold;
             font-size: 14px;
@@ -67,7 +65,7 @@
         }
 
         .field-label {
-            width: 180px;
+            width: 190px;
             color: #087EF0;
             font-weight: 500;
         }
@@ -169,7 +167,7 @@
                 box-shadow: none !important;
                 page-break-after: always !important;
                 page-break-inside: avoid !important;
-                overflow: visible !important;
+                overflow: hidden !important;
             }
 
             .page:last-child {
@@ -248,7 +246,7 @@
     <div class="bg-white dark:bg-[#232323] rounded shadow-lg duration-500 md:p-4 mt-10">
         <div class="justify-center items-center">
             <!-- Buttons -->
-            <div class="md:col-span-6 text-left mt-2 no-print">
+            <div class="md:col-span-6 no-print mt-2 flex items-center gap-2 flex-nowrap">
                 <a href="{{ route('product_detail.pd_detail_index') }}" class="text-gray-100 bg-[#303030] hover:bg-[#404040] font-bold py-1 px-2 mr-2 rounded group">
                     <svg fill="#fff" class="-mt-1 size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26.676 26.676">
                         <g>
@@ -261,46 +259,68 @@
                     </svg>
                     Back
                 </a>
+
                 <a type="button" onclick="window.print()" class="cursor-pointer text-white bg-[#303030] hover:bg-[#404040] font-bold py-1 px-2 mr-2 rounded group">
                     <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                viewBox="0 0 512 512" xml:space="preserve"
-                                class="-mt-1 size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                                <rect x="153.361" y="65.14" style="fill:#FFFFFF;" width="205.278" height="95.191"/>
-                                <path style="fill:#1E0478;" d="M512,144.296v172.838c0,19.889-16.176,36.066-36.066,36.066h-95.582v104.517
-                                    c0,5.993-4.864,10.857-10.857,10.857H142.504c-5.993,0-10.857-4.864-10.857-10.857V353.2H36.066C16.176,353.2,0,337.023,0,317.134
-                                    V144.296c0-19.889,16.176-36.066,36.066-36.066h95.582V54.283c0-5.993,4.864-10.857,10.857-10.857h226.991
-                                    c5.993,0,10.857,4.864,10.857,10.857v53.947h95.582C495.824,108.23,512,124.406,512,144.296z M490.287,317.134V144.296
-                                    c0-7.915-6.438-14.353-14.353-14.353h-47.976v41.244c0,5.993-4.864,10.857-10.857,10.857H94.898
-                                    c-5.993,0-10.857-4.864-10.857-10.857v-41.244H36.066c-7.915,0-14.353,6.438-14.353,14.353v172.838
-                                    c0,7.915,6.438,14.353,14.353,14.353h95.582v-27.608h-19.803c-5.993,0-10.857-4.864-10.857-10.857s4.864-10.857,10.857-10.857
-                                    h30.659h226.991h30.659c5.993,0,10.857,4.864,10.857,10.857s-4.864,10.857-10.857,10.857h-19.803v27.608h95.582
-                                    C483.849,331.486,490.287,325.048,490.287,317.134z M406.245,160.331v-30.388h-25.893v30.388H406.245z M358.639,446.86V303.878
-                                    H153.361V446.86L358.639,446.86L358.639,446.86z M358.639,160.331V65.14H153.361v95.191H358.639z M131.648,160.331v-30.388h-25.893
-                                    v30.388H131.648z"/>
-                                <path style="fill:#9B8CCC;" d="M490.287,144.296v172.838c0,7.915-6.438,14.353-14.353,14.353h-95.582v-27.608h19.803
-                                    c5.993,0,10.857-4.864,10.857-10.857s-4.864-10.857-10.857-10.857h-30.659H142.504h-30.659c-5.993,0-10.857,4.864-10.857,10.857
-                                    s4.864,10.857,10.857,10.857h19.803v27.608H36.066c-7.915,0-14.353-6.438-14.353-14.353V144.296c0-7.915,6.438-14.353,14.353-14.353
-                                    h47.976v41.244c0,5.993,4.864,10.857,10.857,10.857h322.204c5.993,0,10.857-4.864,10.857-10.857v-41.244h47.976
-                                    C483.849,129.943,490.287,136.381,490.287,144.296z M82.391,219.261c0-7.513-6.08-13.603-13.593-13.603s-13.603,6.091-13.603,13.603
-                                    s6.091,13.603,13.603,13.603C76.311,232.864,82.391,226.774,82.391,219.261z"/>
-                                <rect x="380.352" y="129.943" style="fill:#6F7CCD;" width="25.893" height="30.388"/>
-                                <path style="fill:#94E7EF;" d="M358.639,303.878V446.86H153.361V303.878H358.639z M320.684,342.343
-                                    c0-6.004-4.853-10.857-10.857-10.857H202.173c-6.004,0-10.857,4.853-10.857,10.857c0,5.993,4.853,10.857,10.857,10.857h107.655
-                                    C315.831,353.2,320.684,348.336,320.684,342.343z M263.708,397.31c0-5.993-4.864-10.857-10.857-10.857h-50.679
-                                    c-6.004,0-10.857,4.864-10.857,10.857s4.853,10.857,10.857,10.857h50.679C258.844,408.167,263.708,403.303,263.708,397.31z"/>
-                                <g>
-                                    <path style="fill:#1E0478;" d="M309.827,331.486c6.004,0,10.857,4.853,10.857,10.857c0,5.993-4.853,10.857-10.857,10.857H202.173
-                                        c-6.004,0-10.857-4.864-10.857-10.857c0-6.004,4.853-10.857,10.857-10.857H309.827z"/>
-                                    <path style="fill:#1E0478;" d="M252.852,386.454c5.993,0,10.857,4.864,10.857,10.857s-4.864,10.857-10.857,10.857h-50.679
-                                        c-6.004,0-10.857-4.864-10.857-10.857s4.853-10.857,10.857-10.857H252.852z"/>
-                                </g>
-                                <rect x="105.755" y="129.943" style="fill:#6F7CCD;" width="25.893" height="30.388"/>
-                                <path style="fill:#1E0478;" d="M68.799,205.658c7.513,0,13.593,6.091,13.593,13.603s-6.08,13.603-13.593,13.603
-                                    s-13.603-6.091-13.603-13.603S61.286,205.658,68.799,205.658z"/>
-                            </svg>
+                        viewBox="0 0 512 512" xml:space="preserve"
+                        class="-mt-1 size-6 hidden h-6 w-6 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
+                        <rect x="153.361" y="65.14" style="fill:#FFFFFF;" width="205.278" height="95.191"/>
+                        <path style="fill:#1E0478;" d="M512,144.296v172.838c0,19.889-16.176,36.066-36.066,36.066h-95.582v104.517
+                            c0,5.993-4.864,10.857-10.857,10.857H142.504c-5.993,0-10.857-4.864-10.857-10.857V353.2H36.066C16.176,353.2,0,337.023,0,317.134
+                            V144.296c0-19.889,16.176-36.066,36.066-36.066h95.582V54.283c0-5.993,4.864-10.857,10.857-10.857h226.991
+                            c5.993,0,10.857,4.864,10.857,10.857v53.947h95.582C495.824,108.23,512,124.406,512,144.296z M490.287,317.134V144.296
+                            c0-7.915-6.438-14.353-14.353-14.353h-47.976v41.244c0,5.993-4.864,10.857-10.857,10.857H94.898
+                            c-5.993,0-10.857-4.864-10.857-10.857v-41.244H36.066c-7.915,0-14.353,6.438-14.353,14.353v172.838
+                            c0,7.915,6.438,14.353,14.353,14.353h95.582v-27.608h-19.803c-5.993,0-10.857-4.864-10.857-10.857s4.864-10.857,10.857-10.857
+                            h30.659h226.991h30.659c5.993,0,10.857,4.864,10.857,10.857s-4.864,10.857-10.857,10.857h-19.803v27.608h95.582
+                            C483.849,331.486,490.287,325.048,490.287,317.134z M406.245,160.331v-30.388h-25.893v30.388H406.245z M358.639,446.86V303.878
+                            H153.361V446.86L358.639,446.86L358.639,446.86z M358.639,160.331V65.14H153.361v95.191H358.639z M131.648,160.331v-30.388h-25.893
+                            v30.388H131.648z"/>
+                        <path style="fill:#9B8CCC;" d="M490.287,144.296v172.838c0,7.915-6.438,14.353-14.353,14.353h-95.582v-27.608h19.803
+                            c5.993,0,10.857-4.864,10.857-10.857s-4.864-10.857-10.857-10.857h-30.659H142.504h-30.659c-5.993,0-10.857,4.864-10.857,10.857
+                            s4.864,10.857,10.857,10.857h19.803v27.608H36.066c-7.915,0-14.353-6.438-14.353-14.353V144.296c0-7.915,6.438-14.353,14.353-14.353
+                            h47.976v41.244c0,5.993,4.864,10.857,10.857,10.857h322.204c5.993,0,10.857-4.864,10.857-10.857v-41.244h47.976
+                            C483.849,129.943,490.287,136.381,490.287,144.296z M82.391,219.261c0-7.513-6.08-13.603-13.593-13.603s-13.603,6.091-13.603,13.603
+                            s6.091,13.603,13.603,13.603C76.311,232.864,82.391,226.774,82.391,219.261z"/>
+                        <rect x="380.352" y="129.943" style="fill:#6F7CCD;" width="25.893" height="30.388"/>
+                        <path style="fill:#94E7EF;" d="M358.639,303.878V446.86H153.361V303.878H358.639z M320.684,342.343
+                            c0-6.004-4.853-10.857-10.857-10.857H202.173c-6.004,0-10.857,4.853-10.857,10.857c0,5.993,4.853,10.857,10.857,10.857h107.655
+                            C315.831,353.2,320.684,348.336,320.684,342.343z M263.708,397.31c0-5.993-4.864-10.857-10.857-10.857h-50.679
+                            c-6.004,0-10.857,4.864-10.857,10.857s4.853,10.857,10.857,10.857h50.679C258.844,408.167,263.708,403.303,263.708,397.31z"/>
+                        <g>
+                            <path style="fill:#1E0478;" d="M309.827,331.486c6.004,0,10.857,4.853,10.857,10.857c0,5.993-4.853,10.857-10.857,10.857H202.173
+                                c-6.004,0-10.857-4.864-10.857-10.857c0-6.004,4.853-10.857,10.857-10.857H309.827z"/>
+                            <path style="fill:#1E0478;" d="M252.852,386.454c5.993,0,10.857,4.864,10.857,10.857s-4.864,10.857-10.857,10.857h-50.679
+                                c-6.004,0-10.857-4.864-10.857-10.857s4.853-10.857,10.857-10.857H252.852z"/>
+                        </g>
+                        <rect x="105.755" y="129.943" style="fill:#6F7CCD;" width="25.893" height="30.388"/>
+                        <path style="fill:#1E0478;" d="M68.799,205.658c7.513,0,13.593,6.091,13.593,13.603s-6.08,13.603-13.593,13.603
+                            s-13.603-6.091-13.603-13.603S61.286,205.658,68.799,205.658z"/>
+                    </svg>
                     Print
                 </a>
+
+                @if(!empty($bomRows) && count($bomRows) > 1)
+                    <form method="get" class="flex items-center flex-nowrap mt-6">
+                        <span class="shrink-0 text-sm text-gray-700 dark:text-gray-200 mb-2">เอกสาร: &nbsp;</span>
+                        <select name="code"
+                                class="js-example-basic-single"
+                                onchange="this.form.submit()">
+                            @foreach($bomRows as $r)
+                                <option value="{{ $r['code'] }}"
+                                    @selected(($selectedBom['code'] ?? '') === ($r['code'] ?? ''))>
+                                    {{ $r['c_code'] ?? '-' }} ({{ $r['code'] }})
+                                </option>
+                            @endforeach
+                        </select>
+
+                        @foreach(request()->except('code') as $k => $v)
+                            <input type="hidden" name="{{ $k }}" value="{{ $v }}">
+                        @endforeach
+                    </form>
+                @endif
             </div>
+
 
             <!-- Pages Container - แสดงหน้าที่ถูก generate -->
             <div id="pages-container"></div>
@@ -311,8 +331,8 @@
                 <div class="content-item ref-section" style="display: flex; justify-content: flex-end; margin-bottom: 15px; margin-top: 0px;">
                     <div style="display:grid; grid-template-columns: 130px 117px; column-gap: 10px; row-gap: 6px; align-items:baseline;">
 
-                        <div style="text-align:right; font-weight:600; font-size: 14px;">REF :</div>
-                        <div style="text-align:left; font-size: 14px; color: #F72B2B;">รหัสเอกสารของ IB</div>
+                        <!-- <div style="text-align:right; font-weight:600; font-size: 14px;">REF :</div>
+                        <div style="text-align:left; font-size: 14px; color: #F72B2B;">รหัสเอกสารของ IB</div> -->
 
                         <div style="text-align:right; font-weight:600; font-size: 14px;">DATE OF ISSUE :</div>
                         <div style="text-align:left; font-size: 14px;"><?php echo date('Y-m-d'); ?></div>
@@ -323,21 +343,28 @@
                 <!-- Product Details Section -->
                 <div class="content-item content-section">
                     <div class="field-row">
-                        <span class="field-label">PRODUCT CODE</span>
+                        <span class="field-label">BULK CODE</span>
                         <span class="field-separator">:</span>
-                        <span class="field-value">เป็น bulk code ที่อยู่ใน BOM Bulk SAP เช่น 3-2CP291143</span>
+                        <span class="field-value">{{ $selectedBom['c_code'] ?? '-' }}</span>
                     </div>
+
+                    <!-- <div class="field-row">
+                        <span class="field-label">FG</span>
+                        <span class="field-separator">:</span>
+                        <span class="field-value">{{ $selectedBom['code'] ?? '-' }}</span>
+                    </div> -->
                     <div class="field-row">
                         <span class="field-label">JOB REFFERENCE NO</span>
                         <span class="field-separator">:</span>
                         <!-- 73847 <span class="field-value">เลขทะเบียนงานวิจัย เช่น CSCP-68022</span> -->
-                        <span class="field-value">{{ $data->JOB_REFNO }}</span>
+                        <span class="field-value">{{ $data->JOB_REFNO ?? '-' }}</span>
                     </div>
                     <div class="field-row">
                         <span class="field-label">PRODUCT NAME</span>
                         <span class="field-separator">:</span>
-                        <!-- <span class="field-value">ชื่อสินค้าที่แบรนด์สรุปแจ้งนักวิจัยเมื่อ confirm สูตร</span> -->
-                        <span class="field-value">{{ $data->NAME_THAI }}</span>
+                        <span class="field-value">
+                            {{ $selectedBom['name'] ?? ($data->NAME_THAI ?? '-') }}
+                        </span>
                     </div>
                     <div class="field-row">
                         <span class="field-label">APPEARANCE</span>
@@ -347,19 +374,33 @@
                     <div class="field-row">
                         <span class="field-label">CATEGORY</span>
                         <span class="field-separator">:</span>
-                        <span class="field-value">ประเภทสินค้า</span>
+                        <span class="field-value">{{ $data->cat_name }}</span>
                     </div>
                     <div class="field-row">
                         <span class="field-label">SHELF-LIFE (Months)</span>
                         <span class="field-separator">:</span>
-                        <span class="field-value">{{ $data->AGE }}</span>
+                        <span class="field-value">{{ $data->AGE ?? '-' }}</span>
+                    </div>
+                    <div class="field-label" style="font-size: 13px;">
+                        FDA notification is required 
+                        <!-- &nbsp;&nbsp;<span style="color: black;">:</span> -->
+                    </div>
+                    <div class="checkbox-row" style="margin-left: 100px;">
+                        <div class="checkbox-group">
+                            <div class="checkbox-box"></div>
+                            <span style="font-size: 14px;">Yes</span>
+                        </div>
+                        <div class="checkbox-group">
+                            <div class="checkbox-box"></div>
+                            <span style="font-size: 14px;">No</span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="content-item dotted-separator"></div>
 
                 <!-- FDA Notification Section -->
-                <div class="content-item content-section">
+                <!-- <div class="content-item content-section">
                     <div style="font-weight: bold; font-size: 14px; text-decoration: underline;">
                         FDA notification is required :
                     </div>
@@ -373,7 +414,7 @@
                             <span>No</span>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- ต้องแสดงคำเตือนบนฉลาก Section -->
                 <div class="content-item content-section">
@@ -383,11 +424,11 @@
                     <div class="checkbox-row" style="margin-left: 100px;">
                         <div class="checkbox-group">
                             <div class="checkbox-box"></div>
-                            <span>Yes</span>
+                            <span style="font-size: 14px;">Yes</span>
                         </div>
                         <div class="checkbox-group">
                             <div class="checkbox-box"></div>
-                            <span>No</span>
+                            <span style="font-size: 14px;">No</span>
                         </div>
                     </div>
                 </div>
@@ -414,30 +455,36 @@
                 </div>
 
                 <!-- ===== Special Ingredients ===== -->
+                <!-- Title + text เป็น 1 item -->
                 <div class="content-item content-section" style="margin-top: 20px;">
                     <div style="font-weight: bold; font-size: 14px; margin-bottom: 10px; text-decoration: underline;">
                         Special Ingredients
                     </div>
-
                     <div style="margin-left: 20px; font-size: 12px; color: #F72B2B;">
                         <div style="margin: 5px 0;">ส่วนผสม บรรยายสรรพคุณ พร้อมรูปภาพ เช่น สารสกัด วิตามิน เทคโนโลยี (ใส่ effective dose หรือ just claimed) ต้องการให้</div>
-                        <div style="margin: 5px 0;">สามารถแนบไฟล์ได้ทั้ง word, excel, pdf</div>
-
-                        <!-- ✅ GRID 3 คอลัมน์ -->
-                        <div class="si-grid">
-                            @foreach($images as $index => $image)
-                                <div class="img-item" data-id="{{ $image->id }}">
-                                <img
-                                    src="{{ $image->path ? asset($image->path) : 'https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg' }}"
-                                    class="si-img"
-                                    @if($image->path) @click="openGallery({{ $index }})" @endif
-                                    alt="Uploaded Image"
-                                >
-                                </div>
-                            @endforeach
-                        </div>
+                        <div style="margin: 5px 0;">สามารถแนบไฟล์ได้ทั้ง excel, pdf</div>
                     </div>
                 </div>
+                <!-- แต่ละแถวรูป (3 รูป) เป็น 1 item แยก → pagination จัดหน้าได้ละเอียดขึ้น -->
+                @if($ibshSpecialImages->count())
+                    @foreach($ibshSpecialImages->chunk(3) as $row)
+                        <div class="content-item">
+                            <div style="margin-left: 20px;">
+                                <div class="si-grid" style="margin-top: 0;">
+                                    @foreach($row as $ibsh)
+                                        <div class="img-item">
+                                            <img src="{{ asset($ibsh->path) }}" class="si-img" alt="Special Ingredients">
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="content-item">
+                        <div style="margin-left: 20px; font-size: 12px; color: #999; font-style: italic;">No images</div>
+                    </div>
+                @endif
 
                 <!-- ===== Characteristic ===== -->
                 <div class="content-item content-section" style="margin-top: 20px;">
@@ -448,6 +495,25 @@
                         <div style="margin: 5px 0;">คุณสมบัติของสูตรผลิตภัณฑ์ นักวิจัยบรรยายอย่างง่ายให้แต่ละสูตร เพื่อแบรนด์นำไปพิจารณา จะใช้หรือปรับข้อความตามเหมาะสม</div>
                     </div>
                 </div>
+                @if($ibshCharacteristicImages->count())
+                    @foreach($ibshCharacteristicImages->chunk(3) as $row)
+                        <div class="content-item">
+                            <div style="margin-left: 20px;">
+                                <div class="si-grid" style="margin-top: 0;">
+                                    @foreach($row as $ibsh)
+                                        <div class="img-item">
+                                            <img src="{{ asset($ibsh->path) }}" class="si-img" alt="Characteristic">
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @else
+                    <div class="content-item">
+                        <div style="margin-left: 20px; font-size: 12px; color: #999; font-style: italic;">No images</div>
+                    </div>
+                @endif
 
                 <!-- ===== Fragrance ===== -->
                 <div class="content-item content-section" style="margin-top: 20px;">
@@ -458,7 +524,7 @@
                         <div style="margin: 5px 0;">บางผลิตภัณฑ์ไม่ต้องแสดงข้อมูลนี้ได้ การแสดงข้อมูลมีบรรยายแนวกลิ่น และรูป Triangle น้ำหอม หรืออาจขอแนบเป็นไฟล์ pdf</div>
 
                         <!-- ✅ GRID 3 คอลัมน์ -->
-                        <div class="si-grid">
+                        <!-- <div class="si-grid">
                             @foreach($images as $index => $image)
                                 <div class="img-item" data-id="{{ $image->id }}">
                                 <img
@@ -469,7 +535,7 @@
                                 >
                                 </div>
                             @endforeach
-                        </div>
+                        </div> -->
 
                     </div>
                 </div>
@@ -483,8 +549,7 @@
                         <div style="margin: 5px 0;">ข้อแนะนำวิธีการใช</div>
                     </div>
                 </div>
-                <!-- ===== How To Use ===== -->
-                <div class="content-item content-section" style="margin-top: 20px;">
+                <!-- <div class="content-item content-section" style="margin-top: 20px;">
                     <div style="font-weight: bold; font-size: 14px; margin-bottom: 10px; text-decoration: underline;">
                         How To Use 
                     </div>
@@ -492,7 +557,6 @@
                         <div style="margin: 5px 0;">ข้อแนะนำวิธีการใช</div>
                     </div>
                 </div>
-                <!-- ===== How To Use ===== -->
                 <div class="content-item content-section" style="margin-top: 20px;">
                     <div style="font-weight: bold; font-size: 14px; margin-bottom: 10px; text-decoration: underline;">
                         How To Use 
@@ -500,7 +564,7 @@
                     <div style="margin-left: 20px; font-size: 12px; color: #F72B2B;">
                         <div style="margin: 5px 0;">ข้อแนะนำวิธีการใช</div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- ===== Qualification claimed ===== -->
                 <div class="content-item content-section">
@@ -513,7 +577,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->alcohol_free == 'Y')
+                                    @if ($data && $data->alcohol_free == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -530,7 +594,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->colorant_free == 'Y')
+                                    @if ($data && $data->colorant_free == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -547,7 +611,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->fragrance_free == 'Y')
+                                    @if ($data && $data->fragrance_free == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -564,7 +628,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->mineral_free == 'Y')
+                                    @if ($data && $data->mineral_free == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -581,7 +645,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->oil_free == 'Y')
+                                    @if ($data && $data->oil_free == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -598,7 +662,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->paraben_free == 'Y')
+                                    @if ($data && $data->paraben_free == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -615,7 +679,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->petrolatum_free == 'Y')
+                                    @if ($data && $data->petrolatum_free == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -632,7 +696,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->petroleum_free == 'Y')
+                                    @if ($data && $data->petroleum_free == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -649,7 +713,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->phthalate_free == 'Y')
+                                    @if ($data && $data->phthalate_free == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -666,7 +730,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->silicone_free == 'Y')
+                                    @if ($data && $data->silicone_free == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -683,7 +747,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->triethanolamin_free == 'Y')
+                                    @if ($data && $data->triethanolamin_free == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -700,7 +764,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->chil_over_6year == 'Y')
+                                    @if ($data && $data->chil_over_6year == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -717,7 +781,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->pregnancy == 'Y')
+                                    @if ($data && $data->pregnancy == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -737,7 +801,7 @@
                         <div style="flex: 1;">
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->non_comedogenic == 'Y')
+                                    @if ($data && $data->non_comedogenic == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -754,7 +818,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->synthetic_fragrance == 'Y')
+                                    @if ($data && $data->synthetic_fragrance == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -771,7 +835,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->synthetic_colorant == 'Y')
+                                    @if ($data && $data->synthetic_colorant == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -788,7 +852,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->certified_organic == 'Y')
+                                    @if ($data && $data->certified_organic == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -805,7 +869,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->certified_food == 'Y')
+                                    @if ($data && $data->certified_food == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -822,7 +886,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->natural_alcohol == 'Y')
+                                    @if ($data && $data->natural_alcohol == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -839,7 +903,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->cruelty_free == 'Y')
+                                    @if ($data && $data->cruelty_free == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -856,7 +920,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->hypoallergenic == 'Y')
+                                    @if ($data && $data->hypoallergenic == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -873,7 +937,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->tested == 'Y')
+                                    @if ($data && $data->tested == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -890,7 +954,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->ph_balance == 'Y')
+                                    @if ($data && $data->ph_balance == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -907,7 +971,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->sls_free == 'Y')
+                                    @if ($data && $data->sls_free == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -924,7 +988,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->talc_free == 'Y')
+                                    @if ($data && $data->talc_free == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -941,7 +1005,7 @@
 
                             <div class="checkbox-row" style="margin:5px 0; display:flex; align-items:center; gap:8px;">
                                 <div class="checkbox-box" style="width:16px; height:16px; border:1px solid #000; position:relative;">
-                                    @if ($data->sls_free == 'Y')
+                                    @if ($data && $data->sls_free == 'Y')
                                         <span style="
                                             position:absolute;
                                             top:11%;
@@ -960,17 +1024,15 @@
                 </div>
 
                 <!-- Not Recommend For Pregnant -->
-                <div class="content-item content-section">
+                <!-- <div class="content-item content-section">
                     <div class="checkbox-row" style="margin: 5px 0; align-items: flex-start;">
                         <div class="checkbox-box" style="margin-top: 3px; flex-shrink: 0;"></div>
                         <div style="display: flex; gap: 20px; flex: 1;">
-                            <!-- Left Column - Labels -->
                             <div style="flex: 1; font-size: 12px;">
                                 <div style="margin-bottom: 3px;">Not Recommend For Pregnant <span style="color: #F72B2B;">(ตัวอย่าง) ควรหลีกเลี่ยงเพื่อลด</span style="color: #F72B2B;"></div>
                                 <div style="margin-bottom: 3px; color: #F72B2B;">โอกาสการระคายเคือ เนื่องจากผลิตภัณฑ์มีค่า SPF50 PA++++</div>
                                 <div style="color: #F72B2B;">ส่วนประกอบของ Chemical Sunscreen เป็นส่วนใหญ่</div>
                             </div>
-                            <!-- Right Column - Input fields -->
                             <div style="flex: 1;">
                                 <div style="border-bottom: 1px solid #000; margin-bottom: 5px; min-height: 18px;"></div>
                                 <div style="border-bottom: 1px solid #000; margin-bottom: 5px; min-height: 18px;"></div>
@@ -978,10 +1040,25 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
+
+                <!-- Not Recommend For Pregnant -->
+                <!-- <div class="content-item content-section">
+                    <div class="checkbox-row" style="margin: 5px 0; font-size: 12px; align-items: flex-end;">
+                        <div class="checkbox-box" style="flex-shrink: 0; margin-bottom: 3px;"></div>
+                        <span style="flex-shrink: 0;">Not Recommend For Pregnant :</span>
+                        <span style="flex: 1; border-bottom: 1px solid #000; margin: 0 0px 0px 0px;"></span>
+                    </div>
+                    <div class="checkbox-row" style="margin-top: 22px; font-size: 12px; align-items: flex-end;">
+                        <span style="flex: 1; border-bottom: 1px solid #000; margin: 0 0px 0px 0px;"></span>
+                    </div>
+                    <div class="checkbox-row" style="margin-top: 22px; font-size: 12px; align-items: flex-end;">
+                        <span style="flex: 1; border-bottom: 1px solid #000; margin: 0 0px 0px 0px;"></span>
+                    </div>
+                </div> -->
 
                 <!-- Product Efficacy Test -->
-                <div class="content-item content-section">
+                <!-- <div class="content-item content-section">
                     <div class="checkbox-row" style="margin: 5px 0; font-size: 12px; align-items: flex-end;">
                         <div class="checkbox-box" style="flex-shrink: 0; margin-bottom: 3px;"></div>
                         <span style="flex-shrink: 0;">Product Efficacy Test :</span>
@@ -993,10 +1070,10 @@
                     <div class="checkbox-row" style="margin-top: 22px; font-size: 12px; align-items: flex-end;">
                         <span style="flex: 1; border-bottom: 1px solid #000; margin: 0 0px 0px 0px;"></span>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- Review Before Making Full Ingredients -->
-                <div class="content-item content-section">
+                <!-- <div class="content-item content-section">
                     <div style="display: flex; margin-top: 15px; font-size: 12px;">
                         <div class="checkbox-row" style="width: 50%;">
                             <div class="checkbox-box"></div>
@@ -1008,7 +1085,67 @@
                             <span>Need to Review Before Making Full Ingredients</span>
                         </div>
                     </div>
-                </div>
+                </div> -->
+
+                <!-- ===== Custom Free Form ===== -->
+                @php
+                    $customFreeForms = json_decode($data->custom_free_forms ?? '[]', true) ?: [];
+                @endphp
+                @php
+                    $cffWithNote = collect($customFreeForms)->filter(fn($c) => !empty($c['note']));
+                    $cffNoNote = collect($customFreeForms)->filter(fn($c) => empty($c['note']));
+                @endphp
+
+                {{-- Items WITHOUT note: display 2 per row (left/right) like Qualification claimed --}}
+                @if($cffNoNote->count())
+                    <div class="content-item content-section">
+                        @foreach($cffNoNote->chunk(2) as $pair)
+                            <div style="display: flex; margin-top: 5px; font-size: 12px;">
+                                @php $pairArr = $pair->values(); @endphp
+                                <div class="checkbox-row" style="width: 50%;">
+                                    <div class="checkbox-box" style="position:relative;">
+                                        @if(($pairArr[0]['value'] ?? 'N') === 'Y')
+                                            <span style="position:absolute; top:11%; left:69%; transform:translate(-50%,-50%); font-size:22px; font-weight:700; line-height:1;">&#x2713;</span>
+                                        @endif
+                                    </div>
+                                    <span>{{ $pairArr[0]['name'] ?? '' }}</span>
+                                </div>
+                                @if(isset($pairArr[1]))
+                                    <div class="checkbox-row" style="width: 50%;">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <div class="checkbox-box" style="position:relative;">
+                                            @if(($pairArr[1]['value'] ?? 'N') === 'Y')
+                                                <span style="position:absolute; top:11%; left:69%; transform:translate(-50%,-50%); font-size:22px; font-weight:700; line-height:1;">&#x2713;</span>
+                                            @endif
+                                        </div>
+                                        <span>{{ $pairArr[1]['name'] ?? '' }}</span>
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
+
+                {{-- Items WITH note: display full width with lines --}}
+                @foreach($cffWithNote as $cff)
+                    <div class="content-item content-section">
+                        <div class="checkbox-row" style="margin: 5px 0; font-size: 12px; align-items: flex-end;">
+                            <div class="checkbox-box" style="flex-shrink: 0; margin-bottom: 3px; width:16px; height:16px; border:1px solid #000; position:relative;">
+                                @if(($cff['value'] ?? 'N') === 'Y')
+                                    <span style="position:absolute; top:11%; left:69%; transform:translate(-50%,-50%); font-size:22px; font-weight:700; line-height:1;">&#x2713;</span>
+                                @endif
+                            </div>
+                            <span style="flex-shrink: 0;">{{ $cff['name'] ?? '' }} :</span>
+                            <span style="flex: 1; border-bottom: 1px solid #000; margin: 0 0px 0px 0px;">{{ $cff['note'] }}</span>
+                        </div>
+                        <div class="checkbox-row" style="margin-top: 22px; font-size: 12px; align-items: flex-end;">
+                            <span style="flex: 1; border-bottom: 1px solid #000; margin: 0 0px 0px 0px;"></span>
+                        </div>
+                        <div class="checkbox-row" style="margin-top: 22px; font-size: 12px; align-items: flex-end;">
+                            <span style="flex: 1; border-bottom: 1px solid #000; margin: 0 0px 0px 0px;"></span>
+                        </div>
+                    </div>
+                @endforeach
 
                 <!-- ===== Natural claimed ===== -->
                 <div class="content-item content-section" style="margin-top: 20px;">
@@ -1016,9 +1153,9 @@
                         %Natural claimed
                     </div>
                     <div style="margin-left: 20px; font-size: 12px;">
-                        <div style="margin: 5px 0;">....%.... Natural active ingredients</div>
-                        <div style="margin: 5px 0;">....%.... Ingredient from natural origin</div>
-                        <div style="margin: 5px 0;">....%.... Ingredient from natural (Ref. ISO16128)</div>
+                        <div style="margin: 5px 0;">{{ $data->natural_active_ingredients }} Natural active ingredients %</div>
+                        <div style="margin: 5px 0;">{{ $data->ingredient_from_natural_origin }} Ingredient from natural origin %</div>
+                        <div style="margin: 5px 0;">{{ $data->ingredient_from_natural_ref_isO16128 }} Ingredient from natural (Ref. ISO16128) %</div>
                     </div>
                 </div>
 
@@ -1029,19 +1166,23 @@
                     <div style="font-weight: bold; font-size: 14px; margin-bottom: 10px; text-decoration: underline;">
                         Ingredient List
                     </div>
-                    <div style="color: #087EF0; font-size: 12px;">
+                    <!-- <div style="color: #087EF0; font-size: 12px;">
                         (อ้างอิง IBH-F195, Date of issue:.............. , Revision......)
-                    </div>
+                    </div> -->
                 </div>
 
                 <!-- Note about RA -->
                 <div class="content-item content-section">
-                    <div style="color: #F72B2B; font-size: 12px; margin-top: 10px;">
+                    <!-- <div style="color: #F72B2B; font-size: 12px; margin-top: 10px;"> -->
+                    <div style="color: #087EF0; font-size: 12px; margin-top: 10px;">
+                        {{ $data->ingredients }}
+                    </div>
+                    <!-- <div style="color: #F72B2B; font-size: 12px; margin-top: 10px;">
                         สูตรที่ไม่ต้องรับรองแจ้ง อย. สามารถใช้ข้อมูลให้ทันต่อเกาะการส่งเอกสารครั้งที่หนึ่ง
                     </div>
                     <div style="color: #F72B2B; font-size: 12px;">
                         สูตรที่ต้องรองแจ้ง เมื่อ RA ยืนยันแล้ว จะได้ Ingredient list ตามที่ยื่นจดแจ้ง ทุกข้อสารตั้งต้นด้วยตัวพิมพ์ ( , )
-                    </div>
+                    </div> -->
                 </div>
 
                 <div class="content-item dotted-separator"></div>
@@ -1073,22 +1214,70 @@
                         </div>
                     </div>
                 </div>
+                <!-- <div class="content-item content-section" style="margin-top: 30px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <div style="flex: 1;">
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-weight: bold; font-size: 12px;">ISSUED BY :</span>
+                                <span style="border-bottom: 1px solid #000; display: inline-block; width: 200px; margin-left: 10px;"></span>
+                            </div>
+                            <div>
+                                <span style="font-weight: bold; font-size: 12px;">DATE</span>
+                                <span style="margin-left: 28px;">:</span>
+                                <span style="border-bottom: 1px solid #000; display: inline-block; width: 200px; margin-left: 10px;"><p style="text-align: center; font-size: 14px;"><?php echo date('Y-m-d'); ?></p></span>
+                            </div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-weight: bold; font-size: 12px;">AUTHORIZED BY :</span>
+                                <span style="border-bottom: 1px solid #000; display: inline-block; width: 200px; margin-left: 10px;"></span>
+                            </div>
+                            <div>
+                                <span style="font-weight: bold; font-size: 12px;">DATE</span>
+                                <span style="margin-left: 64px;">:</span>
+                                <span style="border-bottom: 1px solid #000; display: inline-block; width: 200px; margin-left: 10px;"><p style="text-align: center; center; font-size: 14px;"><?php echo date('Y-m-d'); ?></p></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-item content-section" style="margin-top: 30px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <div style="flex: 1;">
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-weight: bold; font-size: 12px;">ISSUED BY :</span>
+                                <span style="border-bottom: 1px solid #000; display: inline-block; width: 200px; margin-left: 10px;"></span>
+                            </div>
+                            <div>
+                                <span style="font-weight: bold; font-size: 12px;">DATE</span>
+                                <span style="margin-left: 28px;">:</span>
+                                <span style="border-bottom: 1px solid #000; display: inline-block; width: 200px; margin-left: 10px;"><p style="text-align: center; font-size: 14px;"><?php echo date('Y-m-d'); ?></p></span>
+                            </div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="margin-bottom: 10px;">
+                                <span style="font-weight: bold; font-size: 12px;">AUTHORIZED BY :</span>
+                                <span style="border-bottom: 1px solid #000; display: inline-block; width: 200px; margin-left: 10px;"></span>
+                            </div>
+                            <div>
+                                <span style="font-weight: bold; font-size: 12px;">DATE</span>
+                                <span style="margin-left: 64px;">:</span>
+                                <span style="border-bottom: 1px solid #000; display: inline-block; width: 200px; margin-left: 10px;"><p style="text-align: center; center; font-size: 14px;"><?php echo date('Y-m-d'); ?></p></span>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
 
             </div>
         </div>
     </div>
 
     <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
+    <script src="{{ asset('js/select2@4.1.0.min.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Max content height per page
-            // Page 1 มี header (~120px) จึงใส่เนื้อหาได้น้อยกว่า
-            // Page 2+ ไม่มี header จึงใส่เนื้อหาได้มากกว่า
-            const MAX_CONTENT_HEIGHT_PAGE1 = 1200; // pixels - หน้าแรกมี header
-            const MAX_CONTENT_HEIGHT_OTHER = 1000; // pixels - หน้าอื่นไม่มี header
 
-            // Get header HTML template (เฉพาะหน้าแรก)
-            function getHeaderHTML(pageNum, totalPages) {
+            // Header HTML (หน้าแรกเท่านั้น)
+            function getHeaderHTML() {
                 return `
                     <div class="page-header">
                         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
@@ -1118,89 +1307,150 @@
                 `;
             }
 
-            // Pagination function
+            // ===== Dynamic Pagination =====
+            // ใช้ page.scrollHeight > page.clientHeight (integer-based) แทน getBoundingClientRect (float)
+            // เหตุผล: getBoundingClientRect ใช้ float coordinates ที่อาจคลาดเคลื่อนเมื่อ page อยู่ไกลจาก viewport
             function paginateContent() {
-                const originalContent = document.getElementById('original-content');
-                const pagesContainer = document.getElementById('pages-container');
-                const contentItems = originalContent.querySelectorAll('.content-item');
+                var originalContent = document.getElementById('original-content');
+                var pagesContainer = document.getElementById('pages-container');
 
-                if (contentItems.length === 0) {
-                    console.log('No content items found');
-                    return;
-                }
-
-                // Show original content temporarily to measure
                 originalContent.style.display = 'block';
                 originalContent.style.visibility = 'hidden';
                 originalContent.style.position = 'absolute';
+                originalContent.style.left = '-9999px';
+                originalContent.style.width = '180mm';
 
-                // Group content into pages
-                const pages = [];
-                let currentPageItems = [];
-                let currentHeight = 0;
-                let currentPageIndex = 0; // 0 = page 1
+                var items = Array.from(originalContent.querySelectorAll('.content-item'));
+                if (!items.length) return;
 
-                contentItems.forEach((item, index) => {
-                    const itemHeight = item.offsetHeight + 15; // Add margin
-                    // หน้าแรกใช้ค่าน้อยกว่าเพราะมี header
-                    const maxHeight = currentPageIndex === 0 ? MAX_CONTENT_HEIGHT_PAGE1 : MAX_CONTENT_HEIGHT_OTHER;
+                pagesContainer.innerHTML = '';
+                var idx = 0;
+                var pageNum = 0;
 
-                    if (currentHeight + itemHeight > maxHeight && currentPageItems.length > 0) {
-                        // Save current page and start new one
-                        pages.push([...currentPageItems]);
-                        currentPageItems = [];
-                        currentHeight = 0;
-                        currentPageIndex++;
+                while (idx < items.length) {
+                    pageNum++;
+                    var isFirst = (pageNum === 1);
+
+                    var page = document.createElement('div');
+                    page.className = 'page mt-6';
+
+                    var pnDiv = document.createElement('div');
+                    pnDiv.className = 'page-number';
+                    if (!isFirst) pnDiv.style.top = '10mm';
+                    page.appendChild(pnDiv);
+
+                    if (isFirst) {
+                        var hWrap = document.createElement('div');
+                        hWrap.innerHTML = getHeaderHTML();
+                        while (hWrap.firstChild) page.appendChild(hWrap.firstChild);
+                    } else {
+                        var spacer = document.createElement('div');
+                        spacer.style.height = '15mm';
+                        page.appendChild(spacer);
                     }
 
-                    currentPageItems.push(item.outerHTML);
-                    currentHeight += itemHeight;
-                });
+                    var pc = document.createElement('div');
+                    pc.className = 'page-content';
+                    page.appendChild(pc);
 
-                // Add remaining items
-                if (currentPageItems.length > 0) {
-                    pages.push(currentPageItems);
+                    pagesContainer.appendChild(page);
+
+                    var added = 0;
+                    // Screen renders content slightly taller than print (font metrics, mm-to-px differences).
+                    // Allow 8% tolerance so items that fit in print aren't rejected on screen.
+                    var cH = page.clientHeight;
+                    var tolerance = Math.round(cH * 0.27);
+                    console.log('[Page ' + pageNum + '] clientH=' + cH + ' tolerance=' + tolerance + 'px pcOffsetTop=' + pc.offsetTop);
+                    while (idx < items.length) {
+                        var clone = items[idx].cloneNode(true);
+                        if (added === 0) clone.style.marginTop = '0';
+                        pc.appendChild(clone);
+
+                        var sH = page.scrollHeight;
+                        var label = (clone.textContent||'').substring(0,35).trim();
+
+                        if (sH > cH + tolerance && added > 0) {
+                            console.log('  ✗ REJECT "' + label + '" pcH=' + pc.offsetHeight + ' scrollH=' + sH + ' limit=' + (cH+tolerance) + ' over=' + (sH-cH-tolerance) + 'px');
+                            pc.removeChild(clone);
+                            break;
+                        }
+
+                        console.log('  ✓ "' + label + '" pcH=' + pc.offsetHeight + ' scrollH=' + sH + ' remain=' + (cH+tolerance-sH) + 'px');
+                        idx++;
+                        added++;
+                    }
+
+                    // กัน infinite loop: item ตัวเดียวใหญ่เกินหน้า → บังคับใส่
+                    if (added === 0 && idx < items.length) {
+                        var forceClone = items[idx].cloneNode(true);
+                        forceClone.style.marginTop = '0';
+                        pc.appendChild(forceClone);
+                        idx++;
+                    }
                 }
 
-                // Hide original content
                 originalContent.style.display = 'none';
                 originalContent.style.visibility = '';
                 originalContent.style.position = '';
+                originalContent.style.left = '';
+                originalContent.style.width = '';
 
-                // Generate pages HTML
-                const totalPages = pages.length;
-                let pagesHTML = '';
-
-                pages.forEach((pageItems, index) => {
-                    const pageNum = index + 1;
-                    const isFirstPage = pageNum === 1;
-                    const pageNumberStyle = isFirstPage ? '' : 'top: 10mm;';
-
-                    pagesHTML += `
-                        <div class="page mt-6">
-                            <div class="page-number" style="${pageNumberStyle}">Page ${pageNum} of ${totalPages}</div>
-                            ${isFirstPage ? getHeaderHTML(pageNum, totalPages) : '<div style="height: 15mm;"></div>'}
-                            <div class="page-content">
-                                ${pageItems.join('')}
-                            </div>
-                        </div>
-                    `;
+                var allPages = pagesContainer.querySelectorAll('.page');
+                var total = allPages.length;
+                allPages.forEach(function(p, i) {
+                    p.querySelector('.page-number').textContent = 'Page ' + (i + 1) + ' of ' + total;
+                    // Screen: expand page height to show tolerance-overflow content (no clipping)
+                    // Print CSS has height:auto so this doesn't affect print
+                    if (p.scrollHeight > p.clientHeight) {
+                        p.style.height = p.scrollHeight + 'px';
+                    }
                 });
 
-                pagesContainer.innerHTML = pagesHTML;
 
-                console.log(`Generated ${totalPages} page(s)`);
+                console.log('Pagination: ' + total + ' page(s), pageClientH=' + (allPages[0] ? allPages[0].clientHeight : '-'));
             }
 
-            // Initialize pagination
-            paginateContent();
+            // ===== รอรูปภาพโหลดเสร็จก่อน paginate =====
+            var origContent = document.getElementById('original-content');
+            // แสดง off-screen เพื่อให้รูปโหลด (display:none จะไม่โหลดรูปในบาง browser)
+            origContent.style.display = 'block';
+            origContent.style.visibility = 'hidden';
+            origContent.style.position = 'absolute';
+            origContent.style.left = '-9999px';
+
+            var imgs = origContent.querySelectorAll('img');
+            var loadedCount = 0;
+
+            function tryPaginate() {
+                if (loadedCount >= imgs.length) {
+                    paginateContent();
+                }
+            }
+
+            if (imgs.length === 0) {
+                paginateContent();
+            } else {
+                imgs.forEach(function(img) {
+                    if (img.complete) {
+                        loadedCount++;
+                    } else {
+                        img.addEventListener('load', function() { loadedCount++; tryPaginate(); });
+                        img.addEventListener('error', function() { loadedCount++; tryPaginate(); });
+                    }
+                });
+                tryPaginate();
+            }
 
             // Re-paginate on resize
-            let resizeTimeout;
+            var resizeTimeout;
             window.addEventListener('resize', function() {
                 clearTimeout(resizeTimeout);
                 resizeTimeout = setTimeout(paginateContent, 250);
             });
+        });
+
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
         });
     </script>
 @endsection

@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ProductMasterController;
 use App\Http\Controllers\Api\CommonController;
+use App\Http\Controllers\Api\ArtisanController;
+use App\Http\Controllers\ImportExcel\ImportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,6 +18,7 @@ use App\Http\Controllers\Api\CommonController;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
 Route::post('/apiLogin', [AuthController::class, 'apiLogin'])->name('apiLogin');
 Route::get('/api_apps_login', [AuthController::class, 'apiAppsLogin'])->name('api_apps_login');
 Route::get('/users', [AuthController::class, 'list_user']);
@@ -25,7 +28,7 @@ Route::get('/warehouse',  [AuthController::class, 'apiWhereHouse'])->name('api.w
 
 // API ProductMaster
 Route::get('/products', [ProductMasterController::class, 'listProducts']);
-
+Route::get('/products/detail', [ProductMasterController::class, 'list_product_detail']);
 Route::get('/series', [ProductMasterController::class, 'list_series']);
 Route::get('/solutions', [ProductMasterController::class, 'list_solutions']);
 Route::get('/categorys', [ProductMasterController::class, 'list_categorys']);
@@ -45,6 +48,18 @@ Route::get('/account_schedule/{task}', [CommonController::class, 'accountSchedul
 // Command production transfer Data KM
 Route::get('/production_transfer_data_km/{task}', [CommonController::class, 'KmSchedule']);
 
+// Diary (remote DB 10.20.10.35)
+Route::match(['get', 'post'], '/diary', [ImportController::class, 'getDiary']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+/*
+|--------------------------------------------------------------------------
+| Artisan API Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('artisan')->group(function () {
+    Route::post('/route-cache', [ArtisanController::class, 'routeCache']);
 });

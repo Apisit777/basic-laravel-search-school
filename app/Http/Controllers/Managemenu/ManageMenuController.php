@@ -170,7 +170,7 @@ class ManageMenuController extends Controller
         // dump(collect($filters)->flatten());
         // dump(collect($filters)->flatten()->filter());
 
-        return view('managemenu.index', compact('menus', 'position', 'menuData', 'menusAuthPosition'));
+        return view('managemenu.index', compact('menus', 'position', 'menuData', 'menusAuthPosition', 'authPosition'));
     }
 
     public static function menus_data()

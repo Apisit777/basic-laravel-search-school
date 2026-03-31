@@ -471,53 +471,47 @@
                         </svg>
                     </div>
                     <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-full peer-checked:max-h-0">
-                        <div class="mt-8 flex justify-center items-center">
-                            <form id="posForm" method="post">
-                                <div class="table-responsive" style="max-height: 672px; overflow-y: auto; overflow-x: auto;">
-                                    <table id="positionTable" class="table table-bordered text-gray-900 dark:text-white cursor-pointer text-sm" style="width: 100%;">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 30px">Action</th>
-                                                <th style="width: 30px">ID</th>
-                                                <th>ชื่อสิทธิ์</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($position as $pos_data)
-                                                <tr id="pos_{{ $pos_data->id }}" onclick="setAccess({{  $pos_data->id  }})">
-                                                    <td class="flex">
-                                                        <button
-                                                            type="button"
-                                                            class="px-1 py-1 left-1 font-medium tracking-wide bg-[#303030] hover:bg-[#404040] text-white rounded group"
-                                                            data-twe-toggle="modal"
-                                                            data-twe-target="#staticBackdrop"
-                                                            data-twe-ripple-init
-                                                            data-twe-ripple-color="light"
-                                                            onclick="modelManageRole('{{ $pos_data->id }}', '{{ $pos_data->name_position }}')"
-                                                        >
-                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-3 w-3 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                                                                <path d="M0 0h24v24H0V0z" fill="none"></path>
-                                                                <path d="M5 18.08V19h.92l9.06-9.06-.92-.92z" opacity=".3"></path>
-                                                                <path d="M20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29s-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83zM3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM5.92 19H5v-.92l9.06-9.06.92.92L5.92 19z"></path>
-                                                            </svg>
-                                                        </button>
-                                                        <!-- <button
-                                                            type="button"
-                                                            class="px-2 py-1 font-medium tracking-wide bg-[#c72121] hover:bg-[#c23737e3] text-white rounded group"
-                                                        >
-                                                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block">
-                                                                <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" />
-                                                            </svg>
-                                                        </button> -->
-                                                    </td>
-                                                    <td>{{ $pos_data->id }}</td>
-                                                    <td>{{ $pos_data->name_position }}</td>
-                                                </tr>
+                        <div class="p-6">
+                            {{-- Search + Toolbar --}}
+                            <div class="flex items-center gap-2 mb-4">
+                                <input type="text" id="searchRoles" placeholder="Search roles... (e.g. OP-2001)" class="flex-1 h-10 border border-gray-300 dark:border-gray-600 rounded-md px-4 bg-white dark:bg-[#303030] text-gray-900 dark:text-white text-sm focus:border-blue-500 focus:outline-none">
+                                <button onclick="document.getElementById('searchRoles').value=''; filterRoles();" class="h-10 w-10 flex items-center justify-center bg-gray-200 dark:bg-[#505050] hover:bg-gray-300 dark:hover:bg-[#606060] rounded-md text-gray-700 dark:text-gray-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                                </button>
+                            </div>
+
+                            {{-- Grouped List --}}
+                            @php
+                                $brandColors = ['BB' => '#facc15', 'CPS' => '#4ade80', 'KTY' => '#fb923c', 'LL' => '#60a5fa', 'OP' => '#f87171', 'Admin' => '#a78bfa', 'Account' => '#38bdf8', 'FR' => '#fb7185'];
+                                $grouped = $position->groupBy(fn($item) => $item->brand ?? 'OTHER')->sortKeys();
+                            @endphp
+
+                            <div id="roleGroupContainer" class="space-y-1" style="max-height: 560px; overflow-y: auto;">
+                                @foreach ($grouped as $brand => $items)
+                                    @php $color = $brandColors[$brand] ?? '#a78bfa'; @endphp
+                                    <div class="role-brand-group" data-brand="{{ $brand }}">
+                                        {{-- Brand Header --}}
+                                        <div class="flex items-center gap-3 py-2.5 px-3 cursor-pointer hover:bg-gray-200 dark:hover:bg-[#505050] rounded-md transition-colors" onclick="toggleBrandGroup(this)">
+                                            <span class="flex items-center justify-center w-7 h-7 rounded-full text-white text-xs font-bold flex-shrink-0" style="background-color: {{ $color }}">{{ substr($brand, 0, 1) }}</span>
+                                            <span class="text-gray-900 dark:text-white font-semibold text-sm">{{ $brand }}</span>
+                                            <span class="text-gray-400 dark:text-gray-500 text-xs">({{ $items->count() }})</span>
+                                            <svg class="ml-auto h-4 w-4 text-gray-400 transition-transform duration-300 brand-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                                        </div>
+                                        {{-- Sub Items --}}
+                                        <div class="brand-items hidden pl-6">
+                                            @foreach ($items as $pos_data)
+                                                <div id="pos_{{ $pos_data->id }}" class="role-item flex items-center gap-2 py-2 px-3 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-[#505050] transition-colors" data-name="{{ $pos_data->name_position }}" onclick="selectRole({{ $pos_data->id }}, this)">
+                                                    <span class="text-gray-400 text-sm">↳ </span>
+                                                    <button type="button" class="p-1 bg-[#303030] hover:bg-[#505050] text-white rounded flex-shrink-0" data-twe-toggle="modal" data-twe-target="#staticBackdrop" data-twe-ripple-init data-twe-ripple-color="light" onclick="event.stopPropagation(); modelManageRole('{{ $pos_data->id }}', '{{ $pos_data->name_position }}')">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-3 w-3"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M5 18.08V19h.92l9.06-9.06-.92-.92z" opacity=".3"/><path d="M20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.2-.2-.45-.29-.71-.29s-.51.1-.7.29l-1.83 1.83 3.75 3.75 1.83-1.83zM3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM5.92 19H5v-.92l9.06-9.06.92.92L5.92 19z"/></svg>
+                                                    </button>
+                                                    <span class="text-gray-900 dark:text-white text-sm">{{ $pos_data->name_position }}</span>
+                                                </div>
                                             @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </form>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -597,7 +591,7 @@
                                                         <tr>
                                                             <td></td>
                                                             <td></td>
-                                                            <td class="">&nbsp;&nbsp;&nbsp;{{ $submenu['name'] }}</td>
+                                                            <td class="">&nbsp;&nbsp;&nbsp; ↳&nbsp;{{ $submenu['name'] }}</td>
                                                             <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-400 disabled:checked:border-slate-400" id="action_view_{{ $menu['id'] }}_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
                                                             <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-400 disabled:checked:border-slate-400" id="action_create_{{ $menu['id'] }}_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
                                                             <td class="text-center"><input type="checkbox" class="disabled:bg-zinc-400 disabled:checked:border-slate-400" id="action_edit_{{ $menu['id'] }}_{{ $submenu['id'] }}" name="checkboxes[]" value="{{ $menu['id'] }}" onclick="setMenu(this)"></td>
@@ -881,14 +875,50 @@
             }
         }
 
-        $("#positionTable tbody tr").click(function() {
-            let selected = $(this).hasClass("highlight");
+        // Toggle brand group expand/collapse
+        function toggleBrandGroup(header) {
+            const group = header.closest('.role-brand-group');
+            const items = group.querySelector('.brand-items');
+            const chevron = header.querySelector('.brand-chevron');
+            items.classList.toggle('hidden');
+            chevron.classList.toggle('rotate-90');
+        }
 
-            $("#positionTable tr").removeClass("highlight");
-            if(!selected){
-                $(this).addClass("highlight");
-            }
-        });
+        // Select role item + highlight
+        function selectRole(posId, el) {
+            document.querySelectorAll('.role-item').forEach(r => {
+                r.classList.remove('bg-teal-500', 'dark:bg-teal-600', 'text-white');
+                const nameSpan = r.querySelector('span:last-of-type');
+                if (nameSpan) nameSpan.classList.add('text-gray-900');
+            });
+            el.classList.add('bg-teal-500', 'dark:bg-teal-600', 'text-white');
+            const nameSpan = el.querySelector('span:last-of-type');
+            if (nameSpan) nameSpan.classList.remove('text-gray-900');
+            setAccess(posId);
+        }
+
+        // Search / filter roles
+        document.getElementById('searchRoles').addEventListener('input', filterRoles);
+        function filterRoles() {
+            const q = document.getElementById('searchRoles').value.toLowerCase().trim();
+            document.querySelectorAll('.role-brand-group').forEach(group => {
+                const items = group.querySelectorAll('.role-item');
+                let visibleCount = 0;
+                items.forEach(item => {
+                    const name = item.dataset.name.toLowerCase();
+                    const match = !q || name.includes(q);
+                    item.style.display = match ? '' : 'none';
+                    if (match) visibleCount++;
+                });
+                // Show/hide entire brand group
+                group.style.display = visibleCount > 0 || group.dataset.brand.toLowerCase().includes(q) ? '' : 'none';
+                // Auto-expand when searching
+                if (q && visibleCount > 0) {
+                    group.querySelector('.brand-items').classList.remove('hidden');
+                    group.querySelector('.brand-chevron').classList.add('rotate-90');
+                }
+            });
+        }
 
         function setAccess(pos_id){
             removeMenu();
@@ -896,8 +926,22 @@
             select_pos = pos_id;
         }
 
-        setAccess(1);
-        $("#pos_1").addClass("highlight");
+        const authPositionId = {{ $authPosition }};
+        setAccess(authPositionId);
+        // Auto-expand logged-in user's position group and highlight it
+        (function() {
+            const activeItem = document.getElementById('pos_' + authPositionId);
+            if (activeItem) {
+                const group = activeItem.closest('.role-brand-group');
+                if (group) {
+                    group.querySelector('.brand-items').classList.remove('hidden');
+                    group.querySelector('.brand-chevron').classList.add('rotate-90');
+                }
+                activeItem.classList.add('bg-[#05395D]', 'dark:bg-[#05395D]', 'text-white');
+                const nameSpan = activeItem.querySelector('span:last-of-type');
+                if (nameSpan) nameSpan.classList.remove('text-gray-900');
+            }
+        })();
 
         let i = 0;
         $('#add').click( () => {

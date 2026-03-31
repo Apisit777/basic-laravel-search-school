@@ -2,16 +2,15 @@
 @section('title', '')
 
     <style>
-        .loading {
+        /* .loading {
             display: flex;
             align-items: center;
             justify-content: center;
-            /* background-color: #7f7f7fe3; */
             width: 100%;
             height: 100%;
             top: 0;
             left: 0;
-        }
+        } */
         .loading-2 {
             display: flex;
             align-items: center;
@@ -21,6 +20,21 @@
             height: 100%;
             top: 0;
             left: 0;
+        }
+        .skeleton-box {
+            display: inline-block;
+            background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+            background-size: 200% 100%;
+            animation: skeleton-pulse 1.5s ease-in-out infinite;
+            border-radius: 4px;
+        }
+        .dark .skeleton-box {
+            background: linear-gradient(90deg, #3a3a3a 25%, #4a4a4a 50%, #3a3a3a 75%);
+            background-size: 200% 100%;
+        }
+        @keyframes skeleton-pulse {
+            0%   { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
         }
         .page-item.active .page-link {
             color: #fff !important;
@@ -380,11 +394,80 @@
                             </div>
                         </div>
                         <ul class="pt-2.5 mt-2 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
-                        <div id="loader" class="loading absolute hidden bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 animate-spin dark:text-white">
-                                <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
-                                <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
-                            </svg>
+                        <div id="loader" class="absolute inset-0 hidden bg-[#e4e4e4] dark:bg-[#232323] z-50 overflow-hidden p-4">
+                            <!-- Stepper head -->
+                            <div class="flex items-center p-1 mb-2">
+                                <div class="skeleton-box w-[1.938rem] h-[1.938rem] rounded-full me-3"></div>
+                                <div class="skeleton-box w-32 h-4 rounded"></div>
+                            </div>
+                            <!-- Collapsible bar -->
+                            <div class="ps-[1.75rem]">
+                                <div class="skeleton-box w-full h-12 rounded-sm mb-4"></div>
+                                <!-- Form fields -->
+                                <div class="p-2 space-y-5">
+                                    <!-- Row 1: วันที่เริ่มใช้ราคา (4col) + ต้นทุน Brand (2col) -->
+                                    <div class="grid grid-cols-6 gap-4">
+                                        <div class="col-span-4">
+                                            <div class="skeleton-box w-28 h-3 rounded mb-2"></div>
+                                            <div class="skeleton-box w-full h-10 rounded"></div>
+                                        </div>
+                                        <div class="col-span-2">
+                                            <div class="skeleton-box w-36 h-3 rounded mb-2"></div>
+                                            <div class="skeleton-box w-full h-10 rounded"></div>
+                                        </div>
+                                    </div>
+                                    <!-- Row 2: ราคาบัญชีใหม่ + ต้นทุน + KM+5% -->
+                                    <div class="grid grid-cols-6 gap-4">
+                                        <div class="col-span-2">
+                                            <div class="skeleton-box w-24 h-3 rounded mb-2"></div>
+                                            <div class="skeleton-box w-full h-10 rounded"></div>
+                                        </div>
+                                        <div class="col-span-2">
+                                            <div class="skeleton-box w-16 h-3 rounded mb-2"></div>
+                                            <div class="skeleton-box w-full h-10 rounded"></div>
+                                        </div>
+                                        <div class="col-span-2">
+                                            <div class="skeleton-box w-32 h-3 rounded mb-2"></div>
+                                            <div class="skeleton-box w-full h-10 rounded"></div>
+                                        </div>
+                                    </div>
+                                    <!-- Row 3: KM+10% + KM+อื่นๆ + ราคาขาย KM -->
+                                    <div class="grid grid-cols-6 gap-4">
+                                        <div class="col-span-2">
+                                            <div class="skeleton-box w-32 h-3 rounded mb-2"></div>
+                                            <div class="skeleton-box w-full h-10 rounded"></div>
+                                        </div>
+                                        <div class="col-span-2">
+                                            <div class="skeleton-box w-32 h-3 rounded mb-2"></div>
+                                            <div class="skeleton-box w-full h-10 rounded"></div>
+                                        </div>
+                                        <div class="col-span-2">
+                                            <div class="skeleton-box w-20 h-3 rounded mb-2"></div>
+                                            <div class="skeleton-box w-full h-10 rounded"></div>
+                                        </div>
+                                    </div>
+                                    <!-- Row 4: KM+20% + KM+อื่นๆ + ภาษีน้ำหอม -->
+                                    <div class="grid grid-cols-6 gap-4">
+                                        <div class="col-span-2">
+                                            <div class="skeleton-box w-28 h-3 rounded mb-2"></div>
+                                            <div class="skeleton-box w-full h-10 rounded"></div>
+                                        </div>
+                                        <div class="col-span-2">
+                                            <div class="skeleton-box w-28 h-3 rounded mb-2"></div>
+                                            <div class="skeleton-box w-full h-10 rounded"></div>
+                                        </div>
+                                        <div class="col-span-2">
+                                            <div class="skeleton-box w-20 h-3 rounded mb-2"></div>
+                                            <div class="skeleton-box w-full h-10 rounded"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Buttons -->
+                                <div class="flex justify-end gap-2 mt-4">
+                                    <div class="skeleton-box w-20 h-9 rounded"></div>
+                                    <div class="skeleton-box w-20 h-9 rounded"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -492,14 +575,14 @@
 
                                                 <div class="mx-auto max-w-6xl p-5 md:p-4">
                                                     <div class="grid grid-cols-1 gap-6 lg:grid-cols-[420px_1fr]">
-
                                                         <!-- LEFT: Topics -->
-                                                        <aside class="rounded-lg border border-[#6c757d]/20 bg-[rgba(108,117,125,0.4)] dark:border-black/20 dark:bg-black/50 backdrop-blur-xl shadow-lg">
+                                                        <!-- <aside class="rounded-lg border border-[#6c757d]/20 bg-[rgba(108,117,125,0.4)] dark:border-black/20 dark:bg-black/50 backdrop-blur-xl shadow-lg"> -->
+                                                        <aside class="rounded-lg border border-[#6c757d]/20 bg-[rgba(213,213,213,0.4)] dark:border-black/20 dark:bg-black/50 backdrop-blur-xl shadow-lg">
                                                             <div class="border-b border-white/10 p-5">
                                                                 <h2 class="text-slate-950 dark:text-white text-lg font-semibold">หัวข้อเอกสาร</h2>
                                                                 <p class="mt-1 inline-flex items-center gap-1 text-sm text-slate-950 dark:text-white">
                                                                 การตั้งราคา Schedule(
-                                                                <span class="font-bold rounded-full border px-2 py-0 border-black/20 bg-black/15 text-red-600 dark:text-red-600">
+                                                                <span id="activeDateLabel" class="font-bold rounded-full border px-2 py-0 border-black/20 bg-black/15 text-red-600 dark:text-red-600">
                                                                     มีผลวันที่ {{ $data->active_date ?? '- ยังไม่ได้ตั้งราคา' }}
                                                                 </span>
                                                                 )
@@ -507,7 +590,7 @@
                                                             </div>
 
                                                             <div class="p-3 space-y-2">
-                                                                <button type="button" class="w-full text-left rounded-xl border border-white/10 bg-white/10 px-4 py-3 hover:bg-white/15 transition">
+                                                                <button type="button" class="w-full text-left rounded-xl border border-white/10 bg-white/30 dark:bg-[#303030] px-4 py-3 hover:bg-white/50 dark:hover:bg-[#202020] transition">
                                                                 <div class="flex items-center justify-between gap-3">
                                                                     @if( $data->BRAND === 'OP')
                                                                     <div class="rounded-lg border px-3 py-0 border-black/20 bg-black/15">
@@ -550,10 +633,10 @@
                                                     </aside>
 
                                                     <!-- RIGHT: Approval Steps -->
-                                                    <section class="rounded-lg border border-[#6c757d]/20 bg-[rgba(108,117,125,0.4)] dark:border-black/20 dark:bg-black/50 backdrop-blur-xl shadow-lg">
+                                                    <section class="rounded-lg border border-[#6c757d]/20 bg-[rgba(213,213,213,0.4)] dark:border-black/20 dark:bg-black/50 backdrop-blur-xl shadow-lg">
                                                         <div class="border-b border-white/10 p-5 flex items-start justify-between gap-4">
                                                             <div>
-                                                            <h2 class="text-slate-950 dark:text-white text-lg font-semibold">ขั้นตอนการตั้งราคา Schedule</h2>
+                                                            <h2 class="text-slate-950 dark:text-white text-lg font-semibold">ขั้นตอนการดำเนินงาน Schedule</h2>
                                                             </div>
 
                                                             <div class="hidden sm:flex items-center gap-2">
@@ -566,7 +649,7 @@
 
                                                         <div class="p-5">
                                                             <div class="relative">
-                                                            <div class="absolute left-4 top-0 bottom-0 w-px bg-white/15"></div>
+                                                            <div class="absolute left-4 top-5 bottom-0 w-px bg-black dark:bg-white/30"></div>
 
                                                                 <div class="space-y-5">
                                                                     <!-- STEP 1 -->
@@ -598,36 +681,36 @@
                                                                         @endif
 
                                                                         <div class="relative overflow-hidden rounded-lg border-2 border-[#0d6efd]/25 bg-[rgb(13_110_253/0.50)] backdrop-blur-[8px] shadow-lg">
-                                                                        <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.20)_0%,rgba(255,255,255,0.05)_30%,transparent_60%)]"></div>
-                                                                        <div class="relative p-5">
-                                                                            <div class="flex flex-wrap items-center justify-between gap-3">
-                                                                            <div class="text-slate-950 dark:text-white font-semibold">Step 1 • ยังไม่ดำเนินการตั้งราคา</div>
+                                                                            <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.20)_0%,rgba(255,255,255,0.05)_30%,transparent_60%)]"></div>
+                                                                            <div class="relative p-5">
+                                                                                <div class="flex flex-wrap items-center justify-between gap-3">
+                                                                                <div class="text-slate-950 dark:text-white font-semibold">Step 1 • ยังไม่ดำเนินการตั้งราคา</div>
 
-                                                                            {{-- ✅ เพิ่ม id: step1Badge (และ class เหมือนของคุณเป๊ะ) --}}
-                                                                            @if( $data->status === 1) 
-                                                                                <span id="step1Badge" class="text-xs rounded-full border border-[#0d6efd]/30 bg-[#0d6efd]/15 px-2 py-0 text-slate-950 dark:text-white">
-                                                                                Not Started
-                                                                                </span>
-                                                                            @elseif ($data->status === 2)
-                                                                                <span id="step1Badge" class="text-xs rounded-full border border-[#ffc107]/30 bg-[#ffc107]/15 px-2 py-0 text-slate-950 dark:text-white">
-                                                                                In Progress
-                                                                                </span>
-                                                                            @else
-                                                                                <span id="step1Badge" class="text-xs rounded-full border border-emerald-400/30 bg-emerald-400/15 px-2 py-0 text-slate-950 dark:text-white">
-                                                                                Completed
-                                                                                </span>
-                                                                            @endif
+                                                                                {{-- ✅ เพิ่ม id: step1Badge (และ class เหมือนของคุณเป๊ะ) --}}
+                                                                                @if( $data->status === 1) 
+                                                                                    <span id="step1Badge" class="text-xs rounded-full border border-[#0d6efd]/30 bg-[#0d6efd]/15 px-2 py-0 text-slate-950 dark:text-white">
+                                                                                    Not Started
+                                                                                    </span>
+                                                                                @elseif ($data->status === 2)
+                                                                                    <span id="step1Badge" class="text-xs rounded-full border border-[#ffc107]/30 bg-[#ffc107]/15 px-2 py-0 text-slate-950 dark:text-white">
+                                                                                    In Progress
+                                                                                    </span>
+                                                                                @else
+                                                                                    <span id="step1Badge" class="text-xs rounded-full border border-emerald-400/30 bg-emerald-400/15 px-2 py-0 text-slate-950 dark:text-white">
+                                                                                    Completed
+                                                                                    </span>
+                                                                                @endif
+                                                                                </div>
+
+                                                                                {{-- ✅ เพิ่ม id: step1Desc --}}
+                                                                                @if( $data->status === 1) 
+                                                                                    <div id="step1Desc" class="mt-2 text-sm text-slate-950 dark:text-white">ยังไม่ดำเนินการ...</div>
+                                                                                @elseif ($data->status === 2)
+                                                                                    <div id="step1Desc" class="mt-2 text-sm text-slate-950 dark:text-white">ดำเนินการแล้ว...</div>
+                                                                                @else
+                                                                                    <div id="step1Desc" class="mt-2 text-sm text-slate-950 dark:text-white">ดำเนินการเสร็จสมบูรณ์...</div>
+                                                                                @endif
                                                                             </div>
-
-                                                                            {{-- ✅ เพิ่ม id: step1Desc --}}
-                                                                            @if( $data->status === 1) 
-                                                                            <div id="step1Desc" class="mt-2 text-sm text-slate-950 dark:text-white">ยังไม่ดำเนินการ...</div>
-                                                                            @elseif ($data->status === 2)
-                                                                            <div id="step1Desc" class="mt-2 text-sm text-slate-950 dark:text-white">ดำเนินการแล้ว...</div>
-                                                                            @else
-                                                                            <div id="step1Desc" class="mt-2 text-sm text-slate-950 dark:text-white">ดำเนินการเสร็จสมบูรณ์...</div>
-                                                                            @endif
-                                                                        </div>
                                                                         </div>
                                                                     </div>
 
@@ -635,57 +718,57 @@
                                                                     <div class="relative pl-12">
                                                                         {{-- ✅ เพิ่ม id: step2Circle --}}
                                                                         @if( $data->status === 1 ) 
-                                                                        <div id="step2Circle"
-                                                                            class="absolute left-0.5 top-2 h-7 w-7 rounded-full border border-[#0d6efd]/40 bg-[#0d6efd]/25 shadow-[0_0_20px_rgba(13,110,253,0.35)]">
-                                                                            &nbsp;⏳
-                                                                        </div>
+                                                                            <div id="step2Circle"
+                                                                                class="absolute left-0.5 top-2 h-7 w-7 rounded-full border border-[#0d6efd]/40 bg-[#0d6efd]/25 shadow-[0_0_20px_rgba(13,110,253,0.35)]">
+                                                                                &nbsp;⏳
+                                                                            </div>
                                                                         @elseif( $data->status === 2) 
-                                                                        <div id="step2Circle"
-                                                                            class="absolute left-0.5 top-2 h-7 w-7 rounded-full border border-[#ffc107]/40 bg-[#ffc107]/25 shadow-[0_0_20px_rgba(255,193,7,0.35)]">
-                                                                            &nbsp;⏳
-                                                                        </div>
+                                                                            <div id="step2Circle"
+                                                                                class="absolute left-0.5 top-2 h-7 w-7 rounded-full border border-[#ffc107]/40 bg-[#ffc107]/25 shadow-[0_0_20px_rgba(255,193,7,0.35)]">
+                                                                                &nbsp;⏳
+                                                                            </div>
                                                                         @else
-                                                                        <div id="step2Circle"
-                                                                            class="absolute left-0.5 top-2 h-7 w-7 rounded-full border border-emerald-400/25 bg-[rgb(25_135_84/0.50)] shadow-[0_0_20px_rgba(25,135,84,0.45)]">
-                                                                            <svg viewBox="0 0 24 24" class="h-6 w-6 text-white/95"
-                                                                                fill="none" stroke="currentColor" stroke-width="3"
-                                                                                stroke-linecap="round" stroke-linejoin="round">
-                                                                            <path d="M20 6L9 17l-5-5" />
-                                                                            </svg>
-                                                                        </div>
+                                                                            <div id="step2Circle"
+                                                                                class="absolute left-0.5 top-2 h-7 w-7 rounded-full border border-emerald-400/25 bg-[rgb(25_135_84/0.50)] shadow-[0_0_20px_rgba(25,135,84,0.45)]">
+                                                                                <svg viewBox="0 0 24 24" class="h-6 w-6 text-white/95"
+                                                                                    fill="none" stroke="currentColor" stroke-width="3"
+                                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                                <path d="M20 6L9 17l-5-5" />
+                                                                                </svg>
+                                                                            </div>
                                                                         @endif
 
                                                                         <div class="relative overflow-hidden rounded-lg border-2 border-[#ffc107]/25 bg-[rgb(255_193_7/0.50)] backdrop-blur-[8px] shadow-lg">
-                                                                        <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.20)_0%,rgba(255,255,255,0.05)_30%,transparent_60%)]"></div>
-                                                                        <div class="relative p-5">
-                                                                            <div class="flex flex-wrap items-center justify-between gap-3">
-                                                                            <div class="text-slate-950 dark:text-white font-semibold">Step 2 • กำลังดำเนินการตั้งราคา</div>
+                                                                            <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.20)_0%,rgba(255,255,255,0.05)_30%,transparent_60%)]"></div>
+                                                                            <div class="relative p-5">
+                                                                                <div class="flex flex-wrap items-center justify-between gap-3">
+                                                                                <div class="text-slate-950 dark:text-white font-semibold">Step 2 • กำลังดำเนินการตั้งราคา</div>
 
-                                                                            {{-- ✅ เพิ่ม id: step2Badge (class เหมือนของคุณเป๊ะ) --}}
-                                                                            @if( $data->status === 1) 
-                                                                                <span id="step2Badge" class="text-xs rounded-full border border-[#0d6efd]/30 bg-[#0d6efd]/15 px-2 py-0 text-slate-950 dark:text-white">
-                                                                                Not Started
-                                                                                </span>
-                                                                            @elseif ($data->status === 2)
-                                                                                <span id="step2Badge" class="text-xs rounded-full border border-[#ffc107]/30 bg-[#ffc107]/15 px-2 py-0 text-slate-950 dark:text-white">
-                                                                                In Progress
-                                                                                </span>
-                                                                            @else
-                                                                                <span id="step2Badge" class="text-xs rounded-full border border-emerald-400/30 bg-emerald-400/15 px-2 py-0 text-slate-950 dark:text-white">
-                                                                                Completed
-                                                                                </span>
-                                                                            @endif
+                                                                                {{-- ✅ เพิ่ม id: step2Badge (class เหมือนของคุณเป๊ะ) --}}
+                                                                                @if( $data->status === 1) 
+                                                                                    <span id="step2Badge" class="text-xs rounded-full border border-[#0d6efd]/30 bg-[#0d6efd]/15 px-2 py-0 text-slate-950 dark:text-white">
+                                                                                    Not Started
+                                                                                    </span>
+                                                                                @elseif ($data->status === 2)
+                                                                                    <span id="step2Badge" class="text-xs rounded-full border border-[#ffc107]/30 bg-[#ffc107]/15 px-2 py-0 text-slate-950 dark:text-white">
+                                                                                    In Progress
+                                                                                    </span>
+                                                                                @else
+                                                                                    <span id="step2Badge" class="text-xs rounded-full border border-emerald-400/30 bg-emerald-400/15 px-2 py-0 text-slate-950 dark:text-white">
+                                                                                    Completed
+                                                                                    </span>
+                                                                                @endif
+                                                                                </div>
+
+                                                                                {{-- ✅ เพิ่ม id: step2Desc --}}
+                                                                                @if( $data->status === 1) 
+                                                                                    <div id="step2Desc" class="mt-2 text-sm text-slate-950 dark:text-white">ยังไม่ดำเนินการ...</div>
+                                                                                @elseif ($data->status === 2)
+                                                                                    <div id="step2Desc" class="mt-2 text-sm text-slate-950 dark:text-white">กำลังดำเนินการตั้งราคา...</div>
+                                                                                @else
+                                                                                    <div id="step2Desc" class="mt-2 text-sm text-slate-950 dark:text-white">ดำเนินการเสร็จสมบูรณ์...</div>
+                                                                                @endif
                                                                             </div>
-
-                                                                            {{-- ✅ เพิ่ม id: step2Desc --}}
-                                                                            @if( $data->status === 1) 
-                                                                            <div id="step2Desc" class="mt-2 text-sm text-slate-950 dark:text-white">ยังไม่ดำเนินการ...</div>
-                                                                            @elseif ($data->status === 2)
-                                                                            <div id="step2Desc" class="mt-2 text-sm text-slate-950 dark:text-white">กำลังดำเนินการตั้งราคา...</div>
-                                                                            @else
-                                                                            <div id="step2Desc" class="mt-2 text-sm text-slate-950 dark:text-white">ดำเนินการเสร็จสมบูรณ์...</div>
-                                                                            @endif
-                                                                        </div>
                                                                         </div>
                                                                     </div>
 
@@ -693,57 +776,57 @@
                                                                     <div class="relative pl-12">
                                                                         {{-- ✅ เพิ่ม id: step3Circle --}}
                                                                         @if( $data->status === 1 ) 
-                                                                        <div id="step3Circle"
-                                                                            class="absolute left-0.5 top-2 h-7 w-7 rounded-full border border-[#0d6efd]/40 bg-[#0d6efd]/25 shadow-[0_0_20px_rgba(13,110,253,0.35)]">
-                                                                            &nbsp;⏳
-                                                                        </div>
+                                                                            <div id="step3Circle"
+                                                                                class="absolute left-0.5 top-2 h-7 w-7 rounded-full border border-[#0d6efd]/40 bg-[#0d6efd]/25 shadow-[0_0_20px_rgba(13,110,253,0.35)]">
+                                                                                &nbsp;⏳
+                                                                            </div>
                                                                         @elseif( $data->status === 2) 
-                                                                        <div id="step3Circle"
-                                                                            class="absolute left-0.5 top-2 h-7 w-7 rounded-full border border-[#ffc107]/40 bg-[#ffc107]/25 shadow-[0_0_20px_rgba(255,193,7,0.35)]">
-                                                                            &nbsp;⏳
-                                                                        </div>
+                                                                            <div id="step3Circle"
+                                                                                class="absolute left-0.5 top-2 h-7 w-7 rounded-full border border-[#ffc107]/40 bg-[#ffc107]/25 shadow-[0_0_20px_rgba(255,193,7,0.35)]">
+                                                                                &nbsp;⏳
+                                                                            </div>
                                                                         @else
-                                                                        <div id="step3Circle"
-                                                                            class="absolute left-0.5 top-2 h-7 w-7 rounded-full border border-emerald-400/25 bg-[rgb(25_135_84/0.50)] shadow-[0_0_20px_rgba(25,135,84,0.45)]">
-                                                                            <svg viewBox="0 0 24 24" class="h-6 w-6 text-white/95"
-                                                                                fill="none" stroke="currentColor" stroke-width="3"
-                                                                                stroke-linecap="round" stroke-linejoin="round">
-                                                                            <path d="M20 6L9 17l-5-5" />
-                                                                            </svg>
-                                                                        </div>
+                                                                            <div id="step3Circle"
+                                                                                class="absolute left-0.5 top-2 h-7 w-7 rounded-full border border-emerald-400/25 bg-[rgb(25_135_84/0.50)] shadow-[0_0_20px_rgba(25,135,84,0.45)]">
+                                                                                <svg viewBox="0 0 24 24" class="h-6 w-6 text-white/95"
+                                                                                    fill="none" stroke="currentColor" stroke-width="3"
+                                                                                    stroke-linecap="round" stroke-linejoin="round">
+                                                                                <path d="M20 6L9 17l-5-5" />
+                                                                                </svg>
+                                                                            </div>
                                                                         @endif
 
                                                                         <div class="relative overflow-hidden rounded-lg border-2 border-emerald-400/25 bg-[rgb(25_135_84/0.50)] backdrop-blur-[8px] shadow-lg">
-                                                                        <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.22)_0%,rgba(255,255,255,0.06)_30%,transparent_60%)]"></div>
-                                                                        <div class="relative p-5">
-                                                                            <div class="flex flex-wrap items-center justify-between gap-3">
-                                                                            <div class="text-slate-950 dark:text-white font-semibold">Step 3 • ดำเนินการเสร็จสมบูรณ์</div>
+                                                                            <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,0.22)_0%,rgba(255,255,255,0.06)_30%,transparent_60%)]"></div>
+                                                                            <div class="relative p-5">
+                                                                                <div class="flex flex-wrap items-center justify-between gap-3">
+                                                                                <div class="text-slate-950 dark:text-white font-semibold">Step 3 • ดำเนินการเสร็จสมบูรณ์</div>
 
-                                                                            {{-- ✅ เพิ่ม id: step3Badge (class เหมือนของคุณเป๊ะ) --}}
-                                                                            @if( $data->status === 1) 
-                                                                                <span id="step3Badge" class="text-xs rounded-full border border-[#0d6efd]/30 bg-[#0d6efd]/15 px-2 py-0 text-slate-950 dark:text-white">
-                                                                                Not Started
-                                                                                </span>
-                                                                            @elseif ($data->status === 2)
-                                                                                <span id="step3Badge" class="text-xs rounded-full border border-[#ffc107]/30 bg-[#ffc107]/15 px-2 py-0 text-slate-950 dark:text-white">
-                                                                                In Progress
-                                                                                </span>
-                                                                            @else
-                                                                                <span id="step3Badge" class="text-xs rounded-full border border-emerald-400/30 bg-emerald-400/15 px-2 py-0 text-slate-950 dark:text-white">
-                                                                                Completed
-                                                                                </span>
-                                                                            @endif
+                                                                                {{-- ✅ เพิ่ม id: step3Badge (class เหมือนของคุณเป๊ะ) --}}
+                                                                                @if( $data->status === 1) 
+                                                                                    <span id="step3Badge" class="text-xs rounded-full border border-[#0d6efd]/30 bg-[#0d6efd]/15 px-2 py-0 text-slate-950 dark:text-white">
+                                                                                    Not Started
+                                                                                    </span>
+                                                                                @elseif ($data->status === 2)
+                                                                                    <span id="step3Badge" class="text-xs rounded-full border border-[#ffc107]/30 bg-[#ffc107]/15 px-2 py-0 text-slate-950 dark:text-white">
+                                                                                    In Progress
+                                                                                    </span>
+                                                                                @else
+                                                                                    <span id="step3Badge" class="text-xs rounded-full border border-emerald-400/30 bg-emerald-400/15 px-2 py-0 text-slate-950 dark:text-white">
+                                                                                    Completed
+                                                                                    </span>
+                                                                                @endif
+                                                                                </div>
+
+                                                                                {{-- ✅ เพิ่ม id: step3Desc --}}
+                                                                                @if( $data->status === 1) 
+                                                                                <div id="step3Desc" class="mt-2 text-sm text-slate-950 dark:text-white">ยังไม่ดำเนินการ...</div>
+                                                                                @elseif ($data->status === 2)
+                                                                                <div id="step3Desc" class="mt-2 text-sm text-slate-950 dark:text-white">รอการดำเนินการ(Step 2 : กำลังดำเนินการตั้งราคา)...</div>
+                                                                                @else
+                                                                                <div id="step3Desc" class="mt-2 text-sm text-slate-950 dark:text-white">ดำเนินการเสร็จสมบูรณ์...</div>
+                                                                                @endif
                                                                             </div>
-
-                                                                            {{-- ✅ เพิ่ม id: step3Desc --}}
-                                                                            @if( $data->status === 1) 
-                                                                            <div id="step3Desc" class="mt-2 text-sm text-slate-950 dark:text-white">ยังไม่ดำเนินการ...</div>
-                                                                            @elseif ($data->status === 2)
-                                                                            <div id="step3Desc" class="mt-2 text-sm text-slate-950 dark:text-white">รอการดำเนินการ(Step 2 : กำลังดำเนินการตั้งราคา)...</div>
-                                                                            @else
-                                                                            <div id="step3Desc" class="mt-2 text-sm text-slate-950 dark:text-white">ดำเนินการเสร็จสมบูรณ์...</div>
-                                                                            @endif
-                                                                        </div>
                                                                         </div>
                                                                     </div>
 
@@ -762,6 +845,7 @@
                                 </div>
                             </form>
                             <div id="loaderSchedule" class="loading-2 absolute hidden bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]">
+                            <!-- <div id="loaderSchedule" class="loading-2 absolute bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]"> -->
                             <!-- <div id="loader" class="loading-2 absolute bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]"> -->
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 animate-spin dark:text-white">
                                     <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
@@ -795,7 +879,7 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
                                                 </svg>
                                             </div>
-                                            <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
+                                            <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full relative">
                                                 <div id="" class="text-gray-900 dark:text-gray-100">
                                                     <table id="account_schedule" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
                                                         <thead>
@@ -809,6 +893,22 @@
                                                         <tbody>
                                                         </tbody>
                                                     </table>
+                                                </div>
+                                                <!-- Skeleton: account_schedule -->
+                                                <div id="loaderAccountSchedule" class="absolute inset-0 hidden bg-[#e4e4e4] dark:bg-[#404040] z-40 p-3">
+                                                    <!-- skeleton thead -->
+                                                    <div class="grid grid-cols-4 gap-3 mb-4 pb-2 border-b border-gray-300 dark:border-gray-600">
+                                                        <div class="skeleton-box w-20 h-4 rounded"></div>
+                                                        <div class="skeleton-box w-28 h-4 rounded"></div>
+                                                        <div class="skeleton-box w-24 h-4 rounded"></div>
+                                                        <div class="skeleton-box w-16 h-4 rounded"></div>
+                                                    </div>
+                                                    <!-- skeleton rows -->
+                                                    <div class="space-y-3">
+                                                        <div class="grid grid-cols-4 gap-3"><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div></div>
+                                                        <div class="grid grid-cols-4 gap-3"><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div></div>
+                                                        <div class="grid grid-cols-4 gap-3"><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div></div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -840,7 +940,7 @@
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" clip-rule="evenodd" />
                                                 </svg>
                                             </div>
-                                            <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full">
+                                            <div class="bg-gray-100 dark:bg-[#404040] overflow-hidden transition-all duration-500 max-h-0 peer-checked:max-h-full relative">
                                                 <div id="" class="text-gray-900 dark:text-gray-100">
                                                     <table id="account_schedule_log" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
                                                         <thead>
@@ -857,6 +957,23 @@
                                                         </tbody>
                                                     </table>
                                                 </div>
+                                                <!-- Skeleton: account_schedule_log -->
+                                                <div id="loaderAccountScheduleLog" class="absolute inset-0 hidden bg-[#e4e4e4] dark:bg-[#404040] z-40 p-3">
+                                                    <!-- skeleton thead -->
+                                                    <div class="grid grid-cols-5 gap-3 mb-4 pb-2 border-b border-gray-300 dark:border-gray-600">
+                                                        <div class="skeleton-box w-20 h-4 rounded"></div>
+                                                        <div class="skeleton-box w-16 h-4 rounded"></div>
+                                                        <div class="skeleton-box w-12 h-4 rounded"></div>
+                                                        <div class="skeleton-box w-24 h-4 rounded"></div>
+                                                        <div class="skeleton-box w-12 h-4 rounded"></div>
+                                                    </div>
+                                                    <!-- skeleton rows -->
+                                                    <div class="space-y-3">
+                                                        <div class="grid grid-cols-5 gap-3"><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div></div>
+                                                        <div class="grid grid-cols-5 gap-3"><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div></div>
+                                                        <div class="grid grid-cols-5 gap-3"><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div><div class="skeleton-box w-full h-4 rounded"></div></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -865,7 +982,7 @@
                         </li>
                     </ul>
                     <ul class="pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
-                    <div id="loader" class="loading absolute hidden bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]">
+                    <div id="loaderHistory" class="loading-history absolute hidden bg-[#e4e4e4e3] dark:bg-[#2e2d2dd5]">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-10 h-10 animate-spin dark:text-white">
                             <path d="M17.004 10.407c.138.435-.216.842-.672.842h-3.465a.75.75 0 0 1-.65-.375l-1.732-3c-.229-.396-.053-.907.393-1.004a5.252 5.252 0 0 1 6.126 3.537ZM8.12 8.464c.307-.338.838-.235 1.066.16l1.732 3a.75.75 0 0 1 0 .75l-1.732 3c-.229.397-.76.5-1.067.161A5.23 5.23 0 0 1 6.75 12a5.23 5.23 0 0 1 1.37-3.536ZM10.878 17.13c-.447-.098-.623-.608-.394-1.004l1.733-3.002a.75.75 0 0 1 .65-.375h3.465c.457 0 .81.407.672.842a5.252 5.252 0 0 1-6.126 3.539Z" />
                             <path fill-rule="evenodd" d="M21 12.75a.75.75 0 1 0 0-1.5h-.783a8.22 8.22 0 0 0-.237-1.357l.734-.267a.75.75 0 1 0-.513-1.41l-.735.268a8.24 8.24 0 0 0-.689-1.192l.6-.503a.75.75 0 1 0-.964-1.149l-.6.504a8.3 8.3 0 0 0-1.054-.885l.391-.678a.75.75 0 1 0-1.299-.75l-.39.676a8.188 8.188 0 0 0-1.295-.47l.136-.77a.75.75 0 0 0-1.477-.26l-.136.77a8.36 8.36 0 0 0-1.377 0l-.136-.77a.75.75 0 1 0-1.477.26l.136.77c-.448.121-.88.28-1.294.47l-.39-.676a.75.75 0 0 0-1.3.75l.392.678a8.29 8.29 0 0 0-1.054.885l-.6-.504a.75.75 0 1 0-.965 1.149l.6.503a8.243 8.243 0 0 0-.689 1.192L3.8 8.216a.75.75 0 1 0-.513 1.41l.735.267a8.222 8.222 0 0 0-.238 1.356h-.783a.75.75 0 0 0 0 1.5h.783c.042.464.122.917.238 1.356l-.735.268a.75.75 0 0 0 .513 1.41l.735-.268c.197.417.428.816.69 1.191l-.6.504a.75.75 0 0 0 .963 1.15l.601-.505c.326.323.679.62 1.054.885l-.392.68a.75.75 0 0 0 1.3.75l.39-.679c.414.192.847.35 1.294.471l-.136.77a.75.75 0 0 0 1.477.261l.137-.772a8.332 8.332 0 0 0 1.376 0l.136.772a.75.75 0 1 0 1.477-.26l-.136-.771a8.19 8.19 0 0 0 1.294-.47l.391.677a.75.75 0 0 0 1.3-.75l-.393-.679a8.29 8.29 0 0 0 1.054-.885l.601.504a.75.75 0 0 0 .964-1.15l-.6-.503c.261-.375.492-.774.69-1.191l.735.267a.75.75 0 1 0 .512-1.41l-.734-.267c.115-.439.195-.892.237-1.356h.784Zm-2.657-3.06a6.744 6.744 0 0 0-1.19-2.053 6.784 6.784 0 0 0-1.82-1.51A6.705 6.705 0 0 0 12 5.25a6.8 6.8 0 0 0-1.225.11 6.7 6.7 0 0 0-2.15.793 6.784 6.784 0 0 0-2.952 3.489.76.76 0 0 1-.036.098A6.74 6.74 0 0 0 5.251 12a6.74 6.74 0 0 0 3.366 5.842l.009.005a6.704 6.704 0 0 0 2.18.798l.022.003a6.792 6.792 0 0 0 2.368-.004 6.704 6.704 0 0 0 2.205-.811 6.785 6.785 0 0 0 1.762-1.484l.009-.01.009-.01a6.743 6.743 0 0 0 1.18-2.066c.253-.707.39-1.469.39-2.263a6.74 6.74 0 0 0-.408-2.309Z" clip-rule="evenodd" />
@@ -1159,6 +1276,10 @@
         // Form helpers
         // ======================
         function getCode() { return String($('#Code').val() || '').trim(); }          // ต้องมี input#Code ในหน้า
+        function updateActiveDateLabel(dateStr) {
+            const text = dateStr ? 'มีผลวันที่ ' + dateStr : 'มีผลวันที่ - ยังไม่ได้ตั้งราคา';
+            $('#activeDateLabel').text(text);
+        }
         function resetValidateUI() {
             const $form = $('#updateProductPriceSchedule');
             try {
@@ -1186,10 +1307,11 @@
         // ======================
         // Cross-tab signals
         // ======================
-        function broadcastResetToOtherTabs(productCode) {
+        function broadcastResetToOtherTabs(productCode, activeDate) {
             try {
                 localStorage.setItem('account_schedule_reset', JSON.stringify({
                 product: String(productCode || ''),
+                active_date: String(activeDate || ''),
                 ts: Date.now()
                 }));
             } catch (e) {}
@@ -1213,7 +1335,12 @@
                 const payload = JSON.parse(event.newValue || '{}');
                 const code = getCode();
                 if (payload?.product && code && String(payload.product) === code) {
+                    $('#loader').removeClass('hidden');
+                    if (payload.active_date) updateActiveDateLabel(payload.active_date);
                     resetScheduleUI();
+                    if (typeof mytableDatatable !== 'undefined') mytableDatatable.ajax.reload(null, false);
+                    if (typeof mytableDatatableLog !== 'undefined') mytableDatatableLog.ajax.reload(null, false);
+                    setTimeout(function() { $('#loader').addClass('hidden'); }, 500);
                 }
                 } catch (e) {}
             }
@@ -1420,9 +1547,14 @@
                     broadcastStatusToOtherTabs(productCode, res.status);
                     }
 
+                    // ✅ อัปเดท active_date label
+                    if (res.active_date) {
+                        updateActiveDateLabel(res.active_date);
+                    }
+
                     // ✅ reset UI tab นี้ + tab อื่น
                     resetScheduleUI();
-                    broadcastResetToOtherTabs(productCode);
+                    broadcastResetToOtherTabs(productCode, res.active_date || '');
 
                     // ✅ badge_count sync (ถ้ามี)
                     if (typeof res.badge_count !== 'undefined') {
@@ -1431,6 +1563,10 @@
                         if (typeof window.renderAccountBadge === 'function') window.renderAccountBadge(next);
                         if (typeof window.renderAccountNotiListBadge === 'function') window.renderAccountNotiListBadge(next);
                     }
+
+                    // ✅ reload DataTable ตั้งราคาบัญชี
+                    mytableDatatable.ajax.reload(null, false);
+                    mytableDatatableLog.ajax.reload(null, false);
 
                     toastr.success("อัปเดทราคาสำเร็จ!");
                     $('#loader').addClass('hidden');
@@ -1456,20 +1592,28 @@
         if (window.Echo && window.Echo.private) {
         window.Echo.private('account.global')
             .listen('.account.price.schedule.updated', function (e) {
-            // e ควรมี product + status
+            // e ควรมี product + status + active_date
             const code = String(e?.product ?? e?.data?.product ?? '');
             const status = Number(e?.status ?? e?.data?.status ?? 1);
+            const activeDate = String(e?.active_date ?? e?.data?.active_date ?? '');
 
             // ถ้าเปิดอยู่สินค้าตัวเดียวกัน
             if (code && code === getCode()) {
+                $('#loader').removeClass('hidden');
                 showScheduleLoader();
                 renderStatus(status);
+                if (activeDate) updateActiveDateLabel(activeDate);
                 resetScheduleUI();
-                hideScheduleLoader();
+                if (typeof mytableDatatable !== 'undefined') mytableDatatable.ajax.reload(null, false);
+                if (typeof mytableDatatableLog !== 'undefined') mytableDatatableLog.ajax.reload(null, false);
+                setTimeout(function() {
+                    $('#loader').addClass('hidden');
+                    hideScheduleLoader();
+                }, 500);
 
                 // cross-tab
                 broadcastStatusToOtherTabs(code, status);
-                broadcastResetToOtherTabs(code);
+                broadcastResetToOtherTabs(code, activeDate);
             }
             });
         }
@@ -1574,13 +1718,27 @@
                     orderable: true,
                     defaultContent: "-",
                     render: function(data, type, row) {
-                        return `
-                                <span class="inline-flex min-w-[200px] items-center justify-start gap-1 whitespace-nowrap
+                        let scheduleStatusPeice = '';
+
+                            if(row.status == 0) {
+                                scheduleStatusPeice = `
+                                    <span class="inline-flex min-w-[200px] items-center justify-start gap-1 whitespace-nowrap
                                     rounded-full border border-[#ffc107]/30 bg-[#ffc107]/15
                                     px-2 py-0 text-base font-semibold text-slate-950 dark:text-white">
-                                ⌛ ${row.price}
+                                    ⌛ ${row.price}
                                 </span>
-                            `;
+                                `;
+                            } else if (row.status == 1) {
+                                 scheduleStatusPeice = `
+                                    <span class="inline-flex min-w-[200px] items-center justify-start gap-1 whitespace-nowrap
+                                    rounded-full border border-emerald-400/30 bg-emerald-400/15
+                                    px-2 py-0 text-base font-semibold text-slate-950 dark:text-white">
+                                    ✅ ${row.price}
+                                </span>
+                                `;
+                            }
+                        
+                        return scheduleStatusPeice != "" ? scheduleStatusPeice : "-";
 
                     }
                 },
@@ -1697,6 +1855,19 @@
             mytableDatatableLog.draw();
             return false;
         });
-        
+
+        // ✅ Auto skeleton: show เมื่อ AJAX เริ่ม, hide เมื่อ AJAX เสร็จ
+        $('#account_schedule').on('preXhr.dt', function() {
+            $('#loaderAccountSchedule').removeClass('hidden');
+        }).on('xhr.dt', function() {
+            $('#loaderAccountSchedule').addClass('hidden');
+        });
+
+        $('#account_schedule_log').on('preXhr.dt', function() {
+            $('#loaderAccountScheduleLog').removeClass('hidden');
+        }).on('xhr.dt', function() {
+            $('#loaderAccountScheduleLog').addClass('hidden');
+        });
+
     </script>
 @endsection

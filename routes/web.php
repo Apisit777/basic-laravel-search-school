@@ -17,6 +17,8 @@ use App\Http\Controllers\PusherController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ExportExcel\ExportExcelController;
+use App\Http\Controllers\ImportExcel\ImportController;
+use App\Http\Controllers\Ibsh\IbshController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,6 +51,16 @@ Route::get('/api_bypass_login', [AuthController::class, 'apiByPassLogin'])->name
 // Switch role
 Route::get('/switch_role', [HomeController::class, 'role'])->name('switch_role');
 Route::post('/role_bypass', [HomeController::class, 'roleByPass'])->name('role_bypass');
+
+// Diary (remote DB 10.20.10.35)
+Route::group(['prefix' => 'diary', 'as' => 'diary.'], function () {
+    Route::get('/', [ImportController::class, 'index'])->name('index');
+    Route::post('/list_diary', [ImportController::class, 'getDiary'])->name('list_diary');
+    Route::post('/list_diary_external', [ImportController::class, 'getDiaryExternal'])->name('list_diary_external');
+    Route::post('/preview', [ImportController::class, 'previewCompare'])->name('preview');
+    Route::post('/import', [ImportController::class, 'importBoth'])->name('import');
+    Route::get('/transfer-status', [ImportController::class, 'getTransferStatus'])->name('transfer_status');
+});
 
 // Route::middleware('auth')->group(function() {
 Route::group(['middleware' => ['auth', 'check.permission']], function () {
@@ -190,6 +202,10 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
         Route::post('/list_product_detail_manage_export_excel', [ProductDetailController::class, 'listProductDetailManageExportExcel'])->name('list_product_detail_manage_export_excel');
         Route::post('/pd_detail_manage_export_excel_update/{product_id}', [ProductDetailController::class, 'updateProductDetailManageExportExcel'])->name('pd_detail_manage_export_excel_update');
         Route::get('/pd_detail/show/{product_id}', [ProductDetailController::class, 'show'])->name('pd_detail_show');
+
+        // ✅ เพิ่มเส้นนี้ (ไม่ต้องสร้าง Controller ใหม่)
+        Route::get('/pd_detail/pdf-codes/{product_id}', [ProductDetailController::class, 'pdfCodes'])->name('pd_detail_pdf_codes');
+
         Route::get('/pd_detail/edit/{product_id}', [ProductDetailController::class, 'edit'])->name('pd_detail_edit');
         Route::post('/pd_detail_update/{product_id}', [ProductDetailController::class, 'update'])->name('pd_detail_update');
 
@@ -276,6 +292,14 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
     Route::group(['prefix' => 'channel', 'as' => 'channel.'], function () {
         Route::get('/', [ProductChannelController::class, 'index'])->name('index');
         Route::post('/list_product_channel', [ProductChannelController::class, 'list_product_channel'])->name('list_product_channel');
+    });
+
+    // Main Menu IBSH
+    Route::group(['prefix' => 'ibhs', 'as' => 'ibhs.'], function () {
+        // Sub Menu Product Detail1(Product Detail)
+        Route::get('/product_description', [IbshController::class, 'index'])->name('pd_detail_index');
+        Route::get('/product_description/edit/{product_id}', [IbshController::class, 'edit'])->name('ibhs_edit');
+        Route::post('/list_ibsh', [IbshController::class, 'listIbsh'])->name('list_ibsh');
     });
 
     // Km

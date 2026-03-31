@@ -35,6 +35,31 @@
             background-repeat: no-repeat;
             background-attachment: fixed;
         } */
+
+        .page-loading{
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.35);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+        }
+
+        .page-loading.is-active{ display:flex; }
+
+        .page-loading .spinner{
+            width:44px; height:44px;
+            border-radius:50%;
+            border:4px solid rgba(255,255,255,.35);
+            border-top-color:#fff;
+            animation: spin .8s linear infinite;
+        }
+
+        @keyframes spin{ to{ transform: rotate(360deg);} }
+
+
     </style>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
      <!-- @vite(['resources/css/app.css', 'resources/js/app.ts']) -->
@@ -48,7 +73,7 @@
 
         @include('layouts.admin_navbar')
         @include('layouts.admin_menu_sidenav')
-        <body x-cloak x-data="{darkMode: $persist(false)}" :class="{'dark': darkMode === true }" class="antialiased">
+        <!-- <body x-cloak x-data="{darkMode: $persist(false)}" :class="{'dark': darkMode === true }" class="antialiased"> -->
         <!-- <div class="min-h-screen p-2 md:ml-64 bg-white dark:bg-[#202020] duration-500" style="z-index: -10; background-image: url('https://www.ssup.co.th/wp-content/uploads/2022/11/shutterstock_2079577573.png')"> -->
         <div class="min-h-screen p-4 md:ml-64 bg-white dark:bg-[#202020] duration-500">
             <div class="p-2 rounded-sm dark:border-gray-700 mt-4">
@@ -57,6 +82,12 @@
                 </div>
             </div>
         </div>
+
+        <!-- ✅ ใส่ตรงนี้เลย: ก่อนปิด body -->
+        <div id="pageLoading" class="page-loading" aria-hidden="true">
+            <div class="spinner"></div>
+        </div>
+
     </body>
 
     <!-- contents lg:pointer-events-auto lg:block lg:w-72 lg:overflow-y-auto lg:border-r lg:border-zinc-900/10 lg:px-6 lg:pb-8 lg:pt-4 xl:w-80 lg:dark:border-white/10 -->
@@ -155,6 +186,43 @@
         $('#auth_department').append(
             `<span class="text-gray-900 dark:text-white p-2">${role}</span></button>`
         );
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const el = document.getElementById('pageLoading');
+            if (!el) return;
+
+            const show = () => el.classList.add('is-active');
+            const hide = () => el.classList.remove('is-active');
+
+            // คลิกลิงก์ภายในเว็บ -> โชว์โหลด
+            document.addEventListener('click', (e) => {
+                const a = e.target.closest('a');
+                if (!a) return;
+
+                const href = a.getAttribute('href') || '';
+                const target = a.getAttribute('target');
+
+                // ข้ามกรณีพิเศษ
+                if (target === '_blank') return;
+                if (href.startsWith('#') || href.startsWith('javascript:')) return;
+                if (a.hasAttribute('download')) return;
+
+                // ถ้าเป็นลิงก์ออกนอกโดเมนให้ข้าม (กันโชว์ค้าง)
+                try {
+                const url = new URL(href, window.location.href);
+                if (url.origin !== window.location.origin) return;
+                } catch (_) {}
+
+                show();
+            });
+
+            // submit form -> โชว์โหลด
+            document.addEventListener('submit', () => show());
+
+            // เวลา back/forward แล้วกลับมาหน้าเดิม -> ซ่อน
+            window.addEventListener('pageshow', hide);
+        });
+        
     </script>
 
 </html>

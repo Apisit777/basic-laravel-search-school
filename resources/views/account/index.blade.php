@@ -227,7 +227,7 @@
             </div>
         </div>
 
-        <ul class="pt-1 mt-1 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-700 relative"></ul>
+        <!-- <ul class="pt-1 mt-1 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-700 relative"></ul> -->
 
         <!-- <div class="flex xs:right-12 sm:right-12 md:right-14 lg:right-14 xl:right-14 z-10 absolute mt-3">   
             <a
@@ -296,6 +296,8 @@
             </div>
         </div> -->
 
+        <ul class="pt-1 mt-1 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-700 relative"></ul>
+        
         <div class="buttons-wrapper relative">
             <div class="buttons-panel absolute inset-x-0 top-4 z-20 flex items-center justify-between space-x-2">
                 <!-- ซ้าย: 3 ปุ่ม filter -->

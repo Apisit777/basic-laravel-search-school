@@ -685,17 +685,21 @@ class ExportExcelController extends Controller
                 'case_width' => 'case_width',
                 'case_length' => 'case_length',
                 'case_height' => 'case_height',
-                'case_barcode' => 'case_barcode',
                 'case_weight' => 'case_weight',
                 'case_pack_size' => 'case_pack_size',
+                'case_barcode' => 'case_barcode',
                 'inner_width' => 'inner_width',
                 'inner_length' => 'inner_length',
                 'inner_height' => 'inner_height',
                 'inner_pack_size' => 'inner_pack_size',
+                'inner_barcode' => 'inner_barcode',
                 'inner_weight' => 'inner_weight',
-                'unit_barcode' => 'unit_barcode',
+                'unit_width' => 'unit_width',
+                'unit_length' => 'unit_length',
+                'unit_height' => 'unit_height',
                 'unit_weight' => 'unit_weight',
                 'unit_pak_size' => 'unit_pak_size',
+                'unit_barcode' => 'unit_barcode',
                 'other_detail' => 'อื่นๆ',
                 'sls_free' => 'sls_free',
                 'silicone_free' => 'silicone_free',
@@ -770,12 +774,15 @@ class ExportExcelController extends Controller
                 'inner_width' => 'inner_width',
                 'inner_length' => 'inner_length',
                 'inner_height' => 'inner_height',
-                'inner_barcode' => 'inner_barcode',
                 'inner_pack_size' => 'inner_pack_size',
                 'inner_weight' => 'inner_weight',
-                'unit_barcode' => 'unit_barcode',
+                'inner_barcode' => 'inner_barcode',
+                'unit_width' => 'unit_width',
+                'unit_length' => 'unit_length',
+                'unit_height' => 'unit_height',
                 'unit_weight' => 'unit_weight',
                 'unit_pak_size' => 'unit_pak_size',
+                'unit_barcode' => 'unit_barcode',
                 'fad' => 'FDA',
                 // 'channel' => 'channel',
                 'channels' => 'Channel',
@@ -918,7 +925,22 @@ class ExportExcelController extends Controller
             if ($U === 'SUB_CATEGORY' || $U === 'S_CAT')
                 return 'sub_categories.DESCRIPTION as sub_categories_name';
 
-            // ===== 2) ฟิลด์พิเศษที่ต้อง compose เอง =====
+            // ===== 2) ฟิลด์ Dimension: บังคับดึงจาก com_products (cp) =====
+            // Unit (cp.width / cp.long / cp.height)
+            if ($U === 'WIDTH')         return DB::raw('IFNULL(cp.`width`, 0) as `width`');
+            if ($U === 'UNIT_WIDTH')    return DB::raw('IFNULL(cp.`width`, 0) as unit_width');
+            if ($U === 'UNIT_LENGTH')   return DB::raw('IFNULL(cp.`long`, 0) as unit_length');
+            if ($U === 'UNIT_HEIGHT')   return DB::raw('IFNULL(cp.`height`, 0) as unit_height');
+            // Inner (km_ ใน com_products → fallback pd)
+            if ($U === 'INNER_WIDTH')   return DB::raw('COALESCE(NULLIF(cp.km_inner_width, 0), pd.inner_width, 0) as inner_width');
+            if ($U === 'INNER_LENGTH')  return DB::raw('COALESCE(NULLIF(cp.km_inner_long, 0), pd.inner_length, 0) as inner_length');
+            if ($U === 'INNER_HEIGHT')  return DB::raw('COALESCE(NULLIF(cp.km_inner_height, 0), pd.inner_height, 0) as inner_height');
+            // Case (km_ ใน com_products → fallback pd)
+            if ($U === 'CASE_WIDTH')    return DB::raw('COALESCE(NULLIF(cp.km_case_width, 0), pd.case_width, 0) as case_width');
+            if ($U === 'CASE_LENGTH')   return DB::raw('COALESCE(NULLIF(cp.km_case_long, 0), pd.case_length, 0) as case_length');
+            if ($U === 'CASE_HEIGHT')   return DB::raw('COALESCE(NULLIF(cp.km_case_height, 0), pd.case_height, 0) as case_height');
+
+            // ===== 3) ฟิลด์พิเศษที่ต้อง compose เอง =====
             if ($U === 'PRODUCT') {
                 // ใช้ code เดียวชื่อ PRODUCT เสมอ เพื่อให้ง่ายต่อ group/order
                 return DB::raw('COALESCE(p1.PRODUCT, pc.PRODUCT) as PRODUCT');
@@ -974,6 +996,12 @@ class ExportExcelController extends Controller
                 $selectFields[] = DB::raw('GROUP_CONCAT(DISTINCT pcb.CHANNEL ORDER BY pcb.CHANNEL SEPARATOR ", ") as channels');
             }
         }
+
+        // เพิ่ม unit dimension อัตโนมัติ (ไม่ต้องพึ่ง permission table)
+        $selectFields[] = DB::raw('IFNULL(cp.`width`, 0) as unit_width');
+        $selectFields[] = DB::raw('IFNULL(cp.`long`, 0) as unit_length');
+        $selectFields[] = DB::raw('IFNULL(cp.`height`, 0) as unit_height');
+
         // dd($selectFields);
 
         // ตรวจสอบ permission ก่อน query
@@ -984,37 +1012,6 @@ class ExportExcelController extends Controller
             }
 
             // // ✅ สร้าง base query ครั้งเดียว และ “บังคับ” ให้ permission = 'Y'
-            // $base = Product1::select($selectFields)
-            //     ->leftJoin('product_details', DB::raw('LOWER(product1s.PRODUCT)'), '=', DB::raw('LOWER(product_details.product_id)'))
-            //     ->leftJoin('product_others', 'product1s.PRODUCT', '=', 'product_others.product_id')
-            //     ->leftJoin('com_products', 'product1s.PRODUCT', '=', 'com_products.product_id')
-            //     ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
-            //     ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
-            //     ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
-            //     ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
-            //     ->where('product1s.BRAND', 'CPS')
-            //     // 🔒 เอาเฉพาะที่อนุญาตเท่านั้น
-            //     ->whereRaw('UPPER(product_details.permission) = "Y"');
-
-            // // --- ตัวกรองตามช่วงรหัส (ถ้าอยาก “ไม่สนใจช่วงรหัส” ก็ไม่ต้องใส่เงื่อนไขพวกนี้) ---
-            // if (!isset($request->start_product) || $request->start_product == null) {
-            //     // ไม่กรองรหัส
-            //     $query = clone $base;
-            // } elseif (!isset($request->end_product) || $request->end_product == null) {
-            //     // กรอง = รหัสเดียว
-            //     $query = (clone $base)->where('product1s.PRODUCT', $request->start_product);
-            // } else {
-            //     // กรองช่วงรหัส
-            //     $query = (clone $base)
-            //         ->whereBetween('product1s.PRODUCT', [$request->start_product, $request->end_product]);
-            // }
-
-            // $ProDevelops = $query
-            //     ->groupBy('product1s.PRODUCT')
-            //     ->orderBy('product1s.PRODUCT', 'asc')
-            //     ->get()
-            //     ->toArray();
-
             // ✅ base query: เริ่มจาก product_channels
             $base = DB::table('product_channels as pc')
                 ->select($selectFields)
@@ -1025,7 +1022,10 @@ class ExportExcelController extends Controller
                 // (ถ้าต้องการ) โยง table อื่น ๆ ที่ผูกอยู่กับ product1s
                 ->leftJoin('com_products as cp', 'p1.PRODUCT', '=', 'cp.product_id')
                 ->leftJoin('solutions', 'p1.SOLUTION', '=', 'solutions.ID')
-                ->leftJoin('series', 'p1.SERIES', '=', 'series.ID')
+                ->leftJoin('series', function($join) {
+                    $join->on('p1.SERIES', '=', 'series.ID')
+                         ->on('pc.BRAND', '=', 'series.BRAND');
+                })
                 ->leftJoin('categories', 'p1.CATEGORY', '=', 'categories.ID')
                 ->leftJoin('sub_categories', 'p1.S_CAT', '=', 'sub_categories.ID')
                 // join product_channel_brands เพื่อดึง Channel

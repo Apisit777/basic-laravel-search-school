@@ -610,6 +610,23 @@ class ProductFormController extends Controller
             ->pluck('PRODUCT')
             ->toArray();
 
+
+        // $evens = [];
+        // $odds = [];
+
+        // for ($i = 1; $i <= 100; $i++) {
+        //     if ($i % 2 === 0) {
+        //         $evens[] = $i;
+        //     } else {
+        //         $odds[] = $i;
+        //     }
+        // }
+
+        // dd(
+        //     "เลขคู่: " . json_encode($evens),
+        //     "เลขคี่: " . json_encode($odds)
+        // );
+
         return view('account.index', compact('productCodeArr', 'brands', 'getSelect2ProDevelops'));
     }
     public function createAccount(Request $request)
@@ -897,7 +914,8 @@ class ProductFormController extends Controller
             event(new AccountApprovalRequested(
                 (string) $data->BRAND,
                 (string) $updateProductPrice->product_id,
-                (string) Auth::user()->username
+                (string) Auth::user()->username,
+                (string) ($data_product_account_upddate['active_date'] ?? '')
             ));
             $request->session()->flash('status', 'อัปเดตข้อมูลสำเร็จ');
 
@@ -905,6 +923,7 @@ class ProductFormController extends Controller
                 'success' => true,
                 'product' => (string) $updateProductPrice->product_id,
                 'status'  => (int) $updateProductPrice->status, // ส่งกลับให้ JS ใช้ render ได้ทันที
+                'active_date' => $data_product_account_upddate['active_date'] ?? '',
             ]);
 
         } catch (\Exception $e) {

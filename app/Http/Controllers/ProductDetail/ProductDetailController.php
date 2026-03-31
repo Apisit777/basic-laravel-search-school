@@ -13,14 +13,20 @@ use App\Models\ProductDetailExportExcel;
 use App\Models\ProductDetailLog;
 use App\Models\Com_product;
 use App\Models\ComProductImage;
+use App\Models\ComProduct;
 use App\Models\ComProductLog;
 use App\Models\Countrie;
+use App\Models\ProductOther;
+use App\Models\ProductOtherLog;
+use App\Models\CoreIbshFiel;
 use App\Models\user_permission;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use DateTime; // ✅ เพิ่มบรรทัดนี้
+use Illuminate\Support\Facades\Cache;
 
 class ProductDetailController extends Controller
 {
@@ -37,6 +43,7 @@ class ProductDetailController extends Controller
 
         $isSuperAdmin = (Auth::user()->id === 26) ? true : false;
         $userpermission = Auth::user()->getUserPermission->name_position;
+        $userDepartment = Auth::user()->getUserDepartment->department;
         $namePosition  = explode('-', $userpermission);
         $userpermission = trim(end($namePosition));
         // dd($userpermission);
@@ -71,7 +78,7 @@ class ProductDetailController extends Controller
         //     ->toArray();
 
         // } else 
-        if ($userpermission == 'CPS') {
+        if ($userpermission == 'CPS' || $userDepartment == 'IBSH') {
             $brands = Barcode::select(
                 'BRAND',
                 'STATUS')
@@ -99,7 +106,72 @@ class ProductDetailController extends Controller
                 ->toArray();    
         }
 
-        // dd($getSelect2ProDevelops);
+        // $endpoint = "http://sapkmacc.ssup.co.th/api/bom/bulk";
+        // $res = Http::get($endpoint);
+
+        // $raw = $res->body();
+
+        // // decode เอง (ตัดปัญหา header/format เพี้ยน)
+        // $data = json_decode($raw, true);
+        // // dd($data);
+
+        // if (json_last_error() !== JSON_ERROR_NONE) {
+        //     dd('JSON ERROR: '.json_last_error_msg(), $raw);
+        // }
+
+        // // ✅ pretty print
+        // return response()->json($data, 200, [], JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+
+
+
+        // $endpoint = "http://sapkmacc.ssup.co.th/api/bom/bulk";
+        // $res = Http::get($endpoint);
+
+        // $data = json_decode($res->body(), true);
+        // if (json_last_error() !== JSON_ERROR_NONE) {
+        //     dd('JSON ERROR: '.json_last_error_msg(), $res->body());
+        // }
+
+        // $normalized = [];
+
+        // foreach ($data as $k => $items) {
+
+        //     // ✅ บางตัวไม่ใช่ array ก็ข้าม
+        //     if (!is_array($items)) continue;
+
+        //     foreach ($items as $row) {
+
+        //         // ✅ ถ้าเป็น "row จริง" จะมี mkt_code
+        //         if (is_array($row) && array_key_exists('mkt_code', $row)) {
+        //             $mkt = (string)$row['mkt_code'];
+        //             $normalized[$mkt][] = $row;
+        //             continue;
+        //         }
+
+        //         // ✅ ถ้าเป็น "ชุดของ rows" (ซ้อนอีกชั้น) ให้แตกออก
+        //         if (is_array($row)) {
+        //             foreach ($row as $row2) {
+        //                 if (is_array($row2) && array_key_exists('mkt_code', $row2)) {
+        //                     $mkt = (string)$row2['mkt_code'];
+        //                     $normalized[$mkt][] = $row2;
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+
+        // // dd($normalized);
+
+        // // ... หลัง loop normalize เสร็จแล้ว
+        // dd([
+        // 'has_75422' => array_key_exists('75422', $normalized),
+        // 'count_75422' => isset($normalized['75422']) ? count($normalized['75422']) : 0,
+        // 'sample_75422' => $normalized['75422'][0] ?? null,
+        // 'keys_like_75422' => array_values(array_filter(array_keys($normalized), fn($k)=>str_contains((string)$k,'75422'))),
+        // ]);
+
+
+
         return view('product_detail.index', compact('brands', 'dataProductMasterArr', 'getSelect2ProDevelops'));
     }
 
@@ -140,40 +212,107 @@ class ProductDetailController extends Controller
 
     public function show(Request $request, $product_id)
     {
+        // ✅ 1) DB เดิมของคุณ
         $data = ProductDetail::select(
             'product_details.corporation_id as corporation_id',
             'product_details.product_id as product_id',
+            'product_details.ingredients as ingredients',
+            'product_details.natural_active_ingredients as natural_active_ingredients',
+            'product_details.ingredient_from_natural_origin as ingredient_from_natural_origin',
+            'product_details.ingredient_from_natural_ref_isO16128 as ingredient_from_natural_ref_isO16128',
             'product_others.*',
             'pro_develops.JOB_REFNO as JOB_REFNO',
             'product1s.NAME_THAI as NAME_THAI',
             'product1s.AGE as AGE',
+            'categories.DESCRIPTION as cat_name',
         )
         ->leftJoin('product1s', 'product_details.product_id', '=', 'product1s.PRODUCT')
         ->leftJoin('pro_develops', 'product_details.product_id', '=', 'pro_develops.PRODUCT')
         ->leftJoin('product_others', 'product_details.product_id', '=', 'product_others.product_id')
+        ->leftJoin('categories', 'categories.ID', '=', 'product1s.CATEGORY')
         ->orderBy('product_details.product_id', 'ASC')
         ->firstWhere('product_details.product_id', '=', $product_id);
 
-        // $data->sls_free
+        // dd($data->ingredients);
 
         $images = ComProductImage::select(
-            'id', 
-            'product_id', 
-            'seq', 
+            'id','product_id','seq',
             DB::raw("CASE
-                        WHEN com_product_images.path LIKE 'https%' 
-                        THEN com_product_images.path
-                        ELSE com_product_images.path
-                    END 
-                    AS path"
-            ),
+                WHEN com_product_images.path LIKE 'https%' THEN com_product_images.path
+                ELSE com_product_images.path
+            END AS path")
         )
         ->where('product_id', $product_id)
         ->orderBy('seq', 'asc')
         ->get();
 
-        // dd($data);
-        return view('product_detail.show', compact('data', 'images'));
+        // ✅ 2) รับ FG code จาก query string
+        $fgCode = trim((string)$request->query('code', '')); // เช่น 9-CP75422-2
+
+        // ✅ 3) ดึง BOM จาก SAP API (cache 10 นาที)
+        $endpoint = "http://sapkmacc.ssup.co.th/api/bom/bulk";
+        $raw = Cache::remember('sap_bom_bulk_raw', 600, function () use ($endpoint) {
+            return Http::timeout(30)->get($endpoint)->body();
+        });
+
+        $bomAll = json_decode($raw, true);
+        if (json_last_error() !== JSON_ERROR_NONE || !is_array($bomAll)) {
+            // ถ้า API พัง ก็ยังเข้า show ได้ แค่ไม่มี bom
+            $bomAll = [];
+        }
+
+        // ✅ 4) ดึงเฉพาะชุดของ product_id (รองรับ key 75422 และ 75422F1)
+        $bomRows = [];
+        foreach ($bomAll as $k => $items) {
+            $kStr = (string)$k;
+            if ($kStr === (string)$product_id || str_starts_with($kStr, (string)$product_id)) {
+                if (!is_array($items)) continue;
+
+                foreach ($items as $row) {
+                    if (is_array($row) && isset($row['code'])) {
+                        $bomRows[] = $row;
+                    } elseif (is_array($row)) { // เผื่อซ้อน
+                        foreach ($row as $row2) {
+                            if (is_array($row2) && isset($row2['code'])) $bomRows[] = $row2;
+                        }
+                    }
+                }
+            }
+        }
+
+        // ✅ 5) เลือก “เอกสารที่จะแสดง” ตาม fgCode
+        $selectedBom = null;
+
+        if ($fgCode !== '') {
+            foreach ($bomRows as $r) {
+                if (($r['code'] ?? '') === $fgCode) { $selectedBom = $r; break; }
+            }
+        }
+
+        // ถ้าไม่ส่ง code มา: เลือกตัวหลักก่อน (ไม่ใช่ -1/-2) ถ้าไม่มีค่อยเอาตัวแรก
+        if (!$selectedBom && count($bomRows) > 0) {
+            foreach ($bomRows as $r) {
+                $c = (string)($r['code'] ?? '');
+                if (!preg_match('/-\d+$/', $c)) { $selectedBom = $r; break; }
+            }
+            if (!$selectedBom) $selectedBom = $bomRows[0];
+        }
+
+        // ✅ 6) ดึงรูป IBSH แยกตาม form_type (เฉพาะ image)
+        $ibshSpecialImages = CoreIbshFiel::where('product_id', $product_id)
+            ->where('form_type', 'special_ingredients')
+            ->where('file_type', 'image')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $ibshCharacteristicImages = CoreIbshFiel::where('product_id', $product_id)
+            ->where('form_type', 'characteristic')
+            ->where('file_type', 'image')
+            ->orderBy('id', 'desc')
+            ->get();
+
+        // ✅ 7) ส่งไป view เพิ่มตัวแปร bom
+        return view('product_detail.show', compact('data', 'images', 'selectedBom', 'bomRows', 'fgCode', 'ibshSpecialImages', 'ibshCharacteristicImages'));
     }
 
     /**
@@ -280,6 +419,7 @@ class ProductDetailController extends Controller
 
         $scheme = request()->getScheme(); // http หรือ https
         $host   = request()->getHost();   // localhost หรือ pdmaster.ssup.co.th
+
         $images = ComProductImage::select(
             'id', 
             'product_id', 
@@ -295,8 +435,37 @@ class ProductDetailController extends Controller
         ->where('product_id', $id)
             ->orderBy('seq', 'asc')
             ->get();
+        if ($images->isEmpty()) {
+            // fallback ไปที่ com_products (ใช้ img_url แทน path และไม่มี seq)
+            $images = ComProduct::select(
+                    'id',
+                    'product_id',
+                    // DB::raw('0 as seq'),
+                    DB::raw("img_url as path")
+                )
+                ->where('product_id', $id)
+                ->orderBy('id', 'asc')   // หรือจะตัดบรรทัดนี้ออกก็ได้
+                ->get();
+        }
 
         $product_id = $images->first()->product_id ?? null;
+
+        // ดึงรูปจาก API Oriental Princess (ใช้ cache เดียวกับ listWarehouse)
+        $opApiImage = null;
+        $opImages = Cache::remember('op_product_images', 60 * 60, function () {
+            try {
+                $response = Http::timeout(10)->get('https://orientalprincess.com/api/getProductImage.php');
+                if ($response->successful()) {
+                    return collect($response->json())->whereNotNull('image')->pluck('image', 'sku')->toArray();
+                }
+            } catch (\Exception $e) {
+                \Log::warning('OP API getProductImage failed: ' . $e->getMessage());
+            }
+            return [];
+        });
+        if (isset($opImages[$product_id])) {
+            $opApiImage = $opImages[$product_id];
+        }
 
         // dd($dataComProduct);
         // $errorText = collect($dataComProduct);
@@ -344,6 +513,9 @@ class ProductDetailController extends Controller
                     'country' => $request->input('country'),
                     'fad' => $request->input('fad'),
                     'ingredients' => $request->input('ingredients'),
+                    'natural_active_ingredients' => trim(str_replace('%', '', $request->input('natural_active_ingredients'))),
+                    'ingredient_from_natural_origin' => trim(str_replace('%', '', $request->input('ingredient_from_natural_origin'))),
+                    'ingredient_from_natural_ref_isO16128' => trim(str_replace('%', '', $request->input('ingredient_from_natural_ref_isO16128'))),
                     'after_open_m' => $after_open_m,
                     'description_th' => $request->input('description_th'),
                     'description_en' => $request->input('description_en'),
@@ -375,8 +547,70 @@ class ProductDetailController extends Controller
                     // 'STATUS_EDIT_DT' => '',
                 ];
 
+                // dd($data_product_upddate);
+
                 // อัปเดตข้อมูล
                 $upddateProductDetail = ProductDetail::where('product_id', $id)->update($data_product_upddate);
+
+                // ค้นหาข้อมูลเดิมจาก ProductOther
+                $data_other_old = ProductOther::where('product_id', $id)->first();
+                if ($data_other_old) {
+                    $data_other_old_arr = $data_other_old->toArray();
+                    $log_other = [
+                        'update_dt' => date("Y/m/d H:i:s"),
+                        'user_update' => Auth::user()->username,
+                    ];
+                    $data_other_old_arr = array_merge($data_other_old_arr, $log_other);
+                    ProductOtherLog::create($data_other_old_arr);
+                }
+
+                ProductOther::where('product_id', $id)->update([
+                    'company_id' => $request->input('company_id'),
+                    'item_name' => $request->input('item_name'),
+                    'cat_name' => $request->input('cat_name'),
+                    'usage_area' => $request->input('usage_area'),
+                    'product_line' => $request->input('product_line'),
+                    'texture' => $request->input('texture'),
+                    'product_type' => $request->input('product_type'),
+                    'finish' => $request->input('finish'),
+                    'skin_type' => $request->input('skin_type'),
+                    'package' => $request->input('package'),
+                    'coverage' => $request->input('coverage'),
+                    'package2' => $request->input('package2'),
+                    'color_name_th' => $request->input('color_name_th'),
+                    'color_name_en' => $request->input('color_name_en'),
+                    'suppiler_th' => $request->input('suppiler_th'),
+                    'suppiler_en' => $request->input('suppiler_en'),
+                    'color_code' => $request->input('color_code'),
+
+                    'sls_free' => $request->input('sls_free', 'N'),
+                    'natural_alcohol' => $request->input('natural_alcohol', 'N'),
+                    'silicone_free' => $request->input('silicone_free', 'N'),
+                    'certified_food' => $request->input('certified_food', 'N'),
+                    'mineral_free' => $request->input('mineral_free', 'N'),
+                    'certified_organic' => $request->input('certified_organic', 'N'),
+                    'colorant_free' => $request->input('colorant_free', 'N'),
+                    'hypoallergenic' => $request->input('hypoallergenic', 'N'),
+                    'phthalate_free' => $request->input('phthalate_free', 'N'),
+                    'tested' => $request->input('tested', 'N'),
+                    'cruelty_free' => $request->input('cruelty_free', 'N'),
+                    'non_comedogenic' => $request->input('non_comedogenic', 'N'),
+                    'talc_free' => $request->input('talc_free', 'N'),
+                    'synthetic_colorant' => $request->input('synthetic_colorant', 'N'),
+                    'oil_free' => $request->input('oil_free', 'N'),
+                    'synthetic_fragrance' => $request->input('synthetic_fragrance', 'N'),
+                    'triethanolamin_free' => $request->input('triethanolamin_free', 'N'),
+                    'ph_balance' => $request->input('ph_balance', 'N'),
+                    'petroleum_free' => $request->input('petroleum_free', 'N'),
+                    'chil_over_6year' => $request->input('chil_over_6year', 'N'),
+                    'petrolatum_free' => $request->input('petrolatum_free', 'N'),
+                    'fragrance_free' => $request->input('fragrance_free', 'N'),
+                    'alcohol_free' => $request->input('alcohol_free', 'N'),
+                    'paraben_free' => $request->input('paraben_free', 'N'),
+                    'pregnancy' => $request->input('pregnancy', 'N'),
+                    'breastfeed' => $request->input('breastfeed', 'N'),
+                    'custom_free_forms' => $request->input('custom_free_forms') ?: null,
+                ]);
 
                 $data_consumables_old = Product1::select(
                     'product1s.*',
@@ -415,7 +649,31 @@ class ProductDetailController extends Controller
                     ]
                 );
 
-                // dd($upddateProductDetail);
+                // Save uploaded files to core_ibsh_fiels
+                if ($request->hasFile('dz_files')) {
+                    $form_type = $request->input('dz_form_type', 'special_ingredients');
+                    $imageExts = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
+                    $year  = date('Y');
+                    $month = date('m');
+                    $dir   = "uploads/ibsh/$year/$month/";
+                    if (!file_exists(public_path($dir))) {
+                        mkdir(public_path($dir), 0777, true);
+                    }
+                    foreach ($request->file('dz_files') as $file) {
+                        $ext = strtolower($file->getClientOriginalExtension());
+                        $file_type = in_array($ext, $imageExts) ? 'image' : 'document';
+                        $filename = Str::uuid() . '.' . $ext;
+                        $file->move(public_path($dir), $filename);
+                        CoreIbshFiel::create([
+                            'product_id' => $id,
+                            'form_type'  => $form_type,
+                            'file_type'  => $file_type,
+                            'path'       => $dir . $filename,
+                            'upd_date'   => now(),
+                        ]);
+                    }
+                }
+
                 DB::commit();
                 $request->session()->flash('status', 'เพิ่มขู้อมูลสำเร็จ');
                 return response()->json(['success' => true]);
@@ -432,6 +690,63 @@ class ProductDetailController extends Controller
     public function destroy(Request $request)
     {
         //
+    }
+
+    public function pdfCodes($product_id)
+    {
+        $productId = trim((string)$product_id);
+
+        $endpoint = "http://sapkmacc.ssup.co.th/api/bom/bulk";
+        $raw = Cache::remember('sap_bom_bulk_raw', 600, function () use ($endpoint) {
+            return Http::timeout(30)->get($endpoint)->body();
+        });
+
+        $data = json_decode($raw, true);
+        if (json_last_error() !== JSON_ERROR_NONE || !is_array($data)) {
+            return response()->json(['ok' => false, 'message' => 'Invalid JSON'], 500);
+        }
+
+        // ดึงทั้ง key = productId และ key ที่ขึ้นต้น productId เช่น 11241F1
+        $matched = [];
+        foreach ($data as $k => $items) {
+            $kStr = (string)$k;
+            if ($kStr === $productId || str_starts_with($kStr, $productId)) {
+                if (is_array($items)) $matched = array_merge($matched, $items);
+            }
+        }
+
+        // flatten
+        $rows = [];
+        foreach ($matched as $row) {
+            if (is_array($row) && isset($row['code'])) $rows[] = $row;
+            elseif (is_array($row)) {
+                foreach ($row as $row2) {
+                    if (is_array($row2) && isset($row2['code'])) $rows[] = $row2;
+                }
+            }
+        }
+
+        // unique code
+        $codes = [];
+        foreach ($rows as $r) {
+            $c = trim((string)($r['code'] ?? ''));
+            if ($c === '') continue;
+            $codes[$c] = [
+                'code'   => $c,
+                'name'   => $r['name'] ?? null,
+                'c_code' => $r['c_code'] ?? null, // ✅ BULK CODE
+                'c_name' => $r['c_name'] ?? null, // (ถ้าต้องการ)
+            ];
+        }
+
+        $codes = array_values($codes);
+
+        return response()->json([
+            'ok' => true,
+            'product_id' => $productId,
+            'count' => count($codes),
+            'codes' => $codes,
+        ]);
     }
 
     public function listProductDetail(Request $request)

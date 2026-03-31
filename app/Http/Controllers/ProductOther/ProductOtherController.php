@@ -236,8 +236,15 @@ class ProductOtherController extends Controller
         //     ->where('CATEGORY_ID', $request->category_id)
         //     ->get();
 
-        $data = ProductLine::select('ID', 'CATEGORY_ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')
-            ->where('CATEGORY_ID', $request->category_id)
+        // กรอง Product Line ตาม Category และ BRAND = CPS
+        // ถ้ามี Product Type จริงจะดึงเฉพาะที่มี
+        $data = ProductLine::select('product_lines.ID', 'product_lines.CATEGORY_ID', 'product_lines.DESCRIPTION', 'product_lines.BRAND', 'product_lines.EDIT_DT')
+            ->join('product_types', 'product_types.PRODUCT_LINE_ID', '=', 'product_lines.ID')
+            ->where('product_lines.CATEGORY_ID', $request->category_id)
+            ->where('product_lines.BRAND', 'CPS')
+            ->where('product_types.BRAND', 'CPS')
+            ->groupBy('product_lines.ID', 'product_lines.CATEGORY_ID', 'product_lines.DESCRIPTION', 'product_lines.BRAND', 'product_lines.EDIT_DT')
+            ->orderBy('product_lines.DESCRIPTION')
             ->get();
 
         return response()->json($data);
@@ -261,29 +268,25 @@ class ProductOtherController extends Controller
         //     ->where('PRODUCT_LINE_ID', $request->line_id)
         //     ->get();
 
+        // กรอง Product Type ตาม Product Line และ BRAND = CPS
         $data = ProductType::select('ID', 'PRODUCT_LINE_ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')
             ->where('PRODUCT_LINE_ID', $request->line_id)
+            ->where('BRAND', 'CPS')
+            ->orderBy('DESCRIPTION')
             ->get();
 
         return response()->json($data);
     }
 
-    public function productOtherCategory(Request $request) 
+    public function productOtherCategory(Request $request)
     {
-        $isSuperAdmin = (Auth::user()->id === 26);
-        $userpermission = Auth::user()->getUserPermission->name_position;
-        $namePosition = explode('-', $userpermission);
-        $userpermission = trim(end($namePosition));
-
-        // กำหนดรายการ Brand ที่รองรับ
-        $validBrands = MasterBrand::select('BRAND')->pluck('BRAND')->toArray();
-
-        // ตรวจสอบว่า user มีสิทธิ์ใน Brand ใด
-        $brand = in_array($userpermission, $validBrands) ? $userpermission : 'OP';
-
-        $data = Category::select('ID', 'SERIES_ID', 'DESCRIPTION', 'BRAND', 'EDIT_DT')
-            ->where('BRAND', $brand)
-            ->where('SERIES_ID', $request->series_id)
+        // ดึงเฉพาะ Category ที่มี Product Line อยู่จริง และ BRAND = CPS
+        $data = Category::select('categories.ID', 'categories.SERIES_ID', 'categories.DESCRIPTION', 'categories.BRAND', 'categories.EDIT_DT')
+            ->join('product_lines', 'product_lines.CATEGORY_ID', '=', 'categories.ID')
+            ->where('categories.BRAND', 'CPS')
+            ->where('product_lines.BRAND', 'CPS')
+            ->groupBy('categories.ID', 'categories.SERIES_ID', 'categories.DESCRIPTION', 'categories.BRAND', 'categories.EDIT_DT')
+            ->orderBy('categories.DESCRIPTION')
             ->get();
 
         return response()->json($data);
@@ -453,12 +456,29 @@ class ProductOtherController extends Controller
             'BRAND')
         ->where('BRAND', 'CPS')
         ->get();
-        $categorys = Category::select(
-            'ID',
-            'DESCRIPTION',
-            'BRAND')
-        ->where('BRAND', 'CPS')
-        ->get();
+        // ดึงเฉพาะ Category ที่มี Product Line อยู่จริง และ BRAND = CPS
+        $categorys = Category::select('categories.ID', 'categories.DESCRIPTION', 'categories.BRAND')
+            ->join('product_lines', 'product_lines.CATEGORY_ID', '=', 'categories.ID')
+            ->where('categories.BRAND', 'CPS')
+            ->where('product_lines.BRAND', 'CPS')
+            ->groupBy('categories.ID', 'categories.DESCRIPTION', 'categories.BRAND')
+            ->orderBy('categories.DESCRIPTION')
+            ->get();
+
+        // ถ้ามี Category เดิมที่ไม่อยู่ใน list ให้เพิ่มเข้าไป (รักษาค่าเดิม)
+        if ($data && $data->category_id) {
+            $existingIds = $categorys->pluck('ID')->toArray();
+            if (!in_array($data->category_id, $existingIds)) {
+                $oldCategory = Category::select('ID', 'DESCRIPTION', 'BRAND')
+                    ->where('ID', $data->category_id)
+                    ->where('BRAND', 'CPS')
+                    ->first();
+                if ($oldCategory) {
+                    $categorys->push($oldCategory);
+                }
+            }
+        }
+
         $sub_categorys = Sub_category::select(
             'ID',
             'CATEGORY_ID',

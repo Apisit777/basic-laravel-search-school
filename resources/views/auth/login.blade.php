@@ -202,7 +202,8 @@
         <!-- <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/ChatGPT Image 21 ส.ค. 2568 16_26_32.png')}}')"> -->
             <!-- <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/redesign_guess_my_age_Content-02.jpg')}}')"> -->
         <!-- <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/npd-formenedt__.jpg')}}')"> -->
-    <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/Research-6.svg')}}')">
+    <!-- <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/Research-6.svg')}}')"> -->
+    <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/makeup-cosmetics-7.png')}}')">
         <div class="flex">
             {{-- Left 60% (ว่างไว้ หรือใส่อะไรเพิ่มทีหลัง) --}}
             <div class="w-3/5 text-white dark:text-white">
@@ -217,7 +218,7 @@
 
                 {{-- Logo Horse + SSUP --}}
                 <div class="relative">
-                    <img src="{{ URL::asset('media/Logo-company.png') }}" class="absolute -top-6 -left-24 z-0 animate-bounce" />
+                    <!-- <img src="{{ URL::asset('media/Logo-company.png') }}" class="absolute -top-6 -left-24 z-0 animate-bounce" /> -->
                     <!-- <span class="relative z-10 self-start logo-text-cps font-serif font-semibold whitespace-nowrap text-white dark:text-white -ml-48 animate-fade-in-up">
                         @foreach(collect(mb_str_split($text0)) as $index => $char)
                             <span class="opacity-0 animate-slide-in" style="animation-delay: {{ $index * 0.1 }}s">
@@ -287,7 +288,7 @@
                             </svg>
                         </div>
                     </form>
-                    <p class="mt-4 block text-center font-sans text-base font-normal leading-relaxed antialiased">
+                    <p class="mt-4 block text-center font-sans text-base font-semibold leading-relaxed antialiased">
                         IMG Slide For Brand(OP, CPS, RI, BB, LL, GNC)
                     </p>
                     <span class="mt-4 block font-sans text-xs font-bold text-center">
@@ -299,8 +300,8 @@
                 </div> -->
             </div>
             <!-- <div class="mb-12 md:mb-0 md:w-8/12 lg:w-5/12 xl:w-4/12"> -->
-            <div class="mb-12 md:mb-0 md:w-5/12 lg:w-5/12 xl:w-3/12">
-                <div class="relative max-w-7xl rounded-md p-5 bg-white dark:bg-[#202020] text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-16 mr-10 -ml-1">
+            <div class="mb-12 md:mb-0 md:w-6/12 lg:w-6/12 xl:w-4/12">
+                 <div class="relative max-w-7xl rounded-md p-5 border-2 text-black dark:text-white shadow-md shadow-[#202020] dark:shadow-blue-500 mt-16 mr-10 -ml-1 backdrop-blur-sm" style="background-color: rgba(128, 128, 128, 0.3); border-color: #FFFFFF;">
                     <form id="from_user" class="group js-validation-signin" action="javascript:void(0)" method="POST">
                         <div class="flex flex-row items-center justify-center lg:justify-start">
                             <div class="flex text-center">
@@ -315,7 +316,7 @@
                                 <span class="[&>svg]:h-5 [&>svg]:w-5 grid justify-items-center">
                                     <img src="https://www.ssup.co.th/wp-content/uploads/2022/11/site-logo-g.png" width="65px" height="65px">
                                 </span>
-                                <p>Extra SSUP</p>
+                                <p class="text-[#ffffff] mt-1">Extra SSUP</p>
                             </button>
                             <!-- Github -->
                             <!-- <button
@@ -348,7 +349,7 @@
                         <div class="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-black dark:before:border-blue-500 after:mt-0.5 after:flex-1 after:border-t after:border-black dark:after:border-blue-500">
                             <p class="mx-4 mb-0 text-center font-semibold dark:text-white">
                             <!-- Or -->
-                             <span class="self-start font-serif font-semibold whitespace-nowrap text-white dark:text-white ml-2.5 animate-fade-in-up">
+                             <span class="self-start text-lg font-serif font-semibold whitespace-nowrap text-white dark:text-white ml-2.5 animate-fade-in-up">
                                 @foreach(collect(mb_str_split($logo)) as $index => $char)
                                     <span class="text-black dark:text-white opacity-0 animate-slide-in" style="animation-delay: {{ $index * 0.1 }}s">
                                         {!! $char === ' ' ? '&nbsp;' : $char !!}
@@ -358,16 +359,16 @@
                             </p>
                         </div>
                         <div class="flex flex-col gap-3">
-                            <!-- <label for="" class="block text-sm font-normal text-black dark:text-white"><strong>Prodcut Master</strong></label> -->
-                            <label for="" class="block text-sm font-normal text-black dark:text-white">กรอกรหัสพนักงานและรหัสผ่าน(ใช้ข้อมูลเดียวกับระบบ Extra SSUP) เพื่อเข้าใช้</label>
+                            <!-- <label for="" class="block text-sm font-semibold text-black dark:text-white"><strong>Prodcut Master</strong></label> -->
+                            <label for="" class="block text-sm font-semibold text-black dark:text-white">กรอกรหัสพนักงานและรหัสผ่าน(ใช้ข้อมูลเดียวกับระบบ Extra SSUP) เพื่อเข้าใช้</label>
                             <div class="flex w-full flex-col items-start ">
-                                <label for="" class="block text-sm font-normal text-black dark:text-white">Username</label>
+                                <label for="" class="block text-sm font-semibold text-black dark:text-white">Username</label>
                                 <input type="text" id="username" name="username" class="peer block w-full rounded-sm border-black dark:border-gray-100 p-2.5 text-xs text-gray-900  placeholder:text-xs placeholder:font-light placeholder:text-gray-400 focus:border-none focus:outline-none focus:ring-1 focus:ring-sky-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500" placeholder="Username" required pattern="^([A-Z][A-Za-z ,.'`-]{3,30})$" />
                                 <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">Please enter a valid username </span>
                             </div>
                             
                             <div class="flex w-full flex-col items-start ">
-                                <label for="password" class="block text-sm font-normal text-black dark:text-white">Password</label>
+                                <label for="password" class="block text-sm font-semibold text-black dark:text-white">Password</label>
                                 <input type="password" id="password" name="password" class="peer block w-full rounded-sm border-black dark:border-gray-100 p-2.5 text-xs text-gray-900 placeholder:text-xs placeholder:font-light placeholder:text-gray-400 focus:border-none focus:outline-none focus:ring-1 focus:ring-sky-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500" placeholder="*********" required pattern=".{4,}" />
                                 <!-- <input type="password" id="password" name="password" class="peer block w-full rounded-sm border-black dark:border-gray-100 p-2.5 text-xs text-gray-900 placeholder:text-xs placeholder:font-light placeholder:text-gray-400 focus:border-none focus:outline-none focus:ring-1 focus:ring-sky-500 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500" placeholder="*********" pattern=".{4,}" /> -->
                                 <span class="mt-2 hidden text-sm text-red-500 peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">Please enter a valid password</span>
@@ -382,7 +383,7 @@
                             >
                             </label>
                             <label class="mt-px cursor-pointer select-none font-light" htmlFor="checkbox">
-                                <p class="flex items-center font-sans text-sm font-normal leading-normal antialiased">
+                                <p class="flex items-center font-sans text-sm font-semibold leading-normal antialiased">
                                     <!-- I agree the -->
                                     <Link class="font-medium transition-colors hover:text-blue-500" href="#" >
                                         <!-- &nbsp;Terms and Conditions -->
@@ -486,7 +487,7 @@
                             </svg>
                         </div>
                     </form>
-                    <p class="mt-4 block text-center font-sans text-base font-normal leading-relaxed antialiased">
+                    <p class="mt-4 block text-center font-sans text-base font-semibold leading-relaxed antialiased">
                         Already have an account?
                         <!-- <a href="{{ route('register') }}" class="cursor-pointer space-y-2 border-black dark:border-blue-500 group">
                             <svg Class="h-4 w-4 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
@@ -516,12 +517,12 @@
                                 Develop
                         </a> -->
                     </p>
-                    <span class="mt-4 block font-sans text-xs font-bold text-center">
+                    <span class="mt-4 block font-sans text-sm font-semibold text-center">
                         PRODUCT MASTER
-                        <a href="{{ route('register') }}" class="cursor-pointer space-y-2 border-black dark:border-blue-500 group">
+                        <a href="{{ route('register') }}" class="cursor-pointer font-semibold space-y-2 border-black dark:border-blue-500 group">
                             DEV
                         </a>
-                        (V 2.04.0 © 2024)
+                        (V 3.04.0 © 2024)
                     </span> 
                 </div>
             </div>

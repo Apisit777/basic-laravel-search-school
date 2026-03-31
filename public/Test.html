@@ -111,13 +111,62 @@
 </style>
 
 <body>
-    <nav class="fixed bottom-[calc(100vh-theme(spacing.16))] left-0 right-0 top-0 bg-white text-black border-b border-gray-200 dark:border-gray-700">
+
+    <nav class="fixed top-0 z-50 w-full border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-[#202020] duration-500 no-print">
         <div class="px-3 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start rtl:justify-end">
                     <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-sm md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-[#303030] dark:focus:ring-gray-600">
                         <span class="sr-only">Open sidebar</span>
                         <!-- Hamburger icon -->
+                        <svg
+                        class="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                        >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
+                        </svg>
+                    </button>
+                    <span class="self-center dark:text-white text-md font-semibold sm:text-xl whitespace-nowrap ml-2.5">Tailwindcss</span>
+                </div>
+                <div class="flex items-center space-x-1 rtl:space-x-reverse">
+
+                    <div class="flex items-center justify-center gap-2 text-center cursor-pointer">
+                        <button
+                            @click="darkMode=!darkMode"
+                            type="button"
+                            class="relative inline-flex flex-shrink-0 h-6 transition-colors duration-200 ease-in-out border-2 border-transparent rounded-full cursor-pointer bg-zinc-200 dark:bg-zinc-900 w-11 focus:outline-none focus:ring-2 focus:ring-neutral-700 focus:ring-offset-2"
+                            role="switch"
+                            aria-checked="false"
+                        >
+                            <span class="sr-only">Use setting</span>
+                            <span class="relative inline-block w-5 h-5 transition duration-500 ease-in-out transform translate-x-0 bg-white rounded-full shadow pointer-events-none dark:translate-x-5 ring-0">
+                                <span class="absolute inset-0 flex items-center justify-center w-full h-full transition-opacity duration-500 ease-in opacity-100 dark:opacity-0 dark:duration-100 dark:ease-out" aria-hidden="true">
+                                    <img src="{{URL::asset('media/sunny.png')}}" class="w-4 h-4" />
+                                </span>
+                                <span class="absolute inset-0 flex items-center justify-center w-full h-full transition-opacity duration-100 ease-out opacity-0 dark:opacity-100 dark:duration-200 dark:ease-in" aria-hidden="true">
+                                    <img src="{{URL::asset('media/half-moon.png')}}" class="w-4 h-4" />
+                                </span>
+                            </span>
+                        </button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- <nav class="fixed bottom-[calc(100vh-theme(spacing.16))] left-0 right-0 top-0 bg-white text-black border-b border-gray-200 dark:border-gray-700">
+        <div class="px-3 py-3 lg:px-5 lg:pl-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center justify-start rtl:justify-end">
+                    <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-sm text-gray-500 rounded-sm md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-[#303030] dark:focus:ring-gray-600">
+                        <span class="sr-only">Open sidebar</span>
                         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"></path>
                         </svg>
@@ -126,9 +175,9 @@
                 </div>
             </div>
         </div>         
-    </nav>
+    </nav> -->
     <aside id="logo-sidebar" class="sidebar fixed top-16 left-0 z-40 w-64 h-screen -translate-x-full border-r border-gray-200 md:translate-x-0 dark:border-gray-700 transition-all duration-500" aria-label="Sidebar">
-        <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-[#202020] duration-500 mt">
+        <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-[#202020] duration-500 -mt-3">
             <ul class="space-y-2 font-medium">
                 <li>
                     <a class="flex items-center mt-2 p-2 rounded-sm dark:text-white hover:bg-neutral-800/50 dark:hover:bg-[#303030] group cursor-pointer">
@@ -160,8 +209,8 @@
     </aside>
 
     <div class="min-h-screen p-4 md:ml-64 bg-white dark:bg-[#202020] duration-500">
-        <!-- <div class="p-2 rounded-sm dark:border-gray-700 mt-4">
-            <div class="max-w-8xl mx-auto">
+        <div class="p-2 rounded-sm dark:border-gray-700 mt-4">
+            <!-- <div class="max-w-8xl mx-auto">
                 <div class="p-4 rounded shadow-lg bg-[#232323] duration-500 md:p-4 mt-10">
                     <div class="justify-center items-center">
                         <section id="features" class="container mx-auto px-4 space-y-6 bg-slate-50 py-8 md:py-12 lg:py-20">
@@ -263,9 +312,9 @@
                         </section>
                     </div>
                 </div>
-            </div>
-        </div> -->
-         <div class="p-2 rounded-sm dark:border-gray-700 mt-4">
+            </div> -->
+        </div>
+        <div class="p-2 rounded-sm dark:border-gray-700 mt-4">
             <div class="max-w-8xl mx-auto">
                 <div class="p-4 rounded shadow-lg bg-[#232323] duration-500 md:p-4 mt-10">
                     <div class="justify-center items-center">
@@ -286,7 +335,6 @@
                 </div>
             </div>
         </div>
-
     </div>
 
 </body>

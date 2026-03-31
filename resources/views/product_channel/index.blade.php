@@ -32,6 +32,17 @@
             padding: 0.55rem !important;
         }
 
+        /* Brand, Product, Product Price ให้กว้างเท่ากัน */
+        #productChannel th:nth-child(1),
+        #productChannel td:nth-child(1),
+        #productChannel th:nth-child(2),
+        #productChannel td:nth-child(2),
+        #productChannel th:nth-child(3),
+        #productChannel td:nth-child(3) {
+            width: 10% !important;
+            min-width: 140px;
+        }
+
         .select2-container .select2-dropdown .select2-results__options {
             max-height: 360px !important;
         }
@@ -166,7 +177,7 @@
                 <!-- ที่อยู่ปกติของตาราง -->
                 <div x-ref="tableHome">
                     <div x-ref="tableWrapper" class="bg-white dark:bg-[#232323] rounded shadow-lg md:p-4 text-gray-900 dark:text-gray-100">
-                        <table id="example" class="w-full table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
+                        <table id="productChannel" class="w-full table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Brand</th>
@@ -324,7 +335,7 @@
                     // ให้ DataTables คำนวณความกว้างใหม่
                     queueMicrotask(() => {
                         if (window.jQuery?.fn?.dataTable) {
-                            const dt = jQuery('#example').DataTable?.();
+                            const dt = jQuery('#productChannel').DataTable?.();
                             if (dt) {
                                 dt.columns.adjust();
                                 dt.responsive?.recalc();
@@ -343,7 +354,7 @@
                     // ปรับ DataTables หลังกลับบ้าน
                     queueMicrotask(()=> {
                         if (window.jQuery?.fn?.dataTable) {
-                        const dt = jQuery('#example').DataTable?.();
+                        const dt = jQuery('#productChannel').DataTable?.();
                             if (dt) { 
                                 dt.columns.adjust(); dt.responsive?.recalc(); dt.draw(false); 
                             }
@@ -357,7 +368,7 @@
             $('.js-example-basic-single').select2();
         });
 
-        const mytableDatatable = $('#example').DataTable({
+        const mytableDatatable = $('#productChannel').DataTable({
             serverSide: true,
             searching: false,
             resposive: true,

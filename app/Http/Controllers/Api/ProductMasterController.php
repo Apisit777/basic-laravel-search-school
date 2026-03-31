@@ -10,6 +10,7 @@ use App\Models\Solution;
 use App\Models\Category;
 use App\Models\Sub_category;
 use App\Models\Product1;
+use App\Models\ProductChannel;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
@@ -39,7 +40,12 @@ class ProductMasterController extends Controller
 
         // $products = Product1::where('BRAND', $BRAND)->whereNotIn('STATUS', ['X', 'O', 'D']);
 
-        $products = Product1::where('BRAND', $BRAND);
+        $products = Product1::where(function ($q) use ($BRAND) {
+            $q->where('BRAND', $BRAND)
+              ->orWhereHas('productChannel', function ($query) use ($BRAND) {
+                  $query->where('BRAND', $BRAND);
+              });
+        });
 
         if (request()->has('PRODUCT')) {
             $PRODUCT = request()->query('PRODUCT');
@@ -220,5 +226,52 @@ class ProductMasterController extends Controller
         }
 
         return response()->json(['status' => true, 'total' =>  $sub_categorys->count(),  'message' => $message, 'data' => $sub_categorys], 200, [], JSON_UNESCAPED_UNICODE);
+    }
+
+    public function list_product_detail(Request $request)
+    {
+
+        // ดึงค่าที่ใช้ในการค้นหา
+        $queryParams = request()->query();
+        $BRAND = "";
+
+        // ตรวจสอบว่ามีค่าหรือไม่
+        if (!$queryParams) {
+            return response()->json(['status' => false, 'message' => 'กรุณากรอกคำค้นหา', 'data' => []], 400, [], JSON_UNESCAPED_UNICODE);
+        }
+
+
+        if (request()->has('BRAND')) {
+            $BRAND = request()->query('BRAND');
+        } else {
+            return response()->json(['status' => false, 'total' => 0, 'message' => 'กรุณากรอกคำค้นหา BRAND', 'data' => []], 400, [], JSON_UNESCAPED_UNICODE);
+        }
+
+        // $products = Product1::where('BRAND', $BRAND)->whereNotIn('STATUS', ['X', 'O', 'D']);
+
+        // $products = DB::table('com_product_detail')->where('corporation_id', $BRAND);
+        $products = DB::table('product_details')->where(function ($q) use ($BRAND) {
+            $q->where('corporation_id', $BRAND)
+              ->orWhereIn('product_id', function ($sub) use ($BRAND) {
+                  $sub->select('PRODUCT')->from('product_channels')->where('BRAND', $BRAND);
+              });
+        });
+
+
+        if (request()->has('PRODUCT')) {
+            $PRODUCT = request()->query('PRODUCT');
+            $products =  $products->where('product_id', $PRODUCT);
+        }
+
+
+
+        $products = $products->get();
+
+        $message = "ไม่พบข้อมูล";
+        if ($products->count() > 0) {
+            $message = "พบข้อมูล";
+        }
+
+        return response()->json(['status' => true, 'total' =>  $products->count(),  'message' => $message, 'data' => $products], 200, [], JSON_UNESCAPED_UNICODE);
     }
 }

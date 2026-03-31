@@ -789,6 +789,13 @@
                     $(this).val([]).trigger('change');
                 }
             });
+
+            // โหลด Product Line และ Product Type ตามค่าที่เลือกไว้ตอนเปิดหน้า
+            const selectedCategoryId = $('#CATEGORY_ID').val();
+            if (selectedCategoryId) {
+                // โหลด Line ตาม Category และรักษาค่าเดิมไว้
+                getajaxLine({value: selectedCategoryId}, true);
+            }
         });
 
         jQuery('#username_loading').hide();
@@ -840,14 +847,19 @@
 
         const dlayMessage = 1000;
 
+        // เก็บค่าเดิมที่เลือกไว้ (กรณีข้อมูลเก่าไม่สอดคล้องกัน)
+        const originalCategoryId = '{{ $data->category_id ?? "" }}';
+        const originalLineId = '{{ $data->product_line_id ?? "" }}';
+        const originalTypeId = '{{ $data->product_type_id ?? "" }}';
+
         // ฟังก์ชันดึง Line ตาม Category ที่เลือก
-        function getajaxLine(e) {
+        function getajaxLine(e, keepOriginal = false) {
             const lineSelect = jQuery('#LINE_ID');
-            lineSelect.find("option").remove();
-            lineSelect.empty().append(new Option("--- กรุณาเลือก ---", ""));
             const typeSelect = jQuery('#TYPE_ID');
-            typeSelect.find("option").remove();
-            typeSelect.empty().append(new Option("--- กรุณาเลือก ---", ""));
+
+            // เก็บค่าปัจจุบันไว้ก่อน
+            const currentLineVal = lineSelect.val();
+            const currentTypeVal = typeSelect.val();
 
             jQuery.ajax({
                 type: "GET",
@@ -858,15 +870,45 @@
                 },
                 success: function(data) {
                     console.log("Line Data:", data);
-                    lineSelect.find("option[value='']").remove();
-                    lineSelect.append(new Option("--- กรุณาเลือก ---", ""));  
+                    lineSelect.find("option").remove();
+                    lineSelect.append(new Option("--- กรุณาเลือก ---", ""));
+
+                    let foundCurrentLine = false;
                     if (data.length > 0) {
                         data.forEach(item => {
-                            let displayText = `${item.ID} - ${item.DESCRIPTION}`;
-                            lineSelect.append(new Option(displayText, item.ID));
+                            let displayText = `${item.DESCRIPTION}`;
+                            let option = new Option(displayText, item.ID);
+                            // ถ้ามีค่าเดิมอยู่ใน list ใหม่ ให้ selected
+                            if (keepOriginal && item.ID == originalLineId) {
+                                option.selected = true;
+                                foundCurrentLine = true;
+                            }
+                            lineSelect.append(option);
                         });
-                    } else {
-                        console.warn("No Line Found");
+                    }
+
+                    // ถ้าค่าเดิมไม่อยู่ใน list ใหม่ แต่มีค่าเดิม ให้เพิ่มเข้าไป (กรณีข้อมูลไม่สอดคล้อง)
+                    if (keepOriginal && !foundCurrentLine && originalLineId) {
+                        @if(isset($data->product_line_id) && isset($product_lines))
+                            @foreach($product_lines as $pl)
+                                if ('{{ $pl->ID }}' == originalLineId) {
+                                    let option = new Option('{{ $pl->DESCRIPTION }}', '{{ $pl->ID }}');
+                                    option.selected = true;
+                                    lineSelect.append(option);
+                                }
+                            @endforeach
+                        @endif
+                    }
+
+                    lineSelect.trigger('change');
+
+                    // ถ้าไม่ใช่การโหลดครั้งแรก ให้ reset Type
+                    if (!keepOriginal) {
+                        typeSelect.find("option").remove();
+                        typeSelect.append(new Option("--- กรุณาเลือก ---", ""));
+                    } else if (lineSelect.val()) {
+                        // โหลด Type ตาม Line ที่เลือก
+                        getajaxType({value: lineSelect.val()}, true);
                     }
                 },
                 error: function(xhr) {
@@ -876,10 +918,11 @@
         }
 
         // ฟังก์ชันดึง Type ตาม Line ที่เลือก
-        function getajaxType(e) {
+        function getajaxType(e, keepOriginal = false) {
             const typeSelect = jQuery('#TYPE_ID');
-            typeSelect.find("option").remove();
-            typeSelect.empty().append(new Option("--- กรุณาเลือก ---", ""));
+
+            // เก็บค่าปัจจุบันไว้ก่อน
+            const currentTypeVal = typeSelect.val();
 
             jQuery.ajax({
                 type: "GET",
@@ -890,16 +933,37 @@
                 },
                 success: function(data) {
                     console.log("Type Data:", data);
-                    typeSelect.find("option[value='']").remove();
+                    typeSelect.find("option").remove();
                     typeSelect.append(new Option("--- กรุณาเลือก ---", ""));
+
+                    let foundCurrentType = false;
                     if (data.length > 0) {
                         data.forEach(item => {
-                            let displayText = `${item.ID} - ${item.DESCRIPTION}`;
-                            typeSelect.append(new Option(displayText, item.ID));
+                            let displayText = `${item.DESCRIPTION}`;
+                            let option = new Option(displayText, item.ID);
+                            // ถ้ามีค่าเดิมอยู่ใน list ใหม่ ให้ selected
+                            if (keepOriginal && item.ID == originalTypeId) {
+                                option.selected = true;
+                                foundCurrentType = true;
+                            }
+                            typeSelect.append(option);
                         });
-                    } else {
-                        console.warn("No Type Found");
                     }
+
+                    // ถ้าค่าเดิมไม่อยู่ใน list ใหม่ แต่มีค่าเดิม ให้เพิ่มเข้าไป (กรณีข้อมูลไม่สอดคล้อง)
+                    if (keepOriginal && !foundCurrentType && originalTypeId) {
+                        @if(isset($data->product_type_id) && isset($product_types))
+                            @foreach($product_types as $pt)
+                                if ('{{ $pt->ID }}' == originalTypeId) {
+                                    let option = new Option('{{ $pt->DESCRIPTION }} (ข้อมูลเดิม)', '{{ $pt->ID }}');
+                                    option.selected = true;
+                                    typeSelect.append(option);
+                                }
+                            @endforeach
+                        @endif
+                    }
+
+                    typeSelect.trigger('change');
                 },
                 error: function(xhr) {
                     console.error("Error fetching Type:", xhr.responseText);

@@ -50,7 +50,7 @@
     <!-- <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" /> -->
 
     @php
-        $packSizes = [3, 4, 6, 8, 9, 12, 24, 30, 36, 48, 50, 72, 80, 100, 144, 180, 2000];
+        $packSizes = [3, 4, 5, 6, 8, 9, 12, 24, 30, 36, 48, 50, 60, 72, 80, 100, 144, 180, 2000];
     @endphp
 
 @section('content')

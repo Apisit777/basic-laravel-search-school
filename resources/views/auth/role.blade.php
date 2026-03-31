@@ -176,7 +176,7 @@
     <!-- <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/shutterstock_2079577573 - Copy-min.png')}}')"> -->
     <!-- <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/npd-formenedt__.jpg')}}')"> -->
     <!-- <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/ChatGPT Image 21 ส.ค. 2568 16_26_32.png')}}')"> -->
-    <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/redesign_guess_my_age_Content-02.jpg')}}')">
+    <div class="min-h-screen p-10" style="background-image: url('{{ asset('media/makeup-cosmetics-4.png')}}')">
         <div class="flex">
             {{-- Left 60% (ว่างไว้ หรือใส่อะไรเพิ่มทีหลัง) --}}
             <div class="w-3/5 text-white dark:text-white">

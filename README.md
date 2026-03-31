@@ -66,3 +66,16 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 ## Force push
+
+
+
+ทางเลือกที่ใช้จริงบน Production (แนะนำ)
+ทางเลือก A (แนะนำสุด): แยกพอร์ต Reverb คนละโปรเจกต์
+
+Project A: Reverb = 8080
+
+Project B: Reverb = 8081
+แล้วให้ Nginx/Apache แยกโดเมนหรือ path ไปยังพอร์ตนั้น
+
+✅ ง่ายสุด, ไม่งง, ไม่ชนแน่นอน
+ข้อควรจำ: เปิด firewall / security group ให้พอร์ตที่ใช้ “เข้าถึงได้จาก client” (หรือให้ Nginx reverse proxy)

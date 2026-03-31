@@ -649,6 +649,11 @@
         };
         async function getMediaStream(constraints) {
             try {
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    alert('กล้องใช้งานไม่ได้ เนื่องจากเว็บไซต์ต้องเปิดผ่าน HTTPS เท่านั้น');
+                    console.error('getUserMedia ต้องการ HTTPS (Secure Context)');
+                    return;
+                }
                 mediaStream =  await navigator.mediaDevices.getUserMedia(constraints);
                 let video = document.getElementById('cam');
                 video.srcObject = mediaStream;

@@ -915,12 +915,22 @@ class ProductController extends Controller
                 'BRAND')
             ->where('BRAND', 'CPS')
             ->get();
-            $categorys = Category::select(
-                'ID',
-                'DESCRIPTION',
-                'BRAND')
-            ->where('BRAND', 'CPS')
-            ->get();
+
+            // ดึงเฉพาะ Category ที่มี Product Line อยู่จริง และ BRAND = CPS
+            $categorys = Category::select('categories.ID', 'categories.DESCRIPTION', 'categories.BRAND')
+                ->join('product_lines', 'product_lines.CATEGORY_ID', '=', 'categories.ID')
+                ->where('categories.BRAND', 'CPS')
+                ->where('product_lines.BRAND', 'CPS')
+                ->groupBy('categories.ID', 'categories.DESCRIPTION', 'categories.BRAND')
+                ->orderBy('categories.DESCRIPTION')
+                ->get();
+
+            // $categorys = Category::select(
+            //     'ID',
+            //     'DESCRIPTION',
+            //     'BRAND')
+            // ->where('BRAND', 'CPS')
+            // ->get();
             $sub_categorys = Sub_category::select(
                 'ID',
                 'CATEGORY_ID',
@@ -2891,12 +2901,22 @@ class ProductController extends Controller
                     'DESCRIPTION' => $data->SERIES,
                 ];
             }
-            $categorys = Category::select(
-                'ID AS CATEGORY',
-                'DESCRIPTION',
-                'BRAND')
-            ->where('BRAND', 'CPS')
-            ->get()->toArray();
+
+            // ดึงเฉพาะ Category ที่มี Product Line อยู่จริง และ BRAND = CPS
+            $categorys = Category::select('categories.ID AS CATEGORY', 'categories.DESCRIPTION AS DESCRIPTION', 'categories.BRAND AS BRAND')
+                ->join('product_lines', 'product_lines.CATEGORY_ID', '=', 'categories.ID')
+                ->where('categories.BRAND', 'CPS')
+                ->where('product_lines.BRAND', 'CPS')
+                ->groupBy('categories.ID', 'categories.DESCRIPTION', 'categories.BRAND')
+                ->orderBy('categories.DESCRIPTION')
+                ->get()->toArray();
+
+            // $categorys = Category::select(
+            //     'ID AS CATEGORY',
+            //     'DESCRIPTION',
+            //     'BRAND')
+            // ->where('BRAND', 'CPS')
+            // ->get()->toArray();
             if (!in_array($data->CATEGORY, array_column($categorys, 'CATEGORY')))
             {
                 $categorys[] =  [

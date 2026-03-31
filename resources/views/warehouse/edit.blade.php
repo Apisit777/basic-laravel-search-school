@@ -423,7 +423,7 @@
     @endphp
 
     @php
-        $packSizes = [1, 3, 4, 6, 8, 9, 12, 24, 30, 36, 48, 50, 72, 80, 144, 180];
+        $packSizes = [3, 4, 5, 6, 8, 9, 12, 24, 30, 36, 48, 50, 60, 72, 80, 100, 144, 180, 2000];
         $unitSize = (int) $data->unit_pak_size;
         // ✅ ถ้าไม่มีค่า, เป็น 0, หรือเป็น 3 ให้ default = 1
         $selectedSize = ($unitSize > 0 && $unitSize !== 3) ? $unitSize : 1;
@@ -791,7 +791,22 @@
                                                                     <div class="grid gap-0 gap-y-2 text-sm grid-cols-1 md:grid-cols-8">
                                                                         <!-- case_width -->
                                                                         <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">กว้าง</label>
-                                                                        <input value="{{ $data->km_case_width }}" id="km_case_width" name="km_case_width" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                        @php
+                                                                            $kmW = $data->km_case_width;
+                                                                            $rawW = ($kmW === null || (string)$kmW === '' || (float)$kmW == 0)
+                                                                                ? ($data->case_width ?? '')
+                                                                                : $kmW;
+                                                                            // เหลือแค่ 0-9 . -
+                                                                            $rawW = is_string($rawW) ? trim($rawW) : $rawW;
+                                                                            $numW = (string)$rawW === '' ? '' : preg_replace('/[^0-9\.\-]/', '', (string)$rawW);
+                                                                            // แปลงเป็นตัวเลขจริง
+                                                                            $numW = $numW === '' ? '' : (float)$numW;
+                                                                        @endphp
+
+                                                                        <input value="{{ $numW === '' ? '' : number_format($numW, 2, '.', '') }}"
+                                                                            id="km_case_width" name="km_case_width" type="number" step="0.01" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                        <!-- <input value="{{ $data->km_case_width }}" id="km_case_width" name="km_case_width" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" /> -->
+
                                                                         <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
                                                                         <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Net Weight, น้ำหนักสินค้า)</label>
                                                                         <input value="{{ $data->case_net_weight }}" id="case_net_weight" name="case_net_weight" type="number" class="col-span-1 m-0 p-0 text-center bg-[#e7e7e7] border border-gray-900 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly />
@@ -799,7 +814,21 @@
 
                                                                         <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
                                                                         <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">ยาว</label>
-                                                                        <input value="{{ $data->km_case_long }}" id="km_case_long" name="km_case_long" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                        @php
+                                                                            $kmL = $data->km_case_long;
+                                                                            $rawL = ($kmL === null || (string)$kmL === '' || (float)$kmL == 0)
+                                                                                ? ($data->case_length ?? '')
+                                                                                : $kmL;
+                                                                            // เหลือแค่ 0-9 . -
+                                                                            $rawL = is_string($rawL) ? trim($rawL) : $rawL;
+                                                                            $numL = (string)$rawL === '' ? '' : preg_replace('/[^0-9\.\-]/', '', (string)$rawL);
+                                                                            // แปลงเป็นตัวเลขจริง
+                                                                            $numL = $numL === '' ? '' : (float)$numL;
+                                                                        @endphp
+
+                                                                        <input value="{{ $numL === '' ? '' : number_format($numL, 2, '.', '') }}" 
+                                                                            id="km_case_long" name="km_case_long" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                        <!-- <input value="{{ $data->km_case_long }}" id="km_case_long" name="km_case_long" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" /> -->
                                                                         <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
                                                                         <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">น้ำหนัก(Gross Weight, สินค้า+กล่อง)</label>
                                                                         <input value="{{ $data->case_gross_weight }}" id="case_gross_weight" name="case_gross_weight" type="text" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
@@ -807,7 +836,21 @@
 
                                                                         <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start invisible">ล่องหน</label>
                                                                         <label class="m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">สูง</label>
-                                                                        <input value="{{ $data->km_case_height }}" id="km_case_height" name="km_case_height" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                        @php
+                                                                            $kmH = $data->km_case_height;
+                                                                            $rawH = ($kmH === null || (string)$kmH === '' || (float)$kmH == 0)
+                                                                                ? ($data->case_height ?? '')
+                                                                                : $kmH;
+                                                                            // เหลือแค่ 0-9 . -
+                                                                            $rawH = is_string($rawH) ? trim($rawH) : $rawH;
+                                                                            $numH = (string)$rawH === '' ? '' : preg_replace('/[^0-9\.\-]/', '', (string)$rawH);
+                                                                            // แปลงเป็นตัวเลขจริง
+                                                                            $numH = $numH === '' ? '' : (float)$numH;
+                                                                        @endphp
+
+                                                                        <input value="{{ $numH === '' ? '' : number_format($numH, 2, '.', '') }}"
+                                                                            id="km_case_height" name="km_case_height" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" />
+                                                                        <!-- <input value="{{ $data->km_case_height }}" id="km_case_height" name="km_case_height" type="number" class="col-span-1 m-0 p-0 dark:text-white rounded-sm dark:bg-[#303030] text-center focus:border-blue-500" /> -->
                                                                         <label class="col-span-1 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">&nbsp; ซม.</label>
                                                                         <label class="col-span-2 m-0 p-0 dark:text-white rounded-sm text-sm text-center grid content-center justify-items-start">barcode</label>
 
@@ -1167,33 +1210,68 @@
                                                         @endforeach
                                                     </div>
 
+                                                    {{-- รูปจาก API เพื่อเปรียบเทียบ --}}
+                                                    @if(!empty($opApiImage))
+                                                        <div class="mt-4 px-4 pb-4">
+                                                            <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">รูปจาก API (เปรียบเทียบ)</p>
+                                                            <div class="inline-block relative group">
+                                                                <img src="{{ $opApiImage }}"
+                                                                    class="h-auto max-w-full rounded shadow-sm border-2 border-dashed border-blue-400"
+                                                                    style="max-height: 250px;"
+                                                                    alt="API Image">
+                                                                <span class="absolute top-1 left-1 bg-blue-500 text-white text-xs px-2 py-0.5 rounded">API</span>
+                                                            </div>
+                                                        </div>
+                                                    @endif
+
                                                     <!-- Modal Popup for Large Image View -->
                                                     <div x-show="modalVisible" x-cloak
                                                         class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-80 transition-opacity duration-300"
                                                         @click.away="closeGallery()" :class="{ 'modal-enter': galleryOpen, 'modal-leave': !galleryOpen }">
 
-                                                        <div class="relative w-full h-full flex items-center justify-center">
+                                                        <div class="relative w-full h-full flex items-center justify-center overflow-hidden">
                                                             <!-- รูปภาพ -->
-                                                            <img :src="activeImageUrl" class="max-w-[90%] max-h-[90%] object-contain rounded-lg shadow-lg" :class="slideDirection">
+                                                            <div class="max-w-[90%] max-h-[90%] transition-transform duration-300" :style="'transform: scale(' + zoomLevel + ')'">
+                                                                <img :src="activeImageUrl" class="max-w-full max-h-[90vh] object-contain rounded-lg shadow-lg" :class="slideDirection">
+                                                            </div>
 
-                                                            <!-- ปุ่มปิด -->
-                                                            <button @click="closeGallery()" class="absolute top-4 right-4 p-2 rounded-full z-50 bg-gray-300 hover:bg-gray-400">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                                                                </svg>
-                                                            </button>
+                                                            <!-- ปุ่มด้านบนขวา -->
+                                                            <div class="absolute top-4 right-4 z-50 flex items-center gap-1.5">
+                                                                <!-- ปุ่มซูมออก -->
+                                                                <button type="button" @click="zoomOut()" class="p-2 rounded-lg bg-black/60 hover:bg-black/80 backdrop-blur-sm transition-colors">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16zM8 11h6" />
+                                                                    </svg>
+                                                                </button>
+                                                                <!-- ปุ่มซูมเข้า -->
+                                                                <button type="button" @click="zoomIn()" class="p-2 rounded-lg bg-black/60 hover:bg-black/80 backdrop-blur-sm transition-colors">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16zM11 8v6M8 11h6" />
+                                                                    </svg>
+                                                                </button>
+                                                                <!-- ปุ่มรีเซ็ตซูม -->
+                                                                <button type="button" @click="resetZoom()" x-show="zoomLevel !== 1" class="px-2 py-1.5 rounded-lg bg-black/60 hover:bg-black/80 backdrop-blur-sm transition-colors">
+                                                                    <span class="text-white text-xs font-bold" x-text="Math.round(zoomLevel * 100) + '%'"></span>
+                                                                </button>
+                                                                <!-- ปุ่มปิด -->
+                                                                <button type="button" @click="closeGallery()" class="p-2 rounded-lg bg-black/60 hover:bg-black/80 backdrop-blur-sm transition-colors">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
 
                                                             <!-- ปุ่ม Prev -->
-                                                            <button @click="prevImage()" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-300 hover:bg-gray-400 p-2 rounded-full z-50">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                                                            <button type="button" @click="prevImage()" class="absolute left-4 top-1/2 transform -translate-y-1/2 p-2 rounded-lg bg-black/60 hover:bg-black/80 backdrop-blur-sm z-50 transition-colors">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                                                                 </svg>
                                                             </button>
 
                                                             <!-- ปุ่ม Next -->
-                                                            <button @click="nextImage()" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-300 hover:bg-gray-400 p-2 rounded-full z-50">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                                                            <button type="button" @click="nextImage()" class="absolute right-4 top-1/2 transform -translate-y-1/2 p-2 rounded-lg bg-black/60 hover:bg-black/80 backdrop-blur-sm z-50 transition-colors">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                                                 </svg>
                                                             </button>
                                                         </div>
@@ -1425,6 +1503,11 @@
         };
         async function getMediaStream(constraints) {
             try {
+                if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                    alert('กล้องใช้งานไม่ได้ เนื่องจากเว็บไซต์ต้องเปิดผ่าน HTTPS เท่านั้น');
+                    console.error('getUserMedia ต้องการ HTTPS (Secure Context)');
+                    return;
+                }
                 mediaStream =  await navigator.mediaDevices.getUserMedia(constraints);
                 let video = document.getElementById('cam');
                 video.srcObject = mediaStream;
@@ -1824,26 +1907,36 @@
                 isAnimating: false,
                 transitionDelay: 400,
                 slideDirection: 'image-slide-active',
+                zoomLevel: 1,
                 openGallery(index) {
                     console.log('📸 เปิดรูป Index:', index);
                     this.currentIndex = index;
+                    this.zoomLevel = 1;
                     this.modalVisible = true;
                     this.galleryOpen = false;
                     this.activeImageUrl = '';
-                    // setTimeout(() => {
-                        this.activeImageUrl = this.images[this.currentIndex];
-                        this.galleryOpen = true;
-                    // }, 50);
+                    this.activeImageUrl = this.images[this.currentIndex];
+                    this.galleryOpen = true;
                 },
                 closeGallery() {
                     console.log('❌ ปิด Gallery');
                     this.galleryOpen = false;
+                    this.zoomLevel = 1;
 
                     setTimeout(() => {
                         this.modalVisible = false;
                         this.activeImageUrl = '';
                         this.currentIndex = null;
                     }, this.transitionDelay);
+                },
+                zoomIn() {
+                    if (this.zoomLevel < 3) this.zoomLevel = Math.round((this.zoomLevel + 0.25) * 100) / 100;
+                },
+                zoomOut() {
+                    if (this.zoomLevel > 0.5) this.zoomLevel = Math.round((this.zoomLevel - 0.25) * 100) / 100;
+                },
+                resetZoom() {
+                    this.zoomLevel = 1;
                 },
                 prevImage() {
                     if (this.isAnimating) return;
@@ -1861,6 +1954,7 @@
                 },
                 changeImage(newIndex, direction) {
                     console.log('🔄 Slide:', this.currentIndex, '->', newIndex, 'ทิศทาง:', direction);
+                    this.zoomLevel = 1;
                     this.slideDirection = direction === 'next' ? 'image-slide-next' : 'image-slide-prev';
 
                     setTimeout(() => {

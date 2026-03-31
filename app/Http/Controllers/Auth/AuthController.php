@@ -211,46 +211,12 @@ class AuthController extends Controller
                         ->where('name_position', '=', $role)
                         ->first();
 
+                    $namePositionStr_4 = substr($role, -4);
                     $namePositionStr_3 = substr($role, -3);
                     $namePositionStr_2 = substr($role, -2);
 
-                    // if (substr($role, -2) === 'KM') {
-                    //     $debugSteps = [];
-
-                    //     // 1️⃣ ตัด role เต็ม เช่น AST-Manager-LC-KM
-                    //     $debugSteps['role'] = $role;
-
-                    //     // 2️⃣ ใช้ explode แยกด้วย '-'
-                    //     $parts = explode('-', $role);
-                    //     $debugSteps['explode_parts'] = $parts;
-
-                    //     // 3️⃣ นับจำนวน segment
-                    //     $count = count($parts);
-                    //     $debugSteps['segment_count'] = $count;
-
-                    //     // 4️⃣ department อยู่ก่อน KM (จากท้าย) → คือ segment ลำดับรองสุดท้าย
-                    //     $department = ($count >= 2) ? $parts[$count - 2] : null;
-                    //     $debugSteps['extracted_department'] = $department;
-
-                    //     // 5️⃣ brand = KM แบบ fix
-                    //     $brand = 'KM';
-                    //     $debugSteps['extracted_brand'] = $brand;
-
-                    //     // 6️⃣ สร้าง positionData
-                    //     $positionData = [
-                    //         'name_position' => $role,
-                    //         'brand' => $brand,
-                    //         'department' => $department,
-                    //     ];
-                    //     $debugSteps['final_position_data'] = $positionData;
-
-                    //     // 🐞 Debug ทั้งหมด
-                    //     dd($debugSteps);
-                    // }
-
-                    // เงื่อนไขพิเศษกรณี KM
+                    // เงื่อนไขพิเศษกรณี KM (เช่น Admin-IBSH-KM, AST-Manager-LC-KM)
                     if ($namePositionStr_2 === 'KM') {
-                        // ดึง LC จากตำแหน่งหลังขีดสุดท้ายก่อน 'KM'
                         $parts = explode('-', $role);
                         $count = count($parts);
                         $department = ($count >= 2) ? $parts[$count - 2] : null;
@@ -261,7 +227,15 @@ class AuthController extends Controller
                             'department' => $department,
                         ];
                     }
-                    // ✅ เงื่อนไขแบรนด์ปกติ
+                    // เงื่อนไข IBSH (4 ตัว)
+                    else if ($namePositionStr_4 === 'IBSH') {
+                        $positionData = [
+                            'name_position' => $role,
+                            'brand' => 'IBSH',
+                            'department' => 'IBSH',
+                        ];
+                    }
+                    // เงื่อนไขแบรนด์ปกติ (3 ตัว)
                     else if (in_array($namePositionStr_3, ['CPS', 'KTY', 'GNC', 'ACC'])) {
                         $positionData = [
                             'name_position' => $role,
@@ -363,20 +337,49 @@ class AuthController extends Controller
                 $user->save();
                 Auth::login($user, false);
 
-                /// เงื่อนไขพิเศษ: ถ้า defaultRole ลงท้ายด้วย KM → redirect ไปหน้า warehouse/dimension & รหัส user test km(91)
-                if (substr($defaultRole, -2) === 'KM' && Auth::user()->id === 91) {
+                // เงื่อนไขพิเศษ: ถ้า defaultRole เป็น Modern Trade ตอน login จะไม่สามารถเห็น cost ได้
+                $modernTrade = [
+                    'MT1' => 'Assistant Manager - Modern Trade-CPS',
+                    'MT2' => 'Division Manager-Modern Trade Channel-CPS',
+                    'MT3' => 'Key Account Manager-Modern Trade-CPS',
+                    'MT4' => 'Administrator-Modern Trade-CPS',
+                ];
+
+                $currentPosition = Auth::user()->getUserPermission->name_position;
+
+                $pos = Str::lower(trim((string) $currentPosition));
+                $modernTradeValues = array_map(fn ($v) => Str::lower(trim($v)), array_values($modernTrade));
+
+                // เงื่อนไข IBSH → ต้องเช็คก่อน KM (เพราะ IBSH-KM ลงท้ายด้วย KM เหมือนกัน)
+                $userDept = optional(Auth::user()->getUserDepartment)->department;
+
+                if ($userDept === 'IBSH') {
+                    return response()->json([
+                        'status' => 'success',
+                        'response' => $response,
+                        'default_role' => $defaultRole,
+                        'route' => '/ibsh/product_detail',
+                    ]);
+                } elseif (substr($defaultRole, -2) === 'KM' && Auth::user()->id === 91) {
                     return response()->json([
                         'status' => 'success',
                         'response' => $response,
                         'default_role' => $defaultRole,
                         'route' => '/product_master/pd_master'
                     ]);
-                } else if (substr($defaultRole, -2) === 'KM') {
+                } elseif (substr($defaultRole, -2) === 'KM') {
                     return response()->json([
                         'status' => 'success',
                         'response' => $response,
                         'default_role' => $defaultRole,
                         'route' => '/warehouse/dimension'
+                    ]);
+                } elseif (in_array($pos, $modernTradeValues, true)) {
+                    return response()->json([
+                        'status' => 'success',
+                        'response' => $response,
+                        'default_role' => $defaultRole,
+                        'route' => '/product_detail/pd_detail',
                     ]);
                 }
 
@@ -574,46 +577,12 @@ class AuthController extends Controller
                         ->where('name_position', '=', $role)
                         ->first();
 
+                    $namePositionStr_4 = substr($role, -4);
                     $namePositionStr_3 = substr($role, -3);
                     $namePositionStr_2 = substr($role, -2);
 
-                    // if (substr($role, -2) === 'KM') {
-                    //     $debugSteps = [];
-
-                    //     // 1️⃣ ตัด role เต็ม เช่น AST-Manager-LC-KM
-                    //     $debugSteps['role'] = $role;
-
-                    //     // 2️⃣ ใช้ explode แยกด้วย '-'
-                    //     $parts = explode('-', $role);
-                    //     $debugSteps['explode_parts'] = $parts;
-
-                    //     // 3️⃣ นับจำนวน segment
-                    //     $count = count($parts);
-                    //     $debugSteps['segment_count'] = $count;
-
-                    //     // 4️⃣ department อยู่ก่อน KM (จากท้าย) → คือ segment ลำดับรองสุดท้าย
-                    //     $department = ($count >= 2) ? $parts[$count - 2] : null;
-                    //     $debugSteps['extracted_department'] = $department;
-
-                    //     // 5️⃣ brand = KM แบบ fix
-                    //     $brand = 'KM';
-                    //     $debugSteps['extracted_brand'] = $brand;
-
-                    //     // 6️⃣ สร้าง positionData
-                    //     $positionData = [
-                    //         'name_position' => $role,
-                    //         'brand' => $brand,
-                    //         'department' => $department,
-                    //     ];
-                    //     $debugSteps['final_position_data'] = $positionData;
-
-                    //     // 🐞 Debug ทั้งหมด
-                    //     dd($debugSteps);
-                    // }
-
-                    // เงื่อนไขพิเศษกรณี KM
+                    // เงื่อนไขพิเศษกรณี KM (เช่น Admin-IBSH-KM, AST-Manager-LC-KM)
                     if ($namePositionStr_2 === 'KM') {
-                        // ดึง LC จากตำแหน่งหลังขีดสุดท้ายก่อน 'KM'
                         $parts = explode('-', $role);
                         $count = count($parts);
                         $department = ($count >= 2) ? $parts[$count - 2] : null;
@@ -624,7 +593,15 @@ class AuthController extends Controller
                             'department' => $department,
                         ];
                     }
-                    // ✅ เงื่อนไขแบรนด์ปกติ
+                    // เงื่อนไข IBSH (4 ตัว)
+                    else if ($namePositionStr_4 === 'IBSH') {
+                        $positionData = [
+                            'name_position' => $role,
+                            'brand' => 'IBSH',
+                            'department' => 'IBSH',
+                        ];
+                    }
+                    // เงื่อนไขแบรนด์ปกติ (3 ตัว)
                     else if (in_array($namePositionStr_3, ['CPS', 'KTY', 'GNC', 'ACC'])) {
                         $positionData = [
                             'name_position' => $role,
@@ -739,27 +716,36 @@ class AuthController extends Controller
                 $pos = Str::lower(trim((string) $currentPosition));
                 $modernTradeValues = array_map(fn ($v) => Str::lower(trim($v)), array_values($modernTrade));
 
-                // เงื่อนไขพิเศษ: ถ้า defaultRole ลงท้ายด้วย KM → redirect ไปหน้า warehouse/dimension & รหัส user test km(91)
-                if (substr($defaultRole, -2) === 'KM' && Auth::user()->id === 91) {
+                // เงื่อนไข IBSH → ต้องเช็คก่อน KM (เพราะ IBSH-KM ลงท้ายด้วย KM เหมือนกัน)
+                $userDept = optional(Auth::user()->getUserDepartment)->department;
+
+                if ($userDept === 'IBSH') {
+                    return response()->json([
+                        'status' => 'success',
+                        'response' => $response,
+                        'default_role' => $defaultRole,
+                        'route' => '/ibhs/product_description',
+                    ]);
+                } elseif (substr($defaultRole, -2) === 'KM' && Auth::user()->id === 91) {
                     return response()->json([
                         'status' => 'success',
                         'response' => $response,
                         'default_role' => $defaultRole,
                         'route' => '/product_master/pd_master'
                     ]);
-                } else if (substr($defaultRole, -2) === 'KM') {
+                } elseif (substr($defaultRole, -2) === 'KM') {
                     return response()->json([
                         'status' => 'success',
                         'response' => $response,
                         'default_role' => $defaultRole,
                         'route' => '/warehouse/dimension'
                     ]);
-                } elseif (in_array($pos, $modernTradeValues, true)) {    // ✅ เปรียบเทียบกับ values
+                } elseif (in_array($pos, $modernTradeValues, true)) {
                     return response()->json([
                         'status' => 'success',
                         'response' => $response,
                         'default_role' => $defaultRole,
-                        'route' => '/product_detail/pd_detail',           // ✅ เส้นทางที่ต้องการ
+                        'route' => '/product_detail/pd_detail',
                     ]);
                 }
 
