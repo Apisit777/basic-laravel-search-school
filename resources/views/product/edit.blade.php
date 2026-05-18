@@ -214,6 +214,50 @@
                     </div>
                 </div> -->
 
+                <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6 mt-2 text-gray-900 dark:text-gray-100">
+                    <div class="md:col-span-3">
+                        <label for="km_product_code">ผลิตภัณฑ์ที่ต้องการให้ KM ผลิต<span class="text-danger"> *</span></label>
+                        <input type="hidden" name="product_id" value="{{ $data->product_id }}">
+                        <select class="js-example-basic-single w-full rounded-sm text-xs" id="km_product_code" name="km_product_code">
+                            <option value="">--- กรุณาเลือก ---</option>
+                            @foreach($bomCodes as $bom)
+                                <option value="{{ $bom['code'] }}">{{ $bom['code'] }} — (ผลิตสินค้าตัวนี้)</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="md:col-span-3 relative">
+                        <label for="name">ผลิตภัณฑ์ที่ใช้งานในปัจจุบัน</label>
+                        <div class="max-h-[120px] overflow-y-auto pr-1">
+                            @forelse($bomCodes as $i => $bom)
+                                <div class="flex items-center gap-2 {{ $i > 0 ? 'mt-1' : '' }}">
+                                    <input
+                                        type="text"
+                                        class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-red-600 dark:text-red-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        value="{{ $bom['code'] }}"
+                                        readonly
+                                    />
+
+                                    @if($bom['inactive'] === 'N')
+                                        <span class="shrink-0 text-xl">✅</span>
+                                    @else
+                                        <span class="shrink-0 text-xl">❌</span>
+                                    @endif
+                                </div>
+                            @empty
+                                <div class="flex items-center gap-2">
+                                    <input
+                                        type="text"
+                                        class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-gray-400 dark:text-gray-500 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010]"
+                                        value="-"
+                                        readonly
+                                    />
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
+                </div>
+
                 <div class='w-12/12 mt-4 relative'>
                     <div class="p-4">
                         <ul class="relative m-0 w-full list-none overflow-hidden p-0 transition-[height] duration-200 ease-in-out" data-twe-stepper-init="" data-twe-stepper-type="vertical">

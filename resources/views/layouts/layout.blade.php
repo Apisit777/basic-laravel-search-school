@@ -88,6 +88,9 @@
             <div class="spinner"></div>
         </div>
 
+        {{-- Laravel Control Terminal --}}
+        @include('components.laravel-control-terminal')
+
     </body>
 
     <!-- contents lg:pointer-events-auto lg:block lg:w-72 lg:overflow-y-auto lg:border-r lg:border-zinc-900/10 lg:px-6 lg:pb-8 lg:pt-4 xl:w-80 lg:dark:border-white/10 -->

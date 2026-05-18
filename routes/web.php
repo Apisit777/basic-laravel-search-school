@@ -18,7 +18,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ExportExcel\ExportExcelController;
 use App\Http\Controllers\ImportExcel\ImportController;
-use App\Http\Controllers\Ibsh\IbshController;
+use App\Http\Controllers\Ibhs\IbhsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -297,9 +297,13 @@ Route::group(['middleware' => ['auth', 'check.permission']], function () {
     // Main Menu IBSH
     Route::group(['prefix' => 'ibhs', 'as' => 'ibhs.'], function () {
         // Sub Menu Product Detail1(Product Detail)
-        Route::get('/product_description', [IbshController::class, 'index'])->name('pd_detail_index');
-        Route::get('/product_description/edit/{product_id}', [IbshController::class, 'edit'])->name('ibhs_edit');
-        Route::post('/list_ibsh', [IbshController::class, 'listIbsh'])->name('list_ibsh');
+        Route::get('/product_description', [IbhsController::class, 'index'])->name('pd_detail_index');
+        Route::get('/product_description/create', [IbhsController::class, 'create'])->name('ibhs_create');
+        Route::post('/product_description', [IbhsController::class, 'store'])->name('ibhs_store');
+        Route::get('/product_description/show/{product_id}', [IbhsController::class, 'show'])->name('ibhs_show');
+        Route::get('/product_description/edit/{product_id}', [IbhsController::class, 'edit'])->name('ibhs_edit');
+        Route::post('/product_description/update/{id}', [IbhsController::class, 'update'])->name('ibhs_update');
+        Route::post('/list_ibsh', [IbhsController::class, 'listIbsh'])->name('list_ibsh');
     });
 
     // Km

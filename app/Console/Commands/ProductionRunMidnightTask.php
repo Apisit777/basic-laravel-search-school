@@ -125,6 +125,22 @@ class ProductionRunMidnightTask extends Command
                                 $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
                         
+                                // Pre-check iconv fields — log warning if any char will be stripped
+                                $iconvCheckFields = [
+                                    'NAME_THAI'  => $rs->NAME_THAI,
+                                    'NAME_ENG'   => $rs->NAME_ENG,
+                                    'SHORT_THAI' => $rs->SHORT_THAI,
+                                    'SHORT_ENG'  => $rs->SHORT_ENG,
+                                    'UNIT'       => $rs->UNIT,
+                                    'AGE'        => $rs->AGE,
+                                    'UNIT_TYPE'  => $rs->UNIT_TYPE,
+                                ];
+                                foreach ($iconvCheckFields as $fieldName => $fieldValue) {
+                                    if ($fieldValue !== '' && @iconv('UTF-8', 'TIS-620', $fieldValue) === false) {
+                                        Log::warning("iconv TIS-620: PRODUCT={$rs->PRODUCT} field={$fieldName} has invalid chars (will be stripped). value={$fieldValue}");
+                                    }
+                                }
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -133,14 +149,14 @@ class ProductionRunMidnightTask extends Command
                                     [COLOR] = '{$rs->COLOR}',
                                     [GRP_P] = '{$rs->GRP_P}',
                                     [SUPPLIER] = '{$rs->SUPPLIER}',
-                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                     [VENDOR] = '{$rs->VENDOR}',
                                     [PRICE] = '{$rs->PRICE}',
                                     [COST] = '{$rs->COST}',
-                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                     [UNIT_Q] = '{$rs->UNIT_Q}',
                                     [SOLUTION] = '{$rs->SOLUTION}',
                                     [SERIES] = '{$rs->SERIES}',
@@ -164,13 +180,13 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
                                     [NAME_EXP] = '{$rs->NAME_EXP}',
                                     [NET_WEIGHT] = '{$rs->NET_WEIGHT}',
-                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                     [TYPE_G] = '{$rs->TYPE_G}',
                                     [OPT_DATE1] = '{$OPT_DATE1_RP}',
                                     [OPT_DATE2] =  '{$OPT_DATE2_RP}',
@@ -221,14 +237,14 @@ class ProductionRunMidnightTask extends Command
                                         '" . $rs->COLOR . "',
                                         '" . $rs->GRP_P . "',
                                         '" . $rs->SUPPLIER . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
                                         N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                         '" . $rs->VENDOR . "',
                                         '" . $rs->PRICE . "',
                                         '" . $rs->COST . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                         '" . $rs->UNIT_Q . "',
                                         '" . $rs->SOLUTION . "',
                                         '" . $rs->SERIES . "',
@@ -252,13 +268,13 @@ class ProductionRunMidnightTask extends Command
                                         '" . $rs->PACK_SIZE3 . "',
                                         '" . $rs->PACK_SIZE4 . "',
                                         '" . $REG_DATE_RP . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                         '" . $rs->WIDTH . "',
                                         '" . $rs->HEIGHT . "',
                                         '" . $rs->WIDE . "',
                                         '" . $rs->NAME_EXP . "',
                                         '" . $rs->NET_WEIGHT . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                         '" . $rs->TYPE_G . "',
                                         '" . $OPT_DATE1_RP . "',
                                         '" . $OPT_DATE2_RP . "',
@@ -337,6 +353,22 @@ class ProductionRunMidnightTask extends Command
 
                                 $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
 
+                                // Pre-check iconv fields — log warning if any char will be stripped
+                                $iconvCheckFields = [
+                                    'NAME_THAI'  => $rs->NAME_THAI,
+                                    'NAME_ENG'   => $rs->NAME_ENG,
+                                    'SHORT_THAI' => $rs->SHORT_THAI,
+                                    'SHORT_ENG'  => $rs->SHORT_ENG,
+                                    'UNIT'       => $rs->UNIT,
+                                    'AGE'        => $rs->AGE,
+                                    'UNIT_TYPE'  => $rs->UNIT_TYPE,
+                                ];
+                                foreach ($iconvCheckFields as $fieldName => $fieldValue) {
+                                    if ($fieldValue !== '' && @iconv('UTF-8', 'TIS-620', $fieldValue) === false) {
+                                        Log::warning("iconv TIS-620: PRODUCT={$rs->PRODUCT} field={$fieldName} has invalid chars (will be stripped). value={$fieldValue}");
+                                    }
+                                }
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -345,14 +377,14 @@ class ProductionRunMidnightTask extends Command
                                     [COLOR] = '{$rs->COLOR}',
                                     [GRP_P] = '{$rs->GRP_P}',
                                     [SUPPLIER] = '{$rs->SUPPLIER}',
-                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                     [VENDOR] = '{$rs->VENDOR}',
                                     [PRICE] = '{$rs->PRICE}',
                                     [COST] = '{$rs->COST}',
-                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                     [UNIT_Q] = '{$rs->UNIT_Q}',
                                     [SOLUTION] = '{$rs->SOLUTION}',
                                     [SERIES] = '{$rs->SERIES}',
@@ -376,13 +408,13 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
                                     [NAME_EXP] = '{$rs->NAME_EXP}',
                                     [NET_WEIGHT] = '{$rs->NET_WEIGHT}',
-                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                     [TYPE_G] = '{$rs->TYPE_G}',
                                     [OPT_DATE1] = '{$OPT_DATE1_RP}',
                                     [OPT_DATE2] =  '{$OPT_DATE2_RP}',
@@ -438,14 +470,14 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->COLOR . "',
                                             '" . $rs->GRP_P . "',
                                             '" . $rs->SUPPLIER . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                             '" . $rs->VENDOR . "',
                                             '" . $rs->PRICE . "',
                                             '" . $rs->COST . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                             '" . $rs->UNIT_Q . "',
                                             '" . $rs->SOLUTION . "',
                                             '" . $rs->SERIES . "',
@@ -469,13 +501,13 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->PACK_SIZE3 . "',
                                             '" . $rs->PACK_SIZE4 . "',
                                             '" . $REG_DATE_RP . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                             '" . $rs->WIDTH . "',
                                             '" . $rs->HEIGHT . "',
                                             '" . $rs->WIDE . "',
                                             '" . $rs->NAME_EXP . "',
                                             '" . $rs->NET_WEIGHT . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                             '" . $rs->TYPE_G . "',
                                             '" . $OPT_DATE1_RP . "',
                                             '" . $OPT_DATE2_RP . "',
@@ -545,6 +577,22 @@ class ProductionRunMidnightTask extends Command
                                 $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
+                                // Pre-check iconv fields — log warning if any char will be stripped
+                                $iconvCheckFields = [
+                                    'NAME_THAI'  => $rs->NAME_THAI,
+                                    'NAME_ENG'   => $rs->NAME_ENG,
+                                    'SHORT_THAI' => $rs->SHORT_THAI,
+                                    'SHORT_ENG'  => $rs->SHORT_ENG,
+                                    'UNIT'       => $rs->UNIT,
+                                    'AGE'        => $rs->AGE,
+                                    'UNIT_TYPE'  => $rs->UNIT_TYPE,
+                                ];
+                                foreach ($iconvCheckFields as $fieldName => $fieldValue) {
+                                    if ($fieldValue !== '' && @iconv('UTF-8', 'TIS-620', $fieldValue) === false) {
+                                        Log::warning("iconv TIS-620: PRODUCT={$rs->PRODUCT} field={$fieldName} has invalid chars (will be stripped). value={$fieldValue}");
+                                    }
+                                }
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -553,14 +601,14 @@ class ProductionRunMidnightTask extends Command
                                     [COLOR] = '{$rs->COLOR}',
                                     [GRP_P] = '{$rs->GRP_P}',
                                     [SUPPLIER] = '{$rs->SUPPLIER}',
-                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                     [VENDOR] = '{$rs->VENDOR}',
                                     [PRICE] = '{$rs->PRICE}',
                                     [COST] = '{$rs->COST}',
-                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                     [UNIT_Q] = '{$rs->UNIT_Q}',
                                     [SOLUTION] = '{$rs->SOLUTION}',
                                     [SERIES] = '{$rs->SERIES}',
@@ -584,13 +632,13 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
                                     [NAME_EXP] = '{$rs->NAME_EXP}',
                                     [NET_WEIGHT] = '{$rs->NET_WEIGHT}',
-                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                     [TYPE_G] = '{$rs->TYPE_G}',
                                     [OPT_DATE1] = '{$OPT_DATE1_RP}',
                                     [OPT_DATE2] =  '{$OPT_DATE2_RP}',
@@ -637,14 +685,14 @@ class ProductionRunMidnightTask extends Command
                                         '" . $rs->COLOR . "',
                                         '" . $rs->GRP_P . "',
                                         '" . $rs->SUPPLIER . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                         '" . $rs->VENDOR . "',
                                         '" . $rs->PRICE . "',
                                         '" . $rs->COST . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                         '" . $rs->UNIT_Q . "',
                                         '" . $rs->SOLUTION . "',
                                         '" . $rs->SERIES . "',
@@ -668,13 +716,13 @@ class ProductionRunMidnightTask extends Command
                                         '" . $rs->PACK_SIZE3 . "',
                                         '" . $rs->PACK_SIZE4 . "',
                                         '" . $REG_DATE_RP . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                         '" . $rs->WIDTH . "',
                                         '" . $rs->HEIGHT . "',
                                         '" . $rs->WIDE . "',
                                         '" . $rs->NAME_EXP . "',
                                         '" . $rs->NET_WEIGHT . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                         '" . $rs->TYPE_G . "',
                                         '" . $OPT_DATE1_RP . "',
                                         '" . $OPT_DATE2_RP . "',
@@ -744,6 +792,22 @@ class ProductionRunMidnightTask extends Command
 
                                 $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
 
+                                // Pre-check iconv fields — log warning if any char will be stripped
+                                $iconvCheckFields = [
+                                    'NAME_THAI'  => $rs->NAME_THAI,
+                                    'NAME_ENG'   => $rs->NAME_ENG,
+                                    'SHORT_THAI' => $rs->SHORT_THAI,
+                                    'SHORT_ENG'  => $rs->SHORT_ENG,
+                                    'UNIT'       => $rs->UNIT,
+                                    'AGE'        => $rs->AGE,
+                                    'UNIT_TYPE'  => $rs->UNIT_TYPE,
+                                ];
+                                foreach ($iconvCheckFields as $fieldName => $fieldValue) {
+                                    if ($fieldValue !== '' && @iconv('UTF-8', 'TIS-620', $fieldValue) === false) {
+                                        Log::warning("iconv TIS-620: PRODUCT={$rs->PRODUCT} field={$fieldName} has invalid chars (will be stripped). value={$fieldValue}");
+                                    }
+                                }
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -752,14 +816,14 @@ class ProductionRunMidnightTask extends Command
                                     [COLOR] = '{$rs->COLOR}',
                                     [GRP_P] = '{$rs->GRP_P}',
                                     [SUPPLIER] = '{$rs->SUPPLIER}',
-                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                     [VENDOR] = '{$rs->VENDOR}',
                                     [PRICE] = '{$rs->PRICE}',
                                     [COST] = '{$rs->COST}',
-                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                     [UNIT_Q] = '{$rs->UNIT_Q}',
                                     [SOLUTION] = '{$rs->SOLUTION}',
                                     [SERIES] = '{$rs->SERIES}',
@@ -783,13 +847,13 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
                                     [NAME_EXP] = '{$rs->NAME_EXP}',
                                     [NET_WEIGHT] = '{$rs->NET_WEIGHT}',
-                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                     [TYPE_G] = '{$rs->TYPE_G}',
                                     [OPT_DATE1] = '{$OPT_DATE1_RP}',
                                     [OPT_DATE2] =  '{$OPT_DATE2_RP}',
@@ -841,14 +905,14 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->COLOR . "',
                                             '" . $rs->GRP_P . "',
                                             '" . $rs->SUPPLIER . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                             '" . $rs->VENDOR . "',
                                             '" . $rs->PRICE . "',
                                             '" . $rs->COST . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                             '" . $rs->UNIT_Q . "',
                                             '" . $rs->SOLUTION . "',
                                             '" . $rs->SERIES . "',
@@ -872,13 +936,13 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->PACK_SIZE3 . "',
                                             '" . $rs->PACK_SIZE4 . "',
                                             '" . $REG_DATE_RP . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                             '" . $rs->WIDTH . "',
                                             '" . $rs->HEIGHT . "',
                                             '" . $rs->WIDE . "',
                                             '" . $rs->NAME_EXP . "',
                                             '" . $rs->NET_WEIGHT . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                             '" . $rs->TYPE_G . "',
                                             '" . $OPT_DATE1_RP . "',
                                             '" . $OPT_DATE2_RP . "',
@@ -956,6 +1020,22 @@ class ProductionRunMidnightTask extends Command
                                 $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
+                                // Pre-check iconv fields — log warning if any char will be stripped
+                                $iconvCheckFields = [
+                                    'NAME_THAI'  => $rs->NAME_THAI,
+                                    'NAME_ENG'   => $rs->NAME_ENG,
+                                    'SHORT_THAI' => $rs->SHORT_THAI,
+                                    'SHORT_ENG'  => $rs->SHORT_ENG,
+                                    'UNIT'       => $rs->UNIT,
+                                    'AGE'        => $rs->AGE,
+                                    'UNIT_TYPE'  => $rs->UNIT_TYPE,
+                                ];
+                                foreach ($iconvCheckFields as $fieldName => $fieldValue) {
+                                    if ($fieldValue !== '' && @iconv('UTF-8', 'TIS-620', $fieldValue) === false) {
+                                        Log::warning("iconv TIS-620: PRODUCT={$rs->PRODUCT} field={$fieldName} has invalid chars (will be stripped). value={$fieldValue}");
+                                    }
+                                }
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -964,14 +1044,14 @@ class ProductionRunMidnightTask extends Command
                                     [COLOR] = '{$rs->COLOR}',
                                     [GRP_P] = '{$rs->GRP_P}',
                                     [SUPPLIER] = '{$rs->SUPPLIER}',
-                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                     [VENDOR] = '{$rs->VENDOR}',
                                     [PRICE] = '{$rs->PRICE}',
                                     [COST] = '{$rs->COST}',
-                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                     [UNIT_Q] = '{$rs->UNIT_Q}',
                                     [SOLUTION] = '{$rs->SOLUTION}',
                                     [SERIES] = '{$rs->SERIES}',
@@ -995,13 +1075,13 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
                                     [NAME_EXP] = '{$rs->NAME_EXP}',
                                     [NET_WEIGHT] = '{$rs->NET_WEIGHT}',
-                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                     [TYPE_G] = '{$rs->TYPE_G}',
                                     [OPT_DATE1] = '{$OPT_DATE1_RP}',
                                     [OPT_DATE2] =  '{$OPT_DATE2_RP}',
@@ -1048,14 +1128,14 @@ class ProductionRunMidnightTask extends Command
                                         '" . $rs->COLOR . "',
                                         '" . $rs->GRP_P . "',
                                         '" . $rs->SUPPLIER . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                         '" . $rs->VENDOR . "',
                                         '" . $rs->PRICE . "',
                                         '" . $rs->COST . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                         '" . $rs->UNIT_Q . "',
                                         '" . $rs->SOLUTION . "',
                                         '" . $rs->SERIES . "',
@@ -1079,13 +1159,13 @@ class ProductionRunMidnightTask extends Command
                                         '" . $rs->PACK_SIZE3 . "',
                                         '" . $rs->PACK_SIZE4 . "',
                                         '" . $REG_DATE_RP . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                         '" . $rs->WIDTH . "',
                                         '" . $rs->HEIGHT . "',
                                         '" . $rs->WIDE . "',
                                         '" . $rs->NAME_EXP . "',
                                         '" . $rs->NET_WEIGHT . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                         '" . $rs->TYPE_G . "',
                                         '" . $OPT_DATE1_RP . "',
                                         '" . $OPT_DATE2_RP . "',
@@ -1157,6 +1237,22 @@ class ProductionRunMidnightTask extends Command
 
                                 $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
 
+                                // Pre-check iconv fields — log warning if any char will be stripped
+                                $iconvCheckFields = [
+                                    'NAME_THAI'  => $rs->NAME_THAI,
+                                    'NAME_ENG'   => $rs->NAME_ENG,
+                                    'SHORT_THAI' => $rs->SHORT_THAI,
+                                    'SHORT_ENG'  => $rs->SHORT_ENG,
+                                    'UNIT'       => $rs->UNIT,
+                                    'AGE'        => $rs->AGE,
+                                    'UNIT_TYPE'  => $rs->UNIT_TYPE,
+                                ];
+                                foreach ($iconvCheckFields as $fieldName => $fieldValue) {
+                                    if ($fieldValue !== '' && @iconv('UTF-8', 'TIS-620', $fieldValue) === false) {
+                                        Log::warning("iconv TIS-620: PRODUCT={$rs->PRODUCT} field={$fieldName} has invalid chars (will be stripped). value={$fieldValue}");
+                                    }
+                                }
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -1165,14 +1261,14 @@ class ProductionRunMidnightTask extends Command
                                     [COLOR] = '{$rs->COLOR}',
                                     [GRP_P] = '{$rs->GRP_P}',
                                     [SUPPLIER] = '{$rs->SUPPLIER}',
-                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                     [VENDOR] = '{$rs->VENDOR}',
                                     [PRICE] = '{$rs->PRICE}',
                                     [COST] = '{$rs->COST}',
-                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                     [UNIT_Q] = '{$rs->UNIT_Q}',
                                     [SOLUTION] = '{$rs->SOLUTION}',
                                     [SERIES] = '{$rs->SERIES}',
@@ -1196,13 +1292,13 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
                                     [NAME_EXP] = '{$rs->NAME_EXP}',
                                     [NET_WEIGHT] = '{$rs->NET_WEIGHT}',
-                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                     [TYPE_G] = '{$rs->TYPE_G}',
                                     [OPT_DATE1] = '{$OPT_DATE1_RP}',
                                     [OPT_DATE2] =  '{$OPT_DATE2_RP}',
@@ -1254,14 +1350,14 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->COLOR . "',
                                             '" . $rs->GRP_P . "',
                                             '" . $rs->SUPPLIER . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                             '" . $rs->VENDOR . "',
                                             '" . $rs->PRICE . "',
                                             '" . $rs->COST . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                             '" . $rs->UNIT_Q . "',
                                             '" . $rs->SOLUTION . "',
                                             '" . $rs->SERIES . "',
@@ -1285,13 +1381,13 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->PACK_SIZE3 . "',
                                             '" . $rs->PACK_SIZE4 . "',
                                             '" . $REG_DATE_RP . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                             '" . $rs->WIDTH . "',
                                             '" . $rs->HEIGHT . "',
                                             '" . $rs->WIDE . "',
                                             '" . $rs->NAME_EXP . "',
                                             '" . $rs->NET_WEIGHT . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                             '" . $rs->TYPE_G . "',
                                             '" . $OPT_DATE1_RP . "',
                                             '" . $OPT_DATE2_RP . "',
@@ -1360,6 +1456,22 @@ class ProductionRunMidnightTask extends Command
                                 $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
+                                // Pre-check iconv fields — log warning if any char will be stripped
+                                $iconvCheckFields = [
+                                    'NAME_THAI'  => $rs->NAME_THAI,
+                                    'NAME_ENG'   => $rs->NAME_ENG,
+                                    'SHORT_THAI' => $rs->SHORT_THAI,
+                                    'SHORT_ENG'  => $rs->SHORT_ENG,
+                                    'UNIT'       => $rs->UNIT,
+                                    'AGE'        => $rs->AGE,
+                                    'UNIT_TYPE'  => $rs->UNIT_TYPE,
+                                ];
+                                foreach ($iconvCheckFields as $fieldName => $fieldValue) {
+                                    if ($fieldValue !== '' && @iconv('UTF-8', 'TIS-620', $fieldValue) === false) {
+                                        Log::warning("iconv TIS-620: PRODUCT={$rs->PRODUCT} field={$fieldName} has invalid chars (will be stripped). value={$fieldValue}");
+                                    }
+                                }
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -1368,14 +1480,14 @@ class ProductionRunMidnightTask extends Command
                                     [COLOR] = '{$rs->COLOR}',
                                     [GRP_P] = '{$rs->GRP_P}',
                                     [SUPPLIER] = '{$rs->SUPPLIER}',
-                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                     [VENDOR] = '{$rs->VENDOR}',
                                     [PRICE] = '{$rs->PRICE}',
                                     [COST] = '{$rs->COST}',
-                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                     [UNIT_Q] = '{$rs->UNIT_Q}',
                                     [SOLUTION] = '{$rs->SOLUTION}',
                                     [SERIES] = '{$rs->SERIES}',
@@ -1399,13 +1511,13 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
                                     [NAME_EXP] = '{$rs->NAME_EXP}',
                                     [NET_WEIGHT] = '{$rs->NET_WEIGHT}',
-                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                     [TYPE_G] = '{$rs->TYPE_G}',
                                     [OPT_DATE1] = '{$OPT_DATE1_RP}',
                                     [OPT_DATE2] =  '{$OPT_DATE2_RP}',
@@ -1452,14 +1564,14 @@ class ProductionRunMidnightTask extends Command
                                         '" . $rs->COLOR . "',
                                         '" . $rs->GRP_P . "',
                                         '" . $rs->SUPPLIER . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                         '" . $rs->VENDOR . "',
                                         '" . $rs->PRICE . "',
                                         '" . $rs->COST . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                         '" . $rs->UNIT_Q . "',
                                         '" . $rs->SOLUTION . "',
                                         '" . $rs->SERIES . "',
@@ -1483,13 +1595,13 @@ class ProductionRunMidnightTask extends Command
                                         '" . $rs->PACK_SIZE3 . "',
                                         '" . $rs->PACK_SIZE4 . "',
                                         '" . $REG_DATE_RP . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                         '" . $rs->WIDTH . "',
                                         '" . $rs->HEIGHT . "',
                                         '" . $rs->WIDE . "',
                                         '" . $rs->NAME_EXP . "',
                                         '" . $rs->NET_WEIGHT . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                         '" . $rs->TYPE_G . "',
                                         '" . $OPT_DATE1_RP . "',
                                         '" . $OPT_DATE2_RP . "',
@@ -1559,6 +1671,22 @@ class ProductionRunMidnightTask extends Command
 
                                 $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
 
+                                // Pre-check iconv fields — log warning if any char will be stripped
+                                $iconvCheckFields = [
+                                    'NAME_THAI'  => $rs->NAME_THAI,
+                                    'NAME_ENG'   => $rs->NAME_ENG,
+                                    'SHORT_THAI' => $rs->SHORT_THAI,
+                                    'SHORT_ENG'  => $rs->SHORT_ENG,
+                                    'UNIT'       => $rs->UNIT,
+                                    'AGE'        => $rs->AGE,
+                                    'UNIT_TYPE'  => $rs->UNIT_TYPE,
+                                ];
+                                foreach ($iconvCheckFields as $fieldName => $fieldValue) {
+                                    if ($fieldValue !== '' && @iconv('UTF-8', 'TIS-620', $fieldValue) === false) {
+                                        Log::warning("iconv TIS-620: PRODUCT={$rs->PRODUCT} field={$fieldName} has invalid chars (will be stripped). value={$fieldValue}");
+                                    }
+                                }
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -1567,14 +1695,14 @@ class ProductionRunMidnightTask extends Command
                                     [COLOR] = '{$rs->COLOR}',
                                     [GRP_P] = '{$rs->GRP_P}',
                                     [SUPPLIER] = '{$rs->SUPPLIER}',
-                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                     [VENDOR] = '{$rs->VENDOR}',
                                     [PRICE] = '{$rs->PRICE}',
                                     [COST] = '{$rs->COST}',
-                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                     [UNIT_Q] = '{$rs->UNIT_Q}',
                                     [SOLUTION] = '{$rs->SOLUTION}',
                                     [SERIES] = '{$rs->SERIES}',
@@ -1598,13 +1726,13 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
                                     [NAME_EXP] = '{$rs->NAME_EXP}',
                                     [NET_WEIGHT] = '{$rs->NET_WEIGHT}',
-                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                     [TYPE_G] = '{$rs->TYPE_G}',
                                     [OPT_DATE1] = '{$OPT_DATE1_RP}',
                                     [OPT_DATE2] =  '{$OPT_DATE2_RP}',
@@ -1656,14 +1784,14 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->COLOR . "',
                                             '" . $rs->GRP_P . "',
                                             '" . $rs->SUPPLIER . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                             '" . $rs->VENDOR . "',
                                             '" . $rs->PRICE . "',
                                             '" . $rs->COST . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                             '" . $rs->UNIT_Q . "',
                                             '" . $rs->SOLUTION . "',
                                             '" . $rs->SERIES . "',
@@ -1687,13 +1815,13 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->PACK_SIZE3 . "',
                                             '" . $rs->PACK_SIZE4 . "',
                                             '" . $REG_DATE_RP . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                             '" . $rs->WIDTH . "',
                                             '" . $rs->HEIGHT . "',
                                             '" . $rs->WIDE . "',
                                             '" . $rs->NAME_EXP . "',
                                             '" . $rs->NET_WEIGHT . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                             '" . $rs->TYPE_G . "',
                                             '" . $OPT_DATE1_RP . "',
                                             '" . $OPT_DATE2_RP . "',
@@ -1760,6 +1888,22 @@ class ProductionRunMidnightTask extends Command
                                 $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
+                                // Pre-check iconv fields — log warning if any char will be stripped
+                                $iconvCheckFields = [
+                                    'NAME_THAI'  => $rs->NAME_THAI,
+                                    'NAME_ENG'   => $rs->NAME_ENG,
+                                    'SHORT_THAI' => $rs->SHORT_THAI,
+                                    'SHORT_ENG'  => $rs->SHORT_ENG,
+                                    'UNIT'       => $rs->UNIT,
+                                    'AGE'        => $rs->AGE,
+                                    'UNIT_TYPE'  => $rs->UNIT_TYPE,
+                                ];
+                                foreach ($iconvCheckFields as $fieldName => $fieldValue) {
+                                    if ($fieldValue !== '' && @iconv('UTF-8', 'TIS-620', $fieldValue) === false) {
+                                        Log::warning("iconv TIS-620: PRODUCT={$rs->PRODUCT} field={$fieldName} has invalid chars (will be stripped). value={$fieldValue}");
+                                    }
+                                }
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -1768,14 +1912,14 @@ class ProductionRunMidnightTask extends Command
                                     [COLOR] = '{$rs->COLOR}',
                                     [GRP_P] = '{$rs->GRP_P}',
                                     [SUPPLIER] = '{$rs->SUPPLIER}',
-                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                     [VENDOR] = '{$rs->VENDOR}',
                                     [PRICE] = '{$rs->PRICE}',
                                     [COST] = '{$rs->COST}',
-                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                     [UNIT_Q] = '{$rs->UNIT_Q}',
                                     [SOLUTION] = '{$rs->SOLUTION}',
                                     [SERIES] = '{$rs->SERIES}',
@@ -1799,13 +1943,13 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
                                     [NAME_EXP] = '{$rs->NAME_EXP}',
                                     [NET_WEIGHT] = '{$rs->NET_WEIGHT}',
-                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                     [TYPE_G] = '{$rs->TYPE_G}',
                                     [OPT_DATE1] = '{$OPT_DATE1_RP}',
                                     [OPT_DATE2] =  '{$OPT_DATE2_RP}',
@@ -1852,14 +1996,14 @@ class ProductionRunMidnightTask extends Command
                                         '" . $rs->COLOR . "',
                                         '" . $rs->GRP_P . "',
                                         '" . $rs->SUPPLIER . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                         '" . $rs->VENDOR . "',
                                         '" . $rs->PRICE . "',
                                         '" . $rs->COST . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                         '" . $rs->UNIT_Q . "',
                                         '" . $rs->SOLUTION . "',
                                         '" . $rs->SERIES . "',
@@ -1883,13 +2027,13 @@ class ProductionRunMidnightTask extends Command
                                         '" . $rs->PACK_SIZE3 . "',
                                         '" . $rs->PACK_SIZE4 . "',
                                         '" . $REG_DATE_RP . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                         '" . $rs->WIDTH . "',
                                         '" . $rs->HEIGHT . "',
                                         '" . $rs->WIDE . "',
                                         '" . $rs->NAME_EXP . "',
                                         '" . $rs->NET_WEIGHT . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                         '" . $rs->TYPE_G . "',
                                         '" . $OPT_DATE1_RP . "',
                                         '" . $OPT_DATE2_RP . "',
@@ -1959,6 +2103,22 @@ class ProductionRunMidnightTask extends Command
 
                                 $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
 
+                                // Pre-check iconv fields — log warning if any char will be stripped
+                                $iconvCheckFields = [
+                                    'NAME_THAI'  => $rs->NAME_THAI,
+                                    'NAME_ENG'   => $rs->NAME_ENG,
+                                    'SHORT_THAI' => $rs->SHORT_THAI,
+                                    'SHORT_ENG'  => $rs->SHORT_ENG,
+                                    'UNIT'       => $rs->UNIT,
+                                    'AGE'        => $rs->AGE,
+                                    'UNIT_TYPE'  => $rs->UNIT_TYPE,
+                                ];
+                                foreach ($iconvCheckFields as $fieldName => $fieldValue) {
+                                    if ($fieldValue !== '' && @iconv('UTF-8', 'TIS-620', $fieldValue) === false) {
+                                        Log::warning("iconv TIS-620: PRODUCT={$rs->PRODUCT} field={$fieldName} has invalid chars (will be stripped). value={$fieldValue}");
+                                    }
+                                }
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -1967,14 +2127,14 @@ class ProductionRunMidnightTask extends Command
                                     [COLOR] = '{$rs->COLOR}',
                                     [GRP_P] = '{$rs->GRP_P}',
                                     [SUPPLIER] = '{$rs->SUPPLIER}',
-                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                     [VENDOR] = '{$rs->VENDOR}',
                                     [PRICE] = '{$rs->PRICE}',
                                     [COST] = '{$rs->COST}',
-                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                     [UNIT_Q] = '{$rs->UNIT_Q}',
                                     [SOLUTION] = '{$rs->SOLUTION}',
                                     [SERIES] = '{$rs->SERIES}',
@@ -1998,13 +2158,13 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
                                     [NAME_EXP] = '{$rs->NAME_EXP}',
                                     [NET_WEIGHT] = '{$rs->NET_WEIGHT}',
-                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                     [TYPE_G] = '{$rs->TYPE_G}',
                                     [OPT_DATE1] = '{$OPT_DATE1_RP}',
                                     [OPT_DATE2] =  '{$OPT_DATE2_RP}',
@@ -2056,14 +2216,14 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->COLOR . "',
                                             '" . $rs->GRP_P . "',
                                             '" . $rs->SUPPLIER . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                             '" . $rs->VENDOR . "',
                                             '" . $rs->PRICE . "',
                                             '" . $rs->COST . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                             '" . $rs->UNIT_Q . "',
                                             '" . $rs->SOLUTION . "',
                                             '" . $rs->SERIES . "',
@@ -2087,13 +2247,13 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->PACK_SIZE3 . "',
                                             '" . $rs->PACK_SIZE4 . "',
                                             '" . $REG_DATE_RP . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                             '" . $rs->WIDTH . "',
                                             '" . $rs->HEIGHT . "',
                                             '" . $rs->WIDE . "',
                                             '" . $rs->NAME_EXP . "',
                                             '" . $rs->NET_WEIGHT . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                             '" . $rs->TYPE_G . "',
                                             '" . $OPT_DATE1_RP . "',
                                             '" . $OPT_DATE2_RP . "',
@@ -2161,6 +2321,22 @@ class ProductionRunMidnightTask extends Command
                                 $OPT_DATE2_RP = $rs->OPT_DATE2 === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->OPT_DATE2;
                                 $ACC_DT_RP = $rs->ACC_DT === '0000-00-00 00:00:00' ? '1900-01-01 00:00:00' : $rs->ACC_DT;
 
+                                // Pre-check iconv fields — log warning if any char will be stripped
+                                $iconvCheckFields = [
+                                    'NAME_THAI'  => $rs->NAME_THAI,
+                                    'NAME_ENG'   => $rs->NAME_ENG,
+                                    'SHORT_THAI' => $rs->SHORT_THAI,
+                                    'SHORT_ENG'  => $rs->SHORT_ENG,
+                                    'UNIT'       => $rs->UNIT,
+                                    'AGE'        => $rs->AGE,
+                                    'UNIT_TYPE'  => $rs->UNIT_TYPE,
+                                ];
+                                foreach ($iconvCheckFields as $fieldName => $fieldValue) {
+                                    if ($fieldValue !== '' && @iconv('UTF-8', 'TIS-620', $fieldValue) === false) {
+                                        Log::warning("iconv TIS-620: PRODUCT={$rs->PRODUCT} field={$fieldName} has invalid chars (will be stripped). value={$fieldValue}");
+                                    }
+                                }
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -2169,14 +2345,14 @@ class ProductionRunMidnightTask extends Command
                                     [COLOR] = '{$rs->COLOR}',
                                     [GRP_P] = '{$rs->GRP_P}',
                                     [SUPPLIER] = '{$rs->SUPPLIER}',
-                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                     [VENDOR] = '{$rs->VENDOR}',
                                     [PRICE] = '{$rs->PRICE}',
                                     [COST] = '{$rs->COST}',
-                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                     [UNIT_Q] = '{$rs->UNIT_Q}',
                                     [SOLUTION] = '{$rs->SOLUTION}',
                                     [SERIES] = '{$rs->SERIES}',
@@ -2200,13 +2376,13 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
                                     [NAME_EXP] = '{$rs->NAME_EXP}',
                                     [NET_WEIGHT] = '{$rs->NET_WEIGHT}',
-                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                     [TYPE_G] = '{$rs->TYPE_G}',
                                     [OPT_DATE1] = '{$OPT_DATE1_RP}',
                                     [OPT_DATE2] =  '{$OPT_DATE2_RP}',
@@ -2253,14 +2429,14 @@ class ProductionRunMidnightTask extends Command
                                         '" . $rs->COLOR . "',
                                         '" . $rs->GRP_P . "',
                                         '" . $rs->SUPPLIER . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                         '" . $rs->VENDOR . "',
                                         '" . $rs->PRICE . "',
                                         '" . $rs->COST . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                         '" . $rs->UNIT_Q . "',
                                         '" . $rs->SOLUTION . "',
                                         '" . $rs->SERIES . "',
@@ -2284,13 +2460,13 @@ class ProductionRunMidnightTask extends Command
                                         '" . $rs->PACK_SIZE3 . "',
                                         '" . $rs->PACK_SIZE4 . "',
                                         '" . $REG_DATE_RP . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                         '" . $rs->WIDTH . "',
                                         '" . $rs->HEIGHT . "',
                                         '" . $rs->WIDE . "',
                                         '" . $rs->NAME_EXP . "',
                                         '" . $rs->NET_WEIGHT . "',
-                                        N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                        N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                         '" . $rs->TYPE_G . "',
                                         '" . $OPT_DATE1_RP . "',
                                         '" . $OPT_DATE2_RP . "',
@@ -2361,6 +2537,22 @@ class ProductionRunMidnightTask extends Command
 
                                 $brand_value = $dataProducts1CheckBrand->BRAND == 'KM' ? 'KM' : $brand_value;
 
+                                // Pre-check iconv fields — log warning if any char will be stripped
+                                $iconvCheckFields = [
+                                    'NAME_THAI'  => $rs->NAME_THAI,
+                                    'NAME_ENG'   => $rs->NAME_ENG,
+                                    'SHORT_THAI' => $rs->SHORT_THAI,
+                                    'SHORT_ENG'  => $rs->SHORT_ENG,
+                                    'UNIT'       => $rs->UNIT,
+                                    'AGE'        => $rs->AGE,
+                                    'UNIT_TYPE'  => $rs->UNIT_TYPE,
+                                ];
+                                foreach ($iconvCheckFields as $fieldName => $fieldValue) {
+                                    if ($fieldValue !== '' && @iconv('UTF-8', 'TIS-620', $fieldValue) === false) {
+                                        Log::warning("iconv TIS-620: PRODUCT={$rs->PRODUCT} field={$fieldName} has invalid chars (will be stripped). value={$fieldValue}");
+                                    }
+                                }
+
                                 $sql_update = "
                                     UPDATE [$dbName].[dbo].[$value[0]] SET
                                     [BRAND] = '{$brand_value}',
@@ -2369,14 +2561,14 @@ class ProductionRunMidnightTask extends Command
                                     [COLOR] = '{$rs->COLOR}',
                                     [GRP_P] = '{$rs->GRP_P}',
                                     [SUPPLIER] = '{$rs->SUPPLIER}',
-                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                    [NAME_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                    [NAME_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                    [SHORT_THAI] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                    [SHORT_ENG] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                     [VENDOR] = '{$rs->VENDOR}',
                                     [PRICE] = '{$rs->PRICE}',
                                     [COST] = '{$rs->COST}',
-                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                    [UNIT] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                     [UNIT_Q] = '{$rs->UNIT_Q}',
                                     [SOLUTION] = '{$rs->SOLUTION}',
                                     [SERIES] = '{$rs->SERIES}',
@@ -2400,13 +2592,13 @@ class ProductionRunMidnightTask extends Command
                                     [PACK_SIZE3] = '{$rs->PACK_SIZE3}',
                                     [PACK_SIZE4] = '{$rs->PACK_SIZE4}',
                                     [REG_DATE] = '{$REG_DATE_RP}',
-                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                    [AGE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                     [WIDTH] = '{$rs->WIDTH}',
                                     [HEIGHT] = '{$rs->HEIGHT}',
                                     [WIDE] = '{$rs->WIDE}',
                                     [NAME_EXP] = '{$rs->NAME_EXP}',
                                     [NET_WEIGHT] = '{$rs->NET_WEIGHT}',
-                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                    [UNIT_TYPE] = N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                     [TYPE_G] = '{$rs->TYPE_G}',
                                     [OPT_DATE1] = '{$OPT_DATE1_RP}',
                                     [OPT_DATE2] =  '{$OPT_DATE2_RP}',
@@ -2458,14 +2650,14 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->COLOR . "',
                                             '" . $rs->GRP_P . "',
                                             '" . $rs->SUPPLIER . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_THAI) . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->NAME_ENG) . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_THAI) . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->SHORT_ENG) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_THAI) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->NAME_ENG) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_THAI) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->SHORT_ENG) . "',
                                             '" . $rs->VENDOR . "',
                                             '" . $rs->PRICE . "',
                                             '" . $rs->COST . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT) . "',
                                             '" . $rs->UNIT_Q . "',
                                             '" . $rs->SOLUTION . "',
                                             '" . $rs->SERIES . "',
@@ -2489,13 +2681,13 @@ class ProductionRunMidnightTask extends Command
                                             '" . $rs->PACK_SIZE3 . "',
                                             '" . $rs->PACK_SIZE4 . "',
                                             '" . $REG_DATE_RP . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->AGE) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->AGE) . "',
                                             '" . $rs->WIDTH . "',
                                             '" . $rs->HEIGHT . "',
                                             '" . $rs->WIDE . "',
                                             '" . $rs->NAME_EXP . "',
                                             '" . $rs->NET_WEIGHT . "',
-                                            N'" . iconv('UTF-8', 'TIS-620', $rs->UNIT_TYPE) . "',
+                                            N'" . iconv('UTF-8', 'TIS-620//IGNORE', $rs->UNIT_TYPE) . "',
                                             '" . $rs->TYPE_G . "',
                                             '" . $OPT_DATE1_RP . "',
                                             '" . $OPT_DATE2_RP . "',

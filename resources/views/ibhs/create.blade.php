@@ -416,25 +416,16 @@
         $innerSrc = $inner?->path ? asset($inner->path) : $placeholder;
         $caseSrc  = $case?->path ? asset($case->path) : $placeholder;
 
-        $labels = [
-            'รูป Show',
-            'รูป Unit',
-            'รูป Inner',
-            'รูป Case',
-            'รูป การเรียงสินค้าใน case',
-        ];
     @endphp
 
 @section('content')
     <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4 mt-10">
         <div class="justify-center items-center">
             <div class="mt-5 flex justify-items-start">
-                <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">แก้ไข</p>
+                <p class="inline-block space-y-2 border-b-2 border-gray-200 dark:border-gray-700 text-xl font-bold text-gray-900 dark:text-gray-100">สร้าง</p>
             </div>
             <div class='w-12/12 mt-4 relative'>
                 <form class="" action="" method="POST" id="update_product_detail">
-                    <input type="hidden" name="corporation_id" id="corporation_id" value="{{ $data->corporation_id }}">
-                    <input type="hidden" name="permission" value="{{ $data->permission ?? 'N' }}">
                     <div class="p-2">
                         <ul class="relative m-0 w-full list-none overflow-hidden p-0 transition-[height] duration-200 ease-in-out" data-twe-stepper-init="" data-twe-stepper-type="vertical">
                             <li data-twe-stepper-step-ref="" class="mb-12 relative h-fit after:absolute after:left-[1.20rem] after:top-[2.2rem] after:mt-px after:h-[calc(100%-2.2rem)] after:w-px after:bg-neutral-200 after:content-[''] dark:after:bg-white/10" data-twe-stepper-step-completed="">
@@ -465,54 +456,53 @@
                                                     <div class="p-2 grid mt-5 gap-2 gap-y-6 text-sm text-gray-900 dark:text-gray-100 grid-cols-1 lg:grid-cols-4">
                                                         <div class="lg:col-span-4">
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
+                                                                <input type="hidden" name="corporation_id" value="">
+                                                                <input type="hidden" name="permission" value="N">
                                                                 <div class="md:col-span-2">
                                                                     <label for="bulk_id">BULK CODE</label>
                                                                 </div>
                                                                 <div class="md:col-span-4 relative">
-                                                                    <input type="text" name="bulk_id" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->bulk_id ?? '' }}">
+                                                                    <input type="text" name="bulk_id" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="">
                                                                 </div>
                                                                 <div class="md:col-span-2">
                                                                     <label for="job_ref_no">JOB REFFERENCE NO</label>
                                                                 </div>
                                                                 <div class="md:col-span-4 relative">
-                                                                    <input type="text" name="job_ref_no" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->job_ref_no ?? '' }}">
+                                                                    <input type="text" name="job_ref_no" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="">
                                                                 </div>
                                                                 <div class="md:col-span-2">
                                                                     <label for="product_name">PRODUCT NAME</label>
                                                                 </div>
                                                                 <div class="md:col-span-4 relative">
-                                                                    <input type="text" name="product_name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->product_name ?? '' }}">
+                                                                    <input type="text" name="product_name" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="">
                                                                 </div>
                                                                 <div class="md:col-span-2">
                                                                     <label for="appearance">APPEARANCE</label>
                                                                 </div>
                                                                 <div class="md:col-span-4 relative">
-                                                                    <input type="text" name="appearance" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->appearance ?? '' }}">
+                                                                    <input type="text" name="appearance" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="">
                                                                 </div>
                                                                 <div class="md:col-span-2">
                                                                     <label for="category">CATEGORY</label>
                                                                 </div>
                                                                 <div class="md:col-span-4 relative">
-                                                                    <input type="text" name="category" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->category ?? '' }}">
+                                                                    <input type="text" name="category" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="">
                                                                 </div>
                                                                 <div class="md:col-span-2">
                                                                     <label for="shelf_life">SHELF-LIFE (Months)</label>
                                                                 </div>
                                                                 <div class="md:col-span-4 relative">
-                                                                    <input type="text" name="shelf_life" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->shelf_life ?? '' }}">
+                                                                    <input type="text" name="shelf_life" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="">
                                                                 </div>
                                                                 <div class="md:col-span-2">
-                                                                    <label for="product_id">FDA notification is required</label>
-                                                                    <!-- <input type="text" name="product_id" id="product_id" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->product_id }}" readonly> -->
+                                                                    <label for="fda_noti">FDA notification is required</label>
                                                                 </div>
 
                                                                 <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                        <input type="radio" id="fda_noti_y" name="fda_noti" value="Y"
-                                                                            {{ ($data->fda_noti ?? '') == 'Y' ? 'checked' : '' }}>
-                                                                        <label for="fda_noti_y" class="mr-5">Yes</label>
-                                                                        <input type="radio" id="fda_noti_n" name="fda_noti" value="N"
-                                                                            {{ ($data->fda_noti ?? 'N') != 'Y' ? 'checked' : '' }}>
-                                                                        <label for="fda_noti_n">No</label>
+                                                                        <input type="radio" id="fda_noti_y" name="fda_noti" value="Y">
+                                                                        <label for="" class="mr-5">Yes</label>
+                                                                        <input type="radio" id="fda_noti_n" name="fda_noti" value="N">
+                                                                        <label for="">No</label>
                                                                     </div>
                                                             </div>
                                                             <ul class="width-full pt-2.5 mt-5 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
@@ -521,42 +511,39 @@
                                                                 <div class="md:col-span-2">
                                                                     
                                                                     <label for="product_id">ต้องแสดงคำเตือนบนฉลาก</label>
-                                                                    <!-- <input type="text" name="product_id" id="product_id" class="h-10 rounded-sm px-4 w-full text-center bg-[#e7e7e7] border border-gray-900 text-blue-600 dark:text-blue-600 text-base font-semibold focus:ring-blue-500 focus:border-blue-500 block p-2.5 cursor-not-allowed dark:bg-[#101010] dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500" value="{{ $data->product_id }}" readonly> -->
                                                                 </div>
 
                                                                 <div class="md:col-span-4 mt-2" style="position: relative;">
-                                                                    <input type="radio" id="warning_display_y" name="warning_display" value="Y"
-                                                                        {{ ($data->warning_display ?? '') == 'Y' ? 'checked' : '' }}>
-                                                                    <label for="warning_display_y" class="mr-5">Yes</label>
-                                                                    <input type="radio" id="warning_display_n" name="warning_display" value="N"
-                                                                        {{ ($data->warning_display ?? 'N') != 'Y' ? 'checked' : '' }}>
-                                                                    <label for="warning_display_n">No</label>
+                                                                    <input type="radio" id="permission_y" name="warning_display" value="Y">
+                                                                    <label for="" class="mr-5">Yes</label>
+                                                                    <input type="radio" id="permission_n" name="warning_display" value="N">
+                                                                    <label for="">No</label>
                                                                 </div>
                                                             </div>
 
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
                                                                 <div class="md:col-span-2">
-                                                                    <label for="product_id" class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 font-bold text-gray-900 dark:text-gray-100">รายการสารที่ต้องแสดงคำเตือน</label>
+                                                                    <label for="list_substances_warning" class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 font-bold text-gray-900 dark:text-gray-100">รายการสารที่ต้องแสดงคำเตือน</label>
                                                                 </div>
                                                             </div>
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
                                                                 <div class="md:col-span-2">
-                                                                    <label for="list_substances_warning_1">ชื่อสาร 1</label>
+                                                                    <label for="list_substances_warning_1">ชื่อสาร</label>
                                                                 </div>
                                                                 <div class="md:col-span-4 relative">
-                                                                    <input type="text" name="list_substances_warning_1" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->list_substances_warning_1 ?? '' }}">
+                                                                    <input type="text" name="list_substances_warning_1" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="">
                                                                 </div>
                                                                 <div class="md:col-span-2">
-                                                                    <label for="list_substances_warning_2">ชื่อสาร 2</label>
+                                                                    <label for="list_substances_warning_2">ชื่อสาร</label>
                                                                 </div>
                                                                 <div class="md:col-span-4 relative">
-                                                                    <input type="text" name="list_substances_warning_2" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->list_substances_warning_2 ?? '' }}">
+                                                                    <input type="text" name="list_substances_warning_2" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="">
                                                                 </div>
                                                                 <div class="md:col-span-2">
-                                                                    <label for="list_substances_warning_3">ชื่อสาร 3</label>
+                                                                    <label for="list_substances_warning_3">ชื่อสาร</label>
                                                                 </div>
                                                                 <div class="md:col-span-4 relative">
-                                                                    <input type="text" name="list_substances_warning_3" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->list_substances_warning_3 ?? '' }}">
+                                                                    <input type="text" name="list_substances_warning_3" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="">
                                                                 </div>
                                                             </div>
 
@@ -565,7 +552,7 @@
                                                                     <label for="ingredients" class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 font-bold text-gray-900 dark:text-gray-100">Special Ingredients</label>
                                                                 </div>
                                                                 <div class="md:col-span-6">
-                                                                    <textarea id="ingredients" name="ingredients" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">{{ $data->ingredients ?? '' }}</textarea>
+                                                                    <textarea id="ingredients" name="ingredients" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
@@ -573,7 +560,7 @@
                                                                     <label for="characteristic" class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 font-bold text-gray-900 dark:text-gray-100">Characteristic</label>
                                                                 </div>
                                                                 <div class="md:col-span-6">
-                                                                    <textarea id="characteristic" name="characteristic" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">{{ $data->characteristic ?? '' }}</textarea>
+                                                                    <textarea id="characteristic" name="characteristic" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
@@ -581,7 +568,7 @@
                                                                     <label for="fragrance" class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 font-bold text-gray-900 dark:text-gray-100">Fragrance</label>
                                                                 </div>
                                                                 <div class="md:col-span-6">
-                                                                    <textarea id="fragrance" name="fragrance" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">{{ $data->fragrance ?? '' }}</textarea>
+                                                                    <textarea id="fragrance" name="fragrance" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6">
@@ -589,12 +576,12 @@
                                                                     <label for="how_to_use" class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 font-bold text-gray-900 dark:text-gray-100">How To Use</label>
                                                                 </div>
                                                                 <div class="md:col-span-6">
-                                                                    <textarea id="how_to_use" name="how_to_use" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">{{ $data->how_to_use ?? '' }}</textarea>
+                                                                    <textarea id="how_to_use" name="how_to_use" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
                                                                 </div>
                                                             </div>
                                                             <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-6 mt-5">
                                                                 <div class="md:col-span-2">
-                                                                    <label for="product_id" class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 font-bold text-gray-900 dark:text-gray-100">Qualification claimed</label>
+                                                                    <label for="qualification_claimed" class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 font-bold text-gray-900 dark:text-gray-100">Qualification claimed</label>
                                                                 </div>
                                                             </div>
 
@@ -616,7 +603,7 @@
                                                                             ['name' => 'triethanolamin_free', 'label' => 'Triethanolamine Free (TEA)'],
                                                                             ['name' => 'chil_over_6year',     'label' => 'Safe for Children Over 6 Years Old.'],
                                                                             ['name' => 'pregnancy',           'label' => 'Safe for Pregnant'],
-                                                                            ['name' => 'no_need_to_review_before_making_full_ingredients', 'label' => 'No Need to Review Before Mading Full Ingredients'],
+                                                                            ['name' => 'no_need_to_review_before_making_full_ingredients',           'label' => 'No Need to Review Before Mading Full Ingredients'],
                                                                         ];
                                                                     @endphp
                                                                     @foreach($leftItems as $item)
@@ -647,7 +634,7 @@
                                                                             ['name' => 'talc_free',           'label' => 'Talc-Free'],
                                                                             ['name' => 'breastfeed',          'label' => 'Safe for Breastfeeding'],
                                                                             ['name' => 'formula_free_from',   'label' => 'Formula Free From (Not Listed Above and Suitable)'],
-                                                                            ['name' => 'need_to_review_before_making_full_ingredients', 'label' => 'Need to Review Before Making Full Ingredients'],
+                                                                            ['name' => 'need_to_review_before_making_full_ingredients',          'label' => 'Need to Review Before Making Full Ingredients'],
                                                                         ];
                                                                     @endphp
                                                                     @foreach($rightItems as $item)
@@ -659,23 +646,20 @@
                                                                             <span>{{ $item['label'] }}</span>
                                                                         </div>
                                                                     @endforeach
-                                                                </div>
-                                                            </div>
 
-                                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2 text-sm mt-3">
+                                                                </div>
                                                                 <!-- Not Recommend For Pregnant -->
                                                                 <div class="grid gap-4 gap-y-1 text-sm grid-cols-1 md:grid-cols-3">
                                                                     <div class="md:col-span-2">
                                                                         <div class="flex items-center gap-2">
                                                                             <input type="hidden" name="not_recommend_pregnant_checkbox" value="N">
                                                                             <input type="checkbox" name="not_recommend_pregnant_checkbox" value="Y"
-                                                                                {{ ($data->not_recommend_pregnant_checkbox ?? 'N') == 'Y' ? 'checked' : '' }}
-                                                                                class="h-4 w-4 rounded border-gray-400 dark:border-gray-500 accent-green-600 cursor-pointer mb-1">
-                                                                            <label class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 font-bold text-gray-900 dark:text-gray-100">Not Recommend For Pregnant</label>
+                                                                                class="h-4 w-4 rounded border-gray-400 dark:border-gray-500 accent-green-600 cursor-pointer">
+                                                                            <label for="not_recommend_pregnant" class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 font-bold text-gray-900 dark:text-gray-100">Not Recommend For Pregnant</label>
                                                                         </div>
                                                                     </div>
                                                                     <div class="md:col-span-6">
-                                                                        <textarea name="not_recommend_pregnant_text" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="">{{ $data->not_recommend_pregnant_text ?? '' }}</textarea>
+                                                                        <textarea id="not_recommend_pregnant" name="not_recommend_pregnant_text" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=""></textarea>
                                                                     </div>
                                                                 </div>
                                                                 <!-- Product Efficacy Test -->
@@ -684,15 +668,15 @@
                                                                         <div class="flex items-center gap-2">
                                                                             <input type="hidden" name="product_efficacy_test_checkbox" value="N">
                                                                             <input type="checkbox" name="product_efficacy_test_checkbox" value="Y"
-                                                                                {{ ($data->product_efficacy_test_checkbox ?? 'N') == 'Y' ? 'checked' : '' }}
-                                                                                class="h-4 w-4 rounded border-gray-400 dark:border-gray-500 accent-green-600 cursor-pointer mb-1">
-                                                                            <label class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 font-bold text-gray-900 dark:text-gray-100">Product Efficacy Test</label>
+                                                                                class="h-4 w-4 rounded border-gray-400 dark:border-gray-500 accent-green-600 cursor-pointer">
+                                                                            <label for="product_efficacy_test" class="inline-block space-y-2 border-b-2 border-gray-300 dark:border-gray-500 font-bold text-gray-900 dark:text-gray-100">Product Efficacy Test</label>
                                                                         </div>
                                                                     </div>
                                                                     <div class="md:col-span-6">
-                                                                        <textarea name="product_efficacy_test_text" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="">{{ $data->product_efficacy_test_text ?? '' }}</textarea>
+                                                                        <textarea id="product_efficacy_test" name="product_efficacy_test_text" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder=""></textarea>
                                                                     </div>
                                                                 </div>
+                                                            </div>
                                                             </div>
 
                                                             <!-- ─── Custom Free Form (JSON array) ─── -->
@@ -711,7 +695,7 @@
                                                                 <div id="customFreeFormList" class="space-y-2"></div>
                                                             </div>
 
-                                                            <div class="md:col-span-9 mt-10">
+                                                            <div class="md:col-span-9">
                                                                 <ul class="width-full pt-2.5 mt-2 space-y-2 font-medium border-t-2 border-gray-300 dark:border-gray-500"></ul>
                                                             </div>
 
@@ -719,23 +703,23 @@
 
                                                                 <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-9 mb-2">
                                                                     <div class="md:col-span-3">
-                                                                        <label for="natural_claimed_1">%Natural claimed 1</label>
-                                                                        <input type="text" name="natural_claimed_1" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->natural_claimed_1 ?? '' }}">
+                                                                        <label for="natural_claimed_1">%Natural claimed<span class="text-danger"> *</span></label>
+                                                                        <input type="text" name="natural_claimed_1" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="">
                                                                     </div>
                                                                     <div class="md:col-span-3">
-                                                                        <label for="natural_claimed_2">%Natural claimed 2</label>
-                                                                        <input type="text" name="natural_claimed_2" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->natural_claimed_2 ?? '' }}">
+                                                                        <label for="natural_claimed_2"><span class="text-danger"> *</span></label>
+                                                                        <input type="text" name="natural_claimed_2" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="">
                                                                     </div>
                                                                     <div class="md:col-span-3">
-                                                                        <label for="natural_claimed_3">%Natural claimed 3</label>
-                                                                        <input type="text" name="natural_claimed_3" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="{{ $data->natural_claimed_3 ?? '' }}">
+                                                                        <label for="natural_claimed_3"><span class="text-danger"> *</span></label>
+                                                                        <input type="text" name="natural_claimed_3" class="h-10 border-[#303030] dark:border focus:border-blue-500 rounded-sm px-4 w-full bg-gray-50 dark:bg-[#303030] text-center" value="">
                                                                     </div>
                                                                 </div>
 
                                                                 <div class="grid gap-4 gap-y-2 text-sm grid-cols-1 md:grid-cols-6">
                                                                     <div class="md:col-span-6">
-                                                                        <label for="ingredient_list" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ส่วนประกอบหลังกล่อง</label>
-                                                                        <textarea id="ingredient_list" name="ingredient_list" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">{{ $data->ingredients ?? '' }}</textarea>
+                                                                        <label for="ingredient_list" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ingredient List</label>
+                                                                        <textarea id="ingredient_list" name="ingredient_list" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-[#303030] dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here."></textarea>
                                                                     </div>
                                                                     <!-- <div class="md:col-span-3" style="position: relative;">
                                                                         <label for="after_open_m">ระยะเวลาหลังเปิดใช้<span class="text-danger"> *</span></label>
@@ -863,8 +847,8 @@
                 </div>
                 <!-- ─── End Dropzone ─── -->
 
-                <!-- ─── Preview IBSH Files ─── -->
-                <div class="mt-6 px-4">
+                <!-- ─── Preview IBSH Files (hidden on create) ─── -->
+                <div class="mt-6 px-4 hidden">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                         <!-- Special Ingredients -->
@@ -878,50 +862,50 @@
                                     <span class="text-xs font-normal text-gray-400">({{ $ibshSpecial->count() }})</span>
                                 </h4>
                                 @if($ibshSpecial->count() > 0)
-                                    <div class="flex items-center gap-2">
-                                        <label class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 cursor-pointer select-none mt-2">
-                                            <input type="checkbox" class="ibsh-select-all rounded border-gray-300 dark:border-gray-600 text-green-500 focus:ring-green-400" data-group="special">
-                                            Select All
-                                        </label>
-                                        <button type="button" class="ibsh-download-btn inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded border border-green-500 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed" data-group="special" disabled>
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                                            </svg>
-                                            Download
-                                        </button>
-                                    </div>
+                                <div class="flex items-center gap-2">
+                                    <label class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 cursor-pointer select-none mt-2">
+                                        <input type="checkbox" class="ibsh-select-all rounded border-gray-300 dark:border-gray-600 text-green-500 focus:ring-green-400" data-group="special">
+                                        Select All
+                                    </label>
+                                    <button type="button" class="ibsh-download-btn inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded border border-green-500 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed" data-group="special" disabled>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                        </svg>
+                                        Download
+                                    </button>
+                                </div>
                                 @endif
                             </div>
                             @if($ibshSpecial->count() > 0)
-                                <div class="columns-2 sm:columns-3 gap-2 space-y-2">
-                                    @foreach($ibshSpecial as $ibsh)
-                                        @php
-                                            $ext = strtolower(pathinfo($ibsh->path, PATHINFO_EXTENSION));
-                                            $isImage = in_array($ext, ['png','jpg','jpeg','webp','gif']);
-                                        @endphp
-                                        <div class="break-inside-avoid rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600 bg-white dark:bg-[#2a2a2a] relative group">
-                                            <label class="absolute top-1.5 left-1.5 z-10 cursor-pointer">
-                                                <input type="checkbox" class="ibsh-file-cb rounded border-gray-300 dark:border-gray-600 text-green-500 focus:ring-green-400" data-group="special" data-url="{{ asset($ibsh->path) }}" data-name="{{ basename($ibsh->path) }}">
-                                            </label>
-                                            @if($isImage)
-                                                <img src="{{ asset($ibsh->path) }}" alt="special_ingredients" class="w-full h-auto object-cover" loading="lazy">
-                                            @else
-                                                <a href="{{ asset($ibsh->path) }}" target="_blank" class="flex flex-col items-center justify-center p-4 gap-2 hover:bg-gray-50 dark:hover:bg-[#333] transition-colors">
-                                                    @if($ext === 'pdf')
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500" viewBox="0 0 24 24" fill="currentColor">
-                                                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 2l5 5h-5V4zm-2.5 9.5a1.5 1.5 0 010 3H9v1.5H7.5v-6H10.5a1.5 1.5 0 010 0zm0 1.5H9v1h1.5a.5.5 0 000-1zm5-1.5h-2v6h2a2.5 2.5 0 000-5zm0 1.5a1 1 0 010 2h-.5v-2h.5zm4-1.5h-2.5v6H18v-2h1.5v-1.5H18v-1h1.5V13.5z"/>
-                                                        </svg>
-                                                    @else
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" viewBox="0 0 24 24" fill="currentColor">
-                                                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm1 9h-2v4.5a1.5 1.5 0 01-3 0V11H8V9h7v2zm-2-4V4l5 5h-5z"/>
-                                                        </svg>
-                                                    @endif
-                                                    <span class="text-xs text-gray-500 dark:text-gray-400 truncate max-w-full">{{ basename($ibsh->path) }}</span>
-                                                </a>
-                                            @endif
-                                        </div>
-                                    @endforeach
-                                </div>
+                            <div class="columns-2 sm:columns-3 gap-2 space-y-2">
+                                @foreach($ibshSpecial as $ibsh)
+                                    @php
+                                        $ext = strtolower(pathinfo($ibsh->path, PATHINFO_EXTENSION));
+                                        $isImage = in_array($ext, ['png','jpg','jpeg','webp','gif']);
+                                    @endphp
+                                    <div class="break-inside-avoid rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600 bg-white dark:bg-[#2a2a2a] relative group">
+                                        <label class="absolute top-1.5 left-1.5 z-10 cursor-pointer">
+                                            <input type="checkbox" class="ibsh-file-cb rounded border-gray-300 dark:border-gray-600 text-green-500 focus:ring-green-400" data-group="special" data-url="{{ asset($ibsh->path) }}" data-name="{{ basename($ibsh->path) }}">
+                                        </label>
+                                        @if($isImage)
+                                            <img src="{{ asset($ibsh->path) }}" alt="special_ingredients" class="w-full h-auto object-cover" loading="lazy">
+                                        @else
+                                            <a href="{{ asset($ibsh->path) }}" target="_blank" class="flex flex-col items-center justify-center p-4 gap-2 hover:bg-gray-50 dark:hover:bg-[#333] transition-colors">
+                                                @if($ext === 'pdf')
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500" viewBox="0 0 24 24" fill="currentColor">
+                                                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 2l5 5h-5V4zm-2.5 9.5a1.5 1.5 0 010 3H9v1.5H7.5v-6H10.5a1.5 1.5 0 010 0zm0 1.5H9v1h1.5a.5.5 0 000-1zm5-1.5h-2v6h2a2.5 2.5 0 000-5zm0 1.5a1 1 0 010 2h-.5v-2h.5zm4-1.5h-2.5v6H18v-2h1.5v-1.5H18v-1h1.5V13.5z"/>
+                                                    </svg>
+                                                @else
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" viewBox="0 0 24 24" fill="currentColor">
+                                                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm1 9h-2v4.5a1.5 1.5 0 01-3 0V11H8V9h7v2zm-2-4V4l5 5h-5z"/>
+                                                    </svg>
+                                                @endif
+                                                <span class="text-xs text-gray-500 dark:text-gray-400 truncate max-w-full">{{ basename($ibsh->path) }}</span>
+                                            </a>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
                             @else
                                 <p class="text-xs text-gray-400 dark:text-gray-500 italic">No files</p>
                             @endif
@@ -938,50 +922,50 @@
                                     <span class="text-xs font-normal text-gray-400">({{ $ibshCharacteristic->count() }})</span>
                                 </h4>
                                 @if($ibshCharacteristic->count() > 0)
-                                    <div class="flex items-center gap-2">
-                                        <label class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 cursor-pointer select-none mt-2">
-                                            <input type="checkbox" class="ibsh-select-all rounded border-gray-300 dark:border-gray-600 text-blue-500 focus:ring-blue-400" data-group="characteristic">
-                                            Select All
-                                        </label>
-                                        <button type="button" class="ibsh-download-btn inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded border border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed" data-group="characteristic" disabled>
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                                            </svg>
-                                            Download
-                                        </button>
-                                    </div>
+                                <div class="flex items-center gap-2">
+                                    <label class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400 cursor-pointer select-none mt-2">
+                                        <input type="checkbox" class="ibsh-select-all rounded border-gray-300 dark:border-gray-600 text-blue-500 focus:ring-blue-400" data-group="characteristic">
+                                        Select All
+                                    </label>
+                                    <button type="button" class="ibsh-download-btn inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded border border-blue-500 text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors disabled:opacity-40 disabled:cursor-not-allowed" data-group="characteristic" disabled>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                        </svg>
+                                        Download
+                                    </button>
+                                </div>
                                 @endif
                             </div>
                             @if($ibshCharacteristic->count() > 0)
-                                <div class="columns-2 sm:columns-3 gap-2 space-y-2">
-                                    @foreach($ibshCharacteristic as $ibsh)
-                                        @php
-                                            $ext = strtolower(pathinfo($ibsh->path, PATHINFO_EXTENSION));
-                                            $isImage = in_array($ext, ['png','jpg','jpeg','webp','gif']);
-                                        @endphp
-                                        <div class="break-inside-avoid rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600 bg-white dark:bg-[#2a2a2a] relative group">
-                                            <label class="absolute top-1.5 left-1.5 z-10 cursor-pointer">
-                                                <input type="checkbox" class="ibsh-file-cb rounded border-gray-300 dark:border-gray-600 text-blue-500 focus:ring-blue-400" data-group="characteristic" data-url="{{ asset($ibsh->path) }}" data-name="{{ basename($ibsh->path) }}">
-                                            </label>
-                                            @if($isImage)
-                                                <img src="{{ asset($ibsh->path) }}" alt="characteristic" class="w-full h-auto object-cover" loading="lazy">
-                                            @else
-                                                <a href="{{ asset($ibsh->path) }}" target="_blank" class="flex flex-col items-center justify-center p-4 gap-2 hover:bg-gray-50 dark:hover:bg-[#333] transition-colors">
-                                                    @if($ext === 'pdf')
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500" viewBox="0 0 24 24" fill="currentColor">
-                                                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 2l5 5h-5V4zm-2.5 9.5a1.5 1.5 0 010 3H9v1.5H7.5v-6H10.5a1.5 1.5 0 010 0zm0 1.5H9v1h1.5a.5.5 0 000-1zm5-1.5h-2v6h2a2.5 2.5 0 000-5zm0 1.5a1 1 0 010 2h-.5v-2h.5zm4-1.5h-2.5v6H18v-2h1.5v-1.5H18v-1h1.5V13.5z"/>
-                                                        </svg>
-                                                    @else
-                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" viewBox="0 0 24 24" fill="currentColor">
-                                                            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm1 9h-2v4.5a1.5 1.5 0 01-3 0V11H8V9h7v2zm-2-4V4l5 5h-5z"/>
-                                                        </svg>
-                                                    @endif
-                                                    <span class="text-xs text-gray-500 dark:text-gray-400 truncate max-w-full">{{ basename($ibsh->path) }}</span>
-                                                </a>
-                                            @endif
-                                        </div>
-                                    @endforeach
-                                </div>
+                            <div class="columns-2 sm:columns-3 gap-2 space-y-2">
+                                @foreach($ibshCharacteristic as $ibsh)
+                                    @php
+                                        $ext = strtolower(pathinfo($ibsh->path, PATHINFO_EXTENSION));
+                                        $isImage = in_array($ext, ['png','jpg','jpeg','webp','gif']);
+                                    @endphp
+                                    <div class="break-inside-avoid rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600 bg-white dark:bg-[#2a2a2a] relative group">
+                                        <label class="absolute top-1.5 left-1.5 z-10 cursor-pointer">
+                                            <input type="checkbox" class="ibsh-file-cb rounded border-gray-300 dark:border-gray-600 text-blue-500 focus:ring-blue-400" data-group="characteristic" data-url="{{ asset($ibsh->path) }}" data-name="{{ basename($ibsh->path) }}">
+                                        </label>
+                                        @if($isImage)
+                                            <img src="{{ asset($ibsh->path) }}" alt="characteristic" class="w-full h-auto object-cover" loading="lazy">
+                                        @else
+                                            <a href="{{ asset($ibsh->path) }}" target="_blank" class="flex flex-col items-center justify-center p-4 gap-2 hover:bg-gray-50 dark:hover:bg-[#333] transition-colors">
+                                                @if($ext === 'pdf')
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-red-500" viewBox="0 0 24 24" fill="currentColor">
+                                                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm-1 2l5 5h-5V4zm-2.5 9.5a1.5 1.5 0 010 3H9v1.5H7.5v-6H10.5a1.5 1.5 0 010 0zm0 1.5H9v1h1.5a.5.5 0 000-1zm5-1.5h-2v6h2a2.5 2.5 0 000-5zm0 1.5a1 1 0 010 2h-.5v-2h.5zm4-1.5h-2.5v6H18v-2h1.5v-1.5H18v-1h1.5V13.5z"/>
+                                                    </svg>
+                                                @else
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-green-600" viewBox="0 0 24 24" fill="currentColor">
+                                                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zm1 9h-2v4.5a1.5 1.5 0 01-3 0V11H8V9h7v2zm-2-4V4l5 5h-5z"/>
+                                                    </svg>
+                                                @endif
+                                                <span class="text-xs text-gray-500 dark:text-gray-400 truncate max-w-full">{{ basename($ibsh->path) }}</span>
+                                            </a>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            </div>
                             @else
                                 <p class="text-xs text-gray-400 dark:text-gray-500 italic">No files</p>
                             @endif
@@ -1026,7 +1010,6 @@
                         </div>
                     </div>
                 </form>
-
 
             </div>
         </div>
@@ -1084,41 +1067,6 @@
         //     });
         // });
 
-        function onOpenhandler(params) {
-            // document.querySelectorAll('.setpcollep').forEach((element, index) => {
-            //     element.addEventListener('click', function (params) {
-            //         document.querySelectorAll('.setcheckbox').forEach(ee => {
-            //             ee.checked = false
-            //         });
-            //         document.querySelectorAll('.bg_step_color').forEach(ee => {
-            //             ee.classList.remove('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
-            //             ee.classList.add('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
-            //         });
-            //         let el = document.querySelectorAll('.setcheckbox')[index]
-            //         let el_colr = document.querySelectorAll('.bg_step_color')[index]
-            //         el.checked = !el.checked
-            //         if( el.checked){
-            //             el_colr.classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
-            //             el_colr.classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
-            //         }
-            //     })
-            // });
-            // document.querySelectorAll('.setcheckbox').forEach((element, index) => {
-            //     element.addEventListener('click', function (params) {
-            //         let el = document.querySelectorAll('.setcheckbox')[index]
-            //         let el_colr = document.querySelectorAll('.bg_step_color')[index]
-            //         console.log("🚀 ~ el.checked:", el.checked)
-            //         if( el.checked){
-            //             el_colr.classList.remove('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
-            //             el_colr.classList.add('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
-            //         } else {
-            //             el_colr.classList.remove('bg-success-100', 'text-success-700', 'dark:bg-green-950', 'dark:text-success-500/80')
-            //             el_colr.classList.add('!bg-primary-100', '!text-primary-700', 'dark:!bg-slate-900', 'dark:!text-primary-500')
-            //         }
-            //     })
-            // });
-        }
-
         $(document).ready(function() {
             // onOpenhandler()
             // document.querySelectorAll('.setcheckbox')[0].checked = true
@@ -1131,213 +1079,9 @@
             // เปิดทุก tab
             document.querySelectorAll('.setcheckbox').forEach(function(el) { el.checked = true; });
 
-            // Convert PHP arrays to JavaScript objects
-            let allChannel = <?php echo json_encode($allChannels); ?>;
-            let defaultAllChannel = <?php echo json_encode($defaultAllChannels); ?>;
-            let defaultChannel = <?php echo json_encode($defaultChannel); ?>;
-
-            console.log('allChannel:', allChannel);
-            console.log('defaultAllChannel:', defaultAllChannel);
-            console.log('defaultChannel:', defaultChannel);
-
-            // ถ้า allChannel ยังไม่มี 'all' ให้เพิ่มเข้าไป
-            if (!allChannel.includes('all')) {
-                allChannel.unshift('all');
-            }
-            
-            $('.js-example-basic-single').select2();
-            $('#multiSelect').select2({
-                placeholder: "--- กรุณาเลือก ---",
-                closeOnSelect: false,
-            });
-
-            $('#multiSelect').empty();
-
-            // Populate all options first
-            allChannel.forEach(function(channel) {
-                let option = new Option(channel, channel, false, false);
-                $('#multiSelect').append(option);
-            });
-
-            // Set default values after a short delay
-            setTimeout(function () {
-                let selectedValues = [];
-
-                if (defaultAllChannel[0] === 'all') {
-                    selectedValues = ['all']; // ✅ เลือกแค่ 'all'
-                } else {
-                    selectedValues = defaultChannel.map(c =>
-                        allChannel.find(ac => ac.trim().toLowerCase() === c.trim().toLowerCase()) || c
-                    ).filter(Boolean);
-                }
-
-                $('#multiSelect').val(selectedValues).trigger("change");
-
-                console.log("Selected values after setting:", $('#multiSelect').val());
-            }, 600);
-
-            // ✅ เพิ่มเงื่อนไขควบคุมการเลือก All หรือรายการย่อย
-            $('#multiSelect').on('select2:select', function (e) {
-                let selected = $(this).val() || [];
-                let selectedValue = e.params.data.id;
-
-                // ถ้าเลือก all → ลบตัวอื่น
-                if (selectedValue === 'all') {
-                    $(this).val(['all']).trigger('change');
-                } else {
-                    // ถ้าเลือกตัวอื่นแล้วมี all อยู่ → เอา all ออก
-                    if (selected.includes('all')) {
-                        const filtered = selected.filter(val => val !== 'all');
-                        $(this).val(filtered).trigger('change');
-                    }
-                }
-            });
-
-            // ✅ รองรับ unselect เพื่อเลือกใหม่เมื่อกดเอา 'all' ออก
-            $('#multiSelect').on('select2:unselect', function (e) {
-                let selected = $(this).val() || [];
-
-                // ถ้าลบ all → clear ทั้งหมดเพื่อให้เลือกใหม่ได้
-                if (e.params.data.id === 'all') {
-                    $(this).val([]).trigger('change');
-                }
-            });
-
-            // โหลด Product Line และ Product Type ตามค่าที่เลือกไว้ตอนเปิดหน้า
-            const selectedCategoryId = $('#CATEGORY_ID').val();
-            if (selectedCategoryId) {
-                // โหลด Line ตาม Category และรักษาค่าเดิมไว้
-                getajaxLine({value: selectedCategoryId}, true);
-            }
-
         });
-
-        let i = 0;
-        $('#add').click( () => {
-            ++i;
-            $('#table').append(
-                `<tr>
-                    <td>
-                        <input class="w-11/12 text-gray-900 text-sm form-control" type="text" name="inputs[`+ i +`][name]" placeholder="Name">
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-danger remove-table-row">Remove</button>
-                    </td>
-                </tr>`);
-        });
-        console.log("Index: ", ++i)
-        $(document).on('click', '.remove-table-row', function() {
-            $(this).parents('tr').remove();
-        });
-
-        jQuery('#username_loading').hide();
-        jQuery("#username_alert").hide();
-        jQuery("#correct_username").hide();
-
-        function checkNameBrand() {
-            const edit_id = jQuery('#edit_id').val();
-            const name = jQuery('#id_brand').val();
-
-            jQuery.ajax({
-                method: "POST",
-                url: '{{ route('checknamebrand') }}',
-                data: {
-                        _token: "{{ csrf_token() }}",
-                        edit_id, name
-                    },
-                dataType: 'json',
-                beforeSend: function () {
-                    jQuery("#submitButton").attr("disabled", true);
-                    jQuery('#username_loading').show();
-                    jQuery("#correct_username").hide();
-                    jQuery("#username_alert").hide();
-                },
-                success: function (checknamebrand) {
-                    jQuery('#username_loading').hide();
-                    jQuery("#correct_username").hide();
-
-                    if (name == '') {
-                        jQuery("#submitButton").attr("disabled", false);
-                        jQuery("#correct_username").hide();
-                        jQuery("#username_alert").hide();
-                        jQuery("#id_brand").removeClass("is-invalid");
-                    } else if (checknamebrand == true) {
-                        jQuery("#submitButton").attr("disabled", false);
-                        jQuery("#username_alert").hide();
-                        jQuery("#id_brand").removeClass("is-invalid");
-                        jQuery("#correct_username").show();
-                    } else {
-                        jQuery("#username_alert").show();
-                        jQuery("#id_brand").addClass("is-invalid");
-                        jQuery("#correct_username").hide();
-                    }
-                },
-                error: function (params) {
-                }
-            });
-        }
 
         const dlayMessage = 1000;
-
-        function editProductDetail() {
-            jQuery.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            var formData = new FormData(document.getElementById('update_product_detail'));
-            formData.append('_method', 'POST');
-
-            // Append Dropzone files
-            if (window.getDzFiles) {
-                window.getDzFiles().forEach(function(file) {
-                    formData.append('dz_files[]', file);
-                });
-                formData.append('dz_form_type', window.getDzFormType ? window.getDzFormType() : '');
-                formData.append('dz_file_type', window.getDzFileType ? window.getDzFileType() : '');
-            }
-
-            $.ajax({
-                method: "POST",
-                url: "{{ route('ibhs.ibhs_update', $data->id) }}",
-                data: formData,
-                processData: false,
-                contentType: false,
-                beforeSend: function () {
-                    $('#loader').removeClass('hidden')
-                },
-                success: function(res){
-                    if(res.success == true) {
-                        window.location = "/ibhs/product_description";
-                    } else {
-                        toastr.error("Can't Create Product!");
-                    }
-                    return false;
-                },
-                error: function (params) {
-                    setTimeout(function() {
-                        errorMessage("Can't Update!");
-                    },dlayMessage)
-                    setTimeout(function() {
-                        toastr.error("Can't Update!");
-                    },dlayMessage)
-                }
-            });
-        }
-
-        function successMessage(text) {
-            $('#loader').addClass('hidden');
-            $('#name').val('')
-        }
-        function errorMessage(text) {
-            $('#loader').addClass('hidden');
-            $('#name').val('')
-        }
-
-
-
-
 
         // ========== Custom Free Form (dynamic rows → JSON) ==========
         (function() {
@@ -1737,6 +1481,60 @@
                 }
             });
         });
+
+        function editProductDetail() {
+            jQuery.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            var formData = new FormData(document.getElementById('update_product_detail'));
+            formData.append('_method', 'POST');
+
+            // Append Dropzone files
+            if (window.getDzFiles) {
+                window.getDzFiles().forEach(function(file) {
+                    formData.append('dz_files[]', file);
+                });
+                formData.append('dz_form_type', window.getDzFormType ? window.getDzFormType() : '');
+                formData.append('dz_file_type', window.getDzFileType ? window.getDzFileType() : '');
+            }
+
+            $.ajax({
+                method: "POST",
+                url: "{{ route('ibhs.ibhs_store') }}",
+                data: formData,
+                processData: false,
+                contentType: false,
+                beforeSend: function () {
+                    $('#loader').removeClass('hidden')
+                },
+                success: function(res){
+                    if(res.success == true) {
+                        window.location = "/ibhs/product_description";
+                    } else {
+                        toastr.error("Can't Create Product!");
+                    }
+                    return false;
+                },
+                error: function (params) {
+                    setTimeout(function() {
+                        errorMessage("Can't Create!");
+                    },dlayMessage)
+                    setTimeout(function() {
+                        toastr.error("Can't Create!");
+                    },dlayMessage)
+                }
+            });
+        }
+
+        function successMessage(text) {
+            $('#loader').addClass('hidden');
+        }
+        function errorMessage(text) {
+            $('#loader').addClass('hidden');
+        }
 
         function ImgUpload() {
             let imgWrap = "";

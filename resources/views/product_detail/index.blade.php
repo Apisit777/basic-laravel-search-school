@@ -829,33 +829,37 @@ function onOpenhandler(params) {
                 $('#brand_id').val(null).trigger('change'); // Clear ค่า select2
                 $('#search').val('').trigger('keyup'); // เคลียร์ค่า input ค้นหา
             });
-        });
 
-        $('#start_product').on('change', function () {
-            const selectedId = $(this).val();
-            if (!selectedId) {
-                $('#end_product').html('<option value="">--- กรุณาเลือก ---</option>');
-                jQuery("#submitButtonDownLoadExcel").addClass('cursor-not-allowed opacity-50');
-                return;
-            }
-            $.ajax({
-                url: "{{ route('product_master.product_master_get_select2') }}",
-                type: "GET",
-                data: {
-                    id: selectedId, 
-                },
-                success: function (response) {
+            // เมื่อเลือก รหัสเริ่มต้น → โหลด รหัสสิ้นสุด
+            $('#start_product').on('select2:select', function (e) {
+                const selectedId = e.params.data.id;
+                if (!selectedId) {
                     $('#end_product').html('<option value="">--- กรุณาเลือก ---</option>');
-                    jQuery("#submitButtonDownLoadExcel").removeClass('cursor-not-allowed opacity-50');
-                    jQuery("#submitButtonDownLoadExcel").attr("disabled", false);
-                    response.forEach(function (item) {
-                        $('#end_product').append(`<option value="${item}">${item}</option>`);
-                    });
-                },
-                error: function (error) {
-                    console.log(error);
-                    alert('เกิดข้อผิดพลาด ไม่สามารถโหลดข้อมูลได้');
-                },
+                    jQuery("#submitButtonDownLoadExcel").addClass('cursor-not-allowed opacity-50');
+                    return;
+                }
+                $.ajax({
+                    url: "{{ route('product_master.product_master_get_select2') }}",
+                    type: "GET",
+                    data: {
+                        id: selectedId,
+                    },
+                    success: function (response) {
+                        if ($('#end_product').hasClass('select2-hidden-accessible')) {
+                            $('#end_product').select2('destroy');
+                        }
+                        $('#end_product').html('<option value="">--- กรุณาเลือก ---</option>');
+                        jQuery("#submitButtonDownLoadExcel").removeClass('cursor-not-allowed opacity-50');
+                        jQuery("#submitButtonDownLoadExcel").attr("disabled", false);
+                        response.forEach(function (item) {
+                            $('#end_product').append(`<option value="${item}">${item}</option>`);
+                        });
+                        $('#end_product').select2();
+                    },
+                    error: function (xhr, status, error) {
+                        alert('เกิดข้อผิดพลาด ไม่สามารถโหลดข้อมูลได้');
+                    },
+                });
             });
         });
 
@@ -871,6 +875,7 @@ function onOpenhandler(params) {
             ref_barcode_real: 'Barcode สินค้าจริง',
             status: 'Status',
             unit_q: 'ปริมาณการบรรจุ',
+            unit_type: 'หน่วยปริมาณ',
             width: 'กว้าง',
             wide: 'ยาว',
             height: 'สูง',

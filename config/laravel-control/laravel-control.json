@@ -1,0 +1,13 @@
+{
+    "commands": {
+        "checkout": "Switch role (use '-' to switch to previous role)"
+    },
+    "shortcuts": {
+        "openTerminal": "ctrl+`",
+        "openLaravelGraph": "ctrl+shift+`"
+    },
+    "defaults": {
+        "promptPrefix": "laravel ",
+        "welcomeMessage": "Laravel Control: type 'laravel help' for available commands"
+    }
+}

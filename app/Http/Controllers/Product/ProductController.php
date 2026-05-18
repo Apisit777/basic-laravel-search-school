@@ -53,6 +53,8 @@ use App\Models\ProductOther;
 use App\Models\ProductOtherLog;
 use App\Models\ComProductPack;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 use Carbon\Carbon;
 use App\Events\AccountApprovalRequested;
 
@@ -3179,7 +3181,35 @@ class ProductController extends Controller
 
         // dd($categorys);
         // dd($solutions);
-        return view('product.edit', compact('data', 'multiChannels', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions'));
+
+        // ✅ ดึง BOM FG จาก SAP API (cache 10 นาที)
+        $bomCodes = [];
+        $endpoint = "http://sapkmacc.ssup.co.th/api/bom/bulk";
+        $raw = Cache::remember('sap_bom_bulk_raw', 600, function () use ($endpoint) {
+            return Http::timeout(30)->get($endpoint)->body();
+        });
+        $bomData = json_decode($raw, true);
+        if (is_array($bomData)) {
+            $productId = (string) $PRODUCT;
+            foreach ($bomData as $k => $items) {
+                $kStr = (string) $k;
+                if ($kStr === $productId || str_starts_with($kStr, $productId)) {
+                    if (is_array($items)) {
+                        foreach ($items as $row) {
+                            if (is_array($row) && isset($row['code'])) {
+                                $bomCodes[] = [
+                                    'code'     => $row['code'] ?? '',
+                                    'name'     => $row['name'] ?? '',
+                                    'inactive' => $row['inactive'] ?? 'N',
+                                ];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return view('product.edit', compact('data', 'multiChannels', 'allBrands', 'defaultBrands', 'owners', 'grp_ps', 'brand_ps', 'venders', 'type_gs', 'solutions', 'series', 'categorys', 'sub_categorys', 'pdms', 'p_statuss', 'unit_ps', 'unit_types', 'acctypes', 'conditions', 'bomCodes'));
     }
 
     /**

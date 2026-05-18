@@ -305,11 +305,12 @@ class ExportExcelController extends Controller
 
         if ($userpermission == 'OP') {
             if (!isset($request->start_product) || $request->start_product == null) {
-                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'product1s.COST', 'p_statuses.DESCRIPTION', 'product1s.REGISTER', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
                                         ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
                                         ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
                                         ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
                                         ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                                        ->leftJoin('p_statuses', 'product1s.STATUS', '=', 'p_statuses.ID')
                                         ->where('product1s.BRAND', 'OP')
                                         ->groupBy('product1s.PRODUCT')
                                         ->orderBy('product1s.PRODUCT', 'asc')
@@ -317,11 +318,12 @@ class ExportExcelController extends Controller
                                         ->toArray();
                                         // dd($ProDevelops);
             } else if (!isset($request->end_product) || $request->end_product == null) {
-                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'product1s.COST', 'p_statuses.DESCRIPTION', 'product1s.REGISTER', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
                                         ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
                                         ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
                                         ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
                                         ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                                        ->leftJoin('p_statuses', 'product1s.STATUS', '=', 'p_statuses.ID')
                                         ->groupBy('product1s.PRODUCT')
                                         ->where('product1s.BRAND', 'OP')
                                         ->where('PRODUCT', $request->start_product)
@@ -329,11 +331,12 @@ class ExportExcelController extends Controller
                                         ->toArray();
                                         // dd($ProDevelops);
             } else {
-                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
+                $ProDevelops = Product1::select('product1s.BRAND', 'product1s.PRODUCT', 'product1s.BARCODE', 'product1s.NAME_THAI', 'product1s.NAME_ENG', 'product1s.SHORT_THAI', 'product1s.SHORT_ENG', 'product1s.PRICE', 'product1s.COST', 'p_statuses.DESCRIPTION', 'product1s.REGISTER', 'solutions.DESCRIPTION AS SOLUTION', 'series.DESCRIPTION AS SERIES', 'categories.DESCRIPTION AS CATEGORY', 'sub_categories.DESCRIPTION AS SUB_CATEGORY')
                                         ->leftJoin('solutions', 'product1s.SOLUTION', '=', 'solutions.ID')
                                         ->leftJoin('series', 'product1s.SERIES', '=', 'series.ID')
                                         ->leftJoin('categories', 'product1s.CATEGORY', '=', 'categories.ID')
                                         ->leftJoin('sub_categories', 'product1s.S_CAT', '=', 'sub_categories.ID')
+                                        ->leftJoin('p_statuses', 'product1s.STATUS', '=', 'p_statuses.ID')
                                         ->where('product1s.BRAND', 'OP')
                                         ->whereBetween('product1s.PRODUCT', [$request->start_product, $request->end_product])
                                         ->groupBy('product1s.PRODUCT')
@@ -595,7 +598,7 @@ class ExportExcelController extends Controller
         if ($userpermission == 'GNC' || $userpermission == 'BD') {
             $columns = array('Brand', 'Product ID', 'Barcode', 'Name Thai', 'Name English', 'Short Name Thai', 'Short Name English', 'น้ำหนัก(Net Weight, น้ำหนักสินค้า)', 'น้ำหนัก(Gross Weight, สินค้า+กล่อง)', 'Unit', 'Retail Price', 'Cost', 'Product Status', 'ingredients');
         } else {
-            $columns = array('Brand', 'Product ID', 'Barcode', 'Name Thai', 'Name English', 'Short Name Thai', 'Short Name English', 'Retail Price', 'Solution', 'Series', 'Category', 'Sub Category');
+            $columns = array('Brand', 'Product ID', 'Barcode', 'Name Thai', 'Name English', 'Short Name Thai', 'Short Name English', 'Retail Price', 'Cost', 'Product status', 'FDA', 'Solution', 'Series', 'Category', 'Sub Category');
         }
         // dd($columns);
 
@@ -635,6 +638,7 @@ class ExportExcelController extends Controller
                 'ref_barcode_real' => 'Barcode สินค้าจริง',
                 'status' => 'Status',
                 'unit_q' => 'ปริมาณการบรรจุ',
+                'unit_type' => 'หน่วยปริมาณ',
                 'width' => 'กว้าง',
                 'wide'            => 'ยาว',
                 'height'          => 'สูง',
@@ -745,6 +749,7 @@ class ExportExcelController extends Controller
                 'ref_barcode_real' => 'Barcode สินค้าจริง',
                 'status' => 'Status',
                 'unit_q' => 'ปริมาณการบรรจุ',
+                'unit_type' => 'หน่วยปริมาณ',
                 'width' => 'กว้าง',
                 'wide'            => 'ยาว',
                 'height'          => 'สูง',
@@ -831,9 +836,7 @@ class ExportExcelController extends Controller
                 'pregnancy' => 'คนท้องใช้ได้หรือไม่',                        // ใหม่
                 'breastfeed' => 'ให้นมบุตรใช้ได้หรือไม่',                     // ใหม่
 
-                'PRICE' => 'PRICE',
-
-                'UNIT_TYPE' => 'UNIT_TYPE',                              // ใหม่
+                'PRICE' => 'PRICE',                           // ใหม่
                 // 'cost' => 'Cost',
                 'DESCRIPTION as solutions_name' => 'Solution',
                 'DESCRIPTION as series_name' => 'Series',
@@ -925,12 +928,14 @@ class ExportExcelController extends Controller
             if ($U === 'SUB_CATEGORY' || $U === 'S_CAT')
                 return 'sub_categories.DESCRIPTION as sub_categories_name';
 
-            // ===== 2) ฟิลด์ Dimension: บังคับดึงจาก com_products (cp) =====
-            // Unit (cp.width / cp.long / cp.height)
-            if ($U === 'WIDTH')         return DB::raw('IFNULL(cp.`width`, 0) as `width`');
-            if ($U === 'UNIT_WIDTH')    return DB::raw('IFNULL(cp.`width`, 0) as unit_width');
-            if ($U === 'UNIT_LENGTH')   return DB::raw('IFNULL(cp.`long`, 0) as unit_length');
-            if ($U === 'UNIT_HEIGHT')   return DB::raw('IFNULL(cp.`height`, 0) as unit_height');
+            // ===== 2) ฟิลด์ Dimension: com_products (cp) → fallback product1s (p1) =====
+            // Unit (cp.width / cp.long / cp.height → fallback p1.WIDTH / p1.WIDE / p1.HEIGHT)
+            if ($U === 'WIDTH')         return DB::raw('COALESCE(NULLIF(cp.`width`, 0), NULLIF(p1.WIDTH, 0), 0) as `width`');
+            if ($U === 'WIDE')          return DB::raw('COALESCE(NULLIF(cp.`long`, 0), NULLIF(p1.WIDE, 0), 0) as `wide`');
+            if ($U === 'HEIGHT')        return DB::raw('COALESCE(NULLIF(cp.`height`, 0), NULLIF(p1.HEIGHT, 0), 0) as `height`');
+            if ($U === 'UNIT_WIDTH')    return DB::raw('COALESCE(NULLIF(cp.`width`, 0), NULLIF(p1.WIDTH, 0), 0) as unit_width');
+            if ($U === 'UNIT_LENGTH')   return DB::raw('COALESCE(NULLIF(cp.`long`, 0), NULLIF(p1.WIDE, 0), 0) as unit_length');
+            if ($U === 'UNIT_HEIGHT')   return DB::raw('COALESCE(NULLIF(cp.`height`, 0), NULLIF(p1.HEIGHT, 0), 0) as unit_height');
             // Inner (km_ ใน com_products → fallback pd)
             if ($U === 'INNER_WIDTH')   return DB::raw('COALESCE(NULLIF(cp.km_inner_width, 0), pd.inner_width, 0) as inner_width');
             if ($U === 'INNER_LENGTH')  return DB::raw('COALESCE(NULLIF(cp.km_inner_long, 0), pd.inner_length, 0) as inner_length');
@@ -998,9 +1003,9 @@ class ExportExcelController extends Controller
         }
 
         // เพิ่ม unit dimension อัตโนมัติ (ไม่ต้องพึ่ง permission table)
-        $selectFields[] = DB::raw('IFNULL(cp.`width`, 0) as unit_width');
-        $selectFields[] = DB::raw('IFNULL(cp.`long`, 0) as unit_length');
-        $selectFields[] = DB::raw('IFNULL(cp.`height`, 0) as unit_height');
+        $selectFields[] = DB::raw('COALESCE(NULLIF(cp.`width`, 0), NULLIF(p1.WIDTH, 0), 0) as unit_width');
+        $selectFields[] = DB::raw('COALESCE(NULLIF(cp.`long`, 0), NULLIF(p1.WIDE, 0), 0) as unit_length');
+        $selectFields[] = DB::raw('COALESCE(NULLIF(cp.`height`, 0), NULLIF(p1.HEIGHT, 0), 0) as unit_height');
 
         // dd($selectFields);
 

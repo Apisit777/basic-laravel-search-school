@@ -353,12 +353,12 @@ class AuthController extends Controller
                 // เงื่อนไข IBSH → ต้องเช็คก่อน KM (เพราะ IBSH-KM ลงท้ายด้วย KM เหมือนกัน)
                 $userDept = optional(Auth::user()->getUserDepartment)->department;
 
-                if ($userDept === 'IBSH') {
+                if ($userDept === 'IBHS') {
                     return response()->json([
                         'status' => 'success',
                         'response' => $response,
                         'default_role' => $defaultRole,
-                        'route' => '/ibsh/product_detail',
+                        'route' => '/ibhs/product_description',
                     ]);
                 } elseif (substr($defaultRole, -2) === 'KM' && Auth::user()->id === 91) {
                     return response()->json([
@@ -719,7 +719,7 @@ class AuthController extends Controller
                 // เงื่อนไข IBSH → ต้องเช็คก่อน KM (เพราะ IBSH-KM ลงท้ายด้วย KM เหมือนกัน)
                 $userDept = optional(Auth::user()->getUserDepartment)->department;
 
-                if ($userDept === 'IBSH') {
+                if ($userDept === 'IBHS') {
                     return response()->json([
                         'status' => 'success',
                         'response' => $response,

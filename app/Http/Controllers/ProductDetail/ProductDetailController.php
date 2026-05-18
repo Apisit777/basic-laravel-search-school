@@ -775,10 +775,40 @@ class ProductDetailController extends Controller
         }
         // กรองข้อมูลถ้ามีคำค้นหา
         if (!empty($searchAll)) {
-            $data->where(function ($q) use ($searchAll) {
+            // ค้นหา product_id จาก Bulk code / BOM FG (SAP API cache)
+            $bomMatchIds = [];
+            $bomRaw = Cache::get('sap_bom_bulk_raw');
+            if ($bomRaw) {
+                $bomData = json_decode($bomRaw, true);
+                if (is_array($bomData)) {
+                    foreach ($bomData as $pid => $items) {
+                        if (!is_array($items)) continue;
+                        foreach ($items as $row) {
+                            if (!is_array($row) || !isset($row['code'])) continue;
+                            $code = trim((string)($row['code'] ?? ''));
+                            // เฉพาะชุดแรก (ไม่มี -ตัวเลขท้าย)
+                            if (preg_match('/-\d+$/', $code)) continue;
+                            $cCode = trim((string)($row['c_code'] ?? ''));
+                            if (
+                                stripos($code, $searchAll) !== false ||
+                                stripos($cCode, $searchAll) !== false
+                            ) {
+                                $bomMatchIds[] = (string)$pid;
+                            }
+                        }
+                    }
+                }
+            }
+            $bomMatchIds = array_unique($bomMatchIds);
+
+            $data->where(function ($q) use ($searchAll, $bomMatchIds) {
                 $q->orWhere('product_details.product_id', 'like', '%' . $searchAll . '%')
                 ->orWhere('product1s.NAME_THAI', 'like', '%' . $searchAll . '%')
                 ->orWhere('product1s.BARCODE', 'like', '%' . $searchAll . '%');
+
+                if (!empty($bomMatchIds)) {
+                    $q->orWhereIn('product_details.product_id', $bomMatchIds);
+                }
             });
         }
 

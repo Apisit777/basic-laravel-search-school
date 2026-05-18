@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\ProductMasterController;
 use App\Http\Controllers\Api\CommonController;
 use App\Http\Controllers\Api\ArtisanController;
 use App\Http\Controllers\ImportExcel\ImportController;
+use App\Http\Controllers\LaravelControl\LaravelControlController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,4 +63,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 */
 Route::prefix('artisan')->group(function () {
     Route::post('/route-cache', [ArtisanController::class, 'routeCache']);
+});
+
+/*
+|--------------------------------------------------------------------------
+| Laravel Control Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('laravel-control')->middleware('web')->group(function () {
+    Route::post('/command', [LaravelControlController::class, 'command']);
+    Route::get('/status', [LaravelControlController::class, 'status']);
+    Route::get('/branch', [LaravelControlController::class, 'branch']);
+    Route::post('/checkout', [LaravelControlController::class, 'checkout']);
+    Route::get('/config', [LaravelControlController::class, 'config']);
+    Route::get('/history', [LaravelControlController::class, 'history']);
+    Route::get('/branches', [LaravelControlController::class, 'branches']);
+    Route::post('/show', [LaravelControlController::class, 'show']);
+    Route::post('/show-all', [LaravelControlController::class, 'showAll']);
 });

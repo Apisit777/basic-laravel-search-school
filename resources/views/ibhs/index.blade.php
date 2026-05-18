@@ -362,6 +362,20 @@
         .pdf-btn:hover{
         filter: brightness(1.05);
         }
+
+        /* จอเล็ก: ปุ่มลงมาอยู่ใน flow ปกติ */
+        @media (max-width: 767px) and (max-height: 919px) {
+            .buttons-panel {
+                position: relative !important;
+                inset: auto !important;
+                width: 100%;
+                margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}" />
@@ -415,18 +429,65 @@
                
         <ul class="pt-1 mt-1 space-y-2 font-medium border-t-2 border-gray-200 dark:border-gray-700 relative"></ul>
 
+        <div class="buttons-wrapper relative">
+            <div class="buttons-panel absolute inset-x-0 top-4 z-20 flex items-center justify-end space-x-2">
+                <button
+                    class="flex items-center rounded bg-[#303030] hover:bg-[#404040] px-4 pb-[5px] pt-[6px] text-sm font-bold uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out focus:outline-none focus:ring-0 motion-reduce:transition-none dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
+                    type="button"
+                    id="dropdownMenuButton1s"
+                    data-twe-dropdown-toggle-ref
+                    aria-expanded="false"
+                    data-twe-ripple-init
+                    data-twe-ripple-color="light">
+                    <span class="me-2 [&>svg]:h-5 [&>svg]:w-5">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor">
+                        <path
+                        fill-rule="evenodd"
+                        d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                        clip-rule="evenodd" />
+                    </svg>
+                    </span>
+                        เพิ่มข้อมูลสินค้า
+                </button>
+                <ul style="z-index: 999999999;" class="absolute divide-y divide-gray-600 rounded-sm w-36 md:w-48 dark:divide-gray-600 float-left m-0 hidden min-w-max list-none overflow-hidden border-none bg-white bg-clip-padding text-base shadow-lg data-[twe-dropdown-show]:block dark:bg-surface-dark"
+                    aria-labelledby="dropdownMenuButton1s"
+                    data-twe-dropdown-menu-ref>
+                    <li>
+                        <a href="{{ route('ibhs.ibhs_create') }}" class="block w-full whitespace-nowrap bg-white px-2 py-2 text-sm font-bold text-neutral-700 hover:bg-zinc-200/60 focus:bg-zinc-200/60 focus:outline-none active:bg-zinc-200/60 active:no-underline dark:bg-surface-dark dark:text-white dark:hover:bg-neutral-800/25 dark:focus:bg-neutral-800/25 dark:active:bg-neutral-800/25 group">
+                            <svg class="mb-1 h-3 w-3 hidden transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1 md:inline-block" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                fill="currentColor" viewBox="0 0 512 512"  xml:space="preserve">
+                                <g>
+                                    <path class="st0" d="M504.262,66.75L445.226,7.706c-10.291-10.284-26.938-10.267-37.222,0l-38.278,38.278l96.282,96.266
+                                        l38.254-38.295C514.537,93.672,514.554,77.017,504.262,66.75z"/>
+                                    <path class="st0" d="M32.815,382.921L0.025,512l129.055-32.83l319.398-319.431l-96.249-96.265L32.815,382.921z M93.179,404.792
+                                        l-21.871-21.871l278.289-278.289l21.887,21.887L93.179,404.792z"/>
+                                </g>
+                            </svg>
+                            <span class="ml-1">
+                                เพิ่มข้อมูล
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
         <!-- <div class="bg-white rounded shadow-lg dark:bg-[#232323] duration-500 md:p-4"> -->
             <div id="account-wrapper" class="relative">
-
                 <div id="containerexample" class="text-gray-900 dark:text-gray-100">
                     <table id="table_product_detail" class="table table-striped table-bordered dt-responsive nowrap text-gray-900 dark:text-gray-100" style="width:100%">
                         <thead>
                             <tr>
-                                <th>###</th> <!-- สำหรับปุ่ม toggle -->
-                                <th>Brand</th>
-                                <th>Product</th>
+                                <th>#</th> <!-- สำหรับปุ่ม toggle -->
+                                <!-- <th>Brand</th> -->
+                                <th>Bulk code</th>
+                                <!-- <th>Product</th> -->
+                                <!-- <th>BOM FG</th> -->
                                 <th>Product Name</th>
-                                <th>Barcode (Unit)</th>
+                                <!-- <th>Barcode (Unit)</th> -->
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -1168,7 +1229,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
 
-                "url": "{{ route('product_detail.list_product_detail') }}",
+                "url": "{{ route('ibhs.list_ibsh') }}",
                 "type": "POST",
                 'data': function(data) {
                     data.brand_id = $('#brand_id').val();
@@ -1192,55 +1253,64 @@
                 },
                 {
                     targets: 1,
-                    orderable: true,
+                    orderable: false,
                     render: function(data, type, row) {
-                        return row.corporation_id;
+                        const val = row.bulk_id ?? '-';
+                        return `<span class="inline-flex min-w-[150px] items-center justify-start gap-1 whitespace-nowrap rounded-full border border-emerald-400/30 bg-emerald-400/15 px-2 py-0.5 text-xs font-semibold text-slate-950 dark:text-white">${val}</span>`;
                     }
                 },
+                // {
+                //     targets: 3,
+                //     orderable: true,
+                //     render: function (data, type, row) {
+                //         const pid = (row.product_id ?? '').toString();        // กัน null/number
+                //         const job = (row.JOB_REFNO == null) ? '-' : row.JOB_REFNO; // null/undefined => '-'
+
+                //         if (pid.length === 5) {
+                //             return `
+                //                 <span class="inline-flex min-w-[120px] items-center justify-start gap-1 whitespace-nowrap
+                //                 rounded-full border border-[#dc3545]/30 bg-black/15
+                //                 px-2 py-0.5 text-xs font-semibold text-slate-950 dark:text-white">
+                //                     ${pid}
+                //                 </span>
+                //             `;
+                //         }
+                //         if (pid.length > 5) {
+                //             return `
+                //                 <span class="inline-flex min-w-[120px] items-center justify-start gap-1 whitespace-nowrap
+                //                 rounded-full border border-[#dc3545]/30 bg-black/15
+                //                 px-2 py-0.5 text-xs font-semibold text-slate-950 dark:text-white">
+                //                     ${pid}
+                //                 </span>
+                //             `;
+                //         }
+                //         return `${pid}`;
+                //     }
+                // },
+                // {
+                //     targets: 4,
+                //     orderable: false,
+                //     data: null,
+                //     defaultContent: '',
+                //     className: 'bom-fg-cell',
+                //     render: function() { return '<span class="text-gray-400 text-xs">...</span>'; }
+                // },
                 {
                     targets: 2,
                     orderable: true,
-                    render: function (data, type, row) {
-                        const pid = (row.product_id ?? '').toString();        // กัน null/number
-                        const job = (row.JOB_REFNO == null) ? '-' : row.JOB_REFNO; // null/undefined => '-'
-
-                        if (pid.length === 5) {
-                            return `
-                                <span class="inline-flex min-w-[150px] items-center justify-start gap-1 whitespace-nowrap
-                                rounded-full border border-emerald-400/30 bg-emerald-400/15
-                                px-2 py-0.5 text-xs font-semibold text-slate-950 dark:text-white">
-                                    ${pid}
-                                </span>
-                            `;
-                        }
-                        if (pid.length > 5) {
-                            return `
-                                <span class="inline-flex min-w-[150px] items-center justify-start gap-1 whitespace-nowrap
-                                rounded-full border border-[#dc3545]/30 bg-black/15
-                                px-2 py-0.5 text-xs font-semibold text-slate-950 dark:text-white">
-                                    ${pid}
-                                </span>
-                            `;
-                        }
-                        return `${pid}`;
+                    render: function(data, type, row) {
+                        return row.product_name;
                     }
                 },
+                // {
+                //     targets: 4,
+                //     orderable: true,
+                //     render: function(data, type, row) {
+                //         return row.BARCODE;
+                //     }
+                // },
                 {
                     targets: 3,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.NAME_THAI;
-                    }
-                },
-                {
-                    targets: 4,
-                    orderable: true,
-                    render: function(data, type, row) {
-                        return row.BARCODE;
-                    }
-                },
-                {
-                    targets: 5,
                     orderable: true,
                     className: 'text-center',
                     render: function(data, type, row) {
@@ -1258,7 +1328,7 @@
                                             Edit
                                         </a>
 
-                                        <a href="{{route('product_detail.pd_detail_show',0)}}" type="button" class="bclose">
+                                        <a href="{{route('ibhs.ibhs_show',0)}}" type="button" class="bclose">
                                             <svg class="size-7 cursor-pointer" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                                                 viewBox="0 0 309.267 309.267" xml:space="preserve">
                                                 <g>
@@ -1277,7 +1347,7 @@
                                                 </g>
                                             </svg>
                                         </a>
-                                `.replaceAll('/0', "/" + row.product_id);
+                                `.replaceAll('/0', "/" + row.id);
                         }
 
                     }
@@ -1322,11 +1392,15 @@
         // });
 
         mytableDatatable.on('draw', function () {
+            const promises = [];
+            const badge = (val) => `<span class="inline-flex min-w-[120px] items-center justify-start gap-1 whitespace-nowrap rounded-full border border-[#dc3545]/30 bg-[#dc3545]/15 px-2 py-0.5 text-xs font-semibold text-slate-950 dark:text-white">${val}</span>`;
+            const badgeDash = badge('-');
+
             mytableDatatable.rows({ page: 'current' }).every(function () {
                 const tr = this.node();
                 const rowData = this.data();
 
-                if (!rowData) return; // ✅ กัน undefined
+                if (!rowData) return;
 
                 const productId = (rowData.product_id ?? '').toString().trim();
                 if (!productId) return;
@@ -1337,17 +1411,36 @@
                 if (holder.data('checked') === true) return;
                 holder.data('checked', true);
 
-                fetchPdfCodes(productId)
+                const p = fetchPdfCodes(productId)
                 .then(json => {
-                    if (!json || json.ok !== true) { holder.html(''); return; }
+                    if (!json || json.ok !== true) {
+                        holder.html('');
+                        $(tr).find('td.bulk-code-cell').html(badgeDash);
+                        $(tr).find('td.bom-fg-cell').html(badgeDash);
+                        return;
+                    }
 
                     const variants = (json.codes || []).filter(x => /-\d+$/.test(x.code));
                     holder.html(variants.length > 0
                     ? `<button type="button" class="dt-toggle btn-toggle">▶</button>`
                     : ''
                     );
+
+                    const base = (json.codes || []).find(x => !/-\d+$/.test(x.code));
+                    $(tr).find('td.bulk-code-cell').html(badge(base ? (base.c_code ?? '-') : '-'));
+                    $(tr).find('td.bom-fg-cell').html(badge(base ? (base.code ?? '-') : '-'));
                 })
-                .catch(() => holder.html(''));
+                .catch(() => {
+                    holder.html('');
+                    $(tr).find('td.bulk-code-cell').html(badgeDash);
+                    $(tr).find('td.bom-fg-cell').html(badgeDash);
+                });
+                promises.push(p);
+            });
+
+            // หลังโหลดข้อมูลครบทุกแถว ปรับ header ให้ตรงกับ body
+            Promise.all(promises).then(() => {
+                mytableDatatable.columns.adjust();
             });
         });
 
